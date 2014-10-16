@@ -175,7 +175,6 @@ if (is_dir($application_folder)) {
     }
 
     define('APPPATH', BASEPATH . $application_folder . '/');
-    die(APPPATH);
 }
 
 /*
