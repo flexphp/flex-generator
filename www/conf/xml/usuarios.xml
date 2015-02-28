@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<crear>
+    <test>
+        <nombre_formulario>Test</nombre_formulario>
+        <se_envia>POST</se_envia>
+        <tipo_de_servicio>SOAP</tipo_de_servicio>
+        <id_numero_1>
+            <que_quieres>Caja</que_quieres>
+            <como_se_llama>Numero 1</como_se_llama>
+            <que_dato_recibira>numeros</que_dato_recibira>
+            <longitud_maxima_es>10</longitud_maxima_es>
+            <mensaje_de_error_longitud_maxima>Te pasaste</mensaje_de_error_longitud_maxima>
+            <es_obligatorio>si</es_obligatorio>
+            <mensaje_de_error_es_obligatorio>Ey! Se te olvido</mensaje_de_error_es_obligatorio>
+        </id_numero_1>
+        <id_correo>
+            <que_quieres>Caja</que_quieres>
+            <como_se_llama>Email</como_se_llama>
+            <que_dato_recibira>correo</que_dato_recibira>
+            <longitud_maxima_es>60</longitud_maxima_es>
+            <mensaje_de_error_longitud_maxima></mensaje_de_error_longitud_maxima>
+            <es_obligatorio>no</es_obligatorio>
+        </id_correo>
+        <id_enviar>
+            <que_quieres>Boton</que_quieres>
+            <como_se_llama>Enviar</como_se_llama>
+        </id_enviar>
+        <id_limpiar>
+            <que_quieres>Restablecer</que_quieres>
+            <como_se_llama>Limpiar</como_se_llama>
+        </id_limpiar>
+    </test>
+</crear>
