@@ -5,7 +5,7 @@
     <!-- Fila en la que estan los encabezados del formulario -->
     <xsl:variable name="filaEncabezado" select="1" />
     <!-- Prefijo de los atributos de formulario -->
-    <xsl:variable name="prefijoAtributo" select="'id-'" />
+    <xsl:variable name="prefijoAtributo" select="'id_'" />
     <!-- Fila en la que estan los encabezados de los detalles del formulario -->
     <xsl:variable name="filaDetalles" select="3" />
     <!-- numero de filas que tiene el encabezado  del formulario -->
@@ -13,7 +13,7 @@
     <!-- numero de filas que tiene el detalle del formulario -->
     <xsl:variable name="totalColumnasDetalle" select="9" />
     <!-- formatear etiquetas de nombres a minusculas  -->
-    <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz-'" />
+    <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz_'" />
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ ?'" />
 
     <xsl:template match="/">
@@ -30,16 +30,12 @@
                         <!-- Limpia el nombre de la hoja actual: mi nombre a mi-nombre -->
                         <xsl:variable name="nombreHojaActual" select="translate(./@table:name, $uppercase, $lowercase)"/>
                         <!-- Crear elemento con el nombre de la hoja <nombre-hoja>-->
-                        <xsl:text disable-output-escaping="yes">&lt;</xsl:text>
-                        <xsl:value-of select="$nombreHojaActual"/>
-                        <xsl:text disable-output-escaping="yes">&gt;&#10;</xsl:text>
-
-                        <!-- Aplica la plantilla //table:table -->
-                        <xsl:apply-templates select="."/>
-
-                        <xsl:text disable-output-escaping="yes">    &lt;/</xsl:text>
-                        <xsl:value-of select="$nombreHojaActual"/>
-                        <xsl:text disable-output-escaping="yes">&gt;&#10;</xsl:text>
+                        <xsl:element name="{$nombreHojaActual}">
+                            <!-- Aplica la plantilla //table:table -->
+                            <xsl:text disable-output-escaping="yes">&#10;</xsl:text>
+                            <xsl:apply-templates select="."/>
+                        </xsl:element>
+                        <xsl:text disable-output-escaping="yes">&#10;</xsl:text>
                     </xsl:if>
                 </xsl:if>
             </xsl:for-each>
@@ -79,23 +75,23 @@
                         <!-- No lo hace para el encabezado -->
                         <xsl:if test="position() != $titulos">
                             <!-- coloca un hijo al formulario con el titulo del elemento-->
-                            <xsl:variable name="id" select="concat($prefijoAtributo, translate(./table:table-cell[2]/text:p, $uppercase, $lowercase))"/>
+                            <xsl:variable name="id" select="translate(concat($prefijoAtributo, ./table:table-cell[2]/text:p), $uppercase, $lowercase)"/>
 
-                            <xsl:text disable-output-escaping="yes">        &lt;</xsl:text>
-                            <xsl:value-of select="$id"/>
-                            <xsl:text disable-output-escaping="yes">&gt;&#10;</xsl:text>
+                            <xsl:text disable-output-escaping="yes">        </xsl:text>
+                            <xsl:element name="{$id}">
+                                <xsl:text disable-output-escaping="yes">&#10;</xsl:text>
 
-                            <xsl:call-template name="CellLoop">
-                                <xsl:with-param name="totalCells" select="$totalColumnas"/>
-                                <xsl:with-param name="currentColumn" select="1"/>
-                                <xsl:with-param name="currentCell" select="1"/>
-                                <xsl:with-param name="currentIteration" select="1"/>
-                                <xsl:with-param name="filaTitulos" select="$titulos"/>
-                            </xsl:call-template>
+                                <xsl:call-template name="CellLoop">
+                                    <xsl:with-param name="totalCells" select="$totalColumnas"/>
+                                    <xsl:with-param name="currentColumn" select="1"/>
+                                    <xsl:with-param name="currentCell" select="1"/>
+                                    <xsl:with-param name="currentIteration" select="1"/>
+                                    <xsl:with-param name="filaTitulos" select="$titulos"/>
+                                </xsl:call-template>
 
-                            <xsl:text disable-output-escaping="yes">        &lt;/</xsl:text>
-                            <xsl:value-of select="$id"/>
-                            <xsl:text disable-output-escaping="yes">&gt;&#10;</xsl:text>
+                                <xsl:text disable-output-escaping="yes">        </xsl:text>
+                            </xsl:element>
+                            <xsl:text disable-output-escaping="yes">&#10;</xsl:text>
 
                         </xsl:if>
                     </xsl:otherwise>
@@ -171,23 +167,20 @@
 
             <xsl:variable name="etiqueta" select="translate(//table:table/table:table-row[$filaTitulos]/table:table-cell[$currentColumn]/text:p, $uppercase, $lowercase)"/>
 
-            <xsl:text disable-output-escaping="yes">&lt;</xsl:text>
-            <xsl:value-of select="$etiqueta"/>
-            <xsl:text disable-output-escaping="yes">&gt;</xsl:text>
+            <xsl:element name="{$etiqueta}">
 
-            <xsl:for-each select="$tagContentPointer/text:p">
+                <xsl:for-each select="$tagContentPointer/text:p">
+                  
+                    <xsl:if test="position() &gt; 1">
+                        <xsl:call-template name="multilineSeparator" />
+                    </xsl:if>
+                    <!-- Agrega el valor de la celda -->
+                    <xsl:value-of select="."/>
 
-                <xsl:if test="position() &gt; 1">
-                    <xsl:call-template name="multilineSeparator" />
-                </xsl:if>
-                <!-- Agrega el valor de la celda -->
-                <xsl:value-of select="."/>
+                </xsl:for-each>
 
-            </xsl:for-each>
-
-            <xsl:text disable-output-escaping="yes">&lt;/</xsl:text>
-            <xsl:value-of select="$etiqueta"/>
-            <xsl:text disable-output-escaping="yes">&gt;&#10;</xsl:text>
+            </xsl:element>
+            <xsl:text disable-output-escaping="yes">&#10;</xsl:text>
         </xsl:if>
     </xsl:template>
     <!-- Cells that contain multiple lines (ctrl-enter) will translate the line endings to this variable in the output -->
