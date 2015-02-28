@@ -159,22 +159,30 @@ function convertir2UrlLocal($ruta) {
     return str_replace('../', '<?php echo base_url(); ?>', $ruta);
 }
 
-function validarArgumentoTipo($nombre, $etiqueta, $tipo, $msj = '') {
+/**
+ * Crea validacion del tipo de dato dentro del proyecto
+ * @param string $id Identificador del elemento a validar
+ * @param string $etiqueta Nombre mostrado al cliente en el formulario
+ * @param string $tipo Tipo de dato a validar ver ZC_DATO
+ * @param string $msj Mensaje de error definido por el usuario en la plantilla
+ * @return string
+ */
+function validarArgumentoTipo($id, $etiqueta, $tipo, $msj = '') {
     $validacion = FIN_DE_LINEA;
     $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_DATO_MENSAJE_ERROR_PREDETERMINADO;
 
     switch ($tipo) {
         case ZC_DATO_NUMERICO:
-            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$nombre}'],  FILTER_VALIDATE_INT) && '' != \$dato['{$nombre}']){" . FIN_DE_LINEA;
+            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$id}'],  FILTER_VALIDATE_INT) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_EMAIL:
-            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$nombre}'], FILTER_VALIDATE_EMAIL)) {" . FIN_DE_LINEA;
+            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$id}'], FILTER_VALIDATE_EMAIL) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_FECHA:
-            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$nombre}'], FILTER_VALIDATE_INT)) {" . FIN_DE_LINEA;
+            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$id}'], FILTER_VALIDATE_INT) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_URL:
-            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$nombre}'], FILTER_VALIDATE_URL)) {" . FIN_DE_LINEA;
+            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_ALFANUMERICO:
         default :
@@ -188,7 +196,15 @@ function validarArgumentoTipo($nombre, $etiqueta, $tipo, $msj = '') {
     return $validacion;
 }
 
-function validarArgumentoObligatorio($nombre, $etiqueta, $obligatorio = 'no', $msj = '') {
+/**
+ * Crea validacion para los datos obligatorios, segun sea definido por el usuario en la configuracion
+ * @param string $id Identificador del elemento a validar
+ * @param string $etiqueta Nombre mostrado al cliente en el formulario
+ * @param string $obligatorio Bandera para identificar si el sato es obligatorio
+ * @param string $msj Mensaje de error definido por el usuario en la plantilla
+ * @return string
+ */
+function validarArgumentoObligatorio($id, $etiqueta, $obligatorio = 'no', $msj = '') {
     $validacion = '';
     $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_OBLIGATORIO_ERROR_PREDETERMINADO;
 
@@ -200,7 +216,7 @@ function validarArgumentoObligatorio($nombre, $etiqueta, $obligatorio = 'no', $m
         case '1':
         default :
             $validacion .= FIN_DE_LINEA;
-            $validacion .= insertarEspacios(8) . "if ('' == \$dato['{$nombre}']){" . FIN_DE_LINEA;
+            $validacion .= insertarEspacios(8) . "if ('' == \$dato['{$id}']){" . FIN_DE_LINEA;
             $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '{$msjValidacion}';" . FIN_DE_LINEA;
             $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
             break;
@@ -209,7 +225,16 @@ function validarArgumentoObligatorio($nombre, $etiqueta, $obligatorio = 'no', $m
     return $validacion;
 }
 
-function validarArgumentoLongitudMaxima($nombre, $etiqueta, $tipo, $longitudMaxima = -1, $msj = '') {
+/**
+ * Crea validacion de longitud maxima del campo
+ * @param string $id Identificador del elemento a validar
+ * @param string $etiqueta Nombre mostrado al cliente en el formulario
+ * @param string $tipo Tipo de dato a validar ver ZC_DATO
+ * @param string $longitudMaxima Longitud maxima definida por el usuario para el campo
+ * @param string $msj Mensaje de error definido por el usuario en la plantilla
+ * @return string
+ */
+function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitudMaxima = -1, $msj = '') {
     $validacion = '';
     $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO;
 
@@ -220,7 +245,7 @@ function validarArgumentoLongitudMaxima($nombre, $etiqueta, $tipo, $longitudMaxi
         default :
             if ($longitudMaxima > 0) {
                 $validacion .= FIN_DE_LINEA;
-                $validacion .= insertarEspacios(8) . "if (strlen(\$dato['$nombre']) >  {$longitudMaxima}){" . FIN_DE_LINEA;
+                $validacion .= insertarEspacios(8) . "if (strlen(\$dato['$id']) >  {$longitudMaxima}){" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '" . str_replace('&[Longitud]&', $longitudMaxima, $msjValidacion) . "';" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
             }
@@ -230,7 +255,16 @@ function validarArgumentoLongitudMaxima($nombre, $etiqueta, $tipo, $longitudMaxi
     return $validacion;
 }
 
-function validarArgumentoLongitudMinima($nombre, $etiqueta, $tipo, $longitudMinima = 0, $msj = '') {
+/**
+ * Crea validacion de longitud maxima del campo
+ * @param string $id Identificador del elemento a validar
+ * @param string $etiqueta Nombre mostrado al cliente en el formulario
+ * @param string $tipo Tipo de dato a validar ver ZC_DATO
+ * @param string $longitudMinima Longitud minima definida por el usuario para el campo
+ * @param string $msj Mensaje de error definido por el usuario en la plantilla
+ * @return string
+ */
+function validarArgumentoLongitudMinima($id, $etiqueta, $tipo, $longitudMinima = 0, $msj = '') {
     $validacion = '';
     $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_LONGITUD_MINIMA_ERROR_PREDETERMINADO;
 
@@ -241,7 +275,7 @@ function validarArgumentoLongitudMinima($nombre, $etiqueta, $tipo, $longitudMini
         default :
             if ($longitudMinima > 0) {
                 $validacion .= FIN_DE_LINEA;
-                $validacion .= insertarEspacios(8) . "if (strlen(\$dato['$nombre']) >  {$longitudMinima}){" . FIN_DE_LINEA;
+                $validacion .= insertarEspacios(8) . "if (strlen(\$dato['$id']) <  {$longitudMinima}){" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '" . str_replace('&[Longitud]&', $longitudMinima, $msjValidacion) . "';" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
             }

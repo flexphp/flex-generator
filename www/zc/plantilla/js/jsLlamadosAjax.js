@@ -8,9 +8,7 @@
                     url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}Cliente/',
                     type: 'POST',
                     dataType: 'JSON',
-                    data: {
-                        {_asignacionCliente_}, accion: nombreAccion
-                    },
+                    data: $('#frm_{_nombreFormulario_}').serialize()+'&accion='+nombreAccion,
                     success: function(rpta){
                         if(undefined != rpta.error && '' != rpta.error){
                             $('#{_nombreFormulario_}Error').text(rpta.error);
