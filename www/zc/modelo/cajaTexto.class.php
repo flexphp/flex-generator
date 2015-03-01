@@ -76,11 +76,17 @@ class cajaTexto {
 
     /**
      * Crear y define el elemento HTML a devolver
+     * El estilo de creacion permite crear dos columnas para la recoleecion de datos
+     * Cada una inicia con una columna en blanco (margen) izquierdo
+     * 5 columnas repartidas con 2 para la etiqueta del elemento y 3 para la forma de ignreso
+     * 5 columnas repartidas con 2 para la etiqueta del elemento y 3 para la forma de ignreso
+     * Cada una inicia con una columna en blanco (margen) derecho
      */
     function crearCajaTexto() {
         $this->_cajaTexto = "
             <div class='row'>
-                <div class='col-md-2'>
+                <div class='col-md-1'></div>
+                <div class='col-md-2 text-right'>
                     <label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
                 </div>
                 <div class='col-md-3'>
@@ -96,6 +102,8 @@ class cajaTexto {
                 "/>
                     <span class='help-block'></span>
                 </div>
+                <div class='col-md-5'></div>
+                <div class='col-md-1'></div>
             </div>
         ";
     }

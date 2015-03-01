@@ -19,12 +19,23 @@
     </head>
     <body>
         <div class="container-fluid">
+            <!-- Seperacion del top -->
+            <div class="col-md-12"> </div>
+            <!-- Nombrel del formulario actual -->
             <div class="col-md-1"></div>
-            <div class="col-md-6">
-                <form id="frm_{_nombreFormulario_}" name="frm_{_nombreFormulario_}" method="{_metodoFormulario_}">
+            <div class="col-md-5 text-center">
+                <h2>{_nombreFormulario_}</h2>
+            </div>
+            <div class="col-md-5"></div>
+            <div class="col-md-1"></div>
+            <!-- Formulario para el ingreso de datos -->
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <form id="{_nombreFormulario_}" name="{_nombreFormulario_}" method="{_metodoFormulario_}">
                     {_contenidoFormulario_}
                 </form>
             </div>
+            <div class="col-md-1"></div>
         </div>
 
         <!-- URL del proyecto, se usa en los llamados ajax -->

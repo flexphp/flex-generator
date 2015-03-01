@@ -488,8 +488,24 @@ class formulario {
     private function unirElementosFormulario($elementos) {
         $elementosFormulario = '';
         foreach ($elementos as $elemento => $valor) {
+            // Hasta el momento solo se utilizan para los botones
+            $estiloInicio = $estiloFin = '';
+            if ($elemento == 'acciones') {
+                // Las acciones son muchas en una sola fila, se agrupan al final del proceso
+                $estiloInicio = "
+                    <div class='row'>
+                        <div class='col-md-1'></div>
+                        <div class='col-md-5 text-center'>
+                        ";
+                $estiloFin = "
+                        </div>
+                        <div class='col-md-5'></div>
+                        <div class='col-md-1'></div>
+                    </div>
+                ";
+            }
             if (is_array($elementos[$elemento])) {
-                $elementosFormulario .= $this->unirElementosFormulario($valor);
+                $elementosFormulario .= $estiloInicio.$this->unirElementosFormulario($elementos[$elemento]).$estiloFin;
             } else {
                 $elementosFormulario .= $elementos[$elemento];
             }
