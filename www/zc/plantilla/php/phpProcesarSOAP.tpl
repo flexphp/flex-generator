@@ -8,9 +8,9 @@
         } else {
             $rptaWS = $ws['rptaWS'];
             if ($rptaWS) {
-                if ($rptaWS[0]['error1'] != '') {
-                    // $this->manejoError->crearError(json_decode($rptaWS[0]['error1'], true));
-                    $rpta['error'] = json_decode($rptaWS[0]['error1'], true);
+                if ($rptaWS[0]['error'] != '') {
+                    // $this->manejoError->crearError(json_decode($rptaWS[0]['error'], true));
+                    $rpta['error'] = json_decode($rptaWS[0]['error'], true);
                 } elseif ($rptaWS[0]['cta'] > 0) {
                     // Informacion devuelta
                     $rpta['infoEncabezado'] = json_decode($rptaWS[0]['infoEncabezado'], true);

@@ -749,7 +749,7 @@ class formulario {
                 $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpCrearAccion.tpl');
                 $plantilla->asignarEtiqueta('nombreModelo', $this->_id);
                 $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
-                $plantilla->asignarEtiqueta('servidorAccion', $this->_id . '.' . $this->_tipoWS);
+                $plantilla->asignarEtiqueta('servidorAccion', $this->_id . '_' . $this->_tipoWS);
                 $plantilla->asignarEtiqueta('asignacionCliente', $this->_asignacionParametrosClienteSOAP);
 
                 // Concatena las acciones que se pueden llamar desde el cliente

@@ -173,16 +173,16 @@ function validarArgumentoTipo($id, $etiqueta, $tipo, $msj = '') {
 
     switch ($tipo) {
         case ZC_DATO_NUMERICO:
-            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$id}'],  FILTER_VALIDATE_INT) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion .= insertarEspacios(8) . "if (filter_var(\$dato['{$id}'],  FILTER_VALIDATE_INT) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_EMAIL:
-            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$id}'], FILTER_VALIDATE_EMAIL) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion .= insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_EMAIL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_FECHA:
-            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$id}'], FILTER_VALIDATE_INT) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion .= insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_INT) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_URL:
-            $validacion .= insertarEspacios(8) . "if (!filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion .= insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_ALFANUMERICO:
         default :

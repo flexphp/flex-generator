@@ -13,8 +13,8 @@
         $return = array();
 
         $server = base_url() . 'index.php/';
-        $serverURL = $server . "{_servidorAccion_}";
-        $serverScript = '';
+        $serverURL = $server . '{_servidorAccion_}/';
+        $serverScript = '{_nombreAccion_}';
         $metodoALlamar = $datos['accion'].'Servidor';
 
         /**
@@ -39,8 +39,8 @@
         $_rpta = $_CLI_WS->call(
             $metodoALlamar, // Funcion a llamar
             $Parametros, // Parametros pasados a la funcion
-            "uri:$serverURL/$serverScript", // namespace
-            "uri:$serverURL/$serverScript/$metodoALlamar"       // SOAPAction
+            "uri:{$serverURL}{$serverScript}", // namespace
+            "uri:{$serverURL}{$serverScript}/$metodoALlamar"       // SOAPAction
         );
 
         // Verificacion que los parametros estan ok, y si lo estan. mostrar rta.
