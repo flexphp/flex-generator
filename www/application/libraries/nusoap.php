@@ -6,6 +6,10 @@ if (!defined('BASEPATH'))
 class nusoap {
 
     function nusoap() {
+        /**
+         * Define zona horaro utilizada por ala aplicacion
+         */
+        date_default_timezone_set('America/Bogota');
         require_once APPPATH . 'libraries/nusoap/nusoap' . EXT;
     }
 

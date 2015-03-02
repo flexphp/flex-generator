@@ -181,7 +181,19 @@ class formulario {
      * @var string
      */
     private $_accionCliente = '';
+    
+    /**
+     * Variable para definir las acciones que se ejecutaran en el servidor WS
+     * @var string 
+     */
+    private $_accionesServidorWS = '';
 
+    /**
+     * Nombre del archivo controlador del servidor de WS creado en /controllers
+     * @var string
+     */
+    private $_nombreArchivoServidor = '';
+    
     /**
      * Nombre del archivo modelo creado en /models
      * @var string
@@ -303,6 +315,32 @@ class formulario {
         }
 
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModelo);
+
+        return $this;
+    }
+    
+    /**
+     * Crea el archivo controlador que manejan las funciones de WS del lado servidor
+     * @param string $directorioSalida Ruta de salida donde se creara el archivo
+     * @param string $extension Extension que tendra el archivo de salida
+     * @param array $opciones Opciones de configuracion del arhcivo creado
+     * @return \formulario
+     */
+    private function crearControladorServidorFormulario($directorioSalida = '../application/controllers', $extension = 'php', $opciones = array()) {
+        /**
+         * Plantilla para el modelo (model)
+         */
+        $plantilla = new plantilla();
+        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorServidorSOAP.tpl');
+
+        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoServidor);
+        $plantilla->asignarEtiqueta('accionesServidorWS', $this->_accionesServidorWS);
+
+        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
+            $plantilla->minimizarPlantilla();
+        }
+
+        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoServidor);
 
         return $this;
     }
@@ -469,6 +507,7 @@ class formulario {
         $this->procesarFormulario();
         $this->crearControladorFormulario();
         $this->crearModeloFormulario();
+        $this->crearControladorServidorFormulario();
         // Las acciones del cliente se deben procesar despues de crear el controlador,
         // ya que este ultimo hace referencia a la URL
         $this->crearAccionesClienteFormulario();
@@ -569,6 +608,7 @@ class formulario {
         $this->_nombreArchivoModelo = 'modelo_' . $id;
         $this->_nombreArchivoVista = 'vista_' . $id;
         $this->_nombreArchivoControlador = $id;
+        $this->_nombreArchivoServidor = $id  . '_' . $this->_tipoWS;
 
         return $this;
     }
@@ -749,7 +789,7 @@ class formulario {
                 $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpCrearAccion.tpl');
                 $plantilla->asignarEtiqueta('nombreModelo', $this->_id);
                 $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
-                $plantilla->asignarEtiqueta('servidorAccion', $this->_id . '_' . $this->_tipoWS);
+                $plantilla->asignarEtiqueta('servidorAccion', $this->_nombreArchivoServidor);
                 $plantilla->asignarEtiqueta('asignacionCliente', $this->_asignacionParametrosClienteSOAP);
 
                 // Concatena las acciones que se pueden llamar desde el cliente
@@ -765,149 +805,28 @@ class formulario {
      * @param string $directorioSalida
      * @return \formulario
      */
-    private function crearWsSOAPServidorFormulario($directorioSalida = 'dist/wss') {
+    private function controladorWsSOAPServidorFormulario() {
         if ($this->_crearAccionServidor && $this->_tipoWS == ZC_WS_SOAP) {
-            $nombre = $this->_id;
-            $extension = 'php';
-            $this->_nombre = $nombre . '.' . $this->_tipoWS . '.' . $extension;
-
-            $servidorSOAP = "<?php" . FIN_DE_LINEA;
-            $servidorSOAP .= "" . FIN_DE_LINEA;
-            $servidorSOAP .= "// Solo muestra errores fatales" . FIN_DE_LINEA;
-            $servidorSOAP .= "error_reporting(1);" . FIN_DE_LINEA;
-            $servidorSOAP .= "// Fecha y hora del sistema" . FIN_DE_LINEA;
-            $servidorSOAP .= "date_default_timezone_set('America/Bogota');" . FIN_DE_LINEA;
-            $servidorSOAP .= "" . FIN_DE_LINEA;
-            $servidorSOAP .= "/**" . FIN_DE_LINEA;
-            $servidorSOAP .= " * Clase para el manejo de Servidor WS" . FIN_DE_LINEA;
-            $servidorSOAP .= " */" . FIN_DE_LINEA;
-            $servidorSOAP .= "if (!class_exists('soap_server')) {" . FIN_DE_LINEA;
-            $servidorSOAP .= "    require '../nuSOAP/nusoap.php';" . FIN_DE_LINEA;
-            $servidorSOAP .= "}" . FIN_DE_LINEA;
-
-            $servidorSOAP .= "\$miURL = '';" . FIN_DE_LINEA;
-            $servidorSOAP .= "\$_SRV_WS = new soap_server();" . FIN_DE_LINEA;
-            $servidorSOAP .= "\$_SRV_WS->configureWSDL('{$nombre}', \$miURL);" . FIN_DE_LINEA;
-            $servidorSOAP .= "\$_SRV_WS->wsdl->schemaTargetNamespace = \$miURL;" . FIN_DE_LINEA;
-            $servidorSOAP .= "\$_SRV_WS->wsdl->setDebugLevel(9);" . FIN_DE_LINEA;
-            $servidorSOAP .= "" . FIN_DE_LINEA;
-
             foreach ($this->_acciones as $nro => $caracteristicas) {
-                $servidorSOAP .= "/**" . FIN_DE_LINEA;
-                $servidorSOAP .= " * Definir los tipo de variables que se devolveran en la repuesta" . FIN_DE_LINEA;
-                $servidorSOAP .= " */" . FIN_DE_LINEA;
-                $servidorSOAP .= "\$_SRV_WS->wsdl->addComplexType(" . FIN_DE_LINEA;
-                $servidorSOAP .= "    '{$caracteristicas[ZC_ID]}Respta', " . FIN_DE_LINEA;
-                $servidorSOAP .= "    'complexType', " . FIN_DE_LINEA;
-                $servidorSOAP .= "    'struct', " . FIN_DE_LINEA;
-                $servidorSOAP .= "    'all', " . FIN_DE_LINEA;
-                $servidorSOAP .= "    '', " . FIN_DE_LINEA;
-                $servidorSOAP .= "    array(" . FIN_DE_LINEA;
-                $servidorSOAP .= "        'cta' => array(" . FIN_DE_LINEA;
-                $servidorSOAP .= "            'name' => 'cta'," . FIN_DE_LINEA;
-                $servidorSOAP .= "            'type' => 'xsd:string'" . FIN_DE_LINEA;
-                $servidorSOAP .= "        )," . FIN_DE_LINEA;
-                $servidorSOAP .= "        'infoEncabezado' => array(" . FIN_DE_LINEA;
-                $servidorSOAP .= "            'name' => 'infoEncabezado'," . FIN_DE_LINEA;
-                $servidorSOAP .= "            'type' => 'xsd:string'" . FIN_DE_LINEA;
-                $servidorSOAP .= "        )," . FIN_DE_LINEA;
-                $servidorSOAP .= "        'error1' => array(" . FIN_DE_LINEA;
-                $servidorSOAP .= "            'name' => 'error1'," . FIN_DE_LINEA;
-                $servidorSOAP .= "            'type' => 'xsd:string'" . FIN_DE_LINEA;
-                $servidorSOAP .= "        )" . FIN_DE_LINEA;
-                $servidorSOAP .= "    )" . FIN_DE_LINEA;
-                $servidorSOAP .= ");" . FIN_DE_LINEA;
-                $servidorSOAP .= "" . FIN_DE_LINEA;
-                $servidorSOAP .= "/**" . FIN_DE_LINEA;
-                $servidorSOAP .= " * Definir la manera de devolver el resultado" . FIN_DE_LINEA;
-                $servidorSOAP .= " */" . FIN_DE_LINEA;
-                $servidorSOAP .= "\$_SRV_WS->wsdl->addComplexType(" . FIN_DE_LINEA;
-                $servidorSOAP .= "    '{$caracteristicas[ZC_ID]}ResptaArray', " . FIN_DE_LINEA;
-                $servidorSOAP .= "    'complexType', " . FIN_DE_LINEA;
-                $servidorSOAP .= "    'array', " . FIN_DE_LINEA;
-                $servidorSOAP .= "    '', " . FIN_DE_LINEA;
-                $servidorSOAP .= "    'SOAP-ENC:Array', " . FIN_DE_LINEA;
-                $servidorSOAP .= "    array(), " . FIN_DE_LINEA;
-                $servidorSOAP .= "    array(" . FIN_DE_LINEA;
-                $servidorSOAP .= "        array(" . FIN_DE_LINEA;
-                $servidorSOAP .= "            'ref' => 'SOAP-ENC:arrayType'," . FIN_DE_LINEA;
-                $servidorSOAP .= "            'wsdl:arrayType' => 'tns:{$caracteristicas[ZC_ID]}Respta[]'" . FIN_DE_LINEA;
-                $servidorSOAP .= "        )" . FIN_DE_LINEA;
-                $servidorSOAP .= "    )," . FIN_DE_LINEA;
-                $servidorSOAP .= "    'tns:{$caracteristicas[ZC_ID]}Respta'" . FIN_DE_LINEA;
-                $servidorSOAP .= ");" . FIN_DE_LINEA;
-                $servidorSOAP .= "" . FIN_DE_LINEA;
-                $servidorSOAP .= "/**" . FIN_DE_LINEA;
-                $servidorSOAP .= " * Parametros que recibe la funcion" . FIN_DE_LINEA;
-                $servidorSOAP .= " */" . FIN_DE_LINEA;
-                $servidorSOAP .= "\${$caracteristicas[ZC_ID]}Parametros = array(" . FIN_DE_LINEA;
-                $servidorSOAP .= "{$this->_asignacionParametrosServidorSOAP}" . FIN_DE_LINEA;
-                $servidorSOAP .= ");" . FIN_DE_LINEA;
-                $servidorSOAP .= "" . FIN_DE_LINEA;
-                $servidorSOAP .= "/**" . FIN_DE_LINEA;
-                $servidorSOAP .= " * Definir el tipo de respuesta que devuelve el servidor" . FIN_DE_LINEA;
-                $servidorSOAP .= " */" . FIN_DE_LINEA;
-                $servidorSOAP .= "\${$caracteristicas[ZC_ID]}Returns = array(" . FIN_DE_LINEA;
-                $servidorSOAP .= "    'return' => 'tns:{$caracteristicas[ZC_ID]}ResptaArray'" . FIN_DE_LINEA;
-                $servidorSOAP .= ");" . FIN_DE_LINEA;
-                $servidorSOAP .= "" . FIN_DE_LINEA;
-                $servidorSOAP .= "/**" . FIN_DE_LINEA;
-                $servidorSOAP .= " * Registrar la funcion en el servidor" . FIN_DE_LINEA;
-                $servidorSOAP .= " */" . FIN_DE_LINEA;
-                $servidorSOAP .= "\$_SRV_WS->register(" . FIN_DE_LINEA;
-                $servidorSOAP .= "        '{$caracteristicas[ZC_ID]}{$nombre}Servidor', // Nombre de la funcion" . FIN_DE_LINEA;
-                $servidorSOAP .= "        \${$caracteristicas[ZC_ID]}Parametros, // Parametros de entrada" . FIN_DE_LINEA;
-                $servidorSOAP .= "        \${$caracteristicas[ZC_ID]}Returns, // Parametros de salida" . FIN_DE_LINEA;
-                $servidorSOAP .= "        \$miURL" . FIN_DE_LINEA;
-                $servidorSOAP .= ");" . FIN_DE_LINEA;
-                $servidorSOAP .= "" . FIN_DE_LINEA;
-                $servidorSOAP .= "function {$caracteristicas[ZC_ID]}{$nombre}Servidor({$this->_asignacionParametrosFuncionServidorSOAP}){" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // f_crmlog('Parametros WSS ' . __FUNCTION__ . preprint(get_defined_vars(), 1));" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // global \$conexionsql;" . FIN_DE_LINEA;
-                $servidorSOAP .= "" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // if (!class_exists('error')) {" . FIN_DE_LINEA;
-                $servidorSOAP .= "    //     require(gLib::\$_webExtApp . archivosInclude::\$_error_class_php);" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // }" . FIN_DE_LINEA;
-                $servidorSOAP .= "" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // Clase para el manejo de errores" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // \$manejoError = new error();" . FIN_DE_LINEA;
-                $servidorSOAP .= "" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // Incializacion de variables de respuesta" . FIN_DE_LINEA;
-                $servidorSOAP .= "    \$Resultado[0] = array(" . FIN_DE_LINEA;
-                $servidorSOAP .= "        'cta' => 0," . FIN_DE_LINEA;
-                $servidorSOAP .= "        'infoEncabezado' => ''," . FIN_DE_LINEA;
-                $servidorSOAP .= "        'error1' => ''," . FIN_DE_LINEA;
-                $servidorSOAP .= "    );" . FIN_DE_LINEA;
-                $servidorSOAP .= "    \$i = 0;" . FIN_DE_LINEA;
-                $servidorSOAP .= "" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // if (!\$conexionsql) {" . FIN_DE_LINEA;
-                $servidorSOAP .= "    //    \$manejoError->crearError('Error de conexion');" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // } else {" . FIN_DE_LINEA;
-                $servidorSOAP .= "        " . $this->formatearAccionFormulario($caracteristicas['accionServidor']) . "" . FIN_DE_LINEA;
-                $servidorSOAP .= "        if(is_array(\$row)){" . FIN_DE_LINEA;
-                $servidorSOAP .= "            \$Resultado[\$i]['infoEncabezado'] = json_encode(\$row);" . FIN_DE_LINEA;
-                $servidorSOAP .= "        } else {" . FIN_DE_LINEA;
-                $servidorSOAP .= "            \$Resultado[\$i]['infoEncabezado'] = \$row;" . FIN_DE_LINEA;
-                $servidorSOAP .= "        }" . FIN_DE_LINEA;
-                $servidorSOAP .= "        \$Resultado[0]['cta'] = \$cta;" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // }" . FIN_DE_LINEA;
-                $servidorSOAP .= "" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // Validacion de posibles errores" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // if (\$manejoError->numeroDeErrores() > 0) {" . FIN_DE_LINEA;
-                $servidorSOAP .= "    //     \$Resultado[0]['error1'] = json_encode(\$manejoError->devolverErrores());" . FIN_DE_LINEA;
-                $servidorSOAP .= "    // }" . FIN_DE_LINEA;
-                $servidorSOAP .= "" . FIN_DE_LINEA;
-                $servidorSOAP .= "    return new soapval('return', 'tns:{$caracteristicas[ZC_ID]}ResptaArray', \$Resultado);" . FIN_DE_LINEA;
-                $servidorSOAP .= "}" . FIN_DE_LINEA;
+                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO_TIPO]) {
+                    // Los botones tipo restablecer no crean acciones
+                    continue;
+                }
+                /**
+                 * Plantilla para la creacion de acciones en el cliente
+                 */
+                $plantilla = new plantilla();
+                $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloServidorSOAP.tpl');
+                $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoServidor);
+                $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
+                $plantilla->asignarEtiqueta('nombreFuncion', $caracteristicas[ZC_ID] . 'Servidor');
+                $plantilla->asignarEtiqueta('asignacionCliente', $this->_asignacionParametrosServidorSOAP);
+                $plantilla->asignarEtiqueta('asignacionFuncion', $this->_asignacionParametrosFuncionServidorSOAP);
+
+                // Concatena las acciones que se pueden llamar desde el cliente
+                $this->_accionesServidorWS .= $plantilla->devolverPlantilla() . FIN_DE_LINEA;
             }
-            $servidorSOAP .= "" . FIN_DE_LINEA;
-            $servidorSOAP .= "\$_SRV_WS->service(\$HTTP_RAW_POST_DATA);" . FIN_DE_LINEA;
-            $servidorSOAP .= "?>" . FIN_DE_LINEA;
-
-            $this->_ruta = $directorioSalida . '/';
-            $this->_salida = $this->_ruta . crearArchivo($directorioSalida, $this->_nombre, $extension, $servidorSOAP);
         }
-
         return $this;
     }
 
@@ -947,7 +866,7 @@ class formulario {
         $this->modeloValidacionFormulario();
         $this->modeloWsSOAPClienteFormulario();
         $this->modeloControladorAcciones();
-//        $this->crearWsSOAPServidorFormulario();
+        $this->controladorWsSOAPServidorFormulario();
         return $this;
     }
 
