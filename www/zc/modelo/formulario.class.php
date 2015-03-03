@@ -12,17 +12,17 @@ define('FIN_DE_LINEA_HTML', '<br/>');
 /**
  * Clase para la creacion de cajas de textos (input type=text)
  */
-require RUTA_GENERADOR_CODIGO . '/modelo/cajas.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/caja.class.php';
 
 /**
  * Clase para la creacion de botones (button)
  */
-require RUTA_GENERADOR_CODIGO . '/modelo/acciones.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/boton.class.php';
 
 /**
- * Clase para la creacion de botones (button)
+ * Clase para la creacion de listas (select)
  */
-require RUTA_GENERADOR_CODIGO . '/modelo/listas.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/lista.class.php';
 
 /**
  * Crear formulario html
@@ -566,12 +566,10 @@ class formulario {
      * @return \formulario
      */
     private function agregarElementoCajaFormulario($caracteristicas) {
-        // Para evitar errores con valores vacios se hace la validacion previa
-        $this->verificarValoresArgumentos($caracteristicas);
-        $texto = new caja($caracteristicas);
-        $texto->crearCaja();
-        $this->_formulario['elementos'][$caracteristicas[ZC_ID]] = $texto->devolverCaja();
-        $this->_elementos[] = $caracteristicas;
+        $html = new caja($caracteristicas);
+        $html->crear();
+        $this->_formulario['elementos'][$html->_prop[ZC_ID]] = $html->devolver();
+        $this->_elementos[] = $html->_prop;
         return $this;
     }
 
@@ -582,12 +580,10 @@ class formulario {
      * @return \formulario
      */
     private function agregarElementoBotonFormulario($caracteristicas, $tipoAccion = 'boton') {
-        // Para evitar errores con valores vacios se hace la validacion previa
-        $this->verificarValoresArgumentos($caracteristicas);
-        $boton = new acciones($caracteristicas, $tipoAccion);
-        $boton->crearAccion();
-        $this->_formulario['acciones'][$caracteristicas[ZC_ID]] = $boton->devolverAccion();
-        $this->_acciones[] = $caracteristicas;
+        $html = new boton($caracteristicas, $tipoAccion);
+        $html->crear();
+        $this->_formulario['acciones'][$html->_prop[ZC_ID]] = $html->devolver();
+        $this->_acciones[] = $html->_prop;
         return $this;
     }
 
@@ -597,12 +593,10 @@ class formulario {
      * @return \formulario
      */
     private function agregarElementoListaFormulario($caracteristicas) {
-        // Para evitar errores con valores vacios se hace la validacion previa
-        $this->verificarValoresArgumentos($caracteristicas);
-        $lista = new listas($caracteristicas);
-        $lista->crearLista();
-        $this->_formulario['elementos'][$caracteristicas[ZC_ID]] = $lista->devolverLista();
-        $this->_elementos[] = $caracteristicas;
+        $html = new lista($caracteristicas);
+        $html->crear();
+        $this->_formulario['elementos'][$html->_prop[ZC_ID]] = $html->devolver();
+        $this->_elementos[] = $html->_prop;
         return $this;
     }
 
@@ -664,7 +658,7 @@ class formulario {
                 $this->_asignacionCliente .= $caracteristicas[ZC_ID] . ': ' . $caracteristicas[ZC_ID];
 
                 $this->_asignacionParametrosServidorSOAP .= ($this->_asignacionParametrosServidorSOAP == '') ? '' : ',' . FIN_DE_LINEA;
-                $this->_asignacionParametrosServidorSOAP .= insertarEspacios(12) . "'{$caracteristicas[ZC_ID]}' => 'xsd:{$caracteristicas[ZC_DATO]}'";
+                $this->_asignacionParametrosServidorSOAP .= insertarEspacios(12) . "'{$caracteristicas[ZC_ID]}' => 'xsd:{$caracteristicas[ZC_DATO_WS]}'";
 
                 $this->_asignacionParametrosClienteSOAP .= ($this->_asignacionParametrosClienteSOAP == '') ? '' : ',' . FIN_DE_LINEA . insertarEspacios(12);
                 $this->_asignacionParametrosClienteSOAP .= "'{$caracteristicas[ZC_ID]}' => \$datos['{$caracteristicas[ZC_ID]}']";
@@ -893,40 +887,4 @@ class formulario {
         $this->controladorWsSOAPServidorFormulario();
         return $this;
     }
-
-    /**
-     * Verifica y establece valores predeterminados para cada uno de los elementos
-     * @param mixed $arg Argumentos pasados por el usuario para cada elemento
-     * @return \formulario
-     * @throws Exception
-     */
-    private function verificarValoresArgumentos(&$arg) {
-        // Identificadores campos
-        if (isset($arg[ZC_ID]) && '' != trim($arg[ZC_ID]) && is_string($arg[ZC_ID])) {
-            $arg[ZC_ID] = trim($arg[ZC_ID]);
-        } else {
-            throw new Exception(__FUNCTION__ . ": El campo {$arg[ZC_ETIQUETA]} tiene un identificador no valido [a-Z_].");
-        }
-        $arg[ZC_ETIQUETA] = (isset($arg[ZC_ETIQUETA]) && '' != trim($arg[ZC_ETIQUETA])) ? trim($arg[ZC_ETIQUETA]) : $arg[ZC_ID];
-
-        // Tipo de dato
-        $arg[ZC_DATO] = (isset($arg[ZC_DATO])) ? $arg[ZC_DATO] : '';
-        $arg[ZC_DATO_MENSAJE_ERROR] = (isset($arg[ZC_DATO_MENSAJE_ERROR])) ? $arg[ZC_DATO_MENSAJE_ERROR] : null;
-        // Dato obligatorio
-        $arg[ZC_OBLIGATORIO] = (isset($arg[ZC_OBLIGATORIO])) ? $arg[ZC_OBLIGATORIO] : ZC_OBLIGATORIO_NO;
-        $arg[ZC_OBLIGATORIO_ERROR] = (isset($arg[ZC_OBLIGATORIO_ERROR])) ? $arg[ZC_OBLIGATORIO_ERROR] : null;
-        // La longitud debe ser numerica
-        $arg[ZC_LONGITUD_MINIMA] = (isset($arg[ZC_LONGITUD_MINIMA]) && is_int($arg[ZC_LONGITUD_MINIMA])) ? $arg[ZC_LONGITUD_MINIMA] : 0;
-        $arg[ZC_LONGITUD_MINIMA_ERROR] = (isset($arg[ZC_LONGITUD_MINIMA_ERROR])) ? $arg[ZC_LONGITUD_MINIMA_ERROR] : null;
-        // La longitud debe ser numerica
-        $arg[ZC_LONGITUD_MAXIMA] = (isset($arg[ZC_LONGITUD_MAXIMA]) && is_int($arg[ZC_LONGITUD_MAXIMA])) ? $arg[ZC_LONGITUD_MAXIMA] : 0;
-        $arg[ZC_LONGITUD_MAXIMA_ERROR] = (isset($arg[ZC_LONGITUD_MAXIMA_ERROR])) ? $arg[ZC_LONGITUD_MAXIMA_ERROR] : null;
-
-        if (isset($arg[ZC_LONGITUD_MINIMA]) && isset($arg[ZC_LONGITUD_MAXIMA]) && $arg[ZC_LONGITUD_MINIMA] > $arg[ZC_LONGITUD_MAXIMA]) {
-            throw new Exception(__FUNCTION__ . ": El campo {$arg[ZC_ETIQUETA]} tiene incoherencia en sus longitudes.");
-        }
-
-        return $this;
-    }
-
 }

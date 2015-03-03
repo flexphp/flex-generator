@@ -77,7 +77,7 @@ function {_nombreAccion_}(){
 	    );
 	    $i = 0;
 
-	    $resultado = '';
+	    $resultado = implode('|', func_get_args());
 	    $row = $resultado;
 	    $cta = 1;
 					

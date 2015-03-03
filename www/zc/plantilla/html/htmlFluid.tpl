@@ -5,9 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{_nombreFormulario_}</title>
-        <!-- Bootstrap -->
+        <!-- CSS Bootstrap -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/bootstrap.min.css">
-        <!-- Parsley -->
+        <!-- CSS Parsley -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/parsley.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -21,7 +21,7 @@
         <div class="container-fluid">
             <!-- Seperacion del top -->
             <div class="col-md-12"> </div>
-            <!-- Nombrel del formulario actual -->
+            <!-- Nombre del formulario actual -->
             <div class="col-md-1"></div>
             <div class="col-md-5 text-center">
                 <h2>{_nombreFormulario_}</h2>
@@ -40,11 +40,11 @@
 
         <!-- URL del proyecto, se usa en los llamados ajax -->
         <input type="hidden" id="URLProyecto" name="URLProyecto" value="<?php echo base_url(); ?>"/>
-        <!-- jQuery -->
+        <!-- JS jQuery -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/jquery.v2.1.1.min.js"></script>
-        <!-- BootStrap -->
+        <!-- JS BootStrap -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/bootstrap.v3.3.2.min.js"></script>
-        <!-- ParsleyJS -->
+        <!-- JS Parsley -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/parsley.v2.0.5.js"></script>
         {_archivoJavascript_}
     </body>

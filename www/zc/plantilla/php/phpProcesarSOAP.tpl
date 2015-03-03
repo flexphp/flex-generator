@@ -1,4 +1,4 @@
-    function procesarRespuestaWS($ws) {
+function procesarRespuestaWS($ws) {
         if (isset($ws['errorWS'])) {
             /**
             * Error durante consulta webservice

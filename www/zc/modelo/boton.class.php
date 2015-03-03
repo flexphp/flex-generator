@@ -1,47 +1,36 @@
 <?php
 
-class acciones {
+/**
+ * Clase base para la creacion de elemento HTML
+ */
+require_once 'elementos.class.php';
 
-    /**
-     * Identificador unico del boton dentro del formulario
-     * @var string
-     */
-    public $_id;
-
-    /**
-     * Descripcion del boton creado
-     * @var string
-     */
-    public $_etiqueta;
+/**
+ * Crea botones: button, reset
+ */
+class boton extends elementos{
 
     /**
      * Clase css del boton creado
      * @var string
      */
-    public $_presentacion;
-
-    /**
-     * Construido del boton
-     * @var string
-     */
-    private $_accion;
+    private $_presentacion;
 
     /**
      * Crear botones de accion a crear
      * @param array $caracteristicas Caracteristicas del boton a crear
-     * @param string $tipoAccion Tipo de boton a crear
+     * @param string $tipo Tipo de boton a crear
      */
     function __construct($caracteristicas, $tipo) {
-        $this->_id = $caracteristicas[ZC_ID];
-        $this->_etiqueta = (!isset($caracteristicas[ZC_ETIQUETA])) ? $this->_id : $caracteristicas[ZC_ETIQUETA];
+        parent::__construct($caracteristicas);
         $this->tipo($tipo);
     }
 
     /**
      * Define todos los parametros del boton a crear, funcion principal de la clase
      */
-    function crearAccion() {
-        $this->_accion = "
+    function crear() {
+        $this->_html = "
             <button" .
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
@@ -72,21 +61,4 @@ class acciones {
                 break;
         }
     }
-
-    /**
-     * Imprime el boton del formulario
-     * @return string
-     */
-    function imprimirAccion() {
-        echo $this->_accion;
-    }
-
-    /**
-     * Devuelve el tipo de boton creado
-     * @return string
-     */
-    function devolverAccion() {
-        return $this->_accion;
-    }
-
 }

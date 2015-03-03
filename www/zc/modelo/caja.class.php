@@ -1,36 +1,14 @@
 <?php
 
-class caja {
+/**
+ * Clase base para la creacion de elemento HTML
+ */
+require_once 'elementos.class.php';
 
-    /**
-     * Identificador unico del elemento dentro del formulario
-     * @var string
-     */
-    public $_id;
-
-    /**
-     * Etiqueta que acompana la caja de texto, descripcion
-     * @var string
-     */
-    public $_etiqueta;
-
-    /**
-     * Bandera para definir si es un camp obligatorio
-     * @var string
-     */
-    public $_obligatorio = 'false';
-
-    /**
-     * Signo que identifica los campos obligatorios
-     * @var string
-     */
-    public $_signoObligatorio = '';
-
-    /**
-     * Mensaje mostrado al cliente si el campo es obligatorio y no se ha diligenciado
-     * @var string
-     */
-    public $_msjObligatorio = '';
+/**
+ * Crea cajas texto
+ */
+class caja extends elementos{
 
     /**
      * Tipo de datos que recibira el campo, ver AZ_DATO_*
@@ -45,33 +23,15 @@ class caja {
     public $_msjTipo = '';
 
     /**
-     * Campo tipo html a mostrar en pantalla
-     * @var string
-     */
-    private $_caja;
-
-    /**
      * Contrucutor de la caja de texto, define las caracteristicas que tendra el elemento
      * @param array $caracteristicas Valores seleccionados por el cliente
      * @throws Exception
      */
     function __construct($caracteristicas) {
-        /**
-         * Id del objeto dentro del formulario
-         */
-        if (!isset($caracteristicas[ZC_ID])) {
-            throw new Exception(__FUNCTION__ . ': Es necesario el id para el objeto');
-        } else {
-            $this->_id = $caracteristicas[ZC_ID];
-        }
-        $this->_etiqueta = (!isset($caracteristicas[ZC_ETIQUETA])) ? $this->_id : $caracteristicas[ZC_ETIQUETA];
-        if (isset($caracteristicas[ZC_OBLIGATORIO]) && $caracteristicas[ZC_OBLIGATORIO] == ZC_OBLIGATORIO_SI) {
-            $this->_signoObligatorio = '*';
-            $this->_obligatorio = 'true';
-            $this->_msjObligatorio = (!isset($caracteristicas[ZC_OBLIGATORIO_ERROR])) ? ZC_OBLIGATORIO_ERROR_PREDETERMINADO : $caracteristicas[ZC_OBLIGATORIO_ERROR];
-        }
-
-        $this->tipo($caracteristicas[ZC_DATO], $caracteristicas[ZC_DATO_MENSAJE_ERROR]);
+        parent::__construct($caracteristicas);
+        $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
+        $this->tipo($this->_prop[ZC_DATO], $this->_prop[ZC_DATO_MENSAJE_ERROR]);
+        $this->longitud($this->_prop[ZC_LONGITUD_MINIMA], $this->_prop[ZC_LONGITUD_MAXIMA], $this->_prop[ZC_LONGITUD_MINIMA_ERROR], $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]);
     }
 
     /**
@@ -82,8 +42,8 @@ class caja {
      * 5 columnas repartidas con 2 para la etiqueta del elemento y 3 para la forma de ignreso
      * Cada una inicia con una columna en blanco (margen) derecho
      */
-    function crearCaja() {
-        $this->_caja = "
+    function crear() {
+        $this->_html = "
             <div class='row'>
                 <div class='col-md-1'></div>
                 <div class='col-md-2 text-right'>
@@ -93,12 +53,19 @@ class caja {
                     <input" .
                 " type='text'" .
                 " class='form-control'" .
+                // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
+                // Validacion tipo
                 " data-parsley-type='{$this->_tipo}'" .
                 " data-parsley-type-message='{$this->_msjTipo}'" .
+                // Validacion obligatorio
                 " data-parsley-required='{$this->_obligatorio}'" .
                 " data-parsley-required-message='{$this->_msjObligatorio}'" .
+                // Validacion longitudes
+                " {$this->_longitud}" .
+                " {$this->_msjLongitud}" .
+                // Ayuda visual
                 " data-placement='right'" .
                 " data-toggle='tooltip'" .
                 " data-original-title='{$this->_etiqueta}'" .
@@ -142,21 +109,5 @@ class caja {
                 $this->_msjTipo = 'Debe ser alfanumerico: ' . $this->_msjTipo;
                 break;
         }
-    }
-
-    /**
-     * Muestra la caja de texto en pantalla
-     */
-    function imprimirCaja() {
-        echo $this->_caja;
-    }
-
-    /**
-     * Retorna el codigo HTML creado de la caja de texto
-     * @return string
-     */
-    function devolverCaja() {
-        return $this->_caja;
-    }
-
+    }    
 }

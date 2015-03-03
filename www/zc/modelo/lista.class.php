@@ -1,70 +1,28 @@
 <?php
 
-class listas {
+/**
+ * Clase base para la creacion de elemento HTML
+ */
+require_once 'elementos.class.php';
 
-    /**
-     * Identificador unico del elemento dentro del formulario
-     * @var string
-     */
-    public $_id;
-
-    /**
-     * Etiqueta que acompana la caja de texto, descripcion
-     * @var string
-     */
-    public $_etiqueta;
-
-    /**
-     * Bandera para definir si es un camp obligatorio
-     * @var string
-     */
-    public $_obligatorio = 'false';
-
-    /**
-     * Signo que identifica los campos obligatorios
-     * @var string
-     */
-    public $_signoObligatorio = '';
-
-    /**
-     * Mensaje mostrado al cliente si el campo es obligatorio y no se ha diligenciado
-     * @var string
-     */
-    public $_msjObligatorio = '';
+/**
+ * Crea elementos de lista, (select)
+ */
+class lista extends elementos {
 
     /**
      * HTML con el conjunto de opciones posibles para la lista
      * @var type
      */
-    public $_opciones = '';
+    private $_opciones = '';
 
     /**
-     * Campo tipo html a mostrar en pantalla
-     * @var string
-     */
-    private $_lista;
-
-    /**
-     * Contrucutor de la caja de texto, define las caracteristicas que tendra el elemento
+     * Contrucutor de listas (input select), define las caracteristicas que tendra el elemento
      * @param array $caracteristicas Valores seleccionados por el cliente
-     * @throws Exception
      */
     function __construct($caracteristicas) {
-        /**
-         * Id del objeto dentro del formulario
-         */
-        if (!isset($caracteristicas[ZC_ID])) {
-            throw new Exception(__FUNCTION__ . ': Es necesario el id para el objeto');
-        } else {
-            $this->_id = $caracteristicas[ZC_ID];
-        }
-        $this->_etiqueta = (!isset($caracteristicas[ZC_ETIQUETA])) ? $this->_id : $caracteristicas[ZC_ETIQUETA];
-        if (isset($caracteristicas[ZC_OBLIGATORIO]) && $caracteristicas[ZC_OBLIGATORIO] == ZC_OBLIGATORIO_SI) {
-            $this->_signoObligatorio = '*';
-            $this->_obligatorio = 'true';
-            $this->_msjObligatorio = (!isset($caracteristicas[ZC_OBLIGATORIO_ERROR])) ? ZC_OBLIGATORIO_ERROR_PREDETERMINADO : $caracteristicas[ZC_OBLIGATORIO_ERROR];
-        }
-
+        parent::__construct($caracteristicas);
+        $this->obligatorio($caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
         $this->opciones($caracteristicas[ZC_ELEMENTO_SELECT_OPCIONES]);
     }
 
@@ -76,8 +34,8 @@ class listas {
      * 5 columnas repartidas con 2 para la etiqueta del elemento y 3 para la forma de ignreso
      * Cada una inicia con una columna en blanco (margen) derecho
      */
-    function crearLista() {
-        $this->_lista = "
+    public function crear() {
+        $this->_html = "
             <div class='row'>
                 <div class='col-md-1'></div>
                 <div class='col-md-2 text-right'>
@@ -127,20 +85,4 @@ class listas {
             $this->_opciones .= insertarEspacios(14) . "<option value='$id'>$valor</option>" . FIN_DE_LINEA;
         }
     }
-
-    /**
-     * Muestra la caja de texto en pantalla
-     */
-    function imprimirLista() {
-        echo $this->_lista;
-    }
-
-    /**
-     * Retorna el codigo HTML creado de la caja de texto
-     * @return string
-     */
-    function devolverLista() {
-        return $this->_lista;
-    }
-
 }

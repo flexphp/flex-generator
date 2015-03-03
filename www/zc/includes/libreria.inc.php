@@ -245,7 +245,7 @@ function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitudMaxima =
         default :
             if ($longitudMaxima > 0) {
                 $validacion .= FIN_DE_LINEA;
-                $validacion .= insertarEspacios(8) . "if (strlen(\$dato['$id']) >  {$longitudMaxima}){" . FIN_DE_LINEA;
+                $validacion .= insertarEspacios(8) . "if (strlen(\$dato['$id']) >  {$longitudMaxima} && '' != \$dato['$id']){" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '" . str_replace('&[Longitud]&', $longitudMaxima, $msjValidacion) . "';" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
             }
@@ -275,7 +275,7 @@ function validarArgumentoLongitudMinima($id, $etiqueta, $tipo, $longitudMinima =
         default :
             if ($longitudMinima > 0) {
                 $validacion .= FIN_DE_LINEA;
-                $validacion .= insertarEspacios(8) . "if (strlen(\$dato['$id']) <  {$longitudMinima}){" . FIN_DE_LINEA;
+                $validacion .= insertarEspacios(8) . "if (strlen(\$dato['$id']) <  {$longitudMinima} && '' != \$dato['$id']){" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '" . str_replace('&[Longitud]&', $longitudMinima, $msjValidacion) . "';" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
             }
