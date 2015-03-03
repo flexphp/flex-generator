@@ -12,12 +12,17 @@ define('FIN_DE_LINEA_HTML', '<br/>');
 /**
  * Clase para la creacion de cajas de textos (input type=text)
  */
-require RUTA_GENERADOR_CODIGO . '/modelo/cajaTexto.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/cajas.class.php';
 
 /**
  * Clase para la creacion de botones (button)
  */
 require RUTA_GENERADOR_CODIGO . '/modelo/acciones.class.php';
+
+/**
+ * Clase para la creacion de botones (button)
+ */
+require RUTA_GENERADOR_CODIGO . '/modelo/listas.class.php';
 
 /**
  * Crear formulario html
@@ -181,10 +186,10 @@ class formulario {
      * @var string
      */
     private $_accionCliente = '';
-    
+
     /**
      * Variable para definir las acciones que se ejecutaran en el servidor WS
-     * @var string 
+     * @var string
      */
     private $_accionesServidorWS = '';
 
@@ -193,7 +198,7 @@ class formulario {
      * @var string
      */
     private $_nombreArchivoServidor = '';
-    
+
     /**
      * Nombre del archivo modelo creado en /models
      * @var string
@@ -254,6 +259,34 @@ class formulario {
     }
 
     /**
+     * Crear el archivo con el modelo (model) para el formulario
+     * @param string $directorioSalida ruta donde se creara el archivo
+     * @param string $extension Extension del archivo creado. por defecto PHP
+     * @param array $opciones Opciones a aplicar a la plantilla creada
+     * @return \formulario
+     */
+    private function crearModeloFormulario($directorioSalida = '../application/models', $extension = 'php', $opciones = array()) {
+        /**
+         * Plantilla para el modelo (model)
+         */
+        $plantilla = new plantilla();
+        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloSOAP.tpl');
+
+        $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
+        $plantilla->asignarEtiqueta('validacion', $this->_validacion);
+        $plantilla->asignarEtiqueta('procesarWS', $this->_procesarWS);
+        $plantilla->asignarEtiqueta('clienteWS', $this->_clienteSOAP);
+
+        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
+            $plantilla->minimizarPlantilla();
+        }
+
+        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModelo);
+
+        return $this;
+    }
+
+    /**
      * Crear un arhivo fisico para el el formulario en el sirectorio de salida definido
      * por defecto:
      *  $directorioSalida = dist/form (Ruta de salida)
@@ -287,60 +320,6 @@ class formulario {
         if (isset($opciones['abrir']) && $opciones['abrir'] === true) {
             $this->_plantillaHTML->abrirPlantilla();
         }
-
-        return $this;
-    }
-
-    /**
-     * Crear el archivo con el modelo (model) para el formulario
-     * @param string $directorioSalida ruta donde se creara el archivo
-     * @param string $extension Extension del archivo creado. por defecto PHP
-     * @param array $opciones Opciones a aplicar a la plantilla creada
-     * @return \formulario
-     */
-    private function crearModeloFormulario($directorioSalida = '../application/models', $extension = 'php', $opciones = array()) {
-        /**
-         * Plantilla para el modelo (model)
-         */
-        $plantilla = new plantilla();
-        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloSOAP.tpl');
-
-        $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
-        $plantilla->asignarEtiqueta('validacion', $this->_validacion);
-        $plantilla->asignarEtiqueta('procesarWS', $this->_procesarWS);
-        $plantilla->asignarEtiqueta('clienteWS', $this->_clienteSOAP);
-
-        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
-            $plantilla->minimizarPlantilla();
-        }
-
-        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModelo);
-
-        return $this;
-    }
-    
-    /**
-     * Crea el archivo controlador que manejan las funciones de WS del lado servidor
-     * @param string $directorioSalida Ruta de salida donde se creara el archivo
-     * @param string $extension Extension que tendra el archivo de salida
-     * @param array $opciones Opciones de configuracion del arhcivo creado
-     * @return \formulario
-     */
-    private function crearControladorServidorFormulario($directorioSalida = '../application/controllers', $extension = 'php', $opciones = array()) {
-        /**
-         * Plantilla para el modelo (model)
-         */
-        $plantilla = new plantilla();
-        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorServidorSOAP.tpl');
-
-        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoServidor);
-        $plantilla->asignarEtiqueta('accionesServidorWS', $this->_accionesServidorWS);
-
-        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
-            $plantilla->minimizarPlantilla();
-        }
-
-        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoServidor);
 
         return $this;
     }
@@ -402,17 +381,43 @@ class formulario {
     }
 
     /**
+     * Crea el archivo controlador que manejan las funciones de WS del lado servidor
+     * @param string $directorioSalida Ruta de salida donde se creara el archivo
+     * @param string $extension Extension que tendra el archivo de salida
+     * @param array $opciones Opciones de configuracion del arhcivo creado
+     * @return \formulario
+     */
+    private function crearControladorServidorFormulario($directorioSalida = '../application/controllers', $extension = 'php', $opciones = array()) {
+        /**
+         * Plantilla para el modelo (model)
+         */
+        $plantilla = new plantilla();
+        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorServidorSOAP.tpl');
+
+        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoServidor);
+        $plantilla->asignarEtiqueta('accionesServidorWS', $this->_accionesServidorWS);
+
+        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
+            $plantilla->minimizarPlantilla();
+        }
+
+        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoServidor);
+
+        return $this;
+    }
+
+    /**
      * Crea las cajas de texto en el formulario, segun las caracteristicas dadas
      * array(
       ZC_ID => '', // Id de la caja de texto
-      'tipo' => 'cajaTexto',
+      ZC_ELEMENTO_CAJA_TEXTO => 'caja',
       ZC_DATO => 'int|string', // integer no se ha contemplado
-      ZC_ELEMENTO_ETIQUETA => '', // Etiqueta (descripcion relacionada a la caja de texto)
-      ZC_OBLIGATORIO => 'true|false' // Define si el campo es obligatorio (para validacion cliente y servidor)
+      ZC_ETIQUETA => '', // Etiqueta (descripcion relacionada a la caja de texto)
+      ZC_OBLIGATORIO => 'true|false', 1|0 // Define si el campo es obligatorio (para validacion cliente y servidor)
       )
      * @return \formulario
      */
-    public function agregarCajaTextoFormulario() {
+    public function agregarCajaFormulario() {
         $cajas = func_get_args();
         $this->agregarElementoFormulario($cajas);
         return $this;
@@ -423,7 +428,7 @@ class formulario {
      * array(
       ZC_ID => 'sumar', // Identificador del boton
       'tipo' => 'boton',
-      ZC_ELEMENTO_ETIQUETA => 'Sumar', // Nombre a mostrar en el boton
+      ZC_ETIQUETA => 'Sumar', // Nombre a mostrar en el boton
       'rutaWS' => 'http://soa.freddie.net/dist', // Ruta del WS a utlizar por la funcion
       'directorioWSS' => 'wss', // Directorio padre del WS a utilizar
       'accionServidor' => "
@@ -470,14 +475,17 @@ class formulario {
             /**
              * Se valida en minuscula para evitar ambiguaedades: Boton, boton, BOTON, etc
              */
-            $caracteristicas[ZC_ELEMENTO_TIPO] = (strtolower($caracteristicas[ZC_ELEMENTO_TIPO]));
-            switch ($caracteristicas[ZC_ELEMENTO_TIPO]) {
+            $caracteristicas[ZC_ELEMENTO] = (strtolower($caracteristicas[ZC_ELEMENTO]));
+            switch ($caracteristicas[ZC_ELEMENTO]) {
                 case ZC_ELEMENTO_CAJA_TEXTO:
-                    $this->agregarElementoTextoFormulario($caracteristicas);
+                    $this->agregarElementoCajaFormulario($caracteristicas);
                     break;
                 case ZC_ELEMENTO_RADIO:
                     break;
                 case ZC_ELEMENTO_CHECKBOX:
+                    break;
+                case ZC_ELEMENTO_SELECT:
+                    $this->agregarElementoListaFormulario($caracteristicas);
                     break;
                 case ZC_ELEMENTO_RESTABLECER:
                     $tipoAccion = 'restablecer';
@@ -485,7 +493,7 @@ class formulario {
                     $this->agregarElementoBotonFormulario($caracteristicas, $tipoAccion);
                     break;
                 default:
-                    throw new Exception(__FUNCTION__ . ": Tipo de elemento no definido: {$caracteristicas[ZC_ELEMENTO_TIPO]}!");
+                    throw new Exception(__FUNCTION__ . ": Tipo de elemento no definido: {$caracteristicas[ZC_ELEMENTO]}!");
             }
         }
         return $this;
@@ -544,7 +552,7 @@ class formulario {
                 ";
             }
             if (is_array($elementos[$elemento])) {
-                $elementosFormulario .= $estiloInicio.$this->unirElementosFormulario($elementos[$elemento]).$estiloFin;
+                $elementosFormulario .= $estiloInicio . $this->unirElementosFormulario($elementos[$elemento]) . $estiloFin;
             } else {
                 $elementosFormulario .= $elementos[$elemento];
             }
@@ -554,22 +562,23 @@ class formulario {
 
     /**
      * Agrega las cajas de texto dentro del formulario, segun caracteristicas
-     * @param string $caracteristicas
+     * @param string $caracteristicas Caracteristicas extraidas del XML
      * @return \formulario
      */
-    private function agregarElementoTextoFormulario($caracteristicas) {
+    private function agregarElementoCajaFormulario($caracteristicas) {
         // Para evitar errores con valores vacios se hace la validacion previa
         $this->verificarValoresArgumentos($caracteristicas);
-        $texto = new cajaTexto($caracteristicas);
-        $texto->crearCajaTexto();
-        $this->_formulario['elementos'][$caracteristicas[ZC_ID]] = $texto->devolverCajaTexto();
+        $texto = new caja($caracteristicas);
+        $texto->crearCaja();
+        $this->_formulario['elementos'][$caracteristicas[ZC_ID]] = $texto->devolverCaja();
         $this->_elementos[] = $caracteristicas;
         return $this;
     }
 
     /**
      * Agrega las botones dentro del formulario, segun caracteristicas
-     * @param string $caracteristicas
+     * @param string $caracteristicas Caracteristicas extraidas del XML
+     * @param string $tipoAccion Tipo de acciones boton|restablecer
      * @return \formulario
      */
     private function agregarElementoBotonFormulario($caracteristicas, $tipoAccion = 'boton') {
@@ -579,6 +588,21 @@ class formulario {
         $boton->crearAccion();
         $this->_formulario['acciones'][$caracteristicas[ZC_ID]] = $boton->devolverAccion();
         $this->_acciones[] = $caracteristicas;
+        return $this;
+    }
+
+    /**
+     * Agrega las listas dentro del formulario, segun caracteristicas
+     * @param string $caracteristicas
+     * @return \formulario
+     */
+    private function agregarElementoListaFormulario($caracteristicas) {
+        // Para evitar errores con valores vacios se hace la validacion previa
+        $this->verificarValoresArgumentos($caracteristicas);
+        $lista = new listas($caracteristicas);
+        $lista->crearLista();
+        $this->_formulario['elementos'][$caracteristicas[ZC_ID]] = $lista->devolverLista();
+        $this->_elementos[] = $caracteristicas;
         return $this;
     }
 
@@ -608,7 +632,7 @@ class formulario {
         $this->_nombreArchivoModelo = 'modelo_' . $id;
         $this->_nombreArchivoVista = 'vista_' . $id;
         $this->_nombreArchivoControlador = $id;
-        $this->_nombreArchivoServidor = $id  . '_' . $this->_tipoWS;
+        $this->_nombreArchivoServidor = $id . '_' . $this->_tipoWS;
 
         return $this;
     }
@@ -651,16 +675,16 @@ class formulario {
                 $this->_asignacionParametrosFuncionClienteSOAP .= insertarEspacios(8) . "\$datos['{$caracteristicas[ZC_ID]}'] = \$this->input->post('{$caracteristicas[ZC_ID]}');" . FIN_DE_LINEA;
 
                 // Validacion obligatoriedad
-                $validacion .= validarArgumentoObligatorio($caracteristicas[ZC_ID], $caracteristicas[ZC_ELEMENTO_ETIQUETA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
+                $validacion .= validarArgumentoObligatorio($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
 
                 // Validacion tipo de dato Entero
-                $validacion .= validarArgumentoTipo($caracteristicas[ZC_ID], $caracteristicas[ZC_ELEMENTO_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_DATO_MENSAJE_ERROR]);
+                $validacion .= validarArgumentoTipo($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_DATO_MENSAJE_ERROR]);
 
                 // Validacion longitud minima del campo
-                $validacion .= validarArgumentoLongitudMinima($caracteristicas[ZC_ID], $caracteristicas[ZC_ELEMENTO_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MINIMA], $caracteristicas[ZC_LONGITUD_MINIMA_ERROR]);
+                $validacion .= validarArgumentoLongitudMinima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MINIMA], $caracteristicas[ZC_LONGITUD_MINIMA_ERROR]);
 
                 // Validacion longitud maxima del campo
-                $validacion .= validarArgumentoLongitudMaxima($caracteristicas[ZC_ID], $caracteristicas[ZC_ELEMENTO_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_LONGITUD_MAXIMA_ERROR]);
+                $validacion .= validarArgumentoLongitudMaxima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_LONGITUD_MAXIMA_ERROR]);
             }
 
             $plantilla = new plantilla();
@@ -710,7 +734,7 @@ class formulario {
         if ($this->_crearAccionServidor) {
 
             foreach ($this->_acciones as $nro => $caracteristicas) {
-                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO_TIPO]) {
+                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO]) {
                     // Los botones tipo restablecer no crean acciones
                     continue;
                 }
@@ -744,7 +768,7 @@ class formulario {
         if ($this->_crearAccionServidor) {
 
             foreach ($this->_acciones as $nro => $caracteristicas) {
-                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO_TIPO]) {
+                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO]) {
                     // Los botones tipo restablecer no crean accciones de envio, ya tiene la
                     // accion preferida
                     continue;
@@ -778,7 +802,7 @@ class formulario {
     private function modeloWsSOAPClienteFormulario() {
         if ($this->_crearAccionServidor && $this->_tipoWS == ZC_WS_SOAP) {
             foreach ($this->_acciones as $nro => $caracteristicas) {
-                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO_TIPO]) {
+                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO]) {
                     // Los botones tipo restablecer no crean acciones
                     continue;
                 }
@@ -808,7 +832,7 @@ class formulario {
     private function controladorWsSOAPServidorFormulario() {
         if ($this->_crearAccionServidor && $this->_tipoWS == ZC_WS_SOAP) {
             foreach ($this->_acciones as $nro => $caracteristicas) {
-                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO_TIPO]) {
+                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO]) {
                     // Los botones tipo restablecer no crean acciones
                     continue;
                 }
@@ -881,9 +905,9 @@ class formulario {
         if (isset($arg[ZC_ID]) && '' != trim($arg[ZC_ID]) && is_string($arg[ZC_ID])) {
             $arg[ZC_ID] = trim($arg[ZC_ID]);
         } else {
-            throw new Exception(__FUNCTION__ . ": El campo {$arg[ZC_ELEMENTO_ETIQUETA]} tiene un identificador no valido [a-Z_].");
+            throw new Exception(__FUNCTION__ . ": El campo {$arg[ZC_ETIQUETA]} tiene un identificador no valido [a-Z_].");
         }
-        $arg[ZC_ELEMENTO_ETIQUETA] = (isset($arg[ZC_ELEMENTO_ETIQUETA]) && '' != trim($arg[ZC_ELEMENTO_ETIQUETA])) ? trim($arg[ZC_ELEMENTO_ETIQUETA]) : $arg[ZC_ID];
+        $arg[ZC_ETIQUETA] = (isset($arg[ZC_ETIQUETA]) && '' != trim($arg[ZC_ETIQUETA])) ? trim($arg[ZC_ETIQUETA]) : $arg[ZC_ID];
 
         // Tipo de dato
         $arg[ZC_DATO] = (isset($arg[ZC_DATO])) ? $arg[ZC_DATO] : '';
@@ -893,13 +917,13 @@ class formulario {
         $arg[ZC_OBLIGATORIO_ERROR] = (isset($arg[ZC_OBLIGATORIO_ERROR])) ? $arg[ZC_OBLIGATORIO_ERROR] : null;
         // La longitud debe ser numerica
         $arg[ZC_LONGITUD_MINIMA] = (isset($arg[ZC_LONGITUD_MINIMA]) && is_int($arg[ZC_LONGITUD_MINIMA])) ? $arg[ZC_LONGITUD_MINIMA] : 0;
-        $arg[ZC_LONGITUD_MINIMA_ERROR] = (isset($arg[ZC_LONGITUD_MINIMA_ERROR])) ? $arg[ZC_LONGITUD_MANIMA_ERROR] : null;
+        $arg[ZC_LONGITUD_MINIMA_ERROR] = (isset($arg[ZC_LONGITUD_MINIMA_ERROR])) ? $arg[ZC_LONGITUD_MINIMA_ERROR] : null;
         // La longitud debe ser numerica
         $arg[ZC_LONGITUD_MAXIMA] = (isset($arg[ZC_LONGITUD_MAXIMA]) && is_int($arg[ZC_LONGITUD_MAXIMA])) ? $arg[ZC_LONGITUD_MAXIMA] : 0;
         $arg[ZC_LONGITUD_MAXIMA_ERROR] = (isset($arg[ZC_LONGITUD_MAXIMA_ERROR])) ? $arg[ZC_LONGITUD_MAXIMA_ERROR] : null;
 
         if (isset($arg[ZC_LONGITUD_MINIMA]) && isset($arg[ZC_LONGITUD_MAXIMA]) && $arg[ZC_LONGITUD_MINIMA] > $arg[ZC_LONGITUD_MAXIMA]) {
-            throw new Exception(__FUNCTION__ . ": El campo {$arg[ZC_ELEMENTO_ETIQUETA]} tiene incoherencia en sus longitudes.");
+            throw new Exception(__FUNCTION__ . ": El campo {$arg[ZC_ETIQUETA]} tiene incoherencia en sus longitudes.");
         }
 
         return $this;

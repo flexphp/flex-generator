@@ -33,7 +33,7 @@ class acciones {
      */
     function __construct($caracteristicas, $tipo) {
         $this->_id = $caracteristicas[ZC_ID];
-        $this->_etiqueta = (!isset($caracteristicas[ZC_ELEMENTO_ETIQUETA])) ? $this->_id : $caracteristicas[ZC_ELEMENTO_ETIQUETA];
+        $this->_etiqueta = (!isset($caracteristicas[ZC_ETIQUETA])) ? $this->_id : $caracteristicas[ZC_ETIQUETA];
         $this->tipo($tipo);
     }
 

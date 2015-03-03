@@ -5,13 +5,13 @@
     <!-- Fila en la que estan los encabezados del formulario -->
     <xsl:variable name="filaEncabezado" select="1" />
     <!-- Prefijo de los atributos de formulario -->
-    <xsl:variable name="prefijoAtributo" select="'id_'" />
+    <xsl:variable name="prefijoAtributo" select="''" />
     <!-- Fila en la que estan los encabezados de los detalles del formulario -->
     <xsl:variable name="filaDetalles" select="3" />
     <!-- numero de filas que tiene el encabezado  del formulario -->
     <xsl:variable name="totalColumnasEncabezado" select="4" />
     <!-- numero de filas que tiene el detalle del formulario -->
-    <xsl:variable name="totalColumnasDetalle" select="9" />
+    <xsl:variable name="totalColumnasDetalle" select="10" />
     <!-- formatear etiquetas de nombres a minusculas  -->
     <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz_'" />
     <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ ?'" />

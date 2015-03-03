@@ -197,14 +197,14 @@ class procesarXML {
             throw new Exception(__FUNCTION__ . ": Estructura no valida!: " . $archivoXML);
         }
         foreach ($elementos as $key => $value) {
-            if (!isset($value[ZC_ELEMENTO_TIPO]) && $key == 0) {
+            if (!isset($value[ZC_ELEMENTO]) && $key == 0) {
                 /**
                  * Atributos Formulario, crear una variable con el id
                  */
                 $nombre = $value[ZC_ID];
                 $$nombre = new formulario($value);
                 $$nombre->inicioFormulario();
-            } elseif (isset($value[ZC_ELEMENTO_TIPO]) && $key != 0) {
+            } elseif (isset($value[ZC_ELEMENTO]) && $key != 0) {
                 /**
                  * Otros atributos no definidos, esta funcion se encarga de validar el tipo
                  */

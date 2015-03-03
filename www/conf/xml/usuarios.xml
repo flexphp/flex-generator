@@ -4,30 +4,41 @@
         <nombre_formulario>Test</nombre_formulario>
         <se_envia>POST</se_envia>
         <tipo_de_servicio>SOAP</tipo_de_servicio>
-        <id_numero_1>
+        <numero_1>
             <que_quieres>Caja</que_quieres>
             <como_se_llama>Numero 1</como_se_llama>
             <que_dato_recibira>numeros</que_dato_recibira>
+            <mensaje_de_error_tipo_dato>Solo se aceptan numeros </mensaje_de_error_tipo_dato>
             <longitud_maxima_es>10</longitud_maxima_es>
             <mensaje_de_error_longitud_maxima>Te pasaste</mensaje_de_error_longitud_maxima>
             <es_obligatorio>si</es_obligatorio>
             <mensaje_de_error_es_obligatorio>Ey! Se te olvido</mensaje_de_error_es_obligatorio>
-        </id_numero_1>
-        <id_correo>
+        </numero_1>
+        <correo>
             <que_quieres>Caja</que_quieres>
-            <como_se_llama>Email</como_se_llama>
+            <como_se_llama>Correo</como_se_llama>
             <que_dato_recibira>correo</que_dato_recibira>
+            <mensaje_de_error_tipo_dato>Por favor digita un correo valido</mensaje_de_error_tipo_dato>
             <longitud_maxima_es>60</longitud_maxima_es>
-            <mensaje_de_error_longitud_maxima></mensaje_de_error_longitud_maxima>
+            <longitud_minima_es>10</longitud_minima_es>
+            <mensaje_de_error_longitud_minima>Muy corto, minimo 10</mensaje_de_error_longitud_minima>
             <es_obligatorio>no</es_obligatorio>
-        </id_correo>
-        <id_enviar>
+        </correo>
+        <musica>
+            <que_quieres>Lista</que_quieres>
+            <como_se_llama>Musica</como_se_llama>
+            <que_dato_recibira>numeros</que_dato_recibira>
+            <es_obligatorio>si</es_obligatorio>
+            <mensaje_de_error_es_obligatorio>Falto el genero musical</mensaje_de_error_es_obligatorio>
+            <posibles_valores>0=,1=Rock, 2=Salsa, 3=Merengue</posibles_valores>
+        </musica>
+        <enviar>
             <que_quieres>Boton</que_quieres>
             <como_se_llama>Enviar</como_se_llama>
-        </id_enviar>
-        <id_limpiar>
+        </enviar>
+        <limpiar>
             <que_quieres>Restablecer</que_quieres>
             <como_se_llama>Limpiar</como_se_llama>
-        </id_limpiar>
-    </test>
+        </limpiar>
+</test>
 </crear>

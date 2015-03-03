@@ -1,6 +1,6 @@
 <?php
 
-class cajaTexto {
+class listas {
 
     /**
      * Identificador unico del elemento dentro del formulario
@@ -33,22 +33,16 @@ class cajaTexto {
     public $_msjObligatorio = '';
 
     /**
-     * Tipo de datos que recibira el campo, ver AZ_DATO_*
-     * @var string
+     * HTML con el conjunto de opciones posibles para la lista
+     * @var type
      */
-    public $_tipo = '';
-
-    /**
-     * Mensaje mostrado al cliente si el campo no es del tipo esperado
-     * @var string
-     */
-    public $_msjTipo = '';
+    public $_opciones = '';
 
     /**
      * Campo tipo html a mostrar en pantalla
      * @var string
      */
-    private $_cajaTexto;
+    private $_lista;
 
     /**
      * Contrucutor de la caja de texto, define las caracteristicas que tendra el elemento
@@ -64,14 +58,14 @@ class cajaTexto {
         } else {
             $this->_id = $caracteristicas[ZC_ID];
         }
-        $this->_etiqueta = (!isset($caracteristicas[ZC_ELEMENTO_ETIQUETA])) ? $this->_id : $caracteristicas[ZC_ELEMENTO_ETIQUETA];
+        $this->_etiqueta = (!isset($caracteristicas[ZC_ETIQUETA])) ? $this->_id : $caracteristicas[ZC_ETIQUETA];
         if (isset($caracteristicas[ZC_OBLIGATORIO]) && $caracteristicas[ZC_OBLIGATORIO] == ZC_OBLIGATORIO_SI) {
             $this->_signoObligatorio = '*';
             $this->_obligatorio = 'true';
             $this->_msjObligatorio = (!isset($caracteristicas[ZC_OBLIGATORIO_ERROR])) ? ZC_OBLIGATORIO_ERROR_PREDETERMINADO : $caracteristicas[ZC_OBLIGATORIO_ERROR];
         }
 
-        $this->tipo($caracteristicas[ZC_DATO]);
+        $this->opciones($caracteristicas[ZC_ELEMENTO_SELECT_OPCIONES]);
     }
 
     /**
@@ -82,24 +76,26 @@ class cajaTexto {
      * 5 columnas repartidas con 2 para la etiqueta del elemento y 3 para la forma de ignreso
      * Cada una inicia con una columna en blanco (margen) derecho
      */
-    function crearCajaTexto() {
-        $this->_cajaTexto = "
+    function crearLista() {
+        $this->_lista = "
             <div class='row'>
                 <div class='col-md-1'></div>
                 <div class='col-md-2 text-right'>
                     <label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
                 </div>
                 <div class='col-md-3'>
-                    <input" .
-                " type='text'" .
+                    <select" .
                 " class='form-control'" .
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
-                " data-parsley-type='{$this->_tipo}'" .
-                " data-parsley-type-message='{$this->_msjTipo}'" .
                 " data-parsley-required='{$this->_obligatorio}'" .
                 " data-parsley-required-message='{$this->_msjObligatorio}'" .
+                " data-placement='right'" .
+                " data-toggle='tooltip'" .
+                " data-original-title='{$this->_etiqueta}'" .
                 "/>
+                    {$this->_opciones}
+                    </select>
                     <span class='help-block'></span>
                 </div>
                 <div class='col-md-5'></div>
@@ -109,50 +105,42 @@ class cajaTexto {
     }
 
     /**
-     * Defien el tipo de validacion segun el dato a recibir, la validacion se
-     * hace a nivel del cliente, la validacion se hace con expresiones regulares
-     * @param string $tipo
+     * Devuelve el html con el conjunto de valores posible para el listado
+     * @param type $opciones Valores que puede adoptar la lista de seleccion,
+     * debe ser del tipo: id1 = valor1, id2 = valor2
      */
-    private function tipo($tipo) {
-        switch ($tipo) {
-            case ZC_DATO_NUMERICO:
-                $this->_tipo = "digits";
-                $this->_msjTipo = "Se esperan numeros";
-                break;
-            case ZC_DATO_FECHA:
-                $formato = 'DD/MM/YYYY';
-                $this->_tipo = "^(?:(?:0?[1-9]|1\d|2[0-8])(\/|-)(?:0?[1-9]|1[0-2]))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(?:(?:31(\/|-)(?:0?[13578]|1[02]))|(?:(?:29|30)(\/|-)(?:0?[1,3-9]|1[0-2])))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(29(\/|-)0?2)(\/|-)(?:(?:0[48]00|[13579][26]00|[2468][048]00)|(?:\d\d)?(?:0[48]|[2468][048]|[13579][26]))$";
-                $this->_msjTipo = "Se espera fecha ($formato)";
-                break;
-            case ZC_DATO_EMAIL:
-                $this->_tipo = "email";
-                $this->_msjTipo = "Se espera correo";
-                break;
-            case ZC_DATO_URL:
-                $this->_tipo = "url";
-                $this->_msjTipo = "Se espera solo texto";
-                break;
-            case ZC_DATO_ALFANUMERICO:
-            default:
-                $this->_tipo = "alphanum";
-                $this->_msjTipo = "Dato no valido";
-                break;
+    private function opciones($opciones) {
+        if (is_string($opciones)) {
+            // Se agrega la opcion vacia al inicio del listado
+            $cada_opcion = explode(',', '=,' . $opciones);
+            $opciones = array();
+            foreach ($cada_opcion as $value) {
+                if (strpos($value, '=') === false) {
+                    throw new Exception(__FUNCTION__ . ': Tipo de lista no valido, se espera id1=valor1, id2=valor2');
+                }
+                list($id, $valor) = explode('=', $value);
+                $opciones[trim($id)] = trim($valor);
+            }
+        }
+
+        foreach ($opciones as $id => $valor) {
+            $this->_opciones .= insertarEspacios(14) . "<option value='$id'>$valor</option>" . FIN_DE_LINEA;
         }
     }
 
     /**
      * Muestra la caja de texto en pantalla
      */
-    function imprimirCajaTexto() {
-        echo $this->_cajaTexto;
+    function imprimirLista() {
+        echo $this->_lista;
     }
 
     /**
      * Retorna el codigo HTML creado de la caja de texto
      * @return string
      */
-    function devolverCajaTexto() {
-        return $this->_cajaTexto;
+    function devolverLista() {
+        return $this->_lista;
     }
 
 }

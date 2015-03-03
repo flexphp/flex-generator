@@ -1,13 +1,12 @@
 <?php
 
-// Fecha y hora del sistema" . FIN_DE_LINEA;
-date_default_timezone_set('America/Bogota');
-
 define("RUTA_GENERADOR_CODIGO", "../zc");
 /**
  * Tipos de elementos aceptados
  */
 define("ZC_ID", "id");
+define("ZC_ETIQUETA", "como_se_llama");
+
 define("ZC_TIPO_WS", "tipo_de_servicio");
 define("ZC_FORMULARIO_NOMBRE", "nombre_formulario");
 define("ZC_FORMULARIO_METODO", "se_envia");
@@ -16,13 +15,15 @@ define("ZC_NOMBRE_ACCION_CLIENTE", "nombre_accion");
 define("ZC_WS_SOAP", "soap");
 define("ZC_WS_REST", "rest");
 
+define("ZC_ELEMENTO", "que_quieres");
 define("ZC_ELEMENTO_CAJA_TEXTO", "caja");
 define("ZC_ELEMENTO_BOTON", "boton");
 define("ZC_ELEMENTO_RADIO", "radio");
 define("ZC_ELEMENTO_CHECKBOX", "checkbox");
+define("ZC_ELEMENTO_SELECT", "lista");
+define("ZC_ELEMENTO_SELECT_OPCIONES", "posibles_valores");
+
 define("ZC_ELEMENTO_RESTABLECER", "restablecer");
-define("ZC_ELEMENTO_TIPO", "que_quieres");
-define("ZC_ELEMENTO_ETIQUETA", "como_se_llama");
 
 define("ZC_DATO", "que_dato_recibira");
 define("ZC_DATO_NUMERICO", "numeros");

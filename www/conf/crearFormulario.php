@@ -35,6 +35,13 @@ try {
     $parsleyjs->crearPlantilla('../publico/js', 'js');
 
     /**
+     * Boostrap Homologado
+     */
+    $bootstrapjs = new plantilla();
+    $bootstrapjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/bootstrap.v3.3.2.min.js');
+    $bootstrapjs->crearPlantilla('../publico/js', 'js');
+
+    /**
      * CSS Homologado
      */
     $bootstrapcss = new plantilla();
