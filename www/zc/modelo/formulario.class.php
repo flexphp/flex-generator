@@ -25,6 +25,11 @@ require RUTA_GENERADOR_CODIGO . '/modelo/boton.class.php';
 require RUTA_GENERADOR_CODIGO . '/modelo/lista.class.php';
 
 /**
+ * Clase para la creacion de unica seleccion (radio)
+ */
+require RUTA_GENERADOR_CODIGO . '/modelo/radio.class.php';
+
+/**
  * Crear formulario html
  */
 class formulario {
@@ -481,6 +486,7 @@ class formulario {
                     $this->agregarElementoCajaFormulario($caracteristicas);
                     break;
                 case ZC_ELEMENTO_RADIO:
+                    $this->agregarElementoRadioFormulario($caracteristicas);
                     break;
                 case ZC_ELEMENTO_CHECKBOX:
                     break;
@@ -601,6 +607,19 @@ class formulario {
     }
 
     /**
+     * Agrega las listas dentro del formulario, segun caracteristicas
+     * @param string $caracteristicas
+     * @return \formulario
+     */
+    private function agregarElementoRadioFormulario($caracteristicas) {
+        $html = new radio($caracteristicas);
+        $html->crear();
+        $this->_formulario['elementos'][$html->_prop[ZC_ID]] = $html->devolver();
+        $this->_elementos[] = $html->_prop;
+        return $this;
+    }
+
+    /**
      * Agrea los archivos javascript al formulario
      * @return \formulario
      */
@@ -672,7 +691,7 @@ class formulario {
                 $validacion .= validarArgumentoObligatorio($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
 
                 // Validacion tipo de dato Entero
-                $validacion .= validarArgumentoTipo($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_DATO_MENSAJE_ERROR]);
+                $validacion .= validarArgumentoTipo($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_DATO_ERROR]);
 
                 // Validacion longitud minima del campo
                 $validacion .= validarArgumentoLongitudMinima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MINIMA], $caracteristicas[ZC_LONGITUD_MINIMA_ERROR]);
@@ -887,4 +906,5 @@ class formulario {
         $this->controladorWsSOAPServidorFormulario();
         return $this;
     }
+
 }

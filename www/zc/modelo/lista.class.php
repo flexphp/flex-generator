@@ -22,8 +22,8 @@ class lista extends elementos {
      */
     function __construct($caracteristicas) {
         parent::__construct($caracteristicas);
-        $this->obligatorio($caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
-        $this->opciones($caracteristicas[ZC_ELEMENTO_SELECT_OPCIONES]);
+        $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
+        $this->opciones($this->_prop[ZC_ELEMENTO_SELECT_OPCIONES]);
     }
 
     /**
@@ -85,4 +85,5 @@ class lista extends elementos {
             $this->_opciones .= insertarEspacios(14) . "<option value='$id'>$valor</option>" . FIN_DE_LINEA;
         }
     }
+
 }

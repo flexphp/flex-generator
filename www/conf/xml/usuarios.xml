@@ -39,8 +39,23 @@
             <que_dato_recibira>numeros</que_dato_recibira>
             <es_obligatorio>si</es_obligatorio>
             <mensaje_de_error_es_obligatorio>Falto el genero musical</mensaje_de_error_es_obligatorio>
-            <posibles_valores>0=,1=Rock, 2=Salsa, 3=Merengue</posibles_valores>
+            <posibles_valores>1=Rock, 2=Salsa, 3=Merengue</posibles_valores>
         </musica>
+        <vestido>
+            <que_quieres>checkbox</que_quieres>
+            <como_se_llama>Color</como_se_llama>
+            <que_dato_recibira>numeros</que_dato_recibira>
+            <es_obligatorio>si</es_obligatorio>
+            <mensaje_de_error_es_obligatorio>Cual te gusta?</mensaje_de_error_es_obligatorio>
+            <posibles_valores>1=Rojo, 2=Azul</posibles_valores>
+        </vestido>
+        <genero>
+            <que_quieres>Radio</que_quieres>
+            <como_se_llama>Genero</como_se_llama>
+            <que_dato_recibira>alfanumerico</que_dato_recibira>
+            <es_obligatorio>no</es_obligatorio>
+            <posibles_valores>M=Hombre, F=Mujer</posibles_valores>
+        </genero>
         <enviar>
             <que_quieres>Boton</que_quieres>
             <como_se_llama>Enviar</como_se_llama>
@@ -49,5 +64,5 @@
             <que_quieres>Restablecer</que_quieres>
             <como_se_llama>Limpiar</como_se_llama>
         </limpiar>
-</test>
+    </test>
 </crear>

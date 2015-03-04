@@ -30,7 +30,7 @@ class caja extends elementos{
     function __construct($caracteristicas) {
         parent::__construct($caracteristicas);
         $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
-        $this->tipo($this->_prop[ZC_DATO], $this->_prop[ZC_DATO_MENSAJE_ERROR]);
+        $this->tipo($this->_prop[ZC_DATO], $this->_prop[ZC_DATO_ERROR]);
         $this->longitud($this->_prop[ZC_LONGITUD_MINIMA], $this->_prop[ZC_LONGITUD_MAXIMA], $this->_prop[ZC_LONGITUD_MINIMA_ERROR], $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]);
     }
 
@@ -84,7 +84,7 @@ class caja extends elementos{
      * @param string $tipo
      */
     private function tipo($tipo, $msjTipo = '') {
-        $this->_msjTipo = ('' != $msjTipo) ? $msjTipo : ZC_DATO_MENSAJE_ERROR_PREDETERMINADO;
+        $this->_msjTipo = ('' != $msjTipo) ? $msjTipo : ZC_DATO_ERROR_PREDETERMINADO;
         switch ($tipo) {
             case ZC_DATO_NUMERICO:
                 $this->_tipo = "digits";

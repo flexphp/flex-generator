@@ -214,7 +214,6 @@ class procesarXML {
             }
         }
         $$nombre->finFormulario();
-//        echo $$nombre->devolverFormulario();
     }
 
 }

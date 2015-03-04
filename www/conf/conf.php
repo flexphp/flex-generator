@@ -31,8 +31,8 @@ define("ZC_DATO_EMAIL", "correo");
 define("ZC_DATO_FECHA", "fecha");
 define("ZC_DATO_URL", "url");
 define("ZC_DATO_ALFANUMERICO", "alfanumerico");
-define("ZC_DATO_MENSAJE_ERROR", "mensaje_de_error_tipo_dato");
-define("ZC_DATO_MENSAJE_ERROR_PREDETERMINADO", "Tipo de dato incorrecto");
+define("ZC_DATO_ERROR", "mensaje_de_error_tipo_dato");
+define("ZC_DATO_ERROR_PREDETERMINADO", "Tipo de dato incorrecto");
 define("ZC_DATO_WS", "dato_ws");
 
 define("ZC_LONGITUD_MAXIMA", "longitud_maxima_es");

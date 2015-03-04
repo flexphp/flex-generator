@@ -169,7 +169,7 @@ function convertir2UrlLocal($ruta) {
  */
 function validarArgumentoTipo($id, $etiqueta, $tipo, $msj = '') {
     $validacion = FIN_DE_LINEA;
-    $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_DATO_MENSAJE_ERROR_PREDETERMINADO;
+    $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_DATO_ERROR_PREDETERMINADO;
 
     switch ($tipo) {
         case ZC_DATO_NUMERICO:
