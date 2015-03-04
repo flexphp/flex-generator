@@ -39,11 +39,15 @@ class checkbox extends elementos {
             <div class='row'>
                 <div class='col-md-1'></div>
                 <div class='col-md-2 text-right'>
-                    <label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
+                    <label>{$this->_etiqueta}{$this->_signoObligatorio}</label>
                 </div>
                 <div class='col-md-3'>
-                    {$this->_opciones}
-                    <span class='help-block'></span>
+                    <div class='table table-bordered'>
+                        <div class='text-center'>
+                            {$this->_opciones}
+                        </div>
+                        <span id='error-{$this->_id}'></span>
+                    </div>
                 </div>
                 <div class='col-md-5'></div>
                 <div class='col-md-1'></div>
@@ -63,7 +67,7 @@ class checkbox extends elementos {
             $opciones = array();
             foreach ($cada_opcion as $value) {
                 if (strpos($value, '=') === false) {
-                    throw new Exception(__FUNCTION__ . ': Tipo de radio no valido, se espera id1=valor1, id2=valor2');
+                    throw new Exception(__FUNCTION__ . ': Tipo de checkbox no valido, se espera id1=valor1, id2=valor2');
                 }
                 list($id, $valor) = explode('=', $value);
                 $opciones[trim($id)] = trim($valor);
@@ -75,22 +79,27 @@ class checkbox extends elementos {
             $this->_opciones .= insertarEspacios(14) .
                     "<label for='{$idOpcion}'>" .
                     "<input" .
-                    " type='radio'" .
-                    " class='radio'" .
+                    " type='checkbox'" .
+                    " class='checkbox'" .
+                    // Idenfitificador
+                    // El nombre se maneja como arreglo para permitir enviar varios valores
                     " id='{$idOpcion}'" .
-                    " name='{$this->_id}'" .
+                    " name='{$this->_id}[]'" .
                     " value='{$id}'";
             if (!isset($config)) {
                 // Solo agrega la configuracion a un elemento dentro del grupo
                 $config = true;
                 $this->_opciones .= "" .
-                        " data-parsley-required='{$this->_obligatorio}'" .
-                        " data-parsley-required-message='{$this->_msjObligatorio}'";
+                        " {$this->_obligatorio}" .
+                        " {$this->_msjObligatorio}";
             }
             $this->_opciones .= "" .
-                    " data-placement='right'" .
+                    // Ayuda visible
+                    " data-placement='{$this->_posicionTitle}'" .
                     " data-toggle='tooltip'" .
                     " data-original-title='{$this->_etiqueta}: {$valor}'" .
+                    // Elemento donde se mostraran los errores
+                    " data-parsley-errors-container='#error-{$this->_id}'" .
                     "/>" .
                     "$valor" .
                     "</label>" . FIN_DE_LINEA;

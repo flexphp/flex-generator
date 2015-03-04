@@ -56,17 +56,17 @@ class caja extends elementos{
                 // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
-                // Validacion tipo
-                " data-parsley-type='{$this->_tipo}'" .
-                " data-parsley-type-message='{$this->_msjTipo}'" .
                 // Validacion obligatorio
-                " data-parsley-required='{$this->_obligatorio}'" .
-                " data-parsley-required-message='{$this->_msjObligatorio}'" .
+                " {$this->_obligatorio}" .
+                " {$this->_msjObligatorio}" .
+                // Validacion tipo de dato
+                " {$this->_tipo}" .
+                " {$this->_msjTipo}" .
                 // Validacion longitudes
                 " {$this->_longitud}" .
                 " {$this->_msjLongitud}" .
                 // Ayuda visual
-                " data-placement='right'" .
+                " data-placement='{$this->_posicionTitle}'" .
                 " data-toggle='tooltip'" .
                 " data-original-title='{$this->_etiqueta}'" .
                 "/>
@@ -87,26 +87,27 @@ class caja extends elementos{
         $this->_msjTipo = ('' != $msjTipo) ? $msjTipo : ZC_DATO_ERROR_PREDETERMINADO;
         switch ($tipo) {
             case ZC_DATO_NUMERICO:
-                $this->_tipo = "digits";
-                $this->_msjTipo = 'Debe ser numero: ' . $this->_msjTipo;
+                $this->_tipo = "data-parsley-type='digits'";
+                $this->_msjTipo = "data-parsley-type-message='Debe ser numero: {$this->_msjTipo}'";
                 break;
             case ZC_DATO_FECHA:
                 $formato = 'DD/MM/YYYY';
-                $this->_tipo = "^(?:(?:0?[1-9]|1\d|2[0-8])(\/|-)(?:0?[1-9]|1[0-2]))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(?:(?:31(\/|-)(?:0?[13578]|1[02]))|(?:(?:29|30)(\/|-)(?:0?[1,3-9]|1[0-2])))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(29(\/|-)0?2)(\/|-)(?:(?:0[48]00|[13579][26]00|[2468][048]00)|(?:\d\d)?(?:0[48]|[2468][048]|[13579][26]))$";
-                $this->_msjTipo = 'Debe ser fecha: ' . $this->_msjTipo;
+                $formatoRegExp = "^(?:(?:0?[1-9]|1\d|2[0-8])(\/|-)(?:0?[1-9]|1[0-2]))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(?:(?:31(\/|-)(?:0?[13578]|1[02]))|(?:(?:29|30)(\/|-)(?:0?[1,3-9]|1[0-2])))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(29(\/|-)0?2)(\/|-)(?:(?:0[48]00|[13579][26]00|[2468][048]00)|(?:\d\d)?(?:0[48]|[2468][048]|[13579][26]))$";
+                $this->_tipo = "data-parsley-type='$formatoRegExp'";
+                $this->_msjTipo = "data-parsley-type-message='Debe ser fecha ($formato): {$this->_msjTipo}'";
                 break;
             case ZC_DATO_EMAIL:
-                $this->_tipo = "email";
-                $this->_msjTipo = 'Debe ser e-mail: ' . $this->_msjTipo;
+                $this->_tipo = "data-parsley-type='email'";
+                $this->_msjTipo = "data-parsley-type-message='Debe ser correo: {$this->_msjTipo}'";
                 break;
             case ZC_DATO_URL:
-                $this->_tipo = "url";
-                $this->_msjTipo = 'Debe ser url: ' . $this->_msjTipo;
+                $this->_tipo = "data-parsley-type='url'";
+                $this->_msjTipo = "data-parsley-type-message='Debe ser url: {$this->_msjTipo}'";
                 break;
             case ZC_DATO_ALFANUMERICO:
             default:
-                $this->_tipo = "alphanum";
-                $this->_msjTipo = 'Debe ser alfanumerico: ' . $this->_msjTipo;
+                $this->_tipo = '';
+                $this->_msjTipo = '';
                 break;
         }
     }    

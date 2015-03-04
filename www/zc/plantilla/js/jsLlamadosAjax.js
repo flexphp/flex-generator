@@ -5,7 +5,7 @@
                 {_inicializacionCliente_}
                 $.ajax({
                     // A la accion se le concatena la palabra cliente, asi se llama en la funcion
-                    url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}Cliente/',
+                    url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}/',
                     type: 'POST',
                     dataType: 'JSON',
                     data: $('#{_nombreFormulario_}').serialize()+'&accion='+nombreAccion,

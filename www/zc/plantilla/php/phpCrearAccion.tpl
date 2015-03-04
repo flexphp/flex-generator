@@ -4,7 +4,6 @@
      * @return array respuesta del servidor WS
      */
     function {_nombreAccion_}Cliente($datos){
-        //    f_crmlog('Parametros WSC ' . $datos['accion'] . preprint($datos, 1));
         $tiempo_inicio = microtime(true);
 
         /**
@@ -15,7 +14,7 @@
         $server = base_url() . 'index.php/';
         $serverURL = $server . '{_servidorAccion_}/';
         $serverScript = '{_nombreAccion_}';
-        $metodoALlamar = $datos['accion'].'Servidor';
+        $metodoALlamar = $datos['accion'] . 'Servidor';
 
         /**
          * Parametros de la funcion a llamar
@@ -57,6 +56,5 @@
         $tiempo_fin = microtime(true);
         $return['timeWS'] = ($tiempo_fin - $tiempo_inicio);
         $return['metodoWS'] = $metodoALlamar;
-        // f_crmlog('Respuesta ' . $datos['accion'] . preprint($return, 1));
         return $return;
     }

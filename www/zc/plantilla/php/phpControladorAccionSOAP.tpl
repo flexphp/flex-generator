@@ -1,4 +1,4 @@
-public function {_nombreAccion_}Cliente() {
+public function {_nombreAccion_}() {
         {_asignacionCliente_}
         $rpta = $this->{_nombreModelo_}->{_nombreValidacion_}($datos);
         if (isset($rpta['error']) && '' != $rpta['error']) {

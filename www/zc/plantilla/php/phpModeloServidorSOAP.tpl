@@ -47,7 +47,7 @@ function {_nombreAccion_}(){
 	 * Parametros que recibe la funcion
 	 */
 	${_nombreAccion_}Parametros = array(
-	        {_asignacionCliente_}
+            {_asignacionCliente_}
 	);
 
 	/**
@@ -61,21 +61,21 @@ function {_nombreAccion_}(){
 	 * Registrar la funcion en el servidor
 	 */
 	$this->_SRV_WS->register(
-	        '{_nombreFuncion_}', // Nombre de la funcion
-	        ${_nombreAccion_}Parametros, // Parametros de entrada
-	        ${_nombreAccion_}Returns, // Parametros de salida
-	        $this->_miURL
+            '{_nombreFuncion_}', // Nombre de la funcion
+            ${_nombreAccion_}Parametros, // Parametros de entrada
+            ${_nombreAccion_}Returns, // Parametros de salida
+            $this->_miURL
 	);
 
 	function {_nombreFuncion_}({_asignacionFuncion_}){
 	    file_put_contents(getcwd() . '/application/logs/{_nombreControlador_}_' . date('Ymd') . '.log', 'Parametros WSS ' . __FUNCTION__ . print_r(get_defined_vars(), 1) . "\n", FILE_APPEND);
 	    // Incializacion de variables de respuesta
+	    $i = 0;
 	    $Resultado[0] = array(
 	        'cta' => 0,
 	        'infoEncabezado' => '',
 	        'error' => '',
 	    );
-	    $i = 0;
 
 	    $resultado = implode('|', func_get_args());
 	    $row = $resultado;

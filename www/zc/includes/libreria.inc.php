@@ -167,33 +167,38 @@ function convertir2UrlLocal($ruta) {
  * @param string $msj Mensaje de error definido por el usuario en la plantilla
  * @return string
  */
-function validarArgumentoTipo($id, $etiqueta, $tipo, $msj = '') {
-    $validacion = FIN_DE_LINEA;
+function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
+    if($elemento == ZC_ELEMENTO_CHECKBOX){
+        // Los elementos tipo checkbox puedenser array, nose validan
+        return '';
+    }
+    $validacion = '';
     $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_DATO_ERROR_PREDETERMINADO;
-
-    switch ($tipo) {
+    switch ($dato) {
         case ZC_DATO_NUMERICO:
-            $validacion .= insertarEspacios(8) . "if (filter_var(\$dato['{$id}'],  FILTER_VALIDATE_INT) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (filter_var(\$dato['{$id}'],  FILTER_VALIDATE_INT) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_EMAIL:
-            $validacion .= insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_EMAIL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_EMAIL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_FECHA:
-            $validacion .= insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_INT) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_INT) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_URL:
-            $validacion .= insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_ALFANUMERICO:
         default :
-            $validacion .= insertarEspacios(8) . "if (true === false) {" . FIN_DE_LINEA;
             break;
     }
-
-    $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '{$msjValidacion}';" . FIN_DE_LINEA;
-    $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
-
+    if('' != $validacion){
+        // Determina se se debe agregar validacion
+        $validacion = FIN_DE_LINEA . $validacion;
+        $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '{$msjValidacion}';" . FIN_DE_LINEA;
+        $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
+    }
     return $validacion;
+
 }
 
 /**

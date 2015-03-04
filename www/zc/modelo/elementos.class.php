@@ -30,7 +30,14 @@ class elementos {
      * Bandera para definir si es un camp obligatorio
      * @var string
      */
-    protected $_obligatorio = 'false';
+    protected $_obligatorio = '';
+    
+    /**
+     * Posicion en la que se ubicara el mensaje de ayuda que se muestra al posicionar 
+     * el puntero sobre el elemento. Valores: right | left | top | bottom
+     * @var string 
+     */
+    protected $_posicionTitle = 'right';
 
     /**
      * Signo que identifica los campos obligatorios
@@ -96,8 +103,10 @@ class elementos {
         // Tipo de dato
         $this->_prop[ZC_DATO] = (isset($this->_prop[ZC_DATO]) && '' != $this->_prop[ZC_DATO]) ? $this->_prop[ZC_DATO] : '';
         $this->_prop[ZC_DATO_ERROR] = (isset($this->_prop[ZC_DATO_ERROR]) && '' != $this->_prop[ZC_DATO_ERROR]) ? $this->_prop[ZC_DATO_ERROR] : null;
+        // Tipo Elemento
+        $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? $this->_prop[ZC_ELEMENTO] : '';
         // Traduccion del tipo de datos escogido por el cliente para el servidor
-        $this->_prop[ZC_DATO_WS] = $this->datoWS($this->_prop[ZC_DATO]);
+        $this->_prop[ZC_DATO_WS] = $this->datoWS($this->_prop[ZC_ELEMENTO], $this->_prop[ZC_DATO]);
         // Dato obligatorio
         $this->_prop[ZC_OBLIGATORIO] = (isset($this->_prop[ZC_OBLIGATORIO])) ? $this->_prop[ZC_OBLIGATORIO] : ZC_OBLIGATORIO_NO;
         $this->_prop[ZC_OBLIGATORIO_ERROR] = (isset($this->_prop[ZC_OBLIGATORIO_ERROR]) && '' != $this->_prop[ZC_OBLIGATORIO_ERROR]) ? $this->_prop[ZC_OBLIGATORIO_ERROR] : null;
@@ -109,7 +118,7 @@ class elementos {
         $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] = (isset($this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) && '' != $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) ? $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] : null;
 
         if (isset($this->_prop[ZC_LONGITUD_MINIMA]) && isset($this->_prop[ZC_LONGITUD_MAXIMA]) && $this->_prop[ZC_LONGITUD_MINIMA] > $this->_prop[ZC_LONGITUD_MAXIMA]) {
-            throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en sus longitudes.");
+            throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
         }
 
         return $this;
@@ -120,21 +129,22 @@ class elementos {
      * @param string $dato Tipo de dato definido por el cliente
      * @return string
      */
-    private function datoWS($dato) {
-        $return = '';
-        switch ($dato) {
-            case ZC_DATO_NUMERICO:
-                $return = 'int';
+    private function datoWS($elemento, $dato) {
+        $xsd = '';
+        switch (true) {
+            case ($dato == ZC_DATO_NUMERICO && $elemento != ZC_ELEMENTO_CHECKBOX):
+                // Los checkbox se manejan como string, haciendo json_encode
+                $xsd = 'int';
                 break;
-            case ZC_DATO_ALFANUMERICO:
-            case ZC_DATO_EMAIL:
-            case ZC_DATO_URL:
-            case ZC_DATO_FECHA:
+            case ($dato == ZC_DATO_ALFANUMERICO):
+            case ($dato == ZC_DATO_EMAIL):
+            case ($dato == ZC_DATO_URL):
+            case ($dato == ZC_DATO_FECHA):
             default:
-                $return = 'string';
+                $xsd = 'string';
                 break;
         }
-        return $return;
+        return $xsd;
     }
 
     /**
@@ -145,8 +155,8 @@ class elementos {
     protected function obligatorio($obligatorio, $error) {
         if (isset($obligatorio) && $obligatorio == ZC_OBLIGATORIO_SI) {
             $this->_signoObligatorio = '*';
-            $this->_obligatorio = 'true';
-            $this->_msjObligatorio = (isset($error)) ? $error : ZC_OBLIGATORIO_ERROR_PREDETERMINADO;
+            $this->_obligatorio = "data-parsley-required='true'";
+            $this->_msjObligatorio = (isset($error)) ? "data-parsley-required-message='{$error}'" : "data-parsley-required-message='" . ZC_OBLIGATORIO_ERROR_PREDETERMINADO . "'";
         }
     }
 

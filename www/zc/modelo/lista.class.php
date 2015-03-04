@@ -44,11 +44,14 @@ class lista extends elementos {
                 <div class='col-md-3'>
                     <select" .
                 " class='form-control'" .
+                // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
-                " data-parsley-required='{$this->_obligatorio}'" .
-                " data-parsley-required-message='{$this->_msjObligatorio}'" .
-                " data-placement='right'" .
+                // Validacion obligatorio
+                " {$this->_obligatorio}" .
+                " {$this->_msjObligatorio}" .
+                // Ayuda visual
+                " data-placement='{$this->_posicionTitle}'" .
                 " data-toggle='tooltip'" .
                 " data-original-title='{$this->_etiqueta}'" .
                 "/>

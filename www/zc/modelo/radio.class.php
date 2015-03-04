@@ -42,8 +42,12 @@ class radio extends elementos {
                     <label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
                 </div>
                 <div class='col-md-3'>
-                    {$this->_opciones}
-                    <span class='help-block'></span>
+                    <div class='table table-bordered'>
+                        <div class='text-center'>
+                            {$this->_opciones}
+                        </div>
+                        <span id='error-{$this->_id}'></span>
+                    </div>
                 </div>
                 <div class='col-md-5'></div>
                 <div class='col-md-1'></div>
@@ -77,6 +81,7 @@ class radio extends elementos {
                     "<input" .
                     " type='radio'" .
                     " class='radio'" .
+                    // Identificador campo
                     " id='{$idOpcion}'" .
                     " name='{$this->_id}'" .
                     " value='{$id}'";
@@ -84,13 +89,16 @@ class radio extends elementos {
                 // Solo agrega la configuracion a un elemento dentro del grupo
                 $config = true;
                 $this->_opciones .= "" .
-                        " data-parsley-required='{$this->_obligatorio}'" .
-                        " data-parsley-required-message='{$this->_msjObligatorio}'";
+                        " {$this->_obligatorio}" .
+                        " {$this->_msjObligatorio}";
             }
             $this->_opciones .= "" .
-                    " data-placement='right'" .
+                    // Ayuda visual
+                    " data-placement='{$this->_posicionTitle}'" .
                     " data-toggle='tooltip'" .
                     " data-original-title='{$this->_etiqueta}: {$valor}'" .
+                    // Elemento donde se mostraran los errores
+                    " data-parsley-errors-container='#error-{$this->_id}'" .
                     "/>" .
                     "$valor" .
                     "</label>" . FIN_DE_LINEA;

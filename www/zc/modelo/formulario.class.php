@@ -30,6 +30,11 @@ require RUTA_GENERADOR_CODIGO . '/modelo/lista.class.php';
 require RUTA_GENERADOR_CODIGO . '/modelo/radio.class.php';
 
 /**
+ * Clase para la creacion de unica seleccion (radio)
+ */
+require RUTA_GENERADOR_CODIGO . '/modelo/checkbox.class.php';
+
+/**
  * Crear formulario html
  */
 class formulario {
@@ -121,7 +126,7 @@ class formulario {
     private $_plantillaHTML = null;
 
     /**
-     * Elementos utilizados por el formulario, pueden ser text, button, radio, etc.
+     * Elementos utilizados por el formulario, pueden ser text, select, radio, checkbox.
      * @var type
      */
     private $_elementos = array();
@@ -489,6 +494,7 @@ class formulario {
                     $this->agregarElementoRadioFormulario($caracteristicas);
                     break;
                 case ZC_ELEMENTO_CHECKBOX:
+                    $this->agregarElementoCheckboxFormulario($caracteristicas);
                     break;
                 case ZC_ELEMENTO_SELECT:
                     $this->agregarElementoListaFormulario($caracteristicas);
@@ -548,9 +554,11 @@ class formulario {
                 $estiloInicio = "
                     <div class='row'>
                         <div class='col-md-1'></div>
-                        <div class='col-md-5 text-center'>
+                        <div class='col-md-5'>
+                            <div class='text-right'>
                         ";
                 $estiloFin = "
+                            <div>
                         </div>
                         <div class='col-md-5'></div>
                         <div class='col-md-1'></div>
@@ -607,12 +615,25 @@ class formulario {
     }
 
     /**
-     * Agrega las listas dentro del formulario, segun caracteristicas
+     * Agrega las radios dentro del formulario, segun caracteristicas
      * @param string $caracteristicas
      * @return \formulario
      */
     private function agregarElementoRadioFormulario($caracteristicas) {
         $html = new radio($caracteristicas);
+        $html->crear();
+        $this->_formulario['elementos'][$html->_prop[ZC_ID]] = $html->devolver();
+        $this->_elementos[] = $html->_prop;
+        return $this;
+    }
+    
+    /**
+     * Agrega las checkbox dentro del formulario, segun caracteristicas
+     * @param string $caracteristicas
+     * @return \formulario
+     */
+    private function agregarElementoCheckboxFormulario($caracteristicas) {
+        $html = new checkbox($caracteristicas);
         $html->crear();
         $this->_formulario['elementos'][$html->_prop[ZC_ID]] = $html->devolver();
         $this->_elementos[] = $html->_prop;
@@ -676,11 +697,13 @@ class formulario {
                 $this->_asignacionCliente .= ('' == $this->_asignacionCliente) ? '' : ', ';
                 $this->_asignacionCliente .= $caracteristicas[ZC_ID] . ': ' . $caracteristicas[ZC_ID];
 
-                $this->_asignacionParametrosServidorSOAP .= ($this->_asignacionParametrosServidorSOAP == '') ? '' : ',' . FIN_DE_LINEA;
-                $this->_asignacionParametrosServidorSOAP .= insertarEspacios(12) . "'{$caracteristicas[ZC_ID]}' => 'xsd:{$caracteristicas[ZC_DATO_WS]}'";
+                $this->_asignacionParametrosServidorSOAP .= ($this->_asignacionParametrosServidorSOAP == '') ? '' : ',' . FIN_DE_LINEA . insertarEspacios(12);
+                $this->_asignacionParametrosServidorSOAP .= "'{$caracteristicas[ZC_ID]}' => 'xsd:{$caracteristicas[ZC_DATO_WS]}'";
 
+                // Los datos se envia codificados para evitar errores con caracteres especiales, ademas
+                //permite envial 'cualquier' tipo de dato
                 $this->_asignacionParametrosClienteSOAP .= ($this->_asignacionParametrosClienteSOAP == '') ? '' : ',' . FIN_DE_LINEA . insertarEspacios(12);
-                $this->_asignacionParametrosClienteSOAP .= "'{$caracteristicas[ZC_ID]}' => \$datos['{$caracteristicas[ZC_ID]}']";
+                $this->_asignacionParametrosClienteSOAP .= ($caracteristicas[ZC_ELEMENTO] != ZC_ELEMENTO_CHECKBOX) ? "'{$caracteristicas[ZC_ID]}' => \$datos['{$caracteristicas[ZC_ID]}']" : "'{$caracteristicas[ZC_ID]}' => json_encode(\$datos['{$caracteristicas[ZC_ID]}'])";
 
                 $this->_asignacionParametrosFuncionServidorSOAP .= ($this->_asignacionParametrosFuncionServidorSOAP == '') ? '' : ', ';
                 $this->_asignacionParametrosFuncionServidorSOAP .= "\${$caracteristicas[ZC_ID]}";
@@ -691,7 +714,7 @@ class formulario {
                 $validacion .= validarArgumentoObligatorio($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
 
                 // Validacion tipo de dato Entero
-                $validacion .= validarArgumentoTipo($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_DATO_ERROR]);
+                $validacion .= validarArgumentoTipoDato($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_ELEMENTO], $caracteristicas[ZC_DATO], $caracteristicas[ZC_DATO_ERROR]);
 
                 // Validacion longitud minima del campo
                 $validacion .= validarArgumentoLongitudMinima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MINIMA], $caracteristicas[ZC_LONGITUD_MINIMA_ERROR]);
