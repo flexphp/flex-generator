@@ -25,6 +25,12 @@
             <div class="col-md-1"></div>
             <div class="col-md-5 text-center">
                 <h2>{_nombreFormulario_}</h2>
+                <!-- Barra de progreso -->
+                <div class="progress ">
+                    <div id="progreso-{_nombreFormulario_}" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <span id="msj-progreso-{_nombreFormulario_}" style="color: black">0%</span>
+                    </div>
+                </div>
             </div>
             <div class="col-md-5"></div>
             <div class="col-md-1"></div>
@@ -46,6 +52,8 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/bootstrap.v3.3.2.min.js"></script>
         <!-- JS Parsley -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/parsley.v2.0.5.js"></script>
+        <!-- Utilidades AC -->
+        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/zc.v1.0.0.js"></script>
         {_archivoJavascript_}
     </body>
 </html>

@@ -42,6 +42,13 @@ try {
     $bootstrapjs->crearPlantilla('../publico/js', 'js');
 
     /**
+     * JS con funciones javascript utilizadas por el sistema
+     */
+    $zcjs = new plantilla();
+    $zcjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/zc.v1.0.0.js');
+    $zcjs->crearPlantilla('../publico/js', 'js');
+    
+    /**
      * CSS Homologado
      */
     $bootstrapcss = new plantilla();
@@ -54,6 +61,7 @@ try {
     $parsleycss = new plantilla();
     $parsleycss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/parsley.css');
     $parsleycss->crearPlantilla('../publico/css', 'css');
+    
     /**
      * Opciones de formulario
      */

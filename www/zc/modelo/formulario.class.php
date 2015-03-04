@@ -228,6 +228,11 @@ class formulario {
     private $_nombreArchivoVista = '';
 
     /**
+     * Nombre del archivo javascrip relacionado al formulario
+     * @var type 
+     */
+    private $_nombreArchivoJs = '';
+    /**
      * Funcion de inicializacion del formulario, reqeuire que seha suministradas
      * unos datos basicos relacionados al formulario
      * array(
@@ -383,7 +388,7 @@ class formulario {
             $plantilla->minimizarPlantilla();
         }
 
-        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_id);
+        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoJs);
         // Agregar archivo creado al javascript al formulario
         $this->javascriptFormulario($plantilla->_salidaPlantilla);
 
@@ -667,6 +672,7 @@ class formulario {
         $this->_nombreArchivoVista = 'vista_' . $id;
         $this->_nombreArchivoControlador = $id;
         $this->_nombreArchivoServidor = $id . '_' . $this->_tipoWS;
+        $this->_nombreArchivoJs = $id;
 
         return $this;
     }
