@@ -1,9 +1,13 @@
 <?php
 
 /**
+ * Ejecucion de sentencias en base de datos
+ */
+require_once 'conexion.class.php';
+/**
  * Clase para la creacion del modelo de base de datos dependiendo del motor
  */
-class bd {
+class bd extends conexion{
 
     /**
      * Motor de base de datos seleccionado por el usuario (mysql)
@@ -22,6 +26,12 @@ class bd {
      * @var array
      */
     private $_prop = array();
+    
+    /**
+     * Sentencias para ejecutar creacion del modelo de BC
+     * @var array
+     */
+    private $_sentencias = array();
 
     /**
      * Valida los datos parametrizados por el usuario y crea modelo de base datos
@@ -58,6 +68,12 @@ class bd {
             ZC_OBLIGATORIO_SI => 'NOT NULL',
             ZC_ETIQUETA => 'COMMENT',
             ZC_MOTOR_AUTOINCREMENTAL => 'AUTO_INCREMENT',
+            'CREACION_BD' => 'CREATE DATABASE',
+            'CREACION_TABLA' => 'CREATE TABLE',
+            'CONDICIONAL_BD' => 'IF NOT EXISTS',
+            'CONDICIONAL_TABLA' => 'IF NOT EXISTS',
+            'LLAVE_PRIMARIA' => 'PRIMARY KEY',
+            'CHARSET' => 'DEFAULT CHARACTER SET',
         );
     }
 
@@ -125,8 +141,15 @@ class bd {
     }
 
     /**
-     * Crear el elemento HTML
-     * Es un metodo publico, se utiliza desde fuera de la clase, ver class formulario
+     * Establece propiedades SQL del campo, no todos los elementos necesitan creacion de campo
+     * un ejemplo son los botones, asi que estos se omiten durante el proceso
+     * @param string $nombre Nombre del campo en la base de datos, corresponde al ZC_ID
+     * @param string $dato Tipo de dato que recibe el campo ZC_DATO, se traduce al tipo SQL correspondiente 
+     * @param string $longitud Longitud maxima del campo ZC_LONGITUD_MAXIMA
+     * @param string $nulo Determina valores obligatorios ZC_OBLIGATORIO
+     * @param string $comentario Descripcion del campo, corresponde a la etiqueta ZC_ETIQUETA
+     * @param string $coma Union de los campos
+     * @return string
      */
     private function campo($nombre, $dato, $longitud, $nulo, $comentario, $coma) {
         return $coma . FIN_DE_LINEA . insertarEspacios(4) . $nombre . ' ' . $this->dato($dato) . $this->longitud($dato, $longitud) . ' ' . $this->nulo($nulo) . ' ' . $this->comentario($comentario);
@@ -139,10 +162,82 @@ class bd {
     private function autoincremental() {
         return insertarEspacios(4) . 'id INT ' . $this->nulo(ZC_OBLIGATORIO_SI) . ' ' . $this->_equivalencias[$this->_motor][ZC_MOTOR_AUTOINCREMENTAL] . ',';
     }
+    
+    /**
+     * Defiene el charset segun el motor
+     * @return string
+     */
+    private function charset() {
+        if(ZC_MOTOR_DEFAULT_CHARSET == ''){
+            return '';
+        }
+        $charset = '';
+        switch ($this->_motor) {
+            case ZC_MOTOR_MYSQL:
+                $charset = $this->_equivalencias[$this->_motor]['CHARSET'] . ' ' . ZC_MOTOR_DEFAULT_CHARSET;
+                break;
+            default:
+                throw new Exception(__FUNCTION__ . ': Motor ('.$this->_motor.') no contemplado');
+        }
+        return $charset;
+    }
 
-    public function crear() {
+    /**
+     * Establece las sentencias para la creacion de la base de datos del sistema
+     */
+    private function db() {
+        $bd = '';
+        switch ($this->_motor) {
+            case ZC_MOTOR_MYSQL:
+                $bd = $this->_equivalencias[$this->_motor]['CREACION_BD'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_BD'] . ' ' .  ZC_CONEXION_BD . ' ' . $this->charset();
+                break;
+            default:
+                throw new Exception(__FUNCTION__ . ': Motor ('.$this->_motor.') no contemplado');
+        }
+        $this->_sentencias[] = $bd;
+        return $this;
+    }
+    
+    /**
+     * Nombre de la tabla, sentencia de creacion segun motor
+     * @return string
+     * @throws Exception
+     */
+    private function nombreTabla() {
+        $nombre = '';
+        switch ($this->_motor) {
+            case ZC_MOTOR_MYSQL:
+                $nombre = $this->_equivalencias[$this->_motor]['CREACION_TABLA'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_TABLA'] . ' ' . $this->_prop[0][ZC_ID] . ' (' . FIN_DE_LINEA;
+                break;
+            default:
+                throw new Exception(__FUNCTION__ . ': Motor ('.$this->_motor.') no contemplado');
+        }
+        return $nombre;
+    }
+    
+    /**
+     * Crea la restriccion de llave primaria para la tabla
+     * @return string
+     * @throws Exception
+     */
+    private function llave($campo, $coma = '') {
+        $key = '';
+        switch ($this->_motor) {
+            case ZC_MOTOR_MYSQL:
+                $key = $coma . insertarEspacios(4) . FIN_DE_LINEA . $this->_equivalencias[$this->_motor]['LLAVE_PRIMARIA'] . ' (' . $campo . ')';
+                break;
+            default:
+                throw new Exception(__FUNCTION__ . ': Motor ('.$this->_motor.') no contemplado');
+        }
+        return $key;
+    }
+    
+    /**
+     * Establece las sentencias para crear cada una de las tablas del sistema
+     */
+    private function tabla() {
         $campos = '';
-        $tabla = 'CREATE TABLE ' . $this->_prop[0][ZC_ID] . '(' . FIN_DE_LINEA;
+        $tabla = $this->nombreTabla();
         $tabla .= $this->autoincremental();
         foreach ($this->_prop as $nro => $caracteristicas) {
             switch (true) {
@@ -163,10 +258,17 @@ class bd {
             }
         }
         $tabla .= $campos;
-        $tabla .= FIN_DE_LINEA . ')';
-        preprint($tabla);
+        $tabla .= $this->llave('id', ',');
+        $tabla .= FIN_DE_LINEA . ') '.$this->charset();
+        $this->_sentencias[] = $tabla;
+        return $this;
     }
 
+    /**
+     * Esteblece las propiedades necesarias para la creacion de las tablas y base de datos
+     * @return \bd
+     * @throws Exception
+     */
     private function verificar() {
         foreach ($this->_prop as $nro => $caracteristicas) {
             if (!isset($this->_prop[$nro][ZC_ID]) || '' == trim($this->_prop[$nro][ZC_ID]) || !is_string($this->_prop[$nro][ZC_ID])) {
@@ -188,11 +290,30 @@ class bd {
     }
 
     /**
+     * Crea estrucutra de la base de datos y la tabla segun el tipo de motor seleccionado por el usuario
+     */
+    public function crear() {
+        $this->db();
+        $this->tabla();
+    }
+    
+    /**
+     * Ejejcuta las sentencias en las tablas
+     */
+    public function ejecutar() {
+        $this->conectar();
+        foreach ($this->_sentencias as $nro => $sentencia) {
+            $this->query($sentencia);
+        }
+        return $this;
+    }
+    
+    /**
      * Muestra el elemento en pantalla
      * Es un metodo publico, se utiliza desde fuera de la clase, ver class formulario
      */
     public function imprimir() {
-        echo $this->_html;
+        echo preprint($this->_sentencias);
     }
 
     /**
@@ -201,7 +322,7 @@ class bd {
      * @return string
      */
     public function devolver() {
-        return $this->_html;
+        return implode(';', $this->_sentencias);
     }
 
 }

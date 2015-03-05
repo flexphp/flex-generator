@@ -212,7 +212,7 @@ class procesarXML {
         foreach ($elementos as $key => $value) {
             if (!isset($value[ZC_ELEMENTO]) && $key == 0) {
                 /**
-                 * Atributos Formulario, crear una variable con el id
+                 * Atributos Formulario, crear una variable con el id del formulario
                  */
                 $nombre = $value[ZC_ID];
                 $$nombre = new formulario($value);
@@ -234,7 +234,8 @@ class procesarXML {
             $motor = $elementos[0][ZC_MOTOR];
             $bd = new bd($elementos, $motor);
             $bd->crear();
-//            $bd->registrar();
+            $bd->imprimir();
+            $bd->ejecutar();
         }
     }
 
