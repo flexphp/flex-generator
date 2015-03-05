@@ -31,11 +31,11 @@ class elementos {
      * @var string
      */
     protected $_obligatorio = '';
-    
+
     /**
-     * Posicion en la que se ubicara el mensaje de ayuda que se muestra al posicionar 
+     * Posicion en la que se ubicara el mensaje de ayuda que se muestra al posicionar
      * el puntero sobre el elemento. Valores: right | left | top | bottom
-     * @var string 
+     * @var string
      */
     protected $_posicionTitle = 'right';
 
@@ -95,7 +95,7 @@ class elementos {
          * Id del objeto dentro del formulario
          */
         if (!isset($this->_prop[ZC_ID]) || '' == trim($this->_prop[ZC_ID]) || !is_string($this->_prop[ZC_ID])) {
-            throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} tiene un identificador no valido [a-Z_].");
+            throw new Exception(__FUNCTION__ . ": El campo NO tiene un identificador valido [a-Z_].");
         }
         $this->_prop[ZC_ID] = trim($this->_prop[ZC_ID]);
         $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? trim($this->_prop[ZC_ETIQUETA]) : $this->_prop[ZC_ID];
@@ -120,7 +120,6 @@ class elementos {
         if (isset($this->_prop[ZC_LONGITUD_MINIMA]) && isset($this->_prop[ZC_LONGITUD_MAXIMA]) && $this->_prop[ZC_LONGITUD_MINIMA] > $this->_prop[ZC_LONGITUD_MAXIMA]) {
             throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
         }
-
         return $this;
     }
 
