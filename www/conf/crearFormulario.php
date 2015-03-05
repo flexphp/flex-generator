@@ -10,7 +10,7 @@ require 'conf.php';
 require RUTA_GENERADOR_CODIGO . '/includes/libreria.inc.php';
 require RUTA_GENERADOR_CODIGO . '/modelo/plantilla.class.php';
 require RUTA_GENERADOR_CODIGO . '/modelo/formulario.class.php';
-require RUTA_GENERADOR_CODIGO . '/modelo/procesarXML.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/xml.class.php';
 
 error_reporting(E_ALL);
 
@@ -47,7 +47,7 @@ try {
     $zcjs = new plantilla();
     $zcjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/zc.v1.0.0.js');
     $zcjs->crearPlantilla('../publico/js', 'js');
-    
+
     /**
      * CSS Homologado
      */
@@ -61,7 +61,7 @@ try {
     $parsleycss = new plantilla();
     $parsleycss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/parsley.css');
     $parsleycss->crearPlantilla('../publico/css', 'css');
-    
+
     /**
      * Opciones de formulario
      */

@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Clase para la creacion del script de la base de datos
+ */
+require_once 'bd.class.php';
+
+/**
  * Procesador de archivoXML
  *
  * Se encarga de crear los formularios web con base en los XML de configuracion
@@ -56,6 +61,13 @@ class procesarXML {
      */
     private $elementos = array();
 
+    /**
+     * Almacena las variables de cada atributo
+     * usada para crear el formulario
+     * @var array
+     */
+    private $propiedad = array();
+
     function __construct() {
 
     }
@@ -66,7 +78,7 @@ class procesarXML {
      */
     private function estructuraArchivoXML($xml) {
         foreach ($xml as $padre => $hijos) {
-            $form['id'] = $padre;
+            $form[ZC_ID] = $padre;
             $this->elementos[0] = array();
             $this->atributosXPathXML($hijos, $form);
             $this->hijosXPathXML($hijos, $form);
@@ -103,7 +115,7 @@ class procesarXML {
                 /**
                  * Crea variable con el nombre del elemento
                  */
-                $$propiedad = array('id' => $propiedad);
+                $$propiedad = array(ZC_ID => $propiedad);
                 $this->atributosXPathXML($valor, $$propiedad);
                 $this->hijosXPathXML($hijos->{$propiedad}[$contadorHijos], $$propiedad);
                 $this->elementos[] = $$propiedad;
@@ -183,6 +195,7 @@ class procesarXML {
                  * Por lo menos se debio crear un elemento para tener una estructura valida
                  */
                 $this->xml2form($rutaXML, $this->elementos);
+                $this->crearModeloDB($this->elementos);
             }
         }
     }
@@ -214,6 +227,15 @@ class procesarXML {
             }
         }
         $$nombre->finFormulario();
+    }
+
+    private function crearModeloDB($elementos) {
+        if ('' != $elementos[0][ZC_MOTOR]) {
+            $motor = $elementos[0][ZC_MOTOR];
+            $bd = new bd($elementos, $motor);
+            $bd->crear();
+//            $bd->registrar();
+        }
     }
 
 }

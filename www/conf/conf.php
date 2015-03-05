@@ -18,15 +18,15 @@ define("ZC_WS_REST", "rest");
 define("ZC_ELEMENTO", "que_quieres");
 define("ZC_ELEMENTO_CAJA_TEXTO", "caja");
 define("ZC_ELEMENTO_BOTON", "boton");
-define("ZC_ELEMENTO_RADIO", "radio");
-define("ZC_ELEMENTO_CHECKBOX", "checkbox");
+define("ZC_ELEMENTO_RADIO", "circulo");
+define("ZC_ELEMENTO_CHECKBOX", "cuadrado");
 define("ZC_ELEMENTO_SELECT", "lista");
 define("ZC_ELEMENTO_SELECT_OPCIONES", "posibles_valores");
 
 define("ZC_ELEMENTO_RESTABLECER", "restablecer");
 
 define("ZC_DATO", "que_dato_recibira");
-define("ZC_DATO_NUMERICO", "numeros");
+define("ZC_DATO_NUMERICO", "numero");
 define("ZC_DATO_EMAIL", "correo");
 define("ZC_DATO_FECHA", "fecha");
 define("ZC_DATO_URL", "url");
@@ -47,3 +47,7 @@ define("ZC_OBLIGATORIO_SI", "si");
 define("ZC_OBLIGATORIO_NO", "no");
 define("ZC_OBLIGATORIO_ERROR", "mensaje_de_error_es_obligatorio");
 define("ZC_OBLIGATORIO_ERROR_PREDETERMINADO", "Campo obligatorio");
+
+define("ZC_MOTOR", "se_guardara_en");
+define("ZC_MOTOR_MYSQL", "mysql");
+define("ZC_MOTOR_AUTOINCREMENTAL", "auto");

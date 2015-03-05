@@ -4,58 +4,52 @@
         <nombre_formulario>Test</nombre_formulario>
         <se_envia>POST</se_envia>
         <tipo_de_servicio>SOAP</tipo_de_servicio>
-        <numero_1>
+        <se_guardara_en>MySQL</se_guardara_en>
+        <usuario>
             <que_quieres>Caja</que_quieres>
-            <como_se_llama>Numero 1</como_se_llama>
-            <que_dato_recibira>numeros</que_dato_recibira>
-            <mensaje_de_error_tipo_dato>Solo se aceptan numeros </mensaje_de_error_tipo_dato>
-            <longitud_maxima_es>10</longitud_maxima_es>
-            <mensaje_de_error_longitud_maxima>Te pasaste</mensaje_de_error_longitud_maxima>
-            <es_obligatorio>si</es_obligatorio>
-            <mensaje_de_error_es_obligatorio>Ey! Se te olvido</mensaje_de_error_es_obligatorio>
-        </numero_1>
-        <nombre>
-            <que_quieres>Caja</que_quieres>
-            <como_se_llama>Nombre</como_se_llama>
+            <como_se_llama>Usuario</como_se_llama>
             <que_dato_recibira>alfanumerico</que_dato_recibira>
-            <mensaje_de_error_tipo_dato>Por favor digita un nombre valido</mensaje_de_error_tipo_dato>
-            <longitud_minima_es>10</longitud_minima_es>
-            <mensaje_de_error_longitud_minima></mensaje_de_error_longitud_minima>
             <es_obligatorio>si</es_obligatorio>
-        </nombre>
+            <longitud_minima_es>5</longitud_minima_es>
+            <longitud_maxima_es>10</longitud_maxima_es>
+            <mensaje_de_error_es_obligatorio>Ey! Se te olvido</mensaje_de_error_es_obligatorio>
+            <mensaje_de_error_longitud_minima>Muy corto, minimo 5</mensaje_de_error_longitud_minima>
+            <mensaje_de_error_longitud_maxima>Te pasaste</mensaje_de_error_longitud_maxima>
+        </usuario>
         <correo>
             <que_quieres>Caja</que_quieres>
             <como_se_llama>Correo</como_se_llama>
             <que_dato_recibira>correo</que_dato_recibira>
             <mensaje_de_error_tipo_dato>Por favor digita un correo valido</mensaje_de_error_tipo_dato>
-            <longitud_maxima_es>60</longitud_maxima_es>
+            <es_obligatorio>si</es_obligatorio>
             <longitud_minima_es>10</longitud_minima_es>
-            <mensaje_de_error_longitud_minima>Muy corto, minimo 10</mensaje_de_error_longitud_minima>
-            <es_obligatorio>no</es_obligatorio>
+            <longitud_maxima_es>20</longitud_maxima_es>
+            <mensaje_de_error_longitud_minima>Al menos 10</mensaje_de_error_longitud_minima>
         </correo>
-        <musica>
-            <que_quieres>Lista</que_quieres>
-            <como_se_llama>Musica</como_se_llama>
-            <que_dato_recibira>numeros</que_dato_recibira>
-            <es_obligatorio>si</es_obligatorio>
-            <mensaje_de_error_es_obligatorio>Falto el genero musical</mensaje_de_error_es_obligatorio>
-            <posibles_valores>1=Rock, 2=Salsa, 3=Merengue</posibles_valores>
-        </musica>
-        <vestido>
-            <que_quieres>checkbox</que_quieres>
-            <como_se_llama>Vestido</como_se_llama>
-            <que_dato_recibira>numeros</que_dato_recibira>
-            <es_obligatorio>si</es_obligatorio>
-            <mensaje_de_error_es_obligatorio>Cual te gusta?</mensaje_de_error_es_obligatorio>
-            <posibles_valores>1=Rojo, 2=Azul</posibles_valores>
-        </vestido>
         <genero>
-            <que_quieres>Radio</que_quieres>
+            <que_quieres>Circulo</que_quieres>
             <como_se_llama>Genero</como_se_llama>
             <que_dato_recibira>alfanumerico</que_dato_recibira>
-            <es_obligatorio>no</es_obligatorio>
-            <posibles_valores>M=Hombre, F=Mujer</posibles_valores>
+            <es_obligatorio>si</es_obligatorio>
+            <longitud_maxima_es>2</longitud_maxima_es>
+            <posibles_valores>F=Mujer,M=Hombre</posibles_valores>
         </genero>
+        <pais>
+            <que_quieres>Lista</que_quieres>
+            <como_se_llama>Pais</como_se_llama>
+            <que_dato_recibira>numero</que_dato_recibira>
+            <mensaje_de_error_tipo_dato>Selecciona un valor de la lista</mensaje_de_error_tipo_dato>
+            <es_obligatorio>si</es_obligatorio>
+            <mensaje_de_error_es_obligatorio>y el pais?</mensaje_de_error_es_obligatorio>
+            <posibles_valores>1=Colombia, 2=Peru, 3=Brasil</posibles_valores>
+        </pais>
+        <recibir_publicidad>
+            <que_quieres>Cuadrado</que_quieres>
+            <como_se_llama>Recibir publicidad</como_se_llama>
+            <que_dato_recibira>numero</que_dato_recibira>
+            <es_obligatorio>no</es_obligatorio>
+            <posibles_valores>1=Si</posibles_valores>
+        </recibir_publicidad>
         <enviar>
             <que_quieres>Boton</que_quieres>
             <como_se_llama>Enviar</como_se_llama>
@@ -64,5 +58,5 @@
             <que_quieres>Restablecer</que_quieres>
             <como_se_llama>Limpiar</como_se_llama>
         </limpiar>
-    </test>
+</test>
 </crear>
