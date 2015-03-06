@@ -229,9 +229,10 @@ class formulario {
 
     /**
      * Nombre del archivo javascrip relacionado al formulario
-     * @var type 
+     * @var type
      */
     private $_nombreArchivoJs = '';
+
     /**
      * Funcion de inicializacion del formulario, reqeuire que seha suministradas
      * unos datos basicos relacionados al formulario
@@ -482,12 +483,6 @@ class formulario {
                 throw new Exception(__FUNCTION__ . ": Y las caracteristicas del elemento!?");
             }
             /**
-             * Define el tipo de boton a crear
-             * boton = button (Boton normal, tambien utilizado para el submit) default
-             * restablecer = reset (Limpiar formulario)
-             */
-            $tipoAccion = 'boton';
-            /**
              * Se valida en minuscula para evitar ambiguaedades: Boton, boton, BOTON, etc
              */
             $caracteristicas[ZC_ELEMENTO] = (strtolower($caracteristicas[ZC_ELEMENTO]));
@@ -505,9 +500,13 @@ class formulario {
                     $this->agregarElementoListaFormulario($caracteristicas);
                     break;
                 case ZC_ELEMENTO_RESTABLECER:
-                    $tipoAccion = 'restablecer';
+                case ZC_ELEMENTO_CANCELAR:
                 case ZC_ELEMENTO_BOTON:
-                    $this->agregarElementoBotonFormulario($caracteristicas, $tipoAccion);
+                case ZC_ACCION_AGREGAR:
+                case ZC_ACCION_BUSCAR:
+                case ZC_ACCION_MODIFICAR:
+                case ZC_ACCION_BORRAR:
+                    $this->agregarElementoBotonFormulario($caracteristicas);
                     break;
                 default:
                     throw new Exception(__FUNCTION__ . ": Tipo de elemento no definido: {$caracteristicas[ZC_ELEMENTO]}!");
@@ -631,7 +630,7 @@ class formulario {
         $this->_elementos[] = $html->_prop;
         return $this;
     }
-    
+
     /**
      * Agrega las checkbox dentro del formulario, segun caracteristicas
      * @param string $caracteristicas

@@ -97,14 +97,15 @@ class elementos {
         if (!isset($this->_prop[ZC_ID]) || '' == trim($this->_prop[ZC_ID]) || !is_string($this->_prop[ZC_ID])) {
             throw new Exception(__FUNCTION__ . ": El campo NO tiene un identificador valido [a-Z_].");
         }
-        $this->_prop[ZC_ID] = trim($this->_prop[ZC_ID]);
-        $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? trim($this->_prop[ZC_ETIQUETA]) : $this->_prop[ZC_ID];
+        $this->_prop[ZC_ID] = strtolower(trim($this->_prop[ZC_ID]));
+        $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? $this->_prop[ZC_ETIQUETA] : $this->_prop[ZC_ID];
+        $this->_prop[ZC_ETIQUETA] = ucwords(trim($this->_prop[ZC_ETIQUETA]));
 
         // Tipo de dato
         $this->_prop[ZC_DATO] = (isset($this->_prop[ZC_DATO]) && '' != $this->_prop[ZC_DATO]) ? $this->_prop[ZC_DATO] : '';
         $this->_prop[ZC_DATO_ERROR] = (isset($this->_prop[ZC_DATO_ERROR]) && '' != $this->_prop[ZC_DATO_ERROR]) ? $this->_prop[ZC_DATO_ERROR] : null;
         // Tipo Elemento
-        $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? $this->_prop[ZC_ELEMENTO] : '';
+        $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : '';
         // Traduccion del tipo de datos escogido por el cliente para el servidor
         $this->_prop[ZC_DATO_WS] = $this->datoWS($this->_prop[ZC_ELEMENTO], $this->_prop[ZC_DATO]);
         // Dato obligatorio

@@ -168,7 +168,7 @@ function convertir2UrlLocal($ruta) {
  * @return string
  */
 function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
-    if($elemento == ZC_ELEMENTO_CHECKBOX){
+    if ($elemento == ZC_ELEMENTO_CHECKBOX) {
         // Los elementos tipo checkbox puedenser array, nose validan
         return '';
     }
@@ -191,14 +191,13 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
         default :
             break;
     }
-    if('' != $validacion){
+    if ('' != $validacion) {
         // Determina se se debe agregar validacion
         $validacion = FIN_DE_LINEA . $validacion;
         $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '{$msjValidacion}';" . FIN_DE_LINEA;
         $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
     }
     return $validacion;
-
 }
 
 /**
@@ -288,4 +287,81 @@ function validarArgumentoLongitudMinima($id, $etiqueta, $tipo, $longitudMinima =
     }
 
     return $validacion;
+}
+
+/**
+ * Copia los archivos masivamente, no colocar el ultimo slash en las rutas
+ * @param string $origen Ruta origen de los archivos
+ * @param string $destino Ruta destino de los archivos
+ */
+function copiar($origen, $destino) {
+    // Enlace simbolicos
+    if (is_link($origen)) {
+        return symlink(readlink($origen), $destino);
+    }
+    // Archivos
+    if (is_file($origen)) {
+        return copy($origen, $destino);
+    }
+    // No es carpeta
+    if (!is_dir($origen)) {
+        return false;
+    }
+    //Destino no existe
+    if (!is_dir($destino)) {
+        mkdir($destino, 0770);
+    }
+
+    //Recorrer carpeta
+    $dir = dir($origen);
+    while (false !== $entry = $dir->read()) {
+        // Saltar punteros
+        if ($entry == '.' || $entry == '..') {
+            continue;
+        }
+        copiar("$origen/$entry", "$destino/$entry");
+    }
+    $dir->close();
+    return true;
+}
+
+/**
+ * Elimina carpeta o archivos
+ * @param type $origen
+ */
+function eliminar($origen) {
+    // Enlace simbolicos
+    if (is_link($origen)) {
+        return unlink(readlink($origen));
+    }
+    // Archivos
+    if (is_file($origen)) {
+        return unlink($origen);
+    }
+
+    if (is_dir($origen)) {
+        //Recorrer carpeta
+        $dir = dir($origen);
+        while (false !== $entry = $dir->read()) {
+            // Saltar punteros
+            if ($entry == '.' || $entry == '..') {
+                continue;
+            }
+            elminar("$origen/$entry");
+        }
+        $dir->close();
+        return rmdir($origen);
+    }
+    return false;
+}
+
+/**
+ * Mueve los archivos masivamente, no colocar el ultimo slash en las rutas
+ * @param string $origen Ruta origen de los archivos
+ * @param string $destino Ruta destino de los archivos
+ */
+function mover($origen, $destino) {
+    if (copiar($origen, $destino)) {
+        eliminar($origen, $destino);
+    }
 }

@@ -235,7 +235,7 @@ class procesarXML {
             $bd = new bd($elementos, $motor);
             $bd->crear();
             $bd->imprimir();
-            $bd->ejecutar();
+//            $bd->ejecutar();
         }
     }
 

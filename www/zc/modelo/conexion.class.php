@@ -7,13 +7,13 @@ class conexion {
 
     /**
      * Recurso de conexion a la base de datos
-     * @var resource 
+     * @var resource
      */
     private $_link = null;
-    
+
     /**
      * Ruta del archivo de conexion
-     * @var string 
+     * @var string
      */
     private $_archivoConexion = '../conf/db.ini';
 
@@ -46,10 +46,17 @@ class conexion {
             error_reporting(0);
             $this->_link = mysqli_connect($datos[0], $datos[1], $datos[2]);
             $this->existeConexion();
-            mysqli_select_db($this->_link, $datos[3]);
             return $this->_link;
         }
         return false;
+    }
+
+    /**
+     * Seleccionar la base de datos
+     * @param string $bd Nombre de la base de datos
+     */
+    protected function seleccionarBD($bd) {
+        mysqli_select_db($this->_link, $bd);
     }
 
     /**

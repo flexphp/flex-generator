@@ -4,10 +4,11 @@
  * Ejecucion de sentencias en base de datos
  */
 require_once 'conexion.class.php';
+
 /**
  * Clase para la creacion del modelo de base de datos dependiendo del motor
  */
-class bd extends conexion{
+class bd extends conexion {
 
     /**
      * Motor de base de datos seleccionado por el usuario (mysql)
@@ -26,7 +27,7 @@ class bd extends conexion{
      * @var array
      */
     private $_prop = array();
-    
+
     /**
      * Sentencias para ejecutar creacion del modelo de BC
      * @var array
@@ -144,7 +145,7 @@ class bd extends conexion{
      * Establece propiedades SQL del campo, no todos los elementos necesitan creacion de campo
      * un ejemplo son los botones, asi que estos se omiten durante el proceso
      * @param string $nombre Nombre del campo en la base de datos, corresponde al ZC_ID
-     * @param string $dato Tipo de dato que recibe el campo ZC_DATO, se traduce al tipo SQL correspondiente 
+     * @param string $dato Tipo de dato que recibe el campo ZC_DATO, se traduce al tipo SQL correspondiente
      * @param string $longitud Longitud maxima del campo ZC_LONGITUD_MAXIMA
      * @param string $nulo Determina valores obligatorios ZC_OBLIGATORIO
      * @param string $comentario Descripcion del campo, corresponde a la etiqueta ZC_ETIQUETA
@@ -162,13 +163,13 @@ class bd extends conexion{
     private function autoincremental() {
         return insertarEspacios(4) . 'id INT ' . $this->nulo(ZC_OBLIGATORIO_SI) . ' ' . $this->_equivalencias[$this->_motor][ZC_MOTOR_AUTOINCREMENTAL] . ',';
     }
-    
+
     /**
      * Defiene el charset segun el motor
      * @return string
      */
     private function charset() {
-        if(ZC_MOTOR_DEFAULT_CHARSET == ''){
+        if (ZC_MOTOR_DEFAULT_CHARSET == '') {
             return '';
         }
         $charset = '';
@@ -177,7 +178,7 @@ class bd extends conexion{
                 $charset = $this->_equivalencias[$this->_motor]['CHARSET'] . ' ' . ZC_MOTOR_DEFAULT_CHARSET;
                 break;
             default:
-                throw new Exception(__FUNCTION__ . ': Motor ('.$this->_motor.') no contemplado');
+                throw new Exception(__FUNCTION__ . ': Motor (' . $this->_motor . ') no contemplado');
         }
         return $charset;
     }
@@ -189,15 +190,15 @@ class bd extends conexion{
         $bd = '';
         switch ($this->_motor) {
             case ZC_MOTOR_MYSQL:
-                $bd = $this->_equivalencias[$this->_motor]['CREACION_BD'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_BD'] . ' ' .  ZC_CONEXION_BD . ' ' . $this->charset();
+                $bd = $this->_equivalencias[$this->_motor]['CREACION_BD'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_BD'] . ' ' . ZC_CONEXION_BD . ' ' . $this->charset();
                 break;
             default:
-                throw new Exception(__FUNCTION__ . ': Motor ('.$this->_motor.') no contemplado');
+                throw new Exception(__FUNCTION__ . ': Motor (' . $this->_motor . ') no contemplado');
         }
         $this->_sentencias[] = $bd;
         return $this;
     }
-    
+
     /**
      * Nombre de la tabla, sentencia de creacion segun motor
      * @return string
@@ -210,11 +211,11 @@ class bd extends conexion{
                 $nombre = $this->_equivalencias[$this->_motor]['CREACION_TABLA'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_TABLA'] . ' ' . $this->_prop[0][ZC_ID] . ' (' . FIN_DE_LINEA;
                 break;
             default:
-                throw new Exception(__FUNCTION__ . ': Motor ('.$this->_motor.') no contemplado');
+                throw new Exception(__FUNCTION__ . ': Motor (' . $this->_motor . ') no contemplado');
         }
         return $nombre;
     }
-    
+
     /**
      * Crea la restriccion de llave primaria para la tabla
      * @return string
@@ -227,11 +228,11 @@ class bd extends conexion{
                 $key = $coma . insertarEspacios(4) . FIN_DE_LINEA . $this->_equivalencias[$this->_motor]['LLAVE_PRIMARIA'] . ' (' . $campo . ')';
                 break;
             default:
-                throw new Exception(__FUNCTION__ . ': Motor ('.$this->_motor.') no contemplado');
+                throw new Exception(__FUNCTION__ . ': Motor (' . $this->_motor . ') no contemplado');
         }
         return $key;
     }
-    
+
     /**
      * Establece las sentencias para crear cada una de las tablas del sistema
      */
@@ -259,7 +260,7 @@ class bd extends conexion{
         }
         $tabla .= $campos;
         $tabla .= $this->llave('id', ',');
-        $tabla .= FIN_DE_LINEA . ') '.$this->charset();
+        $tabla .= FIN_DE_LINEA . ') ' . $this->charset();
         $this->_sentencias[] = $tabla;
         return $this;
     }
@@ -274,9 +275,10 @@ class bd extends conexion{
             if (!isset($this->_prop[$nro][ZC_ID]) || '' == trim($this->_prop[$nro][ZC_ID]) || !is_string($this->_prop[$nro][ZC_ID])) {
                 throw new Exception(__FUNCTION__ . ": El campo NO tiene un identificador valido [a-Z_].");
             }
-            $this->_prop[$nro][ZC_ID] = trim($this->_prop[$nro][ZC_ID]);
+            $this->_prop[$nro][ZC_ID] = strtolower(trim($this->_prop[$nro][ZC_ID]));
             // Comentario
-            $this->_prop[$nro][ZC_ETIQUETA] = (isset($this->_prop[$nro][ZC_ETIQUETA]) && '' != trim($this->_prop[$nro][ZC_ETIQUETA])) ? trim($this->_prop[$nro][ZC_ETIQUETA]) : $this->_prop[$nro][ZC_ID];
+            $this->_prop[$nro][ZC_ETIQUETA] = (isset($this->_prop[$nro][ZC_ETIQUETA]) && '' != trim($this->_prop[$nro][ZC_ETIQUETA])) ? $this->_prop[$nro][ZC_ETIQUETA] : $this->_prop[$nro][ZC_ID];
+            $this->_prop[$nro][ZC_ETIQUETA] = ucwords(trim($this->_prop[$nro][ZC_ETIQUETA]));
             // Tipo de elmento
             $this->_prop[$nro][ZC_ELEMENTO] = (isset($this->_prop[$nro][ZC_ELEMENTO]) && '' != trim($this->_prop[$nro][ZC_ELEMENTO])) ? trim($this->_prop[$nro][ZC_ELEMENTO]) : null;
             // Tipo de dato
@@ -296,7 +298,7 @@ class bd extends conexion{
         $this->db();
         $this->tabla();
     }
-    
+
     /**
      * Ejejcuta las sentencias en las tablas
      */
@@ -307,7 +309,7 @@ class bd extends conexion{
         }
         return $this;
     }
-    
+
     /**
      * Muestra el elemento en pantalla
      * Es un metodo publico, se utiliza desde fuera de la clase, ver class formulario

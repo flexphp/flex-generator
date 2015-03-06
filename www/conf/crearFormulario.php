@@ -63,6 +63,12 @@ try {
     $parsleycss->crearPlantilla('../publico/css', 'css');
 
     /**
+      /**
+     * Iconos homologados
+     */
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/fonts', '../publico/fonts');
+
+    /**
      * Opciones de formulario
      */
     $nf = new procesarXML();

@@ -35,7 +35,7 @@
             <posibles_valores>F=Mujer,M=Hombre</posibles_valores>
         </genero>
         <pais>
-            <que_quieres>Lista</que_quieres>
+            <que_quieres>Listado</que_quieres>
             <como_se_llama>Pais</como_se_llama>
             <que_dato_recibira>numero</que_dato_recibira>
             <mensaje_de_error_tipo_dato>Selecciona un valor de la lista</mensaje_de_error_tipo_dato>
@@ -50,12 +50,28 @@
             <es_obligatorio>no</es_obligatorio>
             <posibles_valores>1=Si</posibles_valores>
         </recibir_publicidad>
-        <enviar>
-            <que_quieres>Boton</que_quieres>
-            <como_se_llama>Enviar</como_se_llama>
-        </enviar>
+        <agregar>
+            <que_quieres>Agregar</que_quieres>
+            <como_se_llama>Agregar</como_se_llama>
+        </agregar>
+        <buscar>
+            <que_quieres>Buscar</que_quieres>
+            <como_se_llama>Buscar</como_se_llama>
+        </buscar>
+        <modificar>
+            <que_quieres>Modificar</que_quieres>
+            <como_se_llama>Modificar</como_se_llama>
+        </modificar>
+        <borrar>
+            <que_quieres>Borrar</que_quieres>
+            <como_se_llama>Borrar</como_se_llama>
+        </borrar>
+        <cancelar>
+            <que_quieres>Cancelar</que_quieres>
+            <como_se_llama>Cancelar</como_se_llama>
+        </cancelar>
         <limpiar>
-            <que_quieres>Restablecer</que_quieres>
+            <que_quieres>Limpiar</que_quieres>
             <como_se_llama>Limpiar</como_se_llama>
         </limpiar>
 </test>

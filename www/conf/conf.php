@@ -1,4 +1,5 @@
 <?php
+
 // Ruta donde se encuentra el generador de codigo
 define("RUTA_GENERADOR_CODIGO", "../zc");
 //Tipos de elementos aceptados
@@ -18,9 +19,10 @@ define("ZC_ELEMENTO_CAJA_TEXTO", "caja");
 define("ZC_ELEMENTO_BOTON", "boton");
 define("ZC_ELEMENTO_RADIO", "circulo");
 define("ZC_ELEMENTO_CHECKBOX", "cuadrado");
-define("ZC_ELEMENTO_SELECT", "lista");
+define("ZC_ELEMENTO_SELECT", "listado");
 define("ZC_ELEMENTO_SELECT_OPCIONES", "posibles_valores");
-define("ZC_ELEMENTO_RESTABLECER", "restablecer");
+define("ZC_ELEMENTO_RESTABLECER", "limpiar");
+define("ZC_ELEMENTO_CANCELAR", "cancelar");
 // Tipos de datos aceptados
 define("ZC_DATO", "que_dato_recibira");
 define("ZC_DATO_NUMERICO", "numero");
@@ -55,3 +57,8 @@ define("ZC_CONEXION_PUERTO", "3306");
 define("ZC_CONEXION_BD", "ejemplo");
 define("ZC_CONEXION_USUARIO", "root");
 define("ZC_CONEXION_CLAVE", "1q2w3e4r");
+// Acciones predefinidas en base de datos
+define("ZC_ACCION_AGREGAR", "agregar");
+define("ZC_ACCION_BUSCAR", "buscar");
+define("ZC_ACCION_MODIFICAR", "modificar");
+define("ZC_ACCION_BORRAR", "borrar");
