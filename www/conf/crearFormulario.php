@@ -61,13 +61,40 @@ try {
     $parsleycss = new plantilla();
     $parsleycss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/parsley.css');
     $parsleycss->crearPlantilla('../publico/css', 'css');
-
+    
     /**
-      /**
      * Iconos homologados
      */
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/fonts', '../publico/fonts');
-
+    
+    /**
+     * Crear archivo de configuracion de base de datos, valida y setea la configuracion segun corresponda
+     */
+    $db = new plantilla();
+    $db->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/ci/database.tpl');
+    if(defined('ZC_CONEXION_SERVIDOR')){
+        $db->asignarEtiqueta('servidor', ZC_CONEXION_SERVIDOR);
+    }
+    if(defined('ZC_CONEXION_USUARIO')){
+        $db->asignarEtiqueta('usuario', ZC_CONEXION_USUARIO);
+    }
+    if(defined('ZC_CONEXION_CLAVE')){
+        $db->asignarEtiqueta('clave', ZC_CONEXION_CLAVE);
+    }
+    if(defined('ZC_CONEXION_BD')){
+        $db->asignarEtiqueta('bd', ZC_CONEXION_BD);
+    }
+    if(defined('ZC_MOTOR_MYSQL')){
+        $db->asignarEtiqueta('motor', ZC_MOTOR_MYSQL);
+    }
+    if(defined('ZC_MOTOR_DEFAULT_CHARSET')){
+        $db->asignarEtiqueta('charset', ZC_MOTOR_DEFAULT_CHARSET);
+    }
+    if(defined('ZC_MOTOR_DEFAULT_COLLATION')){
+        $db->asignarEtiqueta('collation', ZC_MOTOR_DEFAULT_COLLATION);
+    }
+    $db->crearPlantilla('../application/config', 'php');
+    
     /**
      * Opciones de formulario
      */

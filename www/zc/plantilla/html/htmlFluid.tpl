@@ -21,6 +21,7 @@
         <div class="container-fluid">
             <!-- Seperacion del top -->
             <div class="col-md-12"> </div>
+            
             <!-- Nombre del formulario actual -->
             <div class="col-md-1"></div>
             <div class="col-md-5 text-center">
@@ -31,9 +32,17 @@
                         <span id="msj-progreso-{_nombreFormulario_}" style="color: black">0%</span>
                     </div>
                 </div>
+                    
+                <!-- Errores devueltos por el serivdor -->
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    <span id="error-{_nombreFormulario_}"></span>
+                </div>
             </div>
             <div class="col-md-5"></div>
             <div class="col-md-1"></div>
+            
             <!-- Formulario para el ingreso de datos -->
             <div class="col-md-1"></div>
             <div class="col-md-10">

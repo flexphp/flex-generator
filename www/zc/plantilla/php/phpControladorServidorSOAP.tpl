@@ -9,7 +9,7 @@ class {_nombreControlador_} extends CI_Controller{
         parent::__construct();
 
         // Libreria para el manejode WS
-        $this->load->library("nusoap");
+        $this->load->library('nusoap');
         /**
          * Clase para el manejo de Servidor WS
          */

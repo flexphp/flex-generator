@@ -56,9 +56,6 @@ class boton extends elementos {
 
     /**
      * Selecciona el tipo de boton a crear en el formulario
-     * @param string $tipo Tipo de boton a crear, posibles valores:
-     * restablecer:reset Boton para limpiar el formulario
-     * boton:button Boton para ejecutar acciones
      */
     private function tipo() {
         switch ($this->_prop[ZC_ELEMENTO]) {

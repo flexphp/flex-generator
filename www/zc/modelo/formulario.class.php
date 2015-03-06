@@ -30,9 +30,14 @@ require RUTA_GENERADOR_CODIGO . '/modelo/lista.class.php';
 require RUTA_GENERADOR_CODIGO . '/modelo/radio.class.php';
 
 /**
- * Clase para la creacion de unica seleccion (radio)
+ * Clase para la creacion de selecciones multiples (checkbox)
  */
 require RUTA_GENERADOR_CODIGO . '/modelo/checkbox.class.php';
+
+/**
+ * Clase para la creacion de acciones segun el boton seleccionado
+ */
+require RUTA_GENERADOR_CODIGO . '/modelo/accion.class.php';
 
 /**
  * Crear formulario html
@@ -484,6 +489,7 @@ class formulario {
             }
             /**
              * Se valida en minuscula para evitar ambiguaedades: Boton, boton, BOTON, etc
+             * Se debe dejar, en este punto no ha pasado por la funcion elementos::verificar
              */
             $caracteristicas[ZC_ELEMENTO] = (strtolower($caracteristicas[ZC_ELEMENTO]));
             switch ($caracteristicas[ZC_ELEMENTO]) {
@@ -887,6 +893,9 @@ class formulario {
                 $plantilla->asignarEtiqueta('nombreFuncion', $caracteristicas[ZC_ID] . 'Servidor');
                 $plantilla->asignarEtiqueta('asignacionCliente', $this->_asignacionParametrosServidorSOAP);
                 $plantilla->asignarEtiqueta('asignacionFuncion', $this->_asignacionParametrosFuncionServidorSOAP);
+                // Asigna la accion del lador servidor
+                $accion = new accion($this->_elementos, $caracteristicas[ZC_ELEMENTO]);
+                $plantilla->asignarEtiqueta('accionServidor', $accion->devolver());
 
                 // Concatena las acciones que se pueden llamar desde el cliente
                 $this->_accionesServidorWS .= $plantilla->devolverPlantilla() . FIN_DE_LINEA;

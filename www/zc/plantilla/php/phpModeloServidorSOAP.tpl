@@ -77,7 +77,9 @@ function {_nombreAccion_}(){
 	        'error' => '',
 	    );
 
-	    $resultado = implode('|', func_get_args());
+{_accionServidor_}
+            
+            file_put_contents(getcwd() . '/application/logs/{_nombreControlador_}_' . date('Ymd') . '.log', 'Resultado Accion ' . __FUNCTION__ . print_r($resultado, 1) . "\n", FILE_APPEND);
 	    $row = $resultado;
 	    $cta = 1;
 					

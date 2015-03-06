@@ -90,36 +90,42 @@ class elementos {
      * @param mixed $this->_prop Argumentos pasados por el usuario para cada elemento
      * @throws Exception
      */
-    private function verificar() {
+    protected function verificar() {
         /**
          * Id del objeto dentro del formulario
          */
         if (!isset($this->_prop[ZC_ID]) || '' == trim($this->_prop[ZC_ID]) || !is_string($this->_prop[ZC_ID])) {
             throw new Exception(__FUNCTION__ . ": El campo NO tiene un identificador valido [a-Z_].");
         }
+        // Identificadores del elemento
         $this->_prop[ZC_ID] = strtolower(trim($this->_prop[ZC_ID]));
         $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? $this->_prop[ZC_ETIQUETA] : $this->_prop[ZC_ID];
-        $this->_prop[ZC_ETIQUETA] = ucwords(trim($this->_prop[ZC_ETIQUETA]));
-
-        // Tipo de dato
-        $this->_prop[ZC_DATO] = (isset($this->_prop[ZC_DATO]) && '' != $this->_prop[ZC_DATO]) ? $this->_prop[ZC_DATO] : '';
-        $this->_prop[ZC_DATO_ERROR] = (isset($this->_prop[ZC_DATO_ERROR]) && '' != $this->_prop[ZC_DATO_ERROR]) ? $this->_prop[ZC_DATO_ERROR] : null;
+        $this->_prop[ZC_ETIQUETA] = ucfirst(trim($this->_prop[ZC_ETIQUETA]));
         // Tipo Elemento
-        $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : '';
-        // Traduccion del tipo de datos escogido por el cliente para el servidor
-        $this->_prop[ZC_DATO_WS] = $this->datoWS($this->_prop[ZC_ELEMENTO], $this->_prop[ZC_DATO]);
-        // Dato obligatorio
-        $this->_prop[ZC_OBLIGATORIO] = (isset($this->_prop[ZC_OBLIGATORIO])) ? $this->_prop[ZC_OBLIGATORIO] : ZC_OBLIGATORIO_NO;
-        $this->_prop[ZC_OBLIGATORIO_ERROR] = (isset($this->_prop[ZC_OBLIGATORIO_ERROR]) && '' != $this->_prop[ZC_OBLIGATORIO_ERROR]) ? $this->_prop[ZC_OBLIGATORIO_ERROR] : null;
-        // La longitud debe ser numerica
-        $this->_prop[ZC_LONGITUD_MINIMA] = (isset($this->_prop[ZC_LONGITUD_MINIMA]) && is_int((int) $this->_prop[ZC_LONGITUD_MINIMA])) ? $this->_prop[ZC_LONGITUD_MINIMA] : null;
-        $this->_prop[ZC_LONGITUD_MINIMA_ERROR] = (isset($this->_prop[ZC_LONGITUD_MINIMA_ERROR]) && '' != $this->_prop[ZC_LONGITUD_MINIMA_ERROR]) ? $this->_prop[ZC_LONGITUD_MINIMA_ERROR] : null;
-        // La longitud debe ser numerica
-        $this->_prop[ZC_LONGITUD_MAXIMA] = (isset($this->_prop[ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[ZC_LONGITUD_MAXIMA])) ? $this->_prop[ZC_LONGITUD_MAXIMA] : null;
-        $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] = (isset($this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) && '' != $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) ? $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] : null;
+        $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : null;
+        
+        /**
+         * No todos los elementos necesitan todas las propedades, minimiza uso de memoria
+         */
+        if(in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA_TEXTO, ZC_ELEMENTO_CHECKBOX, ZC_ELEMENTO_RADIO, ZC_ELEMENTO_SELECT))){
+            // Tipo de dato
+            $this->_prop[ZC_DATO] = (isset($this->_prop[ZC_DATO]) && '' != $this->_prop[ZC_DATO]) ? $this->_prop[ZC_DATO] : null;
+            $this->_prop[ZC_DATO_ERROR] = (isset($this->_prop[ZC_DATO_ERROR]) && '' != $this->_prop[ZC_DATO_ERROR]) ? $this->_prop[ZC_DATO_ERROR] : null;
+            // Traduccion del tipo de datos escogido por el cliente para el servidor
+            $this->_prop[ZC_DATO_WS] = $this->datoWS($this->_prop[ZC_ELEMENTO], $this->_prop[ZC_DATO]);
+            // Dato obligatorio
+            $this->_prop[ZC_OBLIGATORIO] = (isset($this->_prop[ZC_OBLIGATORIO])) ? $this->_prop[ZC_OBLIGATORIO] : null;
+            $this->_prop[ZC_OBLIGATORIO_ERROR] = (isset($this->_prop[ZC_OBLIGATORIO_ERROR]) && '' != $this->_prop[ZC_OBLIGATORIO_ERROR]) ? $this->_prop[ZC_OBLIGATORIO_ERROR] : null;
+            // La longitud debe ser numerica
+            $this->_prop[ZC_LONGITUD_MINIMA] = (isset($this->_prop[ZC_LONGITUD_MINIMA]) && is_int((int) $this->_prop[ZC_LONGITUD_MINIMA])) ? $this->_prop[ZC_LONGITUD_MINIMA] : null;
+            $this->_prop[ZC_LONGITUD_MINIMA_ERROR] = (isset($this->_prop[ZC_LONGITUD_MINIMA_ERROR]) && '' != $this->_prop[ZC_LONGITUD_MINIMA_ERROR]) ? $this->_prop[ZC_LONGITUD_MINIMA_ERROR] : null;
+            // La longitud debe ser numerica
+            $this->_prop[ZC_LONGITUD_MAXIMA] = (isset($this->_prop[ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[ZC_LONGITUD_MAXIMA])) ? $this->_prop[ZC_LONGITUD_MAXIMA] : null;
+            $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] = (isset($this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) && '' != $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) ? $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] : null;
 
-        if (isset($this->_prop[ZC_LONGITUD_MINIMA]) && isset($this->_prop[ZC_LONGITUD_MAXIMA]) && $this->_prop[ZC_LONGITUD_MINIMA] > $this->_prop[ZC_LONGITUD_MAXIMA]) {
-            throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
+            if (isset($this->_prop[ZC_LONGITUD_MINIMA]) && isset($this->_prop[ZC_LONGITUD_MAXIMA]) && $this->_prop[ZC_LONGITUD_MINIMA] > $this->_prop[ZC_LONGITUD_MAXIMA]) {
+                throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
+            }
         }
         return $this;
     }
@@ -139,9 +145,12 @@ class elementos {
             case ($dato == ZC_DATO_ALFANUMERICO):
             case ($dato == ZC_DATO_EMAIL):
             case ($dato == ZC_DATO_URL):
-            case ($dato == ZC_DATO_FECHA):
-            default:
+            case ($dato == ZC_DATO_NUMERICO):
                 $xsd = 'string';
+                break;
+            default:
+                // Botones y otros no definidos no se configura
+                $xsd = null;
                 break;
         }
         return $xsd;

@@ -50,6 +50,7 @@ define("ZC_OBLIGATORIO_ERROR_PREDETERMINADO", "Campo obligatorio");
 define("ZC_MOTOR", "se_guardara_en");
 define("ZC_MOTOR_MYSQL", "mysql");
 define("ZC_MOTOR_DEFAULT_CHARSET", "latin1");
+define("ZC_MOTOR_DEFAULT_COLLATION", "latin1_swedish_ci");
 define("ZC_MOTOR_AUTOINCREMENTAL", "auto");
 // Configuracion del conexion a base de datos
 define("ZC_CONEXION_SERVIDOR", "localhost");

@@ -9,15 +9,21 @@
                     type: 'POST',
                     dataType: 'JSON',
                     data: $('#{_nombreFormulario_}').serialize()+'&accion='+nombreAccion,
+                    beforeSend: function(){
+                        // Oculta ventana con mensajes
+                        $('.alert').hide();
+                    },
                     success: function(rpta){
                         if(undefined != rpta.error && '' != rpta.error){
-                            $('#{_nombreFormulario_}Error').text(rpta.error);
+                            // Muestra mensaje de error
+                            $('#error-{_nombreFormulario_}').text(rpta.error);
+                            $('.alert-danger').show();
                         }else{
                             {_accionCliente_}
                         }
                     },
                     error: function(rpta){
-                        $('#{_nombreFormulario_}Error').text('Error en el servicio');
+                        $('#error-{_nombreFormulario_}').text('Error en el servicio');
                     }
                 });
             }
