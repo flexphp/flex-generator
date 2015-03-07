@@ -227,15 +227,20 @@ class procesarXML {
             }
         }
         $$nombre->finFormulario();
+        unset($$nombre);
     }
 
+    /**
+     * Crea el modelo de la base de datos en el motor
+     * @param array $elementos
+     */
     private function crearModeloDB($elementos) {
         if ('' != $elementos[0][ZC_MOTOR]) {
             $motor = $elementos[0][ZC_MOTOR];
             $bd = new bd($elementos, $motor);
             $bd->crear();
             $bd->imprimir();
-//            $bd->ejecutar();
+            $bd->ejecutar();
         }
     }
 

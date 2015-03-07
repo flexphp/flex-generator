@@ -14,6 +14,7 @@
                         $('.alert').hide();
                     },
                     success: function(rpta){
+                        console.log(rpta);
                         if(undefined != rpta.error && '' != rpta.error){
                             // Muestra mensaje de error
                             $('#error-{_nombreFormulario_}').text(rpta.error);

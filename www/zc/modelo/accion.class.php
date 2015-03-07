@@ -15,26 +15,33 @@ require_once 'agregar.class.php';
 class accion extends elementos {
 
     /**
-     * Tipo de accion a ejecutar
-     * @var string 
+     * Formulario o tabla relacionado
+     * @var string
      */
-    private $_accion = null;
-    
+    protected $_tabla = null;
+
+    /**
+     * Tipo de accion a ejecutar
+     * @var string
+     */
+    protected $_accion = null;
+
     /**
      * Conjunto de elementos tipo input del formulario, corresponde a los campos
-     * @var array 
+     * @var array
      */
-    private $_campos = array();
+    protected $_campos = array();
+
     /**
      * Crear las acciones, segun el tipo de elemento
      * @param array $caracteristicas Caracteristicas de la accion a crear
-     * @param string $tipo Tipo de boton a crear
+     * @param string $tabla Nombre de la tabla a manejar
+     * @param string $accion Tipo de boton a crear
      */
-    function __construct($caracteristicas, $accion) {
+    function __construct($caracteristicas, $tabla, $accion) {
         $this->_accion = $accion;
+        $this->_tabla = strtolower($tabla);
         $this->_campos = $caracteristicas;
-        unset($caracteristicas);
-        $this->crear();
     }
 
     /**
@@ -43,7 +50,7 @@ class accion extends elementos {
     public function crear() {
         switch ($this->_accion) {
             case ZC_ACCION_AGREGAR:
-                $accion = new agregar($this->_campos, $this->_accion);
+                $accion = new agregar($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ACCION_BUSCAR:
 //                $accion = new buscar($this->_campos, $this->_accion);
@@ -64,9 +71,11 @@ class accion extends elementos {
         }
         // Establece la accion creada
         $this->_html = (isset($accion)) ? $accion->devolver() : $this->comando('$resultado = implode(\'|\', func_get_args());');
+        return $this;
     }
 
     protected function comando($cmd) {
         return insertarEspacios(12) . $cmd . FIN_DE_LINEA;
     }
+
 }

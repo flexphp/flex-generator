@@ -306,6 +306,11 @@ class bd extends conexion {
         $this->conectar();
         foreach ($this->_sentencias as $nro => $sentencia) {
             $this->query($sentencia);
+            if ($nro == 0) {
+                // Despues de crear base de datos (sentencia 0)
+                // Se conecta a la base de datos creada
+                $this->seleccionarBD(ZC_CONEXION_BD);
+            }
         }
         return $this;
     }

@@ -781,8 +781,8 @@ class formulario {
         if ($this->_crearAccionServidor) {
 
             foreach ($this->_acciones as $nro => $caracteristicas) {
-                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO]) {
-                    // Los botones tipo restablecer no crean acciones
+                if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR))) {
+                    // Los botones tipo restablecer, cancelar no crean acciones
                     continue;
                 }
                 /**
@@ -815,7 +815,7 @@ class formulario {
         if ($this->_crearAccionServidor) {
 
             foreach ($this->_acciones as $nro => $caracteristicas) {
-                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO]) {
+                if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR))) {
                     // Los botones tipo restablecer no crean accciones de envio, ya tiene la
                     // accion preferida
                     continue;
@@ -849,8 +849,8 @@ class formulario {
     private function modeloWsSOAPClienteFormulario() {
         if ($this->_crearAccionServidor && $this->_tipoWS == ZC_WS_SOAP) {
             foreach ($this->_acciones as $nro => $caracteristicas) {
-                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO]) {
-                    // Los botones tipo restablecer no crean acciones
+                if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR))) {
+                    // Los botones tipo restablecer, cancelar no crean acciones
                     continue;
                 }
                 /**
@@ -879,8 +879,8 @@ class formulario {
     private function controladorWsSOAPServidorFormulario() {
         if ($this->_crearAccionServidor && $this->_tipoWS == ZC_WS_SOAP) {
             foreach ($this->_acciones as $nro => $caracteristicas) {
-                if (ZC_ELEMENTO_RESTABLECER == $caracteristicas[ZC_ELEMENTO]) {
-                    // Los botones tipo restablecer no crean acciones
+                if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR))) {
+                    // Los botones tipo restablecer, cancelar no crean acciones
                     continue;
                 }
                 /**
@@ -894,8 +894,8 @@ class formulario {
                 $plantilla->asignarEtiqueta('asignacionCliente', $this->_asignacionParametrosServidorSOAP);
                 $plantilla->asignarEtiqueta('asignacionFuncion', $this->_asignacionParametrosFuncionServidorSOAP);
                 // Asigna la accion del lador servidor
-                $accion = new accion($this->_elementos, $caracteristicas[ZC_ELEMENTO]);
-                $plantilla->asignarEtiqueta('accionServidor', $accion->devolver());
+                $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO]);
+                $plantilla->asignarEtiqueta('accionServidor', $accion->crear()->devolver());
 
                 // Concatena las acciones que se pueden llamar desde el cliente
                 $this->_accionesServidorWS .= $plantilla->devolverPlantilla() . FIN_DE_LINEA;

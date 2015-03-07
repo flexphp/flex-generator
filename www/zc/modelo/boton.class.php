@@ -82,7 +82,8 @@ class boton extends elementos {
             case ZC_ELEMENTO_CANCELAR:
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
-                $this->_presentacion = 'btn-warning';
+                //Agrega calse especial, determina que accion tomar
+                $this->_presentacion = 'btn-warning zc-boton-cancelar';
                 break;
             case ZC_ELEMENTO_RESTABLECER:
                 $this->_tipo = 'reset';
