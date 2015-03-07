@@ -68,7 +68,6 @@ function {_nombreAccion_}(){
 	);
 
 	function {_nombreFuncion_}({_asignacionFuncion_}){
-	    file_put_contents(getcwd() . '/application/logs/{_nombreControlador_}_' . date('Ymd') . '.log', 'Parametros WSS ' . __FUNCTION__ . print_r(get_defined_vars(), 1) . "\n", FILE_APPEND);
 	    // Incializacion de variables de respuesta
 	    $i = 0;
 	    $Resultado[0] = array(
@@ -79,23 +78,20 @@ function {_nombreAccion_}(){
 
 {_accionServidor_}
             
-            file_put_contents(getcwd() . '/application/logs/{_nombreControlador_}_' . date('Ymd') . '.log', 'Resultado Accion ' . __FUNCTION__ . print_r($resultado, 1) . "\n", FILE_APPEND);
 	    $row = $resultado;
 	    $cta = 1;
 					
-            if(is_array($row)){
-                $Resultado[$i]['infoEncabezado'] = json_encode($row);
-            } else {
-                $Resultado[$i]['infoEncabezado'] = $row;
-            }
-            $Resultado[0]['cta'] = $cta;
+        if(is_array($row)){
+            $Resultado[$i]['infoEncabezado'] = json_encode($row);
+        } else {
+            $Resultado[$i]['infoEncabezado'] = $row;
+        }
+        $Resultado[0]['cta'] = $cta;
 
-            file_put_contents(getcwd() . '/application/logs/{_nombreControlador_}_' . date('Ymd') . '.log', 'Resultado: ' . print_r($Resultado, 1) . "\n", FILE_APPEND);
+        file_put_contents(getcwd() . '/application/logs/{_nombreControlador_}_' . date('Ymd') . '.log', __FUNCTION__ . "\n" . ' $data: ' . print_r($data, 1) . "\n" . ' $Resultado: ' . print_r($Resultado, 1) . "\n", FILE_APPEND);
 
 	    return new soapval('return', 'tns:{_nombreAccion_}ResptaArray', $Resultado);
 	}
 
-	$HTTP_RAW_POST_DATA = file_get_contents('php://input');
-	file_put_contents(getcwd() . '/application/logs/{_nombreControlador_}_' . date('Ymd') . '.log', 'Argumentos WSS ' . $HTTP_RAW_POST_DATA . "\n", FILE_APPEND);
-	$this->_SRV_WS->service($HTTP_RAW_POST_DATA);
-    }
+	$this->_SRV_WS->service(file_get_contents('php://input'));
+}

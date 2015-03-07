@@ -74,8 +74,32 @@ class accion extends elementos {
         return $this;
     }
 
-    protected function comando($cmd) {
-        return insertarEspacios(12) . $cmd . FIN_DE_LINEA;
+    /**
+     * Adecua la sintaxis del comando pasado por parametro
+     * @param string $cmd Comando a agregar
+     * @param int $espacios Numero de espacios en la sangria izquierda
+     * @return string
+     */
+    protected function comando($cmd, $espacios = 0) {
+        return insertarEspacios((8+$espacios)) . $cmd . FIN_DE_LINEA;
     }
 
+    /**
+     * Asigna los variables segun tipo
+     * @param array $campos Elementos a inicializar
+     */
+    protected function inicializar(){
+        $cmd = $this->comando('$data = array();');
+        foreach ($this->_campos as $nro => $campo) {
+            switch ($campo[ZC_ELEMENTO]) {
+                case ZC_ELEMENTO_CHECKBOX:
+                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = implode(',', json_decode(\${$campo[ZC_ID]}, true));");
+                    break;
+                default:
+                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = \${$campo[ZC_ID]};");
+                    break;
+            }
+        }
+        return $cmd;
+    }
 }
