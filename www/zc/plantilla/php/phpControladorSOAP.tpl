@@ -16,6 +16,6 @@ class {_nombreControlador_} extends CI_Controller {
         $this->load->view('{_nombreVista_}');
     }
 
-    {_accionServidor_}
+{_accionServidor_}
 
 }

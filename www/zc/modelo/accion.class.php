@@ -33,6 +33,12 @@ class accion extends elementos {
     protected $_campos = array();
 
     /**
+     * Almacena la funcion que ejecuta todo el proceso en el modelo
+     * @var string
+     */
+    protected $_funcion = '';
+
+    /**
      * Crear las acciones, segun el tipo de elemento
      * @param array $caracteristicas Caracteristicas de la accion a crear
      * @param string $tabla Nombre de la tabla a manejar
@@ -70,7 +76,8 @@ class accion extends elementos {
                 break;
         }
         // Establece la accion creada
-        $this->_html = (isset($accion)) ? $accion->devolver() : $this->comando('$resultado = implode(\'|\', func_get_args());');
+        $this->_html = (isset($accion)) ? $accion->crear()->devolver() : $this->comando('$resultado = implode(\'+\', func_get_args());$cta = 1;', 12);
+        $this->_funcion = (isset($accion)) ? $accion->funcion()->devolverFuncion() : $this->comando('//$rpta[\'resultado\'] = implode(\'|\', $datos);');
         return $this;
     }
 
@@ -81,7 +88,7 @@ class accion extends elementos {
      * @return string
      */
     protected function comando($cmd, $espacios = 0) {
-        return insertarEspacios((8+$espacios)) . $cmd . FIN_DE_LINEA;
+        return insertarEspacios($espacios) . $cmd . FIN_DE_LINEA;
     }
 
     /**
@@ -89,17 +96,21 @@ class accion extends elementos {
      * @param array $campos Elementos a inicializar
      */
     protected function inicializar(){
-        $cmd = $this->comando('$data = array();');
+        $cmd = $this->comando('$data = array();', 12);
         foreach ($this->_campos as $nro => $campo) {
             switch ($campo[ZC_ELEMENTO]) {
                 case ZC_ELEMENTO_CHECKBOX:
-                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = implode(',', json_decode(\${$campo[ZC_ID]}, true));");
+                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = implode(',', json_decode(\${$campo[ZC_ID]}, true));", 12);
                     break;
                 default:
-                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = \${$campo[ZC_ID]};");
+                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = \${$campo[ZC_ID]};", 12);
                     break;
             }
         }
         return $cmd;
+    }
+
+    public function devolverFuncion(){
+        return $this->_funcion;
     }
 }

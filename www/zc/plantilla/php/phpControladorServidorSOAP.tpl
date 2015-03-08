@@ -20,5 +20,5 @@ class {_nombreControlador_} extends CI_Controller{
         $this->_SRV_WS->wsdl->setDebugLevel(9);
      }
 
-    {_accionesServidorWS_}
+{_accionesServidorWS_}
 }

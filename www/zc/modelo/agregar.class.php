@@ -12,7 +12,6 @@ class agregar extends accion {
      */
     function __construct($caracteristicas, $tabla, $accion) {
         parent::__construct($caracteristicas, $tabla, $accion);
-        $this->crear();
     }
 
     /**
@@ -25,36 +24,66 @@ class agregar extends accion {
             throw new Exception(__FUNCTION__ . ': Error en la accion, se esperaba: ' . ZC_ACCION_AGREGAR);
         }
         $php = '';
-        $php .= $this->comando('//Nombre de la tabla afectada');
-        $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';');
-        $php .= $this->comando('//Establece los valores de cada uno de los campos');
+        $php .= $this->comando('//Establece los valores de cada uno de los campos', 12);
         $php .= $this->inicializar($this->_campos);
-        $php .= $this->comando('');
-        $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original');
-        $php .= $this->comando('$CI = new CI_Controller;');
-        $php .= $this->comando('$CI->load->model(\'modelo_\' . $tabla, $tabla);');
-        $php .= $this->comando('$CI->load->database();');
-        $php .= $this->comando('// Validacion de los datos');
-        $php .= $this->comando('$error = $CI->$tabla->validacionTest($data);');
-        $php .= $this->comando('switch (true){');
-        $php .= $this->comando('case (isset($error[\'error\']) && \'\' != $error[\'error\']):', 4);
-        $php .= $this->comando('// Errores durante la validacion de datos', 8);
-        $php .= $this->comando('$Resultado[0][\'error\'] = json_encode($error[\'error\']);', 8);
-        $php .= $this->comando('break;', 8);
-        $php .= $this->comando('case !$CI->db->initialize():', 4);
-        $php .= $this->comando('// Error en la conexion a la base de datos', 8);
-        $php .= $this->comando('$Resultado[0][\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 8);
-        $php .= $this->comando('break;', 8);
-        $php .= $this->comando('case $CI->db->insert($tabla, $data) == false:', 4);
-        $php .= $this->comando('// Mensaje/causa de error devuelto', 8);
-        $php .= $this->comando('$Resultado[0][\'error\'] = json_encode($CI->db->_error_message());', 8);
-        $php .= $this->comando('default:', 4);
-        $php .= $this->comando('// Devuelve el id insertado campo y el numero de filas efectadas', 8);
-        $php .= $this->comando('$resultado = $CI->db->insert_id();', 8);
-        $php .= $this->comando('$cta = $CI->db->affected_rows() > 0;', 8);
-        $php .= $this->comando('break;', 8);
-        $php .= $this->comando('}');
+        $php .= $this->comando('', 12);
+        $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
+        $php .= $this->comando('//Nombre de la tabla afectada', 12);
+        $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
+        $php .= $this->comando('$CI = new CI_Controller;', 12);
+        $php .= $this->comando('$CI->load->model(\'modelo_\' . $tabla, $tabla);', 12);
+        $php .= $this->comando('// Ejecucion de la accion', 12);
+        $php .= $this->comando('$rpta = $CI->$tabla->agregar($data);', 12);
+        $php .= $this->comando('switch (true){', 12);
+        $php .= $this->comando('case (isset($rpta[\'error\']) && \'\' != $rpta[\'error\']):', 12);
+        $php .= $this->comando('// Errores durante la ejecucion', 16);
+        $php .= $this->comando('$Resultado[0][\'error\'] = json_encode($rpta[\'error\']);', 16);
+        $php .= $this->comando('break;', 16);
+        $php .= $this->comando('default:', 12);
+        $php .= $this->comando('// Resultado', 16);
+        $php .= $this->comando('$resultado = $rpta[\'resultado\'];', 16);
+        $php .= $this->comando('$cta = $rpta[\'cta\'];', 16);
+        $php .= $this->comando('break;', 16);
+        $php .= $this->comando('}', 12);
         $this->_html = $php;
+        return $this;
+    }
+
+    /**
+     * Selecciona crea la accion agregar. el resultado de la accion se almacena en la
+     * variable $resultado (IMPORTANTE)
+     */
+    public function funcion() {
+        if ($this->_accion !== ZC_ACCION_AGREGAR) {
+            // No es la accion esperada, no crea nada
+            throw new Exception(__FUNCTION__ . ': Error en la accion, se esperaba: ' . ZC_ACCION_AGREGAR);
+        }
+        $php = '';
+        $php .= $this->comando('function agregar($campos){');
+        $php .= $this->comando('$rpta = array();', 8);
+        $php .= $this->comando('$validacion = $this->' . $this->_tabla . '->validacionTest($campos);', 8);
+        $php .= $this->comando('switch (true){', 8);
+        $php .= $this->comando('case (isset($validacion[\'error\']) && \'\' != $validacion[\'error\']):', 12);
+        $php .= $this->comando('// Errores durante la validacion de campos', 16);
+        $php .= $this->comando('$rpta[\'error\'] = json_encode($validacion[\'error\']);', 16);
+        $php .= $this->comando('break;', 16);
+        $php .= $this->comando('case !$this->db->initialize():', 12);
+        $php .= $this->comando('// Error en la conexion a la base de campos', 16);
+        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 16);
+        $php .= $this->comando('break;', 16);
+        $php .= $this->comando('case $this->db->insert(' . $this->_tabla . ', $campos) == false:', 12);
+        $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
+        $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
+        $php .= $this->comando('default:', 12);
+        $php .= $this->comando('// Devuelve el id insertado campo y el numero de filas efectadas', 16);
+        $php .= $this->comando('$rpta[\'resultado\'] = $this->db->insert_id();', 16);
+        $php .= $this->comando('$rpta[\'cta\'] = $this->db->affected_rows() > 0;', 16);
+        $php .= $this->comando('break;', 16);
+        $php .= $this->comando('}', 8);
+        $php .= $this->comando('return $rpta;', 8);
+        $php .= $this->comando('}', 4);
+        $this->_funcion = $php;
+        return $this;
     }
 
 }

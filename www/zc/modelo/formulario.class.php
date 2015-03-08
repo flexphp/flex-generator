@@ -191,6 +191,12 @@ class formulario {
     private $_procesarWS = '';
 
     /**
+     * Inicializacion la variable que contiene el codigo de las funcioes creadas
+     * @var string
+     */
+    private $_funciones = '';
+
+    /**
      * Inicializacion la variable que contiene el codigo del llamado a al servidor (SOAP)
      * @var string
      */
@@ -294,9 +300,10 @@ class formulario {
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloSOAP.tpl');
 
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
-        $plantilla->asignarEtiqueta('validacion', $this->_validacion);
-        $plantilla->asignarEtiqueta('procesarWS', $this->_procesarWS);
         $plantilla->asignarEtiqueta('clienteWS', $this->_clienteSOAP);
+        $plantilla->asignarEtiqueta('procesarWS', $this->_procesarWS);
+        $plantilla->asignarEtiqueta('funciones', $this->_funciones);
+        $plantilla->asignarEtiqueta('validacion', $this->_validacion);
 
         if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
             $plantilla->minimizarPlantilla();
@@ -800,7 +807,7 @@ class formulario {
                     $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorAccionREST.tpl');
                 }
                 // Concatena cada accion del cliente
-                $this->_accionServidor .= $plantilla->devolverPlantilla() . FIN_DE_LINEA;
+                $this->_accionServidor .= FIN_DE_LINEA . insertarEspacios(4) . $plantilla->devolverPlantilla() . FIN_DE_LINEA;
             }
         }
         return $this;
@@ -893,12 +900,15 @@ class formulario {
                 $plantilla->asignarEtiqueta('nombreFuncion', $caracteristicas[ZC_ID] . 'Servidor');
                 $plantilla->asignarEtiqueta('asignacionCliente', $this->_asignacionParametrosServidorSOAP);
                 $plantilla->asignarEtiqueta('asignacionFuncion', $this->_asignacionParametrosFuncionServidorSOAP);
-                // Asigna la accion del lador servidor
+                // Asigna la accion del lado servidor
                 $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO]);
                 $plantilla->asignarEtiqueta('accionServidor', $accion->crear()->devolver());
 
+                // Concatena las funciones que se ejecutaran en el modelo
+                $this->_funciones .= $accion->devolverFuncion();
+
                 // Concatena las acciones que se pueden llamar desde el cliente
-                $this->_accionesServidorWS .= $plantilla->devolverPlantilla() . FIN_DE_LINEA;
+                $this->_accionesServidorWS .= FIN_DE_LINEA . insertarEspacios(4) . $plantilla->devolverPlantilla() . FIN_DE_LINEA;
             }
         }
         return $this;

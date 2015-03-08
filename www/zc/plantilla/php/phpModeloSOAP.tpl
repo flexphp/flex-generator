@@ -6,9 +6,11 @@ class {_nombreModelo_} extends CI_Model {
         parent::__construct();
         $this->load->helper('url');
         $this->load->library('nusoap');
+        $this->load->database();
     }
 
     {_clienteWS_}
     {_procesarWS_}
+    {_funciones_}
     {_validacion_}
 }
