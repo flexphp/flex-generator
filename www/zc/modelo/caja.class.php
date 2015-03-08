@@ -23,6 +23,13 @@ class caja extends elementos{
     public $_msjTipo = '';
 
     /**
+     * Formato de fecha utilizado
+     * @var string
+     */
+    private $_formatoFecha = 'YYYY-MM-DD';
+
+
+    /**
      * Contrucutor de la caja de texto, define las caracteristicas que tendra el elemento
      * @param array $caracteristicas Valores seleccionados por el cliente
      * @throws Exception
@@ -30,8 +37,8 @@ class caja extends elementos{
     function __construct($caracteristicas) {
         parent::__construct($caracteristicas);
         $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
-        $this->tipo($this->_prop[ZC_DATO], $this->_prop[ZC_DATO_ERROR]);
         $this->longitud($this->_prop[ZC_LONGITUD_MINIMA], $this->_prop[ZC_LONGITUD_MAXIMA], $this->_prop[ZC_LONGITUD_MINIMA_ERROR], $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]);
+        $this->tipo($this->_prop[ZC_DATO], $this->_prop[ZC_DATO_ERROR]);
     }
 
     /**
@@ -43,6 +50,10 @@ class caja extends elementos{
      * Cada una inicia con una columna en blanco (margen) derecho
      */
     function crear() {
+        if($this->_html != ''){
+            // Solo si no ha creado otros elementos, Ejemplo: date
+            return true;
+        }
         $this->_html = "
             <div class='row'>
                 <div class='col-md-1'></div>
@@ -79,7 +90,7 @@ class caja extends elementos{
     }
 
     /**
-     * Defien el tipo de validacion segun el dato a recibir, la validacion se
+     * Define el tipo de validacion segun el dato a recibir, la validacion se
      * hace a nivel del cliente, la validacion se hace con expresiones regulares
      * @param string $tipo
      */
@@ -88,21 +99,22 @@ class caja extends elementos{
         switch ($tipo) {
             case ZC_DATO_NUMERICO:
                 $this->_tipo = "data-parsley-type='digits'";
-                $this->_msjTipo = "data-parsley-type-message='Debe ser numero: {$this->_msjTipo}'";
+                $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
                 break;
             case ZC_DATO_FECHA:
-                $formato = 'DD/MM/YYYY';
-                $formatoRegExp = "^(?:(?:0?[1-9]|1\d|2[0-8])(\/|-)(?:0?[1-9]|1[0-2]))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(?:(?:31(\/|-)(?:0?[13578]|1[02]))|(?:(?:29|30)(\/|-)(?:0?[1,3-9]|1[0-2])))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(29(\/|-)0?2)(\/|-)(?:(?:0[48]00|[13579][26]00|[2468][048]00)|(?:\d\d)?(?:0[48]|[2468][048]|[13579][26]))$";
-                $this->_tipo = "data-parsley-type='$formatoRegExp'";
-                $this->_msjTipo = "data-parsley-type-message='Debe ser fecha ($formato): {$this->_msjTipo}'";
+                // $formatoRegExp = "^((\d{2}(([02468][048])|([13579][26]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|([1-2][0-9])))))|(\d{2}(([02468][1235679])|([13579][01345789]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))(\s(((0?[1-9])|(1[0-2]))\:([0-5][0-9])((\s)|(\:([0-5][0-9])\s))([AM|PM|am|pm]{2,2})))?$";
+                $formatoRegExp = "^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$";
+                $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
+                $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFecha}): {$this->_msjTipo}'";
+                $this->crearFecha();
                 break;
             case ZC_DATO_EMAIL:
                 $this->_tipo = "data-parsley-type='email'";
-                $this->_msjTipo = "data-parsley-type-message='Debe ser correo: {$this->_msjTipo}'";
+                $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
                 break;
             case ZC_DATO_URL:
                 $this->_tipo = "data-parsley-type='url'";
-                $this->_msjTipo = "data-parsley-type-message='Debe ser url: {$this->_msjTipo}'";
+                $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
                 break;
             case ZC_DATO_ALFANUMERICO:
             default:
@@ -110,5 +122,46 @@ class caja extends elementos{
                 $this->_msjTipo = '';
                 break;
         }
-    }    
+    }
+
+    /**
+     * Crea un elmento con el formato de fecha, aplica datapicker
+     */
+    private function crearFecha(){
+        $this->_html = "
+            <div class='row'>
+                <div class='col-md-1'></div>
+                <div class='col-md-2 text-right'>
+                    <label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
+                </div>
+                <div class='col-md-3'>
+                    <div class='input-group date zc-caja-fecha' id='fecha-{$this->_id}'>
+                        <input" .
+                    " type='text'" .
+                    " class='form-control zc-caja-fecha'" .
+                    // Identificador
+                    " id='{$this->_id}'" .
+                    " name='{$this->_id}'" .
+                    // Validacion obligatorio
+                    " {$this->_obligatorio}" .
+                    " {$this->_msjObligatorio}" .
+                    // Validacion tipo de dato
+                    " {$this->_tipo}" .
+                    " {$this->_msjTipo}" .
+                    // Ayuda visual
+                    " data-placement='{$this->_posicionTitle}'" .
+                    " data-toggle='tooltip'" .
+                    " data-original-title='{$this->_etiqueta}'" .
+                    "/>
+                        <span class='input-group-addon'>
+                            <span class='glyphicon glyphicon-calendar'></span>
+                        </span>
+                    </div>
+                    <span class='help-block'></span>
+                </div>
+                <div class='col-md-5'></div>
+                <div class='col-md-1'></div>
+            </div>
+        ";
+    }
 }

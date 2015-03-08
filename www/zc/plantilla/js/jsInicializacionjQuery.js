@@ -17,6 +17,11 @@ $(document).ready(function () {
         $('#{_nombreFormulario_}').trigger('reset');
     });
 
+    // Inicializa los cajas de texto para las fechas
+    $('.zc-caja-fecha').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+
     // Accion boton cancelar
     $('.zc-boton-cancelar').click(function(e){
         e.preventDefault();
@@ -37,6 +42,7 @@ $(document).ready(function () {
 
     // Habilita la validacion del formulario
     $('#{_nombreFormulario_} .btn').not(':input[type=reset], .zc-boton-cancelar').click(function () {
+        $('.parsley-errors-list').show();
         if($('#{_nombreFormulario_}').parsley().validate()){
             // Accion seleccionada por el usuario
             var nombreAccion = ($(this).attr('id'));

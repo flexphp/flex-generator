@@ -182,7 +182,7 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
             $validacion = insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_EMAIL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_FECHA:
-            $validacion = insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_INT) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (!preg_match('/^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$/', \$dato['{$id}']) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_URL:
             $validacion = insertarEspacios(8) . "if (filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;

@@ -7,6 +7,8 @@
         <title>{_nombreFormulario_}</title>
         <!-- CSS Bootstrap -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/bootstrap.min.css">
+        <!-- CSS Datapicker -->
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/datetimepicker.min.css">
         <!-- CSS Parsley -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/parsley.css">
 
@@ -57,8 +59,13 @@
         <input type="hidden" id="URLProyecto" name="URLProyecto" value="<?php echo base_url(); ?>"/>
         <!-- JS jQuery -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/jquery.v2.1.1.min.js"></script>
+        <!-- JS Datapicker -->
+        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/moment.v2.9.0.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/es.js"></script>
         <!-- JS BootStrap -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/bootstrap.v3.3.2.min.js"></script>
+        <!-- JS Datapicker -->
+        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/datetimepicker.v4.7.14.min.js"></script>
         <!-- JS Parsley -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/parsley.v2.0.5.js"></script>
         <!-- Utilidades AC -->
