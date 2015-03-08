@@ -35,24 +35,13 @@ class radio extends elementos {
      * Cada una inicia con una columna en blanco (margen) derecho
      */
     public function crear() {
-        $this->_html = "
-            <div class='row'>
-                <div class='col-md-1'></div>
-                <div class='col-md-2 text-right'>
-                    <label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
-                </div>
-                <div class='col-md-3'>
-                    <div class='table table-bordered'>
-                        <div class='text-center'>
-                            {$this->_opciones}
-                        </div>
-                        <span id='error-{$this->_id}'></span>
+        $this->_html = $this->plantilla(
+                "<div class='table table-bordered'>
+                    <div class='text-center'>
+                        {$this->_opciones}
                     </div>
-                </div>
-                <div class='col-md-5'></div>
-                <div class='col-md-1'></div>
-            </div>
-        ";
+                    <span id='error-{$this->_id}'></span>
+                </div>");
     }
 
     /**
@@ -94,9 +83,7 @@ class radio extends elementos {
             }
             $this->_opciones .= "" .
                     // Ayuda visual
-                    " data-placement='{$this->_posicionTitle}'" .
-                    " data-toggle='tooltip'" .
-                    " data-original-title='{$this->_etiqueta}: {$valor}'" .
+                    $this->ayuda($this->_etiqueta . ': ' . $valor) .
                     // Elemento donde se mostraran los errores
                     " data-parsley-errors-container='#error-{$this->_id}'" .
                     "/>" .

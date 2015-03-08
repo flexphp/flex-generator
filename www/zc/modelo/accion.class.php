@@ -92,7 +92,7 @@ class accion extends elementos {
     }
 
     /**
-     * Asigna los variables segun tipo
+     * Asigna los variables segun tipo, se usa en la creacion de acciones
      * @param array $campos Elementos a inicializar
      */
     protected function inicializar(){

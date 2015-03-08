@@ -122,9 +122,16 @@ class elementos {
             // La longitud debe ser numerica
             $this->_prop[ZC_LONGITUD_MAXIMA] = (isset($this->_prop[ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[ZC_LONGITUD_MAXIMA])) ? $this->_prop[ZC_LONGITUD_MAXIMA] : null;
             $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] = (isset($this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) && '' != $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) ? $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] : null;
-
+            // La longitud de los campos predefinidos
+            // Fecha en formato YYYY-MM-DD = 10
+            $this->_prop[ZC_LONGITUD_MAXIMA] = ($this->_prop[ZC_DATO] == ZC_DATO_FECHA) ? 10 : $this->_prop[ZC_LONGITUD_MAXIMA];
+            // Valida las longitudes
             if (isset($this->_prop[ZC_LONGITUD_MINIMA]) && isset($this->_prop[ZC_LONGITUD_MAXIMA]) && $this->_prop[ZC_LONGITUD_MINIMA] > $this->_prop[ZC_LONGITUD_MAXIMA]) {
                 throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
+            }
+            // Valida la longitud del campo, es obligatoria para las cajas
+            if (isset($this->_prop[ZC_ELEMENTO]) && $this->_prop[ZC_ELEMENTO] == ZC_ELEMENTO_CAJA_TEXTO &&  !isset($this->_prop[ZC_LONGITUD_MAXIMA])) {
+                throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
             }
         }
         return $this;
@@ -146,6 +153,8 @@ class elementos {
             case ($dato == ZC_DATO_EMAIL):
             case ($dato == ZC_DATO_URL):
             case ($dato == ZC_DATO_NUMERICO):
+            case ($dato == ZC_DATO_CONTRASENA):
+            case ($dato == ZC_DATO_FECHA):
                 $xsd = 'string';
                 break;
             default:
@@ -169,6 +178,13 @@ class elementos {
         }
     }
 
+    /**
+     * Hace las validaciones de la longitud en el campo
+     * @param string $minima Longitud minima del campo
+     * @param string $maxima Longitud maxima del campo
+     * @param string $errorMinima Error de la longitud minima del campo
+     * @param string $errorMaxima Error de la longitud maxima del campo
+     */
     protected function longitud($minima, $maxima, $errorMinima, $errorMaxima) {
         $errorMin = (isset($errorMinima)) ? $errorMinima : str_replace('&[Longitud]&', $minima, ZC_LONGITUD_MINIMA_ERROR_PREDETERMINADO);
         $errorMax = (isset($errorMaxima)) ? $errorMaxima : str_replace('&[Longitud]&', $maxima, ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO);
@@ -194,6 +210,35 @@ class elementos {
                 $this->_msjLongitud = '';
                 break;
         }
+    }
+
+    /**
+     * Construye el mensaje de ayuda mostrado en los campos
+     * @param string $msj Mensaje de ayuda a mostrar, por defecto es la etiqueta del campo
+     */
+    protected function ayuda($msj = ''){
+        $msj = ($msj == '') ? $this->_etiqueta : $msj;
+        $html = " data-placement='{$this->_posicionTitle}'" .
+                " data-toggle='tooltip'" .
+                " data-original-title='{$msj}'";
+        return $html;
+    }
+
+    protected function plantilla($campo){
+        $html = "
+            <div class='row'>
+                <div class='col-md-1'></div>
+                <div class='col-md-2 text-right'>
+                    <label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
+                </div>
+                <div class='col-md-3'>
+                    {$campo}
+                </div>
+                <div class='col-md-5'></div>
+                <div class='col-md-1'></div>
+            </div>
+        ";
+        return $html;
     }
 
     /**

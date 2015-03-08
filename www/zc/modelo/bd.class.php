@@ -61,6 +61,7 @@ class bd extends conexion {
     private function equivalencias() {
         $this->_equivalencias[ZC_MOTOR_MYSQL] = array(
             ZC_DATO_ALFANUMERICO => 'VARCHAR',
+            ZC_DATO_CONTRASENA => 'VARCHAR',
             ZC_DATO_NUMERICO => 'INT',
             ZC_DATO_FECHA => 'DATE',
             ZC_DATO_URL => 'VARCHAR',
@@ -92,6 +93,7 @@ class bd extends conexion {
             case ZC_DATO_EMAIL:
             case ZC_DATO_URL:
             case ZC_DATO_FECHA:
+            case ZC_DATO_CONTRASENA:
                 $tipo = $this->_equivalencias[$this->_motor][$dato];
                 break;
             default:
@@ -115,6 +117,10 @@ class bd extends conexion {
                     throw new Exception(__FUNCTION__ . ': Error en longitud maxima, por el tipo de campo es obligatorio colocarlo');
                 }
                 $longitud = "($maxima)";
+                break;
+            case ZC_DATO_CONTRASENA:
+                // SHA1 = 40
+                $longitud = "(40)";
                 break;
             case ZC_DATO_FECHA:
             case ZC_DATO_NUMERICO:

@@ -35,14 +35,8 @@ class lista extends elementos {
      * Cada una inicia con una columna en blanco (margen) derecho
      */
     public function crear() {
-        $this->_html = "
-            <div class='row'>
-                <div class='col-md-1'></div>
-                <div class='col-md-2 text-right'>
-                    <label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
-                </div>
-                <div class='col-md-3'>
-                    <select" .
+        $this->_html = $this->plantilla(
+                    "<select" .
                 " class='form-control'" .
                 // Identificador
                 " id='{$this->_id}'" .
@@ -51,18 +45,11 @@ class lista extends elementos {
                 " {$this->_obligatorio}" .
                 " {$this->_msjObligatorio}" .
                 // Ayuda visual
-                " data-placement='{$this->_posicionTitle}'" .
-                " data-toggle='tooltip'" .
-                " data-original-title='{$this->_etiqueta}'" .
+                $this->ayuda() .
                 "/>
                     {$this->_opciones}
                     </select>
-                    <span class='help-block'></span>
-                </div>
-                <div class='col-md-5'></div>
-                <div class='col-md-1'></div>
-            </div>
-        ";
+                    <span class='help-block'></span>");
     }
 
     /**

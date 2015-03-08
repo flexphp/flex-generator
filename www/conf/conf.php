@@ -28,6 +28,7 @@ define("ZC_DATO", "que_dato_recibira");
 define("ZC_DATO_NUMERICO", "numero");
 define("ZC_DATO_EMAIL", "correo");
 define("ZC_DATO_FECHA", "fecha");
+define("ZC_DATO_CONTRASENA", "contrasena");
 define("ZC_DATO_URL", "url");
 define("ZC_DATO_ALFANUMERICO", "alfanumerico");
 define("ZC_DATO_ERROR", "mensaje_de_error_tipo_dato");
@@ -63,3 +64,5 @@ define("ZC_ACCION_AGREGAR", "agregar");
 define("ZC_ACCION_BUSCAR", "buscar");
 define("ZC_ACCION_MODIFICAR", "modificar");
 define("ZC_ACCION_BORRAR", "borrar");
+// Acciones a las que no se les aplica validacion de datos
+define("ZC_ACCION_SIN_VALIDACION", ZC_ACCION_BUSCAR . "," . ZC_ACCION_BORRAR);

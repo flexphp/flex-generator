@@ -575,7 +575,7 @@ class formulario {
                             <div class='text-right'>
                         ";
                 $estiloFin = "
-                            <div>
+                            </div>
                         </div>
                         <div class='col-md-5'></div>
                         <div class='col-md-1'></div>
@@ -726,7 +726,11 @@ class formulario {
                 $this->_asignacionParametrosFuncionServidorSOAP .= ($this->_asignacionParametrosFuncionServidorSOAP == '') ? '' : ', ';
                 $this->_asignacionParametrosFuncionServidorSOAP .= "\${$caracteristicas[ZC_ID]}";
 
-                $this->_asignacionParametrosFuncionClienteSOAP .= insertarEspacios(8) . "\$datos['{$caracteristicas[ZC_ID]}'] = \$this->input->post('{$caracteristicas[ZC_ID]}');" . FIN_DE_LINEA;
+                if($caracteristicas[ZC_DATO] == ZC_DATO_CONTRASENA){
+                    $this->_asignacionParametrosFuncionClienteSOAP .= insertarEspacios(8) . "\$datos['{$caracteristicas[ZC_ID]}'] = sha1(\$this->input->post('{$caracteristicas[ZC_ID]}'));" . FIN_DE_LINEA;
+                }else{
+                    $this->_asignacionParametrosFuncionClienteSOAP .= insertarEspacios(8) . "\$datos['{$caracteristicas[ZC_ID]}'] = \$this->input->post('{$caracteristicas[ZC_ID]}');" . FIN_DE_LINEA;
+                }
 
                 // Validacion obligatoriedad
                 $validacion .= validarArgumentoObligatorio($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
@@ -745,6 +749,7 @@ class formulario {
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpValidacionServidor.tpl');
             $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
             $plantilla->asignarEtiqueta('elementosFormulario', $validacion);
+            $plantilla->asignarEtiqueta('accionesSinValidacion', ZC_ACCION_SIN_VALIDACION);
 
             // Concatena cada accion del cliente
             $this->_validacion = $plantilla->devolverPlantilla() . FIN_DE_LINEA;

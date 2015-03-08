@@ -34,17 +34,20 @@
                         <span id="msj-progreso-{_nombreFormulario_}" style="color: black">0%</span>
                     </div>
                 </div>
+                <!-- Fin Barra de progreso -->
                     
-                <!-- Errores devueltos por el serivdor -->
+                <!-- Errores devueltos por el servidor -->
                 <div class="alert alert-danger" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
                     <span id="error-{_nombreFormulario_}"></span>
                 </div>
+                <!-- Fin Errores devueltos por el servidor -->
             </div>
             <div class="col-md-5"></div>
             <div class="col-md-1"></div>
-            
+            <!-- Fin Nombre del formulario actual -->
+
             <!-- Formulario para el ingreso de datos -->
             <div class="col-md-1"></div>
             <div class="col-md-10">
@@ -53,6 +56,7 @@
                 </form>
             </div>
             <div class="col-md-1"></div>
+            <!-- Fin Formulario para el ingreso de datos -->
         </div>
 
         <!-- URL del proyecto, se usa en los llamados ajax -->

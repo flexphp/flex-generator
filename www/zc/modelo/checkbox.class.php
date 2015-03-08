@@ -35,24 +35,13 @@ class checkbox extends elementos {
      * Cada una inicia con una columna en blanco (margen) derecho
      */
     public function crear() {
-        $this->_html = "
-            <div class='row'>
-                <div class='col-md-1'></div>
-                <div class='col-md-2 text-right'>
-                    <label>{$this->_etiqueta}{$this->_signoObligatorio}</label>
-                </div>
-                <div class='col-md-3'>
-                    <div class='table table-bordered'>
+        $this->_html = $this->plantilla(
+                    "<div class='table table-bordered'>
                         <div class='text-center'>
                             {$this->_opciones}
                         </div>
                         <span id='error-{$this->_id}'></span>
-                    </div>
-                </div>
-                <div class='col-md-5'></div>
-                <div class='col-md-1'></div>
-            </div>
-        ";
+                    </div>");
     }
 
     /**
@@ -94,10 +83,8 @@ class checkbox extends elementos {
                         " {$this->_msjObligatorio}";
             }
             $this->_opciones .= "" .
-                    // Ayuda visible
-                    " data-placement='{$this->_posicionTitle}'" .
-                    " data-toggle='tooltip'" .
-                    " data-original-title='{$this->_etiqueta}: {$valor}'" .
+                    // Ayuda visual
+                    $this->ayuda() .
                     // Elemento donde se mostraran los errores
                     " data-parsley-errors-container='#error-{$this->_id}'" .
                     "/>" .
