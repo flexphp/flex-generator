@@ -23,7 +23,7 @@
         <div class="container-fluid">
             <!-- Seperacion del top -->
             <div class="col-md-12"> </div>
-            
+
             <!-- Nombre del formulario actual -->
             <div class="col-md-1"></div>
             <div class="col-md-5 text-center">
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <!-- Fin Barra de progreso -->
-                    
+
                 <!-- Errores devueltos por el servidor -->
                 <div class="alert alert-danger" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

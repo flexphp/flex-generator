@@ -95,12 +95,17 @@ class accion extends elementos {
      * Asigna los variables segun tipo, se usa en la creacion de acciones
      * @param array $campos Elementos a inicializar
      */
-    protected function inicializar(){
+    protected function inicializar() {
         $cmd = $this->comando('$data = array();', 12);
         foreach ($this->_campos as $nro => $campo) {
-            switch ($campo[ZC_ELEMENTO]) {
-                case ZC_ELEMENTO_CHECKBOX:
+            switch (true) {
+                case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_CHECKBOX:
+                    // Devuelve el alemento al array original
                     $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = implode(',', json_decode(\${$campo[ZC_ID]}, true));", 12);
+                    break;
+                case $campo[ZC_DATO] == ZC_DATO_CONTRASENA:
+                    // Encripta las contrasenas
+                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = sha1(\${$campo[ZC_ID]});", 12);
                     break;
                 default:
                     $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = \${$campo[ZC_ID]};", 12);
@@ -110,7 +115,8 @@ class accion extends elementos {
         return $cmd;
     }
 
-    public function devolverFuncion(){
+    public function devolverFuncion() {
         return $this->_funcion;
     }
+
 }

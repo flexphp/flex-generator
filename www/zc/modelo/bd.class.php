@@ -60,7 +60,8 @@ class bd extends conexion {
 
     private function equivalencias() {
         $this->_equivalencias[ZC_MOTOR_MYSQL] = array(
-            ZC_DATO_ALFANUMERICO => 'VARCHAR',
+            ZC_DATO_TEXTO => 'VARCHAR',
+            ZC_DATO_AREA_TEXTO => 'VARCHAR',
             ZC_DATO_CONTRASENA => 'VARCHAR',
             ZC_DATO_NUMERICO => 'INT',
             ZC_DATO_FECHA => 'DATE',
@@ -89,7 +90,8 @@ class bd extends conexion {
         $tipo = '';
         switch ($dato) {
             case ZC_DATO_NUMERICO:
-            case ZC_DATO_ALFANUMERICO:
+            case ZC_DATO_TEXTO:
+            case ZC_DATO_AREA_TEXTO:
             case ZC_DATO_EMAIL:
             case ZC_DATO_URL:
             case ZC_DATO_FECHA:
@@ -110,7 +112,8 @@ class bd extends conexion {
     protected function longitud($dato, $maxima) {
         $longitud = '';
         switch ($dato) {
-            case ZC_DATO_ALFANUMERICO:
+            case ZC_DATO_TEXTO:
+            case ZC_DATO_AREA_TEXTO:
             case ZC_DATO_EMAIL:
             case ZC_DATO_URL:
                 if (!is_numeric($maxima) || $maxima == 0) {

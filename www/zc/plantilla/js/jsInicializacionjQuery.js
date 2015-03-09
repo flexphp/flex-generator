@@ -21,7 +21,7 @@ $(document).ready(function () {
     $('.zc-caja-fecha').datetimepicker({
         format: 'YYYY-MM-DD'
     });
-
+ 
     // Accion boton cancelar
     $('.zc-boton-cancelar').click(function(e){
         e.preventDefault();

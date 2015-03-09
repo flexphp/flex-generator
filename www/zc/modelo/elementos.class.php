@@ -103,11 +103,11 @@ class elementos {
         $this->_prop[ZC_ETIQUETA] = ucfirst(trim($this->_prop[ZC_ETIQUETA]));
         // Tipo Elemento
         $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : null;
-        
+
         /**
          * No todos los elementos necesitan todas las propedades, minimiza uso de memoria
          */
-        if(in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA_TEXTO, ZC_ELEMENTO_CHECKBOX, ZC_ELEMENTO_RADIO, ZC_ELEMENTO_SELECT))){
+        if (in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA_TEXTO, ZC_ELEMENTO_CHECKBOX, ZC_ELEMENTO_RADIO, ZC_ELEMENTO_SELECT))) {
             // Tipo de dato
             $this->_prop[ZC_DATO] = (isset($this->_prop[ZC_DATO]) && '' != $this->_prop[ZC_DATO]) ? $this->_prop[ZC_DATO] : null;
             $this->_prop[ZC_DATO_ERROR] = (isset($this->_prop[ZC_DATO_ERROR]) && '' != $this->_prop[ZC_DATO_ERROR]) ? $this->_prop[ZC_DATO_ERROR] : null;
@@ -130,7 +130,7 @@ class elementos {
                 throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
             }
             // Valida la longitud del campo, es obligatoria para las cajas
-            if (isset($this->_prop[ZC_ELEMENTO]) && $this->_prop[ZC_ELEMENTO] == ZC_ELEMENTO_CAJA_TEXTO &&  !isset($this->_prop[ZC_LONGITUD_MAXIMA])) {
+            if (isset($this->_prop[ZC_ELEMENTO]) && $this->_prop[ZC_ELEMENTO] == ZC_ELEMENTO_CAJA_TEXTO && !isset($this->_prop[ZC_LONGITUD_MAXIMA])) {
                 throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
             }
         }
@@ -149,7 +149,8 @@ class elementos {
                 // Los checkbox se manejan como string, haciendo json_encode
                 $xsd = 'int';
                 break;
-            case ($dato == ZC_DATO_ALFANUMERICO):
+            case ($dato == ZC_DATO_TEXTO):
+            case ($dato == ZC_DATO_AREA_TEXTO):
             case ($dato == ZC_DATO_EMAIL):
             case ($dato == ZC_DATO_URL):
             case ($dato == ZC_DATO_NUMERICO):
@@ -216,7 +217,7 @@ class elementos {
      * Construye el mensaje de ayuda mostrado en los campos
      * @param string $msj Mensaje de ayuda a mostrar, por defecto es la etiqueta del campo
      */
-    protected function ayuda($msj = ''){
+    protected function ayuda($msj = '') {
         $msj = ($msj == '') ? $this->_etiqueta : $msj;
         $html = " data-placement='{$this->_posicionTitle}'" .
                 " data-toggle='tooltip'" .
@@ -224,7 +225,7 @@ class elementos {
         return $html;
     }
 
-    protected function plantilla($campo){
+    protected function plantilla($campo) {
         $html = "
             <div class='row'>
                 <div class='col-md-1'></div>

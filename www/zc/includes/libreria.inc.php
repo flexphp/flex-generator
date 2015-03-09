@@ -187,7 +187,7 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
         case ZC_DATO_URL:
             $validacion = insertarEspacios(8) . "if (\$validarDato && filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
-        case ZC_DATO_ALFANUMERICO:
+        case ZC_DATO_TEXTO:
         default :
             break;
     }
@@ -244,7 +244,9 @@ function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitudMaxima =
 
     switch ($tipo) {
         case ZC_DATO_NUMERICO:
-            // Datos numericos no se les valida la longitud?
+        // Datos numericos no se les valida la longitud?
+        case ZC_DATO_CONTRASENA:
+            // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
             break;
         default :
             if ($longitudMaxima > 0) {

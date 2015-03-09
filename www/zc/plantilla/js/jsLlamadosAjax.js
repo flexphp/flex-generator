@@ -17,7 +17,7 @@
                         console.log(rpta);
                         if(rpta.error != undefined && '' != rpta.error){
                             // Muestra mensaje de error
-                            $('#error-{_nombreFormulario_}').text(rpta.error);
+                            $('#error-{_nombreFormulario_}').text(rpta.error); 
                             $('.alert-danger').show();
                         }else{
                             {_accionCliente_}

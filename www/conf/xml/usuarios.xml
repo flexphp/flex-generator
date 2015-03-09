@@ -8,7 +8,7 @@
         <usuario>
             <que_quieres>Caja</que_quieres>
             <como_se_llama>Usuario</como_se_llama>
-            <que_dato_recibira>alfanumerico</que_dato_recibira>
+            <que_dato_recibira>texto</que_dato_recibira>
             <es_obligatorio>si</es_obligatorio>
             <longitud_minima_es>5</longitud_minima_es>
             <longitud_maxima_es>10</longitud_maxima_es>
@@ -29,17 +29,11 @@
         <genero>
             <que_quieres>Circulo</que_quieres>
             <como_se_llama>Genero</como_se_llama>
-            <que_dato_recibira>alfanumerico</que_dato_recibira>
+            <que_dato_recibira>texto</que_dato_recibira>
             <es_obligatorio>si</es_obligatorio>
             <longitud_maxima_es>2</longitud_maxima_es>
             <posibles_valores>F=Mujer,M=Hombre</posibles_valores>
         </genero>
-        <nacimiento>
-            <que_quieres>Caja</que_quieres>
-            <como_se_llama>Nacimiento</como_se_llama>
-            <que_dato_recibira>fecha</que_dato_recibira>
-            <es_obligatorio>si</es_obligatorio>
-        </nacimiento>
         <pais>
             <que_quieres>Listado</que_quieres>
             <como_se_llama>Pais</como_se_llama>
@@ -56,14 +50,27 @@
             <es_obligatorio>no</es_obligatorio>
             <posibles_valores>1=Si</posibles_valores>
         </recibir_publicidad>
+        <fecha>
+            <que_quieres>Caja</que_quieres>
+            <como_se_llama>Fecha</como_se_llama>
+            <que_dato_recibira>fecha</que_dato_recibira>
+            <es_obligatorio>si</es_obligatorio>
+        </fecha>
         <clave>
             <que_quieres>Caja</que_quieres>
             <como_se_llama>Clave</como_se_llama>
-            <que_dato_recibira>contrasena</que_dato_recibira>
+            <que_dato_recibira>clave</que_dato_recibira>
             <es_obligatorio>si</es_obligatorio>
-            <mensaje_de_error_es_obligatorio>Ante todo la seguridad?</mensaje_de_error_es_obligatorio>
-            <longitud_maxima_es>30</longitud_maxima_es>
+            <longitud_maxima_es>15</longitud_maxima_es>
+            <mensaje_de_error_es_obligatorio>Y la seguridad...</mensaje_de_error_es_obligatorio>
         </clave>
+        <observaciones>
+            <que_quieres>Caja</que_quieres>
+            <como_se_llama>Observaciones</como_se_llama>
+            <que_dato_recibira>mucho texto</que_dato_recibira>
+            <es_obligatorio>no</es_obligatorio>
+            <longitud_maxima_es>100</longitud_maxima_es>
+        </observaciones>
         <agregar>
             <que_quieres>Agregar</que_quieres>
             <como_se_llama>Agregar</como_se_llama>
@@ -88,5 +95,5 @@
             <que_quieres>Limpiar</que_quieres>
             <como_se_llama>Limpiar</como_se_llama>
         </limpiar>
-</test>
+    </test>
 </crear>

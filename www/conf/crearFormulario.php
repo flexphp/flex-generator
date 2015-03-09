@@ -44,7 +44,6 @@ try {
     /**
      * Datapicker
      */
-    
     $datetimepickerjs = new plantilla();
     $datetimepickerjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/datetimepicker.v4.7.14.min.js');
     $datetimepickerjs->crearPlantilla('../publico/js', 'js');

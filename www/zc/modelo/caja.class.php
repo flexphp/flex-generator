@@ -8,7 +8,7 @@ require_once 'elementos.class.php';
 /**
  * Crea cajas texto
  */
-class caja extends elementos{
+class caja extends elementos {
 
     /**
      * Tipo de datos que recibira el campo, ver AZ_DATO_*
@@ -27,7 +27,6 @@ class caja extends elementos{
      * @var string
      */
     private $_formatoFecha = 'YYYY-MM-DD';
-
 
     /**
      * Contrucutor de la caja de texto, define las caracteristicas que tendra el elemento
@@ -57,10 +56,13 @@ class caja extends elementos{
             case ZC_DATO_CONTRASENA:
                 $this->crearContrasena();
                 break;
+            case ZC_DATO_AREA_TEXTO:
+                $this->crearAreaDeTexto();
+                break;
             case ZC_DATO_NUMERICO:
             case ZC_DATO_EMAIL:
             case ZC_DATO_URL:
-            case ZC_DATO_ALFANUMERICO:
+            case ZC_DATO_TEXTO:
             default:
                 $this->crearCaja();
                 break;
@@ -93,20 +95,20 @@ class caja extends elementos{
                 $this->_tipo = "data-parsley-type='url'";
                 $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
                 break;
-            case ZC_DATO_ALFANUMERICO:
+            case ZC_DATO_TEXTO:
             default:
                 $this->_tipo = '';
                 $this->_msjTipo = '';
                 break;
         }
     }
-    
+
     /**
      * Crear cajas que no requiren inconos especiales
      */
-    private function crearCaja(){
+    private function crearCaja() {
         $this->_html = $this->plantilla(
-                    "<input" .
+                "<input" .
                 " type='text'" .
                 " class='form-control'" .
                 // Identificador
@@ -130,27 +132,27 @@ class caja extends elementos{
     /**
      * Crea un elmento con el formato de fecha, aplica datapicker
      */
-    private function crearFecha(){
+    private function crearFecha() {
         $this->_html = $this->plantilla(
-                    "<div class='input-group date zc-caja-fecha' id='fecha-{$this->_id}'>
+                "<div class='input-group date zc-caja-fecha' id='fecha-{$this->_id}'>
                         <input" .
-                    " type='text'" .
-                    " class='form-control zc-caja-fecha'" .
-                    // Identificador
-                    " id='{$this->_id}'" .
-                    " name='{$this->_id}'" .
-                    // Validacion obligatorio
-                    " {$this->_obligatorio}" .
-                    " {$this->_msjObligatorio}" .
-                    // Validacion tipo de dato
-                    " {$this->_tipo}" .
-                    " {$this->_msjTipo}" .
-                    // Validacion longitudes
-                    " {$this->_longitud}" .
-                    " {$this->_msjLongitud}" .
-                    // Ayuda visual
-                    $this->ayuda() .
-                    "/>
+                " type='text'" .
+                " class='form-control zc-caja-fecha'" .
+                // Identificador
+                " id='{$this->_id}'" .
+                " name='{$this->_id}'" .
+                // Validacion obligatorio
+                " {$this->_obligatorio}" .
+                " {$this->_msjObligatorio}" .
+                // Validacion tipo de dato
+                " {$this->_tipo}" .
+                " {$this->_msjTipo}" .
+                // Validacion longitudes
+                " {$this->_longitud}" .
+                " {$this->_msjLongitud}" .
+                // Ayuda visual
+                $this->ayuda() .
+                "/>
                         <span class='input-group-addon'>
                             <span class='glyphicon glyphicon-calendar'></span>
                         </span>
@@ -159,29 +161,56 @@ class caja extends elementos{
     }
 
     /**
-     * Crea un elmento con el formato de fecha, aplica datapicker
+     * Crea un elemento con el formato contrasena
      */
-    private function crearContrasena(){
+    private function crearContrasena() {
         $this->_html = $this->plantilla(
-                    "<input" .
-                    " type='password'" .
-                    " class='form-control'" .
-                    // Identificador
-                    " id='{$this->_id}'" .
-                    " name='{$this->_id}'" .
-                    // Validacion obligatorio
-                    " {$this->_obligatorio}" .
-                    " {$this->_msjObligatorio}" .
-                    // Validacion tipo de dato
-                    " {$this->_tipo}" .
-                    " {$this->_msjTipo}" .
-                    // Validacion longitudes
-                    " {$this->_longitud}" .
-                    " {$this->_msjLongitud}" .
-                    // Ayuda visual
-                    $this->ayuda() .
-                    "/>
+                "<input" .
+                " type='password'" .
+                " class='form-control'" .
+                // Identificador
+                " id='{$this->_id}'" .
+                " name='{$this->_id}'" .
+                // Validacion obligatorio
+                " {$this->_obligatorio}" .
+                " {$this->_msjObligatorio}" .
+                // Validacion tipo de dato
+                " {$this->_tipo}" .
+                " {$this->_msjTipo}" .
+                // Validacion longitudes
+                " {$this->_longitud}" .
+                " {$this->_msjLongitud}" .
+                // Ayuda visual
+                $this->ayuda() .
+                "/>
                     <span class='help-block'></span>");
+    }
+
+    /**
+     * Crea un elemento tipo textarea
+     */
+    private function crearAreaDeTexto() {
+        $this->_html = $this->plantilla(
+                "<textarea" .
+                " rows='3'" .
+                " class='form-control'" .
+                // Identificador
+                " id='{$this->_id}'" .
+                " name='{$this->_id}'" .
+                // Validacion obligatorio
+                " {$this->_obligatorio}" .
+                " {$this->_msjObligatorio}" .
+                // Validacion tipo de dato
+                " {$this->_tipo}" .
+                " {$this->_msjTipo}" .
+                // Validacion longitudes
+                " {$this->_longitud}" .
+                " {$this->_msjLongitud}" .
+                // Ayuda visual
+                $this->ayuda() .
+                "/>" .
+                " </textarea>" .
+                "<span class='help-block'></span>");
     }
 
 }
