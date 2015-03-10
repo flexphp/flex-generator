@@ -169,7 +169,7 @@ function convertir2UrlLocal($ruta) {
  */
 function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
     if ($elemento == ZC_ELEMENTO_CHECKBOX) {
-        // Los elementos tipo checkbox puedenser array, nose validan
+        // Los elementos tipo checkbox pueden ser array, no se validan
         return '';
     }
     $validacion = '';
@@ -213,11 +213,9 @@ function validarArgumentoObligatorio($id, $etiqueta, $obligatorio = 'no', $msj =
     $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_OBLIGATORIO_ERROR_PREDETERMINADO;
 
     switch (trim(strtolower($obligatorio))) {
-        case 'no':
-        case '0':
+        case ZC_OBLIGATORIO_NO:
             break;
-        case 'si':
-        case '1':
+        case ZC_OBLIGATORIO_SI:
         default :
             $validacion .= FIN_DE_LINEA;
             $validacion .= insertarEspacios(8) . "if (\$validarDato && '' == \$dato['{$id}']){" . FIN_DE_LINEA;

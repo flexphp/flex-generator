@@ -66,6 +66,10 @@ try {
     $zcjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/zc.v1.0.0.js');
     $zcjs->crearPlantilla('../publico/js', 'js');
 
+    $indexjs = new plantilla();
+    $indexjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/index.html');
+    $indexjs->crearPlantilla('../publico/js', 'html');
+
     /**
      * CSS Homologado
      */
@@ -81,10 +85,21 @@ try {
     $parsleycss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/parsley.css');
     $parsleycss->crearPlantilla('../publico/css', 'css');
 
+    $indexcss = new plantilla();
+    $indexcss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/index.html');
+    $indexcss->crearPlantilla('../publico/css', 'html');
+
     /**
      * Iconos homologados
      */
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/fonts', '../publico/fonts');
+
+    /**
+     * Index de la carpeta publico
+     */
+    $index = new plantilla();
+    $index->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/index.html');
+    $index->crearPlantilla('../publico', 'html');
 
     /**
      * Crear archivo de configuracion de base de datos, valida y setea la configuracion segun corresponda
