@@ -35,6 +35,14 @@ function ZCBarraProgreso(formulario, formasValidar){
     }
 }
 
+function ZCAccionReiniciarFormulario(e, formulario){
+    e.preventDefault();
+    $('.parsley-errors-list').hide();
+    $('#error-'+formulario).text('');
+    $('.alert').hide();
+    $('#'+formulario).trigger('reset');
+}
+
 /**
  * Valida los campos durande la accion cancelar, si alguno tiene datos, muestra mensaje de advertencia
  * @param string formulario Id del formulario al que se la va validar el progreso
@@ -92,6 +100,8 @@ function ZCCamposDeBusqueda(e, id){
     $('.zc-filtros-'+filtro).removeClass('hidden');
     // Establece elvalor seleccionado del filtro
     $('.zc-filtros-busqueda').val(filtro);
+    // Deja el valor nuevamente en vacio para una nueva asignacion
+    $('#'+filtro).val('');
 }
 
 /**
@@ -114,26 +124,32 @@ function ZCAccionAgregarFiltro(e, formulario, id){
 
     var textoFiltro = $('.zc-filtros-busqueda:first option:selected').html();
     var textoOperador = $('#operador-' + filtro + " option:selected").html();
+    var textoValor = (valor != '') ? valor : '<i>(vacio)</i>';
 
-    // Evita eliminar filtros repetidos
-    var cantidadFiltros = $('.zc-filtros-aplicados-'+filtro).length;
-    console.log(filtro+operador+valor);
+    // Evita eliminar filtros repetidos, se maneja como numero
+    var cantidadFiltros = parseInt($('#zc-filtros-cantidad-filtros').val());
+    var identificadorFiltro = filtro+'-'+cantidadFiltros;
+    // Suma al numero de filtros, nunca se repite el id, asi no importa el orden en el que son eliminados
+    $('#zc-filtros-cantidad-filtros').val((cantidadFiltros+1));
 
     // Agrega un campo oculto al formaulario con los valores a enviar
-    $('#' + formulario).append("<div class='row zc-filtros-aplicados-"+filtro+"' id='zc-filtros-aplicados-"+filtro+'-'+cantidadFiltros+"'>"+
+    $('#' + formulario).append("<div class='row zc-filtros-disponibles' id='zc-filtros-aplicados-"+identificadorFiltro+"'>"+
     "<div class='col-md-1'></div>"+
     // Etiqueta del campo
     "<div class='col-md-2 text-center'>"+textoFiltro+"</div>" +
     // Operador
     "<div class='col-md-2 text-center'>"+textoOperador+"</div>" +
     // Valor
-    "<div class='col-md-3 text-center'>"+valor+"</div>" +
+    "<div class='col-md-2 text-center'>"+textoValor+"</div>" +
     // Boton para quitar filtro
-//    "<div class='col-md-2'><button class='btn btn-warning zc-filtros-quitar' id='quitar-"+filtro+'-'+cantidadFiltros+"' name='quitar-"+filtro+'-'+cantidadFiltros+"'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span>Quitar</button></div>" +
-    "<div class='col-md-2'><button onclick='javascript:ZCAccionQuitarFiltro(event ,this);'class='btn btn-warning zc-filtros-quitar' id='quitar-"+filtro+'-'+cantidadFiltros+"' name='quitar-"+filtro+'-'+cantidadFiltros+"'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span>Quitar</button></div>" +
-    "<div class='col-md-1'><input id='filtros-seleccionados[]' name='filtros-seleccionados' type='hidden' value='"+filtro+"|?|"+operador+"|?|"+valor+"'/></div>" +
+    "<div class='col-md-1'><button onclick='javascript:ZCAccionQuitarFiltro(event ,this);'class='btn btn-warning zc-filtros-quitar' id='quitar-"+identificadorFiltro+"' name='quitar-"+identificadorFiltro+"'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></button></div>" +
+    "<div class='col-md-1'><input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='"+filtro+"|?|"+operador+"|?|"+valor+"'/></div>" +
+    "<div class='col-md-1'></div>" +
+    "<div class='col-md-1'></div>" +
     "<div class='col-md-1'></div>" +
     "</div>");
+    // Deja en blaco nuevamente el campo para el ingreso de datos
+    $('#' + filtro).val('');
 }
 
 /**
@@ -149,3 +165,61 @@ function ZCAccionQuitarFiltro(e, id){
     $('div').remove('#zc-filtros-aplicados-'+filtro);
 }
 
+/**
+ * Ejecuta la accion de busqueda con los filtros seleccionados
+ * @param {event} e
+ * @param {string} formulario
+ * @param {string} id
+ * @returns {undefined}
+ */
+function ZCAccionBuscarFiltro(e, formulario, id){
+    e.preventDefault();
+    var filtro = '';
+    var filtrosAEnviar = '';
+    $('#'+formulario).find($('.zc-filtros-seleccionado')).each(function(){
+        //Verifica que no se halla contado antes
+        //Salta elementos que no tengan id definido
+        var filtro = $('#'+this.id).val();
+        if(filtro != ''){
+            console.log(filtro);
+            filtrosAEnviar += (filtrosAEnviar != '') ? '|??|' : '';
+            filtrosAEnviar += filtro;
+        }
+    });
+    
+    //Si existen filtros validos, envia solicitud al servidor
+    if(filtrosAEnviar != ''){
+        console.log(filtrosAEnviar);
+    }
+    
+}
+
+/**
+ * Oculta los filtros de busqueda
+ * @param {event} e
+ * @param {string} formulario
+ * @param {string} id
+ * @returns {undefined}
+ */
+
+function ZCAccionOcultarFiltro(e, formulario, id){
+    e.preventDefault();
+    $('#'+formulario).find($('.zc-filtros-disponibles')).addClass('hidden');
+    $('#'+formulario).find($('.zc-filtros-mostrar')).removeClass('hidden');
+    $('#'+formulario).find($('.zc-filtros-ocultar')).addClass('hidden');
+}
+
+/**
+ * Mostrar los filtros de busqueda
+ * @param {event} e
+ * @param {string} formulario
+ * @param {string} id
+ * @returns {undefined}
+ */
+
+function ZCAccionMostrarFiltro(e, formulario, id){
+    e.preventDefault();
+    $('#'+formulario).find($('.zc-filtros-disponibles')).removeClass('hidden');
+    $('#'+formulario).find($('.zc-filtros-ocultar')).removeClass('hidden');
+    $('#'+formulario).find($('.zc-filtros-mostrar')).addClass('hidden');
+}

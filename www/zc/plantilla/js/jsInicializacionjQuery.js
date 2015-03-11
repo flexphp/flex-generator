@@ -3,18 +3,14 @@
  */
 $(document).ready(function () {
     //Campos que se validan del formulario
-    var formasValidar = $('input, textarea, select').not(':input[type=button], :input[type=submit], :input[type=reset], select[class=zc-filtros-busqueda]');
+    var formasValidar = $('input, textarea, select').not(':input[type=button], :input[type=submit], :input[type=reset], select[class=zc-filtros-busqueda], #zc-filtros-cantidad-filtros');
     //Agrega descripciones de ayuda a las cajas de texto
     $('body').tooltip({ selector: '[data-toggle=tooltip]' });
     // Oculta ventana con mensajes de error
     $('.alert').hide();
     // Accion del boton limpiar
     $(':input[type=reset]').click(function(e){
-        e.preventDefault();
-        $('.parsley-errors-list').hide();
-        $('#error-{_nombreFormulario_}').text('');
-        $('.alert').hide();
-        $('#{_nombreFormulario_}').trigger('reset');
+        ZCAccionReiniciarFormulario(e, '{_nombreFormulario_}');
     });
 
     // Inicializa los cajas de texto para las fechas
@@ -47,6 +43,21 @@ $(document).ready(function () {
     $('.zc-filtros-quitar').click(function(e){
         ZCAccionQuitarFiltro(e, this);
     });
+    
+    // Accion boton zc-filtros-buscar para realizar busqueda con los filtros seleccionados
+    $('.zc-filtros-buscar').click(function(e){
+        ZCAccionBuscarFiltro(e, '{_nombreFormulario_}', this);
+    });
+    
+    // Accion boton zc-filtros-ocultar para ocultar los filtros seleccionados
+    $('.zc-filtros-ocultar').click(function(e){
+        ZCAccionOcultarFiltro(e, '{_nombreFormulario_}', this);
+    });
+    
+    // Accion boton zc-filtros-mostrar para mostrar los filtros seleccionados
+    $('.zc-filtros-mostrar').click(function(e){
+        ZCAccionMostrarFiltro(e, '{_nombreFormulario_}', this);
+    });
 
     // Se agrega la validacion cuando los elementos pierden el foco
     $('#{_nombreFormulario_}').find($(formasValidar)).focusout(function (e) {
@@ -55,7 +66,7 @@ $(document).ready(function () {
     });
 
     // Habilita la validacion del formulario
-    $('#{_nombreFormulario_} .btn').not(':input[type=reset], .zc-boton-cancelar, .zc-filtros-agregar, .zc-filtros-quitar').click(function () {
+    $('#{_nombreFormulario_} .btn').not(':input[type=reset], .zc-boton-cancelar, .zc-filtros-agregar, .zc-filtros-quitar, .zc-filtros-buscar, .zc-filtros-mostrar, .zc-filtros-ocultar').click(function () {
         $('.parsley-errors-list').show();
         if($('#{_nombreFormulario_}').parsley().validate()){
             // Accion seleccionada por el usuario
