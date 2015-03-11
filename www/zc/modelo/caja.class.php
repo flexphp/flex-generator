@@ -67,6 +67,7 @@ class caja extends elementos {
                 $this->crearCaja();
                 break;
         }
+        return $this;
     }
 
     /**
@@ -107,8 +108,7 @@ class caja extends elementos {
      * Crear cajas que no requiren inconos especiales
      */
     private function crearCaja() {
-        $this->_html = $this->plantilla(
-                "<input" .
+        $this->_html = "<input" .
                 " type='text'" .
                 " class='form-control'" .
                 // Identificador
@@ -126,15 +126,14 @@ class caja extends elementos {
                 // Ayuda visual
                 $this->ayuda() .
                 "/>
-                    <span class='help-block'></span>");
+                    <span class='help-block'></span>";
     }
 
     /**
      * Crea un elmento con el formato de fecha, aplica datapicker
      */
     private function crearFecha() {
-        $this->_html = $this->plantilla(
-                "<div class='input-group date zc-caja-fecha' id='fecha-{$this->_id}'>
+        $this->_html = "<div class='input-group date zc-caja-fecha' id='fecha-{$this->_id}'>
                         <input" .
                 " type='text'" .
                 " class='form-control zc-caja-fecha'" .
@@ -157,15 +156,14 @@ class caja extends elementos {
                             <span class='glyphicon glyphicon-calendar'></span>
                         </span>
                     </div>
-                    <span class='help-block'></span>");
+                    <span class='help-block'></span>";
     }
 
     /**
      * Crea un elemento con el formato contrasena
      */
     private function crearContrasena() {
-        $this->_html = $this->plantilla(
-                "<input" .
+        $this->_html = "<input" .
                 " type='password'" .
                 " class='form-control'" .
                 // Identificador
@@ -183,15 +181,14 @@ class caja extends elementos {
                 // Ayuda visual
                 $this->ayuda() .
                 "/>
-                    <span class='help-block'></span>");
+                    <span class='help-block'></span>";
     }
 
     /**
      * Crea un elemento tipo textarea
      */
     private function crearAreaDeTexto() {
-        $this->_html = $this->plantilla(
-                "<textarea" .
+        $this->_html = "<textarea" .
                 " rows='3'" .
                 " class='form-control'" .
                 // Identificador
@@ -210,7 +207,7 @@ class caja extends elementos {
                 $this->ayuda() .
                 "/>" .
                 " </textarea>" .
-                "<span class='help-block'></span>");
+                "<span class='help-block'></span>";
     }
 
 }

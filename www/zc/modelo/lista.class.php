@@ -35,8 +35,7 @@ class lista extends elementos {
      * Cada una inicia con una columna en blanco (margen) derecho
      */
     public function crear() {
-        $this->_html = $this->plantilla(
-                    "<select" .
+        $this->_html = "<select" .
                 " class='form-control'" .
                 // Identificador
                 " id='{$this->_id}'" .
@@ -49,7 +48,7 @@ class lista extends elementos {
                 "/>
                     {$this->_opciones}
                     </select>
-                    <span class='help-block'></span>");
+                    <span class='help-block'></span>";
     }
 
     /**

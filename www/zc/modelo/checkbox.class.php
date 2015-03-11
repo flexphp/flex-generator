@@ -35,13 +35,12 @@ class checkbox extends elementos {
      * Cada una inicia con una columna en blanco (margen) derecho
      */
     public function crear() {
-        $this->_html = $this->plantilla(
-                    "<div class='table table-bordered'>
+        $this->_html = "<div class='table table-bordered'>
                         <div class='text-center'>
                             {$this->_opciones}
                         </div>
                         <span id='error-{$this->_id}'></span>
-                    </div>");
+                    </div>";
     }
 
     /**

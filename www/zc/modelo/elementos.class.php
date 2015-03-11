@@ -191,17 +191,17 @@ class elementos {
         $errorMax = (isset($errorMaxima)) ? $errorMaxima : str_replace('&[Longitud]&', $maxima, ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO);
         switch (true) {
             // Tiene longitud maxima y minima
-            case isset($minima) && isset($maxima):
+            case isset($minima) && $minima > 0 && isset($maxima) && $maxima > 0:
                 $this->_longitud = "data-parsley-length='[$minima,$maxima]'";
                 $this->_msjLongitud = "data-parsley-length-message='Longitud esta entre ($minima,$maxima)'";
                 break;
             // Tiene longitud minima
-            case isset($minima):
+            case isset($minima) && $minima > 0:
                 $this->_longitud = "data-parsley-minlength='$minima'";
                 $this->_msjLongitud = "data-parsley-minlength-message='$errorMin'";
                 break;
             // Tiene longitud maxima
-            case isset($maxima):
+            case isset($maxima) && $maxima > 0:
                 $this->_longitud = "data-parsley-maxlength='$maxima'";
                 $this->_msjLongitud = "data-parsley-maxlength-message='$errorMax'";
                 break;
@@ -259,11 +259,20 @@ class elementos {
     }
 
     /**
-     * Retorna el codigo HTML dele elemento
+     * Retorna el codigo HTML del elemento con la plantilla div
      * Es un metodo publico, se utiliza desde fuera de la clase, ver class formulario
      * @return string
      */
     public function devolver() {
+        return $this->plantilla($this->_html);
+    }
+
+    /**
+     * Retorna el codigo HTML del elemento SIN la plantilla div
+     * Es un metodo publico, se utiliza desde fuera de la clase, ver class buscar
+     * @return string
+     */
+    public function devolverCampo() {
         return $this->_html;
     }
 
