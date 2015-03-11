@@ -8,6 +8,10 @@ require_once 'elementos.class.php';
  * Crea la funcion de agregar (insert)
  */
 require_once 'agregar.class.php';
+/**
+ * Crea la funcion de listar/buscar (select)
+ */
+require_once 'buscar.class.php';
 
 /**
  * Crea acciones: agregar, buscar, modificar, eliminar, cancelar, defecto
@@ -39,6 +43,12 @@ class accion extends elementos {
     protected $_funcion = '';
 
     /**
+     * Almacena la el html de los filtros creados por cada formulario
+     * @var string
+     */
+    protected $_filtro = '';
+
+    /**
      * Crear las acciones, segun el tipo de elemento
      * @param array $caracteristicas Caracteristicas de la accion a crear
      * @param string $tabla Nombre de la tabla a manejar
@@ -59,7 +69,8 @@ class accion extends elementos {
                 $accion = new agregar($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ACCION_BUSCAR:
-//                $accion = new buscar($this->_campos, $this->_accion);
+                $accion = new buscar($this->_campos, $this->_tabla, $this->_accion);
+                $this->_filtro = (isset($accion)) ? $accion->filtro()->devolverFiltro() : '';
                 break;
             case ZC_ACCION_MODIFICAR:
 //                $accion = new modificar($this->_campos, $this->_accion);
@@ -76,7 +87,7 @@ class accion extends elementos {
                 break;
         }
         // Establece la accion creada
-        $this->_html = (isset($accion)) ? $accion->crear()->devolver() : $this->comando('$resultado = implode(\'+\', func_get_args());$cta = 1;', 12);
+        $this->_html = (isset($accion)) ? $accion->crear()->devolverElemento() : $this->comando('$resultado = implode(\'+\', func_get_args());$cta = 1;', 12);
         $this->_funcion = (isset($accion)) ? $accion->funcion()->devolverFuncion() : $this->comando('//$rpta[\'resultado\'] = implode(\'|\', $datos);');
         return $this;
     }
@@ -117,6 +128,10 @@ class accion extends elementos {
 
     public function devolverFuncion() {
         return $this->_funcion;
+    }
+
+    public function devolverFiltro() {
+        return $this->_filtro;
     }
 
 }

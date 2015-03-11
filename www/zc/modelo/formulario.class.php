@@ -197,6 +197,12 @@ class formulario {
     private $_funciones = '';
 
     /**
+     * Inicializacion la variable que contiene el codigo html de los filtros disponibles
+     * @var string
+     */
+    private $_filtros = '';
+
+    /**
      * Inicializacion la variable que contiene el codigo del llamado a al servidor (SOAP)
      * @var string
      */
@@ -237,6 +243,12 @@ class formulario {
      * @var string
      */
     private $_nombreArchivoVista = '';
+
+    /**
+     * Nombre del archivo vista creado en /views
+     * @var string
+     */
+    private $_nombreArchivoListar = '';
 
     /**
      * Nombre del archivo javascrip relacionado al formulario
@@ -353,6 +365,44 @@ class formulario {
     }
 
     /**
+     * Crear un arhivo fisico para el el formulario en el sirectorio de salida definido
+     * por defecto:
+     *  $directorioSalida = dist/form (Ruta de salida)
+     *  $tipoSalida = php (Extension)
+     * @param string $directorioSalida Ruta donde se crear el archivo
+     * @param string $extension Extension del archivo creado
+     * @param array $opciones Opciones a aplicar a la plantilla del formulario creado
+     * @return \formulario
+     * @throws Exception
+     */
+    public function crearListarFormulario($directorioSalida = '../application/views', $extension = 'html', $opciones = array()) {
+        /**
+         * Plantilla para la vista (view), se puede devolver, por eso se deja en una variable $this
+         */
+        $plantilla = new plantilla();
+        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlListarFluid.tpl');
+
+        $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
+        $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
+        $plantilla->asignarEtiqueta('contenidoFormulario', $this->_filtros);
+        $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
+
+        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
+            $plantilla->minimizarPlantilla();
+        }
+
+        $this->_textoFormulario = (0 == count($this->_formulario)) ? '<vacio>' : $plantilla->devolverPlantilla();
+
+        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoListar);
+
+        if (isset($opciones['abrir']) && $opciones['abrir'] === true) {
+            $plantilla->abrirPlantilla();
+        }
+
+        return $this;
+    }
+
+    /**
      * Crea el controlador del formulario del tipo CodeIgniter
      * @param type $directorioSalida Ruta donde se creara el archivos
      * @param type $extension Extension con la cual se creara el archivo
@@ -368,6 +418,7 @@ class formulario {
 
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('nombreVista', $this->_nombreArchivoVista . '.html');
+        $plantilla->asignarEtiqueta('nombreVistaListar', $this->_nombreArchivoListar . '.html');
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('accionServidor', $this->_accionServidor);
 
@@ -551,6 +602,8 @@ class formulario {
         $this->crearJavascriptFormulario();
         // La vista se debe crear despues de los archivos javascript (cargar bien rutas js)
         $this->crearVistaFormulario();
+        // La vista de busqueda y listado de campos de la tabla
+        $this->crearListarFormulario();
 
         $this->fin();
         return $this;
@@ -613,7 +666,7 @@ class formulario {
     private function agregarElementoBotonFormulario($caracteristicas, $tipoAccion = 'boton') {
         $html = new boton($caracteristicas, $tipoAccion);
         $html->crear();
-        $this->_formulario['acciones'][$html->_prop[ZC_ID]] = $html->devolver();
+        $this->_formulario['acciones'][$html->_prop[ZC_ID]] = $html->devolverElemento();
         $this->_acciones[] = $html->_prop;
         return $this;
     }
@@ -682,6 +735,7 @@ class formulario {
         $id = strtolower($this->_id);
         $this->_nombreArchivoModelo = 'modelo_' . $id;
         $this->_nombreArchivoVista = 'vista_' . $id;
+        $this->_nombreArchivoListar = 'vista_listar_' . $id;
         $this->_nombreArchivoControlador = $id;
         $this->_nombreArchivoServidor = $id . '_' . $this->_tipoWS;
         $this->_nombreArchivoJs = $id;
@@ -903,10 +957,13 @@ class formulario {
                 $plantilla->asignarEtiqueta('asignacionFuncion', $this->_asignacionParametrosFuncionServidorSOAP);
                 // Asigna la accion del lado servidor
                 $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO]);
-                $plantilla->asignarEtiqueta('accionServidor', $accion->crear()->devolver());
+                $plantilla->asignarEtiqueta('accionServidor', $accion->crear()->devolverElemento());
 
                 // Concatena las funciones que se ejecutaran en el modelo
                 $this->_funciones .= $accion->devolverFuncion();
+
+                // Concatena las los filtros de los formularios de busqueda
+                $this->_filtros .= $accion->devolverFiltro();
 
                 // Concatena las acciones que se pueden llamar desde el cliente
                 $this->_accionesServidorWS .= FIN_DE_LINEA . insertarEspacios(4) . $plantilla->devolverPlantilla() . FIN_DE_LINEA;

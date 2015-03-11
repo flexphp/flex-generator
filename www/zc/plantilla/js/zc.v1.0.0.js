@@ -13,7 +13,8 @@ function ZCBarraProgreso(formulario, formasValidar){
     // Todos campos del formulario
     $('#'+formulario).find($(formasValidar)).each(function(){
         //Verifica que no se halla contado antes
-        if(nombres.indexOf(this.name) == -1){
+        //Salta elementos que no tengan id definido
+        if(nombres.indexOf(this.name) == -1 && this.id != ''){
             nombres.push(this.name);
             contadorCampos++;
             if ($('#'+this.id).parsley().isValid('#'+this.id)){
@@ -70,3 +71,81 @@ function ZCAccionCancelar(formulario, formasValidar){
 
     return existenCamposDiligenciados;
 }
+
+/**
+ * Menejo de los filtros de busqueda
+ * @param {e} Evento disparador
+ * @param {type} id
+ * @returns {Boolean}
+ */
+function ZCCamposDeBusqueda(e, id){
+    e.preventDefault();
+    if(!$(id).length){
+        console.log('Elemento no encontrado');
+        return false;
+    }
+
+    var filtro = $(id).val();
+    // Oculta tod los posibles filtros
+    $('.zc-filtros').addClass('hidden');
+    // Muestra el filtro seleccionado de la lista
+    $('.zc-filtros-'+filtro).removeClass('hidden');
+    // Establece elvalor seleccionado del filtro
+    $('.zc-filtros-busqueda').val(filtro);
+}
+
+/**
+ * Agrega un filtro de busqueda seleccionado por el usuario
+ * @param {e} Evento disparador
+ * @param {string} formulario
+ * @param {$} id
+ * @returns {undefined}
+ */
+function ZCAccionAgregarFiltro(e, formulario, id){
+    e.preventDefault();
+    var filtro = $(id).attr('id').replace('agregar-', '');
+    var operador = $('#operador-' + filtro).val();
+    var valor = $('#' + filtro).val();
+
+    if (!$('#'+formulario).parsley().validate()){
+        console.log('Campo no valido');
+        return false;
+    }
+
+    var textoFiltro = $('.zc-filtros-busqueda:first option:selected').html();
+    var textoOperador = $('#operador-' + filtro + " option:selected").html();
+
+    // Evita eliminar filtros repetidos
+    var cantidadFiltros = $('.zc-filtros-aplicados-'+filtro).length;
+    console.log(filtro+operador+valor);
+
+    // Agrega un campo oculto al formaulario con los valores a enviar
+    $('#' + formulario).append("<div class='row zc-filtros-aplicados-"+filtro+"' id='zc-filtros-aplicados-"+filtro+'-'+cantidadFiltros+"'>"+
+    "<div class='col-md-1'></div>"+
+    // Etiqueta del campo
+    "<div class='col-md-2 text-center'>"+textoFiltro+"</div>" +
+    // Operador
+    "<div class='col-md-2 text-center'>"+textoOperador+"</div>" +
+    // Valor
+    "<div class='col-md-3 text-center'>"+valor+"</div>" +
+    // Boton para quitar filtro
+//    "<div class='col-md-2'><button class='btn btn-warning zc-filtros-quitar' id='quitar-"+filtro+'-'+cantidadFiltros+"' name='quitar-"+filtro+'-'+cantidadFiltros+"'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span>Quitar</button></div>" +
+    "<div class='col-md-2'><button onclick='javascript:ZCAccionQuitarFiltro(event ,this);'class='btn btn-warning zc-filtros-quitar' id='quitar-"+filtro+'-'+cantidadFiltros+"' name='quitar-"+filtro+'-'+cantidadFiltros+"'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span>Quitar</button></div>" +
+    "<div class='col-md-1'><input id='filtros-seleccionados[]' name='filtros-seleccionados' type='hidden' value='"+filtro+"|?|"+operador+"|?|"+valor+"'/></div>" +
+    "<div class='col-md-1'></div>" +
+    "</div>");
+}
+
+/**
+ * Quitar filtro de busqueda de los filtros seleccionados
+ * @param {e} Evento disparador
+ * @param {$} id
+ * @returns {undefined}
+ */
+function ZCAccionQuitarFiltro(e, id){
+    e.preventDefault();
+    var filtro = $(id).attr('id').replace('quitar-', '');
+    console.log(filtro);
+    $('div').remove('#zc-filtros-aplicados-'+filtro);
+}
+

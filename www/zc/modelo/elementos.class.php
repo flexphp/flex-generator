@@ -272,7 +272,7 @@ class elementos {
      * Es un metodo publico, se utiliza desde fuera de la clase, ver class buscar
      * @return string
      */
-    public function devolverCampo() {
+    public function devolverElemento() {
         return $this->_html;
     }
 

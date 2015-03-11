@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Crea acciones: agregar, deepnde de accion por la funcion  accion:devolver
+ * Crea acciones: agregar, depende de class "accion" por la funcion  accion::devolver
  */
 class agregar extends accion {
 

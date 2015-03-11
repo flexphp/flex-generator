@@ -16,6 +16,10 @@ class {_nombreControlador_} extends CI_Controller {
         $this->load->view('{_nombreVista_}');
     }
 
+    public function listar() {
+        $this->load->view('{_nombreVistaListar_}');
+    }
+
 {_accionServidor_}
 
 }
