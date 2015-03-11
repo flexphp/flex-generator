@@ -33,7 +33,7 @@ class buscar extends accion {
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'modelo_\' . $tabla, $tabla);', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
-        $php .= $this->comando('$rpta = $CI->$tabla->agregar($data);', 12);
+        $php .= $this->comando('$rpta = $CI->$tabla->buscar($data, \'buscar\');', 12);
         $php .= $this->comando('switch (true){', 12);
         $php .= $this->comando('case (isset($rpta[\'error\']) && \'\' != $rpta[\'error\']):', 12);
         $php .= $this->comando('// Errores durante la ejecucion', 16);
@@ -61,7 +61,7 @@ class buscar extends accion {
         $php = '';
         $php .= $this->comando('function buscar($campos){');
         $php .= $this->comando('$rpta = array();', 8);
-        $php .= $this->comando('$validacion = $this->' . $this->_tabla . '->validacionTest($campos);', 8);
+        $php .= $this->comando('$validacion = $this->' . $this->_tabla . '->validarFiltros($campos, \'buscar\');', 8);
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (isset($validacion[\'error\']) && \'\' != $validacion[\'error\']):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos', 16);
@@ -71,7 +71,7 @@ class buscar extends accion {
         $php .= $this->comando('// Error en la conexion a la base de campos', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 16);
         $php .= $this->comando('break;', 16);
-        $php .= $this->comando('case $this->db->select(' . $this->_tabla . ', $campos) == false:', 12);
+        $php .= $this->comando('case $this->db->select(\'*\')->from(\'' . $this->_tabla . '\')->where($validacion[\'condicion\'])->get() == false:', 12);
         $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
         $php .= $this->comando('default:', 12);

@@ -189,7 +189,33 @@ function ZCAccionBuscarFiltro(e, formulario, id){
     
     //Si existen filtros validos, envia solicitud al servidor
     if(filtrosAEnviar != ''){
-        console.log(filtrosAEnviar);
+        $.ajax({
+            url: $('#URLProyecto').val()+'index.php/test/buscar/',
+            type: 'POST',
+            dataType: 'JSON',
+            data: {
+                // Envia filtros de busqueda al servidor
+                filtros: filtrosAEnviar,
+                accion: 'buscar'
+            },
+            beforeSend: function(){
+                // Oculta ventana con mensajes
+                $('.alert').hide();
+            },
+            success: function(rpta){
+                console.log(rpta);
+                if(rpta.error != undefined && '' != rpta.error){
+                    // Muestra mensaje de error
+                    $('#error-Test').text(rpta.error); 
+                    $('.alert-danger').show();
+                }else{
+                    //Accion Cliente va aqui
+                }
+            },
+            error: function(rpta){
+                $('#error-Test').text('Error en el servicio');
+            }
+        });
     }
     
 }

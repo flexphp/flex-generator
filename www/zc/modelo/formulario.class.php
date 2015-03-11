@@ -312,6 +312,7 @@ class formulario {
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloSOAP.tpl');
 
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
+        $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
         $plantilla->asignarEtiqueta('clienteWS', $this->_clienteSOAP);
         $plantilla->asignarEtiqueta('procesarWS', $this->_procesarWS);
         $plantilla->asignarEtiqueta('funciones', $this->_funciones);

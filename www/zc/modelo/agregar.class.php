@@ -71,7 +71,7 @@ class agregar extends accion {
         $php .= $this->comando('// Error en la conexion a la base de campos', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 16);
         $php .= $this->comando('break;', 16);
-        $php .= $this->comando('case $this->db->insert(' . $this->_tabla . ', $campos) == false:', 12);
+        $php .= $this->comando('case $this->db->insert(\'' . $this->_tabla . '\', $campos) == false:', 12);
         $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
         $php .= $this->comando('default:', 12);

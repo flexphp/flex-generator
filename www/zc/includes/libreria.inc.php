@@ -176,16 +176,16 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
     $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_DATO_ERROR_PREDETERMINADO;
     switch ($dato) {
         case ZC_DATO_NUMERICO:
-            $validacion = insertarEspacios(8) . "if (filter_var(\$dato['{$id}'],  FILTER_VALIDATE_INT) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && filter_var(\$dato['{$id}'],  FILTER_VALIDATE_INT) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_EMAIL:
-            $validacion = insertarEspacios(8) . "if (\$validarDato && filter_var(\$dato['{$id}'], FILTER_VALIDATE_EMAIL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && \$validarDato && filter_var(\$dato['{$id}'], FILTER_VALIDATE_EMAIL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_FECHA:
-            $validacion = insertarEspacios(8) . "if (!preg_match('/^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$/', \$dato['{$id}']) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && !preg_match('/^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$/', \$dato['{$id}']) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_URL:
-            $validacion = insertarEspacios(8) . "if (\$validarDato && filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && \$validarDato && filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
         case ZC_DATO_TEXTO:
         default :
@@ -218,7 +218,7 @@ function validarArgumentoObligatorio($id, $etiqueta, $obligatorio = 'no', $msj =
         case ZC_OBLIGATORIO_SI:
         default :
             $validacion .= FIN_DE_LINEA;
-            $validacion .= insertarEspacios(8) . "if (\$validarDato && '' == \$dato['{$id}']){" . FIN_DE_LINEA;
+            $validacion .= insertarEspacios(8) . "if (isset(\$dato['{$id}']) && \$validarDato && '' == \$dato['{$id}']){" . FIN_DE_LINEA;
             $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '{$msjValidacion}';" . FIN_DE_LINEA;
             $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
             break;
@@ -249,7 +249,7 @@ function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitudMaxima =
         default :
             if ($longitudMaxima > 0) {
                 $validacion .= FIN_DE_LINEA;
-                $validacion .= insertarEspacios(8) . "if (\$validarDato && strlen(\$dato['$id']) >  {$longitudMaxima} && '' != \$dato['$id']){" . FIN_DE_LINEA;
+                $validacion .= insertarEspacios(8) . "if (isset(\$dato['{$id}']) && \$validarDato && strlen(\$dato['$id']) >  {$longitudMaxima} && '' != \$dato['$id']){" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '" . str_replace('&[Longitud]&', $longitudMaxima, $msjValidacion) . "';" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
             }
@@ -279,7 +279,7 @@ function validarArgumentoLongitudMinima($id, $etiqueta, $tipo, $longitudMinima =
         default :
             if ($longitudMinima > 0) {
                 $validacion .= FIN_DE_LINEA;
-                $validacion .= insertarEspacios(8) . "if (\$validarDato && strlen(\$dato['$id']) <  {$longitudMinima} && '' != \$dato['$id']){" . FIN_DE_LINEA;
+                $validacion .= insertarEspacios(8) . "if (isset(\$dato['{$id}']) && \$validarDato && strlen(\$dato['$id']) <  {$longitudMinima} && '' != \$dato['$id']){" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '" . str_replace('&[Longitud]&', $longitudMinima, $msjValidacion) . "';" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
             }
