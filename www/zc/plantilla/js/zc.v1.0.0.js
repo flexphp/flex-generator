@@ -161,7 +161,6 @@ function ZCAccionAgregarFiltro(e, formulario, id){
 function ZCAccionQuitarFiltro(e, id){
     e.preventDefault();
     var filtro = $(id).attr('id').replace('quitar-', '');
-    console.log(filtro);
     $('div').remove('#zc-filtros-aplicados-'+filtro);
 }
 
@@ -172,51 +171,20 @@ function ZCAccionQuitarFiltro(e, id){
  * @param {string} id
  * @returns {undefined}
  */
-function ZCAccionBuscarFiltro(e, formulario, id){
-    e.preventDefault();
-    var filtro = '';
+function ZCAccionBuscarFiltro(formulario){
     var filtrosAEnviar = '';
     $('#'+formulario).find($('.zc-filtros-seleccionado')).each(function(){
         //Verifica que no se halla contado antes
         //Salta elementos que no tengan id definido
         var filtro = $('#'+this.id).val();
         if(filtro != ''){
-            console.log(filtro);
             filtrosAEnviar += (filtrosAEnviar != '') ? '|??|' : '';
             filtrosAEnviar += filtro;
         }
     });
     
-    //Si existen filtros validos, envia solicitud al servidor
-    if(filtrosAEnviar != ''){
-        $.ajax({
-            url: $('#URLProyecto').val()+'index.php/test/buscar/',
-            type: 'POST',
-            dataType: 'JSON',
-            data: {
-                // Envia filtros de busqueda al servidor
-                filtros: filtrosAEnviar,
-                accion: 'buscar'
-            },
-            beforeSend: function(){
-                // Oculta ventana con mensajes
-                $('.alert').hide();
-            },
-            success: function(rpta){
-                console.log(rpta);
-                if(rpta.error != undefined && '' != rpta.error){
-                    // Muestra mensaje de error
-                    $('#error-Test').text(rpta.error); 
-                    $('.alert-danger').show();
-                }else{
-                    //Accion Cliente va aqui
-                }
-            },
-            error: function(rpta){
-                $('#error-Test').text('Error en el servicio');
-            }
-        });
-    }
+    //Establece el valor de los filtros a utilizar en la busqueda
+    return filtrosAEnviar;
     
 }
 

@@ -67,3 +67,5 @@ define("ZC_ACCION_MODIFICAR", "modificar");
 define("ZC_ACCION_BORRAR", "borrar");
 // Acciones a las que no se les aplica validacion de datos
 define("ZC_ACCION_SIN_VALIDACION", ZC_ACCION_BUSCAR . "," . ZC_ACCION_BORRAR);
+// Mensajes de error en caso de que no se seleccionen filtros de busqueda
+define("ZC_MENSAJE_ERROR_BUSCAR", "Seleccione los filtros de busqueda.");

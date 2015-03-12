@@ -22,18 +22,20 @@ class {_nombreModelo_} extends CI_Model {
         // Errores durante la validacion
         $rpta['error'] = '';
         // Condicion formada con los filtros dados
-        $rpta['condicion'] = '';
+        $rpta['condicion'] = array();
         // Accion que se esta ejecutando
         $datos['accion'] = $accion;
+        // Determina si se deben validar los filtros
         $filtros = explode('|??|', $campos);
-        // Carga el modelo para poder hacer las validaciones
-        $CI = new CI_Controller;
-        $CI->load->model('{_nombreModelo_}');
         
         foreach ($filtros as $cadaFiltro) {
             list($campo, $operador, $valor) = explode('|?|', $cadaFiltro);
+            if($campo == ''){
+                // Campo no valido
+                continue;
+            }
             $datos[$campo] = $valor;
-            $rptaValidacion = $CI->{_nombreModelo_}->validacion{_nombreFormulario_}($datos);
+            $rptaValidacion = $this->{_nombreModelo_}->{_nombreValidacion_}($datos);
             if (isset($rptaValidacion['error']) && '' != $rptaValidacion['error']) {
                 $rpta['error'] .=  $rptaValidacion['error'];
             }

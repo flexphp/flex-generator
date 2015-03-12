@@ -255,6 +255,12 @@ class formulario {
      * @var type
      */
     private $_nombreArchivoJs = '';
+    
+    /**
+     * Nombre de la funcion que hace la validacion de datos
+     * @var type
+     */
+    private $_nombreFuncionValidacion = '';
 
     /**
      * Funcion de inicializacion del formulario, reqeuire que seha suministradas
@@ -317,6 +323,7 @@ class formulario {
         $plantilla->asignarEtiqueta('procesarWS', $this->_procesarWS);
         $plantilla->asignarEtiqueta('funciones', $this->_funciones);
         $plantilla->asignarEtiqueta('validacion', $this->_validacion);
+        $plantilla->asignarEtiqueta('nombreValidacion', $this->_nombreFuncionValidacion);
 
         if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
             $plantilla->minimizarPlantilla();
@@ -740,6 +747,7 @@ class formulario {
         $this->_nombreArchivoControlador = $id;
         $this->_nombreArchivoServidor = $id . '_' . $this->_tipoWS;
         $this->_nombreArchivoJs = $id;
+        $this->_nombreFuncionValidacion = 'validacion' . $this->_id;
 
         return $this;
     }
@@ -848,6 +856,18 @@ class formulario {
                     // Los botones tipo restablecer, cancelar no crean acciones
                     continue;
                 }
+                // Determina la accion a ejecutar en el cvontrolador
+                switch ($caracteristicas[ZC_ELEMENTO]) {
+                    case ZC_ACCION_BUSCAR:
+                        $comando = "\$datos['accion'] = \$this->input->post('accion');" . FIN_DE_LINEA . insertarEspacios(8);
+                        $comando .= "\$datos['filtros'] = \$this->input->post('filtros');" . FIN_DE_LINEA . insertarEspacios(8);
+                        $comando .= str_replace('{_nombreModelo_}', $this->_nombreArchivoModelo, "\$rpta = \$this->{_nombreModelo_}->validarFiltros(\$datos['filtros'], \$datos['accion']);");
+                        break;
+                    default:
+                        $comando = $this->_asignacionParametrosFuncionClienteSOAP . insertarEspacios(8);;
+                        $comando .= str_replace(array('{_nombreModelo_}', '{_nombreValidacion_}'), array($this->_nombreArchivoModelo, $this->_nombreFuncionValidacion), "\$rpta = \$this->{_nombreModelo_}->{_nombreValidacion_}(\$datos);");
+                        break;
+                }
                 /**
                  * Plantilla para la creacion de acciones en el controlador
                  */
@@ -856,8 +876,7 @@ class formulario {
                     $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorAccionSOAP.tpl');
                     $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
                     // Se crean durante el proceso de los elementos para las validaciones
-                    $plantilla->asignarEtiqueta('asignacionCliente', $this->_asignacionParametrosFuncionClienteSOAP);
-                    $plantilla->asignarEtiqueta('nombreValidacion', 'validacion' . $this->_id);
+                    $plantilla->asignarEtiqueta('asignacionCliente', $comando);
                     $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
                 } else if ($this->_tipoWS == ZC_WS_REST) {
                     $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorAccionREST.tpl');
@@ -883,11 +902,19 @@ class formulario {
                     // accion preferida
                     continue;
                 }
+                switch ($caracteristicas[ZC_ELEMENTO]) {
+                    case ZC_ACCION_BUSCAR:
+                        $tipoPlantilla = 'jsLlamadosBuscarAjax.js';
+                        break;
+                    default:
+                        $tipoPlantilla = 'jsLlamadosDefaultAjax.js';
+                        break;
+                }
                 /**
                  * Plantilla para los envio con AJAX en javascript (jQuery)
                  */
                 $plantilla = new plantilla();
-                $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsLlamadosAjax.js');
+                $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/' . $tipoPlantilla);
                 $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
                 $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
                 // Se crean durante el proceso de los elementos para las validaciones
@@ -896,6 +923,7 @@ class formulario {
                 // Se define en la creacion de la plantilla del controlador
                 $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
                 $plantilla->asignarEtiqueta('accionCliente', '//Accion Cliente va aqui');
+                $plantilla->asignarEtiqueta('mensajeError', ZC_MENSAJE_ERROR_BUSCAR);
 
                 // Concatena cada accion del cliente
                 $this->_accionCliente .= $plantilla->devolverPlantilla() . FIN_DE_LINEA;
@@ -916,6 +944,15 @@ class formulario {
                     // Los botones tipo restablecer, cancelar no crean acciones
                     continue;
                 }
+                // Determina los paramettros a definir en el modelo
+                switch ($caracteristicas[ZC_ELEMENTO]) {
+                    case ZC_ACCION_BUSCAR:
+                        $comando = "'filtros' => \$datos['filtros'],";
+                        break;
+                    default:
+                        $comando = $this->_asignacionParametrosClienteSOAP;
+                        break;
+                }
                 /**
                  * Plantilla para la creacion de acciones en el cliente
                  */
@@ -924,7 +961,8 @@ class formulario {
                 $plantilla->asignarEtiqueta('nombreModelo', $this->_id);
                 $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
                 $plantilla->asignarEtiqueta('servidorAccion', $this->_nombreArchivoServidor);
-                $plantilla->asignarEtiqueta('asignacionCliente', $this->_asignacionParametrosClienteSOAP);
+                
+                $plantilla->asignarEtiqueta('asignacionCliente', $comando);
 
                 // Concatena las acciones que se pueden llamar desde el cliente
                 $this->_clienteSOAP .= $plantilla->devolverPlantilla() . FIN_DE_LINEA;
@@ -946,6 +984,18 @@ class formulario {
                     // Los botones tipo restablecer, cancelar no crean acciones
                     continue;
                 }
+                
+                // Determina la accion a ejecutar en el cvontrolador
+                switch ($caracteristicas[ZC_ELEMENTO]) {
+                    case ZC_ACCION_BUSCAR:
+                        $asignacionCliente=  "'filtros' => 'xsd:string'";
+                        $asignacionFuncion = '$filtros';
+                        break;
+                    default:
+                        $asignacionCliente=  $this->_asignacionParametrosServidorSOAP;
+                        $asignacionFuncion = $this->_asignacionParametrosFuncionServidorSOAP;
+                        break;
+                }
                 /**
                  * Plantilla para la creacion de acciones en el cliente
                  */
@@ -954,8 +1004,8 @@ class formulario {
                 $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoServidor);
                 $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
                 $plantilla->asignarEtiqueta('nombreFuncion', $caracteristicas[ZC_ID] . 'Servidor');
-                $plantilla->asignarEtiqueta('asignacionCliente', $this->_asignacionParametrosServidorSOAP);
-                $plantilla->asignarEtiqueta('asignacionFuncion', $this->_asignacionParametrosFuncionServidorSOAP);
+                $plantilla->asignarEtiqueta('asignacionCliente', $asignacionCliente);
+                $plantilla->asignarEtiqueta('asignacionFuncion', $asignacionFuncion);
                 // Asigna la accion del lado servidor
                 $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO]);
                 $plantilla->asignarEtiqueta('accionServidor', $accion->crear()->devolverElemento());

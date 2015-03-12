@@ -25,7 +25,7 @@ class buscar extends accion {
         }
         $php = '';
         $php .= $this->comando('//Establece los valores de cada uno de los campos', 12);
-        $php .= $this->inicializar($this->_campos);
+//        $php .= $this->inicializar();
         $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
         $php .= $this->comando('//Nombre de la tabla afectada', 12);
@@ -33,7 +33,7 @@ class buscar extends accion {
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'modelo_\' . $tabla, $tabla);', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
-        $php .= $this->comando('$rpta = $CI->$tabla->buscar($data, \'buscar\');', 12);
+        $php .= $this->comando('$rpta = $CI->$tabla->buscar($filtros, \'buscar\');', 12);
         $php .= $this->comando('switch (true){', 12);
         $php .= $this->comando('case (isset($rpta[\'error\']) && \'\' != $rpta[\'error\']):', 12);
         $php .= $this->comando('// Errores durante la ejecucion', 16);
@@ -48,6 +48,15 @@ class buscar extends accion {
         $this->_html = $php;
         return $this;
     }
+    
+    /**
+     * Redefine la duncion de inicializacion para manejar las vearialbes de vusqueda
+     * @return type
+     */
+    function inicializar(){
+        $cmd = $this->comando("\$data = \$filtros;", 12);
+        return $cmd;
+    }
 
     /**
      * Selecciona crea la accion buscar. el resultado de la accion se almacena en la
@@ -59,9 +68,11 @@ class buscar extends accion {
             throw new Exception(__FUNCTION__ . ': Error en la accion, se esperaba: ' . ZC_ACCION_BUSCAR);
         }
         $php = '';
-        $php .= $this->comando('function buscar($campos){');
+        $php .= $this->comando('function buscar($campos, $accion){');
         $php .= $this->comando('$rpta = array();', 8);
-        $php .= $this->comando('$validacion = $this->' . $this->_tabla . '->validarFiltros($campos, \'buscar\');', 8);
+        $php .= $this->comando('$CI = new CI_Controller;', 8);
+        $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
+        $php .= $this->comando('$validacion = $this->modelo_' . $this->_tabla . '->validarFiltros($campos, $accion);');
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (isset($validacion[\'error\']) && \'\' != $validacion[\'error\']):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos', 16);
@@ -71,13 +82,17 @@ class buscar extends accion {
         $php .= $this->comando('// Error en la conexion a la base de campos', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 16);
         $php .= $this->comando('break;', 16);
-        $php .= $this->comando('case $this->db->select(\'*\')->from(\'' . $this->_tabla . '\')->where($validacion[\'condicion\'])->get() == false:', 12);
-        $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
+//        $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
+//        $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
         $php .= $this->comando('default:', 12);
         $php .= $this->comando('// Devuelve el id insertado campo y el numero de filas efectadas', 16);
-        $php .= $this->comando('$rpta[\'resultado\'] = $this->db->insert_id();', 16);
-        $php .= $this->comando('$rpta[\'cta\'] = $this->db->affected_rows() > 0;', 16);
+        $php .= $this->comando('$ressql = $this->db->select(\'*\')->from(\'' . $this->_tabla . '\')->where($validacion[\'condicion\'])->get();', 16);
+        $php .= $this->comando('if($ressql->num_rows() > 0){', 16);
+        $php .= $this->comando('foreach($ressql->result_array() as $row){', 20);
+        $php .= $this->comando('$rpta[\'resultado\'][] = $row;', 24);
+        $php .= $this->comando('}', 20);
+        $php .= $this->comando('$rpta[\'cta\'] = $this->db->affected_rows() > 0;', 20);
+        $php .= $this->comando('}', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('}', 8);
         $php .= $this->comando('return $rpta;', 8);
@@ -136,7 +151,7 @@ class buscar extends accion {
             $operador = "<select id='operador-{$campo[ZC_ID]}' name='operador-{$campo[ZC_ID]}' class='form-control'>" . FIN_DE_LINEA;
             $agregar = "<button class='btn zc-filtros-agregar btn-success' id='agregar-{$campo[ZC_ID]}' name='agregar-{$campo[ZC_ID]}'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
             //El boton de quitar se agrega en el proceso jQuery
-            $buscar = "<button class='btn btn-primary zc-filtros-buscar'><span class='glyphicon glyphicon-search' aria-hidden='true'></span>Buscar</button>" . FIN_DE_LINEA;
+            $buscar = "<button type='button' zc-accion-tipo='" . ZC_ACCION_BUSCAR . "' class='btn btn-primary zc-accion'><span class='glyphicon glyphicon-search' aria-hidden='true'></span>Buscar</button>" . FIN_DE_LINEA;
             $ocultar = "<button class='btn btn-default zc-filtros-ocultar' title='Ocultar filtros'><span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
             $mostrar = "<button class='btn btn-default zc-filtros-mostrar hidden' title='Mostrar filtros'><span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
             switch ($campo[ZC_DATO]) {
@@ -164,21 +179,32 @@ class buscar extends accion {
             $valor = $caja->crear()->devolverElemento() . FIN_DE_LINEA;
 
             $oculto = ($html == '') ? '' : 'hidden';
-            // La distribucion de estos div debe ser igual a la de los creados por la funcion ZCAccionAgregarFiltro
-            $html .= "<div class='row zc-filtros zc-filtros-{$campo[ZC_ID]} {$oculto}'>" .
-                    "<div class='col-md-1'></div>" .
-                    "<div class='col-md-2'>{_elementos_}</div>" .
-                    "<div class='col-md-2'>{$operador}</div>" .
-                    "<div class='col-md-2'>{$valor}</div>" .
-                    "<div class='col-md-1'>{$agregar}</div>" .
-                    "<div class='col-md-1'>{$buscar}</div>" .
-                    "<div class='col-md-1'>{$ocultar}{$mostrar}</div>" .
-                    "<div class='col-md-1'>{_columnas_}</div>" .
-                    "<div class='col-md-1'></div>" .
-                    "</div>" . FIN_DE_LINEA;
+            // La distribucion de estos div debe ser igual a la de los creados por la funcion ZCAccionAgregarFiltro, 
+            // Se carga el boton de accion solo una vez
+            $html .= 
+                "<div class='col-md-8 zc-filtros zc-filtros-{$campo[ZC_ID]} {$oculto}'>" .
+                "   <div class='row'>" .
+                "       <div class='col-lg-1'></div>" .
+                "       <div class='col-md-3'>{_elementos_}</div>" .
+                "       <div class='col-md-3'>{$operador}</div>" .
+                "       <div class='col-md-4'>{$valor}</div>" .
+                "       <div class='col-md-1'>{$agregar}</div>" .
+                "   </div>" .
+                "</div>" . FIN_DE_LINEA;
         }
+        $plantilla = "<div class='row'>" .
+                "" . $html .
+                "    <div class='col-md-4'> " . 
+                "       <div class='row'>" .
+                "           <div class='col-md-3'>{$buscar}</div>" .
+                "           <div class='col-md-3'>{$ocultar}{$mostrar}</div>" .
+                "           <div class='col-md-3'>{_columnas_}</div>" .
+                "           <div class='col-md-1'></div>" .
+                "       </div>" . 
+                "   </div>" . 
+                "</div>" . FIN_DE_LINEA;
         $elementos .= "</select>" . FIN_DE_LINEA;
-        $this->_filtro = str_replace('{_columnas_}', $columnas, str_replace('{_elementos_}', $elementos, $html));
+        $this->_filtro = str_replace('{_columnas_}', $columnas, str_replace('{_elementos_}', $elementos, $plantilla));
         return $this;
     }
 

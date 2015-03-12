@@ -44,11 +44,6 @@ $(document).ready(function () {
         ZCAccionQuitarFiltro(e, this);
     });
     
-    // Accion boton zc-filtros-buscar para realizar busqueda con los filtros seleccionados
-    $('.zc-filtros-buscar').click(function(e){
-        ZCAccionBuscarFiltro(e, '{_nombreFormulario_}', this);
-    });
-    
     // Accion boton zc-filtros-ocultar para ocultar los filtros seleccionados
     $('.zc-filtros-ocultar').click(function(e){
         ZCAccionOcultarFiltro(e, '{_nombreFormulario_}', this);
@@ -66,11 +61,12 @@ $(document).ready(function () {
     });
 
     // Habilita la validacion del formulario
-    $('#{_nombreFormulario_} .btn').not(':input[type=reset], .zc-boton-cancelar, .zc-filtros-agregar, .zc-filtros-quitar, .zc-filtros-buscar, .zc-filtros-mostrar, .zc-filtros-ocultar').click(function () {
+    $('#{_nombreFormulario_} .zc-accion').not(':input[type=reset], .zc-boton-cancelar, .zc-filtros-agregar, .zc-filtros-quitar, .zc-filtros-mostrar, .zc-filtros-ocultar').click(function () {
         $('.parsley-errors-list').show();
+        var nombreAccion = ($(this).attr('zc-accion-tipo'));
+        console.log(nombreAccion);
         if($('#{_nombreFormulario_}').parsley().validate()){
             // Accion seleccionada por el usuario
-            var nombreAccion = ($(this).attr('id'));
             // Selecciona la accion dependiendo el boton seleccionado
             {_accionesCliente_}
         }

@@ -15,7 +15,7 @@ class boton extends elementos {
      * @var string
      */
     private $_tipo;
-
+    
     /**
      * Clase css del boton creado
      * @var string
@@ -47,7 +47,10 @@ class boton extends elementos {
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
                 " type='{$this->_tipo}'" .
-                " class='btn {$this->_presentacion}'" .
+                // Es la acicon que se ejecuta en el llamado ajax
+                " zc-accion-tipo='{$this->_id}'" .
+                // zc-accion indica al sistema que es un boton en el cual debe hacer envio
+                " class='btn {$this->_presentacion} zc-accion'" .
                 ">" .
                 "{$this->_etiqueta}" .
                 " {$this->_icono}" .
@@ -68,6 +71,8 @@ class boton extends elementos {
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>';
                 $this->_presentacion = 'btn-primary';
+                // Para la funcionalidad del buscardor, este id debe ser 'buscar'
+                $this->_prop[ZC_ID] = 'buscar';
                 break;
             case ZC_ACCION_MODIFICAR:
                 $this->_tipo = 'button';
