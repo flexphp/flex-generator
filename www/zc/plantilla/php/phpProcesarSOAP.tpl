@@ -22,7 +22,7 @@ function procesarRespuestaWS($ws) {
                     return $rpta;
                 } else {
                     // $this->manejoError->crearError('No existen datos.');
-                    $rpta['error'] = 'No existen datos.';
+                    $rpta['error'] = 'No se encontraron datos relacionados.';
                 }
             } else {
                 // $this->manejoError->crearError('Error en servidor WS');

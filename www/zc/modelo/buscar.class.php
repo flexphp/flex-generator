@@ -35,25 +35,25 @@ class buscar extends accion {
         $php .= $this->comando('// Ejecucion de la accion', 12);
         $php .= $this->comando('$rpta = $CI->$tabla->buscar($filtros, \'buscar\');', 12);
         $php .= $this->comando('switch (true){', 12);
-        $php .= $this->comando('case (isset($rpta[\'error\']) && \'\' != $rpta[\'error\']):', 12);
-        $php .= $this->comando('// Errores durante la ejecucion', 16);
-        $php .= $this->comando('$Resultado[0][\'error\'] = json_encode($rpta[\'error\']);', 16);
-        $php .= $this->comando('break;', 16);
-        $php .= $this->comando('default:', 12);
-        $php .= $this->comando('// Resultado', 16);
-        $php .= $this->comando('$resultado = $rpta[\'resultado\'];', 16);
-        $php .= $this->comando('$cta = $rpta[\'cta\'];', 16);
-        $php .= $this->comando('break;', 16);
+        $php .= $this->comando('case (isset($rpta[\'error\']) && \'\' != $rpta[\'error\']):', 16);
+        $php .= $this->comando('// Errores durante la ejecucion', 20);
+        $php .= $this->comando('$Resultado[0][\'error\'] = json_encode($rpta[\'error\']);', 20);
+        $php .= $this->comando('break;', 20);
+        $php .= $this->comando('default:', 16);
+        $php .= $this->comando('// Resultado', 20);
+        $php .= $this->comando('$resultado = $rpta[\'resultado\'];', 20);
+        $php .= $this->comando('$cta = $rpta[\'cta\'];', 20);
+        $php .= $this->comando('break;', 20);
         $php .= $this->comando('}', 12);
         $this->_html = $php;
         return $this;
     }
-    
+
     /**
      * Redefine la duncion de inicializacion para manejar las vearialbes de vusqueda
      * @return type
      */
-    function inicializar(){
+    function inicializar() {
         $cmd = $this->comando("\$data = \$filtros;", 12);
         return $cmd;
     }
@@ -86,12 +86,14 @@ class buscar extends accion {
 //        $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
         $php .= $this->comando('default:', 12);
         $php .= $this->comando('// Devuelve el id insertado campo y el numero de filas efectadas', 16);
-        $php .= $this->comando('$ressql = $this->db->select(\'*\')->from(\'' . $this->_tabla . '\')->where($validacion[\'condicion\'])->get();', 16);
+        $php .= $this->comando('$ressql = $this->db->get(\'' . $this->_tabla . '\');', 16);
         $php .= $this->comando('if($ressql->num_rows() > 0){', 16);
+        $php .= $this->comando('$i = 0;', 20);
         $php .= $this->comando('foreach($ressql->result_array() as $row){', 20);
-        $php .= $this->comando('$rpta[\'resultado\'][] = $row;', 24);
+        $php .= $this->comando('$rpta[\'resultado\'][$i] = $row;', 24);
+        $php .= $this->comando('++$i;', 24);
         $php .= $this->comando('}', 20);
-        $php .= $this->comando('$rpta[\'cta\'] = $this->db->affected_rows() > 0;', 20);
+        $php .= $this->comando('$rpta[\'cta\'] = $ressql->num_rows();', 20);
         $php .= $this->comando('}', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('}', 8);
@@ -123,9 +125,9 @@ class buscar extends accion {
         $filtrosTexto = array(
             '=' => '',
             '=' => 'igual a',
-            '% before' => 'inicia con',
-            '%' => 'contiene',
-            '% after' => 'termina con',
+            'after%' => 'inicia con',
+            'both%' => 'contiene',
+            'before%' => 'termina con',
         );
 
         $operadorNumerico = '';
@@ -179,29 +181,29 @@ class buscar extends accion {
             $valor = $caja->crear()->devolverElemento() . FIN_DE_LINEA;
 
             $oculto = ($html == '') ? '' : 'hidden';
-            // La distribucion de estos div debe ser igual a la de los creados por la funcion ZCAccionAgregarFiltro, 
+            // La distribucion de estos div debe ser igual a la de los creados por la funcion ZCAccionAgregarFiltro,
             // Se carga el boton de accion solo una vez
-            $html .= 
-                "<div class='col-md-8 zc-filtros zc-filtros-{$campo[ZC_ID]} {$oculto}'>" .
-                "   <div class='row'>" .
-                "       <div class='col-lg-1'></div>" .
-                "       <div class='col-md-3'>{_elementos_}</div>" .
-                "       <div class='col-md-3'>{$operador}</div>" .
-                "       <div class='col-md-4'>{$valor}</div>" .
-                "       <div class='col-md-1'>{$agregar}</div>" .
-                "   </div>" .
-                "</div>" . FIN_DE_LINEA;
+            $html .=
+                    "<div class='col-md-8 zc-filtros zc-filtros-{$campo[ZC_ID]} {$oculto}'>" .
+                    "   <div class='row'>" .
+                    "       <div class='col-lg-1'></div>" .
+                    "       <div class='col-md-3'>{_elementos_}</div>" .
+                    "       <div class='col-md-3'>{$operador}</div>" .
+                    "       <div class='col-md-4'>{$valor}</div>" .
+                    "       <div class='col-md-1'>{$agregar}</div>" .
+                    "   </div>" .
+                    "</div>" . FIN_DE_LINEA;
         }
         $plantilla = "<div class='row'>" .
                 "" . $html .
-                "    <div class='col-md-4'> " . 
+                "    <div class='col-md-4'> " .
                 "       <div class='row'>" .
                 "           <div class='col-md-3'>{$buscar}</div>" .
                 "           <div class='col-md-3'>{$ocultar}{$mostrar}</div>" .
                 "           <div class='col-md-3'>{_columnas_}</div>" .
                 "           <div class='col-md-1'></div>" .
-                "       </div>" . 
-                "   </div>" . 
+                "       </div>" .
+                "   </div>" .
                 "</div>" . FIN_DE_LINEA;
         $elementos .= "</select>" . FIN_DE_LINEA;
         $this->_filtro = str_replace('{_columnas_}', $columnas, str_replace('{_elementos_}', $elementos, $plantilla));
