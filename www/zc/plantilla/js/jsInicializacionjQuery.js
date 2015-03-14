@@ -20,7 +20,7 @@ $(document).ready(function () {
 
     // Inicializa los filtros de busqueda
     $('.zc-filtros-busqueda').change(function(e){
-        ZCCamposDeBusqueda(e, this);
+        ZCCamposDeBusqueda(e, '{_nombreFormulario_}', this);
     });
 
     // Accion boton cancelar
@@ -43,12 +43,12 @@ $(document).ready(function () {
     $('.zc-filtros-quitar').click(function(e){
         ZCAccionQuitarFiltro(e, this);
     });
-    
+
     // Accion boton zc-filtros-ocultar para ocultar los filtros seleccionados
     $('.zc-filtros-ocultar').click(function(e){
         ZCAccionOcultarFiltro(e, '{_nombreFormulario_}', this);
     });
-    
+
     // Accion boton zc-filtros-mostrar para mostrar los filtros seleccionados
     $('.zc-filtros-mostrar').click(function(e){
         ZCAccionMostrarFiltro(e, '{_nombreFormulario_}', this);

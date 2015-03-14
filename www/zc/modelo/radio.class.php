@@ -41,6 +41,7 @@ class radio extends elementos {
                     </div>
                     <span id='error-{$this->_id}'></span>
                 </div>";
+        return $this;
     }
 
     /**
@@ -69,6 +70,8 @@ class radio extends elementos {
                     "<input" .
                     " type='radio'" .
                     " class='radio'" .
+                    // Permite extraer rapidamente la descripcion de la opcion, se usa en el buscador
+                    " zc-texto='{$valor}'" .
                     // Identificador campo
                     " id='{$idOpcion}'" .
                     " name='{$this->_id}'" .

@@ -41,6 +41,7 @@ class checkbox extends elementos {
                         </div>
                         <span id='error-{$this->_id}'></span>
                     </div>";
+        return $this;
     }
 
     /**
@@ -69,6 +70,8 @@ class checkbox extends elementos {
                     "<input" .
                     " type='checkbox'" .
                     " class='checkbox'" .
+                    // Permite extraer rapidamente la descripcion de la opcion, se usa en el buscador
+                    " zc-texto='{$valor}'" .
                     // Idenfitificador
                     // El nombre se maneja como arreglo para permitir enviar varios valores
                     " id='{$idOpcion}'" .

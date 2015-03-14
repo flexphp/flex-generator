@@ -49,6 +49,7 @@ class lista extends elementos {
                     {$this->_opciones}
                     </select>
                     <span class='help-block'></span>";
+        return $this;
     }
 
     /**

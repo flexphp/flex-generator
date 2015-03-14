@@ -28,14 +28,6 @@
             <div class="col-md-1"></div>
             <div class="col-md-10 text-center">
                 <h2>{_nombreFormulario_}: Listar</h2>
-
-                <!-- Errores devueltos por el servidor -->
-                <div class="alert alert-danger" role="alert">
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Error:</span>
-                    <span id="error-{_nombreFormulario_}"></span>
-                </div>
-                <!-- Fin Errores devueltos por el servidor -->
             </div>
             <div class="col-md-1"></div>
             <!-- Fin Nombre del formulario actual -->
@@ -49,13 +41,26 @@
                     {_contenidoFormulario_}
                 </form>
             </div>
+                <!-- Fin Errores devueltos por el servidor -->
             <div class="col-md-1"></div>
             <!-- Fin Formulario con filtros/opciones de busqueda datos -->
+
+            <!-- Errores devueltos por el servidor -->
+            <div class="col-md-1"></div>
+            <div class="col-md-10 text-center">
+                <br/>
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    <span id="error-{_nombreFormulario_}"></span>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
 
             <!-- Formulario con resultados de la busqueda -->
             <div class="col-md-1"></div>
             <div class="col-md-10">
-                <div id="listado-{_contenidoFormulario_}">
+                <div id="listado-{_nombreFormulario_}">
                     <!-- Resultados de la busqueda -->
                 </div>
             </div>

@@ -3,10 +3,10 @@
              */
             if(nombreAccion === '{_nombreAccion_}') {
                 var filtrosAEnviar = ZCAccionBuscarFiltro('{_nombreFormulario_}');
-                if(filtrosAEnviar == ''){
-                    $('#error-{_nombreFormulario_}').text('{_mensajeError_}'); 
-                    $('.alert-danger').show();
-                }else{
+//                if(filtrosAEnviar == ''){
+//                    $('#error-{_nombreFormulario_}').text('{_mensajeError_}');
+//                    $('.alert-danger').show();
+//                }else{
                     $.ajax({
                         url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}/',
                         type: 'POST',
@@ -19,15 +19,16 @@
                         beforeSend: function(){
                             // Oculta ventana con mensajes
                             $('.alert').hide();
+                            // Limpia resultados anteriores
+                            $('#listado-{_nombreFormulario_}').html('');
                         },
                         success: function(rpta){
-                            console.log(rpta);
                             if(rpta.error != undefined && '' != rpta.error){
                                 // Muestra mensaje de error
-                                $('#error-{_nombreFormulario_}').text(rpta.error); 
+                                $('#error-{_nombreFormulario_}').text(rpta.error);
                                 $('.alert-danger').show();
                             }else{
-                                {_accionCliente_}
+                                ZCListarResultados('listado-{_nombreFormulario_}', rpta);
                             }
                         },
                         error: function(rpta){
@@ -35,5 +36,5 @@
                             $('.alert-danger').show();
                         }
                     });
-                }
+//                }
             }

@@ -15,7 +15,7 @@ class boton extends elementos {
      * @var string
      */
     private $_tipo;
-    
+
     /**
      * Clase css del boton creado
      * @var string
@@ -55,6 +55,7 @@ class boton extends elementos {
                 "{$this->_etiqueta}" .
                 " {$this->_icono}" .
                 "</button>";
+        return $this;
     }
 
     /**

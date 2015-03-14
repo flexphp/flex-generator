@@ -122,6 +122,11 @@ class buscar extends accion {
             '<=' => 'menor o igual a',
             '!=' => 'deferente de',
         );
+        $filtrosListas = array(
+            '=' => '',
+            '=' => 'igual a',
+            '!=' => 'deferente de',
+        );
         $filtrosTexto = array(
             '=' => '',
             '=' => 'igual a',
@@ -131,10 +136,14 @@ class buscar extends accion {
         );
 
         $operadorNumerico = '';
+        $operadorLista = '';
         $operadorTexto = '';
 
         foreach ($filtrosNumericos as $key => $value) {
             $operadorNumerico .= "<option value='$key'>$value</option>" . FIN_DE_LINEA;
+        }
+        foreach ($filtrosListas as $key => $value) {
+            $operadorLista .= "<option value='$key'>$value</option>" . FIN_DE_LINEA;
         }
         foreach ($filtrosTexto as $key => $value) {
             $operadorTexto .= "<option value='$key'>$value</option>" . FIN_DE_LINEA;
@@ -151,21 +160,26 @@ class buscar extends accion {
             }
             $elementos .= "<option value='{$campo[ZC_ID]}'>{$campo[ZC_ETIQUETA]}</option>" . FIN_DE_LINEA;
             $operador = "<select id='operador-{$campo[ZC_ID]}' name='operador-{$campo[ZC_ID]}' class='form-control'>" . FIN_DE_LINEA;
-            $agregar = "<button class='btn zc-filtros-agregar btn-success' id='agregar-{$campo[ZC_ID]}' name='agregar-{$campo[ZC_ID]}'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
+            $agregar = "<button class='btn zc-filtros-agregar btn-success' title='Agregar filtro a la busqueda' id='agregar-{$campo[ZC_ID]}' name='agregar-{$campo[ZC_ID]}'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span>Agregar</button>" . FIN_DE_LINEA;
             //El boton de quitar se agrega en el proceso jQuery
-            $buscar = "<button type='button' zc-accion-tipo='" . ZC_ACCION_BUSCAR . "' class='btn btn-primary zc-accion'><span class='glyphicon glyphicon-search' aria-hidden='true'></span>Buscar</button>" . FIN_DE_LINEA;
+            $buscar = "<button type='button' title='Realizar la busqueda' zc-accion-tipo='" . ZC_ACCION_BUSCAR . "' class='btn btn-primary zc-accion'><span class='glyphicon glyphicon-search' aria-hidden='true'></span>Buscar</button>" . FIN_DE_LINEA;
             $ocultar = "<button class='btn btn-default zc-filtros-ocultar' title='Ocultar filtros'><span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
             $mostrar = "<button class='btn btn-default zc-filtros-mostrar hidden' title='Mostrar filtros'><span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
-            switch ($campo[ZC_DATO]) {
-                case ZC_DATO_NUMERICO:
-                case ZC_DATO_FECHA:
+            switch (true) {
+                case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_CHECKBOX:
+                case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_RADIO:
+                case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_SELECT:
+                    $operador .= $operadorLista;
+                    break;
+                case $campo[ZC_DATO] == ZC_DATO_NUMERICO:
+                case $campo[ZC_DATO] == ZC_DATO_FECHA:
                     $operador .= $operadorNumerico;
                     break;
-                case ZC_DATO_URL:
-                case ZC_DATO_TEXTO:
-                case ZC_DATO_EMAIL:
-                case ZC_DATO_AREA_TEXTO:
-                case ZC_DATO_CONTRASENA:
+                case $campo[ZC_DATO] == ZC_DATO_URL:
+                case $campo[ZC_DATO] == ZC_DATO_TEXTO:
+                case $campo[ZC_DATO] == ZC_DATO_EMAIL:
+                case $campo[ZC_DATO] == ZC_DATO_AREA_TEXTO:
+                case $campo[ZC_DATO] == ZC_DATO_CONTRASENA:
                 default :
                     $operador .= $operadorTexto;
                     break;
@@ -177,8 +191,23 @@ class buscar extends accion {
             $this->_campos[$nro][ZC_LONGITUD_MINIMA] = -1;
             // Los tipos de caja especiales los valida como cajas para evitar validaciones de datos, por ejemplo para los email
             $this->_campos[$nro][ZC_DATO] = (in_array($this->_campos[$nro][ZC_DATO], array(ZC_DATO_EMAIL, ZC_DATO_URL))) ? ZC_DATO_TEXTO : $this->_campos[$nro][ZC_DATO];
-            $caja = new caja($this->_campos[$nro]);
-            $valor = $caja->crear()->devolverElemento() . FIN_DE_LINEA;
+            switch ($this->_campos[$nro][ZC_ELEMENTO]) {
+                case ZC_ELEMENTO_RADIO:
+                    $filtro = new radio($this->_campos[$nro]);
+                    break;
+                case ZC_ELEMENTO_SELECT:
+                    $filtro = new lista($this->_campos[$nro]);
+                    break;
+                case ZC_ELEMENTO_CHECKBOX:
+                    $filtro = new checkbox($this->_campos[$nro]);
+                    break;
+                case ZC_ELEMENTO_CAJA_TEXTO:
+                default :
+                    $filtro = new caja($this->_campos[$nro]);
+                    break;
+            }
+            $valor = $filtro->crear()->devolverElemento() . FIN_DE_LINEA;
+            unset($filtro);
 
             $oculto = ($html == '') ? '' : 'hidden';
             // La distribucion de estos div debe ser igual a la de los creados por la funcion ZCAccionAgregarFiltro,
@@ -186,11 +215,10 @@ class buscar extends accion {
             $html .=
                     "<div class='col-md-8 zc-filtros zc-filtros-{$campo[ZC_ID]} {$oculto}'>" .
                     "   <div class='row'>" .
-                    "       <div class='col-lg-1'></div>" .
                     "       <div class='col-md-3'>{_elementos_}</div>" .
                     "       <div class='col-md-3'>{$operador}</div>" .
                     "       <div class='col-md-4'>{$valor}</div>" .
-                    "       <div class='col-md-1'>{$agregar}</div>" .
+                    "       <div class='col-md-2'>{$agregar}</div>" .
                     "   </div>" .
                     "</div>" . FIN_DE_LINEA;
         }
