@@ -1,17 +1,18 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+$tiempoInicio = time(true);
+// Archivo de configuracion itilizado
 require 'conf.php';
+// Funciones utilizadas durante la creacion del proyecto
 require RUTA_GENERADOR_CODIGO . '/includes/libreria.inc.php';
+// Clase para el manejo de plantillas
 require RUTA_GENERADOR_CODIGO . '/modelo/plantilla.class.php';
-require RUTA_GENERADOR_CODIGO . '/modelo/formulario.class.php';
+// Clase utilizada pra el procesamiento del archivo XML
 require RUTA_GENERADOR_CODIGO . '/modelo/xml.class.php';
+// Clase central del generador de codigo
+require RUTA_GENERADOR_CODIGO . '/modelo/formulario.class.php';
 
+// Mostrar todos los errores generados
 error_reporting(E_ALL);
 
 /**
@@ -137,3 +138,5 @@ try {
 } catch (Exception $e) {
     die($e->getMessage());
 }
+$tiempoFin = time(true);
+echo '<br/> Tiempo de ejecucion: ' . (($tiempoFin - $tiempoInicio) * 1000) / 60;
