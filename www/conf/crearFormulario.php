@@ -1,6 +1,8 @@
 <?php
 
-$tiempoInicio = time(true);
+// Tiempo de inicio del proceso de creacion
+list($usec, $sec) = explode(" ", microtime());
+$tiempoInicio = ((float)$usec + (float)$sec);
 // Archivo de configuracion itilizado
 require 'conf.php';
 // Funciones utilizadas durante la creacion del proyecto
@@ -138,5 +140,6 @@ try {
 } catch (Exception $e) {
     die($e->getMessage());
 }
-$tiempoFin = time(true);
-echo '<br/> Tiempo de ejecucion: ' . (($tiempoFin - $tiempoInicio) * 1000) / 60;
+
+$tiempoFin = tiempoMilisegundos();
+echo '<br/> Tiempo de ejecucion en segundos: ' . ($tiempoFin - $tiempoInicio);

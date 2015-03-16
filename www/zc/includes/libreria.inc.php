@@ -365,3 +365,12 @@ function mover($origen, $destino) {
         eliminar($origen, $destino);
     }
 }
+
+/**
+ * Tiempo en milisegundos, utilizado para medir tiempo de ejecucion
+ * @return type
+ */
+function tiempoMilisegundos() {
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float)$usec + (float)$sec);
+}

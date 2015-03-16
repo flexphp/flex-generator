@@ -68,7 +68,7 @@ $(document).ready(function () {
         if($('#{_nombreFormulario_}').parsley().validate()){
             // Accion seleccionada por el usuario
             // Selecciona la accion dependiendo el boton seleccionado
-            {_accionesCliente_}
+            {_llamadosAjax_}
         }
     });
 });

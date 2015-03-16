@@ -2,7 +2,6 @@
              * Definicion de la accion {_nombreAccion_}
              */
             if(nombreAccion === '{_nombreAccion_}') {
-                {_inicializacionCliente_}
                 $.ajax({
                     // A la accion se le concatena la palabra cliente, asi se llama en la funcion
                     url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}/',

@@ -216,12 +216,11 @@ class procesarXML {
                  */
                 $nombre = $value[ZC_ID];
                 $$nombre = new formulario($value);
-                $$nombre->inicioFormulario();
             } elseif (isset($value[ZC_ELEMENTO]) && $key != 0) {
                 /**
                  * Otros atributos no definidos, esta funcion se encarga de validar el tipo
                  */
-                $$nombre->agregarElementoDesconocidoFormulario($value);
+                $$nombre->agregarElemento($value);
             } else {
                 throw new Exception(__FUNCTION__ . ': No existe el elemento ' . preprint($value, 1));
             }
