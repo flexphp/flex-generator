@@ -49,19 +49,19 @@ class accion extends elementos {
     protected $_filtro = '';
 
     /**
-     * Inicializa los paramentros recibidos por el cliente
+     * Inicializa los parametros recibidos por el cliente
      * @var array
      */
     protected $_inicializarCliente = array();
 
     /**
-     * Inicializa los paramentros recibidos por el servidor
+     * Inicializa los parametros recibidos por el servidor
      * @var array
      */
     protected $_inicializarServidor = array();
 
     /**
-     * Inicializa los paramentros recibidos por la funcion del servidor
+     * Inicializa los parametros recibidos por la funcion del servidor
      * @var array
      */
     protected $_parametrosServidor = array();
