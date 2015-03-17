@@ -49,6 +49,36 @@ class accion extends elementos {
     protected $_filtro = '';
 
     /**
+     * Inicializa los paramentros recibidos por el cliente
+     * @var array
+     */
+    protected $_inicializarCliente = array();
+
+    /**
+     * Inicializa los paramentros recibidos por el servidor
+     * @var array
+     */
+    protected $_inicializarServidor = array();
+
+    /**
+     * Inicializa los paramentros recibidos por la funcion del servidor
+     * @var array
+     */
+    protected $_parametrosServidor = array();
+
+    /**
+     * Inicializa los valores recibidos por el controlador
+     * @var array
+     */
+    protected $_asignacionControlador = array("\$datos['accion'] = \$this->input->post('accion');");
+
+    /**
+     * Tipo de plantilla a utilizar para los llamoados ajax
+     * @var array
+     */
+    protected $_tipoPlantilla = '';
+
+    /**
      * Crear las acciones, segun el tipo de elemento
      * @param array $caracteristicas Caracteristicas de la accion a crear
      * @param string $tabla Nombre de la tabla a manejar
@@ -70,7 +100,6 @@ class accion extends elementos {
                 break;
             case ZC_ACCION_BUSCAR:
                 $accion = new buscar($this->_campos, $this->_tabla, $this->_accion);
-                $this->_filtro = (isset($accion)) ? $accion->filtro()->devolverFiltro() : '';
                 break;
             case ZC_ACCION_MODIFICAR:
 //                $accion = new modificar($this->_campos, $this->_accion);
@@ -79,9 +108,7 @@ class accion extends elementos {
 //                $accion = new borrar($this->_campos, $this->_accion);
                 break;
             case ZC_ELEMENTO_RESTABLECER:
-                break;
             case ZC_ELEMENTO_CANCELAR:
-                break;
             case ZC_ELEMENTO_BOTON:
             default :
                 break;
@@ -89,6 +116,12 @@ class accion extends elementos {
         // Establece la accion creada
         $this->_html = (isset($accion)) ? $accion->crear()->devolverElemento() : $this->comando('$resultado = implode(\'+\', func_get_args());$cta = 1;', 12);
         $this->_funcion = (isset($accion)) ? $accion->funcion()->devolverFuncion() : $this->comando('//$rpta[\'resultado\'] = implode(\'|\', $datos);');
+        $this->_filtro = (isset($accion)) ? $accion->filtro()->devolverFiltro() : '';
+        $this->_inicializarCliente = (isset($accion)) ? $accion->inicializarAccion()->devolverInicializarCliente() : $this->inicializarAccion()->devolverInicializarCliente();
+        $this->_inicializarServidor = (isset($accion)) ? $accion->inicializarAccion()->devolverInicializarServidor() : $this->inicializarAccion()->devolverInicializarServidor();
+        $this->_parametrosServidor = (isset($accion)) ? $accion->inicializarAccion()->devolverParametrosServidor() : $this->inicializarAccion()->devolverParametrosServidor();
+        $this->_asignacionControlador = (isset($accion)) ? $accion->inicializarAccion()->devolverAsignacionControlador() : $this->inicializarAccion()->devolverAsignacionControlador();
+        $this->_tipoPlantilla = (isset($accion)) ? $accion->inicializarAccion()->devolverTipoPlantilla() : $this->inicializarAccion()->devolverTipoPlantilla();
         return $this;
     }
 
@@ -126,12 +159,61 @@ class accion extends elementos {
         return $cmd;
     }
 
+    protected function filtro() {
+        return $this;
+    }
+
+    protected function funcion() {
+        return $this;
+    }
+
+    protected function inicializarAccion() {
+        if (isset($this->_inicializarCliente[0])) {
+            // Ya esta definido, no los vuelve a cargar
+            return $this;
+        }
+        foreach ($this->_campos as $nro => $campo) {
+            // Los datos se envia codificados para evitar errores con caracteres especiales, ademas
+            //permite envial 'cualquier' tipo de dato
+            $this->_inicializarCliente[] = ($campo[ZC_ELEMENTO] != ZC_ELEMENTO_CHECKBOX) ? "'{$campo[ZC_ID]}' => \$datos['{$campo[ZC_ID]}']" : "'{$campo[ZC_ID]}' => json_encode(\$datos['{$campo[ZC_ID]}'])";
+            // Inicilizar servidor
+            $this->_inicializarServidor[] = "'{$campo[ZC_ID]}' => 'xsd:{$campo[ZC_DATO_WS]}'";
+
+            $this->_parametrosServidor[] = "\${$campo[ZC_ID]}";
+
+            $this->_asignacionControlador[] = "\$datos['{$campo[ZC_ID]}'] = \$this->input->post('{$campo[ZC_ID]}');";
+
+            $this->_tipoPlantilla = 'jsLlamadosDefaultAjax.js';
+        }
+        return $this;
+    }
+
     public function devolverFuncion() {
         return $this->_funcion;
     }
 
     public function devolverFiltro() {
         return $this->_filtro;
+    }
+
+    public function devolverInicializarCliente() {
+        return $this->_inicializarCliente;
+    }
+
+    public function devolverInicializarServidor() {
+        return $this->_inicializarServidor;
+    }
+
+    public function devolverParametrosServidor() {
+        return $this->_parametrosServidor;
+    }
+
+    public function devolverAsignacionControlador() {
+        return $this->_asignacionControlador;
+    }
+
+    public function devolverTipoPlantilla() {
+        return $this->_tipoPlantilla;
     }
 
 }

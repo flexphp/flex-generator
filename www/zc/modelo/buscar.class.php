@@ -68,11 +68,11 @@ class buscar extends accion {
             throw new Exception(__FUNCTION__ . ': Error en la accion, se esperaba: ' . ZC_ACCION_BUSCAR);
         }
         $php = '';
-        $php .= $this->comando('function buscar($campos, $accion){');
+        $php .= $this->comando('function buscar($campos, $accion){', 4);
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('$CI = new CI_Controller;', 8);
         $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
-        $php .= $this->comando('$validacion = $this->modelo_' . $this->_tabla . '->validarFiltros($campos, $accion);');
+        $php .= $this->comando('$validacion = $this->modelo_' . $this->_tabla . '->validarFiltros($campos, $accion);', 8);
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (isset($validacion[\'error\']) && \'\' != $validacion[\'error\']):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos', 16);
@@ -235,6 +235,19 @@ class buscar extends accion {
                 "</div>" . FIN_DE_LINEA;
         $elementos .= "</select>" . FIN_DE_LINEA;
         $this->_filtro = str_replace('{_columnas_}', $columnas, str_replace('{_elementos_}', $elementos, $plantilla));
+        return $this;
+    }
+
+    public function inicializarAccion() {
+        if (isset($this->_inicializarCliente[0])) {
+            // Ya esta definido, no vuelve a asignarlos
+            return $this;
+        }
+        $this->_inicializarCliente[] = "'filtros' => \$datos['filtros']";
+        $this->_inicializarServidor[] = "'filtros' => 'xsd:string'";
+        $this->_parametrosServidor[] = '$filtros';
+        $this->_asignacionControlador[] = "\$datos['filtros'] = \$this->input->post('filtros');";
+        $this->_tipoPlantilla = 'jsLlamadosBuscarAjax.js';
         return $this;
     }
 

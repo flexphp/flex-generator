@@ -56,19 +56,26 @@ class formulario {
      * @var string
      */
     public $_metodo = 'POST';
-    
-    /**
-     * Tipo de WS a crear rest|soap, por defecto = rest
-     * @var string
-     */
-    private $_tipoWS = ZC_WS_REST;
 
     /**
-     * Almacena las funciones que se crearan en el controlador, una funcion corresponde 
+     * Tipo de WS a crear rest|soap, por defecto = soap
+     * @var string
+     */
+    private $_tipoWS = ZC_WS_SOAP;
+
+    /**
+     * Almacena las funciones que se crearan en el controlador, una funcion corresponde
      * la mayoria de las veces a un boton
      * @var string
      */
     private $_funcionControlador = '';
+
+    /**
+     * Almacena las funciones que se crearan en el servidor WS, una funcion corresponde
+     * la mayoria de las veces a un boton
+     * @var array
+     */
+    private $_funcionServidor = array();
 
     /**
      * Almacena cada uno de los elementos creados dentro del formulario HTML: botones, cajas, etc.
@@ -109,30 +116,36 @@ class formulario {
      * Parametros pasados al servidor SOAP, se usan durante la definicion de los parametros
      * que acepta la funcion servidor SOAP, se definen los tipos xsd a manejar, depende de la
      * funcion que devuelve el tipo de datoWS
-     * @var string
+     * @var array
      */
-    private $_asignacionParametrosServidorSOAP = '';
+    private $_inicializarServidor = array();
 
     /**
      * Parametros pasados por el cliente segun los valores del AJAX, define la asignacion asi
      * $index = $datos[index];, se usa en el llamado del WS
-     * @var string
+     * @var array
      */
-    private $_asignacionParametrosClienteSOAP = '';
+    private $_inicializarCliente = array();
 
     /**
-     * Lista de parametros aceptados por la funcion del WS Servidor, corresponde a cada uno 
+     * Lista de parametros aceptados por la funcion del WS Servidor, corresponde a cada uno
      * de los campos de la tabla
-     * @var string
+     * @var array
      */
-    private $_asignacionParametrosFuncionServidorSOAP = '';
+    private $_parametrosServidor = array();
 
     /**
      * Lista de valores pasados por el AJAX, asignan los valores a pasar el servidor WS,
      * se usa en la creacion de la funcion del controlador
-     * @var string
+     * @var array
      */
-    private $_asignacionParametrosFuncionClienteSOAP = "\$datos['accion'] = \$this->input->post('accion');\n";
+    private $_asignacionControlador = array();
+
+    /**
+     * Tipo de plantilla a utilizar para los llamados ajax
+     * @var array
+     */
+    private $_tipoPlantilla = array();
 
     /**
      * Inicializacion la variable que contiene el codigo de la validacion del lado servidor,
@@ -142,18 +155,18 @@ class formulario {
     private $_validacionModelo = '';
 
     /**
-     * Inicializacion la variable que contiene el codigo de las funcioes creadas en el modelo
+     * Inicializacion la variable que contiene el codigo de las funciones creadas en el modelo
      * corresponde a cada uno de los llamados al servidor WS
-     * @var string
+     * @var array
      */
-    private $_funcionesModelo = '';
+    private $_funcionesModelo = array();
 
     /**
      * Inicializacion la variable que contiene el codigo html de los filtros disponibles.
      * Se usa en la vusta de busqueda.
-     * @var string
+     * @var array
      */
-    private $_filtros = '';
+    private $_filtros = array();
 
     /**
      * Inicializacion la variable que contiene el codigo del llamado al servidor, cada una
@@ -209,7 +222,7 @@ class formulario {
      * @var type
      */
     private $_nombreArchivoJs = '';
-    
+
     /**
      * Nombre de la funcion que hace la validacion de datos
      * @var type
@@ -250,7 +263,7 @@ class formulario {
         $this->_nombreArchivoControlador = $id;
         // Nombre del listado
         $this->_nombreArchivoListar = 'vista_listar_' . $id;
-        // Nombre del archivo que guarda las funcionalidades del servidor 
+        // Nombre del archivo que guarda las funcionalidades del servidor
         $this->_nombreArchivoServidor = $id . '_' . $this->_tipoWS;
         // Nombre javascript
         $this->_nombreArchivoJs = $id;
@@ -291,7 +304,7 @@ class formulario {
 
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('llamadosModelo', $this->_llamadosModelo);
-        $plantilla->asignarEtiqueta('funcionesModelo', $this->_funcionesModelo);
+        $plantilla->asignarEtiqueta('funcionesModelo', implode(FIN_DE_LINEA, $this->_funcionesModelo));
         $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
         $plantilla->asignarEtiqueta('nombreValidacion', $this->_nombreFuncionValidacion);
 
@@ -361,7 +374,7 @@ class formulario {
 
         $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
         $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
-        $plantilla->asignarEtiqueta('contenidoFormulario', $this->_filtros);
+        $plantilla->asignarEtiqueta('contenidoFormulario', implode(FIN_DE_LINEA, $this->_filtros));
         $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
 
         if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
@@ -462,7 +475,7 @@ class formulario {
     }
 
     /**
-     * Alias de la funcion para agregar elementos desde otras clases, se puede omitir el tipo 
+     * Alias de la funcion para agregar elementos desde otras clases, se puede omitir el tipo
      * de elemento, la funcion se encarga de escoger el adecuado, ademas acepta multiles elemesntos separados por coma
      * @param type $elementos
      */
@@ -658,29 +671,14 @@ class formulario {
     }
 
     /**
-     * Crear archivo encargado de hacer la validaciones del lado servidor
-     * $directorioSalida = dist/serv
-     * @param string $directorioSalida Ruta de salida del archivo
+     * Crea las variables necesarias para la ejecucion del proceso, ademas crea la funcion de
+     * validacion de datos del formulario para el lado servidor
      * @return \formulario
      * @throws Exception
      */
     private function modeloValidacionFormulario() {
         $validacion = '';
         foreach ($this->_elementos as $nro => $caracteristicas) {
-
-            $this->_asignacionParametrosServidorSOAP .= ($this->_asignacionParametrosServidorSOAP == '') ? '' : ',' . FIN_DE_LINEA . insertarEspacios(12);
-            $this->_asignacionParametrosServidorSOAP .= "'{$caracteristicas[ZC_ID]}' => 'xsd:{$caracteristicas[ZC_DATO_WS]}'";
-
-            // Los datos se envia codificados para evitar errores con caracteres especiales, ademas
-            //permite envial 'cualquier' tipo de dato
-            $this->_asignacionParametrosClienteSOAP .= ($this->_asignacionParametrosClienteSOAP == '') ? '' : ',' . FIN_DE_LINEA . insertarEspacios(12);
-            $this->_asignacionParametrosClienteSOAP .= ($caracteristicas[ZC_ELEMENTO] != ZC_ELEMENTO_CHECKBOX) ? "'{$caracteristicas[ZC_ID]}' => \$datos['{$caracteristicas[ZC_ID]}']" : "'{$caracteristicas[ZC_ID]}' => json_encode(\$datos['{$caracteristicas[ZC_ID]}'])";
-
-            $this->_asignacionParametrosFuncionServidorSOAP .= ($this->_asignacionParametrosFuncionServidorSOAP == '') ? '' : ', ';
-            $this->_asignacionParametrosFuncionServidorSOAP .= "\${$caracteristicas[ZC_ID]}";
-
-            $this->_asignacionParametrosFuncionClienteSOAP .= insertarEspacios(8) . "\$datos['{$caracteristicas[ZC_ID]}'] = \$this->input->post('{$caracteristicas[ZC_ID]}');" . FIN_DE_LINEA;
-
             // Validacion obligatoriedad
             $validacion .= validarArgumentoObligatorio($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
             // Validacion tipo de dato Entero
@@ -712,14 +710,12 @@ class formulario {
                 continue;
             }
             // Determina la accion a ejecutar en el cvontrolador
+            $comando = $this->_asignacionControlador[$caracteristicas[ZC_ID]] . FIN_DE_LINEA . insertarEspacios(8);
             switch ($caracteristicas[ZC_ELEMENTO]) {
                 case ZC_ACCION_BUSCAR:
-                    $comando = "\$datos['accion'] = \$this->input->post('accion');" . FIN_DE_LINEA . insertarEspacios(8);
-                    $comando .= "\$datos['filtros'] = \$this->input->post('filtros');" . FIN_DE_LINEA . insertarEspacios(8);
                     $comando .= str_replace('{_nombreModelo_}', $this->_nombreArchivoModelo, "\$rpta = \$this->{_nombreModelo_}->validarFiltros(\$datos['filtros'], \$datos['accion']);");
                     break;
                 default:
-                    $comando = $this->_asignacionParametrosFuncionClienteSOAP . insertarEspacios(8);;
                     $comando .= str_replace(array('{_nombreModelo_}', '{_nombreValidacion_}'), array($this->_nombreArchivoModelo, $this->_nombreFuncionValidacion), "\$rpta = \$this->{_nombreModelo_}->{_nombreValidacion_}(\$datos);");
                     break;
             }
@@ -727,15 +723,11 @@ class formulario {
              * Plantilla para la creacion de acciones en el controlador
              */
             $plantilla = new plantilla();
-            if ($this->_tipoWS == ZC_WS_SOAP) {
-                $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorAccionSOAP.tpl');
-                $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
-                // Se crean durante el proceso de los elementos para las validaciones
-                $plantilla->asignarEtiqueta('asignacionCliente', $comando);
-                $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
-            } else if ($this->_tipoWS == ZC_WS_REST) {
-                $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorAccionREST.tpl');
-            }
+            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorAccionSOAP.tpl');
+            $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
+            // Se crean durante el proceso de los elementos para las validaciones
+            $plantilla->asignarEtiqueta('asignacionCliente', $comando);
+            $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
             // Concatena cada accion del cliente
             $this->_funcionControlador .= FIN_DE_LINEA . insertarEspacios(4) . $plantilla->devolverPlantilla() . FIN_DE_LINEA;
         }
@@ -754,19 +746,11 @@ class formulario {
                 // accion preferida
                 continue;
             }
-            switch ($caracteristicas[ZC_ELEMENTO]) {
-                case ZC_ACCION_BUSCAR:
-                    $tipoPlantilla = 'jsLlamadosBuscarAjax.js';
-                    break;
-                default:
-                    $tipoPlantilla = 'jsLlamadosDefaultAjax.js';
-                    break;
-            }
             /**
              * Plantilla para los envio con AJAX en javascript (jQuery)
              */
             $plantilla = new plantilla();
-            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/' . $tipoPlantilla);
+            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/' . $this->_tipoPlantilla[$caracteristicas[ZC_ID]]);
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
             $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
             // Se define en la creacion de la plantilla del controlador
@@ -781,7 +765,7 @@ class formulario {
     }
 
     /**
-     * Crear cliente WS para el caso de WS SOAP
+     * Crear cliente WS para consumir el servicio web, se hace por cada accion
      * @return \formulario
      */
     private function modeloWsSOAPClienteFormulario() {
@@ -789,15 +773,6 @@ class formulario {
             if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR))) {
                 // Los botones tipo restablecer, cancelar no crean acciones
                 continue;
-            }
-            // Determina los paramettros a definir en el modelo
-            switch ($caracteristicas[ZC_ELEMENTO]) {
-                case ZC_ACCION_BUSCAR:
-                    $comando = "'filtros' => \$datos['filtros'],";
-                    break;
-                default:
-                    $comando = $this->_asignacionParametrosClienteSOAP;
-                    break;
             }
             /**
              * Plantilla para la creacion de acciones en el cliente
@@ -807,9 +782,7 @@ class formulario {
             $plantilla->asignarEtiqueta('nombreModelo', $this->_id);
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
             $plantilla->asignarEtiqueta('servidorAccion', $this->_nombreArchivoServidor);
-            
-            $plantilla->asignarEtiqueta('asignacionCliente', $comando);
-
+            $plantilla->asignarEtiqueta('asignacionCliente', $this->_inicializarCliente[$caracteristicas[ZC_ID]]);
             // Concatena las acciones que se pueden llamar desde el cliente
             $this->_llamadosModelo .= $plantilla->devolverPlantilla() . FIN_DE_LINEA;
         }
@@ -827,18 +800,7 @@ class formulario {
                 // Los botones tipo restablecer, cancelar no crean acciones
                 continue;
             }
-            
-            // Determina la accion a ejecutar en el cvontrolador
-            switch ($caracteristicas[ZC_ELEMENTO]) {
-                case ZC_ACCION_BUSCAR:
-                    $asignacionCliente=  "'filtros' => 'xsd:string'";
-                    $asignacionFuncion = '$filtros';
-                    break;
-                default:
-                    $asignacionCliente=  $this->_asignacionParametrosServidorSOAP;
-                    $asignacionFuncion = $this->_asignacionParametrosFuncionServidorSOAP;
-                    break;
-            }
+
             /**
              * Plantilla para la creacion de acciones en el cliente
              */
@@ -847,15 +809,10 @@ class formulario {
             $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoServidor);
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
             $plantilla->asignarEtiqueta('nombreFuncion', $caracteristicas[ZC_ID] . 'Servidor');
-            $plantilla->asignarEtiqueta('asignacionCliente', $asignacionCliente);
-            $plantilla->asignarEtiqueta('asignacionFuncion', $asignacionFuncion);
-            // Asigna la accion del lado servidor
-            $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO]);
-            $plantilla->asignarEtiqueta('accionServidor', $accion->crear()->devolverElemento());
-            // Concatena las funciones que se ejecutaran en el modelo
-            $this->_funcionesModelo .= $accion->devolverFuncion();
-            // Concatena las los filtros de los formularios de busqueda
-            $this->_filtros .= $accion->devolverFiltro();
+            $plantilla->asignarEtiqueta('asignacionCliente', $this->_inicializarServidor[$caracteristicas[ZC_ID]]);
+            $plantilla->asignarEtiqueta('asignacionFuncion', $this->_parametrosServidor[$caracteristicas[ZC_ID]]);
+            $plantilla->asignarEtiqueta('accionServidor', $this->_funcionServidor[$caracteristicas[ZC_ID]]);
+
             // Concatena las acciones que se pueden llamar desde el cliente
             $this->_accionesServidorWS .= FIN_DE_LINEA . insertarEspacios(4) . $plantilla->devolverPlantilla() . FIN_DE_LINEA;
         }
@@ -885,9 +842,39 @@ class formulario {
      */
     private function procesarFormulario() {
         $this->modeloValidacionFormulario();
+        $this->propiedadesAccion();
         $this->modeloWsSOAPClienteFormulario();
         $this->modeloControladorAcciones();
         $this->controladorWsSOAPServidorFormulario();
+        return $this;
+    }
+
+    private function propiedadesAccion() {
+        foreach ($this->_acciones as $nro => $caracteristicas) {
+            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR))) {
+                // Los botones tipo restablecer, cancelar no crean acciones
+                continue;
+            }
+
+            // Determina la accion a ejecutar en el cvontrolador
+            $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO]);
+            // Funciones creada en el servidor
+            $this->_funcionServidor[$caracteristicas[ZC_ID]] = $accion->crear()->devolverElemento();
+            // Concatena las funciones que se ejecutaran en el modelo
+            $this->_funcionesModelo[$caracteristicas[ZC_ID]] = $accion->devolverFuncion();
+            // Concatena las los filtros de los formularios de busqueda
+            $this->_filtros[$caracteristicas[ZC_ID]] = $accion->devolverFiltro();
+            // Asignacion variables en el modelo para el llamado WS
+            $this->_inicializarCliente[$caracteristicas[ZC_ID]] = implode(',' . FIN_DE_LINEA . insertarEspacios(12), $accion->devolverInicializarCliente());
+            // Inicializacion de variables en el servidor
+            $this->_inicializarServidor[$caracteristicas[ZC_ID]] = implode(',' . FIN_DE_LINEA . insertarEspacios(12), $accion->devolverInicializarServidor());
+            // Parametros recibidos por el servidor
+            $this->_parametrosServidor[$caracteristicas[ZC_ID]] = implode(', ', $accion->devolverParametrosServidor());
+            // Asginacion controlador
+            $this->_asignacionControlador[$caracteristicas[ZC_ID]] = implode(FIN_DE_LINEA . insertarEspacios(8), $accion->devolverAsignacionControlador());
+            // Asginacion controlador
+            $this->_tipoPlantilla[$caracteristicas[ZC_ID]] = $accion->devolverTipoPlantilla();
+        }
         return $this;
     }
 
