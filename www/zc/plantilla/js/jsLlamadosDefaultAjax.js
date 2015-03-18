@@ -9,6 +9,8 @@
                     dataType: 'JSON',
                     data: $('#{_nombreFormulario_}').serialize()+'&accion='+nombreAccion,
                     beforeSend: function(){
+                        // Inactivar el boton, solo permite un envio a la vez
+                        $('#'+nombreAccion).addClass('disabled').prop('disabled', true);
                         // Oculta ventana con mensajes
                         $('.alert').hide();
                     },
@@ -21,6 +23,10 @@
                         }else{
                             {_accionCliente_}
                         }
+                    },
+                    complete: function(){
+                        // Activar el boton cuando se completa la accion, con error o sin error
+                        $('#'+nombreAccion).removeClass('disabled').prop('disabled', false);
                     },
                     error: function(rpta){
                         $('#error-{_nombreFormulario_}').text('Error en el servicio');

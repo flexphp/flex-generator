@@ -153,6 +153,11 @@ class buscar extends accion {
         $elementos = '';
         $columnas = '';
         $elementos .= "<select class='form-control zc-filtros-busqueda'>" . FIN_DE_LINEA;
+        
+        //El boton de quitar se agrega en el proceso jQuery
+        $buscar = "<button type='button' title='Realizar la busqueda' zc-accion-tipo='" . ZC_ACCION_BUSCAR . "' id='buscar' name='buscar' class='btn btn-primary zc-accion'><span class='glyphicon glyphicon-search' aria-hidden='true'></span>Buscar</button>" . FIN_DE_LINEA;
+        $ocultar = "<button class='btn btn-default zc-filtros-ocultar' title='Ocultar filtros'><span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
+        $mostrar = "<button class='btn btn-default zc-filtros-mostrar hidden' title='Mostrar filtros'><span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
         foreach ($this->_campos as $nro => $campo) {
             if ($campo[ZC_DATO] == ZC_DATO_CONTRASENA) {
                 // Los campos tipo contrasena no admiten busquedas
@@ -161,10 +166,6 @@ class buscar extends accion {
             $elementos .= "<option value='{$campo[ZC_ID]}'>{$campo[ZC_ETIQUETA]}</option>" . FIN_DE_LINEA;
             $operador = "<select id='operador-{$campo[ZC_ID]}' name='operador-{$campo[ZC_ID]}' class='form-control'>" . FIN_DE_LINEA;
             $agregar = "<button class='btn zc-filtros-agregar btn-success' title='Agregar filtro a la busqueda' id='agregar-{$campo[ZC_ID]}' name='agregar-{$campo[ZC_ID]}'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span>Agregar</button>" . FIN_DE_LINEA;
-            //El boton de quitar se agrega en el proceso jQuery
-            $buscar = "<button type='button' title='Realizar la busqueda' zc-accion-tipo='" . ZC_ACCION_BUSCAR . "' class='btn btn-primary zc-accion'><span class='glyphicon glyphicon-search' aria-hidden='true'></span>Buscar</button>" . FIN_DE_LINEA;
-            $ocultar = "<button class='btn btn-default zc-filtros-ocultar' title='Ocultar filtros'><span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
-            $mostrar = "<button class='btn btn-default zc-filtros-mostrar hidden' title='Mostrar filtros'><span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
             switch (true) {
                 case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_CHECKBOX:
                 case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_RADIO:
