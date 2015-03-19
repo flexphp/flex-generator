@@ -61,7 +61,7 @@ class {_nombreModelo_} extends CI_Model {
         // Accion que se esta ejecutando
         $datos['accion'] = $accion;
         // Determina si se deben validar los filtros
-        $filtros = ($campos == '')? explode('|??|', $campos) : array();
+        $filtros = ($campos != '')? explode('|??|', $campos) : array();
 
         foreach ($filtros as $cadaFiltro) {
             if($cadaFiltro == ''){

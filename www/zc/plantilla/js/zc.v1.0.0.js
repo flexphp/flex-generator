@@ -48,7 +48,8 @@ function ZCAccionReiniciarFormulario(e, formulario){
  * @param string formulario Id del formulario al que se la va validar el progreso
  * @returns {Boolean}
  */
-function ZCAccionCancelar(formulario, formasValidar){
+function ZCAccionCancelar(e, formulario, formasValidar){
+    e.preventDefault();
     // Todos campos del formulario
     var existenCamposDiligenciados = false;
     var valorCampo = '';

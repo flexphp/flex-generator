@@ -26,7 +26,7 @@ $(document).ready(function () {
     // Accion boton cancelar
     $('.zc-boton-cancelar').click(function(e){
         if(ZCAccionCancelar(e, '{_nombreFormulario_}', formasValidar)){
-            if(confirm('No se guardaran los cambios, continuar?')){
+            if(confirm('No se guardaran los cambios, desea continuar?')){
                 history.back();
             }
         }else{
