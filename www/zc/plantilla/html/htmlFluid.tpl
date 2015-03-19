@@ -60,7 +60,7 @@
         </div>
 
         <!-- Id del registro actual, si esta vacio, es un registro nuevo, de lo contrario es una actualizacion -->
-        <input type="text" id="zc-id-{_nombreFormulario_}" name="zc-id-{_nombreFormulario_}" value=""/>
+        <input type="hidden" id="zc-id-{_nombreFormulario_}" name="zc-id-{_nombreFormulario_}" value=""/>
         <!-- URL del proyecto, se usa en los llamados ajax -->
         <input type="hidden" id="URLProyecto" name="URLProyecto" value="<?php echo base_url(); ?>"/>
         <!-- JS jQuery -->

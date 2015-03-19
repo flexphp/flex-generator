@@ -61,7 +61,7 @@ $(document).ready(function () {
     });
 
     // Habilita la validacion del formulario
-    $('#{_nombreFormulario_} .zc-accion').not(':input[type=reset], .zc-boton-cancelar, .zc-filtros-agregar, .zc-filtros-quitar, .zc-filtros-mostrar, .zc-filtros-ocultar').click(function () {
+    $('#{_nombreFormulario_} .zc-accion').click(function () {
         $('.parsley-errors-list').show();
         var nombreAccion = ($(this).attr('zc-accion-tipo'));
         console.log(nombreAccion);
@@ -71,4 +71,7 @@ $(document).ready(function () {
             {_llamadosAjax_}
         }
     });
+    
+    // Busqueda predefinida, se deja al final cuando ya se ha cargado todo
+    ZCAccionBuscarPredefinido('{_nombreFormulario_}');
 });

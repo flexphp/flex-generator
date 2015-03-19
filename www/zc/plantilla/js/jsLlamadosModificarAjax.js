@@ -21,9 +21,11 @@
                             $('.alert').hide();
                             // Limpia resultados anteriores
                             $('#listado-{_nombreFormulario_}').html('');
+                            // Mostrar cargando
+                            $('#'+nombreAccion+' span').addClass('glyphicon-refresh glyphicon-refresh-animate');
                         },
                         success: function(rpta){
-                            if(rpta.error != undefined && '' != rpta.error){
+                            if(rpta.error !== undefined && '' !== rpta.error){
                                 // Muestra mensaje de error
                                 $('#error-{_nombreFormulario_}').text(rpta.error);
                                 $('.alert-danger').show();
@@ -34,6 +36,8 @@
                         complete: function(){
                             // Activar el boton cuando se completa la accion, con error o sin error
                             $('#'+nombreAccion).removeClass('disabled').prop('disabled', false);
+                            // Ocultar cargando
+                            $('#'+nombreAccion+' span').addClass('glyphicon-refresh glyphicon-refresh-animate');
                         },
                         error: function(rpta){
                             $('#error-{_nombreFormulario_}').text('Error en el servicio');

@@ -50,10 +50,10 @@ class boton extends elementos {
                 // Es la acicon que se ejecuta en el llamado ajax
                 " zc-accion-tipo='{$this->_id}'" .
                 // zc-accion indica al sistema que es un boton en el cual debe hacer envio
-                " class='btn {$this->_presentacion} zc-accion'" .
+                " class='btn {$this->_presentacion}'" .
                 ">" .
-                " {$this->_etiqueta}" .
                 " {$this->_icono}" .
+                " {$this->_etiqueta}" .
                 "</button>";
         return $this;
     }
@@ -66,24 +66,24 @@ class boton extends elementos {
             case ZC_ACCION_AGREGAR:
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
-                $this->_presentacion = 'btn-success';
+                $this->_presentacion = 'btn-success zc-accion';
                 break;
             case ZC_ACCION_BUSCAR:
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>';
-                $this->_presentacion = 'btn-primary';
+                $this->_presentacion = 'btn-primary zc-accion';
                 // Para la funcionalidad del buscador, este id debe ser 'buscar'
                 $this->_prop[ZC_ID] = 'buscar';
                 break;
             case ZC_ACCION_MODIFICAR:
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>';
-                $this->_presentacion = 'btn-success';
+                $this->_presentacion = 'btn-success zc-accion';
                 break;
             case ZC_ACCION_BORRAR:
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
-                $this->_presentacion = 'btn-danger';
+                $this->_presentacion = 'btn-danger zc-accion';
                 break;
             case ZC_ELEMENTO_CANCELAR:
                 $this->_tipo = 'button';

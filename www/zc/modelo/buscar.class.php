@@ -133,6 +133,7 @@ class buscar extends accion {
             'after%' => 'inicia con',
             'both%' => 'contiene',
             'before%' => 'termina con',
+            '!=' => 'deferente de',
         );
 
         $operadorNumerico = '';

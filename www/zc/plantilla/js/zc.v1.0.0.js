@@ -202,15 +202,35 @@ function ZCAccionBuscarFiltro(formulario){
         //Verifica que no se halla contado antes
         //Salta elementos que no tengan id definido
         var filtro = $('#'+this.id).val();
-        if(filtro != ''){
-            filtrosAEnviar += (filtrosAEnviar != '') ? '|??|' : '';
+        if(filtro !== '' && filtro !== undefined){
+            filtrosAEnviar += (filtrosAEnviar !== '') ? '|??|' : '';
             filtrosAEnviar += filtro;
+        }
+        if(this.id === 'filtros-seleccionados-0'){
+            //Elimina el filtro predefinido, esto evita utilizar el filtro en otras busquedas
+            $('#'+this.id).val('');
         }
     });
 
     //Establece el valor de los filtros a utilizar en la busqueda
     return filtrosAEnviar;
 
+}
+
+/**
+ * Valores de busqueda predefinidos, se usa en la accion crear
+ * @param {string} formulario Nombre del formaulario a utilizar
+ * @returns {String}
+ */
+function ZCAccionBuscarPredefinido(formulario){
+    var filtrosPredefinidos = $('#zc-filtros-predefinidos').val();
+    if(filtrosPredefinidos !== '' && filtrosPredefinidos !== undefined){
+        //Establece el valor de los filtros a utilizar en la busqueda
+        $('#'+formulario).append('<input id="filtros-seleccionados-0" type="hidden" class="zc-filtros-seleccionado" value="'+filtrosPredefinidos+'">');
+        // Ejecuta accion boton buscar
+        $('#'+formulario).find('.zc-accion').trigger('click');
+    }
+    return true;
 }
 
 /**

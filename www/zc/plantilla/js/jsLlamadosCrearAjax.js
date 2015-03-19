@@ -13,21 +13,27 @@
                         $('#'+nombreAccion).addClass('disabled').prop('disabled', true);
                         // Oculta ventana con mensajes
                         $('.alert').hide();
+                        // Mostrar cargando
+                        $('#'+nombreAccion+' span').addClass('glyphicon-refresh glyphicon-refresh-animate');
                     },
                     success: function(rpta){
                         console.log(rpta);
-                        if(rpta.error != undefined && '' != rpta.error){
+                        if(rpta.error !== undefined && '' !== rpta.error){
                             // Muestra mensaje de error
                             $('#error-{_nombreFormulario_}').text(rpta.error); 
                             $('.alert-danger').show();
                         }else{
                             // Establece el id devuelto durante el proceso de insercion
                             $('#zc-id-{_nombreFormulario_}').val(rpta.infoEncabezado);
+                            // Carga el listado con el registro insertado
+                            window.location.assign($('#URLProyecto').val()+'index.php/{_nombreControlador_}/listar/'+rpta.infoEncabezado);
                         }
                     },
                     complete: function(){
                         // Activar el boton cuando se completa la accion, con error o sin error
                         $('#'+nombreAccion).removeClass('disabled').prop('disabled', false);
+                        // Ocultar cargando
+                        $('#'+nombreAccion+' span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
                     },
                     error: function(rpta){
                         $('#error-{_nombreFormulario_}').text('Error en el servicio');
