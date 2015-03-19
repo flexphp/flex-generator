@@ -15,6 +15,15 @@ class buscar extends accion {
     }
 
     /**
+     * Redefine la duncion de inicializacion para manejar las vearialbes de vusqueda
+     * @return type
+     */
+    function inicializar() {
+        $cmd = $this->comando("\$data = \$filtros;", 12);
+        return $cmd;
+    }
+
+    /**
      * Selecciona crea la accion buscar. el resultado de la accion se almacena en la
      * variable $resultado (IMPORTANTE)
      */
@@ -47,15 +56,6 @@ class buscar extends accion {
         $php .= $this->comando('}', 12);
         $this->_html = $php;
         return $this;
-    }
-
-    /**
-     * Redefine la duncion de inicializacion para manejar las vearialbes de vusqueda
-     * @return type
-     */
-    function inicializar() {
-        $cmd = $this->comando("\$data = \$filtros;", 12);
-        return $cmd;
     }
 
     /**
@@ -239,16 +239,23 @@ class buscar extends accion {
         return $this;
     }
 
+    /**
+     * Varibles utilizadas durante la creacion de los servicios web
+     * @return \buscar
+     */
     public function inicializarAccion() {
-        if (isset($this->_inicializarCliente[0])) {
+        if (isset($this->_yaInicio)) {
             // Ya esta definido, no vuelve a asignarlos
             return $this;
         }
         $this->_inicializarCliente[] = "'filtros' => \$datos['filtros']";
         $this->_inicializarServidor[] = "'filtros' => 'xsd:string'";
         $this->_parametrosServidor[] = '$filtros';
-        $this->_asignacionControlador[] = "\$datos['filtros'] = \$this->input->post('filtros');";
+        $this->_asignacionControlador[] = $this->comando("\$datos['filtros'] = \$this->input->post('filtros');");
         $this->_tipoPlantilla = 'jsLlamadosBuscarAjax.js';
+        
+        //Desactiva nuevas peticiones de inicializacion
+        $this->_yaInicio = true;
         return $this;
     }
 

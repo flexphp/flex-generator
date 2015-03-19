@@ -4,14 +4,21 @@
  * Clase base para la creacion de elemento HTML
  */
 require_once 'elementos.class.php';
+
 /**
  * Crea la funcion de agregar (insert)
  */
 require_once 'agregar.class.php';
+
 /**
  * Crea la funcion de listar/buscar (select)
  */
 require_once 'buscar.class.php';
+
+/**
+ * Crea la funcion de modificar/actualizar (update)
+ */
+require_once 'modificar.class.php';
 
 /**
  * Crea acciones: agregar, buscar, modificar, eliminar, cancelar, defecto
@@ -77,6 +84,12 @@ class accion extends elementos {
      * @var array
      */
     protected $_tipoPlantilla = '';
+    
+    /**
+     * Determina si las varables ya fueron inicializadas, por defecto no se ha inicializado
+     * @var bool
+     */
+    protected $_yaInicio = null;
 
     /**
      * Crear las acciones, segun el tipo de elemento
@@ -84,7 +97,7 @@ class accion extends elementos {
      * @param string $tabla Nombre de la tabla a manejar
      * @param string $accion Tipo de boton a crear
      */
-    function __construct($caracteristicas, $tabla, $accion) {
+    function accion($caracteristicas, $tabla, $accion) {
         $this->_accion = $accion;
         $this->_tabla = strtolower($tabla);
         $this->_campos = $caracteristicas;
@@ -102,7 +115,7 @@ class accion extends elementos {
                 $accion = new buscar($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ACCION_MODIFICAR:
-//                $accion = new modificar($this->_campos, $this->_accion);
+                $accion = new modificar($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ACCION_BORRAR:
 //                $accion = new borrar($this->_campos, $this->_accion);
@@ -136,7 +149,7 @@ class accion extends elementos {
     }
 
     /**
-     * Asigna los variables segun tipo, se usa en la creacion de acciones
+     * Asigna los variables segun tipo, se usa en la creacion de acciones, son los parametros entregados al servidor web
      * @param array $campos Elementos a inicializar
      */
     protected function inicializar() {
@@ -168,13 +181,13 @@ class accion extends elementos {
     }
 
     protected function inicializarAccion() {
-        if (isset($this->_inicializarCliente[0])) {
+        if (isset($this->_yaInicio)) {
             // Ya esta definido, no los vuelve a cargar
             return $this;
         }
         foreach ($this->_campos as $nro => $campo) {
             // Los datos se envia codificados para evitar errores con caracteres especiales, ademas
-            //permite envial 'cualquier' tipo de dato
+            //permite enviar 'cualquier' tipo de dato
             $this->_inicializarCliente[] = ($campo[ZC_ELEMENTO] != ZC_ELEMENTO_CHECKBOX) ? "'{$campo[ZC_ID]}' => \$datos['{$campo[ZC_ID]}']" : "'{$campo[ZC_ID]}' => json_encode(\$datos['{$campo[ZC_ID]}'])";
             // Inicilizar servidor
             $this->_inicializarServidor[] = "'{$campo[ZC_ID]}' => 'xsd:{$campo[ZC_DATO_WS]}'";
@@ -183,8 +196,11 @@ class accion extends elementos {
 
             $this->_asignacionControlador[] = "\$datos['{$campo[ZC_ID]}'] = \$this->input->post('{$campo[ZC_ID]}');";
 
-            $this->_tipoPlantilla = 'jsLlamadosDefaultAjax.js';
         }
+        $this->_tipoPlantilla = 'jsLlamadosDefaultAjax.js';
+        
+        // Desactiva nuevas solicitudes de inicializacion
+        $this->_yaInicio = true;
         return $this;
     }
 

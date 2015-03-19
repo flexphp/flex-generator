@@ -2,37 +2,27 @@
              * Definicion de la accion {_nombreAccion_}
              */
             if(nombreAccion === '{_nombreAccion_}') {
-                var filtrosAEnviar = ZCAccionBuscarFiltro('{_nombreFormulario_}');
-//                Descomentarioar para validar al menos un filtros de busqueda
-//                if(filtrosAEnviar == ''){
-//                    $('#error-{_nombreFormulario_}').text('{_mensajeError_}');
-//                    $('.alert-danger').show();
-//                    return false;
-//                }
                 $.ajax({
+                    // A la accion se le concatena la palabra cliente, asi se llama en la funcion
                     url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}/',
                     type: 'POST',
                     dataType: 'JSON',
-                    data: {
-                        // Envia filtros de busqueda al servidor
-                        filtros: filtrosAEnviar,
-                        accion: nombreAccion
-                    },
+                    data: $('#{_nombreFormulario_}').serialize()+'&accion='+nombreAccion,
                     beforeSend: function(){
                         // Inactivar el boton, solo permite un envio a la vez
                         $('#'+nombreAccion).addClass('disabled').prop('disabled', true);
                         // Oculta ventana con mensajes
                         $('.alert').hide();
-                        // Limpia resultados anteriores
-                        $('#listado-{_nombreFormulario_}').html('');
                     },
                     success: function(rpta){
+                        console.log(rpta);
                         if(rpta.error != undefined && '' != rpta.error){
                             // Muestra mensaje de error
-                            $('#error-{_nombreFormulario_}').text(rpta.error);
+                            $('#error-{_nombreFormulario_}').text(rpta.error); 
                             $('.alert-danger').show();
                         }else{
-                            ZCListarResultados('listado-{_nombreFormulario_}', rpta);
+                            // Establece el id devuelto durante el proceso de insercion
+                            $('#zc-id-{_nombreFormulario_}').val(rpta.infoEncabezado);
                         }
                     },
                     complete: function(){

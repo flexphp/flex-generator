@@ -269,3 +269,13 @@ function ZCListarResultados(formulario, listado){
     tabla += "</table>";
     $('#'+formulario).html(tabla);
 }
+
+/**
+ * Devuelve el id del registro actual, el cual se desea modificar
+ * @param {String} formulario
+ * @returns {String}
+ */
+function ZCAccionModificarCondicion(formulario){
+    var condicion = $.trim($('#zc-id-'+formulario).val());
+    return condicion;
+}
