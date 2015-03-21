@@ -67,6 +67,9 @@ class boton extends elementos {
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
                 $this->_presentacion = 'btn-success zc-accion';
+                // Para la funcionalidad de ocultar botones
+                $this->_id = ZC_ACCION_AGREGAR;
+                $this->_prop[ZC_ID] = ZC_ACCION_AGREGAR;
                 break;
             case ZC_ACCION_BUSCAR:
                 $this->_tipo = 'button';
@@ -79,11 +82,17 @@ class boton extends elementos {
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>';
                 $this->_presentacion = 'btn-success zc-accion';
+                // Para la funcionalidad de ocultar botones
+                $this->_id = ZC_ACCION_MODIFICAR;
+                $this->_prop[ZC_ID] = ZC_ACCION_MODIFICAR;
                 break;
             case ZC_ACCION_BORRAR:
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
                 $this->_presentacion = 'btn-danger zc-accion';
+                // Para la funcionalidad de ocultar botones
+                $this->_id = ZC_ACCION_BORRAR;
+                $this->_prop[ZC_ID] = ZC_ACCION_BORRAR;
                 break;
             case ZC_ELEMENTO_CANCELAR:
                 $this->_tipo = 'button';

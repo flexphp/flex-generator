@@ -168,7 +168,7 @@ function ZCAccionAgregarFiltro(e, formulario, id){
     // Valor
     "<div class='col-md-2 text-center'>"+textoValor+"</div>" +
     // Boton para quitar filtro
-    "<div class='col-md-2'><button title='Quitar filtro de busqueda' onclick='javascript:ZCAccionQuitarFiltro(event ,this);'class='btn btn-warning zc-filtros-quitar' id='quitar-"+identificadorFiltro+"' name='quitar-"+identificadorFiltro+"'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span>Quitar</button></div>" +
+    "<div class='col-md-2'><button title='Quitar filtro de busqueda' onclick='javascript:ZCAccionQuitarFiltro(event ,this);'class='btn btn-warning zc-filtros-quitar' id='quitar-"+identificadorFiltro+"' name='quitar-"+identificadorFiltro+"'><span class='glyphicon glyphicon-minus-sign' aria-hidden='true'></span> Quitar</button></div>" +
     "<div class='col-md-1'><input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='"+filtro+"|?|"+operador+"|?|"+valor+"'/></div>" +
     "<div class='col-md-1'></div>" +
     "<div class='col-md-1'></div>" +
@@ -298,4 +298,38 @@ function ZCListarResultados(formulario, listado){
 function ZCAccionModificarCondicion(formulario){
     var condicion = $.trim($('#zc-id-'+formulario).val());
     return condicion;
+}
+
+/**
+ * Direcciona a la pagina para agregar un nuevo registro
+ * @param {e} Evento disparador
+ * @param {string} Identificador del formulario
+ * @param {type} id
+ * @returns {Boolean}
+ */
+function ZCAccionNuevoRegistro(e, controlador, id){
+    e.preventDefault;
+    // Direcciona a la pagina de agregar
+    window.location.assign($('#URLProyecto').val()+'index.php/'+controlador+'/nuevo');
+}
+
+/**
+ * Determina los botones a mostrar en el formulario, depende de si es actualizacion o nuevo registro
+ * @param {String} formulario
+ * @param {String} agregar
+ * @param {String} modificar
+ * @param {String} borrar
+ * @returns {String}
+ */
+function ZCAccionBotones(formulario, agregar, modificar, borrar){
+    var id = $.trim($('#zc-id-'+formulario).val());
+
+    if('' === id){
+        // Oculta los botones de modificar y borrar
+        $('#'+modificar).addClass('hidden');
+        $('#'+borrar).addClass('hidden');
+    }else{
+        // Oculta el boton de agregar
+        $('#'+agregar).addClass('hidden');
+    }
 }

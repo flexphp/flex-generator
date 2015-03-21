@@ -54,6 +54,11 @@ $(document).ready(function () {
         ZCAccionMostrarFiltro(e, '{_nombreFormulario_}', this);
     });
 
+    // Accion boton zc-filtros-mostrar para mostrar los filtros seleccionados
+    $('.zc-filtros-nuevo').click(function(e){
+        ZCAccionNuevoRegistro(e, '{_controlador_}', this);
+    });
+
     // Se agrega la validacion cuando los elementos pierden el foco
     $('#{_nombreFormulario_}').find($(formasValidar)).focusout(function (e) {
         // Manejo de la barra de progreso
@@ -74,4 +79,6 @@ $(document).ready(function () {
     
     // Busqueda predefinida, se deja al final cuando ya se ha cargado todo
     ZCAccionBuscarPredefinido('{_nombreFormulario_}');
+    // Botones a mostrar
+    ZCAccionBotones('{_nombreFormulario_}', '{_accionAgregar_}', '{_accionModificar_}', '{_accionBorrar_}');
 });

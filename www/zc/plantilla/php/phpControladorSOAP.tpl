@@ -17,12 +17,18 @@ class {_nombreControlador_} extends CI_Controller {
         $this->listar();
     }
     
+    /**
+     * Formulario de busqueda para la tabla {_nombreControlador_}
+     */
     public function listar() {
         $data['busquedaPredefinida'] = ($this->uri->segment(3) === FALSE)? '' : 'id|?|=|?|'.$this->uri->segment(3);
         $this->load->view('{_nombreVistaListar_}', $data);
     }
     
-    public function agregar() {
+    /**
+     * Agregar nuevo registro en la tabla {_nombreControlador_}
+     */
+    public function nuevo() {
         $this->load->view('{_nombreVista_}');
     }
 

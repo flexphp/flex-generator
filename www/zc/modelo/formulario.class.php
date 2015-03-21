@@ -435,6 +435,10 @@ class formulario {
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsInicializacionjQuery.js');
 
         $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
+        $plantilla->asignarEtiqueta('controlador', $this->_nombreArchivoControlador);
+        $plantilla->asignarEtiqueta('accionAgregar', ZC_ACCION_AGREGAR);
+        $plantilla->asignarEtiqueta('accionModificar', ZC_ACCION_MODIFICAR);
+        $plantilla->asignarEtiqueta('accionBorrar', ZC_ACCION_BORRAR);
         $plantilla->asignarEtiqueta('llamadosAjax', $this->_llamadosAjax);
 
         if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
