@@ -26,7 +26,7 @@ $(document).ready(function () {
     // Accion boton cancelar
     $('.zc-boton-cancelar').click(function(e){
         if(ZCAccionCancelar(e, '{_nombreFormulario_}', formasValidar)){
-            if(confirm('No se guardaran los cambios, continuar?')){
+            if(confirm('No se guardaran los cambios, desea continuar?')){
                 history.back();
             }
         }else{
@@ -54,6 +54,11 @@ $(document).ready(function () {
         ZCAccionMostrarFiltro(e, '{_nombreFormulario_}', this);
     });
 
+    // Accion boton zc-filtros-mostrar para mostrar los filtros seleccionados
+    $('.zc-filtros-nuevo').click(function(e){
+        ZCAccionNuevoRegistro(e, '{_controlador_}', this);
+    });
+
     // Se agrega la validacion cuando los elementos pierden el foco
     $('#{_nombreFormulario_}').find($(formasValidar)).focusout(function (e) {
         // Manejo de la barra de progreso
@@ -61,7 +66,7 @@ $(document).ready(function () {
     });
 
     // Habilita la validacion del formulario
-    $('#{_nombreFormulario_} .zc-accion').not(':input[type=reset], .zc-boton-cancelar, .zc-filtros-agregar, .zc-filtros-quitar, .zc-filtros-mostrar, .zc-filtros-ocultar').click(function () {
+    $('#{_nombreFormulario_} .zc-accion').click(function () {
         $('.parsley-errors-list').show();
         var nombreAccion = ($(this).attr('zc-accion-tipo'));
         console.log(nombreAccion);
@@ -71,4 +76,9 @@ $(document).ready(function () {
             {_llamadosAjax_}
         }
     });
+    
+    // Busqueda predefinida, se deja al final cuando ya se ha cargado todo
+    ZCAccionBuscarPredefinido('{_nombreFormulario_}');
+    // Botones a mostrar
+    ZCAccionBotones('{_nombreFormulario_}', '{_accionAgregar_}', '{_accionModificar_}', '{_accionBorrar_}');
 });

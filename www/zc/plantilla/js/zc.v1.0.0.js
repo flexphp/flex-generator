@@ -48,7 +48,8 @@ function ZCAccionReiniciarFormulario(e, formulario){
  * @param string formulario Id del formulario al que se la va validar el progreso
  * @returns {Boolean}
  */
-function ZCAccionCancelar(formulario, formasValidar){
+function ZCAccionCancelar(e, formulario, formasValidar){
+    e.preventDefault();
     // Todos campos del formulario
     var existenCamposDiligenciados = false;
     var valorCampo = '';
@@ -167,7 +168,7 @@ function ZCAccionAgregarFiltro(e, formulario, id){
     // Valor
     "<div class='col-md-2 text-center'>"+textoValor+"</div>" +
     // Boton para quitar filtro
-    "<div class='col-md-2'><button title='Quitar filtro de busqueda' onclick='javascript:ZCAccionQuitarFiltro(event ,this);'class='btn btn-warning zc-filtros-quitar' id='quitar-"+identificadorFiltro+"' name='quitar-"+identificadorFiltro+"'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span>Quitar</button></div>" +
+    "<div class='col-md-2'><button title='Quitar filtro de busqueda' onclick='javascript:ZCAccionQuitarFiltro(event ,this);'class='btn btn-warning zc-filtros-quitar' id='quitar-"+identificadorFiltro+"' name='quitar-"+identificadorFiltro+"'><span class='glyphicon glyphicon-minus-sign' aria-hidden='true'></span> Quitar</button></div>" +
     "<div class='col-md-1'><input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='"+filtro+"|?|"+operador+"|?|"+valor+"'/></div>" +
     "<div class='col-md-1'></div>" +
     "<div class='col-md-1'></div>" +
@@ -201,15 +202,35 @@ function ZCAccionBuscarFiltro(formulario){
         //Verifica que no se halla contado antes
         //Salta elementos que no tengan id definido
         var filtro = $('#'+this.id).val();
-        if(filtro != ''){
-            filtrosAEnviar += (filtrosAEnviar != '') ? '|??|' : '';
+        if(filtro !== '' && filtro !== undefined){
+            filtrosAEnviar += (filtrosAEnviar !== '') ? '|??|' : '';
             filtrosAEnviar += filtro;
+        }
+        if(this.id === 'filtros-seleccionados-0'){
+            //Elimina el filtro predefinido, esto evita utilizar el filtro en otras busquedas
+            $('#'+this.id).val('');
         }
     });
 
     //Establece el valor de los filtros a utilizar en la busqueda
     return filtrosAEnviar;
 
+}
+
+/**
+ * Valores de busqueda predefinidos, se usa en la accion crear
+ * @param {string} formulario Nombre del formaulario a utilizar
+ * @returns {String}
+ */
+function ZCAccionBuscarPredefinido(formulario){
+    var filtrosPredefinidos = $('#zc-filtros-predefinidos').val();
+    if(filtrosPredefinidos !== '' && filtrosPredefinidos !== undefined){
+        //Establece el valor de los filtros a utilizar en la busqueda
+        $('#'+formulario).append('<input id="filtros-seleccionados-0" type="hidden" class="zc-filtros-seleccionado" value="'+filtrosPredefinidos+'">');
+        // Ejecuta accion boton buscar
+        $('#'+formulario).find('.zc-accion').trigger('click');
+    }
+    return true;
 }
 
 /**
@@ -267,4 +288,48 @@ function ZCListarResultados(formulario, listado){
 
     tabla += "</table>";
     $('#'+formulario).html(tabla);
+}
+
+/**
+ * Devuelve el id del registro actual, el cual se desea modificar
+ * @param {String} formulario
+ * @returns {String}
+ */
+function ZCAccionModificarCondicion(formulario){
+    var condicion = $.trim($('#zc-id-'+formulario).val());
+    return condicion;
+}
+
+/**
+ * Direcciona a la pagina para agregar un nuevo registro
+ * @param {e} Evento disparador
+ * @param {string} Identificador del formulario
+ * @param {type} id
+ * @returns {Boolean}
+ */
+function ZCAccionNuevoRegistro(e, controlador, id){
+    e.preventDefault;
+    // Direcciona a la pagina de agregar
+    window.location.assign($('#URLProyecto').val()+'index.php/'+controlador+'/nuevo');
+}
+
+/**
+ * Determina los botones a mostrar en el formulario, depende de si es actualizacion o nuevo registro
+ * @param {String} formulario
+ * @param {String} agregar
+ * @param {String} modificar
+ * @param {String} borrar
+ * @returns {String}
+ */
+function ZCAccionBotones(formulario, agregar, modificar, borrar){
+    var id = $.trim($('#zc-id-'+formulario).val());
+
+    if('' === id){
+        // Oculta los botones de modificar y borrar
+        $('#'+modificar).addClass('hidden');
+        $('#'+borrar).addClass('hidden');
+    }else{
+        // Oculta el boton de agregar
+        $('#'+agregar).addClass('hidden');
+    }
 }

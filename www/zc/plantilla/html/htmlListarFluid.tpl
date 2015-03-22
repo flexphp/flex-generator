@@ -60,6 +60,10 @@
             <!-- Formulario con resultados de la busqueda -->
             <div class="col-md-1"></div>
             <div class="col-md-10">
+                <div id="cargando-{_nombreFormulario_}" class="hidden text-center form-control">
+                    <!-- Cargando -->
+                    <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Cargando...
+                </div>
                 <div id="listado-{_nombreFormulario_}">
                     <!-- Resultados de la busqueda -->
                 </div>
@@ -68,6 +72,8 @@
             <!-- Fin Formulario con resultados de la busqueda -->
         </div>
 
+        <!-- Busquedas hechas desde la url, se usa en la accion de crear -->
+        <input type="hidden" id="zc-filtros-predefinidos" name="zc-filtros-predefinidos" value="<?php echo $busquedaPredefinida; ?>"/>
         <!-- URL del proyecto, se usa en los llamados ajax -->
         <input type="hidden" id="URLProyecto" name="URLProyecto" value="<?php echo base_url(); ?>"/>
         <!-- JS jQuery -->

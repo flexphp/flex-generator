@@ -13,11 +13,23 @@ class {_nombreControlador_} extends CI_Controller {
     }
 
     public function index() {
-        $this->load->view('{_nombreVista_}');
+        // Accion por defecto
+        $this->listar();
     }
-
+    
+    /**
+     * Formulario de busqueda para la tabla {_nombreControlador_}
+     */
     public function listar() {
-        $this->load->view('{_nombreVistaListar_}');
+        $data['busquedaPredefinida'] = ($this->uri->segment(3) === FALSE)? '' : 'id|?|=|?|'.$this->uri->segment(3);
+        $this->load->view('{_nombreVistaListar_}', $data);
+    }
+    
+    /**
+     * Agregar nuevo registro en la tabla {_nombreControlador_}
+     */
+    public function nuevo() {
+        $this->load->view('{_nombreVista_}');
     }
 
 {_accionServidor_}
