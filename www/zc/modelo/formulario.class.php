@@ -435,10 +435,11 @@ class formulario {
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsInicializacionjQuery.js');
 
         $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
-        $plantilla->asignarEtiqueta('controlador', $this->_nombreArchivoControlador);
+        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('accionAgregar', ZC_ACCION_AGREGAR);
         $plantilla->asignarEtiqueta('accionModificar', ZC_ACCION_MODIFICAR);
         $plantilla->asignarEtiqueta('accionBorrar', ZC_ACCION_BORRAR);
+        $plantilla->asignarEtiqueta('accionPrecargar', ZC_ACCION_PRECARGAR);
         $plantilla->asignarEtiqueta('llamadosAjax', $this->_llamadosAjax);
 
         if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
@@ -524,6 +525,8 @@ class formulario {
                 case ZC_ACCION_BUSCAR:
                 case ZC_ACCION_MODIFICAR:
                 case ZC_ACCION_BORRAR:
+                case ZC_ACCION_NUEVO:
+                case ZC_ACCION_PRECARGAR:
                     $this->agregarElementoBotonFormulario($caracteristicas);
                     break;
                 default:
@@ -745,9 +748,10 @@ class formulario {
      */
     private function crearAccionesClienteFormulario() {
         foreach ($this->_acciones as $nro => $caracteristicas) {
-            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR))) {
+            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR)) || $this->_tipoPlantilla[$caracteristicas[ZC_ID]] == '') {
                 // Los botones tipo restablecer no crean accciones de envio, ya tiene la
                 // accion preferida
+                // No siempre tienen accion predefinida, para el caso de precarga no debe crear una accion
                 continue;
             }
             /**

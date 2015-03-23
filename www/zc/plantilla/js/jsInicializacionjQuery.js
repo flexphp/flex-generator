@@ -56,7 +56,7 @@ $(document).ready(function () {
 
     // Accion boton zc-filtros-mostrar para mostrar los filtros seleccionados
     $('.zc-filtros-nuevo').click(function(e){
-        ZCAccionNuevoRegistro(e, '{_controlador_}', this);
+        ZCAccionNuevoRegistro(e, '{_nombreControlador_}', this);
     });
 
     // Se agrega la validacion cuando los elementos pierden el foco
@@ -76,9 +76,48 @@ $(document).ready(function () {
             {_llamadosAjax_}
         }
     });
-    
+
     // Busqueda predefinida, se deja al final cuando ya se ha cargado todo
     ZCAccionBuscarPredefinido('{_nombreFormulario_}');
     // Botones a mostrar
-    ZCAccionBotones('{_nombreFormulario_}', '{_accionAgregar_}', '{_accionModificar_}', '{_accionBorrar_}');
+    ZCAccionBotones('{_nombreFormulario_}', '{_accionAgregar_}', '{_accionModificar_}', '{_accionBorrar_}', '{_accionPrecargar_}');
 });
+
+function ZCAccionPrecargar(formulario, id, precargar, modificar){
+    $.ajax({
+        url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/' + precargar + '/',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+            // Envia filtros de busqueda al servidor
+            id: id,
+            accion: precargar
+        },
+        beforeSend: function(){
+            $('#'+modificar).addClass('disabled').prop('disabled', true);
+            // Oculta ventana con mensajes
+            $('.alert').hide();
+            // Mostrar cargando
+            $('#'+modificar+' span').addClass('glyphicon-refresh glyphicon-refresh-animate');
+        },
+        success: function(rpta){
+            if(rpta.error !== undefined && '' !== rpta.error){
+                // Muestra mensaje de error
+                $('#error-{_nombreFormulario_}').text(rpta.error);
+                $('.alert-danger').show();
+            }else{
+                ZCAccionPrecargarResultado('{_nombreFormulario_}', rpta);
+            }
+        },
+        complete: function(){
+            // Activar el boton cuando se completa la accion, con error o sin error
+            $('#'+modificar).removeClass('disabled').prop('disabled', false);
+            // Ocultar cargando
+            $('#'+modificar+' span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
+        },
+        error: function(rpta){
+            $('#error-{_nombreFormulario_}').text('Error en el servicio');
+            $('.alert-danger').show();
+        }
+    });
+}

@@ -191,6 +191,8 @@ class procesarXML {
                 $rutaXML = $this->rutaArchivos . "/" . $cadaArchivo;
                 $xml = simplexml_load_file($rutaXML);
                 $this->estructuraArchivoXML($xml);
+                // Agrega la opcion para precargar los datos en la opcion editar
+                $this->elementos[] = array(ZC_ID => 'precargar', ZC_ELEMENTO => ZC_ACCION_PRECARGAR, ZC_ETIQUETA => 'Precargar');
                 /**
                  * Por lo menos se debio crear un elemento para tener una estructura valida
                  */

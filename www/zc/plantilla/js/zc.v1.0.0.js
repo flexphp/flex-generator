@@ -321,7 +321,7 @@ function ZCAccionNuevoRegistro(e, controlador, id){
  * @param {String} borrar
  * @returns {String}
  */
-function ZCAccionBotones(formulario, agregar, modificar, borrar){
+function ZCAccionBotones(formulario, agregar, modificar, borrar, precargar){
     var id = $.trim($('#zc-id-'+formulario).val());
 
     if('' === id){
@@ -331,5 +331,11 @@ function ZCAccionBotones(formulario, agregar, modificar, borrar){
     }else{
         // Oculta el boton de agregar
         $('#'+agregar).addClass('hidden');
+        // Consulta la informacion en la base de datos
+        ZCAccionPrecargar(formulario, id, precargar, modificar);
     }
+}
+
+function ZCAccionPrecargarResultado(formulario, datos){
+
 }

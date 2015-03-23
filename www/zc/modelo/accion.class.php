@@ -21,6 +21,11 @@ require_once 'buscar.class.php';
 require_once 'modificar.class.php';
 
 /**
+ * Crea la funcion para precargar los datos a editar (select)
+ */
+require_once 'precargar.class.php';
+
+/**
  * Crea acciones: agregar, buscar, modificar, eliminar, cancelar, defecto
  */
 class accion extends elementos {
@@ -84,7 +89,7 @@ class accion extends elementos {
      * @var array
      */
     protected $_tipoPlantilla = '';
-    
+
     /**
      * Determina si las varables ya fueron inicializadas, por defecto no se ha inicializado
      * @var bool
@@ -119,6 +124,9 @@ class accion extends elementos {
                 break;
             case ZC_ACCION_BORRAR:
 //                $accion = new borrar($this->_campos, $this->_accion);
+                break;
+            case ZC_ACCION_PRECARGAR:
+                $accion = new precargar($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ELEMENTO_RESTABLECER:
             case ZC_ELEMENTO_CANCELAR:
@@ -195,10 +203,9 @@ class accion extends elementos {
             $this->_parametrosServidor[] = "\${$campo[ZC_ID]}";
 
             $this->_asignacionControlador[] = "\$datos['{$campo[ZC_ID]}'] = \$this->input->post('{$campo[ZC_ID]}');";
-
         }
         $this->_tipoPlantilla = 'jsLlamadosDefaultAjax.js';
-        
+
         // Desactiva nuevas solicitudes de inicializacion
         $this->_yaInicio = true;
         return $this;
