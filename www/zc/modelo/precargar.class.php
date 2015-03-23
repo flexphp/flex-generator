@@ -86,12 +86,8 @@ class precargar extends accion {
         $php .= $this->comando('$this->db->where(array(\'id\' => $id));', 16);
         $php .= $this->comando('$ressql = $this->db->get(\'' . $this->_tabla . '\');', 16);
         $php .= $this->comando('if($ressql->num_rows() > 0){', 16);
-        $php .= $this->comando('$i = 0;', 20);
-        $php .= $this->comando('foreach($ressql->result_array() as $row){', 20);
-        $php .= $this->comando('$rpta[\'resultado\'][$i] = $row;', 24);
-        $php .= $this->comando('++$i;', 24);
-        $php .= $this->comando('}', 20);
-        $php .= $this->comando('$rpta[\'cta\'] = $i;', 20);
+        $php .= $this->comando('$rpta[\'resultado\'] = $ressql->row();', 20);
+        $php .= $this->comando('$rpta[\'cta\'] = $ressql->num_rows();', 20);
         $php .= $this->comando('}', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('}', 8);

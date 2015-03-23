@@ -81,7 +81,7 @@ class modificar extends accion {
         $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
         $php .= $this->comando('default:', 12);
         $php .= $this->comando('// Devuelve el id insertado campo y el numero de filas efectadas', 16);
-        $php .= $this->comando('$rpta[\'resultado\'] = \'Registro actualizado con exito.\';', 16);
+        $php .= $this->comando('$rpta[\'resultado\'] = $condicion;', 16);
         $php .= $this->comando('// Siempre devuelve 1, aun el registro no se cambie', 16);
         $php .= $this->comando('$rpta[\'cta\'] = 1;', 16);
         $php .= $this->comando('break;', 16);
@@ -103,21 +103,22 @@ class modificar extends accion {
         }
         $this->_inicializarCliente = parent::inicializarAccion()->devolverInicializarCliente();
         $this->_inicializarCliente[] = $this->comando("'condicion' => \$datos['condicion']");
-        
+
         $this->_inicializarServidor = parent::inicializarAccion()->devolverInicializarServidor();
         $this->_inicializarServidor[] = $this->comando("'condicion' => 'xsd:int'");
-        
+
         $this->_parametrosServidor = parent::inicializarAccion()->devolverParametrosServidor();
         $this->_parametrosServidor[] = '$condicion';
-        
+
         // Herada los de la clase padre
         $this->_asignacionControlador = parent::inicializarAccion()->devolverAsignacionControlador();
         // Ademas de uno nuevo para elmanejode la condicion de actualizacion
         $this->_asignacionControlador[] = $this->comando("\$datos['condicion'] = \$this->input->post('condicion');");
-        
+
         $this->_tipoPlantilla = 'jsLlamadosModificarAjax.js';
-        
+
         $this->_yaInicio = true;
         return $this;
     }
+
 }

@@ -74,7 +74,7 @@ class boton extends elementos {
             case ZC_ACCION_BUSCAR:
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>';
-                $this->_presentacion = 'btn-primary zc-accion';
+                $this->_presentacion = 'btn-primary zc-accion hidden';
                 // Para la funcionalidad del buscador, este id debe ser 'buscar'
                 $this->_prop[ZC_ID] = 'buscar';
                 break;

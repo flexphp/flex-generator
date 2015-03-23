@@ -95,9 +95,5 @@
             <que_quieres>Limpiar</que_quieres>
             <como_se_llama>Resetear</como_se_llama>
         </resetear>
-        <otro>
-            <que_quieres>Boton</que_quieres>
-            <como_se_llama>Otro</como_se_llama>
-        </otro>
     </test>
 </crear>

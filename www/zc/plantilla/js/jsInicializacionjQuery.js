@@ -69,7 +69,6 @@ $(document).ready(function () {
     $('#{_nombreFormulario_} .zc-accion').click(function () {
         $('.parsley-errors-list').show();
         var nombreAccion = ($(this).attr('zc-accion-tipo'));
-        console.log(nombreAccion);
         if($('#{_nombreFormulario_}').parsley().validate()){
             // Accion seleccionada por el usuario
             // Selecciona la accion dependiendo el boton seleccionado

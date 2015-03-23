@@ -14,7 +14,7 @@ function ZCBarraProgreso(formulario, formasValidar){
     $('#'+formulario).find($(formasValidar)).each(function(){
         //Verifica que no se halla contado antes
         //Salta elementos que no tengan id definido
-        if(nombres.indexOf(this.name) == -1 && this.id != ''){
+        if(nombres.indexOf(this.name) === -1 && this.id !== ''){
             nombres.push(this.name);
             contadorCampos++;
             if ($('#'+this.id).parsley().isValid('#'+this.id)){
@@ -55,7 +55,7 @@ function ZCAccionCancelar(e, formulario, formasValidar){
     var valorCampo = '';
     var nombres = [];
     $('#'+formulario).find($(formasValidar)).each(function(){
-        if(nombres.indexOf(this.name) == -1){
+        if(nombres.indexOf(this.name) === -1){
             nombres.push(this.name);
             switch(true){
                 case $('#'+this.id).attr('type') == 'checkbox':
@@ -63,16 +63,16 @@ function ZCAccionCancelar(e, formulario, formasValidar){
                     if ($('#'+this.id).prop("checked")){
                         marcados++;
                     }
-                    valorCampo = (marcados == 0) ? '' : 'Lleno';
+                    valorCampo = (marcados === 0) ? '' : 'Lleno';
                     break;
-                case $('#'+this.id).attr('type') == 'radio':
+                case $('#'+this.id).attr('type') === 'radio':
                     valorCampo = $('input[name='+this.name+']:checked').val();
                     break;
                 default:
                     valorCampo = $.trim($('#'+this.id).val());
                     break;
             }
-            if (valorCampo != '' && valorCampo != undefined){
+            if (valorCampo !== '' && valorCampo !== undefined){
                 existenCamposDiligenciados = true;
             }
         }
@@ -123,17 +123,17 @@ function ZCAccionAgregarFiltro(e, formulario, id){
     var valor = textoValor = '';
 
     switch(true){
-        case $('input[name^='+filtro+']').attr('type') == 'checkbox':
+        case $('input[name^='+filtro+']').attr('type') === 'checkbox':
             $('input[name^='+filtro+']:checked').each(function(){
                 valor = $('#'+this.id).val();
                 textoValor = $('#'+this.id).attr('zc-texto');
             });
             break;
-        case $('input[name='+filtro+']').attr('type') == 'radio':
+        case $('input[name='+filtro+']').attr('type') === 'radio':
             valor = $('input[name='+filtro+']:checked').val();
-            textoValor = (valor != undefined) ? $('#'+filtro+'_'+valor).attr('zc-texto') : '';
+            textoValor = (valor !== undefined) ? $('#'+filtro+'_'+valor).attr('zc-texto') : '';
             break;
-        case $('#'+filtro).attr('type') == 'select':
+        case $('#'+filtro).attr('type') === 'select':
             valor = $.trim($('#'+filtro).val());
             textoOperador = $('#' + filtro + " option:selected").html();
             break;
@@ -150,7 +150,7 @@ function ZCAccionAgregarFiltro(e, formulario, id){
 
     var textoFiltro = $('.zc-filtros-busqueda:first option:selected').html();
     var textoOperador = $('#operador-' + filtro + " option:selected").html();
-    var textoValor = (textoValor != '') ? textoValor : '<i>(vacio)</i>';
+    var textoValor = (textoValor !== '') ? textoValor : '<i>(vacio)</i>';
 
     // Evita eliminar filtros repetidos, se maneja como numero
     var cantidadFiltros = parseInt($('#zc-filtros-cantidad-filtros').val());
@@ -272,7 +272,7 @@ function ZCListarResultados(formulario, listado){
     for(var i = 0; i < listado.cta; ++i){
         for (var key in listado.infoEncabezado[i]) {
             if (listado.infoEncabezado[i].hasOwnProperty(key)) {
-                if(i == 0 && $.trim(key) != ''){
+                if(i == 0 && $.trim(key) !== ''){
                     //Crea los encabezados
                     encabezados += '<th>'+key+'</th>';
                 }
@@ -336,6 +336,25 @@ function ZCAccionBotones(formulario, agregar, modificar, borrar, precargar){
     }
 }
 
-function ZCAccionPrecargarResultado(formulario, datos){
-
+function ZCAccionPrecargarResultado(formulario, rpta){
+    for (var campo in rpta.infoEncabezado) {
+        switch(true){
+        case $('input[name^='+campo+']').attr('type') === 'checkbox':
+            $('#'+formulario + ' #'+campo+'_'+rpta.infoEncabezado[campo]).prop('checked', true);
+            break;
+        case $('input[name='+campo+']').attr('type') === 'radio':
+            $('#'+formulario + ' #'+campo+'_'+rpta.infoEncabezado[campo]).prop('checked', true);
+            break;
+        case $('#'+campo).attr('type') === 'select':
+            $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);
+            break;
+        case $('#'+campo).attr('type') === 'password':
+            // Las contrasenas las deja vacias
+            $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);
+            break;
+        default:
+            $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);
+            break;
+        }
+    }
 }

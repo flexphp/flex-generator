@@ -30,7 +30,8 @@
                                 $('#error-{_nombreFormulario_}').text(rpta.error);
                                 $('.alert-danger').show();
                             }else{
-                                
+                                // Carga el listado cmostrando el registro insertado
+                                window.location.assign($('#URLProyecto').val()+'index.php/{_nombreControlador_}/listar/'+rpta.infoEncabezado);
                             }
                         },
                         complete: function(){
