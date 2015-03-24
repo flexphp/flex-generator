@@ -93,7 +93,8 @@ function ZCAccionPrecargar(formulario, id, precargar, modificar){
             accion: precargar
         },
         beforeSend: function(){
-            $('#'+modificar).addClass('disabled').prop('disabled', true);
+            // Desactiva todos los campos
+            $('input, textarea, select, button').addClass('disabled').prop('disabled', true);
             // Oculta ventana con mensajes
             $('.alert').hide();
             // Mostrar cargando
@@ -109,8 +110,8 @@ function ZCAccionPrecargar(formulario, id, precargar, modificar){
             }
         },
         complete: function(){
-            // Activar el boton cuando se completa la accion, con error o sin error
-            $('#'+modificar).removeClass('disabled').prop('disabled', false);
+            // Activar los campos para la modificacion
+            $('input, textarea, select, button').removeClass('disabled').prop('disabled', false);
             // Ocultar cargando
             $('#'+modificar+' span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
         },

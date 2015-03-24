@@ -2,9 +2,9 @@
              * Definicion de la accion {_nombreAccion_}
              */
             if(nombreAccion === '{_nombreAccion_}') {
-                // Valida que exista condicion de busca
-                var condicion = ZCAccionModificarCondicion('{_nombreFormulario_}');
-                if(condicion == ''){
+                // Valida que exista id de busca
+                var id = ZCAccionModificarCondicion('{_nombreFormulario_}');
+                if(id == ''){
                     $('#error-{_nombreFormulario_}').text('Error durante la actualizacion');
                     $('.alert-danger').show();
                 }else{
@@ -13,7 +13,7 @@
                         type: 'POST',
                         dataType: 'JSON',
                         // Envia los campos y el id del registro a actualizar
-                        data: $('#{_nombreFormulario_}').serialize()+'&condicion='+condicion+'&accion='+nombreAccion,
+                        data: $('#{_nombreFormulario_}').serialize()+'&id='+id+'&accion='+nombreAccion,
                         beforeSend: function(){
                             // Inactivar el boton, solo permite un envio a la vez
                             $('#'+nombreAccion).addClass('disabled').prop('disabled', true);

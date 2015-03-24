@@ -13,6 +13,29 @@ class modificar extends accion {
     function __construct($caracteristicas, $tabla, $accion) {
         parent::__construct($caracteristicas, $tabla, $accion);
     }
+    
+    public function inicializar() {
+        $cmd = $this->comando('$data = array();', 12);
+        foreach ($this->_campos as $nro => $campo) {
+            switch (true) {
+                case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_CHECKBOX:
+                    // Devuelve el alemento al array original
+                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = implode(',', json_decode(\${$campo[ZC_ID]}, true));", 12);
+                    break;
+                case $campo[ZC_DATO] == ZC_DATO_CONTRASENA:
+                    // Encripta las contrasenas
+                    $cmd .= $this->comando("if(\${$campo[ZC_ID]} != ''){", 12);
+                    $cmd .= $this->comando("// La contrasena cambio", 16);
+                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = sha1(\${$campo[ZC_ID]});", 16);
+                    $cmd .= $this->comando("}", 12);
+                    break;
+                default:
+                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = \${$campo[ZC_ID]};", 12);
+                    break;
+            }
+        }
+        return $cmd;
+    }
 
     /**
      * Selecciona crea la accion modificar. el resultado de la accion se almacena en la
@@ -34,7 +57,7 @@ class modificar extends accion {
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'modelo_\' . $tabla, $tabla);', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
-        $php .= $this->comando('$rpta = $CI->$tabla->modificar($data, $condicion);', 12);
+        $php .= $this->comando('$rpta = $CI->$tabla->modificar($data, $id);', 12);
         $php .= $this->comando('switch (true){', 12);
         $php .= $this->comando('case (isset($rpta[\'error\']) && \'\' != $rpta[\'error\']):', 12);
         $php .= $this->comando('// Errores durante la ejecucion', 16);
@@ -60,7 +83,7 @@ class modificar extends accion {
             throw new Exception(__FUNCTION__ . ': Error en la accion, se esperaba: ' . ZC_ACCION_MODIFICAR);
         }
         $php = '';
-        $php .= $this->comando('function modificar($campos, $condicion = null){', 4);
+        $php .= $this->comando('function modificar($campos, $id = null){', 4);
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('$validacion = $this->' . $this->_tabla . '->validacionTest($campos);', 8);
         $php .= $this->comando('switch (true){', 8);
@@ -68,20 +91,20 @@ class modificar extends accion {
         $php .= $this->comando('// Errores durante la validacion de campos', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode($validacion[\'error\']);', 16);
         $php .= $this->comando('break;', 16);
-        $php .= $this->comando('case (!isset($condicion) || !is_int($condicion)):', 12);
-        $php .= $this->comando('// No existe condicion de busqueda', 16);
+        $php .= $this->comando('case (!isset($id) || !is_int($id)):', 12);
+        $php .= $this->comando('// No existe id de busqueda', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, no se puede actualizar.\');', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case !$this->db->initialize():', 12);
         $php .= $this->comando('// Error en la conexion a la base de campos', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 16);
         $php .= $this->comando('break;', 16);
-        $php .= $this->comando('case $this->db->update(\'' . $this->_tabla . '\', $campos, array(\'id\' => $condicion)) == false:', 12);
+        $php .= $this->comando('case $this->db->update(\'' . $this->_tabla . '\', $campos, array(\'id\' => $id)) == false:', 12);
         $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
         $php .= $this->comando('default:', 12);
         $php .= $this->comando('// Devuelve el id insertado campo y el numero de filas efectadas', 16);
-        $php .= $this->comando('$rpta[\'resultado\'] = $condicion;', 16);
+        $php .= $this->comando('$rpta[\'resultado\'] = $id;', 16);
         $php .= $this->comando('// Siempre devuelve 1, aun el registro no se cambie', 16);
         $php .= $this->comando('$rpta[\'cta\'] = 1;', 16);
         $php .= $this->comando('break;', 16);
@@ -101,19 +124,37 @@ class modificar extends accion {
             // Ya esta definido, no vuelve a asignarlos
             return $this;
         }
+        // Herada los de la clase padre
         $this->_inicializarCliente = parent::inicializarAccion()->devolverInicializarCliente();
-        $this->_inicializarCliente[] = $this->comando("'condicion' => \$datos['condicion']");
+        $this->_inicializarCliente[] = $this->comando("'id' => \$datos['id']");
 
         $this->_inicializarServidor = parent::inicializarAccion()->devolverInicializarServidor();
-        $this->_inicializarServidor[] = $this->comando("'condicion' => 'xsd:int'");
+        $this->_inicializarServidor[] = $this->comando("'id' => 'xsd:int'");
 
         $this->_parametrosServidor = parent::inicializarAccion()->devolverParametrosServidor();
-        $this->_parametrosServidor[] = '$condicion';
+        $this->_parametrosServidor[] = '$id';
 
-        // Herada los de la clase padre
-        $this->_asignacionControlador = parent::inicializarAccion()->devolverAsignacionControlador();
-        // Ademas de uno nuevo para elmanejode la condicion de actualizacion
-        $this->_asignacionControlador[] = $this->comando("\$datos['condicion'] = \$this->input->post('condicion');");
+        // Los valores ya se habian asignado, se borran para establecer los nuevos
+        unset ($this->_asignacionControlador);
+        // Reasina el valor inicial
+        $this->_asignacionControlador[] = $this->comando("\$datos['accion'] = \$this->input->post('accion');");
+        // La inicializacion se ace diferente para manejar los campos tipo passsword, si no se diligencian
+        // es porque no cambian
+        foreach ($this->_campos as $nro => $campo) {
+            switch ($campo[ZC_DATO]){
+                case ZC_DATO_CONTRASENA:
+                    // Se valida que la contrasena este diligenciada
+                    $php = $this->comando("// Clave modificada");
+                    $php .= $this->comando("\$datos['{$campo[ZC_ID]}'] = (\$this->input->post('{$campo[ZC_ID]}') != '') ? \$this->input->post('{$campo[ZC_ID]}') : null;", 8);
+                    $this->_asignacionControlador[] = $php;
+                    break;
+                default :
+                    $this->_asignacionControlador[] = "\$datos['{$campo[ZC_ID]}'] = \$this->input->post('{$campo[ZC_ID]}');";
+                    break;
+            }
+        }
+        // Ademas de uno nuevo para elmanejode la id de actualizacion
+        $this->_asignacionControlador[] = $this->comando("\$datos['id'] = \$this->input->post('id');");
 
         $this->_tipoPlantilla = 'jsLlamadosModificarAjax.js';
 
