@@ -34,7 +34,7 @@
                             $('#error-{_nombreFormulario_}').text(rpta.error);
                             $('.alert-danger').show();
                         }else{
-                            ZCListarResultados('listado-{_nombreFormulario_}', rpta);
+                            ZCListarResultados('{_nombreFormulario_}', '{_nombreControlador_}', rpta);
                         }
                     },
                     complete: function(){

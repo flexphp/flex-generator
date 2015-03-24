@@ -1,6 +1,7 @@
 /**
  * Actualiza la barra de progreso segun se vayan diligenciando los datos
- * @param string formulario Id del formulario al que se la va validar el progreso
+ * @param {string} formulario Id del formulario al que se la va validar el progreso
+ * @param {object} formasValidar Id del formulario al que se la va validar el progreso
  * @returns {Boolean}
  */
 function ZCBarraProgreso(formulario, formasValidar){
@@ -35,6 +36,12 @@ function ZCBarraProgreso(formulario, formasValidar){
     }
 }
 
+/**
+ * Deja el formulario en los valores iniciales
+ * @param {event} e
+ * @param {string} formulario
+ * @returns {undefined}
+ */
 function ZCAccionReiniciarFormulario(e, formulario){
     e.preventDefault();
     $('.parsley-errors-list').hide();
@@ -45,7 +52,9 @@ function ZCAccionReiniciarFormulario(e, formulario){
 
 /**
  * Valida los campos durande la accion cancelar, si alguno tiene datos, muestra mensaje de advertencia
- * @param string formulario Id del formulario al que se la va validar el progreso
+ * @param {event} e
+ * @param {string} formulario Id del formulario al que se la va validar el progreso
+ * @param {object} formasValidar Id del formulario al que se la va validar el progreso
  * @returns {Boolean}
  */
 function ZCAccionCancelar(e, formulario, formasValidar){
@@ -83,8 +92,8 @@ function ZCAccionCancelar(e, formulario, formasValidar){
 
 /**
  * Menejo de los filtros de busqueda
- * @param {e} Evento disparador
- * @param {string} Identificador del formulario
+ * @param {event} e Evento disparador
+ * @param {string} formulario Identificador del formulario
  * @param {type} id
  * @returns {Boolean}
  */
@@ -111,7 +120,7 @@ function ZCCamposDeBusqueda(e, formulario, id){
 
 /**
  * Agrega un filtro de busqueda seleccionado por el usuario
- * @param {e} Evento disparador
+ * @param {event} e Evento disparador
  * @param {string} formulario
  * @param {$} id
  * @returns {undefined}
@@ -144,7 +153,6 @@ function ZCAccionAgregarFiltro(e, formulario, id){
     }
 
     if (!$('#'+formulario).parsley().validate()){
-        console.log('Campo no valido');
         return false;
     }
 
@@ -179,7 +187,7 @@ function ZCAccionAgregarFiltro(e, formulario, id){
 
 /**
  * Quitar filtro de busqueda de los filtros seleccionados
- * @param {e} Evento disparador
+ * @param {event} e Evento disparador
  * @param {$} id
  * @returns {undefined}
  */
@@ -191,9 +199,7 @@ function ZCAccionQuitarFiltro(e, id){
 
 /**
  * Ejecuta la accion de busqueda con los filtros seleccionados
- * @param {event} e
  * @param {string} formulario
- * @param {string} id
  * @returns {undefined}
  */
 function ZCAccionBuscarFiltro(formulario){
@@ -263,31 +269,45 @@ function ZCAccionMostrarFiltro(e, formulario, id){
     $('#'+formulario).find($('.zc-filtros-mostrar')).addClass('hidden');
 }
 
-function ZCListarResultados(formulario, listado){
-//    var tabla = "<table class='table table-striped table-bordered table-hover'>";
+/**
+ * Crea el listado de campos devueltos por el servidor, agrega enlace para la edicion del registro
+ * @param {string} formulario Nombre del formulario donde se creara la el listado
+ * @param {string} controlador Nombre del controlador a utilizar
+ * @param {json} listado Valores devueltos por la consulta
+ * @returns {undefined}
+ */
+
+function ZCListarResultados(formulario, controlador, listado){
     var tabla = "<table class='table table-bordered table-hover'>";
     var encabezados = '';
     var columnas = '';
-
+    var id = -1;
+    
     for(var i = 0; i < listado.cta; ++i){
         for (var key in listado.infoEncabezado[i]) {
             if (listado.infoEncabezado[i].hasOwnProperty(key)) {
-                if(i == 0 && $.trim(key) !== ''){
+                if(i === 0 && $.trim(key) !== ''){
                     //Crea los encabezados
                     encabezados += '<th>'+key+'</th>';
+                }
+                if(key === 'id'  && id === -1){
+                    // Agrega el id del registro para el caso de modificacion
+                    id = listado.infoEncabezado[i][key];
                 }
                 columnas += '<td>' + listado.infoEncabezado[i][key] +  '</td>';
             }
         }
-        if(i == 0){
+        if(i === 0){
             tabla += '<tr>'+encabezados+'</tr>';
         }
-        tabla += '<tr>'+columnas+'</tr>';
+        // Agrega accion de enlace a la edicion del registro
+        tabla += '<tr style="cursor: pointer;" onclick="ZCAccionModificarRegistro(event, \''+controlador+'\', this);" zc-id-registro="'+id+'">'+columnas+'</tr>';
         columnas = '';
+        id = -1;
     }
 
     tabla += "</table>";
-    $('#'+formulario).html(tabla);
+    $('#listado-'+formulario).html(tabla);
 }
 
 /**
@@ -295,15 +315,16 @@ function ZCListarResultados(formulario, listado){
  * @param {String} formulario
  * @returns {String}
  */
+
 function ZCAccionModificarCondicion(formulario){
-    var condicion = $.trim($('#zc-id-'+formulario).val());
-    return condicion;
+    var id = $.trim($('#zc-id-'+formulario).val());
+    return id;
 }
 
 /**
  * Direcciona a la pagina para agregar un nuevo registro
- * @param {e} Evento disparador
- * @param {string} Identificador del formulario
+ * @param {event} e Evento disparador
+ * @param {string} controlador Identificador del formulario
  * @param {type} id
  * @returns {Boolean}
  */
@@ -314,11 +335,26 @@ function ZCAccionNuevoRegistro(e, controlador, id){
 }
 
 /**
+ * Direcciona a la pagina para la edicion del registro
+ * @param {event} e Evento disparador
+ * @param {string} controlador Identificador del formulario
+ * @param {object} enlace This del enlace dado
+ * @returns {Boolean}
+ */
+function ZCAccionModificarRegistro(e, controlador, enlace){
+    e.preventDefault;
+    var id = $(enlace).attr('zc-id-registro');
+    // Direcciona a la pagina de agregar
+    window.location.assign($('#URLProyecto').val()+'index.php/'+controlador+'/editar/'+id);
+}
+
+/**
  * Determina los botones a mostrar en el formulario, depende de si es actualizacion o nuevo registro
- * @param {String} formulario
- * @param {String} agregar
- * @param {String} modificar
- * @param {String} borrar
+ * @param {String} formulario Formulario donde estan los botones
+ * @param {String} agregar Nombre de la funcion agregar
+ * @param {String} modificar Nombre de la funcion modificar
+ * @param {String} borrar Nombre de la funcion borrar
+ * @param {String} precargar Nombre de la funcion precargar
  * @returns {String}
  */
 function ZCAccionBotones(formulario, agregar, modificar, borrar, precargar){
@@ -336,6 +372,12 @@ function ZCAccionBotones(formulario, agregar, modificar, borrar, precargar){
     }
 }
 
+/**
+ * Precarga los datos devueltos por la consulta a la base de datos
+ * @param {string} formulario Nombre del formulario
+ * @param {json} rpta Datos devueltos por el servidor
+ * @returns {undefined}
+ */
 function ZCAccionPrecargarResultado(formulario, rpta){
     for (var campo in rpta.infoEncabezado) {
         switch(true){
@@ -349,10 +391,11 @@ function ZCAccionPrecargarResultado(formulario, rpta){
             $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);
             break;
         case $('#'+campo).attr('type') === 'password':
-            // No se deja obligatorios, no es ncesario cambiarlos
+            // No se deja obligatorios, si la persona lo diligencia se cambia en el servidor, delo contrario se
+            // deja el valor que estaba
             $('#'+formulario + ' #'+campo).removeAttr('data-parsley-required');
             // Las contrasenas las deja vacias
-            $('#'+formulario + ' #'+campo).val();
+            $('#'+formulario + ' #'+campo).val('');
             break;
         default:
             $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);

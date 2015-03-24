@@ -54,9 +54,14 @@ $(document).ready(function () {
         ZCAccionMostrarFiltro(e, '{_nombreFormulario_}', this);
     });
 
-    // Accion boton zc-filtros-mostrar para mostrar los filtros seleccionados
-    $('.zc-filtros-nuevo').click(function(e){
+    // Accion boton zc-nuevo-registro permite agregar un nuevo registro
+    $('.zc-nuevo-registro').click(function(e){
         ZCAccionNuevoRegistro(e, '{_nombreControlador_}', this);
+    });
+    
+    // Accion boton zc-modificar-registro permite modificar el registro
+    $('.zc-editar-registro').click(function(e){
+        ZCAccionModificarRegistro(e, '{_nombreControlador_}', this);
     });
 
     // Se agrega la validacion cuando los elementos pierden el foco

@@ -27,7 +27,7 @@
             <!-- Nombre del formulario actual -->
             <div class="col-md-1"></div>
             <div class="col-md-10 text-center">
-                <h2>{_nombreFormulario_}: Listar</h2>
+                <h2>Listado {_nombreFormulario_}</h2>
             </div>
             <div class="col-md-1"></div>
             <!-- Fin Nombre del formulario actual -->
