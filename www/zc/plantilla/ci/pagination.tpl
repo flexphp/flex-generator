@@ -11,7 +11,7 @@ $config['full_tag_open'] = '<div class="text-center"><ul class="pagination pagin
 $config['full_tag_close'] = '</ul></div>';
 $config['num_tag_open'] = '<li>';
 $config['num_tag_close'] = '</li>';
-$config['cur_tag_open'] = "<li class='disabled'><li class='active'><a href='#'>";
+$config['cur_tag_open'] = "<li class='disabled'><li class='active'><a class='active zc-enlace-paginacion' href='#'>";
 $config['cur_tag_close'] = "<span class='sr-only'></span></a></li>";
 $config['next_tag_open'] = "<li>";
 $config['next_tagl_close'] = "</li>";
@@ -31,3 +31,5 @@ $config['num_links'] = 2;
 $config['per_page'] = {_porPagina_};
 // Necesario para contruir la paginacion adecuadamente
 $config['use_page_numbers'] = TRUE;
+// Clase para los enlace de paginacion
+$config['anchor_class'] = 'zc-enlace-paginacion';
