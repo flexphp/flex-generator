@@ -3,7 +3,8 @@
              */
             if(nombreAccion === '{_nombreAccion_}') {
                 var filtrosAEnviar = ZCAccionBuscarFiltro('{_nombreFormulario_}');
-//                Descomentarioar para validar al menos un filtros de busqueda
+                var paginaActual = ZCAccionBuscarPagina();
+//                Descomentariar para validar al menos un filtros de busqueda
 //                if(filtrosAEnviar == ''){
 //                    $('#error-{_nombreFormulario_}').text('{_mensajeError_}');
 //                    $('.alert-danger').show();
@@ -16,6 +17,7 @@
                     data: {
                         // Envia filtros de busqueda al servidor
                         filtros: filtrosAEnviar,
+                        pagina: paginaActual,
                         accion: nombreAccion
                     },
                     beforeSend: function(){

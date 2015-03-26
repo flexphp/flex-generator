@@ -2,7 +2,7 @@
 
 // Tiempo de inicio del proceso de creacion
 list($usec, $sec) = explode(" ", microtime());
-$tiempoInicio = ((float)$usec + (float)$sec);
+$tiempoInicio = ((float) $usec + (float) $sec);
 // Archivo de configuracion itilizado
 require 'conf.php';
 // Funciones utilizadas durante la creacion del proyecto
@@ -103,6 +103,13 @@ try {
     $index = new plantilla();
     $index->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/index.html');
     $index->crearPlantilla('../publico', 'html');
+
+    /**
+     * Configuracion para los archivos de paginacion
+     */
+    $pagina = new plantilla();
+    $pagina->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/ci/pagination.tpl');
+    $pagina->crearPlantilla('../application/config', 'php');
 
     /**
      * Crear archivo de configuracion de base de datos, valida y setea la configuracion segun corresponda

@@ -224,16 +224,29 @@ function ZCAccionBuscarFiltro(formulario){
 }
 
 /**
+ * Buscar el numero de pagina actual
+ * @returns {jQuery}
+ */
+function ZCAccionBuscarPagina(){
+    var paginaActual = $('#zc-pagina-actual').val();
+    return (paginaActual > 0) ? paginaActual : '';
+}
+
+/**
  * Valores de busqueda predefinidos, se usa en la accion crear
  * @param {string} formulario Nombre del formaulario a utilizar
  * @returns {String}
  */
 function ZCAccionBuscarPredefinido(formulario){
     var filtrosPredefinidos = $('#zc-filtros-predefinidos').val();
-    if(filtrosPredefinidos !== '' && filtrosPredefinidos !== undefined){
+    var paginaActual = $('#zc-pagina-actual').val();
+    if(filtrosPredefinidos !== undefined && filtrosPredefinidos !== ''){
         //Establece el valor de los filtros a utilizar en la busqueda
         $('#'+formulario).append('<input id="filtros-seleccionados-0" type="hidden" class="zc-filtros-seleccionado" value="'+filtrosPredefinidos+'">');
         // Ejecuta accion boton buscar
+        $('#'+formulario).find('.zc-accion').trigger('click');
+    }
+    if(paginaActual !== undefined && paginaActual > 0){
         $('#'+formulario).find('.zc-accion').trigger('click');
     }
     return true;
@@ -273,28 +286,28 @@ function ZCAccionMostrarFiltro(e, formulario, id){
  * Crea el listado de campos devueltos por el servidor, agrega enlace para la edicion del registro
  * @param {string} formulario Nombre del formulario donde se creara la el listado
  * @param {string} controlador Nombre del controlador a utilizar
- * @param {json} listado Valores devueltos por la consulta
+ * @param {json} rpta Valores devueltos por la consulta
  * @returns {undefined}
  */
 
-function ZCListarResultados(formulario, controlador, listado){
+function ZCListarResultados(formulario, controlador, rpta){
     var tabla = "<table class='table table-bordered table-hover'>";
     var encabezados = '';
     var columnas = '';
     var id = -1;
-    
-    for(var i = 0; i < listado.cta; ++i){
-        for (var key in listado.infoEncabezado[i]) {
-            if (listado.infoEncabezado[i].hasOwnProperty(key)) {
+
+    for(var i = 0; i < rpta.cta; ++i){
+        for (var key in rpta.infoEncabezado[i]) {
+            if (rpta.infoEncabezado[i].hasOwnProperty(key)) {
                 if(i === 0 && $.trim(key) !== ''){
                     //Crea los encabezados
                     encabezados += '<th>'+key+'</th>';
                 }
                 if(key === 'id'  && id === -1){
                     // Agrega el id del registro para el caso de modificacion
-                    id = listado.infoEncabezado[i][key];
+                    id = rpta.infoEncabezado[i][key];
                 }
-                columnas += '<td>' + listado.infoEncabezado[i][key] +  '</td>';
+                columnas += '<td>' + rpta.infoEncabezado[i][key] +  '</td>';
             }
         }
         if(i === 0){
@@ -308,6 +321,7 @@ function ZCListarResultados(formulario, controlador, listado){
 
     tabla += "</table>";
     $('#listado-'+formulario).html(tabla);
+    $('#paginacion-'+formulario).html(rpta.paginacion);
 }
 
 /**

@@ -67,6 +67,9 @@
                 <div id="listado-{_nombreFormulario_}">
                     <!-- Resultados de la busqueda -->
                 </div>
+                <div id="paginacion-{_nombreFormulario_}">
+                    <!-- Paginacion de la busqueda -->
+                </div>
             </div>
             <div class="col-md-1"></div>
             <!-- Fin Formulario con resultados de la busqueda -->
@@ -74,6 +77,8 @@
 
         <!-- Busquedas hechas desde la url, se usa en la accion de crear -->
         <input type="hidden" id="zc-filtros-predefinidos" name="zc-filtros-predefinidos" value="<?php echo $busquedaPredefinida; ?>"/>
+        <!-- Pagina actual, se utiliza para la paginacion de las paginas -->
+        <input type="hidden" id="zc-pagina-actual" name="zc-pagina-actual" value="<?php echo $paginaActual; ?>"/>
         <!-- URL del proyecto, se usa en los llamados ajax -->
         <input type="hidden" id="URLProyecto" name="URLProyecto" value="<?php echo base_url(); ?>"/>
         <!-- JS jQuery -->

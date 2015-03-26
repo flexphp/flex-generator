@@ -721,9 +721,14 @@ class formulario {
             switch ($caracteristicas[ZC_ELEMENTO]) {
                 case ZC_ACCION_BUSCAR:
                     $comando .= str_replace('{_nombreModelo_}', $this->_nombreArchivoModelo, "\$rpta = \$this->{_nombreModelo_}->validarFiltros(\$datos['filtros'], \$datos['accion']);");
+                    $paginacion = 'if (isset($rpta[\'cta\'])){';
+//                    $paginacion .= '$rpta[\'paginacion\'] = $this->pagina($rpta[\'cta\']);';
+                    $paginacion .= '$rpta[\'paginacion\'] = $this->pagina($rpta[\'cta\']);';
+                    $paginacion .= '}';
                     break;
                 default:
                     $comando .= str_replace(array('{_nombreModelo_}', '{_nombreValidacion_}'), array($this->_nombreArchivoModelo, $this->_nombreFuncionValidacion), "\$rpta = \$this->{_nombreModelo_}->{_nombreValidacion_}(\$datos);");
+                    $paginacion = '';
                     break;
             }
             /**
@@ -735,6 +740,7 @@ class formulario {
             // Se crean durante el proceso de los elementos para las validaciones
             $plantilla->asignarEtiqueta('asignacionCliente', $comando);
             $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
+            $plantilla->asignarEtiqueta('paginacionCliente', $paginacion);
             // Concatena cada accion del cliente
             $this->_funcionControlador .= FIN_DE_LINEA . insertarEspacios(4) . $plantilla->devolverPlantilla() . FIN_DE_LINEA;
         }

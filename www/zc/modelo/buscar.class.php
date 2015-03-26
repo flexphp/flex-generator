@@ -15,8 +15,8 @@ class buscar extends accion {
     }
 
     /**
-     * Redefine la duncion de inicializacion para manejar las vearialbes de vusqueda
-     * @return type
+     * Redefine la funcion de inicializacion para manejar las variables de busqueda
+     * @return string
      */
     function inicializar() {
         $cmd = $this->comando("\$data = \$filtros;", 12);
@@ -42,7 +42,7 @@ class buscar extends accion {
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'modelo_\' . $tabla, $tabla);', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
-        $php .= $this->comando('$rpta = $CI->$tabla->buscar($filtros, \'buscar\');', 12);
+        $php .= $this->comando('$rpta = $CI->$tabla->buscar($filtros, \'buscar\', $pagina);', 12);
         $php .= $this->comando('switch (true){', 12);
         $php .= $this->comando('case (isset($rpta[\'error\']) && \'\' != $rpta[\'error\']):', 16);
         $php .= $this->comando('// Errores durante la ejecucion', 20);
@@ -68,7 +68,7 @@ class buscar extends accion {
             throw new Exception(__FUNCTION__ . ': Error en la accion, se esperaba: ' . ZC_ACCION_BUSCAR);
         }
         $php = '';
-        $php .= $this->comando('function buscar($campos, $accion){', 4);
+        $php .= $this->comando('function buscar($campos, $accion, $pagina){', 4);
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('$CI = new CI_Controller;', 8);
         $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
@@ -85,15 +85,18 @@ class buscar extends accion {
 //        $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
 //        $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
         $php .= $this->comando('default:', 12);
-        $php .= $this->comando('// Devuelve el id insertado campo y el numero de filas efectadas', 16);
-        $php .= $this->comando('$ressql = $this->db->get(\'' . $this->_tabla . '\');', 16);
+//        $php .= $this->comando('$this->db->limit($pagina);', 16);
+        $php .= $this->comando('// Numero total de elmentos', 16);
+        $php .= $this->comando('$cta = $this->db->get(\'' . $this->_tabla . '\');', 16);
+        $php .= $this->comando('$rpta[\'cta\'] = $cta->num_rows();', 16);
+        $php .= $this->comando('// Paginacion de resultados', 16);
+        $php .= $this->comando('$ressql = $this->db->get(\'' . $this->_tabla . '\', 4, (($pagina - 1) * 4));', 16);
         $php .= $this->comando('if($ressql->num_rows() > 0){', 16);
         $php .= $this->comando('$i = 0;', 20);
         $php .= $this->comando('foreach($ressql->result_array() as $row){', 20);
         $php .= $this->comando('$rpta[\'resultado\'][$i] = $row;', 24);
         $php .= $this->comando('++$i;', 24);
         $php .= $this->comando('}', 20);
-        $php .= $this->comando('$rpta[\'cta\'] = $ressql->num_rows();', 20);
         $php .= $this->comando('}', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('}', 8);
@@ -251,9 +254,13 @@ class buscar extends accion {
             return $this;
         }
         $this->_inicializarCliente[] = "'filtros' => \$datos['filtros']";
+        $this->_inicializarCliente[] = "'pagina' => \$datos['pagina']";
         $this->_inicializarServidor[] = "'filtros' => 'xsd:string'";
-        $this->_parametrosServidor[] = '$filtros';
-        $this->_asignacionControlador[] = $this->comando("\$datos['filtros'] = \$this->input->post('filtros');");
+        $this->_inicializarServidor[] = "'pagina' => 'xsd:int'";
+        $this->_parametrosServidor[] = '$filtros, $pagina';
+        $php = $this->comando("\$datos['filtros'] = \$this->input->post('filtros');");
+        $php .= $this->comando("\$datos['pagina'] = \$this->input->post('pagina');", 8);
+        $this->_asignacionControlador[] = $php;
         $this->_tipoPlantilla = 'jsLlamadosBuscarAjax.js';
 
         //Desactiva nuevas peticiones de inicializacion
