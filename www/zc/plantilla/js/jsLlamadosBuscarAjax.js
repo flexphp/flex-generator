@@ -3,7 +3,7 @@
              */
             if(nombreAccion === '{_nombreAccion_}') {
                 var filtrosAEnviar = ZCAccionBuscarFiltro('{_nombreFormulario_}');
-                var paginaActual = ZCAccionBuscarPagina();
+                var paginaActual = ZCAccionBuscarPagina(filtrosAEnviar);
 //                Descomentariar para validar al menos un filtros de busqueda
 //                if(filtrosAEnviar == ''){
 //                    $('#error-{_nombreFormulario_}').text('{_mensajeError_}');
@@ -11,7 +11,8 @@
 //                    return false;
 //                }
                 $.ajax({
-                    url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}/',
+                    // Para construir la paginacion se necesita el numero de la pagina en la url
+                    url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}/' + paginaActual,
                     type: 'POST',
                     dataType: 'JSON',
                     data: {
@@ -27,6 +28,8 @@
                         $('.alert').hide();
                         // Limpia resultados anteriores
                         $('#listado-{_nombreFormulario_}').html('');
+                        // Limpia la paginacion
+                        $('#paginacion-{_nombreFormulario_}').html('');
                         // Mostrar cargando
                         $('#cargando-{_nombreFormulario_}').removeClass('hidden');
                     },

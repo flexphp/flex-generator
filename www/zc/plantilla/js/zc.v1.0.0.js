@@ -225,11 +225,12 @@ function ZCAccionBuscarFiltro(formulario){
 
 /**
  * Buscar el numero de pagina actual
+ * @param {string} filtros Filtros a utilizar en la busqueda
  * @returns {jQuery}
  */
-function ZCAccionBuscarPagina(){
-    var paginaActual = $('#zc-pagina-actual').val();
-    return (paginaActual > 0) ? paginaActual : '';
+function ZCAccionBuscarPagina(filtros){
+    var pagina = $('#zc-pagina-actual').val();
+    return (pagina === '' || filtros !== '') ? 1 : pagina;
 }
 
 /**
@@ -239,14 +240,15 @@ function ZCAccionBuscarPagina(){
  */
 function ZCAccionBuscarPredefinido(formulario){
     var filtrosPredefinidos = $('#zc-filtros-predefinidos').val();
-    var paginaActual = $('#zc-pagina-actual').val();
     if(filtrosPredefinidos !== undefined && filtrosPredefinidos !== ''){
         //Establece el valor de los filtros a utilizar en la busqueda
         $('#'+formulario).append('<input id="filtros-seleccionados-0" type="hidden" class="zc-filtros-seleccionado" value="'+filtrosPredefinidos+'">');
         // Ejecuta accion boton buscar
         $('#'+formulario).find('.zc-accion').trigger('click');
     }
-    if(paginaActual !== undefined && paginaActual > 0){
+    // Se usa en los cambios de pagina
+    var paginaActual = $('#zc-pagina-actual').val();
+    if(paginaActual !== undefined){
         $('#'+formulario).find('.zc-accion').trigger('click');
     }
     return true;

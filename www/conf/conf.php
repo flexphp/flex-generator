@@ -2,6 +2,8 @@
 
 // Ruta donde se encuentra el generador de codigo
 define("RUTA_GENERADOR_CODIGO", "../zc");
+// Numero de registro por pagina, se usa para paginar los resultados
+define("ZC_REGISTROS_POR_PAGINA", 10);
 //Tipos de elementos aceptados
 define("ZC_ID", "id");
 define("ZC_ETIQUETA", "como_se_llama");

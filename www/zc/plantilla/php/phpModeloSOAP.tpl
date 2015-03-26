@@ -15,6 +15,7 @@ class {_nombreModelo_} extends CI_Model {
 
     /**
      * Procesa la respuesta devuelta por el servidor WS, verifica si existen errores
+     * @param array Respuesta del servidor de WS
      * @return array
      */ 
     function procesarRespuestaWS($ws) {
@@ -54,6 +55,8 @@ class {_nombreModelo_} extends CI_Model {
     /**
      * Valida los filtros aplicados en el formulario de busqieda
      * @param string $campos Filtros de busqueda seleccionados por el cliente
+     * @param string $accion Accion solicitado por parte del cliente
+     * @return array Respuesta de la validacion de datos
      */
     function validarFiltros($campos, $accion){
         // Errores durante la validacion
@@ -82,5 +85,32 @@ class {_nombreModelo_} extends CI_Model {
             }
         }
         return $rpta;
+    }
+    
+    /**
+     * Devuelve el numero total de registros que cumplen con los filtros aplicados 
+     * en el formulario de busqueda
+     * @param string $campos Filtros de busqueda seleccionados por el cliente
+     * @param string $tabla Nombre de la tabla
+     * @return int Numero de registros encontrados
+     */
+    function totalRegistros($campos, $tabla){
+        $filtros = ($campos != '')? explode('|??|', $campos) : array();
+        $this->db->select('COUNT(1) cta');
+        foreach ($filtros as $cadaFiltro) {
+            if($cadaFiltro == ''){
+                //Sin filtro de busqueda
+                continue;
+            }
+            list($campo, $operador, $valor) = explode('|?|', $cadaFiltro);
+            // Agrega condiciones de busqueda segun los filtros
+            if(strpos($operador, '%')){
+                $this->db->like($campo, $valor, str_replace('%', '', $operador));
+            }else{
+                $this->db->where(array($campo.' '.$operador => $valor));
+            }
+        }
+        $ressql = $this->db->get($tabla);
+        return $ressql->row()->cta;
     }
 }

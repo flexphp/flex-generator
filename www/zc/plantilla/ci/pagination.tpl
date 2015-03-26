@@ -23,11 +23,11 @@ $config['last_tag_open'] = "<li>";
 $config['last_tagl_close'] = "</li>";
 $config['first_link'] = '<<';
 $config['last_link'] = '>>';
-// De la forma http://url/index.php/controlador/pagina/#
-$config['uri_segment'] = 4;
+// Se hace en el ajax De la forma http://url/index.php/controlador/buscar/#
+$config['uri_segment'] = 3;
 // Numero de enlace antes y despues de la pagina actual
 $config['num_links'] = 2;
 // $config['display_pages'] = FALSE;
-$config['per_page'] = 4;
+$config['per_page'] = {_porPagina_};
 // Necesario para contruir la paginacion adecuadamente
 $config['use_page_numbers'] = TRUE;

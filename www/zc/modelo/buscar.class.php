@@ -70,6 +70,7 @@ class buscar extends accion {
         $php = '';
         $php .= $this->comando('function buscar($campos, $accion, $pagina){', 4);
         $php .= $this->comando('$rpta = array();', 8);
+        $php .= $this->comando('$porPagina = ' . ZC_REGISTROS_POR_PAGINA . ';', 8);
         $php .= $this->comando('$CI = new CI_Controller;', 8);
         $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
         $php .= $this->comando('$validacion = $this->modelo_' . $this->_tabla . '->validarFiltros($campos, $accion);', 8);
@@ -85,13 +86,12 @@ class buscar extends accion {
 //        $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
 //        $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
         $php .= $this->comando('default:', 12);
-//        $php .= $this->comando('$this->db->limit($pagina);', 16);
-        $php .= $this->comando('// Numero total de elmentos', 16);
-        $php .= $this->comando('$cta = $this->db->get(\'' . $this->_tabla . '\');', 16);
-        $php .= $this->comando('$rpta[\'cta\'] = $cta->num_rows();', 16);
         $php .= $this->comando('// Paginacion de resultados', 16);
-        $php .= $this->comando('$ressql = $this->db->get(\'' . $this->_tabla . '\', 4, (($pagina - 1) * 4));', 16);
+        $php .= $this->comando('$ressql = $this->db->get(\'' . $this->_tabla . '\', $porPagina, (($pagina - 1) * $porPagina));', 16);
+        $php .= $this->comando('// Existen resultados', 16);
         $php .= $this->comando('if($ressql->num_rows() > 0){', 16);
+        $php .= $this->comando('// Numero total de elementos', 20);
+        $php .= $this->comando('$rpta[\'cta\'] = $this->modelo_' . $this->_tabla . '->totalRegistros($campos, \'' . $this->_tabla . '\');', 20);
         $php .= $this->comando('$i = 0;', 20);
         $php .= $this->comando('foreach($ressql->result_array() as $row){', 20);
         $php .= $this->comando('$rpta[\'resultado\'][$i] = $row;', 24);
@@ -255,12 +255,15 @@ class buscar extends accion {
         }
         $this->_inicializarCliente[] = "'filtros' => \$datos['filtros']";
         $this->_inicializarCliente[] = "'pagina' => \$datos['pagina']";
+        
         $this->_inicializarServidor[] = "'filtros' => 'xsd:string'";
         $this->_inicializarServidor[] = "'pagina' => 'xsd:int'";
+        
         $this->_parametrosServidor[] = '$filtros, $pagina';
-        $php = $this->comando("\$datos['filtros'] = \$this->input->post('filtros');");
-        $php .= $this->comando("\$datos['pagina'] = \$this->input->post('pagina');", 8);
-        $this->_asignacionControlador[] = $php;
+        
+        $this->_asignacionControlador[] = "\$datos['filtros'] = \$this->input->post('filtros');";
+        $this->_asignacionControlador[] = "\$datos['pagina'] = \$this->input->post('pagina');";
+        
         $this->_tipoPlantilla = 'jsLlamadosBuscarAjax.js';
 
         //Desactiva nuevas peticiones de inicializacion

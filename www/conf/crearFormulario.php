@@ -109,6 +109,9 @@ try {
      */
     $pagina = new plantilla();
     $pagina->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/ci/pagination.tpl');
+    if (defined('ZC_REGISTROS_POR_PAGINA')) {
+        $pagina->asignarEtiqueta('porPagina', ZC_REGISTROS_POR_PAGINA);
+    }
     $pagina->crearPlantilla('../application/config', 'php');
 
     /**

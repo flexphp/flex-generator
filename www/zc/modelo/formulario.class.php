@@ -723,7 +723,7 @@ class formulario {
                     $comando .= str_replace('{_nombreModelo_}', $this->_nombreArchivoModelo, "\$rpta = \$this->{_nombreModelo_}->validarFiltros(\$datos['filtros'], \$datos['accion']);");
                     $paginacion = 'if (isset($rpta[\'cta\'])){';
 //                    $paginacion .= '$rpta[\'paginacion\'] = $this->pagina($rpta[\'cta\']);';
-                    $paginacion .= '$rpta[\'paginacion\'] = $this->pagina($rpta[\'cta\']);';
+                    $paginacion .= '$rpta[\'paginacion\'] = $this->paginar($rpta[\'cta\']);';
                     $paginacion .= '}';
                     break;
                 default:
