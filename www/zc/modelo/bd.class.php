@@ -52,9 +52,9 @@ class bd extends conexion {
             case ZC_MOTOR_MYSQL:
                 break;
             case '':
-                throw new Exception(__FUNCTION__ . ': Seleccione una opcion de guardado de datos.');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Seleccione una opcion de guardado de datos.');
             default:
-                throw new Exception(__FUNCTION__ . ': Motor (' . $this->_motor . ') no soportado por la herramienta, proximamente.');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no soportado por la herramienta, proximamente.');
         }
     }
 
@@ -99,7 +99,7 @@ class bd extends conexion {
                 $tipo = $this->_equivalencias[$this->_motor][$dato];
                 break;
             default:
-                throw new Exception(__FUNCTION__ . ': Tipo de dato (' . $dato . ') sin equivalencia');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de dato (' . $dato . ') sin equivalencia');
         }
         return $tipo;
     }
@@ -117,7 +117,7 @@ class bd extends conexion {
             case ZC_DATO_EMAIL:
             case ZC_DATO_URL:
                 if (!is_numeric($maxima) || $maxima == 0) {
-                    throw new Exception(__FUNCTION__ . ': Error en longitud maxima, por el tipo de campo es obligatorio colocarlo');
+                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en longitud maxima, por el tipo de campo es obligatorio colocarlo');
                 }
                 $longitud = "($maxima)";
                 break;
@@ -187,7 +187,7 @@ class bd extends conexion {
                 $charset = $this->_equivalencias[$this->_motor]['CHARSET'] . ' ' . ZC_MOTOR_DEFAULT_CHARSET;
                 break;
             default:
-                throw new Exception(__FUNCTION__ . ': Motor (' . $this->_motor . ') no contemplado');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
         }
         return $charset;
     }
@@ -202,7 +202,7 @@ class bd extends conexion {
                 $bd = $this->_equivalencias[$this->_motor]['CREACION_BD'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_BD'] . ' ' . ZC_CONEXION_BD . ' ' . $this->charset();
                 break;
             default:
-                throw new Exception(__FUNCTION__ . ': Motor (' . $this->_motor . ') no contemplado');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
         }
         $this->_sentencias[] = $bd;
         return $this;
@@ -220,7 +220,7 @@ class bd extends conexion {
                 $nombre = $this->_equivalencias[$this->_motor]['CREACION_TABLA'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_TABLA'] . ' ' . $this->_prop[0][ZC_ID] . ' (' . FIN_DE_LINEA;
                 break;
             default:
-                throw new Exception(__FUNCTION__ . ': Motor (' . $this->_motor . ') no contemplado');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
         }
         return $nombre;
     }
@@ -237,7 +237,7 @@ class bd extends conexion {
                 $key = $coma . insertarEspacios(4) . FIN_DE_LINEA . $this->_equivalencias[$this->_motor]['LLAVE_PRIMARIA'] . ' (' . $campo . ')';
                 break;
             default:
-                throw new Exception(__FUNCTION__ . ': Motor (' . $this->_motor . ') no contemplado');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
         }
         return $key;
     }
@@ -282,7 +282,7 @@ class bd extends conexion {
     private function verificar() {
         foreach ($this->_prop as $nro => $caracteristicas) {
             if (!isset($this->_prop[$nro][ZC_ID]) || '' == trim($this->_prop[$nro][ZC_ID]) || !is_string($this->_prop[$nro][ZC_ID])) {
-                throw new Exception(__FUNCTION__ . ": El campo NO tiene un identificador valido [a-Z_].");
+                mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo NO tiene un identificador valido [a-Z_].");
             }
             $this->_prop[$nro][ZC_ID] = strtolower(trim($this->_prop[$nro][ZC_ID]));
             // Comentario

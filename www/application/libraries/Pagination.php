@@ -198,7 +198,7 @@ class Pagination {
 
         // Render the "First" link
         if ($this->first_link !== FALSE AND $this->cur_page > ($this->num_links + 1)) {
-            $first_url = ($this->first_url == '') ? $this->base_url : $this->first_url;
+            $first_url = ($this->first_url == '') ? $this->base_url . '1' : $this->first_url;
             $output .= $this->first_tag_open . '<a ' . $this->anchor_class . 'onclick="ZCAccionPaginarResultado(event, \'' . $this->form . '\', this);" href="' . $first_url . '">' . $this->first_link . '</a>' . $this->first_tag_close;
         }
 

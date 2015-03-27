@@ -209,7 +209,7 @@ class procesarXML {
      */
     private function xml2form($archivoXML, $elementos) {
         if (!isset($elementos[0])) {
-            throw new Exception(__FUNCTION__ . ": Estructura no valida!: " . $archivoXML);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": Estructura no valida!: " . $archivoXML);
         }
         foreach ($elementos as $key => $value) {
             if (!isset($value[ZC_ELEMENTO]) && $key == 0) {
@@ -224,7 +224,7 @@ class procesarXML {
                  */
                 $$nombre->agregarElemento($value);
             } else {
-                throw new Exception(__FUNCTION__ . ': No existe el elemento ' . preprint($value, 1));
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': No existe el elemento ' . preprint($value, 1));
             }
         }
         $$nombre->finFormulario();

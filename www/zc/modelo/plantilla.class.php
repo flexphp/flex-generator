@@ -7,6 +7,12 @@ class plantilla {
      * @var string
      */
     private $_plantilla = null;
+    
+    /**
+     * Opciones qu se deben aplicar a la plantilla, minimizar, abrir
+     * @var array
+     */
+    private $_opciones = array('minimizar' => false, 'abrir' => false);
 
     /**
      * Ruta de la plantilla en disco
@@ -41,20 +47,20 @@ class plantilla {
     /**
      * Constructor
      */
-    function __construct() {
-
+    function __construct($opciones = array()) {
+        $this->_opciones = (is_array($opciones)) ? $opciones : $this->_opciones;
     }
 
     /**
      * Define una nueva plantilla para poder extraer los datos
-     * @param type $nombre Nombre de la plantilla a manejar
-     * @param type $contenido Contenido con las etiquetas a manejar
+     * @param string $nombre Nombre de la plantilla a manejar
+     * @param string $contenido Contenido con las etiquetas a manejar
      * @return \plantilla
      * @throws Exception
      */
     public function nuevaPlantilla($nombre = '', $contenido = '') {
         if ($nombre == '') {
-            throw new Exception(__FUNCTION__ . ": El nombre de la nueva plantilla!");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": El nombre de la nueva plantilla!");
         } else {
             $this->_nombrePlantilla = $nombre;
             $this->_plantilla = $contenido;
@@ -74,7 +80,7 @@ class plantilla {
      */
     public function cargarPlantilla($plantilla = null) {
         if (!is_file($plantilla)) {
-            throw new Exception(__FUNCTION__ . ": La plantilla " . $plantilla . " no existe");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": La plantilla " . $plantilla . " no existe");
         } else {
             $this->_nombrePlantilla = $plantilla;
             $this->_plantilla = file_get_contents($plantilla);
@@ -92,7 +98,7 @@ class plantilla {
      */
     private function extraerEtiquetas() {
         if (!$this->_plantilla) {
-            throw new Exception(__FUNCTION__ . ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else {
             $patron = '#\{_([A-z0-9\s\.])*_\}#';
             preg_match_all($patron, $this->_plantilla, $this->_etiquetas);
@@ -107,14 +113,14 @@ class plantilla {
 
     /**
      * Asigna el valor de etiqueta con el valor entregado
-     * @param type $etiqueta Nombre de la etiqueta presente en la plantilla
-     * @param type $valor Valor de la etiqueta
+     * @param string $etiqueta Nombre de la etiqueta presente en la plantilla
+     * @param string $valor Valor de la etiqueta
      * @return \plantilla
      * @throws Exception
      */
     public function asignarEtiqueta($etiqueta, $valor) {
         if (!$this->_plantilla) {
-            throw new Exception(__FUNCTION__ . ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else {
             if (isset($this->_etiquetasValidas[$etiqueta])) {
 //                No es necesario que la etiqueta este en la plantilla
@@ -134,7 +140,7 @@ class plantilla {
      */
     public function asignarEtiquetaMultiple(array $etiquetas) {
         if (!$this->_plantilla) {
-            throw new Exception(__FUNCTION__ . ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else {
             foreach ($etiquetas as $key => $value) {
                 $this->asignarEtiqueta($key, $value);
@@ -151,7 +157,7 @@ class plantilla {
      */
     public function quitarEtiquetas() {
         if (!$this->_plantilla) {
-            throw new Exception(__FUNCTION__ . ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else {
             $patron = '#\{_([A-z0-9\s\.])*_\}#';
             $reemplazar = '';
@@ -166,10 +172,10 @@ class plantilla {
      * @return \plantilla
      * @throws Exception
      */
-    public function minimizarPlantilla() {
+    private function minimizarPlantilla() {
         if (!$this->_plantilla) {
-            throw new Exception(__FUNCTION__ . ": Y la plantilla!?");
-        } else {
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
+        } else if (isset($this->_opciones['minimizar']) && $this->_opciones['minimizar'] === true) {
             //return $this;
             $patron = array(
 //            Quitar comentarios html
@@ -214,7 +220,7 @@ class plantilla {
      */
     public function imprimirPlantilla() {
         if (!$this->_plantilla) {
-            throw new Exception(__FUNCTION__ . ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else {
             echo $this->_plantilla;
         }
@@ -227,22 +233,24 @@ class plantilla {
      */
     public function devolverPlantilla() {
         if (!$this->_plantilla) {
-            throw new Exception(__FUNCTION__ . ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else {
+            // Verifica si debe minimizar la plantilla
+            $this->minimizarPlantilla();
             return $this->_plantilla;
         }
     }
 
     /**
      * Crear archivo en disco, segun los parametros
-     * @param type $dirSalida Ruta donde se creara el archivo
-     * @param type $tipoSalida Extension que tendra el archivo
-     * @param type $nombreSalida Nombre del archivo como tal
+     * @param string $dirSalida Ruta donde se creara el archivo
+     * @param string $tipoSalida Extension que tendra el archivo
+     * @param string $nombreSalida Nombre del archivo como tal
      * @throws Exception
      */
     public function crearPlantilla($dirSalida = '', $tipoSalida = 'php', $nombreSalida = '') {
         if (!$this->_plantilla) {
-            throw new Exception(__FUNCTION__ . ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else {
             if ($nombreSalida == '') {
                 $info = explode('/', $this->_nombrePlantilla);
@@ -251,17 +259,25 @@ class plantilla {
             } elseif (is_string($nombreSalida) && $nombreSalida != '') {
                 $nombrePlantilla = $nombreSalida;
             } else {
-                throw new Exception(__FUNCTION__ . ": Nombre de para la plantilla incorrecto!");
+                mostrarErrorZC(__FILE__, __FUNCTION__, ": Nombre de para la plantilla incorrecto!");
             }
-            $this->_nombrePlantilla = crearArchivo($dirSalida, $nombrePlantilla, $tipoSalida, $this->_plantilla);
+            $this->_nombrePlantilla = crearArchivo($dirSalida, $nombrePlantilla, $tipoSalida, $this->devolverPlantilla());
             $this->_rutaPlantilla = $dirSalida . '/';
             $this->_salidaPlantilla = $this->_rutaPlantilla . $this->_nombrePlantilla;
+            // Verifica si debe abrir la plantilla
+            $this->abrirPlantilla();
         }
     }
 
-    public function abrirPlantilla($paramsGET = '') {
-        header('Location: ' . $this->_salidaPlantilla . $paramsGET);
-        die();
+    /**
+     * Abre la plantilla en el navegador, depende de las opciones pasadas a la plantilla
+     * @param string $paramsGET Para get pasdos a la plantilla
+     */
+    private function abrirPlantilla($paramsGET = '') {
+        if (isset($this->_opciones['abrir']) && $this->_opciones['abrir'] === true) {
+            header('Location: ' . $this->_salidaPlantilla . $paramsGET);
+            die();
+        }
     }
 
 }

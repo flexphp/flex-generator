@@ -56,7 +56,7 @@ class checkbox extends elementos {
             $opciones = array();
             foreach ($cada_opcion as $value) {
                 if (strpos($value, '=') === false) {
-                    throw new Exception(__FUNCTION__ . ': Tipo de checkbox no valido, se espera id1=valor1, id2=valor2');
+                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de checkbox no valido, se espera id1=valor1, id2=valor2');
                 }
                 list($id, $valor) = explode('=', $value);
                 $opciones[trim($id)] = trim($valor);

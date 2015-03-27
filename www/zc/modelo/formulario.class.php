@@ -45,7 +45,7 @@ require RUTA_GENERADOR_CODIGO . '/modelo/accion.class.php';
 class formulario {
 
     /**
-     * Identificador/Nombre del formulario creado
+     * Identificador del formulario creado
      * @var string
      */
     public $_id = '';
@@ -87,20 +87,20 @@ class formulario {
     private $_formulario = array();
 
     /**
-     * Archivos javascript creados durante el proceso, estos on utilizados por el formulario
+     * Archivos javascript creados durante el proceso, estos son utilizados por los archivos html
      * @var string
      */
     private $_js = '';
 
     /**
-     * Almacena la plantilla html de la vista seleccionada
+     * Almacena la plantilla html de la vista seleccionada, formulario de ingreso/modificacion
      * @var \plantilla
      */
     private $_plantillaHTML = null;
 
     /**
      * Elementos utilizados por el formulario, pueden ser text, select, radio, checkbox.
-     * Almacena las propiedades de cada uno de los elmentos
+     * Almacena las propiedades de cada uno de los elementos
      * @var array
      */
     private $_elementos = array();
@@ -115,41 +115,43 @@ class formulario {
     /**
      * Parametros pasados al servidor SOAP, se usan durante la definicion de los parametros
      * que acepta la funcion servidor SOAP, se definen los tipos xsd a manejar, depende de la
-     * funcion que devuelve el tipo de datoWS
+     * funcion que devuelve el tipo de datoWS, ejemplo: 'campo' => 'xsd:int'
      * @var array
      */
     private $_inicializarServidor = array();
 
     /**
-     * Parametros pasados por el cliente segun los valores del AJAX, define la asignacion asi
-     * $index = $datos[index];, se usa en el llamado del WS
+     * Parametros pasados por el cliente segun los valores del AJAX, define la asignacion de
+     * cada una de los campos,  se usa en el llamado del WS en el modelo, ejemplo:
+     * 'campo' = $datos['campo']
      * @var array
      */
     private $_inicializarCliente = array();
 
     /**
      * Lista de parametros aceptados por la funcion del WS Servidor, corresponde a cada uno
-     * de los campos de la tabla
+     * de los campos de la tabla, ejemplo: $campo1, $campo2, $campon
      * @var array
      */
     private $_parametrosServidor = array();
 
     /**
-     * Lista de valores pasados por el AJAX, asignan los valores a pasar el servidor WS,
-     * se usa en la creacion de la funcion del controlador
+     * Lista de valores pasados por el llamado ajax, asignan los valores a pasar al cliente WS,
+     * se usa en la creacion de la funcion del controlador, ejemplo: $datos['campo'] = $this->input->post('campo');
      * @var array
      */
     private $_asignacionControlador = array();
 
     /**
-     * Tipo de plantilla a utilizar para los llamados ajax
+     * Tipo de plantilla a utilizar para los llamados ajax, cada boton de accion utiliza una plantilla 
+     * especial, sin no se define la plantilla, no se crea la funcion en el archivos javascript
      * @var array
      */
     private $_tipoPlantilla = array();
 
     /**
-     * Inicializacion la variable que contiene el codigo de la validacion del lado servidor,
-     * se guarda en el modelo
+     * Inicializacion la variable que contiene el codigo de la validacion del lado servidor.
+     * La validacion se hace en el modelo
      * @var string
      */
     private $_validacionModelo = '';
@@ -163,20 +165,20 @@ class formulario {
 
     /**
      * Inicializacion la variable que contiene el codigo html de los filtros disponibles.
-     * Se usa en la vusta de busqueda.
+     * Se usa en la vista de busqueda.
      * @var array
      */
     private $_filtros = array();
 
     /**
      * Inicializacion la variable que contiene el codigo del llamado al servidor, cada una
-     * de las acciones
+     * de las acciones, se usa en el controlador
      * @var string
      */
     private $_llamadosModelo = '';
 
     /**
-     * Inicializacion la variable que contiene el javascript (con AJAX) que hace uso del modelo en el servidor
+     * Inicializacion la variable que contiene el javascript (con AJAX) que hace uso del controlador
      * @var string
      */
     private $_llamadosAjax = '';
@@ -188,10 +190,16 @@ class formulario {
     private $_accionesServidorWS = '';
 
     /**
-     * Nombre del archivo controlador del servidor WS creado en /controllers
+     * Nombre del archivo controlador del WS creado en /controllers
      * @var string
      */
     private $_nombreArchivoServidor = '';
+    
+    /**
+     * Nombre del formulario, es utilizado en las funciones javascript y plantillas html
+     * @var string
+     */
+    private $_nombreFormulario = '';
 
     /**
      * Nombre del archivo modelo creado en /models
@@ -218,14 +226,14 @@ class formulario {
     private $_nombreArchivoListar = '';
 
     /**
-     * Nombre del archivo javascrip relacionado al formulario
-     * @var type
+     * Nombre del archivo javascript relacionado al formulario
+     * @var string
      */
     private $_nombreArchivoJs = '';
 
     /**
-     * Nombre de la funcion que hace la validacion de datos
-     * @var type
+     * Nombre de la funcion que hace la validacion de datos del lado servidor
+     * @var string
      */
     private $_nombreFuncionValidacion = '';
 
@@ -237,7 +245,7 @@ class formulario {
      */
     function __construct($caracteristicas) {
         if (!is_array($caracteristicas)) {
-            throw new Exception(__FUNCTION__ . ": Y las caracteristicas del formulario!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, 'Y las caracteristicas del formulario!?');
         } else {
             $this->_id = ucwords($caracteristicas[ZC_ID]);
             $this->_tipoWS = (isset($caracteristicas[ZC_TIPO_WS])) ? strtolower($caracteristicas[ZC_TIPO_WS]) : strtolower($this->_tipoWS);
@@ -254,6 +262,9 @@ class formulario {
      * @return \formulario
      */
     private function inicio() {
+        // Nombre del formulario
+        $this->_nombreFormulario = $this->_id;
+        // Los nombres se manejan en minuscula
         $id = strtolower($this->_id);
         // Nombre vista
         $this->_nombreArchivoVista = 'vista_' . $id;
@@ -291,7 +302,7 @@ class formulario {
     /**
      * Crear el archivo con el modelo (model) para el formulario
      * @param string $directorioSalida ruta donde se creara el archivo
-     * @param string $extension Extension del archivo creado. por defecto PHP
+     * @param string $extension Extension del archivo creado
      * @param array $opciones Opciones a aplicar a la plantilla creada
      * @return \formulario
      */
@@ -299,7 +310,7 @@ class formulario {
         /**
          * Plantilla para el modelo (model)
          */
-        $plantilla = new plantilla();
+        $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloSOAP.tpl');
 
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
@@ -308,114 +319,80 @@ class formulario {
         $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
         $plantilla->asignarEtiqueta('nombreValidacion', $this->_nombreFuncionValidacion);
 
-        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
-            $plantilla->minimizarPlantilla();
-        }
-
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModelo);
 
         return $this;
     }
 
     /**
-     * Crear un arhivo fisico para el el formulario en el directorio de salida definido
-     * por defecto:
-     *  $directorioSalida = ../application/views (Ruta de salida)
-     *  $extension = html (Extension)
+     * Crear un arhivo html para la creacion/modificacion de un registro
      * @param string $directorioSalida Ruta donde se creara el archivo
      * @param string $extension Extension del archivo creado
      * @param array $opciones Opciones a aplicar a la plantilla del formulario creado, minimizar, abrir
      * @return \formulario
-     * @throws Exception
      */
     public function crearVistaFormulario($directorioSalida = '../application/views', $extension = 'html', $opciones = array()) {
         /**
          * Plantilla para la vista (view), se puede devolver, por eso se deja en una variable $this
          */
-        $this->_plantillaHTML = new plantilla();
+        $this->_plantillaHTML = new plantilla($opciones);
         $this->_plantillaHTML->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlFluid.tpl');
 
-        $this->_plantillaHTML->asignarEtiqueta('nombreFormulario', $this->_id);
+        $this->_plantillaHTML->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
         $this->_plantillaHTML->asignarEtiqueta('metodoFormulario', $this->_metodo);
         $this->_plantillaHTML->asignarEtiqueta('contenidoFormulario', $this->unirElementosFormulario($this->_formulario));
         $this->_plantillaHTML->asignarEtiqueta('archivoJavascript', $this->_js);
 
-        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
-            $this->_plantillaHTML->minimizarPlantilla();
-        }
-
-        $this->_plantillaHTML->devolverPlantilla();
         $this->_plantillaHTML->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoVista);
-
-        if (isset($opciones['abrir']) && $opciones['abrir'] === true) {
-            $this->_plantillaHTML->abrirPlantilla();
-        }
 
         return $this;
     }
 
     /**
-     * Crear un arhivo fisico para el el formulario en el sirectorio de salida definido
-     * por defecto:
-     *  $directorioSalida = dist/form (Ruta de salida)
-     *  $tipoSalida = php (Extension)
+     * Crear un arhivo html para la busqueda de registros
      * @param string $directorioSalida Ruta donde se crear el archivo
      * @param string $extension Extension del archivo creado
      * @param array $opciones Opciones a aplicar a la plantilla del formulario creado
      * @return \formulario
-     * @throws Exception
      */
     public function crearListarFormulario($directorioSalida = '../application/views', $extension = 'html', $opciones = array()) {
         /**
-         * Plantilla para la vista (view), se puede devolver, por eso se deja en una variable $this
+         * Plantilla para la vista (view)
          */
-        $plantilla = new plantilla();
+        $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlListarFluid.tpl');
 
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
+        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
         $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
         $plantilla->asignarEtiqueta('contenidoFormulario', implode(FIN_DE_LINEA, $this->_filtros));
         $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
 
-        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
-            $plantilla->minimizarPlantilla();
-        }
-
-        $plantilla->devolverPlantilla();
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoListar);
-
-        if (isset($opciones['abrir']) && $opciones['abrir'] === true) {
-            $plantilla->abrirPlantilla();
-        }
-
+        
         return $this;
     }
 
     /**
      * Crea el controlador del formulario del tipo CodeIgniter
-     * @param type $directorioSalida Ruta donde se creara el archivos
-     * @param type $extension Extension con la cual se creara el archivo
-     * @param type $opciones Opciones a aplicar a la plantilla creada
+     * @param string $directorioSalida Ruta donde se creara el archivos
+     * @param string $extension Extension con la cual se creara el archivo
+     * @param array $opciones Opciones a aplicar a la plantilla creada
      * @return \formulario
      */
     private function crearControladorFormulario($directorioSalida = '../application/controllers', $extension = 'php', $opciones = array()) {
         /**
          * Plantilla para el controlador (controller)
          */
-        $plantilla = new plantilla();
+        $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorSOAP.tpl');
 
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
+        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
         $plantilla->asignarEtiqueta('nombreVista', $this->_nombreArchivoVista . '.html');
         $plantilla->asignarEtiqueta('nombreVistaListar', $this->_nombreArchivoListar . '.html');
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('accionServidor', $this->_funcionControlador);
-
-        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
-            $plantilla->minimizarPlantilla();
-        }
 
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoControlador);
 
@@ -424,29 +401,25 @@ class formulario {
 
     /**
      * Crea el el archivo javascrip que jace el llamado al modelo para procesar los datos
-     * @param type $directorioSalida Ruta donde se creara el archivos
-     * @param type $extension Extension con la cual se creara el archivo
-     * @param type $opciones Opciones a aplicar a la plantilla creada
+     * @param string $directorioSalida Ruta donde se creara el archivos
+     * @param string $extension Extension con la cual se creara el archivo
+     * @param array $opciones Opciones a aplicar a la plantilla creada
      * @return \formulario
      */
     private function crearJavascriptFormulario($directorioSalida = '../publico/js', $extension = 'js', $opciones = array()) {
         /**
          * Plantilla para el manejo de javascript
          */
-        $plantilla = new plantilla();
+        $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsInicializacionjQuery.js');
 
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
+        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('accionAgregar', ZC_ACCION_AGREGAR);
         $plantilla->asignarEtiqueta('accionModificar', ZC_ACCION_MODIFICAR);
         $plantilla->asignarEtiqueta('accionBorrar', ZC_ACCION_BORRAR);
         $plantilla->asignarEtiqueta('accionPrecargar', ZC_ACCION_PRECARGAR);
         $plantilla->asignarEtiqueta('llamadosAjax', $this->_llamadosAjax);
-
-        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
-            $plantilla->minimizarPlantilla();
-        }
 
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoJs);
         // Agregar archivo creado al javascript al formulario
@@ -466,15 +439,11 @@ class formulario {
         /**
          * Plantilla para el modelo (model)
          */
-        $plantilla = new plantilla();
+        $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorServidorSOAP.tpl');
 
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoServidor);
         $plantilla->asignarEtiqueta('accionesServidorWS', $this->_accionesServidorWS);
-
-        if (isset($opciones['minimizar']) && $opciones['minimizar'] === true) {
-            $plantilla->minimizarPlantilla();
-        }
 
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoServidor);
 
@@ -483,8 +452,7 @@ class formulario {
 
     /**
      * Alias de la funcion para agregar elementos desde otras clases, se puede omitir el tipo
-     * de elemento, la funcion se encarga de escoger el adecuado, ademas acepta multiles elemesntos separados por coma
-     * @param type $elementos
+     * de elemento, la funcion se encarga de escoger el adecuado, ademas acepta multiles elementos separados por coma
      */
     public function agregarElemento() {
         $elementos = func_get_args();
@@ -494,13 +462,12 @@ class formulario {
     /**
      * Crea los elementos dentro del formulario segun las caracteristicas entregadas por el xml
      * @param array $elementos Caracteristicas de los elementos a entregar
-     * @throws Exception
      * @return \formulario
      */
     private function agregarElementoFormulario($elementos) {
         foreach ($elementos as $caracteristicas) {
             if (!is_array($caracteristicas)) {
-                throw new Exception(__FUNCTION__ . ": Y las caracteristicas del elemento!?");
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Y las caracteristicas del elemento!?');
             }
             /**
              * Se valida en minuscula para evitar ambiguedades: Boton, boton, BOTON, etc
@@ -532,14 +499,14 @@ class formulario {
                     $this->agregarElementoBotonFormulario($caracteristicas);
                     break;
                 default:
-                    throw new Exception(__FUNCTION__ . ": Tipo de elemento no definido: {$caracteristicas[ZC_ELEMENTO]}!");
+                    mostrarErrorZC(__FILE__, __FUNCTION__, ": Tipo de elemento no definido: {$caracteristicas[ZC_ELEMENTO]}!");
             }
         }
         return $this;
     }
 
     /**
-     * Construye los archivos necesarios.
+     * Construye los archivos necesarios para el proyecto.
      * @return \formulario
      */
     public function finFormulario() {
@@ -624,7 +591,7 @@ class formulario {
 
     /**
      * Agrega las listas dentro del formulario, segun caracteristicas
-     * @param string $caracteristicas
+     * @param string $caracteristicas Caracteristicas extraidas del XML
      * @return \formulario
      */
     private function agregarElementoListaFormulario($caracteristicas) {
@@ -637,7 +604,7 @@ class formulario {
 
     /**
      * Agrega las radios dentro del formulario, segun caracteristicas
-     * @param string $caracteristicas
+     * @param string $caracteristicas Caracteristicas extraidas del XML
      * @return \formulario
      */
     private function agregarElementoRadioFormulario($caracteristicas) {
@@ -650,7 +617,7 @@ class formulario {
 
     /**
      * Agrega las checkbox dentro del formulario, segun caracteristicas
-     * @param string $caracteristicas
+     * @param string $caracteristicas Caracteristicas extraidas del XML
      * @return \formulario
      */
     private function agregarElementoCheckboxFormulario($caracteristicas) {
@@ -700,7 +667,7 @@ class formulario {
 
         $plantilla = new plantilla();
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpValidacionServidor.tpl');
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
+        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
         $plantilla->asignarEtiqueta('elementosFormulario', $validacion);
         $plantilla->asignarEtiqueta('accionesSinValidacion', ZC_ACCION_SIN_VALIDACION);
         $this->_validacionModelo = $plantilla->devolverPlantilla() . FIN_DE_LINEA;
@@ -724,7 +691,6 @@ class formulario {
                 case ZC_ACCION_BUSCAR:
                     $comando .= str_replace('{_nombreModelo_}', $this->_nombreArchivoModelo, "\$rpta = \$this->{_nombreModelo_}->validarFiltros(\$datos['filtros'], \$datos['accion']);");
                     $paginacion = 'if (isset($rpta[\'cta\'])){';
-//                    $paginacion .= '$rpta[\'paginacion\'] = $this->pagina($rpta[\'cta\']);';
                     $paginacion .= '$rpta[\'paginacion\'] = $this->paginar($rpta[\'cta\']);';
                     $paginacion .= '}';
                     break;
@@ -770,7 +736,7 @@ class formulario {
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
             $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
             // Se define en la creacion de la plantilla del controlador
-            $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
+            $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
             $plantilla->asignarEtiqueta('accionCliente', '//Accion Cliente va aqui');
             $plantilla->asignarEtiqueta('mensajeError', ZC_MENSAJE_ERROR_BUSCAR);
 
@@ -795,7 +761,6 @@ class formulario {
              */
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpCrearAccion.tpl');
-            $plantilla->asignarEtiqueta('nombreModelo', $this->_id);
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
             $plantilla->asignarEtiqueta('servidorAccion', $this->_nombreArchivoServidor);
             $plantilla->asignarEtiqueta('asignacionCliente', $this->_inicializarCliente[$caracteristicas[ZC_ID]]);
@@ -844,9 +809,9 @@ class formulario {
         $rutaJavascript = (is_array($javascript)) ? $javascript : array($javascript);
         foreach ($rutaJavascript as $ruta) {
             if (!is_file($ruta)) {
-                throw new Exception(__FUNCTION__ . 'cwd: ' . getcwd() . ": Ruta de archivo no valida: {$ruta}!?");
+                mostrarErrorZC(__FILE__, __FUNCTION__, 'cwd: ' . getcwd() . ": Ruta de archivo no valida: {$ruta}!?");
             }
-            $this->_js .= "<!--Inclusion archivo js -->" . FIN_DE_LINEA . insertarEspacios(8);
+            $this->_js .= '<!--Inclusion archivo js ' . $this->_nombreFormulario . ' -->' . FIN_DE_LINEA . insertarEspacios(8);
             // Cambia la ruta relativa, por una ruta absoluta
             $this->_js .= "<script type='text/javascript' src='" . convertir2UrlLocal($ruta) . "'></script>" . FIN_DE_LINEA . insertarEspacios(8);
         }

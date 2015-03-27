@@ -109,7 +109,7 @@ function nombreArchivo($nombreArchivo) {
  */
 function crearArchivo($directorioArchivo = '', $nombreArchivo = '', $extensionArchivo = '', $contenidoArchivo = '<vacio>') {
     if ($directorioArchivo == '') {
-        throw new Exception(__FUNCTION__ . ": Y la el contenido del archivo!?");
+        mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la el contenido del archivo!?");
     } else {
 
         $nombreArchivo = nombreArchivo($nombreArchivo) . '.' . $extensionArchivo;
@@ -124,7 +124,7 @@ function crearArchivo($directorioArchivo = '', $nombreArchivo = '', $extensionAr
         eliminarArchivo($salidaArchivo);
 
         if (!file_put_contents($salidaArchivo, $contenidoArchivo)) {
-            throw new Exception(__FUNCTION__ . ": No se pudo crear salida para : $salidaArchivo");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": No se pudo crear salida para : $salidaArchivo");
         }
     }
     return $nombreArchivo;
@@ -373,4 +373,16 @@ function mover($origen, $destino) {
 function tiempoMilisegundos() {
     list($usec, $sec) = explode(" ", microtime());
     return ((float) $usec + (float) $sec);
+}
+
+/**
+ * Muestra los errores encontrador durante el proceso de creacion de archivos
+ * @param string $archivo Ruta de archivo donde se origino el error
+ * @param string $funcion Nombre de la funcion donde se origino el error
+ * @param string $error Descripcion del error encontrado
+ * @throws Exception
+ */
+function mostrarErrorZC($archivo, $funcion, $error){
+    $nombre = end(explode(DIRECTORY_SEPARATOR, $archivo));
+    throw new Exception("<b>{$nombre}</b> => <i>{$funcion}:</i> " . FIN_DE_LINEA_HTML . "$error");
 }

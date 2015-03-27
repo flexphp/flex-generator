@@ -95,7 +95,7 @@ class elementos {
          * Id del objeto dentro del formulario
          */
         if (!isset($this->_prop[ZC_ID]) || '' == trim($this->_prop[ZC_ID]) || !is_string($this->_prop[ZC_ID])) {
-            throw new Exception(__FUNCTION__ . ": El campo NO tiene un identificador valido [a-Z_].");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo NO tiene un identificador valido [a-Z_].");
         }
         // Identificadores del elemento
         $this->_prop[ZC_ID] = strtolower(trim($this->_prop[ZC_ID]));
@@ -127,11 +127,11 @@ class elementos {
             $this->_prop[ZC_LONGITUD_MAXIMA] = ($this->_prop[ZC_DATO] == ZC_DATO_FECHA) ? 10 : $this->_prop[ZC_LONGITUD_MAXIMA];
             // Valida las longitudes
             if (isset($this->_prop[ZC_LONGITUD_MINIMA]) && isset($this->_prop[ZC_LONGITUD_MAXIMA]) && $this->_prop[ZC_LONGITUD_MINIMA] > $this->_prop[ZC_LONGITUD_MAXIMA]) {
-                throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
+                mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
             }
             // Valida la longitud del campo, es obligatoria para las cajas
             if (isset($this->_prop[ZC_ELEMENTO]) && $this->_prop[ZC_ELEMENTO] == ZC_ELEMENTO_CAJA_TEXTO && !isset($this->_prop[ZC_LONGITUD_MAXIMA])) {
-                throw new Exception(__FUNCTION__ . ": El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
+                mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
             }
         }
         return $this;

@@ -30,7 +30,7 @@ class buscar extends accion {
     public function crear() {
         if ($this->_accion !== ZC_ACCION_BUSCAR) {
             // No es la accion esperada, no crea nada
-            throw new Exception(__FUNCTION__ . ': Error en la accion, se esperaba: ' . ZC_ACCION_BUSCAR);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_BUSCAR);
         }
         $php = '';
         $php .= $this->comando('//Establece los valores de cada uno de los campos', 12);
@@ -65,7 +65,7 @@ class buscar extends accion {
     public function funcion() {
         if ($this->_accion !== ZC_ACCION_BUSCAR) {
             // No es la accion esperada, no crea nada
-            throw new Exception(__FUNCTION__ . ': Error en la accion, se esperaba: ' . ZC_ACCION_BUSCAR);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_BUSCAR);
         }
         $php = '';
         $php .= $this->comando('function buscar($campos, $accion, $pagina){', 4);
@@ -113,7 +113,7 @@ class buscar extends accion {
     public function filtro() {
         if ($this->_accion !== ZC_ACCION_BUSCAR) {
             // No es la accion esperada, no crea nada
-            throw new Exception(__FUNCTION__ . ': Error en la accion, se esperaba: ' . ZC_ACCION_BUSCAR);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_BUSCAR);
         }
 
         $filtrosNumericos = array(
