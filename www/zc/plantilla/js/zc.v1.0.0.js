@@ -224,16 +224,6 @@ function ZCAccionBuscarFiltro(formulario){
 }
 
 /**
- * Buscar el numero de pagina actual
- * @param {string} filtros Filtros a utilizar en la busqueda
- * @returns {jQuery}
- */
-function ZCAccionBuscarPagina(filtros){
-    var pagina = $('#zc-pagina-actual').val();
-    return (pagina === '' || filtros !== '') ? 1 : pagina;
-}
-
-/**
  * Valores de busqueda predefinidos, se usa en la accion crear
  * @param {string} formulario Nombre del formaulario a utilizar
  * @returns {String}
@@ -244,11 +234,6 @@ function ZCAccionBuscarPredefinido(formulario){
         //Establece el valor de los filtros a utilizar en la busqueda
         $('#'+formulario).append('<input id="filtros-seleccionados-0" type="hidden" class="zc-filtros-seleccionado" value="'+filtrosPredefinidos+'">');
         // Ejecuta accion boton buscar
-        $('#'+formulario).find('.zc-accion').trigger('click');
-    }
-    // Se usa en los cambios de pagina
-    var paginaActual = $('#zc-pagina-actual').val();
-    if(paginaActual !== undefined){
         $('#'+formulario).find('.zc-accion').trigger('click');
     }
     return true;
@@ -418,4 +403,78 @@ function ZCAccionPrecargarResultado(formulario, rpta){
             break;
         }
     }
+}
+
+/**
+ * Accion que da accion a los botones de paginacion
+ * @param {event} e Evento disparado
+ * @param {string} formulario Nombre del formulario
+ * @param {$} id Objeto javascript
+ * @returns {undefined}
+ */
+function ZCAccionPaginarResultado(e, formulario, id){
+    e.preventDefault();
+    var href = $(id).attr('href');
+    ZCAccionPaginar(href, formulario);
+}
+
+/**
+ * Carga la lista de resultados y la paginacion, se usa en la accion buscar y en
+ * los botones de paginacion
+ * @param {string} miURL URL donde se hace la peticion para la recarga de los datos
+ * @param {string} formulario Nombre del formulario de trabajo actual
+ * @returns {undefined}
+ */
+function ZCAccionPaginar(miURL, formulario){
+    var nombreAccion = 'buscar';
+    // Filtros usados para la busqueda
+    var filtrosAEnviar = ZCAccionBuscarFiltro(formulario);
+    // Extrae el numero de la pagina
+    var paginaActual = miURL.substring(miURL.lastIndexOf('/')+1);
+    // Nombre del controlador, se saca de la pagina
+    var controlador = $('#zc-controlador').val();
+
+    $.ajax({
+        // Para construir la paginacion se necesita el numero de la pagina en la url
+        url: miURL,
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+            // Envia filtros de busqueda al servidor
+            filtros: filtrosAEnviar,
+            pagina: paginaActual,
+            accion: nombreAccion
+        },
+        beforeSend: function(){
+            // Inactivar el boton, solo permite un envio a la vez
+            $('#'+nombreAccion).addClass('disabled').prop('disabled', true);
+            // Oculta ventana con mensajes
+            $('.alert').hide();
+            // Limpia resultados anteriores
+            $('#listado-'+formulario).html('');
+            // Limpia la paginacion
+            $('#paginacion-'+formulario).html('');
+            // Mostrar cargando
+            $('#cargando-'+formulario).removeClass('hidden');
+        },
+        success: function(rpta){
+            if(rpta.error !== undefined && '' !== rpta.error){
+                // Muestra mensaje de error
+                $('#error-'+formulario).text(rpta.error);
+                $('.alert-danger').show();
+            }else{
+                ZCListarResultados(formulario, controlador, rpta);
+            }
+        },
+        complete: function(){
+            // Activar el boton cuando se completa la accion, con error o sin error
+            $('#'+nombreAccion).removeClass('disabled').prop('disabled', false);
+            // Ocultar cargando
+            $('#cargando-'+formulario).addClass('hidden');
+        },
+        error: function(rpta){
+            $('#error-'+formulario).text('Error en el servicio');
+            $('.alert-danger').show();
+        }
+    });
 }

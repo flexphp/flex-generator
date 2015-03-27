@@ -58,7 +58,7 @@ $(document).ready(function () {
     $('.zc-nuevo-registro').click(function(e){
         ZCAccionNuevoRegistro(e, '{_nombreControlador_}', this);
     });
-    
+
     // Accion boton zc-modificar-registro permite modificar el registro
     $('.zc-editar-registro').click(function(e){
         ZCAccionModificarRegistro(e, '{_nombreControlador_}', this);

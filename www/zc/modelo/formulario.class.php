@@ -372,6 +372,7 @@ class formulario {
         $plantilla = new plantilla();
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlListarFluid.tpl');
 
+        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
         $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
         $plantilla->asignarEtiqueta('contenidoFormulario', implode(FIN_DE_LINEA, $this->_filtros));
@@ -406,6 +407,7 @@ class formulario {
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorSOAP.tpl');
 
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
+        $plantilla->asignarEtiqueta('nombreFormulario', $this->_id);
         $plantilla->asignarEtiqueta('nombreVista', $this->_nombreArchivoVista . '.html');
         $plantilla->asignarEtiqueta('nombreVistaListar', $this->_nombreArchivoListar . '.html');
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);

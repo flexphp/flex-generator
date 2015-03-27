@@ -24,8 +24,9 @@ class {_nombreControlador_} extends CI_Controller {
      * Pagina los resultados mostrados en la consulta
      */
     public function paginar($cta = 0) {
-        $config['base_url'] = base_url() . '/index.php/{_nombreControlador_}/listar/' . __FUNCTION__ . '/';
+        $config['base_url'] = base_url() . '/index.php/{_nombreControlador_}/buscar/';
         $config['total_rows'] = $cta;
+        $config['form'] = '{_nombreFormulario_}';
         $this->pagination->initialize($config);
         return $this->pagination->create_links();
     }
