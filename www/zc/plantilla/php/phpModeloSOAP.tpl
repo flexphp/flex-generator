@@ -2,6 +2,14 @@
 
 class {_nombreModelo_} extends CI_Model {
 
+    /**
+     * Nombres de los campos a utilizar en los alias, (Accion buscar)
+     * $var array
+     */
+    private $_aliasCampo = array(
+        {_aliasCampos_}
+    );
+
     function __construct() {
         parent::__construct();
         $this->load->helper('url');
@@ -23,29 +31,23 @@ class {_nombreModelo_} extends CI_Model {
             /**
             * Error durante consulta webservice
             */
-            // $this->manejoError->crearError($ws['errorWS']);
             $rpta['error'] = $ws['errorWS'];
         } else {
             $rptaWS = $ws['rptaWS'];
             if ($rptaWS) {
                 if ($rptaWS[0]['error'] != '') {
-                    // $this->manejoError->crearError(json_decode($rptaWS[0]['error'], true));
                     $rpta['error'] = json_decode($rptaWS[0]['error'], true);
                 } elseif ($rptaWS[0]['cta'] > 0) {
                     // Informacion devuelta
                     $rpta['infoEncabezado'] = json_decode($rptaWS[0]['infoEncabezado'], true);
                     // Cantidad de registros devueltos
                     $rpta['cta'] = $rptaWS[0]['cta'];
-                    /**
-                    * Quita campos del array
-                    */
+                    // Devuelve respuesta procesada
                     return $rpta;
                 } else {
-                    // $this->manejoError->crearError('No existen datos.');
-                    $rpta['error'] = 'No se encontraron datos relacionados.';
+                    $rpta['error'] = 'No se encontraron datos.';
                 }
             } else {
-                // $this->manejoError->crearError('Error en servidor WS');
                 $rpta['error'] = 'Error en servidor WS';
             }
         }

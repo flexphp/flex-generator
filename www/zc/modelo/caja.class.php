@@ -3,12 +3,12 @@
 /**
  * Clase base para la creacion de elemento HTML
  */
-require_once 'elementos.class.php';
+require_once 'elemento.class.php';
 
 /**
  * Crea cajas texto
  */
-class caja extends elementos {
+class caja extends elemento {
 
     /**
      * Tipo de datos que recibira el campo, ver AZ_DATO_*

@@ -386,3 +386,13 @@ function mostrarErrorZC($archivo, $funcion, $error){
     $nombre = end(explode(DIRECTORY_SEPARATOR, $archivo));
     throw new Exception("<b>{$nombre}</b> => <i>{$funcion}:</i> " . FIN_DE_LINEA_HTML . "$error");
 }
+
+/**
+ * Asigna los nombres de cada uno de los campos
+ * @param string $id Identificador del campo
+ * @param string $etiqueta Nombre descriptivo del campo
+ * @return string
+ */
+function aliasCampos($id, $etiqueta) {
+    return FIN_DE_LINEA . insertarEspacios(8) . "'$id' => '$id \'$etiqueta\'',";
+}

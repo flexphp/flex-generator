@@ -190,6 +190,14 @@ class formulario {
     private $_accionesServidorWS = '';
 
     /**
+     * Etiquetas de los campos, se utilizan en el modelo para asignar el nombre de los campos
+     * en la respuesta del formulario de busqueda, son los encabezados de la tabla
+     * Si se cambia el alias de id, se debe cambiar tambien en la funcion javascript de listado
+     * @var string
+     */
+    private $_aliasCampos = "'id' => 'id',";
+
+    /**
      * Nombre del archivo controlador del WS creado en /controllers
      * @var string
      */
@@ -318,6 +326,7 @@ class formulario {
         $plantilla->asignarEtiqueta('funcionesModelo', implode(FIN_DE_LINEA, $this->_funcionesModelo));
         $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
         $plantilla->asignarEtiqueta('nombreValidacion', $this->_nombreFuncionValidacion);
+        $plantilla->asignarEtiqueta('aliasCampos', $this->_aliasCampos);
 
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModelo);
 
@@ -663,6 +672,8 @@ class formulario {
             $validacion .= validarArgumentoLongitudMinima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MINIMA], $caracteristicas[ZC_LONGITUD_MINIMA_ERROR]);
             // Validacion longitud maxima del campo
             $validacion .= validarArgumentoLongitudMaxima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_LONGITUD_MAXIMA_ERROR]);
+            // Nombre de los campos usados
+            $this->_aliasCampos .= aliasCampos($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA]);
         }
 
         $plantilla = new plantilla();

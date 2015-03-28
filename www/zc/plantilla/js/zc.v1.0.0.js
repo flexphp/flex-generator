@@ -142,10 +142,12 @@ function ZCAccionAgregarFiltro(e, formulario, id){
             valor = $('input[name='+filtro+']:checked').val();
             textoValor = (valor !== undefined) ? $('#'+filtro+'_'+valor).attr('zc-texto') : '';
             break;
-        case $('#'+filtro).attr('type') === 'select':
+        case $('#'+filtro).prop('type') === 'select-one':
             valor = $.trim($('#'+filtro).val());
-            textoOperador = $('#' + filtro + " option:selected").html();
+            textoValor = $('#' + filtro + " option:selected").html();
             break;
+        //case $('#'+filtro).prop('type') === 'select-multiple':
+        //    break;
         default:
             valor = $.trim($('#'+filtro).val());
             textoValor = valor;
@@ -388,7 +390,10 @@ function ZCAccionPrecargarResultado(formulario, rpta){
         case $('input[name='+campo+']').attr('type') === 'radio':
             $('#'+formulario + ' #'+campo+'_'+rpta.infoEncabezado[campo]).prop('checked', true);
             break;
-        case $('#'+campo).attr('type') === 'select':
+        case $('#'+campo).prop('type') === 'select-one':
+            $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);
+            break;
+        case $('#'+campo).prop('type') === 'select-multiple':
             $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);
             break;
         case $('#'+campo).attr('type') === 'password':

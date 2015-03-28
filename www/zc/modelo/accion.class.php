@@ -3,7 +3,7 @@
 /**
  * Clase base para la creacion de elemento HTML
  */
-require_once 'elementos.class.php';
+require_once 'elemento.class.php';
 
 /**
  * Crea la funcion de agregar (insert)
@@ -28,7 +28,7 @@ require_once 'precargar.class.php';
 /**
  * Crea acciones: agregar, buscar, modificar, eliminar, cancelar, defecto
  */
-class accion extends elementos {
+class accion extends elemento {
 
     /**
      * Formulario o tabla relacionado
@@ -102,7 +102,7 @@ class accion extends elementos {
      * @param string $tabla Nombre de la tabla a manejar
      * @param string $accion Tipo de boton a crear
      */
-    function accion($caracteristicas, $tabla, $accion) {
+    function __construct($caracteristicas, $tabla, $accion) {
         $this->_accion = $accion;
         $this->_tabla = strtolower($tabla);
         $this->_campos = $caracteristicas;

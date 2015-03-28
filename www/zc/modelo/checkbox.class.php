@@ -3,12 +3,12 @@
 /**
  * Clase base para la creacion de elemento HTML
  */
-require_once 'elementos.class.php';
+require_once 'elemento.class.php';
 
 /**
  * Crea elementos de lista, (select)
  */
-class checkbox extends elementos {
+class checkbox extends elemento {
 
     /**
      * HTML con el conjunto de opciones posibles para la lista

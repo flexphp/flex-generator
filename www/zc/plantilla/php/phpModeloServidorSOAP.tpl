@@ -78,8 +78,11 @@ function {_nombreAccion_}(){
 
 {_accionServidor_}
 
-            $Resultado[$i]['infoEncabezado'] = json_encode($resultado);
-            $Resultado[0]['cta'] = $cta;
+            if (isset($resultado)) {
+                // Si existe respuesta valida por parte del servidor
+                $Resultado[$i]['infoEncabezado'] = json_encode($resultado);
+                $Resultado[0]['cta'] = $cta;
+            }
 
             file_put_contents(getcwd() . '/application/logs/{_nombreControlador_}_' . date('Ymd') . '.log', __FUNCTION__ . "\n" . ' $data: ' . print_r(func_get_args(), 1) . "\n" . ' $Resultado: ' . print_r($Resultado, 1) . "\n", FILE_APPEND);
             return new soapval('return', 'tns:{_nombreAccion_}ResptaArray', $Resultado);
