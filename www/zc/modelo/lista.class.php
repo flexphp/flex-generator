@@ -58,22 +58,33 @@ class lista extends elemento {
      * debe ser del tipo: id1 = valor1, id2 = valor2
      */
     private function opciones($opciones) {
+        $opcion = array();
         if (is_string($opciones)) {
-            // Se agrega la opcion vacia al inicio del listado
-            $cada_opcion = explode(',', '=,' . $opciones);
-            $opciones = array();
-            foreach ($cada_opcion as $value) {
-                if (strpos($value, '=') === false) {
-                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista no valido, se espera id1=valor1, id2=valor2');
+            if (strpos($opciones, '=') === false && strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) {
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista no valido, se espera id1=valor1 o tabla::campo::tipoJoin');
+            }
+            $separador = (strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) ? '=' : ZC_MOTOR_JOIN_SEPARADOR;
+            if ($separador != ZC_MOTOR_JOIN_SEPARADOR) {
+                // Agrega la opcion vacia a la lista de seleccion
+                $opcion[''] = 'Seleccione ' . strtolower($this->_prop[ZC_ETIQUETA]);
+                $cada_opcion = explode(',', $opciones);
+                foreach ($cada_opcion as $value) {
+                    if (strpos($value, $separador) === false) {
+                        mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista no valido, se espera id1=valor1, id2=valor2');
+                    }
+                    list($id, $valor) = explode('=', $value);
+                    $opcion[trim($id)] = trim($valor);
                 }
-                list($id, $valor) = explode('=', $value);
-                $opciones[trim($id)] = trim($valor);
+            } else {
+                // Campos llenados por base de datos, se valida que sea una opcion valida
+                joinTablas($opciones);
             }
         }
 
-        foreach ($opciones as $id => $valor) {
+        foreach ($opcion as $id => $valor) {
             $this->_opciones .= insertarEspacios(14) . "<option value='$id'>$valor</option>" . FIN_DE_LINEA;
         }
+        return $this;
     }
 
 }

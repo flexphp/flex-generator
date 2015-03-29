@@ -257,7 +257,7 @@ class bd extends conexion {
                 // Boton
                 case $caracteristicas[ZC_ELEMENTO] == ZC_ELEMENTO_RESTABLECER:
                 // Boton Limpiar
-                case $caracteristicas[ZC_DATO] == null:
+                case $caracteristicas[ZC_DATO] === null:
                     // No hay tipo de dato definido, normalmente porque es boton
                     continue;
                 default:
@@ -304,7 +304,9 @@ class bd extends conexion {
      * Crea estrucutra de la base de datos y la tabla segun el tipo de motor seleccionado por el usuario
      */
     public function crear() {
+        // Sentencias creacion base de datos
         $this->db();
+        // Sentencias creacion de cada tabla
         $this->tabla();
     }
 

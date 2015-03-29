@@ -382,7 +382,7 @@ function tiempoMilisegundos() {
  * @param string $error Descripcion del error encontrado
  * @throws Exception
  */
-function mostrarErrorZC($archivo, $funcion, $error){
+function mostrarErrorZC($archivo, $funcion, $error) {
     $nombre = end(explode(DIRECTORY_SEPARATOR, $archivo));
     throw new Exception("<b>{$nombre}</b> => <i>{$funcion}:</i> " . FIN_DE_LINEA_HTML . "$error");
 }
@@ -395,4 +395,25 @@ function mostrarErrorZC($archivo, $funcion, $error){
  */
 function aliasCampos($id, $etiqueta) {
     return FIN_DE_LINEA . insertarEspacios(8) . "'$id' => '$id \'$etiqueta\'',";
+}
+
+/**
+ * Crear las uniones entre las tablas para los campos
+ * @param string Parametros para la creacion del join, ejemplo: tabla1:id:right
+ * @return string relacion a crear
+ */
+function joinTablas($join) {
+    $parametros = explode(ZC_MOTOR_JOIN_SEPARADOR, strtolower($join));
+    $joinTabla = (isset($parametros[0])) ? $parametros[0] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el nombre la tabla a relacionar!?");
+    $joinCampos = (isset($parametros[1])) ? $parametros[1] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el los campos de relacion!?");
+    $joinTipo = (isset($parametros[2])) ? $parametros[2] : ZC_MOTOR_JOIN_NATURAL;
+}
+
+/**
+ * Crear las uniones entre las tablas para los campos
+ * @param string Parametros para la creacion del join, ejemplo: tabla1:id:right
+ * @return string relacion a crear
+ */
+function validarJoinTipo($tipo) {
+    return (in_array($tipo, array(ZC_MOTOR_JOIN_NATURAL, ZC_MOTOR_JOIN_IZQUIERDA, ZC_MOTOR_JOIN_DERECHA)));
 }

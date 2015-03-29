@@ -56,6 +56,11 @@ define("ZC_MOTOR_MYSQL", "mysql");
 define("ZC_MOTOR_DEFAULT_CHARSET", "latin1");
 define("ZC_MOTOR_DEFAULT_COLLATION", "latin1_swedish_ci");
 define("ZC_MOTOR_AUTOINCREMENTAL", "auto");
+// Seperador de los parametros para hacer el join entres las tablas
+define("ZC_MOTOR_JOIN_SEPARADOR", '::');
+define("ZC_MOTOR_JOIN_NATURAL", '');
+define("ZC_MOTOR_JOIN_IZQUIERDA", 'left');
+define("ZC_MOTOR_JOIN_DERECHA", 'right');
 // Configuracion del conexion a base de datos
 define("ZC_CONEXION_SERVIDOR", "localhost");
 define("ZC_CONEXION_PUERTO", "3306");
