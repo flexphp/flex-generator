@@ -483,3 +483,7 @@ function ZCAccionPaginar(miURL, formulario){
         }
     });
 }
+
+function ZCPrecargarSeleccion(lista, rpta){
+    console.log(lista +'--->'+ rpta);
+}

@@ -233,12 +233,16 @@ class procesarXML {
                  * Otros atributos no definidos, esta funcion se encarga de validar el tipo
                  */
                 $$nombre->agregarElemento($value);
+            } elseif (!isset($elementos[($key+1)])) {
+                /**
+                 * En el ultimo elemento, finaliza el formulario
+                 */
+                $$nombre->finFormulario();
+                unset($$nombre);
             } else {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': No existe el elemento ' . preprint($value, 1));
             }
         }
-        $$nombre->finFormulario();
-        unset($$nombre);
     }
 
     /**

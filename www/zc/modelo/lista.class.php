@@ -15,13 +15,34 @@ class lista extends elemento {
      * @var type
      */
     private $_opciones = '';
+    
+    /**
+     * Propiedades de los join, de aqui se crean las acciones para cargar los campos
+     * tipo lista (select) del formulario
+     * @var array
+     */
+    private $_joinTablas = array();
+    
+    /**
+     * Nombre del controlador donse esta alamacenado el servicio ajax
+     * @var string
+     */
+    private $_controlador = '';
+    
+    /**
+     * Ruta del archivo ajax creado, se usa para agregarlo a los archivos html
+     * @var string
+     */
+    private $_ajax = null;
 
     /**
      * Contrucutor de listas (input select), define las caracteristicas que tendra el elemento
      * @param array $caracteristicas Valores seleccionados por el cliente
+     * @param array $controlador Valores seleccionados por el cliente
      */
-    function __construct($caracteristicas) {
+    function __construct($caracteristicas, $controlador = '') {
         parent::__construct($caracteristicas);
+        $this->_controlador = $controlador;
         $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
         $this->opciones($this->_prop[ZC_ELEMENTO_SELECT_OPCIONES]);
     }
@@ -77,7 +98,8 @@ class lista extends elemento {
                 }
             } else {
                 // Campos llenados por base de datos, se valida que sea una opcion valida
-                joinTablas($opciones);
+                $this->opcionesAjax($opciones);
+                
             }
         }
 
@@ -87,4 +109,34 @@ class lista extends elemento {
         return $this;
     }
 
+    private function opcionesAjax($join) {
+        $this->_joinTablas = joinTablas($join);
+        if('' == $this->_controlador){
+            mostrarErrorZC(__FILE__, __FUNCTION__, 'No se ha definido el controlador para el llamado ajax');
+        }
+        if(isset($this->_joinTablas)){
+            /**
+            * Plantilla para el manejo de javascript
+            */
+            $plantilla = new plantilla();
+            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsLlamadosListasAjax.js');
+
+            $plantilla->asignarEtiqueta('nombreControlador', $this->_controlador);
+            $plantilla->asignarEtiqueta('nombreSelect', $this->_id);
+
+            $plantilla->crearPlantilla('../publico/js', 'js', 'lista_' . $this->_id);
+            // Agregar archivo creado al javascript al formulario
+            $this->_ajax = $plantilla->_salidaPlantilla;
+
+        }
+        return $this;
+    }
+    
+    /**
+     * Devuelve la ruta del archivo ajax si existe
+     * @return type
+     */
+    function devolverAjax() {
+        return (isset($this->_ajax)) ? $this->_ajax : null;
+    }
 }

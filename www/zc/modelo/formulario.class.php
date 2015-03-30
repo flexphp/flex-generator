@@ -604,10 +604,11 @@ class formulario {
      * @return \formulario
      */
     private function agregarElementoListaFormulario($caracteristicas) {
-        $html = new lista($caracteristicas);
+        $html = new lista($caracteristicas, $this->_nombreArchivoControlador);
         $html->crear();
         $this->_formulario['elementos'][$html->_prop[ZC_ID]] = $html->devolver();
         $this->_elementos[] = $html->_prop;
+        $this->javascriptFormulario($html->devolverAjax());
         return $this;
     }
 
@@ -819,12 +820,13 @@ class formulario {
     private function agregarJavascriptFormulario($javascript) {
         $rutaJavascript = (is_array($javascript)) ? $javascript : array($javascript);
         foreach ($rutaJavascript as $ruta) {
-            if (!is_file($ruta)) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, 'cwd: ' . getcwd() . ": Ruta de archivo no valida: {$ruta}!?");
+            if (isset($ruta) && !is_file($ruta)) {
+                mostrarErrorZC(__FILE__, __FUNCTION__, " Ruta de archivo no valida: {$ruta}!");
+            } else if (!isset($ruta)) {
+                $this->_js .= '<!--Inclusion archivo js  -->' . FIN_DE_LINEA . insertarEspacios(8);
+                // Cambia la ruta relativa, por una ruta absoluta
+                $this->_js .= "<script type='text/javascript' src='" . convertir2UrlLocal($ruta) . "'></script>" . FIN_DE_LINEA . insertarEspacios(8);
             }
-            $this->_js .= '<!--Inclusion archivo js ' . $this->_nombreFormulario . ' -->' . FIN_DE_LINEA . insertarEspacios(8);
-            // Cambia la ruta relativa, por una ruta absoluta
-            $this->_js .= "<script type='text/javascript' src='" . convertir2UrlLocal($ruta) . "'></script>" . FIN_DE_LINEA . insertarEspacios(8);
         }
         return $this;
     }
