@@ -33,21 +33,29 @@ class bd extends conexion {
      * @var array
      */
     private $_sentencias = array();
+    
+    /**
+     * Sentencias para crear los join, se unen a las sentencias la final del proceso
+     * @var array
+     */
+    private $_join = array();
 
     /**
      * Valida los datos parametrizados por el usuario y crea modelo de base datos
      * @param array $caracteristicas Caracteristicas de los elementos
      * @param string $motor Base de datos usada para alamcenar los datos de la aplicacion
      */
-    function __construct($caracteristicas, $motor) {
-        $this->_motor = trim(strtolower($motor));
-        $this->motor();
-        $this->_prop = $caracteristicas;
-        $this->verificar();
+    function __construct($motor) {
+        $this->motor($motor);
         $this->equivalencias();
     }
-
-    function motor() {
+    
+    /**
+     * Valoda el motor utilizado para la creacion de la base de datos
+     * @param type $motor
+     */
+    function motor($motor) {
+        $this->_motor = trim(strtolower($motor));
         switch ($this->_motor) {
             case ZC_MOTOR_MYSQL:
                 break;
@@ -195,7 +203,7 @@ class bd extends conexion {
     /**
      * Establece las sentencias para la creacion de la base de datos del sistema
      */
-    private function db() {
+    public function db() {
         $bd = '';
         switch ($this->_motor) {
             case ZC_MOTOR_MYSQL:
@@ -244,8 +252,12 @@ class bd extends conexion {
 
     /**
      * Establece las sentencias para crear cada una de las tablas del sistema
+     * @param array $prop Caracteristicas de las tablas
+     * @return \bd
      */
-    private function tabla() {
+    public function tabla($prop) {
+        $this->_prop = $prop;
+        $this->verificar();
         $campos = '';
         $tabla = $this->nombreTabla();
         $tabla .= $this->autoincremental();
@@ -253,10 +265,6 @@ class bd extends conexion {
             switch (true) {
                 case $nro == 0:
                 // Primer elemento es la descripcion del formulario
-                case $caracteristicas[ZC_ELEMENTO] == ZC_ELEMENTO_BOTON:
-                // Boton
-                case $caracteristicas[ZC_ELEMENTO] == ZC_ELEMENTO_RESTABLECER:
-                // Boton Limpiar
                 case $caracteristicas[ZC_DATO] === null:
                     // No hay tipo de dato definido, normalmente porque es boton
                     continue;
@@ -264,6 +272,7 @@ class bd extends conexion {
                     // Inserta coma si el siguiente campo existe
                     $coma = ('' != $campos) ? ',' : '';
                     $campos .= $this->campo($caracteristicas[ZC_ID], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_ETIQUETA], $coma);
+                    $this->join($caracteristicas[ZC_ELEMENTO_SELECT_OPCIONES]);
                     break;
             }
         }
@@ -271,6 +280,19 @@ class bd extends conexion {
         $tabla .= $this->llave('id', ',');
         $tabla .= FIN_DE_LINEA . ') ' . $this->charset();
         $this->_sentencias[] = $tabla;
+        return $this;
+    }
+    
+    /**
+     * Crea los join de la tabla, solo si los tiene
+     * @param string $join Join entregado por el usuario en el XML
+     * @return \bd
+     */
+    private function join($join) {
+        $joinTabla = joinTablas($join);
+        if(isset($joinTabla)){
+            $this->_join[] = "ALTER TABLE {$this->_prop[0][ZC_ID]} ADD CONSTRAINT zc_fk_2_{$joinTabla['tabla']} FOREIGN KEY (id) REFERENCES {$joinTabla['tabla']} (id) ON UPDATE CASCADE ON DELETE RESTRICT";
+        }
         return $this;
     }
 
@@ -296,18 +318,10 @@ class bd extends conexion {
             $this->_prop[$nro][ZC_OBLIGATORIO] = (isset($this->_prop[$nro][ZC_OBLIGATORIO])) ? $this->_prop[$nro][ZC_OBLIGATORIO] : ZC_OBLIGATORIO_NO;
             // Longitud
             $this->_prop[$nro][ZC_LONGITUD_MAXIMA] = (isset($this->_prop[$nro][ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[$nro][ZC_LONGITUD_MAXIMA])) ? $this->_prop[$nro][ZC_LONGITUD_MAXIMA] : null;
+            // Llaves foraneas
+            $this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES] = (isset($this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES]) && '' != $this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES]) ? $this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES] : null;
         }
         return $this;
-    }
-
-    /**
-     * Crea estrucutra de la base de datos y la tabla segun el tipo de motor seleccionado por el usuario
-     */
-    public function crear() {
-        // Sentencias creacion base de datos
-        $this->db();
-        // Sentencias creacion de cada tabla
-        $this->tabla();
     }
 
     /**
@@ -341,6 +355,17 @@ class bd extends conexion {
      */
     public function devolver() {
         return implode(';', $this->_sentencias);
+    }
+    
+    /**
+     * Agrega los join al fianl del scrip de creacion de sentencias 
+     * @return \bd
+     */
+    public function fin() {
+        foreach ($this->_join as $join){
+            array_push($this->_sentencias, $join);
+        }
+        return $this;
     }
 
 }

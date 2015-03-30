@@ -403,10 +403,16 @@ function aliasCampos($id, $etiqueta) {
  * @return string relacion a crear
  */
 function joinTablas($join) {
-    $parametros = explode(ZC_MOTOR_JOIN_SEPARADOR, strtolower($join));
-    $joinTabla = (isset($parametros[0])) ? $parametros[0] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el nombre la tabla a relacionar!?");
-    $joinCampos = (isset($parametros[1])) ? $parametros[1] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el los campos de relacion!?");
-    $joinTipo = (isset($parametros[2])) ? $parametros[2] : ZC_MOTOR_JOIN_NATURAL;
+    $separador = (strpos($join, ZC_MOTOR_JOIN_SEPARADOR) === false) ? null : ZC_MOTOR_JOIN_SEPARADOR;
+    if(isset($separador)){
+        $parametros = explode(ZC_MOTOR_JOIN_SEPARADOR, strtolower($join));
+        $joinTabla = (isset($parametros[0])) ? $parametros[0] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el nombre la tabla a relacionar!?");
+        $joinCampos = (isset($parametros[1])) ? $parametros[1] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el los campos de relacion!?");
+        $joinTipo = (isset($parametros[2])) ? $parametros[2] : ZC_MOTOR_JOIN_NATURAL;
+        
+        return array('tabla' => $joinTabla, 'campo' => explode(',', $joinCampos), 'join' => $joinTipo);
+    }
+    return null;
 }
 
 /**

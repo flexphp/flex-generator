@@ -287,7 +287,7 @@ class formulario {
         // Nombre javascript
         $this->_nombreArchivoJs = $id;
         // Nombre de la funcion de validacion
-        $this->_nombreFuncionValidacion = 'validacion' . $this->_id;
+        $this->_nombreFuncionValidacion = 'validacion_' . $id;
 
         return $this;
     }
@@ -678,7 +678,7 @@ class formulario {
 
         $plantilla = new plantilla();
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpValidacionServidor.tpl');
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
+        $plantilla->asignarEtiqueta('nombreValidacion', $this->_nombreFuncionValidacion);
         $plantilla->asignarEtiqueta('elementosFormulario', $validacion);
         $plantilla->asignarEtiqueta('accionesSinValidacion', ZC_ACCION_SIN_VALIDACION);
         $this->_validacionModelo = $plantilla->devolverPlantilla() . FIN_DE_LINEA;

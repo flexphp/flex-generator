@@ -56,6 +56,8 @@ define("ZC_MOTOR_MYSQL", "mysql");
 define("ZC_MOTOR_DEFAULT_CHARSET", "latin1");
 define("ZC_MOTOR_DEFAULT_COLLATION", "latin1_swedish_ci");
 define("ZC_MOTOR_AUTOINCREMENTAL", "auto");
+// Seperador de los listas que no utilizan tablas de datos
+define("ZC_MOTOR_SEPARADOR", '=');
 // Seperador de los parametros para hacer el join entres las tablas
 define("ZC_MOTOR_JOIN_SEPARADOR", '::');
 define("ZC_MOTOR_JOIN_NATURAL", '');

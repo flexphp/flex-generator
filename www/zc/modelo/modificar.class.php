@@ -85,7 +85,7 @@ class modificar extends accion {
         $php = '';
         $php .= $this->comando('function modificar($campos, $id = null){', 4);
         $php .= $this->comando('$rpta = array();', 8);
-        $php .= $this->comando('$validacion = $this->' . $this->_tabla . '->validacionTest($campos);', 8);
+        $php .= $this->comando('$validacion = $this->' . $this->_tabla . '->validacion_' . $this->_tabla . '($campos);', 8);
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (isset($validacion[\'error\']) && \'\' != $validacion[\'error\']):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos', 16);

@@ -41,15 +41,15 @@
             <mensaje_de_error_tipo_dato>Selecciona un pais</mensaje_de_error_tipo_dato>
             <es_obligatorio>si</es_obligatorio>
             <mensaje_de_error_es_obligatorio>y el pais?</mensaje_de_error_es_obligatorio>
-            <posibles_valores>paises::id,nombre</posibles_valores>
+            <posibles_valores>paises::nombre</posibles_valores>
         </pais>
-        <pais>
+        <gusto>
             <que_quieres>Listado</que_quieres>
             <como_se_llama>Me gusta</como_se_llama>
-            <que_dato_recibira>texto</que_dato_recibira>
+            <que_dato_recibira>numero</que_dato_recibira>
             <es_obligatorio>si</es_obligatorio>
-            <posibles_valores>V=Bailar, C=Cantar</posibles_valores>
-        </pais>
+            <posibles_valores>1=Bailar, 2=Cantar</posibles_valores>
+        </gusto>
         <recibir_publicidad>
             <que_quieres>Cuadrado</que_quieres>
             <como_se_llama>Recibir publicidad</como_se_llama>
@@ -103,41 +103,4 @@
             <como_se_llama>Resetear</como_se_llama>
         </resetear>
     </test>
-    <paises>
-        <nombre_formulario>Paises</nombre_formulario>
-        <se_envia>POST</se_envia>
-        <tipo_de_servicio>SOAP</tipo_de_servicio>
-        <se_guardara_en>MySQL</se_guardara_en>
-        <nombre>
-            <que_quieres>Caja</que_quieres>
-            <como_se_llama>Nombre</como_se_llama>
-            <que_dato_recibira>texto</que_dato_recibira>
-            <es_obligatorio>si</es_obligatorio>
-            <longitud_maxima_es>30</longitud_maxima_es>
-        </nombre>
-        <enviar>
-            <que_quieres>Agregar</que_quieres>
-            <como_se_llama>Enviar</como_se_llama>
-        </enviar>
-        <encontrar>
-            <que_quieres>Buscar</que_quieres>
-            <como_se_llama>Encontrar</como_se_llama>
-        </encontrar>
-        <actualizar>
-            <que_quieres>Modificar</que_quieres>
-            <como_se_llama>Actualizar</como_se_llama>
-        </actualizar>
-        <eliminar>
-            <que_quieres>Borrar</que_quieres>
-            <como_se_llama>Eliminar</como_se_llama>
-        </eliminar>
-        <volver>
-            <que_quieres>Cancelar</que_quieres>
-            <como_se_llama>Volver</como_se_llama>
-        </volver>
-        <resetear>
-            <que_quieres>Limpiar</que_quieres>
-            <como_se_llama>Resetear</como_se_llama>
-        </resetear>
-    </paises>
 </crear>

@@ -60,6 +60,12 @@ class procesarXML {
      * @var array
      */
     private $elementos = array();
+    
+    /**
+     * Almacena en un array cada uno de los formularios, desde aqui se contruyen las tablas
+     * @var array
+     */
+    private $bd = array();
 
     /**
      * Almacena las variables de cada atributo
@@ -197,9 +203,13 @@ class procesarXML {
                  * Por lo menos se debio crear un elemento para tener una estructura valida
                  */
                 $this->xml2form($rutaXML, $this->elementos);
-                $this->crearModeloDB($this->elementos);
+                // Guarda los datos del formulario
+                $this->bd[] = $this->elementos;
+                // Libera la variable para que pueda ser siendo utilizada
+                $this->elementos = array();
             }
         }
+        $this->crearModeloDB();
     }
 
     /**
@@ -235,14 +245,21 @@ class procesarXML {
      * Crea el modelo de la base de datos en el motor
      * @param array $elementos
      */
-    private function crearModeloDB($elementos) {
-        if ('' != $elementos[0][ZC_MOTOR]) {
-            $motor = $elementos[0][ZC_MOTOR];
-            $bd = new bd($elementos, $motor);
-            $bd->crear();
+    private function crearModeloDB() {
+        if(count($this->bd) > 0){
+            if ('' == $this->bd[0][0][ZC_MOTOR]) {
+                mostrarErrorZC(__FILE__, __FUNCTION__, 'Falta el motor a utilizar!');
+            }
+            $motor = $this->bd[0][0][ZC_MOTOR];
+            $bd = new bd($motor);
+            $bd->db();
+            foreach ($this->bd as $nro => $tabla) {
+                $bd->tabla($tabla);
+            }
+            $bd->fin();
             $bd->imprimir();
             $bd->ejecutar();
         }
+        return $this;
     }
-
 }

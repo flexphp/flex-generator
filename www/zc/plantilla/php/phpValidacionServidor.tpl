@@ -1,4 +1,4 @@
-function validacion{_nombreFormulario_}($dato){
+function {_nombreValidacion_}($dato){
         $rpta = array();
         $rpta['error'] = '';
         $validarDato = true;
