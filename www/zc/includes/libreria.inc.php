@@ -392,15 +392,30 @@ function mostrarErrorZC($archivo, $funcion, $error) {
  * Asigna los nombres de cada uno de los campos
  * @param string $id Identificador del campo
  * @param string $etiqueta Nombre descriptivo del campo
+ * @param string $tabla Nombre de la tabla a la que corresponde el campo
  * @return string
  */
-function aliasCampos($id, $etiqueta) {
-    return FIN_DE_LINEA . insertarEspacios(8) . "'$id' => '$id \'$etiqueta\'',";
+function aliasCampos($id, $etiqueta, $tabla = '') {
+    if($tabla != ''){
+        // Solo lo agrega si la tabla es diferente de vacio
+        $tabla .= '.';
+    }
+    return FIN_DE_LINEA . insertarEspacios(8) . "'{$id}' => '{$tabla}{$id} \'{$etiqueta}\'',";
+}
+
+/**
+ * Extrae cada una de las tablas relacionadas con el formulario, se usa para contruir los join
+ * @param string $id Identificador del campo donde se establece la relacion
+ * @param string $tablas Tabla relacionada
+ * @return string
+ */
+function tablasRelacionadas($id, $tablas, $join = '') {
+    return  FIN_DE_LINEA . insertarEspacios(8) . "'{$tablas}' => array('campo' => '{$id}', 'join' => '{$join}'),";
 }
 
 /**
  * Crear las uniones entre las tablas para los campos
- * @param string Parametros para la creacion del join, ejemplo: tabla1:id:right
+ * @param string Parametros para la creacion del join, ejemplo: tabla1:campo1:right|left|<vacio>
  * @return string relacion a crear
  */
 function joinTablas($join) {
@@ -409,18 +424,21 @@ function joinTablas($join) {
         $parametros = explode(ZC_MOTOR_JOIN_SEPARADOR, strtolower($join));
         $joinTabla = (isset($parametros[0])) ? $parametros[0] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el nombre la tabla a relacionar!?");
         $joinCampos = (isset($parametros[1])) ? $parametros[1] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el los campos de relacion!?");
-        $joinTipo = (isset($parametros[2])) ? $parametros[2] : ZC_MOTOR_JOIN_NATURAL;
+        $joinTipo = (isset($parametros[2])) ? validarJoinTipo($parametros[2]) : '';
 
-        return array('tabla' => $joinTabla, 'campo' => 'id,' . $joinCampos, 'join' => $joinTipo);
+        return array('tabla' => $joinTabla, 'campo' => $joinCampos, 'join' => $joinTipo);
     }
     return null;
 }
 
 /**
  * Crear las uniones entre las tablas para los campos
- * @param string Parametros para la creacion del join, ejemplo: tabla1:id:right
+ * @param string Parametros para la creacion del join, ejemplo: right|left
  * @return string relacion a crear
  */
 function validarJoinTipo($tipo) {
-    return (in_array($tipo, array(ZC_MOTOR_JOIN_NATURAL, ZC_MOTOR_JOIN_IZQUIERDA, ZC_MOTOR_JOIN_DERECHA)));
+    if (!in_array($tipo, array(ZC_MOTOR_JOIN_IZQUIERDA, ZC_MOTOR_JOIN_DERECHA))) {
+        mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo (' . $tipo . ') de relacion no valida');
+    }
+    return $tipo;
 }

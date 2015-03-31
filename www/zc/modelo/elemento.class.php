@@ -99,7 +99,7 @@ class elemento {
         }
         // Identificadores del elemento
         $this->_prop[ZC_ID] = strtolower(trim($this->_prop[ZC_ID]));
-        $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? $this->_prop[ZC_ETIQUETA] : $this->_prop[ZC_ID];
+        $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? trim($this->_prop[ZC_ETIQUETA]) : $this->_prop[ZC_ID];
         $this->_prop[ZC_ETIQUETA] = ucfirst(trim($this->_prop[ZC_ETIQUETA]));
         // Tipo Elemento
         $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : null;
@@ -133,6 +133,7 @@ class elemento {
             if (isset($this->_prop[ZC_ELEMENTO]) && $this->_prop[ZC_ELEMENTO] == ZC_ELEMENTO_CAJA_TEXTO && !isset($this->_prop[ZC_LONGITUD_MAXIMA])) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
             }
+            $this->_prop[ZC_ELEMENTO_SELECT_OPCIONES] = (isset($this->_prop[ZC_ELEMENTO_SELECT_OPCIONES])) ? $this->_prop[ZC_ELEMENTO_SELECT_OPCIONES] : null;
         }
         return $this;
     }

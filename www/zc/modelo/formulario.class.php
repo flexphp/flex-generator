@@ -195,7 +195,14 @@ class formulario {
      * Si se cambia el alias de id, se debe cambiar tambien en la funcion javascript de listado
      * @var string
      */
-    private $_aliasCampos = "'id' => 'id',";
+    private $_aliasCampos = '';
+    
+    /**
+     * Nombre de las tablas relacionadas con el formulario, se usa para connstruir los join 
+     * entre las tablas
+     * @var string
+     */
+    private $_tablasRelacionadas = '';
 
     /**
      * Nombre del archivo controlador del WS creado en /controllers
@@ -327,6 +334,7 @@ class formulario {
         $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
         $plantilla->asignarEtiqueta('nombreValidacion', $this->_nombreFuncionValidacion);
         $plantilla->asignarEtiqueta('aliasCampos', $this->_aliasCampos);
+        $plantilla->asignarEtiqueta('tablasRelacionadas', $this->_tablasRelacionadas);
 
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModelo);
 
@@ -665,6 +673,8 @@ class formulario {
      */
     private function modeloValidacionFormulario() {
         $validacion = '';
+        // Agrega el id, necesario para busqueda y modificacion de registro
+        $this->_aliasCampos .= aliasCampos('id', 'id', $this->_nombreArchivoControlador);
         foreach ($this->_elementos as $nro => $caracteristicas) {
             // Validacion obligatoriedad
             $validacion .= validarArgumentoObligatorio($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
@@ -674,8 +684,16 @@ class formulario {
             $validacion .= validarArgumentoLongitudMinima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MINIMA], $caracteristicas[ZC_LONGITUD_MINIMA_ERROR]);
             // Validacion longitud maxima del campo
             $validacion .= validarArgumentoLongitudMaxima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_LONGITUD_MAXIMA_ERROR]);
-            // Nombre de los campos usados
-            $this->_aliasCampos .= aliasCampos($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA]);
+            // Nombre de tablas utilizados, se usa para los join
+            $joinTablas = joinTablas($caracteristicas[ZC_ELEMENTO_SELECT_OPCIONES]);
+            if (isset($joinTablas)) {
+                $this->_tablasRelacionadas .= tablasRelacionadas($caracteristicas[ZC_ID], $joinTablas['tabla'], $joinTablas['join']);
+                // Nombre de los campos usados
+                $this->_aliasCampos .= aliasCampos($joinTablas['campo'], $caracteristicas[ZC_ETIQUETA], $joinTablas['tabla']);
+            } elseif ($caracteristicas[ZC_DATO] !== ZC_DATO_CONTRASENA) {
+                // Las contrase;as se omiten en el listado del formuario de busqueda
+                $this->_aliasCampos .= aliasCampos($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $this->_nombreArchivoControlador);
+            }
         }
 
         $plantilla = new plantilla();

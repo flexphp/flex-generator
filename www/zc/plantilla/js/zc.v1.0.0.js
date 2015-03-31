@@ -144,7 +144,7 @@ function ZCAccionAgregarFiltro(e, formulario, id){
             break;
         case $('#'+filtro).prop('type') === 'select-one':
             valor = $.trim($('#'+filtro).val());
-            textoValor = $('#' + filtro + " option:selected").html();
+            textoValor = (valor !== '') ? $('#' + filtro + " option:selected").html() : '';
             break;
         //case $('#'+filtro).prop('type') === 'select-multiple':
         //    break;
@@ -179,7 +179,7 @@ function ZCAccionAgregarFiltro(e, formulario, id){
     "<div class='col-md-2 text-center'>"+textoValor+"</div>" +
     // Boton para quitar filtro
     "<div class='col-md-2'><button title='Quitar filtro de busqueda' onclick='javascript:ZCAccionQuitarFiltro(event ,this);'class='btn btn-warning zc-filtros-quitar' id='quitar-"+identificadorFiltro+"' name='quitar-"+identificadorFiltro+"'><span class='glyphicon glyphicon-minus-sign' aria-hidden='true'></span> Quitar</button></div>" +
-    "<div class='col-md-1'><input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='"+filtro+"|?|"+operador+"|?|"+valor+"'/></div>" +
+    "<div class='col-md-1'><input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='"+$('#zc-controlador').val() + '|?|' + filtro+"|?|"+operador+"|?|"+valor+"'/></div>" +
     "<div class='col-md-1'></div>" +
     "<div class='col-md-1'></div>" +
     "</div>");
@@ -484,8 +484,17 @@ function ZCAccionPaginar(miURL, formulario){
     });
 }
 
+/**
+ * Carga de forma ajax los posibles valores del campo
+ * @param {string} lista Nombre del campo que se esta contruyendo
+ * @param {json} rpta Respuesta de los valores devueltos por el ervidor
+ * @returns {undefined}
+ */
 function ZCPrecargarSeleccion(lista, rpta){
+    // Valor de campo
     var id = '';
+    // Descripcon del campo
+    var valor = '';
     var opcion = '';
     for(var i = 0; i < rpta.cta; ++i){
         for (var key in rpta.infoEncabezado[i]) {
@@ -493,11 +502,16 @@ function ZCPrecargarSeleccion(lista, rpta){
                 if(key === 'id'){
                     id = rpta.infoEncabezado[i][key];
                     continue;
+                }else{
+                    valor += ' ' + rpta.infoEncabezado[i][key]
                 }
-                opcion += '<option value=' + id + '>' + rpta.infoEncabezado[i][key] + '</option>';
             }
         }
+        opcion += '<option value=' + id + '>' + valor + '</option>';
+        // Reinicia los valores
+        id = '';
+        valor = '';
     }
-
-    $('#'+lista).html(opcion);
+    // Agrega las opciones al campo
+    $('#'+lista).append(opcion);
 }

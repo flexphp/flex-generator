@@ -60,6 +60,7 @@ class buscar extends accion {
         $php = '';
         $php .= $this->comando('function buscar($campos, $accion, $pagina){', 4);
         $php .= $this->comando('$rpta = array();', 8);
+        $php .= $this->comando('$pagina = (!is_int($pagina)) ? 1 : $pagina;', 8);
         $php .= $this->comando('$porPagina = ' . ZC_REGISTROS_POR_PAGINA . ';', 8);
         $php .= $this->comando('$CI = new CI_Controller;', 8);
         $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
@@ -78,6 +79,10 @@ class buscar extends accion {
         $php .= $this->comando('$this->db->select(implode(\', \', $this->_aliasCampo));', 16);
         $php .= $this->comando('// Tablas involucradas', 16);
         $php .= $this->comando('$this->db->from(\'' . $this->_tabla . '\');', 16);
+        $php .= $this->comando('// Join de las tablas relacionadas', 16);
+        $php .= $this->comando('foreach ($this->_tablasRelacionadas as $tabla => $datos) {', 16);
+        $php .= $this->comando('$this->db->join($tabla, "' . $this->_tabla . '.{$datos[\'campo\']} = {$tabla}.id", $datos[\'join\']);', 20);
+        $php .= $this->comando('}', 16);
         $php .= $this->comando('// Paginacion de resultados', 16);
         $php .= $this->comando('$this->db->limit($porPagina, (($pagina - 1) * $porPagina));', 16);
         $php .= $this->comando('// Resultado consulta', 16);

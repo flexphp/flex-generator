@@ -75,7 +75,7 @@ class ajax extends accion {
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('default:', 12);
         $php .= $this->comando('// Agregar alias a los campos', 16);
-        $php .= $this->comando('$this->db->select($campos);', 16);
+        $php .= $this->comando('$this->db->select(\'id,\' . $campos);', 16);
         $php .= $this->comando('// Tablas involucradas', 16);
         $php .= $this->comando('$this->db->from($tablas);', 16);
         $php .= $this->comando('// Ordena el resultado', 16);

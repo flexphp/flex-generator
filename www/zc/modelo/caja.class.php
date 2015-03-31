@@ -111,6 +111,7 @@ class caja extends elemento {
         $this->_html = "<input" .
                 " type='text'" .
                 " class='form-control'" .
+                " autocomplete='off'" .
                 // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .

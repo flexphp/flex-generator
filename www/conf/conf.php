@@ -60,7 +60,6 @@ define("ZC_MOTOR_AUTOINCREMENTAL", "auto");
 define("ZC_MOTOR_SEPARADOR", '=');
 // Seperador de los parametros para hacer el join entres las tablas
 define("ZC_MOTOR_JOIN_SEPARADOR", '::');
-define("ZC_MOTOR_JOIN_NATURAL", '');
 define("ZC_MOTOR_JOIN_IZQUIERDA", 'left');
 define("ZC_MOTOR_JOIN_DERECHA", 'right');
 // Configuracion del conexion a base de datos

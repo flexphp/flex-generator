@@ -84,10 +84,10 @@ class lista extends elemento {
             if (strpos($opciones, ZC_MOTOR_SEPARADOR) === false && strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista no valido, se espera id1=valor1 o tabla::campo::tipoJoin');
             }
+            // Agrega la opcion vacia a la lista de seleccion, aplica para el ajax como para el proceso no ajax
+            $opcion[''] = '';
             $separador = (strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) ? ZC_MOTOR_SEPARADOR : ZC_MOTOR_JOIN_SEPARADOR;
             if ($separador != ZC_MOTOR_JOIN_SEPARADOR) {
-                // Agrega la opcion vacia a la lista de seleccion
-                $opcion[''] = 'Seleccione ' . strtolower($this->_prop[ZC_ETIQUETA]);
                 $cada_opcion = explode(',', $opciones);
                 foreach ($cada_opcion as $value) {
                     if (strpos($value, $separador) === false) {

@@ -9,6 +9,14 @@ class {_nombreModelo_} extends CI_Model {
     private $_aliasCampo = array(
         {_aliasCampos_}
     );
+    
+    /**
+     * Cada una de las tablas relacionadas con el formulario
+     * $var array
+     */
+    private $_tablasRelacionadas = array(
+        {_tablasRelacionadas_}
+    );
 
     function __construct() {
         parent::__construct();
@@ -73,12 +81,14 @@ class {_nombreModelo_} extends CI_Model {
                 //Sin filtro de busqueda
                 continue;
             }
-            list($campo, $operador, $valor) = explode('|?|', $cadaFiltro);
+            list($tabla, $campo, $operador, $valor) = explode('|?|', $cadaFiltro);
             $datos[$campo] = $valor;
             $rptaValidacion = $this->{_nombreModelo_}->{_nombreValidacion_}($datos);
             if (isset($rptaValidacion['error']) && '' != $rptaValidacion['error']) {
                 $rpta['error'] .=  $rptaValidacion['error'];
             }
+            // Concatena la tabla, si existe
+            $campo = ($tabla != '') ? $tabla . '.' . $campo : $campo;
             // Agrega condiciones de busqueda segun los filtros
             if(strpos($operador, '%')){
                 $this->db->like($campo, $valor, str_replace('%', '', $operador));
@@ -97,21 +107,9 @@ class {_nombreModelo_} extends CI_Model {
      * @return int Numero de registros encontrados
      */
     function totalRegistros($campos, $tabla){
-        $filtros = ($campos != '')? explode('|??|', $campos) : array();
         $this->db->select('COUNT(1) cta');
-        foreach ($filtros as $cadaFiltro) {
-            if($cadaFiltro == ''){
-                //Sin filtro de busqueda
-                continue;
-            }
-            list($campo, $operador, $valor) = explode('|?|', $cadaFiltro);
-            // Agrega condiciones de busqueda segun los filtros
-            if(strpos($operador, '%')){
-                $this->db->like($campo, $valor, str_replace('%', '', $operador));
-            }else{
-                $this->db->where(array($campo.' '.$operador => $valor));
-            }
-        }
+        // Agrega los filtros de busqueda
+        $this->validarFiltros($campos, 'buscar');
         $ressql = $this->db->get($tabla);
         return $ressql->row()->cta;
     }

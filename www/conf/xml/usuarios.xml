@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <crear>
-    <test>
-        <nombre_formulario>Test</nombre_formulario>
+    <usuarios>
+        <nombre_formulario>Usuarios</nombre_formulario>
         <se_envia>POST</se_envia>
         <tipo_de_servicio>SOAP</tipo_de_servicio>
         <se_guardara_en>MySQL</se_guardara_en>
@@ -78,5 +78,5 @@
             <es_obligatorio>no</es_obligatorio>
             <longitud_maxima_es>100</longitud_maxima_es>
         </observaciones>
-    </test>
+    </usuarios>
 </crear>
