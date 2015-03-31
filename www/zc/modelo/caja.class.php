@@ -128,6 +128,7 @@ class caja extends elemento {
                 $this->ayuda() .
                 "/>
                     <span class='help-block'></span>";
+        return $this;
     }
 
     /**
@@ -158,6 +159,7 @@ class caja extends elemento {
                         </span>
                     </div>
                     <span class='help-block'></span>";
+        return $this;
     }
 
     /**
@@ -183,6 +185,7 @@ class caja extends elemento {
                 $this->ayuda() .
                 "/>
                     <span class='help-block'></span>";
+        return $this;
     }
 
     /**
@@ -209,6 +212,7 @@ class caja extends elemento {
                 "/>" .
                 " </textarea>" .
                 "<span class='help-block'></span>";
+        return $this;
     }
-
+    
 }

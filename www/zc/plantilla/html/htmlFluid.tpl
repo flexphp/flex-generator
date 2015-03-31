@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,6 +20,46 @@
         <![endif]-->
     </head>
     <body>
+        <!-- Barra de navegacion -->
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Freddie</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">ZC</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Usuarios <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="<?php echo base_url(). 'index.php/usuarios/nuevo'; ?>">Agregar</a></li>
+                                <li><a href="<?php echo base_url(). 'index.php/usuarios/listar'; ?>">Buscar</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Paises <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="<?php echo base_url(). 'index.php/paises/nuevo'; ?>">Nuevo</a></li>
+                                <li><a href="<?php echo base_url(). 'index.php/paises/listar'; ?>">Buscar</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="https://github.com/freddiegar/zerocodigo/" title="Ir a ZeroCodigo">ZeroCodigo</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+        <br/>
+        <br/>
+        <!-- Fin Barra de navegacion -->
+        
         <div class="container-fluid">
             <!-- Seperacion del top -->
             <div class="col-md-12"> </div>
@@ -58,7 +98,7 @@
             <div class="col-md-1"></div>
             <!-- Fin Formulario para el ingreso de datos -->
         </div>
-
+                
         <!-- Id del registro actual, si esta vacio, es un registro nuevo, de lo contrario es una actualizacion -->
         <input type="hidden" id="zc-id-{_nombreFormulario_}" name="zc-id-{_nombreFormulario_}" value="<?php echo $id; ?>"/>
         <!-- URL del proyecto, se usa en los llamados ajax -->
