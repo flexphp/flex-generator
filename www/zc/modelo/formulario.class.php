@@ -143,7 +143,7 @@ class formulario {
     private $_asignacionControlador = array();
 
     /**
-     * Tipo de plantilla a utilizar para los llamados ajax, cada boton de accion utiliza una plantilla 
+     * Tipo de plantilla a utilizar para los llamados ajax, cada boton de accion utiliza una plantilla
      * especial, sin no se define la plantilla, no se crea la funcion en el archivos javascript
      * @var array
      */
@@ -202,7 +202,7 @@ class formulario {
      * @var string
      */
     private $_nombreArchivoServidor = '';
-    
+
     /**
      * Nombre del formulario, es utilizado en las funciones javascript y plantillas html
      * @var string
@@ -378,7 +378,7 @@ class formulario {
         $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
 
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoListar);
-        
+
         return $this;
     }
 
@@ -505,6 +505,7 @@ class formulario {
                 case ZC_ACCION_BORRAR:
                 case ZC_ACCION_NUEVO:
                 case ZC_ACCION_PRECARGAR:
+                case ZC_ACCION_AJAX:
                     $this->agregarElementoBotonFormulario($caracteristicas);
                     break;
                 default:
@@ -580,8 +581,8 @@ class formulario {
         $html = new boton($caracteristicas, $tipoAccion);
         $html->crear();
         // Devuelve el elemento, no usa devoverl() t a que los botones no usan la plantilla
-        $this->_formulario['acciones'][$html->_prop[ZC_ID]] = $html->devolverElemento();
-        $this->_acciones[] = $html->_prop;
+        $this->_formulario['acciones'][$html->devolverId()] = $html->devolverElemento();
+        $this->_acciones[] = $html->devolverProp();
         return $this;
     }
 
@@ -593,8 +594,8 @@ class formulario {
     private function agregarElementoCajaFormulario($caracteristicas) {
         $html = new caja($caracteristicas);
         $html->crear();
-        $this->_formulario['elementos'][$html->_prop[ZC_ID]] = $html->devolver();
-        $this->_elementos[] = $html->_prop;
+        $this->_formulario['elementos'][$html->devolverId()] = $html->devolver();
+        $this->_elementos[] = $html->devolverProp();
         return $this;
     }
 
@@ -606,8 +607,8 @@ class formulario {
     private function agregarElementoListaFormulario($caracteristicas) {
         $html = new lista($caracteristicas, $this->_nombreArchivoControlador);
         $html->crear();
-        $this->_formulario['elementos'][$html->_prop[ZC_ID]] = $html->devolver();
-        $this->_elementos[] = $html->_prop;
+        $this->_formulario['elementos'][$html->devolverId()] = $html->devolver();
+        $this->_elementos[] = $html->devolverProp();
         $this->javascriptFormulario($html->devolverAjax());
         return $this;
     }
@@ -620,8 +621,8 @@ class formulario {
     private function agregarElementoRadioFormulario($caracteristicas) {
         $html = new radio($caracteristicas);
         $html->crear();
-        $this->_formulario['elementos'][$html->_prop[ZC_ID]] = $html->devolver();
-        $this->_elementos[] = $html->_prop;
+        $this->_formulario['elementos'][$html->devolverId()] = $html->devolver();
+        $this->_elementos[] = $html->devolverProp();
         return $this;
     }
 
@@ -633,8 +634,8 @@ class formulario {
     private function agregarElementoCheckboxFormulario($caracteristicas) {
         $html = new checkbox($caracteristicas);
         $html->crear();
-        $this->_formulario['elementos'][$html->_prop[ZC_ID]] = $html->devolver();
-        $this->_elementos[] = $html->_prop;
+        $this->_formulario['elementos'][$html->devolverId()] = $html->devolver();
+        $this->_elementos[] = $html->devolverProp();
         return $this;
     }
 
@@ -822,7 +823,7 @@ class formulario {
         foreach ($rutaJavascript as $ruta) {
             if (isset($ruta) && !is_file($ruta)) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, " Ruta de archivo no valida: {$ruta}!");
-            } else if (!isset($ruta)) {
+            } else if (isset($ruta)) {
                 $this->_js .= '<!--Inclusion archivo js  -->' . FIN_DE_LINEA . insertarEspacios(8);
                 // Cambia la ruta relativa, por una ruta absoluta
                 $this->_js .= "<script type='text/javascript' src='" . convertir2UrlLocal($ruta) . "'></script>" . FIN_DE_LINEA . insertarEspacios(8);

@@ -3,7 +3,7 @@
 /**
  * Crea acciones: buscar, depende de class "accion" por la funcion  accion::devolver
  */
-class precargar extends accion {
+class ajax extends accion {
 
     /**
      * Crea la accion de buscar, es decir todo el proceso de creacion del SELECT en SQL
@@ -15,22 +15,13 @@ class precargar extends accion {
     }
 
     /**
-     * Redefine la duncion de inicializacion para manejar las vearialbes de vusqueda
-     * @return type
-     */
-    function inicializar() {
-        $cmd = $this->comando("\$data = \$id;", 12);
-        return $cmd;
-    }
-
-    /**
-     * Selecciona crea la accion buscar. el resultado de la accion se almacena en la
+     * Crea la accion ajax. el resultado de la accion se almacena en la
      * variable $resultado (IMPORTANTE)
      */
     public function crear() {
-        if ($this->_accion !== ZC_ACCION_PRECARGAR) {
+        if ($this->_accion !== ZC_ACCION_AJAX) {
             // No es la accion esperada, no crea nada
-            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_PRECARGAR);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_AJAX);
         }
         $php = '';
         $php .= $this->comando('//Establece los valores de cada uno de los campos', 12);
@@ -42,7 +33,7 @@ class precargar extends accion {
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'modelo_\' . $tabla, $tabla);', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
-        $php .= $this->comando('$rpta = $CI->$tabla->precargar($id, \'precargar\');', 12);
+        $php .= $this->comando('$rpta = $CI->$tabla->ajax($tablas, $campos);', 12);
         $php .= $this->comando('switch (true){', 12);
         $php .= $this->comando('case (isset($rpta[\'error\']) && \'\' != $rpta[\'error\']):', 16);
         $php .= $this->comando('// Errores durante la ejecucion', 20);
@@ -63,31 +54,42 @@ class precargar extends accion {
      * variable $resultado (IMPORTANTE)
      */
     public function funcion() {
-        if ($this->_accion !== ZC_ACCION_PRECARGAR) {
+        if ($this->_accion !== ZC_ACCION_AJAX) {
             // No es la accion esperada, no crea nada
-            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_PRECARGAR);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_AJAX);
         }
         $php = '';
-        $php .= $this->comando('function precargar($id, $accion){', 4);
+        $php .= $this->comando('function ajax($tablas, $campos){', 4);
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('$CI = new CI_Controller;', 8);
         $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
         $php .= $this->comando('switch (true){', 8);
-        $php .= $this->comando('case (!isset($id) || \'\' == $id):', 12);
-        $php .= $this->comando('// El campo id es obligatorio para la busqueda', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error en la precarga (id)\');', 16);
+        $php .= $this->comando('case (!isset($campos) || \'\' == $campos):', 12);
+        $php .= $this->comando('case (!isset($tablas) || \'\' == $tablas):', 12);
+        $php .= $this->comando('// Errores durante la validacion de campos', 16);
+        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo mas tarde\');', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case !$this->db->initialize():', 12);
         $php .= $this->comando('// Error en la conexion a la base de campos', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('default:', 12);
-        $php .= $this->comando('// Devuelve los ddatos del id enviado', 16);
-        $php .= $this->comando('$this->db->where(array(\'id\' => $id));', 16);
-        $php .= $this->comando('$ressql = $this->db->get(\'' . $this->_tabla . '\');', 16);
+        $php .= $this->comando('// Agregar alias a los campos', 16);
+        $php .= $this->comando('$this->db->select($campos);', 16);
+        $php .= $this->comando('// Tablas involucradas', 16);
+        $php .= $this->comando('$this->db->from($tablas);', 16);
+        $php .= $this->comando('// Ordena el resultado', 16);
+        $php .= $this->comando('$this->db->order_by(end(explode(\',\', $campos)));', 16);
+        $php .= $this->comando('// Resultado consulta', 16);
+        $php .= $this->comando('$ressql = $this->db->get();', 16);
+        $php .= $this->comando('// Existen resultados', 16);
         $php .= $this->comando('if($ressql->num_rows() > 0){', 16);
-        $php .= $this->comando('$rpta[\'resultado\'] = $ressql->row();', 20);
         $php .= $this->comando('$rpta[\'cta\'] = $ressql->num_rows();', 20);
+        $php .= $this->comando('$i = 0;', 20);
+        $php .= $this->comando('foreach($ressql->result_array() as $row){', 20);
+        $php .= $this->comando('$rpta[\'resultado\'][$i] = $row;', 24);
+        $php .= $this->comando('++$i;', 24);
+        $php .= $this->comando('}', 20);
         $php .= $this->comando('}', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('}', 8);
@@ -106,10 +108,18 @@ class precargar extends accion {
             // Ya esta definido, no vuelve a asignarlos
             return $this;
         }
-        $this->_inicializarCliente[] = "'id' => \$datos['id']";
-        $this->_inicializarServidor[] = "'id' => 'xsd:string'";
-        $this->_parametrosServidor[] = '$id';
-        $this->_asignacionControlador[] = $this->comando("\$datos['id'] = \$this->input->post('id');");
+        $this->_inicializarCliente[] = "'tablas' => \$datos['tablas']";
+        $this->_inicializarCliente[] = "'campos' => \$datos['campos']";
+
+        $this->_inicializarServidor[] = "'tablas' => 'xsd:string'";
+        $this->_inicializarServidor[] = "'campos' => 'xsd:string'";
+
+        $this->_parametrosServidor[] = '$tablas, $campos';
+
+        $this->_asignacionControlador[] = "\$datos['tablas'] = \$this->input->post('tablas');";
+        $this->_asignacionControlador[] = "\$datos['campos'] = \$this->input->post('campos');";
+
+        $this->_tipoPlantilla = '';
 
         //Desactiva nuevas peticiones de inicializacion
         $this->_yaInicio = true;

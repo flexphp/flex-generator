@@ -60,7 +60,7 @@ class procesarXML {
      * @var array
      */
     private $elementos = array();
-    
+
     /**
      * Almacena en un array cada uno de los formularios, desde aqui se contruyen las tablas
      * @var array
@@ -193,12 +193,24 @@ class procesarXML {
         }
         $leerDirectorio = opendir($this->rutaArchivos);
         while ($cadaArchivo = readdir($leerDirectorio)) {
+//            if ($cadaArchivo != 'usuarios.xml') {
+//                continue;
+//            }
             if ($this->extensionArchivo($cadaArchivo) == 'xml') {
+                echo 'Procesando archivo: ' . $cadaArchivo . FIN_DE_LINEA_HTML;
                 $rutaXML = $this->rutaArchivos . "/" . $cadaArchivo;
                 $xml = simplexml_load_file($rutaXML);
                 $this->estructuraArchivoXML($xml);
-                // Agrega la opcion para precargar los datos en la opcion editar
+
+                // Agrega los botones a los formularios
+                $this->elementos[] = array(ZC_ID => 'ajax', ZC_ELEMENTO => ZC_ACCION_AJAX, ZC_ETIQUETA => 'ajax');
                 $this->elementos[] = array(ZC_ID => 'precargar', ZC_ELEMENTO => ZC_ACCION_PRECARGAR, ZC_ETIQUETA => 'Precargar');
+                $this->elementos[] = array(ZC_ID => 'enviar', ZC_ELEMENTO => ZC_ACCION_AGREGAR, ZC_ETIQUETA => 'Enviar');
+                $this->elementos[] = array(ZC_ID => 'encontrar', ZC_ELEMENTO => ZC_ACCION_BUSCAR, ZC_ETIQUETA => 'Encontrar');
+                $this->elementos[] = array(ZC_ID => 'actualizar', ZC_ELEMENTO => ZC_ACCION_MODIFICAR, ZC_ETIQUETA => 'Actualizar');
+                $this->elementos[] = array(ZC_ID => 'eliminar', ZC_ELEMENTO => ZC_ACCION_BORRAR, ZC_ETIQUETA => 'Eliminar');
+                $this->elementos[] = array(ZC_ID => 'limpiar', ZC_ELEMENTO => ZC_ELEMENTO_RESTABLECER, ZC_ETIQUETA => 'Limpiar');
+                $this->elementos[] = array(ZC_ID => 'cancelar', ZC_ELEMENTO => ZC_ELEMENTO_CANCELAR, ZC_ETIQUETA => 'Cancelar');
                 /**
                  * Por lo menos se debio crear un elemento para tener una estructura valida
                  */
@@ -228,19 +240,21 @@ class procesarXML {
                  */
                 $nombre = $value[ZC_ID];
                 $$nombre = new formulario($value);
-            } elseif (isset($value[ZC_ELEMENTO]) && $key != 0) {
+            } elseif (isset($value[ZC_ELEMENTO]) && $key > 0) {
                 /**
                  * Otros atributos no definidos, esta funcion se encarga de validar el tipo
                  */
                 $$nombre->agregarElemento($value);
-            } elseif (!isset($elementos[($key+1)])) {
+            } else {
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': No existe el elemento ' . preprint($value, 1));
+            }
+
+            if (!isset($elementos[($key + 1)]) && $key > 0) {
                 /**
                  * En el ultimo elemento, finaliza el formulario
                  */
                 $$nombre->finFormulario();
                 unset($$nombre);
-            } else {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': No existe el elemento ' . preprint($value, 1));
             }
         }
     }
@@ -250,7 +264,7 @@ class procesarXML {
      * @param array $elementos
      */
     private function crearModeloDB() {
-        if(count($this->bd) > 0){
+        if (count($this->bd) > 0) {
             if ('' == $this->bd[0][0][ZC_MOTOR]) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, 'Falta el motor a utilizar!');
             }
@@ -266,4 +280,5 @@ class procesarXML {
         }
         return $this;
     }
+
 }

@@ -383,7 +383,8 @@ function tiempoMilisegundos() {
  * @throws Exception
  */
 function mostrarErrorZC($archivo, $funcion, $error) {
-    $nombre = end(explode(DIRECTORY_SEPARATOR, $archivo));
+    $ruta = explode(DIRECTORY_SEPARATOR, $archivo);
+    $nombre = end($ruta);
     throw new Exception("<b>{$nombre}</b> => <i>{$funcion}:</i> " . FIN_DE_LINEA_HTML . "$error");
 }
 
@@ -404,13 +405,13 @@ function aliasCampos($id, $etiqueta) {
  */
 function joinTablas($join) {
     $separador = (strpos($join, ZC_MOTOR_JOIN_SEPARADOR) === false) ? null : ZC_MOTOR_JOIN_SEPARADOR;
-    if(isset($separador)){
+    if (isset($separador)) {
         $parametros = explode(ZC_MOTOR_JOIN_SEPARADOR, strtolower($join));
         $joinTabla = (isset($parametros[0])) ? $parametros[0] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el nombre la tabla a relacionar!?");
         $joinCampos = (isset($parametros[1])) ? $parametros[1] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el los campos de relacion!?");
         $joinTipo = (isset($parametros[2])) ? $parametros[2] : ZC_MOTOR_JOIN_NATURAL;
-        
-        return array('tabla' => $joinTabla, 'campo' => explode(',', $joinCampos), 'join' => $joinTipo);
+
+        return array('tabla' => $joinTabla, 'campo' => 'id,' . $joinCampos, 'join' => $joinTipo);
     }
     return null;
 }

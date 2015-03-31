@@ -12,7 +12,7 @@ class elemento {
      * Propiedades del elemento, las conoce el usuarios
      * @var array
      */
-    public $_prop = array();
+    protected $_prop = array();
 
     /**
      * Identificador unico del elemento dentro del formulario
@@ -274,6 +274,22 @@ class elemento {
      */
     public function devolverElemento() {
         return $this->_html;
+    }
+
+    /**
+     * Devolver las propiedades del elemento
+     * @return type
+     */
+    public function devolverProp() {
+        return $this->_prop;
+    }
+
+    /**
+     * Devolver las propiedades del elemento
+     * @return type
+     */
+    public function devolverId() {
+        return $this->_id;
     }
 
 }

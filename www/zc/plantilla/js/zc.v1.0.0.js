@@ -485,5 +485,19 @@ function ZCAccionPaginar(miURL, formulario){
 }
 
 function ZCPrecargarSeleccion(lista, rpta){
-    console.log(lista +'--->'+ rpta);
+    var id = '';
+    var opcion = '';
+    for(var i = 0; i < rpta.cta; ++i){
+        for (var key in rpta.infoEncabezado[i]) {
+            if (rpta.infoEncabezado[i].hasOwnProperty(key)) {
+                if(key === 'id'){
+                    id = rpta.infoEncabezado[i][key];
+                    continue;
+                }
+                opcion += '<option value=' + id + '>' + rpta.infoEncabezado[i][key] + '</option>';
+            }
+        }
+    }
+
+    $('#'+lista).html(opcion);
 }

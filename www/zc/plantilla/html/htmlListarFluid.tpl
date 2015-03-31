@@ -92,7 +92,7 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/datetimepicker.v4.7.14.min.js"></script>
         <!-- JS Parsley -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/parsley.v2.0.5.js"></script>
-        <!-- Utilidades AC -->
+        <!-- Utilidades ZC -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/zc.v1.0.0.js"></script>
         {_archivoJavascript_}
     </body>

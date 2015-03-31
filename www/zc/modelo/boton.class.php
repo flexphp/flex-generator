@@ -96,11 +96,17 @@ class boton extends elemento {
                 break;
             case ZC_ACCION_PRECARGAR:
                 $this->_tipo = 'button';
-                $this->_icono = '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
                 $this->_presentacion = 'btn-default hidden';
                 // Para la funcionalidad de ocultar botones
                 $this->_id = ZC_ACCION_PRECARGAR;
                 $this->_prop[ZC_ID] = ZC_ACCION_PRECARGAR;
+                break;
+            case ZC_ACCION_AJAX:
+                $this->_tipo = 'button';
+                $this->_presentacion = 'btn-default hidden';
+                // Para la funcionalidad de ocultar botones
+                $this->_id = ZC_ACCION_AJAX;
+                $this->_prop[ZC_ID] = ZC_ACCION_AJAX;
                 break;
             case ZC_ELEMENTO_CANCELAR:
                 $this->_tipo = 'button';

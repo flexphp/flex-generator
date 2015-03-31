@@ -78,29 +78,5 @@
             <es_obligatorio>no</es_obligatorio>
             <longitud_maxima_es>100</longitud_maxima_es>
         </observaciones>
-        <enviar>
-            <que_quieres>Agregar</que_quieres>
-            <como_se_llama>Enviar</como_se_llama>
-        </enviar>
-        <encontrar>
-            <que_quieres>Buscar</que_quieres>
-            <como_se_llama>Encontrar</como_se_llama>
-        </encontrar>
-        <actualizar>
-            <que_quieres>Modificar</que_quieres>
-            <como_se_llama>Actualizar</como_se_llama>
-        </actualizar>
-        <eliminar>
-            <que_quieres>Borrar</que_quieres>
-            <como_se_llama>Eliminar</como_se_llama>
-        </eliminar>
-        <volver>
-            <que_quieres>Cancelar</que_quieres>
-            <como_se_llama>Volver</como_se_llama>
-        </volver>
-        <resetear>
-            <que_quieres>Limpiar</que_quieres>
-            <como_se_llama>Resetear</como_se_llama>
-        </resetear>
     </test>
 </crear>

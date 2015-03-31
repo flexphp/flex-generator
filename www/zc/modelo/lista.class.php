@@ -15,20 +15,20 @@ class lista extends elemento {
      * @var type
      */
     private $_opciones = '';
-    
+
     /**
      * Propiedades de los join, de aqui se crean las acciones para cargar los campos
      * tipo lista (select) del formulario
      * @var array
      */
     private $_joinTablas = array();
-    
+
     /**
      * Nombre del controlador donse esta alamacenado el servicio ajax
      * @var string
      */
     private $_controlador = '';
-    
+
     /**
      * Ruta del archivo ajax creado, se usa para agregarlo a los archivos html
      * @var string
@@ -99,7 +99,6 @@ class lista extends elemento {
             } else {
                 // Campos llenados por base de datos, se valida que sea una opcion valida
                 $this->opcionesAjax($opciones);
-                
             }
         }
 
@@ -111,27 +110,28 @@ class lista extends elemento {
 
     private function opcionesAjax($join) {
         $this->_joinTablas = joinTablas($join);
-        if('' == $this->_controlador){
+        if ('' == $this->_controlador) {
             mostrarErrorZC(__FILE__, __FUNCTION__, 'No se ha definido el controlador para el llamado ajax');
         }
-        if(isset($this->_joinTablas)){
+        if (isset($this->_joinTablas)) {
             /**
-            * Plantilla para el manejo de javascript
-            */
+             * Plantilla para el manejo de javascript
+             */
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsLlamadosListasAjax.js');
 
             $plantilla->asignarEtiqueta('nombreControlador', $this->_controlador);
+            $plantilla->asignarEtiqueta('nombreTabla', $this->_joinTablas['tabla']);
+            $plantilla->asignarEtiqueta('nombreCampos', $this->_joinTablas['campo']);
             $plantilla->asignarEtiqueta('nombreSelect', $this->_id);
 
-            $plantilla->crearPlantilla('../publico/js', 'js', 'lista_' . $this->_id);
+            $plantilla->crearPlantilla('../publico/js', 'js', 'ajax_' . $this->_joinTablas['tabla']);
             // Agregar archivo creado al javascript al formulario
             $this->_ajax = $plantilla->_salidaPlantilla;
-
         }
         return $this;
     }
-    
+
     /**
      * Devuelve la ruta del archivo ajax si existe
      * @return type
@@ -139,4 +139,5 @@ class lista extends elemento {
     function devolverAjax() {
         return (isset($this->_ajax)) ? $this->_ajax : null;
     }
+
 }

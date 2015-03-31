@@ -21,9 +21,14 @@ require_once 'buscar.class.php';
 require_once 'modificar.class.php';
 
 /**
- * Crea la funcion para precargar los datos a editar (select)
+ * Crea la funcion para precargar los datos a editar
  */
 require_once 'precargar.class.php';
+
+/**
+ * Crea las funciones para precargar las listas de seleccion
+ */
+require_once 'ajax.class.php';
 
 /**
  * Crea acciones: agregar, buscar, modificar, eliminar, cancelar, defecto
@@ -127,6 +132,9 @@ class accion extends elemento {
                 break;
             case ZC_ACCION_PRECARGAR:
                 $accion = new precargar($this->_campos, $this->_tabla, $this->_accion);
+                break;
+            case ZC_ACCION_AJAX:
+                $accion = new ajax($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ELEMENTO_RESTABLECER:
             case ZC_ELEMENTO_CANCELAR:

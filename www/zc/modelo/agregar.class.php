@@ -15,7 +15,7 @@ class agregar extends accion {
     }
 
     /**
-     * Selecciona crea la accion agregar. el resultado de la accion se almacena en la
+     * Crea la accion agregar. el resultado de la accion se almacena en la
      * variable $resultado (IMPORTANTE)
      */
     public function crear() {
@@ -101,9 +101,10 @@ class agregar extends accion {
         $this->_asignacionControlador = parent::inicializarAccion()->devolverAsignacionControlador();
         $this->_asignacionControlador[] = $this->comando('');
         $this->_tipoPlantilla = 'jsLlamadosCrearAjax.js';
-        
+
         //Desactiva nuevas peticiones de inicializacion
         $this->_yaInicio = true;
         return $this;
     }
+
 }

@@ -15,16 +15,7 @@ class buscar extends accion {
     }
 
     /**
-     * Redefine la funcion de inicializacion para manejar las variables de busqueda
-     * @return string
-     */
-    function inicializar() {
-        $cmd = $this->comando("\$data = \$filtros;", 12);
-        return $cmd;
-    }
-
-    /**
-     * Selecciona crea la accion buscar. el resultado de la accion se almacena en la
+     * Crea la accion buscar. el resultado de la accion se almacena en la
      * variable $resultado (IMPORTANTE)
      */
     public function crear() {
@@ -34,7 +25,6 @@ class buscar extends accion {
         }
         $php = '';
         $php .= $this->comando('//Establece los valores de cada uno de los campos', 12);
-//        $php .= $this->inicializar();
         $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
         $php .= $this->comando('//Nombre de la tabla afectada', 12);
@@ -206,7 +196,7 @@ class buscar extends accion {
                     $filtro = new radio($this->_campos[$nro]);
                     break;
                 case ZC_ELEMENTO_SELECT:
-                    $filtro = new lista($this->_campos[$nro]);
+                    $filtro = new lista($this->_campos[$nro], $this->_tabla);
                     break;
                 case ZC_ELEMENTO_CHECKBOX:
                     $filtro = new checkbox($this->_campos[$nro]);
@@ -259,15 +249,15 @@ class buscar extends accion {
         }
         $this->_inicializarCliente[] = "'filtros' => \$datos['filtros']";
         $this->_inicializarCliente[] = "'pagina' => \$datos['pagina']";
-        
+
         $this->_inicializarServidor[] = "'filtros' => 'xsd:string'";
         $this->_inicializarServidor[] = "'pagina' => 'xsd:int'";
-        
+
         $this->_parametrosServidor[] = '$filtros, $pagina';
-        
+
         $this->_asignacionControlador[] = "\$datos['filtros'] = \$this->input->post('filtros');";
         $this->_asignacionControlador[] = "\$datos['pagina'] = \$this->input->post('pagina');";
-        
+
         $this->_tipoPlantilla = 'jsLlamadosBuscarAjax.js';
 
         //Desactiva nuevas peticiones de inicializacion
