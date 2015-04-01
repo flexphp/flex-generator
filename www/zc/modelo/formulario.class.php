@@ -212,6 +212,7 @@ class formulario {
 
     /**
      * Nombre del formulario, es utilizado en las funciones javascript y plantillas html
+     * tambien se usa para la creacion de los menus de navegacion
      * @var string
      */
     private $_nombreFormulario = '';
@@ -224,6 +225,7 @@ class formulario {
 
     /**
      * Nombre del archivo controlador creado en /controllers
+     * tambien se usa para la creacion de los menus de navegacion
      * @var string
      */
     private $_nombreArchivoControlador = '';
@@ -891,4 +893,10 @@ class formulario {
         return $this;
     }
 
+    /**
+     * Devuelve la informacion necesaria para crear los menus de navegacion
+     */
+    public function infoNavegacion() {
+        return array('formulario' => $this->_nombreFormulario, 'controlador' => $this->_nombreArchivoControlador);
+    }
 }

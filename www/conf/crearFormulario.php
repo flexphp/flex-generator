@@ -9,7 +9,9 @@ require 'conf.php';
 require RUTA_GENERADOR_CODIGO . '/includes/libreria.inc.php';
 // Clase para el manejo de plantillas
 require RUTA_GENERADOR_CODIGO . '/modelo/plantilla.class.php';
-// Clase utilizada pra el procesamiento del archivo XML
+// Clase utilizada para crear el menu de navegacion
+require RUTA_GENERADOR_CODIGO . '/modelo/navegacion.class.php';
+// Clase utilizada para el procesamiento del archivo XML
 require RUTA_GENERADOR_CODIGO . '/modelo/xml.class.php';
 // Clase central del generador de codigo
 require RUTA_GENERADOR_CODIGO . '/modelo/formulario.class.php';

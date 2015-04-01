@@ -515,3 +515,12 @@ function ZCPrecargarSeleccion(lista, rpta){
     // Agrega las opciones al campo
     $('#'+lista).append(opcion);
 }
+
+/**
+ * Resalta el menu actual
+ * @param {string} controlador
+ * @returns {undefined}
+ */
+function ZCMenuActual(controlador){
+    $('#zc-menu-' + controlador).addClass('active');
+}

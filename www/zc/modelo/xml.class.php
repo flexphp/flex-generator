@@ -192,6 +192,8 @@ class procesarXML {
             die('No es una carpeta valida: ' . $rutaXML);
         }
         $leerDirectorio = opendir($this->rutaArchivos);
+        // Crear e menu de navegacion
+        $this->navegacion = new navegacion();
         while ($cadaArchivo = readdir($leerDirectorio)) {
 //            if ($cadaArchivo != 'usuarios.xml') {
 //                continue;
@@ -229,6 +231,7 @@ class procesarXML {
                 $this->elementos = array();
             }
         }
+        $this->navegacion->fin();
         $this->crearModeloDB();
     }
 
@@ -246,23 +249,23 @@ class procesarXML {
                 /**
                  * Atributos Formulario, crear una variable con el id del formulario
                  */
-                $nombre = $value[ZC_ID];
-                $$nombre = new formulario($value);
+                $formulario = new formulario($value);
             } elseif (isset($value[ZC_ELEMENTO]) && $key > 0) {
                 /**
                  * Otros atributos no definidos, esta funcion se encarga de validar el tipo
                  */
-                $$nombre->agregarElemento($value);
+                $formulario->agregarElemento($value);
             } else {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': No existe el elemento ' . preprint($value, 1));
             }
 
             if (!isset($elementos[($key + 1)]) && $key > 0) {
+                $this->navegacion->crear($formulario->infoNavegacion());
                 /**
                  * En el ultimo elemento, finaliza el formulario
                  */
-                $$nombre->finFormulario();
-                unset($$nombre);
+                $formulario->finFormulario();
+                unset($formulario);
             }
         }
     }

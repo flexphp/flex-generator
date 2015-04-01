@@ -126,10 +126,10 @@ class modificar extends accion {
         }
         // Herada los de la clase padre
         $this->_inicializarCliente = parent::inicializarAccion()->devolverInicializarCliente();
-        $this->_inicializarCliente[] = $this->comando("'id' => \$datos['id']");
+        $this->_inicializarCliente[] = "'id' => \$datos['id']";
 
         $this->_inicializarServidor = parent::inicializarAccion()->devolverInicializarServidor();
-        $this->_inicializarServidor[] = $this->comando("'id' => 'xsd:int'");
+        $this->_inicializarServidor[] = "'id' => 'xsd:int'";
 
         $this->_parametrosServidor = parent::inicializarAccion()->devolverParametrosServidor();
         $this->_parametrosServidor[] = '$id';
@@ -137,16 +137,15 @@ class modificar extends accion {
         // Los valores ya se habian asignado, se borran para establecer los nuevos
         unset ($this->_asignacionControlador);
         // Reasina el valor inicial
-        $this->_asignacionControlador[] = $this->comando("\$datos['accion'] = \$this->input->post('accion');");
+        $this->_asignacionControlador[] = "\$datos['accion'] = \$this->input->post('accion');";
         // La inicializacion se ace diferente para manejar los campos tipo passsword, si no se diligencian
         // es porque no cambian
         foreach ($this->_campos as $nro => $campo) {
             switch ($campo[ZC_DATO]){
                 case ZC_DATO_CONTRASENA:
                     // Se valida que la contrasena este diligenciada
-                    $php = $this->comando("// Clave modificada");
-                    $php .= $this->comando("\$datos['{$campo[ZC_ID]}'] = (\$this->input->post('{$campo[ZC_ID]}') != '') ? \$this->input->post('{$campo[ZC_ID]}') : null;", 8);
-                    $this->_asignacionControlador[] = $php;
+                    $this->_asignacionControlador[] = '// Clave modificada';
+                    $this->_asignacionControlador[] = "\$datos['{$campo[ZC_ID]}'] = (\$this->input->post('{$campo[ZC_ID]}') != '') ? \$this->input->post('{$campo[ZC_ID]}') : null;";
                     break;
                 default :
                     $this->_asignacionControlador[] = "\$datos['{$campo[ZC_ID]}'] = \$this->input->post('{$campo[ZC_ID]}');";
@@ -154,7 +153,7 @@ class modificar extends accion {
             }
         }
         // Ademas de uno nuevo para elmanejode la id de actualizacion
-        $this->_asignacionControlador[] = $this->comando("\$datos['id'] = \$this->input->post('id');");
+        $this->_asignacionControlador[] = "\$datos['id'] = \$this->input->post('id');";
 
         $this->_tipoPlantilla = 'jsLlamadosModificarAjax.js';
 
