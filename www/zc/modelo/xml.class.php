@@ -231,7 +231,8 @@ class procesarXML {
                 $this->elementos = array();
             }
         }
-        $this->navegacion->fin();
+        $opciones = array('minimizar' => true);
+        $this->navegacion->fin('../application/views', 'html', $opciones);
         $this->crearModeloDB();
     }
 

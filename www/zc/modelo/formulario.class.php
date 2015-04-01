@@ -539,9 +539,10 @@ class formulario {
         $this->crearAccionesClienteFormulario();
         $this->crearJavascriptFormulario();
         // La vista se debe crear despues de los archivos javascript (cargar bien rutas js)
-        $this->crearVistaFormulario();
+        $opciones = array('minimizar' => true);
+        $this->crearVistaFormulario('../application/views', 'html', $opciones);
         // La vista de busqueda y listado de campos de la tabla
-        $this->crearListarFormulario();
+        $this->crearListarFormulario('../application/views', 'html', $opciones);
         $this->fin();
         return $this;
     }
