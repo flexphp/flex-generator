@@ -1,0 +1,13 @@
+# Archivos de log
+########################
+zc/log/*.log
+
+# Archivos cargados de prueba
+########################
+zc/archivos/*.ods
+zc/archivos/*.xls
+zc/archivos/*.xlsx
+
+# Archivos de configuracion conexion a base de datos
+########################
+www/application/config/database.php
