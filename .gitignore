@@ -11,3 +11,7 @@ zc/archivos/*.xlsx
 # Archivos de configuracion conexion a base de datos
 ########################
 www/application/config/database.php
+
+# Archivos de configuracion para formularios
+########################
+zc/xml/*.xml
