@@ -296,8 +296,9 @@ function ZCListarResultados(formulario, controlador, rpta){
                 if(key === 'id'  && id === -1){
                     // Agrega el id del registro para el caso de modificacion
                     id = rpta.infoEncabezado[i][key];
+                } else {
+                    columnas += '<td>' + rpta.infoEncabezado[i][key] +  '</td>';
                 }
-                columnas += '<td>' + rpta.infoEncabezado[i][key] +  '</td>';
             }
         }
         if(i === 0){
