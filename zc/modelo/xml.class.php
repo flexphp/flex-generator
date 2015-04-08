@@ -89,6 +89,23 @@ class procesarXML {
             $this->atributosXPathXML($hijos, $form);
             $this->hijosXPathXML($hijos, $form);
             $this->elementos[0] = $form;
+            // Agrega los botones a los formularios
+            // Crea los campos dinamicamente
+            $this->elementos[] = array(ZC_ID => 'ajax', ZC_ELEMENTO => ZC_ACCION_AJAX, ZC_ETIQUETA => 'ajax');
+            // Permite precargar la informacion del regitros a modificar
+            $this->elementos[] = array(ZC_ID => 'precargar', ZC_ELEMENTO => ZC_ACCION_PRECARGAR, ZC_ETIQUETA => 'Precargar');
+            // Boton para crear un nuevo registro
+            $this->elementos[] = array(ZC_ID => 'enviar', ZC_ELEMENTO => ZC_ACCION_AGREGAR, ZC_ETIQUETA => 'Agregar');
+            // Necesario para crear el formulario de busqueda
+            $this->elementos[] = array(ZC_ID => 'encontrar', ZC_ELEMENTO => ZC_ACCION_BUSCAR, ZC_ETIQUETA => 'Encontrar');
+            // Permite actualizar el registro en la base de datos
+            $this->elementos[] = array(ZC_ID => 'actualizar', ZC_ELEMENTO => ZC_ACCION_MODIFICAR, ZC_ETIQUETA => 'Actualizar');
+            // Permite eleiminar el registro (desactivarlo)
+            $this->elementos[] = array(ZC_ID => 'eliminar', ZC_ELEMENTO => ZC_ACCION_BORRAR, ZC_ETIQUETA => 'Eliminar');
+            // Boton para cancelar la accion actual
+            $this->elementos[] = array(ZC_ID => 'cancelar', ZC_ELEMENTO => ZC_ELEMENTO_CANCELAR, ZC_ETIQUETA => 'Cancelar');
+            // Boton para limpiar el contenido del dormulario
+            //$this->elementos[] = array(ZC_ID => 'limpiar', ZC_ELEMENTO => ZC_ELEMENTO_RESTABLECER, ZC_ETIQUETA => 'Limpiar');
         }
     }
 
@@ -203,23 +220,6 @@ class procesarXML {
                 $xml = simplexml_load_file($rutaXML);
                 $this->estructuraArchivoXML($xml);
 
-                // Agrega los botones a los formularios
-                // Crea los campos dinamicamente
-                $this->elementos[] = array(ZC_ID => 'ajax', ZC_ELEMENTO => ZC_ACCION_AJAX, ZC_ETIQUETA => 'ajax');
-                // Permite precargar la informacion del regitros a modificar
-                $this->elementos[] = array(ZC_ID => 'precargar', ZC_ELEMENTO => ZC_ACCION_PRECARGAR, ZC_ETIQUETA => 'Precargar');
-                // Boton para crear un nuevo registro
-                $this->elementos[] = array(ZC_ID => 'enviar', ZC_ELEMENTO => ZC_ACCION_AGREGAR, ZC_ETIQUETA => 'Agregar');
-                // Necesario para crear el formulario de busqueda
-                $this->elementos[] = array(ZC_ID => 'encontrar', ZC_ELEMENTO => ZC_ACCION_BUSCAR, ZC_ETIQUETA => 'Encontrar');
-                // Permite actualizar el registro en la base de datos
-                $this->elementos[] = array(ZC_ID => 'actualizar', ZC_ELEMENTO => ZC_ACCION_MODIFICAR, ZC_ETIQUETA => 'Actualizar');
-                // Permite eleiminar el registro (desactivarlo)
-                $this->elementos[] = array(ZC_ID => 'eliminar', ZC_ELEMENTO => ZC_ACCION_BORRAR, ZC_ETIQUETA => 'Eliminar');
-                // Boton para cancelar la accion actual
-                $this->elementos[] = array(ZC_ID => 'cancelar', ZC_ELEMENTO => ZC_ELEMENTO_CANCELAR, ZC_ETIQUETA => 'Cancelar');
-                // Boton para limpiar el contenido del dormulario
-                //$this->elementos[] = array(ZC_ID => 'limpiar', ZC_ELEMENTO => ZC_ELEMENTO_RESTABLECER, ZC_ETIQUETA => 'Limpiar');
                 /**
                  * Por lo menos se debio crear un elemento para tener una estructura valida
                  */
@@ -231,7 +231,7 @@ class procesarXML {
             }
         }
         $opciones = array('minimizar' => true);
-        $this->navegacion->fin('../application/views', 'html', $opciones);
+        $this->navegacion->fin('../www/application/views', 'html', $opciones);
         $this->crearModeloDB();
     }
 
@@ -286,7 +286,7 @@ class procesarXML {
                 $bd->tabla($tabla);
             }
             $bd->fin();
-            $bd->imprimir();
+            $bd->crear();
             $bd->ejecutar();
         }
         return $this;

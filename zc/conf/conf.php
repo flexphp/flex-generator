@@ -1,4 +1,5 @@
 <?php
+
 // Horario por defecto
 date_default_timezone_set('America/Bogota');
 // Define el fin de linea para los archivos creados
@@ -43,6 +44,7 @@ define("ZC_DATO_ERROR", "mensaje_de_error_tipo_dato");
 define("ZC_DATO_ERROR_PREDETERMINADO", "Tipo de dato incorrecto");
 define("ZC_DATO_WS", "dato_ws");
 // Restricciones de longitud
+define("ZC_LONGITUD_PREDETERMINADA", 40);
 define("ZC_LONGITUD_MAXIMA", "longitud_maxima_es");
 define("ZC_LONGITUD_MAXIMA_ERROR", "mensaje_de_error_longitud_maxima");
 define("ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO", "Supera la longitud permitida (&[Longitud]&)");

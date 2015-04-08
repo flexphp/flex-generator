@@ -33,7 +33,7 @@ class bd extends conexion {
      * @var array
      */
     private $_sentencias = array();
-    
+
     /**
      * Sentencias para crear los join, se unen a las sentencias la final del proceso
      * @var array
@@ -49,7 +49,7 @@ class bd extends conexion {
         $this->motor($motor);
         $this->equivalencias();
     }
-    
+
     /**
      * Valoda el motor utilizado para la creacion de la base de datos
      * @param type $motor
@@ -242,7 +242,7 @@ class bd extends conexion {
         $key = '';
         switch ($this->_motor) {
             case ZC_MOTOR_MYSQL:
-                $key = $coma . insertarEspacios(4) . FIN_DE_LINEA . $this->_equivalencias[$this->_motor]['LLAVE_PRIMARIA'] . ' (' . $campo . ')';
+                $key = $coma . FIN_DE_LINEA . insertarEspacios(4) . $this->_equivalencias[$this->_motor]['LLAVE_PRIMARIA'] . ' (' . $campo . ')';
                 break;
             default:
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
@@ -277,12 +277,15 @@ class bd extends conexion {
             }
         }
         $tabla .= $campos;
+        // Agrega campo para determinar el estado del registro, los registros no se eliminan
+        // de la base de datos, cambian de estado
+        $tabla .= $this->campo('zc_estado', ZC_DATO_NUMERICO, 1, ZC_OBLIGATORIO_SI, 'Estado registro', ',');
         $tabla .= $this->llave('id', ',');
         $tabla .= FIN_DE_LINEA . ') ' . $this->charset();
         $this->_sentencias[] = $tabla;
         return $this;
     }
-    
+
     /**
      * Crea los join de la tabla, solo si los tiene
      * @param string $join Join entregado por el usuario en el XML
@@ -290,7 +293,7 @@ class bd extends conexion {
      */
     private function join($join) {
         $joinTabla = joinTablas($join);
-        if(isset($joinTabla)){
+        if (isset($joinTabla)) {
             $this->_join[] = "ALTER TABLE {$this->_prop[0][ZC_ID]} ADD CONSTRAINT zc_fk_2_{$joinTabla['tabla']} FOREIGN KEY (id) REFERENCES {$joinTabla['tabla']} (id) ON UPDATE CASCADE ON DELETE RESTRICT";
         }
         return $this;
@@ -317,7 +320,7 @@ class bd extends conexion {
             // Obligatorio
             $this->_prop[$nro][ZC_OBLIGATORIO] = (isset($this->_prop[$nro][ZC_OBLIGATORIO])) ? $this->_prop[$nro][ZC_OBLIGATORIO] : ZC_OBLIGATORIO_NO;
             // Longitud
-            $this->_prop[$nro][ZC_LONGITUD_MAXIMA] = (isset($this->_prop[$nro][ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[$nro][ZC_LONGITUD_MAXIMA])) ? $this->_prop[$nro][ZC_LONGITUD_MAXIMA] : null;
+            $this->_prop[$nro][ZC_LONGITUD_MAXIMA] = (isset($this->_prop[$nro][ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[$nro][ZC_LONGITUD_MAXIMA])) ? $this->_prop[$nro][ZC_LONGITUD_MAXIMA] : ZC_LONGITUD_PREDETERMINADA;
             // Llaves foraneas
             $this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES] = (isset($this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES]) && '' != $this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES]) ? $this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES] : null;
         }
@@ -354,17 +357,26 @@ class bd extends conexion {
      * @return string
      */
     public function devolver() {
-        return implode(';', $this->_sentencias);
+        return implode(';' . FIN_DE_LINEA . FIN_DE_LINEA, $this->_sentencias);
     }
-    
+
     /**
-     * Agrega los join al fianl del scrip de creacion de sentencias 
+     * Agrega los join al fianl del scrip de creacion de sentencias
      * @return \bd
      */
     public function fin() {
-        foreach ($this->_join as $join){
+        foreach ($this->_join as $join) {
             array_push($this->_sentencias, $join);
         }
+        return $this;
+    }
+
+    /**
+     * Crea el archivo sql para la creacion de la base de datos
+     * @return \bd
+     */
+    public function crear() {
+        crearArchivo('sql/', 'script_' . $this->_motor, 'sql', $this->devolver());
         return $this;
     }
 

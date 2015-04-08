@@ -288,7 +288,8 @@ function ZCListarResultados(formulario, controlador, rpta){
     for(var i = 0; i < rpta.cta; ++i){
         for (var key in rpta.infoEncabezado[i]) {
             if (rpta.infoEncabezado[i].hasOwnProperty(key)) {
-                if(i === 0 && $.trim(key) !== ''){
+                // El campo Id no se muestra
+                if(i === 0 && $.trim(key) !== '' && key !== 'id'){
                     //Crea los encabezados
                     encabezados += '<th>'+key+'</th>';
                 }

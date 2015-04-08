@@ -13,9 +13,10 @@ zc/archivos/*.xlsx
 www/application/config/database.php
 www/application/config/pagination.php
 
-# Archivos de configuracion para formularios
+# Archivos de configuracion
 ########################
 zc/xml/*.xml
+zc/sql/*.sql
 
 # Archivos publicos generados por la aplicaion
 ########################

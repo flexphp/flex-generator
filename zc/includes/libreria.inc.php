@@ -41,7 +41,7 @@ function miTrim($var) {
  * @return boolean
  */
 function miLog($log, $archivo = '') {
-    if($archivo == ''){
+    if ($archivo == '') {
         $archivo = 'log/Log_' . date('Ymd') . '.log';
     }
     $h = fopen($archivo, 'a+');
@@ -160,7 +160,7 @@ function insertarEspacios($cantidad = 4) {
  * @return string
  */
 function convertir2UrlLocal($ruta) {
-    return str_replace('../', '<?php echo base_url(); ?>', $ruta);
+    return str_replace('../www/', '<?php echo base_url(); ?>', $ruta);
 }
 
 /**
@@ -401,7 +401,7 @@ function mostrarErrorZC($archivo, $funcion, $error) {
  * @return string
  */
 function aliasCampos($id, $etiqueta, $tabla = '') {
-    if($tabla != ''){
+    if ($tabla != '') {
         // Solo lo agrega si la tabla es diferente de vacio
         $tabla .= '.';
     }
@@ -415,7 +415,7 @@ function aliasCampos($id, $etiqueta, $tabla = '') {
  * @return string
  */
 function tablasRelacionadas($id, $tablas, $join = '') {
-    return  FIN_DE_LINEA . insertarEspacios(8) . "'{$tablas}' => array('campo' => '{$id}', 'join' => '{$join}'),";
+    return FIN_DE_LINEA . insertarEspacios(8) . "'{$tablas}' => array('campo' => '{$id}', 'join' => '{$join}'),";
 }
 
 /**

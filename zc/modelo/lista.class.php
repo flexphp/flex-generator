@@ -125,7 +125,7 @@ class lista extends elemento {
             $plantilla->asignarEtiqueta('nombreCampos', $this->_joinTablas['campo']);
             $plantilla->asignarEtiqueta('nombreSelect', $this->_id);
 
-            $plantilla->crearPlantilla('../publico/js', 'js', 'ajax_' . $this->_joinTablas['tabla']);
+            $plantilla->crearPlantilla('../www/publico/js', 'js', 'ajax_' . $this->_joinTablas['tabla']);
             // Agregar archivo creado al javascript al formulario
             $this->_ajax = $plantilla->_salidaPlantilla;
         }
