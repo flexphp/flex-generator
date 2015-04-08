@@ -11,8 +11,10 @@ Dropzone.options.cargarArchivos = {
         // Trasforma la respuesta json en un objeto
         console.log(response);
         var rpta = JSON.parse(response);
-        if(rpta.error !== undefined && rpta.error !== ''){
+        if (rpta.error !== undefined && rpta.error !== '') {
             alert(rpta.error);
+        } else {
+            alert('Felicidades! Proyecto creado exitosamente');
         }
     }
 }

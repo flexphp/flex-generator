@@ -16,6 +16,11 @@ require_once 'agregar.class.php';
 require_once 'buscar.class.php';
 
 /**
+ * Crea la funcion de borrar (update a zc_eliminado)
+ */
+require_once 'borrar.class.php';
+
+/**
  * Crea la funcion de modificar/actualizar (update)
  */
 require_once 'modificar.class.php';
@@ -128,7 +133,7 @@ class accion extends elemento {
                 $accion = new modificar($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ACCION_BORRAR:
-//                $accion = new borrar($this->_campos, $this->_accion);
+                $accion = new borrar($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ACCION_PRECARGAR:
                 $accion = new precargar($this->_campos, $this->_tabla, $this->_accion);

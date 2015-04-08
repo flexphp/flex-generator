@@ -66,7 +66,7 @@ class ajax extends accion {
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (!isset($campos) || \'\' == $campos):', 12);
         $php .= $this->comando('case (!isset($tablas) || \'\' == $tablas):', 12);
-        $php .= $this->comando('// Errores durante la validacion de campos', 16);
+        $php .= $this->comando('// Errores durante la validacion de campos y tablas', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo mas tarde\');', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case !$this->db->initialize():', 12);
@@ -78,6 +78,8 @@ class ajax extends accion {
         $php .= $this->comando('$this->db->select(\'id,\' . $campos);', 16);
         $php .= $this->comando('// Tablas involucradas', 16);
         $php .= $this->comando('$this->db->from($tablas);', 16);
+        $php .= $this->comando('// Omite los registros que se encuentran en estado eliminado', 16);
+        $php .= $this->comando('$this->db->where(array(\'zc_eliminado is null\' => null));', 16);
         $php .= $this->comando('// Ordena el resultado', 16);
         $php .= $this->comando('$this->db->order_by(end(explode(\',\', $campos)));', 16);
         $php .= $this->comando('// Resultado consulta', 16);

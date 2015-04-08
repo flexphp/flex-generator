@@ -83,6 +83,8 @@ class buscar extends accion {
         $php .= $this->comando('foreach ($this->_tablasRelacionadas as $tabla => $datos) {', 16);
         $php .= $this->comando('$this->db->join($tabla, "' . $this->_tabla . '.{$datos[\'campo\']} = {$tabla}.id", $datos[\'join\']);', 20);
         $php .= $this->comando('}', 16);
+        $php .= $this->comando('// Omite los registros que se encuentran en estado eliminado', 16);
+        $php .= $this->comando('$this->db->where(array(\'' . $this->_tabla . '.zc_eliminado is null\' => null));', 16);
         $php .= $this->comando('// Paginacion de resultados', 16);
         $php .= $this->comando('$this->db->limit($porPagina, (($pagina - 1) * $porPagina));', 16);
         $php .= $this->comando('// Resultado consulta', 16);

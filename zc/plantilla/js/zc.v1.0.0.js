@@ -321,7 +321,7 @@ function ZCListarResultados(formulario, controlador, rpta){
  * @returns {String}
  */
 
-function ZCAccionModificarCondicion(formulario){
+function ZCAccionCondicion(formulario){
     var id = $.trim($('#zc-id-'+formulario).val());
     return id;
 }

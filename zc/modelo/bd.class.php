@@ -72,6 +72,7 @@ class bd extends conexion {
             ZC_DATO_AREA_TEXTO => 'VARCHAR',
             ZC_DATO_CONTRASENA => 'VARCHAR',
             ZC_DATO_NUMERICO => 'INT',
+            'ZC_DATO_NUMERICO_PEQUENO' => 'TINYINT',
             ZC_DATO_FECHA => 'DATE',
             ZC_DATO_URL => 'VARCHAR',
             ZC_DATO_EMAIL => 'VARCHAR',
@@ -104,6 +105,7 @@ class bd extends conexion {
             case ZC_DATO_URL:
             case ZC_DATO_FECHA:
             case ZC_DATO_CONTRASENA:
+            case 'ZC_DATO_NUMERICO_PEQUENO':
                 $tipo = $this->_equivalencias[$this->_motor][$dato];
                 break;
             default:
@@ -279,7 +281,7 @@ class bd extends conexion {
         $tabla .= $campos;
         // Agrega campo para determinar el estado del registro, los registros no se eliminan
         // de la base de datos, cambian de estado
-        $tabla .= $this->campo('zc_estado', ZC_DATO_NUMERICO, 1, ZC_OBLIGATORIO_SI, 'Estado registro', ',');
+        $tabla .= $this->campo('zc_eliminado', 'ZC_DATO_NUMERICO_PEQUENO', 1, ZC_OBLIGATORIO_NO, 'Registro eliminado?', ',');
         $tabla .= $this->llave('id', ',');
         $tabla .= FIN_DE_LINEA . ') ' . $this->charset();
         $this->_sentencias[] = $tabla;

@@ -27,6 +27,9 @@ if (isset($_FILES['file'])) {
     if (!move_uploaded_file($rutaTemporal, $rutaArchivo)) {
         $rpta['error'] = 'Error moviendo archivo: $rutaArchivo';
     }
+    // Extraer la extension del nombre del archivo
+    $extension = explode('.', $_FILES['file']['name']);
+    $tipoArchivo = end($extension);
 } else {
     // No es un acceso valido al recurso
     header('Location: index.html');
@@ -58,6 +61,12 @@ try {
 
         // Cada fila
         foreach ($hojas as $numeroFila => $fila) {
+            
+            if ('xls' == strtolower($tipoArchivo)) {
+                // Para llas hoja de calculo excel 97 el numero de la fila no inicia en la posicion 0, se deja en la posicion - 1
+                $numeroFila -= 1; 
+            }
+            
             if (is_array($fila)) {
                 if ($numeroFila > 2 && $fila[0] !== '') {
                     $idCampo = str_replace($buscar, $reemplazar, strtolower($fila[1]));
