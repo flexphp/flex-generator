@@ -4,8 +4,6 @@
 require RUTA_GENERADOR_CODIGO . '/includes/libreria.inc.php';
 // Clase para el manejo de plantillas
 require RUTA_GENERADOR_CODIGO . '/modelo/plantilla.class.php';
-// Clase utilizada para crear la ventana de logueo
-require RUTA_GENERADOR_CODIGO . '/modelo/login.class.php';
 // Clase utilizada para crear el menu de navegacion
 require RUTA_GENERADOR_CODIGO . '/modelo/navegacion.class.php';
 // Clase utilizada para el procesamiento del archivo XML

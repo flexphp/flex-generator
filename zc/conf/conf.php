@@ -10,6 +10,10 @@ define('FIN_DE_LINEA_HTML', '<br/>');
 define("RUTA_GENERADOR_CODIGO", "../zc");
 // Numero de registro por pagina, se usa para paginar los resultados
 define("ZC_REGISTROS_POR_PAGINA", 10);
+// Nombre de la hoja pra crear ventana de logueo, se define en la hoja de calculo
+define("ZC_LOGIN_PAGINA", "zc_login");
+// Nombre de la tabla contra la que se hace la validacion del login
+define("ZC_LOGIN_TABLA", "usuarios");
 //Tipos de elementos aceptados
 define("ZC_ID", "id");
 define("ZC_ETIQUETA", "como_se_llama");
@@ -28,7 +32,7 @@ define("ZC_ELEMENTO_BOTON", "boton");
 define("ZC_ELEMENTO_RADIO", "circulo");
 define("ZC_ELEMENTO_CHECKBOX", "cuadrado");
 define("ZC_ELEMENTO_SELECT", "listado");
-define("ZC_ELEMENTO_SELECT_OPCIONES", "posibles_valores");
+define("ZC_ELEMENTO_OPCIONES", "posibles_valores");
 define("ZC_ELEMENTO_RESTABLECER", "limpiar");
 define("ZC_ELEMENTO_CANCELAR", "cancelar");
 // Tipos de datos aceptados
@@ -83,6 +87,7 @@ define("ZC_ACCION_BORRAR", "borrar");
 define("ZC_ACCION_NUEVO", "nuevo");
 define("ZC_ACCION_PRECARGAR", "precargar");
 define("ZC_ACCION_AJAX", "ajax");
+define("ZC_ACCION_LOGIN", "login");
 // Acciones a las que no se les aplica validacion de datos
 define("ZC_ACCION_SIN_VALIDACION", ZC_ACCION_BUSCAR . "," . ZC_ACCION_BORRAR);
 // Mensajes de error en caso de que no se seleccionen filtros de busqueda

@@ -259,6 +259,10 @@ class bd extends conexion {
      */
     public function tabla($prop) {
         $this->_prop = $prop;
+        if (in_array($this->_prop[0][ZC_ID], array(ZC_LOGIN_PAGINA))) {
+            // La ventana de logueo no crea tabla, usa campos definidos en otros tablas
+            return $this;
+        }
         $this->verificar();
         $campos = '';
         $tabla = $this->nombreTabla();
@@ -274,7 +278,7 @@ class bd extends conexion {
                     // Inserta coma si el siguiente campo existe
                     $coma = ('' != $campos) ? ',' : '';
                     $campos .= $this->campo($caracteristicas[ZC_ID], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_ETIQUETA], $coma);
-                    $this->join($caracteristicas[ZC_ELEMENTO_SELECT_OPCIONES]);
+                    $this->join($caracteristicas[ZC_ELEMENTO_OPCIONES]);
                     break;
             }
         }
@@ -324,7 +328,7 @@ class bd extends conexion {
             // Longitud
             $this->_prop[$nro][ZC_LONGITUD_MAXIMA] = (isset($this->_prop[$nro][ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[$nro][ZC_LONGITUD_MAXIMA])) ? $this->_prop[$nro][ZC_LONGITUD_MAXIMA] : ZC_LONGITUD_PREDETERMINADA;
             // Llaves foraneas
-            $this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES] = (isset($this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES]) && '' != $this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES]) ? $this->_prop[$nro][ZC_ELEMENTO_SELECT_OPCIONES] : null;
+            $this->_prop[$nro][ZC_ELEMENTO_OPCIONES] = (isset($this->_prop[$nro][ZC_ELEMENTO_OPCIONES]) && '' != $this->_prop[$nro][ZC_ELEMENTO_OPCIONES]) ? $this->_prop[$nro][ZC_ELEMENTO_OPCIONES] : null;
         }
         return $this;
     }

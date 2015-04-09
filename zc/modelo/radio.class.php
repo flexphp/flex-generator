@@ -23,7 +23,7 @@ class radio extends elemento {
     function __construct($caracteristicas) {
         parent::__construct($caracteristicas);
         $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
-        $this->opciones($this->_prop[ZC_ELEMENTO_SELECT_OPCIONES]);
+        $this->opciones($this->_prop[ZC_ELEMENTO_OPCIONES]);
     }
 
     /**

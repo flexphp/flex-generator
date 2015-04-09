@@ -94,6 +94,14 @@ class boton extends elemento {
                 $this->_id = ZC_ACCION_BORRAR;
                 $this->_prop[ZC_ID] = ZC_ACCION_BORRAR;
                 break;
+            case ZC_ACCION_LOGIN:
+                $this->_tipo = 'button';
+                $this->_icono = '<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>';
+                $this->_presentacion = 'btn-primary btn-lg btn-block zc-accion';
+                // Para la funcionalidad de ocultar botones
+                $this->_id = ZC_ACCION_LOGIN;
+                $this->_prop[ZC_ID] = ZC_ACCION_LOGIN;
+                break;
             case ZC_ACCION_PRECARGAR:
                 $this->_tipo = 'button';
                 $this->_presentacion = 'btn-default hidden';

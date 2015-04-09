@@ -134,7 +134,7 @@ class elemento {
             if (isset($this->_prop[ZC_ELEMENTO]) && $this->_prop[ZC_ELEMENTO] == ZC_ELEMENTO_CAJA_TEXTO && !isset($this->_prop[ZC_LONGITUD_MAXIMA])) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
             }
-            $this->_prop[ZC_ELEMENTO_SELECT_OPCIONES] = (isset($this->_prop[ZC_ELEMENTO_SELECT_OPCIONES])) ? $this->_prop[ZC_ELEMENTO_SELECT_OPCIONES] : null;
+            $this->_prop[ZC_ELEMENTO_OPCIONES] = (isset($this->_prop[ZC_ELEMENTO_OPCIONES])) ? $this->_prop[ZC_ELEMENTO_OPCIONES] : null;
         }
         return $this;
     }
@@ -227,6 +227,11 @@ class elemento {
         return $html;
     }
 
+    /**
+     * Plantilla para la ventanas diferentes a las de login
+     * @param string $campo Elemento html creado
+     * @return string
+     */
     protected function plantilla($campo) {
         $html = "
             <div class='row'>
@@ -239,6 +244,25 @@ class elemento {
                 </div>
                 <div class='col-md-5'></div>
                 <div class='col-md-1'></div>
+            </div>
+        ";
+        return $html;
+    }
+
+    /**
+     * Plantilla para la ventana tipo login
+     * @param string $campo Elemento html creado
+     * @return string
+     */
+    protected function plantillaLogin($campo) {
+        $html = "
+            <div class='row'>
+                <div class='col-md-4 text-right'>
+                    <label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
+                </div>
+                <div class='col-md-8'>
+                    {$campo}
+                </div>
             </div>
         ";
         return $html;
@@ -267,6 +291,15 @@ class elemento {
      */
     public function devolver() {
         return $this->plantilla($this->_html);
+    }
+    
+    /**
+     * Retorna el codigo HTML del elemento con la plantilla div para el login
+     * Es un metodo publico, se utiliza desde fuera de la clase, ver class formulario
+     * @return string
+     */
+    public function devolverLogin() {
+        return $this->plantillaLogin($this->_html);
     }
 
     /**

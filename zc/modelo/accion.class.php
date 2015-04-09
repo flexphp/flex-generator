@@ -31,6 +31,11 @@ require_once 'modificar.class.php';
 require_once 'precargar.class.php';
 
 /**
+ * Crea la ventana y acciones de logueo
+ */
+require_once '/login.class.php';
+
+/**
  * Crea las funciones para precargar las listas de seleccion
  */
 require_once 'ajax.class.php';
@@ -140,6 +145,9 @@ class accion extends elemento {
                 break;
             case ZC_ACCION_AJAX:
                 $accion = new ajax($this->_campos, $this->_tabla, $this->_accion);
+                break;
+            case ZC_ACCION_LOGIN:
+                $accion = new login($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ELEMENTO_RESTABLECER:
             case ZC_ELEMENTO_CANCELAR:

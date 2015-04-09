@@ -38,21 +38,24 @@
         <br/>
 
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6 col-md-4 col-md-offset-4">
-                    <div class="account-wall">
-                        <div class="tab-content">
-                            <div class="tab-pane active">
-                                <div class="text-center">
-                                    <img src="<?php echo base_url(); ?>publico/img/login.jpg" style="width: 70%; height: 70%" alt="Bienvenido"/>
-                                </div>
-                                <form class="form-signin" action="" method="post">
-                                    <label for="usuario">Usuario </label><input id="usuario" name="usuario" type="text" class="form-control" autofocus>
-                                    <label for="password">Password</label><input id="password" name="password" type="password" class="form-control">
-                                    <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
-                                    <input type="submit" class="btn btn-primary btn-lg btn-block" value="Ingresar" />
-                                </form>
+            <!-- Errores devueltos por el servidor -->
+            <div class="text-center">
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    <span id="error-{_nombreFormulario_}"></span>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-md-offset-4">
+                <div class="account-wall">
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            <div class="text-center">
+                                <img src="<?php echo base_url(); ?>publico/img/login.jpg" style="width: 70%; height: 70%" alt="Bienvenido"/>
                             </div>
+                            <form id="{_nombreFormulario_}" name="{_nombreFormulario_}" method="{_metodoFormulario_}" class="form-signin">
+                                {_contenidoFormulario_}
+                            </form>
                         </div>
                     </div>
                 </div>

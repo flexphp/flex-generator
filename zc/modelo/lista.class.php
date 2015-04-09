@@ -44,7 +44,7 @@ class lista extends elemento {
         parent::__construct($caracteristicas);
         $this->_controlador = $controlador;
         $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
-        $this->opciones($this->_prop[ZC_ELEMENTO_SELECT_OPCIONES]);
+        $this->opciones($this->_prop[ZC_ELEMENTO_OPCIONES]);
     }
 
     /**

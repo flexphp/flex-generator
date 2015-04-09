@@ -50,7 +50,7 @@ try {
             continue;
         }
         // Identificador de la hoja
-        $idHoja = strtolower($nombreHoja);
+        $idHoja = str_replace($buscar, $reemplazar, strtolower($nombreHoja));
         // Numero de hoja en proceso
         $hojas->ChangeSheet($numeroHoja);
 
@@ -105,7 +105,7 @@ try {
         $xml .= insertarEspacios(4) . '</' . $idHoja . '>' . FIN_DE_LINEA;
         $xml .= insertarEspacios(0) . '</crear>' . FIN_DE_LINEA;
         // Crear el archivo XML por cada hoja
-        file_put_contents('xml/' . $nombreHoja . '.xml', $xml);
+        file_put_contents('xml/' . $idHoja . '.xml', $xml);
     }
     /**
      * Crea los formularios, depende de los archivos xml recien creados
