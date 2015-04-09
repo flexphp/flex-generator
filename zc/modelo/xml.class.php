@@ -62,6 +62,18 @@ class procesarXML {
     private $elementos = array();
 
     /**
+     * Almacena los enlaces a cada uno de los recursos
+     * @var \navegacion
+     */
+    private $navegacion;
+
+    /**
+     * Almacena la ventana de logueo
+     * @var \login
+     */
+    private $login;
+
+    /**
      * Almacena en un array cada uno de los formularios, desde aqui se contruyen las tablas
      * @var array
      */
@@ -209,6 +221,8 @@ class procesarXML {
             mostrarErrorZC(__FILE__, __FUNCTION__, ' No es una carpeta valida: ' . $rutaXML);
         }
         $leerDirectorio = opendir($this->rutaArchivos);
+        // Crear ventana de logue
+        $this->login = new login();
         // Crear e menu de navegacion
         $this->navegacion = new navegacion();
         while ($cadaArchivo = readdir($leerDirectorio)) {

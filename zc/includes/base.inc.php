@@ -4,6 +4,8 @@
 require RUTA_GENERADOR_CODIGO . '/includes/libreria.inc.php';
 // Clase para el manejo de plantillas
 require RUTA_GENERADOR_CODIGO . '/modelo/plantilla.class.php';
+// Clase utilizada para crear la ventana de logueo
+require RUTA_GENERADOR_CODIGO . '/modelo/login.class.php';
 // Clase utilizada para crear el menu de navegacion
 require RUTA_GENERADOR_CODIGO . '/modelo/navegacion.class.php';
 // Clase utilizada para el procesamiento del archivo XML
@@ -95,6 +97,14 @@ try {
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/fonts', '../www/publico/fonts');
 
     /**
+     * Imagenes homologadas
+     */
+    if (!is_dir('../www/publico/img')) {
+        mkdir('../www/publico/img', 0770, true);
+    }
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/img/login.jpg', '../www/publico/img/login.jpg');
+
+    /**
      * Index de la carpeta publico
      */
     $index = new plantilla();
@@ -138,8 +148,6 @@ try {
         $db->asignarEtiqueta('collation', ZC_MOTOR_DEFAULT_COLLATION);
     }
     $db->crearPlantilla('../www/application/config', 'php');
-
-    
 } catch (Exception $e) {
     die($e->getMessage());
 }

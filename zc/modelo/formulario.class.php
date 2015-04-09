@@ -187,9 +187,9 @@ class formulario {
      * @var string
      */
     private $_aliasCampos = '';
-    
+
     /**
-     * Nombre de las tablas relacionadas con el formulario, se usa para connstruir los join 
+     * Nombre de las tablas relacionadas con el formulario, se usa para construir los join
      * entre las tablas
      * @var string
      */
@@ -228,7 +228,7 @@ class formulario {
     private $_nombreArchivoVista = '';
 
     /**
-     * Nombre del archivo vista creado en /views
+     * Nombre del archivo vista del listado creado en /views
      * @var string
      */
     private $_nombreArchivoListar = '';
@@ -891,4 +891,5 @@ class formulario {
     public function infoNavegacion() {
         return array('formulario' => $this->_nombreFormulario, 'controlador' => $this->_nombreArchivoControlador);
     }
+
 }

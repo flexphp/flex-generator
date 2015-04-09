@@ -1,22 +1,23 @@
 <?php
 
 /**
- * Crea acciones: MODIFICAR, depende de class "accion" por la funcion  accion::devolver
+ * Crea la barra de navegacion para la aplicacion
  */
-class navegacion{
+class navegacion {
 
     /**
      * Html con los enlaces agregados
-     * @var string 
+     * @var string
      */
     private $_html = '';
-    
+
     /**
-     * Contructor
+     * Constructor
      */
     function __construct() {
+
     }
-    
+
     /**
      * Agrega el enlace a la barra de navegacion de la aplicacion
      * @param array $info Informacion a utilizar en el enlace
@@ -24,9 +25,9 @@ class navegacion{
     public function crear($info) {
         $controlador = $info['controlador'];
         $formulario = $info['formulario'];
-        $this->_html .= '<li id="zc-menu-' . $controlador. '"><a href="<?php echo base_url(). \'index.php/' . $controlador . '\'; ?>">' . $formulario . '</a></li>' . insertarEspacios(30) . FIN_DE_LINEA;
+        $this->_html .= '<li id="zc-menu-' . $controlador . '"><a href="<?php echo base_url(). \'index.php/' . $controlador . '\'; ?>">' . $formulario . '</a></li>' . insertarEspacios(30) . FIN_DE_LINEA;
     }
-    
+
     /**
      * Crea le menu de navegacion dentro de la carpeta vistas (view) de la aplicacion
      */
@@ -42,6 +43,7 @@ class navegacion{
      * variable $resultado (IMPORTANTE)
      */
     public function __destruct() {
+
     }
 
 }

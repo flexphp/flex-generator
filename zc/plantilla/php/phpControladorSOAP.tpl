@@ -61,7 +61,7 @@ class {_nombreControlador_} extends CI_Controller {
         $this->_data['id'] = ($this->uri->segment(3) === FALSE) ? '' : $this->uri->segment(3);
         $this->load->view($this->_data['vista'], $this->_data);
     }
-    
+
     /**
      * Pagina los resultados mostrados en la consulta
      */
