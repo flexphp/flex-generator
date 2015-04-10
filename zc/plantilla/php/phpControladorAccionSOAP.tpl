@@ -7,7 +7,7 @@ public function {_nombreAccion_}() {
             // Pasa al final
         } else if ($datos['accion'] == '{_nombreAccion_}') {
             $rpta = $this->{_nombreModelo_}->{_nombreAccion_}Cliente($datos);
-            {_paginacionCliente_}
+            {_comandoEspecial_}
         } else if (isset($datos['accion'])) {
             $rpta['error'] = 'Error, datos inesperados';
         }

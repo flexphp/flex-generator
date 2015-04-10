@@ -287,7 +287,7 @@ class formulario {
         // Los nombres se manejan en minuscula
         $id = strtolower($this->_id);
         // Nombre login
-        $this->_nombreArchivoLogin = 'login';
+        $this->_nombreArchivoLogin = 'vista_' . strtolower(ZC_LOGIN_PAGINA);
         // Nombre vista
         $this->_nombreArchivoVista = 'vista_' . $id;
         // Nombre modelo
@@ -810,16 +810,22 @@ class formulario {
             }
             // Determina la accion a ejecutar en el cvontrolador
             $comando = $this->_asignacionControlador[$caracteristicas[ZC_ID]] . FIN_DE_LINEA . insertarEspacios(8);
+            $comandoEspecial = '';
             switch ($caracteristicas[ZC_ELEMENTO]) {
                 case ZC_ACCION_BUSCAR:
                     $comando .= str_replace('{_nombreModelo_}', $this->_nombreArchivoModelo, "\$rpta = \$this->{_nombreModelo_}->validarFiltros(\$datos['filtros'], \$datos['accion']);");
-                    $paginacion = 'if (isset($rpta[\'cta\'])){';
-                    $paginacion .= '$rpta[\'paginacion\'] = $this->paginar($rpta[\'cta\']);';
-                    $paginacion .= '}';
+                    // Construir la paginacion
+                    $comandoEspecial = 'if (isset($rpta[\'cta\'])){';
+                    $comandoEspecial .= '$rpta[\'paginacion\'] = $this->paginar($rpta[\'cta\']);';
+                    $comandoEspecial .= '}';
+                    break;
+                case ZC_ACCION_LOGIN:
+                    $comando .= str_replace(array('{_nombreModelo_}', '{_nombreValidacion_}'), array($this->_nombreArchivoModelo, $this->_nombreFuncionValidacion), "\$rpta = \$this->{_nombreModelo_}->{_nombreValidacion_}(\$datos);");
+                    // Registrar el inicio de sesion del usuario
+                    $comandoEspecial = '$rpta = $this->loguear($rpta);';
                     break;
                 default:
                     $comando .= str_replace(array('{_nombreModelo_}', '{_nombreValidacion_}'), array($this->_nombreArchivoModelo, $this->_nombreFuncionValidacion), "\$rpta = \$this->{_nombreModelo_}->{_nombreValidacion_}(\$datos);");
-                    $paginacion = '';
                     break;
             }
             /**
@@ -831,7 +837,7 @@ class formulario {
             // Se crean durante el proceso de los elementos para las validaciones
             $plantilla->asignarEtiqueta('asignacionCliente', $comando);
             $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
-            $plantilla->asignarEtiqueta('paginacionCliente', $paginacion);
+            $plantilla->asignarEtiqueta('comandoEspecial', $comandoEspecial);
             // Concatena cada accion del cliente
             $this->_funcionControlador .= FIN_DE_LINEA . insertarEspacios(4) . $plantilla->devolverPlantilla() . FIN_DE_LINEA;
         }

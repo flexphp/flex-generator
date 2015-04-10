@@ -74,14 +74,21 @@ class {_nombreModelo_} extends CI_Model {
         // Accion que se esta ejecutando
         $datos['accion'] = $accion;
         // Determina si se deben validar los filtros
-        $filtros = ($campos != '')? explode('|??|', $campos) : array();
+        $filtros = (is_string($campos))? explode('|??|', $campos) : $campos;
 
-        foreach ($filtros as $cadaFiltro) {
+        foreach ($filtros as $llave => $cadaFiltro) {
             if($cadaFiltro == ''){
                 //Sin filtro de busqueda
                 continue;
             }
-            list($tabla, $campo, $operador, $valor) = explode('|?|', $cadaFiltro);
+            if (strpos($cadaFiltro, '|?|') !== false) {
+                list($tabla, $campo, $operador, $valor) = explode('|?|', $cadaFiltro);
+            } else {
+                $tabla = '';
+                $operador = '=';
+                $campo = $llave;
+                $valor = $cadaFiltro;
+            }
             $datos[$campo] = $valor;
             $rptaValidacion = $this->{_nombreModelo_}->{_nombreValidacion_}($datos);
             if (isset($rptaValidacion['error']) && '' != $rptaValidacion['error']) {

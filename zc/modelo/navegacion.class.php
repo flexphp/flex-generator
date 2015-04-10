@@ -38,6 +38,8 @@ class navegacion {
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlNavegacion.tpl');
         $plantilla->asignarEtiqueta('menuNavegacion', $this->_html);
+        $plantilla->asignarEtiqueta('accionInicio', '<?php echo base_url(). \'index.php/inicio\'; ?>');
+        $plantilla->asignarEtiqueta('accionSalir', '<?php echo base_url(). \'index.php/' . ZC_LOGIN_PAGINA . '/desloguear\'; ?>');
         $plantilla->crearPlantilla($directorioSalida, $extension, 'navegacion');
     }
 

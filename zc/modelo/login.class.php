@@ -120,7 +120,7 @@ class login extends accion {
 
         $this->_asignacionControlador = parent::inicializarAccion()->devolverAsignacionControlador();
 
-        $this->_tipoPlantilla = 'jsLlamadosDefaultAjax.js';
+        $this->_tipoPlantilla = 'jsLlamadosLoginAjax.js';
 
         //Desactiva nuevas peticiones de inicializacion
         $this->_yaInicio = true;

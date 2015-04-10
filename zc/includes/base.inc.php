@@ -20,6 +20,24 @@ error_reporting(E_ALL);
  * @author root
  */
 try {
+
+    /**
+     * Pagina de bienvenida de la aplicacion
+     */
+    $iniciophp = new plantilla();
+    $iniciophp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorInicio.tpl');
+    $iniciophp->asignarEtiqueta('nombreFormulario', 'Bienvenida');
+    $iniciophp->asignarEtiqueta('nombreVista', 'vista_inicio.html');
+    $iniciophp->asignarEtiqueta('nombreControlador', 'inicio');
+    $iniciophp->crearPlantilla('../www/application/controllers', 'php', 'inicio');
+
+    $iniciohtml = new plantilla();
+    $iniciohtml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlInicio.tpl');
+    $iniciohtml->asignarEtiqueta('nombreFormulario', 'Bienvenida');
+    $iniciohtml->asignarEtiqueta('nombreVista', 'vista_inicio.html');
+    $iniciohtml->asignarEtiqueta('nombreControlador', 'inicio');
+    $iniciohtml->crearPlantilla('../www/application/views', 'html', 'vista_inicio');
+
     /**
      * JQuery homologado
      */
@@ -90,17 +108,10 @@ try {
     $indexcss->crearPlantilla('../www/publico/css', 'html');
 
     /**
-     * Iconos homologados
+     * Imagenes e Iconos homologados
      */
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/fonts', '../www/publico/fonts');
-
-    /**
-     * Imagenes homologadas
-     */
-    if (!is_dir('../www/publico/img')) {
-        mkdir('../www/publico/img', 0770, true);
-    }
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/img/login.jpg', '../www/publico/img/login.jpg');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/img', '../www/publico/img');
 
     /**
      * Index de la carpeta publico
