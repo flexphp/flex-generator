@@ -427,7 +427,7 @@ function joinTablas($join) {
     $separador = (strpos($join, ZC_MOTOR_JOIN_SEPARADOR) === false) ? null : ZC_MOTOR_JOIN_SEPARADOR;
     if (isset($separador)) {
         $parametros = explode(ZC_MOTOR_JOIN_SEPARADOR, strtolower($join));
-        $joinTabla = (isset($parametros[0])) ? $parametros[0] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el nombre la tabla a relacionar!?");
+        $joinTabla = (isset($parametros[0])) ? reemplazarCaracteresEspeciales($parametros[0]) : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el nombre la tabla a relacionar!?");
         $joinCampos = (isset($parametros[1])) ? $parametros[1] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el los campos de relacion!?");
         $joinTipo = (isset($parametros[2])) ? validarJoinTipo($parametros[2]) : '';
 
@@ -446,4 +446,18 @@ function validarJoinTipo($tipo) {
         mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo (' . $tipo . ') de relacion no valida');
     }
     return $tipo;
+}
+
+/**
+ * Reemplaza caracteres no validas en cadenas
+ * @param string $cadena Cadena a convertir
+ * @return string
+ */
+function reemplazarCaracteresEspeciales($cadena) {
+    // Buscar
+    $buscar = array(' ', '?', 'á', 'é', 'í', 'ó', ' ú', 'ñ', 'Ñ');
+    // Reemplazar
+    $reemplazar = array('_', '', 'a', 'e', 'i', 'o', 'u', 'n', 'n');
+    // Devuelve la cadena transformada
+    return str_replace($buscar, $reemplazar, strtolower($cadena));
 }

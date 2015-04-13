@@ -22,7 +22,28 @@ error_reporting(E_ALL);
 try {
 
     /**
-     * Pagina de bienvenida de la aplicacion
+     * Tablas de configuracion, para usuarios, tipos de usuario y estados de usuario
+     */
+    $usuariosxml = new plantilla();
+    $usuariosxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlUsuarios.tpl');
+    $usuariosxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
+    $usuariosxml->asignarEtiqueta('tipoMotor', ZC_MOTOR_MYSQL);
+    $usuariosxml->crearPlantilla('xml', 'xml', 'usuarios');
+
+    $estados_usuarioxml = new plantilla();
+    $estados_usuarioxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlEstadosUsuario.tpl');
+    $estados_usuarioxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
+    $estados_usuarioxml->asignarEtiqueta('tipoMotor', ZC_MOTOR_MYSQL);
+    $estados_usuarioxml->crearPlantilla('xml', 'xml', 'estados_usuario');
+
+    $tipos_usuarioxml = new plantilla();
+    $tipos_usuarioxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlTiposUsuario.tpl');
+    $tipos_usuarioxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
+    $tipos_usuarioxml->asignarEtiqueta('tipoMotor', ZC_MOTOR_MYSQL);
+    $tipos_usuarioxml->crearPlantilla('xml', 'xml', 'tipos_usuario');
+    
+    /**
+     * Pagina y bienvenida de la aplicacion
      */
     $iniciophp = new plantilla();
     $iniciophp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorInicio.tpl');

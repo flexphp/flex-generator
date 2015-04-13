@@ -10,8 +10,8 @@ define('FIN_DE_LINEA_HTML', '<br/>');
 define("RUTA_GENERADOR_CODIGO", "../zc");
 // Numero de registro por pagina, se usa para paginar los resultados
 define("ZC_REGISTROS_POR_PAGINA", 10);
-// Nombre de la hoja pra crear ventana de logueo, se define en la hoja de calculo
-define("ZC_LOGIN_PAGINA", "zc_login");
+// Nombre de la hoja para crear ventana de logueo, se define en la hoja de calculo
+define("ZC_LOGIN_PAGINA", "usuarios");
 // Nombre de la tabla contra la que se hace la validacion del login
 define("ZC_LOGIN_TABLA", "usuarios");
 //Tipos de elementos aceptados

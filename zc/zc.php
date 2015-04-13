@@ -14,10 +14,6 @@ $rpta = array();
 $rutaArchivo = '';
 // Archivo log
 $log = 'log/Log.log';
-// Buscar
-$buscar = array(' ', '?', 'á', 'é', 'í', 'ó', ' ú', 'ñ', 'Ñ');
-// Reemplazar
-$reemplazar = array('_', '', 'a', 'e', 'i', 'o', 'u', 'n', 'n');
 
 miLog($_FILES);
 
@@ -50,7 +46,7 @@ try {
             continue;
         }
         // Identificador de la hoja
-        $idHoja = str_replace($buscar, $reemplazar, strtolower($nombreHoja));
+        $idHoja = reemplazarCaracteresEspeciales(strtolower($nombreHoja));
         // Numero de hoja en proceso
         $hojas->ChangeSheet($numeroHoja);
 
@@ -69,7 +65,7 @@ try {
             
             if (is_array($fila)) {
                 if ($numeroFila > 2 && $fila[0] !== '') {
-                    $idCampo = str_replace($buscar, $reemplazar, strtolower($fila[1]));
+                    $idCampo = reemplazarCaracteresEspeciales(strtolower($fila[1]));
                     $xml .= insertarEspacios(8) . '<' . $idCampo . '>' . FIN_DE_LINEA;
                 }
                 foreach ($fila as $numeroColumna => $contenido) {
@@ -85,7 +81,7 @@ try {
                         // Descripciones caracteristicas formulario
                         case 2:
                             // Descripciones caracteristicas campos del formulario
-                            $tag[$numeroColumna] = str_replace($buscar, $reemplazar, strtolower($contenido));
+                            $tag[$numeroColumna] = reemplazarCaracteresEspeciales(strtolower($contenido));
                             break;
                         case 1:
                             // Detalles del encabezado
