@@ -11,7 +11,7 @@ class {_nombreControlador_} extends CI_Controller {
      * @var array
      */
     private $_data = array(
-        'formulario' => '{_nombreFormulario_}',
+        'formulario' => '{_idFormulario_}',
         'vista' => '{_nombreVista_}',
         'navegacion' => '',
     );
@@ -20,7 +20,7 @@ class {_nombreControlador_} extends CI_Controller {
         parent::__construct();
         $this->load->helper('url');
         $this->load->library('session');
-        $this->_data['navegacion'] = $this->load->view('navegacion.html', null, true);
+        $this->_data['navegacion'] = $this->load->view('{_paginaNavegacion_}.html', null, true);
     }
 
     /**

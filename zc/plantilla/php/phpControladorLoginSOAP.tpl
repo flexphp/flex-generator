@@ -11,7 +11,7 @@ class {_nombreControlador_} extends CI_Controller {
      * @var array
      */
     private $_data = array(
-        'formulario' => '{_nombreFormulario_}',
+        'formulario' => '{_idFormulario_}',
         'modelo' => '{_nombreModelo_}',
         'vista' => '{_nombreVista_}',
         'controlador' => '{_nombreControlador_}',
@@ -35,7 +35,15 @@ class {_nombreControlador_} extends CI_Controller {
         $this->load->view($this->_data['vista']);
     }
 
+    /**
+     * Crea la sesion para el usuario
+     */
     public function loguear($rpta = array()) {
+    
+        if (count($rpta) == 0) {
+            // No es un llamado valido (no es desde un Ajax, sino por la url)
+            redirect('404');
+        }
         // Asigna datos de session
         if (isset($rpta['infoEncabezado'][0]) && isset($rpta['cta']) && $rpta['cta'] > 0) {
             $session = $rpta['infoEncabezado'][0];
@@ -48,6 +56,9 @@ class {_nombreControlador_} extends CI_Controller {
         return $rpta;
     }
 
+    /**
+     * Termina la session para el usuario
+     */
     public function desloguear() {
         $this->session->sess_destroy();
         redirect('/{_nombreControlador_}', 'location');

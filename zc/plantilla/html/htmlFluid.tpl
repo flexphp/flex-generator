@@ -31,8 +31,8 @@
                 <h2>{_nombreFormulario_}</h2>
                 <!-- Barra de progreso -->
                 <div class="progress ">
-                    <div id="progreso-{_nombreFormulario_}" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                        <span id="msj-progreso-{_nombreFormulario_}" style="color: black">0%</span>
+                    <div id="progreso-{_idFormulario_}" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <span id="msj-progreso-{_idFormulario_}" style="color: black">0%</span>
                     </div>
                 </div>
                 <!-- Fin Barra de progreso -->
@@ -41,7 +41,7 @@
                 <div class="alert alert-danger" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
-                    <span id="error-{_nombreFormulario_}"></span>
+                    <span id="error-{_idFormulario_}"></span>
                 </div>
                 <!-- Fin Errores devueltos por el servidor -->
             </div>
@@ -52,7 +52,7 @@
             <!-- Formulario para el ingreso de datos -->
             <div class="col-md-1"></div>
             <div class="col-md-10">
-                <form id="{_nombreFormulario_}" name="{_nombreFormulario_}" method="{_metodoFormulario_}">
+                <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}">
                     {_contenidoFormulario_}
                 </form>
             </div>
@@ -61,7 +61,7 @@
         </div>
                 
         <!-- Id del registro actual, si esta vacio, es un registro nuevo, de lo contrario es una actualizacion -->
-        <input type="hidden" id="zc-id-{_nombreFormulario_}" name="zc-id-{_nombreFormulario_}" value="<?php echo $id; ?>"/>
+        <input type="hidden" id="zc-id-{_idFormulario_}" name="zc-id-{_idFormulario_}" value="<?php echo $id; ?>"/>
         <!-- URL del proyecto, se usa en los llamados ajax -->
         <input type="hidden" id="URLProyecto" name="URLProyecto" value="<?php echo base_url(); ?>"/>
         <!-- JS jQuery -->

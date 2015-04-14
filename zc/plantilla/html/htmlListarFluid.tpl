@@ -36,7 +36,7 @@
             <!-- Formulario con filtros/opciones de busqueda datos -->
             <div class="col-md-1"></div>
             <div class="col-md-10">
-                <form id="{_nombreFormulario_}" name="{_nombreFormulario_}" method="{_metodoFormulario_}">
+                <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}">
                     <!-- Contador de los filtros utilizados, se us para no repetir ID de filtros -->
                     <input id="zc-filtros-cantidad-filtros" name="zc-filtros-cantidad-filtros" type="hidden" value="0"/>
                     {_contenidoFormulario_}
@@ -53,7 +53,7 @@
                 <div class="alert alert-danger" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
-                    <span id="error-{_nombreFormulario_}"></span>
+                    <span id="error-{_idFormulario_}"></span>
                 </div>
             </div>
             <div class="col-md-1"></div>
@@ -61,14 +61,14 @@
             <!-- Formulario con resultados de la busqueda -->
             <div class="col-md-1"></div>
             <div class="col-md-10">
-                <div id="cargando-{_nombreFormulario_}" class="hidden text-center form-control">
+                <div id="cargando-{_idFormulario_}" class="hidden text-center form-control">
                     <!-- Cargando -->
                     <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Cargando...
                 </div>
-                <div id="listado-{_nombreFormulario_}">
+                <div id="listado-{_idFormulario_}">
                     <!-- Resultados de la busqueda -->
                 </div>
-                <div id="paginacion-{_nombreFormulario_}">
+                <div id="paginacion-{_idFormulario_}">
                     <!-- Paginacion de la busqueda -->
                 </div>
             </div>

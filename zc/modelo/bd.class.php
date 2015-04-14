@@ -60,9 +60,9 @@ class bd extends conexion {
             case ZC_MOTOR_MYSQL:
                 break;
             case '':
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Seleccione una opcion de guardado de datos.');
+                mostrarErrorZC(__FILE__, __FUNCTION__, 'Seleccione una opcion de guardado de datos.');
             default:
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no soportado por la herramienta, proximamente.');
+                mostrarErrorZC(__FILE__, __FUNCTION__, 'Motor (' . $this->_motor . ') no soportado por la herramienta, quizas proximamente.');
         }
     }
 
@@ -259,6 +259,10 @@ class bd extends conexion {
      */
     public function tabla($prop) {
         $this->_prop = $prop;
+        if (in_array($this->_prop[0][ZC_ID], array(ZC_LOGIN_PAGINA))) {
+            // La ventana de logueo no crea tabla, usa campos definidos en otros tablas
+            return $this;
+        }
         $this->verificar();
         $campos = '';
         $tabla = $this->nombreTabla();
@@ -274,7 +278,7 @@ class bd extends conexion {
                     // Inserta coma si el siguiente campo existe
                     $coma = ('' != $campos) ? ',' : '';
                     $campos .= $this->campo($caracteristicas[ZC_ID], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_ETIQUETA], $coma);
-                    $this->join($caracteristicas[ZC_ELEMENTO_OPCIONES]);
+                    $this->join($caracteristicas[ZC_ID], $caracteristicas[ZC_ELEMENTO_OPCIONES]);
                     break;
             }
         }
@@ -290,13 +294,14 @@ class bd extends conexion {
 
     /**
      * Crea los join de la tabla, solo si los tiene
+     * @param string $campo Campo foraneo en la tabla
      * @param string $join Join entregado por el usuario en el XML
      * @return \bd
      */
-    private function join($join) {
+    private function join($campo, $join) {
         $joinTabla = joinTablas($join);
         if (isset($joinTabla)) {
-            $this->_join[] = "ALTER TABLE {$this->_prop[0][ZC_ID]} ADD CONSTRAINT zc_fk_2_{$joinTabla['tabla']} FOREIGN KEY (id) REFERENCES {$joinTabla['tabla']} (id) ON UPDATE CASCADE ON DELETE RESTRICT";
+            $this->_join[] = "ALTER TABLE {$this->_prop[0][ZC_ID]} ADD CONSTRAINT zc_fk_2_{$joinTabla['tabla']} FOREIGN KEY ({$campo}) REFERENCES {$joinTabla['tabla']} (id) ON UPDATE CASCADE ON DELETE RESTRICT";
         }
         return $this;
     }
@@ -369,6 +374,18 @@ class bd extends conexion {
     public function fin() {
         foreach ($this->_join as $join) {
             array_push($this->_sentencias, $join);
+        }
+        // Carga los insert por defecto
+        $archivo = 'plantilla/sql/preinsert_' . $this->_motor . '.sql';
+        if(is_file($archivo)) {
+            // Valida que exista el archivo
+            $insert = explode(';', file_get_contents($archivo));
+            foreach ($insert as $sql) {
+                $sql = trim(preg_replace('/\s+/', ' ', $sql));
+                if (strlen($sql) > 0) {
+                    array_push($this->_sentencias, $sql);   
+                }
+            }
         }
         return $this;
     }

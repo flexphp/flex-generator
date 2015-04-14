@@ -40,6 +40,13 @@ class formulario {
      * @var string
      */
     public $_id = '';
+    
+    /**
+     * Nombre del formulario, corresponde a la descripcion mostrada en el menu de navegacion
+     * y otras cabeceras descriptivas
+     * @var string
+     */
+    public $_nombre = '';
 
     /**
      * Metodo a utilizar para el envio del formulario, por defecto POST
@@ -208,13 +215,6 @@ class formulario {
     private $_esLogin = false;
 
     /**
-     * Nombre del formulario, es utilizado en las funciones javascript y plantillas html
-     * tambien se usa para la creacion de los menus de navegacion
-     * @var string
-     */
-    private $_nombreFormulario = '';
-
-    /**
      * Nombre del archivo modelo creado en /models
      * @var string
      */
@@ -267,7 +267,8 @@ class formulario {
         if (!is_array($caracteristicas)) {
             mostrarErrorZC(__FILE__, __FUNCTION__, 'Y las caracteristicas del formulario!?');
         } else {
-            $this->_id = ucwords($caracteristicas[ZC_ID]);
+            $this->_id = strtolower($caracteristicas[ZC_ID]);
+            $this->_nombre = ($caracteristicas[ZC_FORMULARIO_NOMBRE] != '') ? ucwords($caracteristicas[ZC_FORMULARIO_NOMBRE]) : ($this->_id);
             $this->_tipoWS = (isset($caracteristicas[ZC_TIPO_WS])) ? strtolower($caracteristicas[ZC_TIPO_WS]) : strtolower($this->_tipoWS);
             $this->_metodo = (isset($caracteristicas[ZC_FORMULARIO_METODO])) ? strtoupper($caracteristicas[ZC_FORMULARIO_METODO]) : $this->_metodo;
             $this->inicio();
@@ -282,28 +283,24 @@ class formulario {
      * @return \formulario
      */
     private function inicio() {
-        // Nombre del formulario
-        $this->_nombreFormulario = $this->_id;
-        // Los nombres se manejan en minuscula
-        $id = strtolower($this->_id);
         // Nombre login
         $this->_nombreArchivoLogin = 'vista_' . strtolower(ZC_LOGIN_PAGINA);
         // Nombre vista
-        $this->_nombreArchivoVista = 'vista_' . $id;
+        $this->_nombreArchivoVista = 'vista_' . $this->_id;
         // Nombre modelo
-        $this->_nombreArchivoModelo = 'modelo_' . $id;
+        $this->_nombreArchivoModelo = 'modelo_' . $this->_id;
         // Nombre modelo
-        $this->_nombreArchivoControlador = $id;
+        $this->_nombreArchivoControlador = $this->_id;
         // Nombre del listado
-        $this->_nombreArchivoListar = 'vista_listar_' . $id;
+        $this->_nombreArchivoListar = 'vista_listar_' . $this->_id;
         // Nombre del archivo que guarda las funcionalidades del servidor
-        $this->_nombreArchivoServidor = $id . '_' . $this->_tipoWS;
+        $this->_nombreArchivoServidor = $this->_id . '_' . $this->_tipoWS;
         // Nombre javascript
-        $this->_nombreArchivoJs = $id;
+        $this->_nombreArchivoJs = $this->_id;
         // Nombre de la funcion de validacion
-        $this->_nombreFuncionValidacion = 'validacion_' . $id;
+        $this->_nombreFuncionValidacion = 'validacion_' . $this->_id;
         
-        if ($id == strtolower(ZC_LOGIN_PAGINA)){
+        if ($this->_id == strtolower(ZC_LOGIN_PAGINA)){
             $this->_esLogin = true;
         }
 
@@ -366,8 +363,8 @@ class formulario {
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlLogin.tpl');
 
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
+        $plantilla->asignarEtiqueta('idFormulario', $this->_id);
+        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
         $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
         $plantilla->asignarEtiqueta('contenidoFormulario', $this->unirElementosFormulario($this->_formulario));
         $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
@@ -389,7 +386,8 @@ class formulario {
         $this->_plantillaHTML = new plantilla($opciones);
         $this->_plantillaHTML->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlFluid.tpl');
 
-        $this->_plantillaHTML->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
+        $this->_plantillaHTML->asignarEtiqueta('idFormulario', $this->_id);
+        $this->_plantillaHTML->asignarEtiqueta('nombreFormulario', $this->_nombre);
         $this->_plantillaHTML->asignarEtiqueta('metodoFormulario', $this->_metodo);
         $this->_plantillaHTML->asignarEtiqueta('contenidoFormulario', $this->unirElementosFormulario($this->_formulario));
         $this->_plantillaHTML->asignarEtiqueta('archivoJavascript', $this->_js);
@@ -414,7 +412,8 @@ class formulario {
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlListarFluid.tpl');
 
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
+        $plantilla->asignarEtiqueta('idFormulario', $this->_id);
+        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
         $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
         $plantilla->asignarEtiqueta('contenidoFormulario', implode(FIN_DE_LINEA, $this->_filtros));
         $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
@@ -439,7 +438,7 @@ class formulario {
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorLoginSOAP.tpl');
 
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
+        $plantilla->asignarEtiqueta('idFormulario', $this->_id);
         $plantilla->asignarEtiqueta('nombreVista', $this->_nombreArchivoLogin . '.html');
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('accionServidor', $this->_funcionControlador);
@@ -464,11 +463,12 @@ class formulario {
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorSOAP.tpl');
 
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
+        $plantilla->asignarEtiqueta('idFormulario', $this->_id);
         $plantilla->asignarEtiqueta('nombreVista', $this->_nombreArchivoVista . '.html');
         $plantilla->asignarEtiqueta('nombreVistaListar', $this->_nombreArchivoListar . '.html');
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('accionServidor', $this->_funcionControlador);
+        $plantilla->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
 
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoControlador);
 
@@ -494,7 +494,7 @@ class formulario {
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsLoginjQuery.js');
         }
 
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
+        $plantilla->asignarEtiqueta('idFormulario', $this->_id);
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('accionAgregar', ZC_ACCION_AGREGAR);
         $plantilla->asignarEtiqueta('accionModificar', ZC_ACCION_MODIFICAR);
@@ -865,7 +865,7 @@ class formulario {
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
             $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
             // Se define en la creacion de la plantilla del controlador
-            $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombreFormulario);
+            $plantilla->asignarEtiqueta('idFormulario', $this->_id);
             $plantilla->asignarEtiqueta('accionCliente', '//Accion Cliente va aqui');
             $plantilla->asignarEtiqueta('mensajeError', ZC_MENSAJE_ERROR_BUSCAR);
 
@@ -993,7 +993,7 @@ class formulario {
      * Devuelve la informacion necesaria para crear los menus de navegacion
      */
     public function infoNavegacion() {
-        return array('formulario' => $this->_nombreFormulario, 'controlador' => $this->_nombreArchivoControlador);
+        return array('formulario' => $this->_nombre, 'controlador' => $this->_nombreArchivoControlador);
     }
 
 }

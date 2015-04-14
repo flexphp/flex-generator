@@ -22,12 +22,18 @@
             <que_dato_recibira>texto</que_dato_recibira>
             <es_obligatorio>si</es_obligatorio>
         </apellidos>
-        <email>
+        <correo>
             <que_quieres>Caja</que_quieres>
-            <como_se_llama>Email</como_se_llama>
+            <como_se_llama>Correo</como_se_llama>
             <que_dato_recibira>correo</que_dato_recibira>
             <es_obligatorio>si</es_obligatorio>
-        </email>
+        </correo>
+        <clave>
+            <que_quieres>Caja</que_quieres>
+            <como_se_llama>Clave</como_se_llama>
+            <que_dato_recibira>clave</que_dato_recibira>
+            <es_obligatorio>si</es_obligatorio>
+        </clave>
         <tipo_usuario>
             <que_quieres>Listado</que_quieres>
             <como_se_llama>Tipo usuario</como_se_llama>
@@ -40,7 +46,7 @@
             <como_se_llama>Estado</como_se_llama>
             <que_dato_recibira>numero</que_dato_recibira>
             <es_obligatorio>si</es_obligatorio>
-            <posibles_valores>Estados::nombre</posibles_valores>
+            <posibles_valores>Estados usuario::nombre</posibles_valores>
         </estado>
         <ultimo_ingreso>
             <que_quieres>Caja</que_quieres>

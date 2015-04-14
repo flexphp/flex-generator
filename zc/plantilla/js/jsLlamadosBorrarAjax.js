@@ -3,9 +3,9 @@
              */
             if(nombreAccion === '{_nombreAccion_}') {
                 // Valida que exista id de busca
-                var id = ZCAccionCondicion('{_nombreFormulario_}');
+                var id = ZCAccionCondicion('{_idFormulario_}');
                 if(id == ''){
-                    $('#error-{_nombreFormulario_}').text('Error durante la accion');
+                    $('#error-{_idFormulario_}').text('Error durante la accion');
                     $('.alert-danger').show();
                 }else{
                     $.ajax({
@@ -13,21 +13,21 @@
                         type: 'POST',
                         dataType: 'JSON',
                         // Envia los campos y el id del registro a actualizar
-                        data: $('#{_nombreFormulario_}').serialize()+'&id='+id+'&accion='+nombreAccion,
+                        data: $('#{_idFormulario_}').serialize()+'&id='+id+'&accion='+nombreAccion,
                         beforeSend: function(){
                             // Inactivar el boton, solo permite un envio a la vez
                             $('#'+nombreAccion).addClass('disabled').prop('disabled', true);
                             // Oculta ventana con mensajes
                             $('.alert').hide();
                             // Limpia resultados anteriores
-                            $('#listado-{_nombreFormulario_}').html('');
+                            $('#listado-{_idFormulario_}').html('');
                             // Mostrar cargando
                             $('#'+nombreAccion+' span').addClass('glyphicon-refresh glyphicon-refresh-animate');
                         },
                         success: function(rpta){
                             if(rpta.error !== undefined && '' !== rpta.error){
                                 // Muestra mensaje de error
-                                $('#error-{_nombreFormulario_}').text(rpta.error);
+                                $('#error-{_idFormulario_}').text(rpta.error);
                                 $('.alert-danger').show();
                             }else{
                                 // Carga el listado cmostrando el registro insertado
@@ -41,7 +41,7 @@
                             $('#'+nombreAccion+' span').addClass('glyphicon-refresh glyphicon-refresh-animate');
                         },
                         error: function(rpta){
-                            $('#error-{_nombreFormulario_}').text('Error en el servicio');
+                            $('#error-{_idFormulario_}').text('Error en el servicio');
                             $('.alert-danger').show();
                         }
                     });

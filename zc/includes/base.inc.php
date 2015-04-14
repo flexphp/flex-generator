@@ -22,7 +22,7 @@ error_reporting(E_ALL);
 try {
 
     /**
-     * Tablas de configuracion, para usuarios, tipos de usuario y estados de usuario
+     * Tablas de configuracion, para usuarios, tipos de usuario, estados de usuario y login
      */
     $usuariosxml = new plantilla();
     $usuariosxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlUsuarios.tpl');
@@ -41,6 +41,13 @@ try {
     $tipos_usuarioxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
     $tipos_usuarioxml->asignarEtiqueta('tipoMotor', ZC_MOTOR_MYSQL);
     $tipos_usuarioxml->crearPlantilla('xml', 'xml', 'tipos_usuario');
+
+    $loginxml = new plantilla();
+    $loginxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlLogin.tpl');
+    $loginxml->asignarEtiqueta('paginaLogin', ZC_LOGIN_PAGINA);
+    $loginxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
+    $loginxml->asignarEtiqueta('tipoMotor', ZC_MOTOR_MYSQL);
+    $loginxml->crearPlantilla('xml', 'xml', 'login');
     
     /**
      * Pagina y bienvenida de la aplicacion
@@ -50,6 +57,7 @@ try {
     $iniciophp->asignarEtiqueta('nombreFormulario', 'Bienvenida');
     $iniciophp->asignarEtiqueta('nombreVista', 'vista_inicio.html');
     $iniciophp->asignarEtiqueta('nombreControlador', 'inicio');
+    $iniciophp->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
     $iniciophp->crearPlantilla('../www/application/controllers', 'php', 'inicio');
 
     $iniciohtml = new plantilla();

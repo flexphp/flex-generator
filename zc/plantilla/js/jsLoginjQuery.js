@@ -10,14 +10,14 @@ $(document).ready(function () {
     $('.alert').hide();
     // Accion del boton limpiar
     $(':input[type=reset]').click(function(e){
-        ZCAccionReiniciarFormulario(e, '{_nombreFormulario_}');
+        ZCAccionReiniciarFormulario(e, '{_idFormulario_}');
     });
 
     // Habilita la validacion del formulario
-    $('#{_nombreFormulario_} .zc-accion').click(function () {
+    $('#{_idFormulario_} .zc-accion').click(function () {
         $('.parsley-errors-list').show();
         var nombreAccion = ($(this).attr('zc-accion-tipo'));
-        if($('#{_nombreFormulario_}').parsley().validate()){
+        if($('#{_idFormulario_}').parsley().validate()){
             // Accion seleccionada por el usuario
             // Selecciona la accion dependiendo el boton seleccionado
             {_llamadosAjax_}

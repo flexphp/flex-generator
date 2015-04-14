@@ -3,5 +3,5 @@
              */
             if(nombreAccion === '{_nombreAccion_}') {
                 var miURL = $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}/1';
-                ZCAccionPaginar(miURL, '{_nombreFormulario_}');
+                ZCAccionPaginar(miURL, '{_idFormulario_}');
             }

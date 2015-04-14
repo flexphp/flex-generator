@@ -11,7 +11,7 @@ class {_nombreControlador_} extends CI_Controller {
      * @var array
      */
     private $_data = array(
-        'formulario' => '{_nombreFormulario_}',
+        'formulario' => '{_idFormulario_}',
         'modelo' => '{_nombreModelo_}',
         'vista' => '{_nombreVistaListar_}',
         'controlador' => '{_nombreControlador_}',
@@ -26,7 +26,7 @@ class {_nombreControlador_} extends CI_Controller {
         $this->load->model($this->_data['modelo']);
         $this->load->library(array('session', 'pagination'));
         // Establece el menu de navegacion
-        $this->_data['navegacion'] = $this->load->view('navegacion.html', null, true);
+        $this->_data['navegacion'] = $this->load->view('{_paginaNavegacion_}.html', null, true);
     }
 
     /**

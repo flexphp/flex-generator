@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Login</title>
+        <title>{_nombreFormulario_}</title>
         <!-- CSS Bootstrap -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/bootstrap.min.css">
         <!-- CSS Parsley -->
@@ -43,7 +43,7 @@
                 <div class="alert alert-danger" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
-                    <span id="error-{_nombreFormulario_}"></span>
+                    <span id="error-{_idFormulario_}"></span>
                 </div>
             </div>
             <div class="col-sm-6 col-md-4 col-md-offset-4">
@@ -52,8 +52,9 @@
                         <div class="tab-pane active">
                             <div class="text-center">
                                 <img src="<?php echo base_url(); ?>publico/img/login.jpg" style="width: 70%; height: 70%" alt="Bienvenido"/>
+                                <h1>{_nombreFormulario_}</h1>
                             </div>
-                            <form id="{_nombreFormulario_}" name="{_nombreFormulario_}" method="{_metodoFormulario_}" class="form-signin">
+                            <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}" class="form-signin">
                                 {_contenidoFormulario_}
                             </form>
                         </div>
