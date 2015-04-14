@@ -37,9 +37,20 @@ class {_nombreControlador_} extends CI_Controller {
     }
 
     /**
+     * Validar lo solicitud sea valida
+     */
+    public function validarSesion() {
+        if ($this->session->userdata('zc_logueado') !== true) {
+            // No esta logueado
+            redirect('zlogin');
+        } 
+    } 
+    
+    /**
      * Formulario de busqueda para la tabla {_nombreControlador_}
      */
     public function listar() {
+        $this->validarSesion();
         $this->_data['vista'] = '{_nombreVistaListar_}';
         $this->_data['busquedaPredefinida'] = (is_numeric($this->uri->segment(3)))? $this->_data['controlador'] . '|?|id|?|=|?|'.$this->uri->segment(3) : '';
         $this->_data['paginaActual'] = ($this->uri->segment(3) === 'paginar')? $this->uri->segment(4) : '';
@@ -57,6 +68,7 @@ class {_nombreControlador_} extends CI_Controller {
      * Editar un registro ya existente en la tabla {_nombreControlador_}
      */
     public function editar() {
+        $this->validarSesion();
         $this->_data['vista'] = '{_nombreVista_}';
         $this->_data['id'] = ($this->uri->segment(3) === FALSE) ? '' : $this->uri->segment(3);
         $this->load->view($this->_data['vista'], $this->_data);

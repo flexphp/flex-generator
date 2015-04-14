@@ -34,12 +34,18 @@ class {_nombreControlador_} extends CI_Controller {
         $this->_data['vista'] = '{_nombreVista_}';
         $this->load->view($this->_data['vista']);
     }
+    
+    /**
+     * Se define ya que es necesario, por la misma contruccion del sistema
+     * por favor no eliminar
+     */
+    public function validarSesion() {
+    }
 
     /**
      * Crea la sesion para el usuario
      */
     public function loguear($rpta = array()) {
-    
         if (count($rpta) == 0) {
             // No es un llamado valido (no es desde un Ajax, sino por la url)
             redirect('404');
