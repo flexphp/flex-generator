@@ -22,6 +22,17 @@ error_reporting(E_ALL);
 try {
 
     /**
+     * Imagenes e Iconos homologados
+     */
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/fonts', '../www/publico/fonts');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/img', '../www/publico/img');
+
+    /**
+     * Eliminar archivos xml generados antes
+     */
+    eliminar(RUTA_GENERADOR_CODIGO . '/xml', false);
+
+    /**
      * Tablas de configuracion, para usuarios, tipos de usuario, estados de usuario y login
      */
     $usuariosxml = new plantilla();
@@ -135,12 +146,6 @@ try {
     $indexcss = new plantilla();
     $indexcss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/index.html');
     $indexcss->crearPlantilla('../www/publico/css', 'html');
-
-    /**
-     * Imagenes e Iconos homologados
-     */
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/fonts', '../www/publico/fonts');
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/img', '../www/publico/img');
 
     /**
      * Index de la carpeta publico

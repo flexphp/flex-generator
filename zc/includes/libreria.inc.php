@@ -331,9 +331,10 @@ function copiar($origen, $destino) {
 
 /**
  * Elimina carpeta o archivos
- * @param type $origen
+ * @param string $origen Ruta de la carpeta a eliminar
+ * @param string $eliminarOrigen Elimina la carpeta de la ruta en true, de lo contrario solo elimina el contenido
  */
-function eliminar($origen) {
+function eliminar($origen, $eliminarOrigen = true) {
     // Enlace simbolicos
     if (is_link($origen)) {
         return unlink(readlink($origen));
@@ -351,10 +352,10 @@ function eliminar($origen) {
             if ($entry == '.' || $entry == '..') {
                 continue;
             }
-            elminar("$origen/$entry");
+            eliminar("$origen/$entry");
         }
         $dir->close();
-        return rmdir($origen);
+        return ($eliminarOrigen) ? rmdir($origen) : true;
     }
     return false;
 }
@@ -405,7 +406,8 @@ function aliasCampos($id, $etiqueta, $tabla = '') {
         // Solo lo agrega si la tabla es diferente de vacio
         $tabla .= '.';
     }
-    return FIN_DE_LINEA . insertarEspacios(8) . "'{$id}' => '{$tabla}{$id} \'{$etiqueta}\'',";
+    // Se incluye la tabla en el id, esto para evitar sobreescibir campos con el mismo nombre
+    return FIN_DE_LINEA . insertarEspacios(8) . "'{$tabla}{$id}' => '{$tabla}{$id} \'{$etiqueta}\'',";
 }
 
 /**
