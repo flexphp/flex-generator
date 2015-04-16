@@ -526,3 +526,17 @@ function ZCPrecargarSeleccion(lista, rpta){
 function ZCMenuActual(controlador){
     $('#zc-menu-' + controlador).addClass('active');
 }
+
+
+/**
+ * Activa la accion 
+ */
+function ZCActivarBotonPrincipal(formulario){
+    $('body').delegate(':text, :password', 'keypress', function(e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            // Ejecuta boton primario no oculto
+            $('#'+formulario+' .btn-primary').not('.hidden').trigger('click');
+        }
+    });
+}

@@ -183,7 +183,7 @@ class elemento {
      */
     protected function obligatorio($obligatorio, $error) {
         if (isset($obligatorio) && $obligatorio == ZC_OBLIGATORIO_SI) {
-            $this->_signoObligatorio = '*';
+            $this->_signoObligatorio = '<font style="color: red;">*</font>';
             $this->_obligatorio = "data-parsley-required='true'";
             $this->_msjObligatorio = (isset($error)) ? "data-parsley-required-message='{$error}'" : "data-parsley-required-message='" . ZC_OBLIGATORIO_ERROR_PREDETERMINADO . "'";
         }

@@ -24,6 +24,16 @@ class {_nombreControlador_} extends CI_Controller {
     }
 
     /**
+     * Validar lo solicitud sea valida
+     */
+    public function validarSesion() {
+        if ($this->session->userdata('zc_logueado') !== true) {
+            // No esta logueado
+            redirect('zlogin');
+        } 
+    } 
+
+    /**
      * Accion por defecto
      */
     public function index() {
@@ -34,6 +44,9 @@ class {_nombreControlador_} extends CI_Controller {
      * Pagina de bienvenida
      */
     public function inicio() {
+        // Valida que el usuario este logueado
+        $this->validarSesion();
+
         $this->load->view($this->_data['vista'], $this->_data);
     }
 

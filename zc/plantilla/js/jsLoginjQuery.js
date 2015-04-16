@@ -14,7 +14,8 @@ $(document).ready(function () {
     });
 
     // Habilita la validacion del formulario
-    $('#{_idFormulario_} .zc-accion').click(function () {
+    $('#{_idFormulario_} .zc-accion').click(function (e) {
+        e.preventDefault();
         $('.parsley-errors-list').show();
         var nombreAccion = ($(this).attr('zc-accion-tipo'));
         if($('#{_idFormulario_}').parsley().validate()){
@@ -23,4 +24,6 @@ $(document).ready(function () {
             {_llamadosAjax_}
         }
     });
+    // Activar botones de acciones
+    ZCActivarBotonPrincipal('{_idFormulario_}');
 });

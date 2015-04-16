@@ -71,7 +71,8 @@ $(document).ready(function () {
     });
 
     // Habilita la validacion del formulario
-    $('#{_idFormulario_} .zc-accion').click(function () {
+    $('#{_idFormulario_} .zc-accion').click(function (e) {
+        e.preventDefault();
         $('.parsley-errors-list').show();
         var nombreAccion = ($(this).attr('zc-accion-tipo'));
         if($('#{_idFormulario_}').parsley().validate()){
@@ -87,6 +88,8 @@ $(document).ready(function () {
     ZCAccionBotones('{_idFormulario_}', '{_accionAgregar_}', '{_accionModificar_}', '{_accionBorrar_}', '{_accionPrecargar_}');
     // Menu actual
     ZCMenuActual('{_nombreControlador_}');
+    // Activar botones de acciones
+    ZCActivarBotonPrincipal('{_idFormulario_}');
 });
 
 function ZCAccionPrecargar(formulario, id, precargar, modificar){

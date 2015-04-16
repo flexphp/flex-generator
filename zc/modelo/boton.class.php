@@ -66,7 +66,7 @@ class boton extends elemento {
             case ZC_ACCION_AGREGAR:
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
-                $this->_presentacion = 'btn-success zc-accion';
+                $this->_presentacion = 'btn-primary zc-accion';
                 // Para la funcionalidad de ocultar botones
                 $this->_id = ZC_ACCION_AGREGAR;
                 $this->_prop[ZC_ID] = ZC_ACCION_AGREGAR;
@@ -81,7 +81,7 @@ class boton extends elemento {
             case ZC_ACCION_MODIFICAR:
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>';
-                $this->_presentacion = 'btn-success zc-accion';
+                $this->_presentacion = 'btn-primary zc-accion';
                 // Para la funcionalidad de ocultar botones
                 $this->_id = ZC_ACCION_MODIFICAR;
                 $this->_prop[ZC_ID] = ZC_ACCION_MODIFICAR;
