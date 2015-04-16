@@ -273,9 +273,9 @@ class formulario {
             mostrarErrorZC(__FILE__, __FUNCTION__, 'Y las caracteristicas del formulario!?');
         } else {
             $this->_id = strtolower($caracteristicas[ZC_ID]);
-            $this->_nombre = ($caracteristicas[ZC_FORMULARIO_NOMBRE] != '') ? ucwords($caracteristicas[ZC_FORMULARIO_NOMBRE]) : ($this->_id);
+            $this->_nombre = ($caracteristicas[ZC_FORMULARIO_NOMBRE] != '') ? ucwords($caracteristicas[ZC_FORMULARIO_NOMBRE]) : ucwords($this->_id);
             $this->_tipoWS = (isset($caracteristicas[ZC_TIPO_WS])) ? strtolower($caracteristicas[ZC_TIPO_WS]) : strtolower($this->_tipoWS);
-            $this->_metodo = (isset($caracteristicas[ZC_FORMULARIO_METODO])) ? strtoupper($caracteristicas[ZC_FORMULARIO_METODO]) : $this->_metodo;
+            $this->_metodo = (isset($caracteristicas[ZC_FORMULARIO_METODO])) ? strtoupper($caracteristicas[ZC_FORMULARIO_METODO]) : strtoupper($this->_metodo);
             $this->inicio();
         }
     }

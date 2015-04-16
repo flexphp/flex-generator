@@ -375,6 +375,8 @@ function ZCAccionBotones(formulario, agregar, modificar, borrar, precargar){
         // Consulta la informacion en la base de datos
         ZCAccionPrecargar(formulario, id, precargar, modificar);
     }
+    // Activar botones de acciones
+    ZCActivarBotonPrincipal(formulario);
 }
 
 /**
@@ -525,6 +527,7 @@ function ZCPrecargarSeleccion(lista, rpta){
  */
 function ZCMenuActual(controlador){
     $('#zc-menu-' + controlador).addClass('active');
+    $('#zc-menu-' + controlador).css('font-weight', 'bold');
 }
 
 

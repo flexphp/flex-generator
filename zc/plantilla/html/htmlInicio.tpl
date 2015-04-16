@@ -29,11 +29,11 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
                 </br>
-                Por favor, <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> elige una opci&oacute;n.
+                Por favor elige una opci&oacute;n <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>.
                 <p class="text-center">
                     <img src="<?php echo base_url(); ?>publico/img/inicio.jpg" style="width: 90%; height: 90%" alt="Bienvenido"/>
                     </br>
-                    Bienvenido, esta aplicacion fue generada automaticamente con <i>ZeroCodigo</i>, gracias por usarlo.
+                    Bienvenido, esta aplicaci&oacute;n fue generada automaticamente con <i>ZeroCodigo</i>, gracias por usarlo.
                 </p>
             </div>
             <div class="col-md-1"></div>

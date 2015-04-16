@@ -21,6 +21,9 @@
                             // Muestra mensaje de error
                             $('#error-{_idFormulario_}').text(rpta.error); 
                             $('.alert-danger').show();
+                            // Limpia el valor de las contrasenas
+                            $(':password').val('');
+                            $(':input').filter(':visible:first').focus();
                         }else{
                             window.location.assign($('#URLProyecto').val()+'index.php/inicio');
                         }

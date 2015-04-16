@@ -31,15 +31,27 @@ class {_nombreControlador_} extends CI_Controller {
      * Accion por defecto
      */
     public function index() {
+        $this->enSesion();
         $this->_data['vista'] = '{_nombreVista_}';
         $this->load->view($this->_data['vista']);
     }
     
     /**
+     * Si el usuario ya tiene session iniciada lo envia a la pagina de inicio
+     */
+    public function enSesion() {
+        if ($this->session->userdata('zc_logueado') === true) {
+            // No esta logueado
+            redirect('inicio');
+        } 
+    }
+
+    /**
      * Se define ya que es necesario, por la misma contruccion del sistema
      * por favor no eliminar
      */
     public function validarSesion() {
+        $this->enSesion();
     }
 
     /**

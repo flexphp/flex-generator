@@ -299,10 +299,10 @@ class procesarXML {
      */
     private function crearModeloDB() {
         if (count($this->bd) > 0) {
-            if ('' == $this->bd[0][0][ZC_MOTOR]) {
+            if (!defined('ZC_MOTOR_MYSQL')) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, 'Falta el motor a utilizar!');
             }
-            $motor = $this->bd[0][0][ZC_MOTOR];
+            $motor = ZC_MOTOR_MYSQL;
             $bd = new bd($motor);
             $bd->db();
             foreach ($this->bd as $nro => $tabla) {

@@ -88,8 +88,6 @@ $(document).ready(function () {
     ZCAccionBotones('{_idFormulario_}', '{_accionAgregar_}', '{_accionModificar_}', '{_accionBorrar_}', '{_accionPrecargar_}');
     // Menu actual
     ZCMenuActual('{_nombreControlador_}');
-    // Activar botones de acciones
-    ZCActivarBotonPrincipal('{_idFormulario_}');
 });
 
 function ZCAccionPrecargar(formulario, id, precargar, modificar){
