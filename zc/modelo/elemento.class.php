@@ -64,6 +64,12 @@ class elemento {
     protected $_msjLongitud = '';
 
     /**
+     * Opcion de autofo sobre el elemento
+     * @var string
+     */
+    protected $_autofoco = '';
+
+    /**
      * HTML creado durante el proceso
      * @var string
      */
@@ -123,6 +129,8 @@ class elemento {
             // Si no se define longitud maxima se asume una por defecto
             $this->_prop[ZC_LONGITUD_MAXIMA] = (isset($this->_prop[ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[ZC_LONGITUD_MAXIMA])) ? $this->_prop[ZC_LONGITUD_MAXIMA] : ZC_LONGITUD_PREDETERMINADA;
             $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] = (isset($this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) && '' != $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) ? $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] : null;
+            // Campo donde se posiciona el puntero al cargar el formulario
+            $this->_prop[ZC_AUTOFOCO] = (isset($this->_prop[ZC_AUTOFOCO]) ) ? $this->_prop[ZC_AUTOFOCO] : null;
             // La longitud de los campos predefinidos
             // Fecha en formato YYYY-MM-DD = 10
             $this->_prop[ZC_LONGITUD_MAXIMA] = ($this->_prop[ZC_DATO] == ZC_DATO_FECHA) ? 10 : $this->_prop[ZC_LONGITUD_MAXIMA];
@@ -179,6 +187,7 @@ class elemento {
             $this->_obligatorio = "data-parsley-required='true'";
             $this->_msjObligatorio = (isset($error)) ? "data-parsley-required-message='{$error}'" : "data-parsley-required-message='" . ZC_OBLIGATORIO_ERROR_PREDETERMINADO . "'";
         }
+        return $this;
     }
 
     /**
@@ -213,6 +222,16 @@ class elemento {
                 $this->_msjLongitud = '';
                 break;
         }
+        return $this;
+    }
+
+    /**
+     * Construye el html para el autofoco del campo
+     * @param string $msj Mensaje de ayuda a mostrar, por defecto es la etiqueta del campo
+     */
+    protected function autofoco($autofoco = false) {
+        $this->_autofoco = ($autofoco) ? ' autofocus=\'autofocus\'' : '';
+        return $this;
     }
 
     /**

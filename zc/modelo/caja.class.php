@@ -38,6 +38,7 @@ class caja extends elemento {
         $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
         $this->longitud($this->_prop[ZC_LONGITUD_MINIMA], $this->_prop[ZC_LONGITUD_MAXIMA], $this->_prop[ZC_LONGITUD_MINIMA_ERROR], $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]);
         $this->tipo($this->_prop[ZC_DATO], $this->_prop[ZC_DATO_ERROR]);
+        $this->autofoco($this->_prop[ZC_AUTOFOCO]);
     }
 
     /**
@@ -124,6 +125,8 @@ class caja extends elemento {
                 // Validacion longitudes
                 " {$this->_longitud}" .
                 " {$this->_msjLongitud}" .
+                // Autofoco
+                " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
                 "/>
@@ -151,6 +154,8 @@ class caja extends elemento {
                 // Validacion longitudes
                 " {$this->_longitud}" .
                 " {$this->_msjLongitud}" .
+                // Autofoco
+                " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
                 "/>
@@ -181,6 +186,8 @@ class caja extends elemento {
                 // Validacion longitudes
                 " {$this->_longitud}" .
                 " {$this->_msjLongitud}" .
+                // Autofoco
+                " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
                 "/>
@@ -207,6 +214,8 @@ class caja extends elemento {
                 // Validacion longitudes
                 " {$this->_longitud}" .
                 " {$this->_msjLongitud}" .
+                // Autofoco
+                " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
                 "/>" .

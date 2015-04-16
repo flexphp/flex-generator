@@ -24,6 +24,7 @@ class checkbox extends elemento {
         parent::__construct($caracteristicas);
         $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
         $this->opciones($this->_prop[ZC_ELEMENTO_OPCIONES]);
+        $this->autofoco($this->_prop[ZC_AUTOFOCO]);
     }
 
     /**
@@ -81,6 +82,8 @@ class checkbox extends elemento {
                 // Solo agrega la configuracion a un elemento dentro del grupo
                 $config = true;
                 $this->_opciones .= "" .
+                        // Autofoco
+                        " {$this->_autofoco}" .
                         " {$this->_obligatorio}" .
                         " {$this->_msjObligatorio}";
             }

@@ -27,6 +27,8 @@ define("ZC_NOMBRE_ACCION_CLIENTE", "nombre_accion");
 // Tipos de WS
 define("ZC_WS_SOAP", "soap");
 define("ZC_WS_REST", "rest");
+// Define el campo principal
+define("ZC_AUTOFOCO", "campo_principal");
 // Tipos de elementos aceptados
 define("ZC_ELEMENTO", "que_quieres");
 define("ZC_ELEMENTO_CAJA_TEXTO", "caja");

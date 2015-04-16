@@ -1,15 +1,14 @@
 // Configuracion de la carga del archivo
+var extensionesPermitidas = '.xls,.xlsx,.ods';
 Dropzone.options.cargarArchivos = {
-    dictDefaultMessage: '<h2>Arrastra los archivos aqui</h2> (o haz click)',
+    dictDefaultMessage: '<h2>Arrastra los archivos</h2> (o haz click)',
     addRemoveLinks: true,
     dictRemoveFile: 'Eliminar',
-    acceptedFiles: '.xls,.xlsx,.ods',
-    dictInvalidFileType: 'Solo se aceptan hojas de calculo (.xls,.xlsx,.ods)',
+    acceptedFiles: extensionesPermitidas,
+    dictInvalidFileType: 'Solo se aceptan archivos (' + extensionesPermitidas + ')',
     dictCancelUpload: 'Cancelar',
     dictCancelUploadConfirmation: 'Esta seguro?',
     success: function(file, response){
-        // Trasforma la respuesta json en un objeto
-        console.log(response);
         var rpta = JSON.parse(response);
         if (rpta.error !== undefined && rpta.error !== '') {
             alert(rpta.error);
@@ -18,4 +17,3 @@ Dropzone.options.cargarArchivos = {
         }
     }
 }
-

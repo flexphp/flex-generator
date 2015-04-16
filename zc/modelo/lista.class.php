@@ -45,6 +45,7 @@ class lista extends elemento {
         $this->_controlador = $controlador;
         $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
         $this->opciones($this->_prop[ZC_ELEMENTO_OPCIONES]);
+        $this->autofoco($this->_prop[ZC_AUTOFOCO]);
     }
 
     /**
@@ -64,6 +65,8 @@ class lista extends elemento {
                 // Validacion obligatorio
                 " {$this->_obligatorio}" .
                 " {$this->_msjObligatorio}" .
+                // Autofoco
+                " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
                 "/>

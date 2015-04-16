@@ -258,6 +258,11 @@ class formulario {
     private $_nombreFuncionValidacion = '';
 
     /**
+     * Flag para saber si ya se determino el campo inicial dentro del formulario
+     */
+    private $_autofocoAplicado = false;
+
+    /**
      * Funcion de inicializacion del formulario, reqeuire que seha suministradas
      * unos datos basicos relacionados al formulario
      * @param array $caracteristicas
@@ -560,6 +565,7 @@ class formulario {
                 $caracteristicas[ZC_LONGITUD_MAXIMA] = -1;
                 $caracteristicas[ZC_LONGITUD_MINIMA] = -1;
             }
+            $caracteristicas[ZC_AUTOFOCO] = $this->aplicarAutofoco();
             switch ($caracteristicas[ZC_ELEMENTO]) {
                 case ZC_ELEMENTO_CAJA_TEXTO:
                     $this->agregarElementoCajaFormulario($caracteristicas);
@@ -996,4 +1002,15 @@ class formulario {
         return array('formulario' => $this->_nombre, 'controlador' => $this->_nombreArchivoControlador);
     }
 
+    /**
+     * Determina si se debe agregar la opcion de autofoc al elemento
+     * Solo mse aplica al primer elemento dentro del formulario
+     */
+    private function aplicarAutofoco() {
+        if (!$this->_autofocoAplicado) {
+            $this->_autofocoAplicado = true;
+            return true;
+        }
+        return false;
+    }
 }
