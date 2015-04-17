@@ -190,8 +190,26 @@ class caja extends elemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
-                "/>
+                "/>" . 
+                " <span class='help-block'></span>";
+        if ($this->_prop[ZC_LONGITUD_MAXIMA] !== -1) {
+            // No es de la pantalla login
+            $this->_html .= "<input" .
+                    " type='password'" .
+                    " class='form-control'" .
+                    " placeholder='Confirmación {$this->_etiqueta}'" .
+                    // Identificador
+                    " id='x{$this->_id}'" .
+                    " name='x{$this->_id}'" .
+                    // Debe ser igual al otro campo
+                    " data-parsley-validate-if-empty" .
+                    " data-parsley-equalto='#{$this->_id}'" .
+                    " data-parsley-equalto-message='La confirmación no coincide'" .
+                    // Ayuda visual
+                    $this->ayuda('Confirmación ' . $this->_etiqueta) .
+                    "/>
                     <span class='help-block'></span>";
+        }
         return $this;
     }
 

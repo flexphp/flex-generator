@@ -227,7 +227,7 @@ class elemento {
 
     /**
      * Construye el html para el autofoco del campo
-     * @param string $msj Mensaje de ayuda a mostrar, por defecto es la etiqueta del campo
+     * @param string $autofoco Bandera para saber si se debe crear o no: true | false
      */
     protected function autofoco($autofoco = false) {
         $this->_autofoco = ($autofoco) ? ' autofocus=\'autofocus\'' : '';
@@ -239,10 +239,9 @@ class elemento {
      * @param string $msj Mensaje de ayuda a mostrar, por defecto es la etiqueta del campo
      */
     protected function ayuda($msj = '') {
-        $msj = ($msj == '') ? $this->_etiqueta : $msj;
         $html = " data-placement='{$this->_posicionTitle}'" .
                 " data-toggle='tooltip'" .
-                " data-original-title='{$msj}'";
+                " data-original-title='" . (($msj == '') ? $this->_etiqueta : $msj) . "'";
         return $html;
     }
 

@@ -403,9 +403,9 @@ function ZCAccionPrecargarResultado(formulario, rpta){
         case $('#'+campo).attr('type') === 'password':
             // No se deja obligatorios, si la persona lo diligencia se cambia en el servidor, delo contrario se
             // deja el valor que estaba
-            $('#'+formulario + ' #'+campo).removeAttr('data-parsley-required');
-            // Las contrasenas las deja vacias
-            $('#'+formulario + ' #'+campo).val('');
+            $('#'+formulario + ' #'+campo + ', #x'+campo).removeAttr('data-parsley-required');
+            // Las contrasenas las dejan vacias
+            $('#'+formulario + ' #'+campo + ', #x'+campo).val('');
             break;
         default:
             $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);
