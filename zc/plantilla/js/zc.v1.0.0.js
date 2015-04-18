@@ -297,12 +297,17 @@ function ZCListarResultados(formulario, controlador, rpta){
                     // Agrega el id del registro para el caso de modificacion
                     id = rpta.infoEncabezado[i][key];
                 } else {
-                    columnas += '<td>' + rpta.infoEncabezado[i][key] +  '</td>';
+                    // Valida que exista el valor, de lo contrario lo deja vacio
+                    columnas += '<td>' + ((!rpta.infoEncabezado[i][key]) ? '' : rpta.infoEncabezado[i][key]) +  '</td>';
                 }
             }
         }
         if(i === 0){
             tabla += '<tr>'+encabezados+'</tr>';
+        }
+        if(!rpta.infoEncabezado[i]){
+            // No existen mas registros, termina el ciclo
+            break;
         }
         // Agrega accion de enlace a la edicion del registro
         tabla += '<tr style="cursor: pointer;" onclick="ZCAccionModificarRegistro(event, \''+controlador+'\', this);" zc-id-registro="'+id+'">'+columnas+'</tr>';

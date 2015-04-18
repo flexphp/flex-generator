@@ -38,7 +38,7 @@
                 <!-- Fin Barra de progreso -->
 
                 <!-- Errores devueltos por el servidor -->
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-danger hidden" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
                     <span id="error-{_idFormulario_}"></span>
