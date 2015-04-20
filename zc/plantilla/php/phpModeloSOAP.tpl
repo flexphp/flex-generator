@@ -21,46 +21,13 @@ class {_nombreModelo_} extends CI_Model {
     function __construct() {
         parent::__construct();
         $this->load->helper('url');
-        $this->load->library('nusoap');
+        $this->load->library(array('nusoap', 'zc'));
         $this->load->database();
     }
 
     {_llamadosModelo_}
     {_funcionesModelo_}
     {_validacionModelo_}
-
-    /**
-     * Procesa la respuesta devuelta por el servidor WS, verifica si existen errores
-     * @param array Respuesta del servidor de WS
-     * @return array
-     */ 
-    function procesarRespuestaWS($ws) {
-        if (isset($ws['errorWS'])) {
-            /**
-            * Error durante consulta webservice
-            */
-            $rpta['error'] = $ws['errorWS'];
-        } else {
-            $rptaWS = $ws['rptaWS'];
-            if ($rptaWS) {
-                if ($rptaWS[0]['error'] != '') {
-                    $rpta['error'] = json_decode($rptaWS[0]['error'], true);
-                } elseif ($rptaWS[0]['cta'] > 0) {
-                    // Informacion devuelta
-                    $rpta['infoEncabezado'] = json_decode($rptaWS[0]['infoEncabezado'], true);
-                    // Cantidad de registros devueltos
-                    $rpta['cta'] = $rptaWS[0]['cta'];
-                    // Devuelve respuesta procesada
-                    return $rpta;
-                } else {
-                    $rpta['error'] = 'No se encontraron datos.';
-                }
-            } else {
-                $rpta['error'] = 'Error en servidor WS';
-            }
-        }
-        return $rpta;
-    }
     
     /**
      * Valida los filtros aplicados en el formulario de busqieda

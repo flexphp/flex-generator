@@ -40,7 +40,7 @@
         <div class="container-fluid">
             <!-- Errores devueltos por el servidor -->
             <div class="text-center">
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-danger" style="display: none;" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
                     <span id="error-{_idFormulario_}"></span>

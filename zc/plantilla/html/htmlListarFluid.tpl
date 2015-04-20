@@ -50,7 +50,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10 text-center">
                 <br/>
-                <div class="alert alert-danger hidden" role="alert">
+                <div class="alert alert-danger" style="display: none;" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
                     <span id="error-{_idFormulario_}"></span>

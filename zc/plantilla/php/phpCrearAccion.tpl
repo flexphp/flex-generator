@@ -56,5 +56,5 @@
         $tiempo_fin = microtime(true);
         $return['timeWS'] = ($tiempo_fin - $tiempo_inicio);
         $return['metodoWS'] = $metodoALlamar;
-        return $this->procesarRespuestaWS($return);
+        return $this->zc->procesarRespuestaWS($return);
     }
