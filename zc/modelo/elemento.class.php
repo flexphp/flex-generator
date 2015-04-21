@@ -132,8 +132,12 @@ class elemento {
             // Campo donde se posiciona el puntero al cargar el formulario
             $this->_prop[ZC_AUTOFOCO] = (isset($this->_prop[ZC_AUTOFOCO]) ) ? $this->_prop[ZC_AUTOFOCO] : null;
             // La longitud de los campos predefinidos
-            // Fecha en formato YYYY-MM-DD = 10
+            // Fecha en formato     YYYY-MM-DD          = 10
+            // FechaHora en formato YYYY-MM-DD HH:mm:ss = 19
+            // Fecha hora           HH:mm:ss            = 8
             $this->_prop[ZC_LONGITUD_MAXIMA] = ($this->_prop[ZC_DATO] == ZC_DATO_FECHA) ? 10 : $this->_prop[ZC_LONGITUD_MAXIMA];
+            $this->_prop[ZC_LONGITUD_MAXIMA] = ($this->_prop[ZC_DATO] == ZC_DATO_FECHA_HORA) ? 19 : $this->_prop[ZC_LONGITUD_MAXIMA];
+            $this->_prop[ZC_LONGITUD_MAXIMA] = ($this->_prop[ZC_DATO] == ZC_DATO_HORA) ? 8 : $this->_prop[ZC_LONGITUD_MAXIMA];
             // Valida las longitudes
             if (isset($this->_prop[ZC_LONGITUD_MINIMA]) && isset($this->_prop[ZC_LONGITUD_MAXIMA]) && $this->_prop[ZC_LONGITUD_MINIMA] > $this->_prop[ZC_LONGITUD_MAXIMA]) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
@@ -166,6 +170,8 @@ class elemento {
             case ($dato == ZC_DATO_NUMERICO):
             case ($dato == ZC_DATO_CONTRASENA):
             case ($dato == ZC_DATO_FECHA):
+            case ($dato == ZC_DATO_FECHA_HORA):
+            case ($dato == ZC_DATO_HORA):
                 $xsd = 'string';
                 break;
             default:
