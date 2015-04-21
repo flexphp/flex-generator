@@ -44,6 +44,8 @@ define("ZC_DATO", "que_dato_recibira");
 define("ZC_DATO_NUMERICO", "numero");
 define("ZC_DATO_EMAIL", "correo");
 define("ZC_DATO_FECHA", "fecha");
+define("ZC_DATO_FECHA_HORA", "fecha hora");
+define("ZC_DATO_HORA", "hora");
 define("ZC_DATO_CONTRASENA", "clave");
 define("ZC_DATO_URL", "url");
 define("ZC_DATO_TEXTO", "texto");

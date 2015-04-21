@@ -13,11 +13,6 @@ $(document).ready(function () {
         ZCAccionReiniciarFormulario(e, '{_idFormulario_}');
     });
 
-    // Inicializa los cajas de texto para las fechas
-    $('.zc-caja-fecha').datetimepicker({
-        format: 'YYYY-MM-DD'
-    });
-
     // Inicializa los filtros de busqueda
     $('.zc-filtros-busqueda').change(function(e){
         ZCCamposDeBusqueda(e, '{_idFormulario_}', this);
@@ -88,6 +83,31 @@ $(document).ready(function () {
     ZCAccionBotones('{_idFormulario_}', '{_accionAgregar_}', '{_accionModificar_}', '{_accionBorrar_}', '{_accionPrecargar_}');
     // Menu actual
     ZCMenuActual('{_nombreControlador_}');
+    
+    // Inicializa los cajas de texto para las fechas
+    $('.zc-caja-fecha').datetimepicker({
+        format: 'YYYY-MM-DD',
+//        showClose: true,
+        toolbarPlacement: 'top',
+        showClear: true
+    });
+    
+    // Inicializa los cajas de texto para las fecha hora
+    $('.zc-caja-fecha-hora').datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+//        showClose: true,
+        toolbarPlacement: 'top',
+        sideBySide: true,
+        showClear: true
+    });
+    
+    // Inicializa los cajas de texto para las hora
+    $('.zc-caja-hora').datetimepicker({
+        format: 'HH:mm:ss',
+//        showClose: true,
+        toolbarPlacement: 'top',
+        showClear: true
+    });
 });
 
 function ZCAccionPrecargar(formulario, id, precargar, modificar){

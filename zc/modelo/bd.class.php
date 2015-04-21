@@ -74,6 +74,8 @@ class bd extends conexion {
             ZC_DATO_NUMERICO => 'INT',
             'ZC_DATO_NUMERICO_PEQUENO' => 'TINYINT',
             ZC_DATO_FECHA => 'DATE',
+            ZC_DATO_FECHA_HORA => 'DATETIME',
+            ZC_DATO_HORA => 'TIME',
             ZC_DATO_URL => 'VARCHAR',
             ZC_DATO_EMAIL => 'VARCHAR',
             ZC_OBLIGATORIO_NO => 'NULL',
@@ -104,6 +106,8 @@ class bd extends conexion {
             case ZC_DATO_EMAIL:
             case ZC_DATO_URL:
             case ZC_DATO_FECHA:
+            case ZC_DATO_FECHA_HORA:
+            case ZC_DATO_HORA:
             case ZC_DATO_CONTRASENA:
             case 'ZC_DATO_NUMERICO_PEQUENO':
                 $tipo = $this->_equivalencias[$this->_motor][$dato];
@@ -136,6 +140,8 @@ class bd extends conexion {
                 $longitud = "(40)";
                 break;
             case ZC_DATO_FECHA:
+            case ZC_DATO_FECHA_HORA:
+            case ZC_DATO_HORA:
             case ZC_DATO_NUMERICO:
             default:
                 break;

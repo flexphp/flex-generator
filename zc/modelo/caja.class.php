@@ -27,6 +27,18 @@ class caja extends elemento {
      * @var string
      */
     private $_formatoFecha = 'YYYY-MM-DD';
+    
+    /**
+     * Formato de fecha hora utilizado
+     * @var string
+     */
+    private $_formatoFechaHora = 'YYYY-MM-DD HH:mm:ss';
+    
+    /**
+     * Formato de hora utilizado
+     * @var string
+     */
+    private $_formatoHora = 'HH:mm:ss';
 
     /**
      * Contrucutor de la caja de texto, define las caracteristicas que tendra el elemento
@@ -53,6 +65,12 @@ class caja extends elemento {
         switch ($this->_prop[ZC_DATO]) {
             case ZC_DATO_FECHA:
                 $this->crearFecha();
+                break;
+            case ZC_DATO_FECHA_HORA:
+                $this->crearFechaHora();
+                break;
+            case ZC_DATO_HORA:
+                $this->crearHora();
                 break;
             case ZC_DATO_CONTRASENA:
                 $this->crearContrasena();
@@ -84,10 +102,19 @@ class caja extends elemento {
                 $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
                 break;
             case ZC_DATO_FECHA:
-                // $formatoRegExp = "^((\d{2}(([02468][048])|([13579][26]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|([1-2][0-9])))))|(\d{2}(([02468][1235679])|([13579][01345789]))[\-\/\s]?((((0?[13578])|(1[02]))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\-\/\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\-\/\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))(\s(((0?[1-9])|(1[0-2]))\:([0-5][0-9])((\s)|(\:([0-5][0-9])\s))([AM|PM|am|pm]{2,2})))?$";
                 $formatoRegExp = "^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$";
                 $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
                 $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFecha}): {$this->_msjTipo}'";
+                break;
+            case ZC_DATO_FECHA_HORA:
+                $formatoRegExp = "(\d{2}|\d{4})(?:\-)?([0]{1}\d{1}|[1]{1}[0-2]{1})(?:\-)?([0-2]{1}\d{1}|[3]{1}[0-1]{1})(?:\s)?([0-1]{1}\d{1}|[2]{1}[0-3]{1})(?::)?([0-5]{1}\d{1})(?::)?([0-5]{1}\d{1})";
+                $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
+                $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFechaHora}): {$this->_msjTipo}'";
+                break;
+            case ZC_DATO_HORA:
+                $formatoRegExp = "^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$";
+                $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
+                $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoHora}): {$this->_msjTipo}'";
                 break;
             case ZC_DATO_EMAIL:
                 $this->_tipo = "data-parsley-type='email'";
@@ -135,13 +162,13 @@ class caja extends elemento {
     }
 
     /**
-     * Crea un elmento con el formato de fecha, aplica datapicker
+     * Crea un elemento con el formato de fecha, aplica datapicker
      */
     private function crearFecha() {
         $this->_html = "<div class='input-group date zc-caja-fecha' id='fecha-{$this->_id}'>
                         <input" .
                 " type='text'" .
-                " class='form-control zc-caja-fecha'" .
+                " class='form-control'" .
                 // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
@@ -161,6 +188,72 @@ class caja extends elemento {
                 "/>
                         <span class='input-group-addon'>
                             <span class='glyphicon glyphicon-calendar'></span>
+                        </span>
+                    </div>
+                    <span class='help-block'></span>";
+        return $this;
+    }
+    
+    /**
+     * Crea un elemento con el formato de fecha hora, aplica datapicker
+     */
+    private function crearFechaHora() {
+        $this->_html = "<div class='input-group date zc-caja-fecha-hora' id='fecha-hora-{$this->_id}'>
+                        <input" .
+                " type='text'" .
+                " class='form-control'" .
+                // Identificador
+                " id='{$this->_id}'" .
+                " name='{$this->_id}'" .
+                // Validacion obligatorio
+                " {$this->_obligatorio}" .
+                " {$this->_msjObligatorio}" .
+                // Validacion tipo de dato
+                " {$this->_tipo}" .
+                " {$this->_msjTipo}" .
+                // Validacion longitudes
+                " {$this->_longitud}" .
+                " {$this->_msjLongitud}" .
+                // Autofoco
+                " {$this->_autofoco}" .
+                // Ayuda visual
+                $this->ayuda() .
+                "/>
+                        <span class='input-group-addon'>
+                            <span class='glyphicon glyphicon-calendar'></span>
+                        </span>
+                    </div>
+                    <span class='help-block'></span>";
+        return $this;
+    }
+    
+    /**
+     * Crea un elemento con el formato de hora, aplica datapicker
+     */
+    private function crearHora() {
+        $this->_html = "<div class='input-group date zc-caja-hora' id='hora-{$this->_id}'>
+                        <input" .
+                " type='text'" .
+                " class='form-control'" .
+                // Identificador
+                " id='{$this->_id}'" .
+                " name='{$this->_id}'" .
+                // Validacion obligatorio
+                " {$this->_obligatorio}" .
+                " {$this->_msjObligatorio}" .
+                // Validacion tipo de dato
+                " {$this->_tipo}" .
+                " {$this->_msjTipo}" .
+                // Validacion longitudes
+                " {$this->_longitud}" .
+                " {$this->_msjLongitud}" .
+                // Autofoco
+                " {$this->_autofoco}" .
+                // Ayuda visual
+                $this->ayuda() .
+                "/>
+                        <span class='input-group-addon'>
+                            <span class=\"glyphicon glyphicon-time\"></span>
                         </span>
                     </div>
                     <span class='help-block'></span>";

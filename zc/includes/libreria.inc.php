@@ -205,7 +205,8 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
 }
 
 /**
- * Crea validacion para los datos obligatorios, segun sea definido por el usuario en la configuracion
+ * Crea validacion para los datos obligatorios, segun sea definido por el usuario en la configuracion, 
+ * por defecto ningun campo es obligatorio
  * @param string $id Identificador del elemento a validar
  * @param string $etiqueta Nombre mostrado al cliente en el formulario
  * @param string $obligatorio Bandera para identificar si el sato es obligatorio
@@ -217,14 +218,14 @@ function validarArgumentoObligatorio($id, $etiqueta, $obligatorio = 'no', $msj =
     $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_OBLIGATORIO_ERROR_PREDETERMINADO;
 
     switch (trim(strtolower($obligatorio))) {
-        case ZC_OBLIGATORIO_NO:
-            break;
         case ZC_OBLIGATORIO_SI:
-        default :
             $validacion .= FIN_DE_LINEA;
             $validacion .= insertarEspacios(8) . "if (isset(\$dato['{$id}']) && \$validarDato && '' == \$dato['{$id}']){" . FIN_DE_LINEA;
             $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '{$msjValidacion}';" . FIN_DE_LINEA;
             $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
+            break;
+        case ZC_OBLIGATORIO_NO:
+        default :
             break;
     }
 
