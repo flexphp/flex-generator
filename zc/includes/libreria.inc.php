@@ -188,6 +188,12 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
         case ZC_DATO_FECHA:
             $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && !preg_match('/^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$/', \$dato['{$id}']) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
+        case ZC_DATO_FECHA_HORA:
+            $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && !preg_match('/(\d{2}|\d{4})(?:\-)?([0]{1}\d{1}|[1]{1}[0-2]{1})(?:\-)?([0-2]{1}\d{1}|[3]{1}[0-1]{1})(?:\s)?([0-1]{1}\d{1}|[2]{1}[0-3]{1})(?::)?([0-5]{1}\d{1})(?::)?([0-5]{1}\d{1})/', \$dato['{$id}']) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            break;
+        case ZC_DATO_HORA:
+            $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && !preg_match('/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/', \$dato['{$id}']) && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
+            break;
         case ZC_DATO_URL:
             $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && \$validarDato && filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) === false && '' != \$dato['{$id}']){" . FIN_DE_LINEA;
             break;
