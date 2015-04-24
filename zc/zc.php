@@ -39,6 +39,8 @@ try {
     $hojas = new SpreadsheetReader($rutaArchivo);
     // Extraer hojas
     $cadaHoja = $hojas->Sheets();
+    // Para las hoja de calculo excel 97 el numero de la fila no inicia en la posicion 0, se deja en la posicion - 1
+    $restar = ('xls' == strtolower($tipoArchivo)) ? 1 : 0;
     // Recorre cada una de las hojas
     foreach ($cadaHoja as $numeroHoja => $nombreHoja) {
         if ($nombreHoja == 'ZeroCode') {
@@ -56,46 +58,39 @@ try {
         $xml .= insertarEspacios(4) . '<' . $idHoja . '>' . FIN_DE_LINEA;
 
         // Cada fila
-        foreach ($hojas as $numeroFila => $fila) {
-            
-            if ('xls' == strtolower($tipoArchivo)) {
-                // Para llas hoja de calculo excel 97 el numero de la fila no inicia en la posicion 0, se deja en la posicion - 1
-                $numeroFila -= 1; 
+        foreach ($hojas as $numeroFila => $columnas) {
+            $numeroFila -= $restar; 
+            if ($numeroFila > 2 && $columnas[0] !== '') {
+                $idCampo = reemplazarCaracteresEspeciales(strtolower($columnas[1]));
+                $xml .= insertarEspacios(8) . '<' . $idCampo . '>' . FIN_DE_LINEA;
             }
-            
-            if (is_array($fila)) {
-                if ($numeroFila > 2 && $fila[0] !== '') {
-                    $idCampo = reemplazarCaracteresEspeciales(strtolower($fila[1]));
-                    $xml .= insertarEspacios(8) . '<' . $idCampo . '>' . FIN_DE_LINEA;
+            foreach ($columnas as $numeroColumna => $contenido) {
+                if ($contenido == '') {
+                    // No tiene contenido
+                    continue;
                 }
-                foreach ($fila as $numeroColumna => $contenido) {
-                    if ($contenido == '') {
-                        // No tiene contenido
-                        continue;
-                    }
-                    $info = $numeroFila . ':' . $numeroColumna . ' = ' . $contenido . "\n";
-                    // Almacena la infomracion del archivo en el log
-                    miLog($info);
-                    switch ($numeroFila) {
-                        case 0:
-                        // Descripciones caracteristicas formulario
-                        case 2:
-                            // Descripciones caracteristicas campos del formulario
-                            $tag[$numeroColumna] = reemplazarCaracteresEspeciales(strtolower($contenido));
-                            break;
-                        case 1:
-                            // Detalles del encabezado
-                            $xml .= insertarEspacios(8) . '<' . $tag[$numeroColumna] . '>' . $contenido . '</' . $tag[$numeroColumna] . '>' . FIN_DE_LINEA;
-                            break;
-                        default:
-                            // Detalles de los campos
-                            $xml .= insertarEspacios(12) . '<' . $tag[$numeroColumna] . '>' . $contenido . '</' . $tag[$numeroColumna] . '>' . FIN_DE_LINEA;
-                            break;
-                    }
+                $info = $numeroFila . ':' . $numeroColumna . ' = ' . $contenido . "\n";
+                // Almacena la informacion del archivo en el log
+                miLog($info);
+                switch ($numeroFila) {
+                    case 0:
+                    // Descripciones caracteristicas formulario
+                    case 2:
+                        // Descripciones caracteristicas campos del formulario
+                        $tag[$numeroColumna] = reemplazarCaracteresEspeciales(strtolower($contenido));
+                        break;
+                    case 1:
+                        // Detalles del encabezado
+                        $xml .= insertarEspacios(8) . '<' . $tag[$numeroColumna] . '>' . $contenido . '</' . $tag[$numeroColumna] . '>' . FIN_DE_LINEA;
+                        break;
+                    default:
+                        // Detalles de los campos
+                        $xml .= insertarEspacios(12) . '<' . $tag[$numeroColumna] . '>' . $contenido . '</' . $tag[$numeroColumna] . '>' . FIN_DE_LINEA;
+                        break;
                 }
-                if ($numeroFila > 2 && $fila[0] !== '') {
-                    $xml .= insertarEspacios(8) . '</' . $idCampo . '>' . FIN_DE_LINEA;
-                }
+            }
+            if ($numeroFila > 2 && $columnas[0] !== '') {
+                $xml .= insertarEspacios(8) . '</' . $idCampo . '>' . FIN_DE_LINEA;
             }
         }
         $xml .= insertarEspacios(4) . '</' . $idHoja . '>' . FIN_DE_LINEA;
