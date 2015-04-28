@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
+
 class zc {
     public function __construct() {
 
@@ -43,9 +47,33 @@ class zc {
      * devolviendo un error de Acceso restringido (401)
      */
     function validarSesion() {
-        header('WWW-Authenticate: Basic realm="Autenticacion"');
+        $rpta = array();
+        if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW'])) {
+            $this->autenticacion();
+        } else {
+            $rpta = array (
+                'accion' => 'login',
+                'login' => $_SERVER['PHP_AUTH_USER'],
+                'clave' => $_SERVER['PHP_AUTH_PW']
+            );
+        }
+        return $rpta;
+    }
+    
+    /**
+     * Muestra el mensaje de dialogo para capturar nombre de usuario y contrasena
+     */
+    function autenticacion() {
+        header('WWW-Authenticate: Basic realm="Por favor inicie sesion"');
         header('HTTP/1.1 401 Unauthorized');
         die('401: Acceso restringido');
+    }
+    
+    /**
+     * Valida si el llamado se hace desde un webservice
+     */
+    function esWebService() {
+        return (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'nusoap') !== false) ? true : false;
     }
 
     public function __destruct() {

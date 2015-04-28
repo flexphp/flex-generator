@@ -525,9 +525,25 @@ class formulario {
         /**
          * Plantilla para el modelo (model)
          */
+        $comandoEspecial = '';
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorServidorSOAP.tpl');
+        
+        if (!$this->_esLogin) {
+            $comandoEspecial .= insertarEspacios(0) . '// Valida que el usuario este autenticado para poder usar los ws' . FIN_DE_LINEA;
+            $comandoEspecial .= insertarEspacios(8) . '// solo si es un llamado remoto' . FIN_DE_LINEA;
+            $comandoEspecial .= insertarEspacios(8) . '$this->load->library(\'zc\');' . FIN_DE_LINEA;
+            $comandoEspecial .= insertarEspacios(8) . 'if (!$this->zc->esWebService()) {' . FIN_DE_LINEA;
+            $comandoEspecial .= insertarEspacios(12) . '$datos = $this->zc->validarSesion();' . FIN_DE_LINEA;
+            $comandoEspecial .= insertarEspacios(12) . '$this->load->model(\'modelo_' . ZC_LOGIN_PAGINA . '\', \'zlogin\');' . FIN_DE_LINEA;
+            $comandoEspecial .= insertarEspacios(12) . '$rpta = $this->zlogin->loginCliente($datos);' . FIN_DE_LINEA;
+            $comandoEspecial .= insertarEspacios(12) . 'if (isset($rpta[\'error\'])) {' . FIN_DE_LINEA;
+            $comandoEspecial .= insertarEspacios(16) . 'die($rpta[\'error\']);' . FIN_DE_LINEA;
+            $comandoEspecial .= insertarEspacios(12) . '}' . FIN_DE_LINEA;
+            $comandoEspecial .= insertarEspacios(8) . '}' . FIN_DE_LINEA;
+        }
 
+        $plantilla->asignarEtiqueta('comandoEspecial', $comandoEspecial);
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoServidor);
         $plantilla->asignarEtiqueta('accionesServidorWS', $this->_accionesServidorWS);
 
@@ -788,8 +804,9 @@ class formulario {
                 $this->_tablasRelacionadas .= tablasRelacionadas($caracteristicas[ZC_ID], $joinTablas['tabla'], $joinTablas['join']);
                 // Nombre de los campos usados
                 $this->_aliasCampos .= aliasCampos($joinTablas['campo'], $caracteristicas[ZC_ETIQUETA], $joinTablas['tabla']);
-            } elseif ($caracteristicas[ZC_DATO] !== ZC_DATO_CONTRASENA) {
-                // Las contrase;as se omiten en el listado del formuario de busqueda
+            } elseif ($caracteristicas[ZC_DATO] !== ZC_DATO_CONTRASENA || ($caracteristicas[ZC_DATO] === ZC_DATO_CONTRASENA && $this->_esLogin)) {
+                // Las contrasenas se omiten en el listado del formulario de busqueda, excepto para el caso de login
+                // La contrasena se almacena en los datos de session para autencicarse con los WS
                 $this->_aliasCampos .= aliasCampos($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $tabla);
             }
         }
@@ -894,8 +911,19 @@ class formulario {
             /**
              * Plantilla para la creacion de acciones en el cliente
              */
+            $comandoEspecial = '';
+            
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpCrearAccion.tpl');
+            
+            if (!$this->_esLogin) {
+                $comandoEspecial .= insertarEspacios(0) . '/**' . FIN_DE_LINEA;
+                $comandoEspecial .= insertarEspacios(9) . '* Define los datos de acceso al WS ' . FIN_DE_LINEA;
+                $comandoEspecial .= insertarEspacios(9) . '*/' . FIN_DE_LINEA;
+                $comandoEspecial .= insertarEspacios(8) . '$_CLI_WS->setCredentials($this->session->userdata(\'Login\'), $this->session->userdata(\'Clave\'), \'basic\');' . FIN_DE_LINEA;
+            }
+            
+            $plantilla->asignarEtiqueta('comandoEspecial', $comandoEspecial);
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
             $plantilla->asignarEtiqueta('servidorAccion', $this->_nombreArchivoServidor);
             $plantilla->asignarEtiqueta('asignacionCliente', $this->_inicializarCliente[$caracteristicas[ZC_ID]]);

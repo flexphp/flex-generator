@@ -29,11 +29,9 @@
         if ($error) {
             $return['errorWS'] = $error;
         }
-        /* Define los datos de acceso al WS */
-        // $_CLI_WS->setCredentials(autenticacionWS::$_usuario_ws_servidor_7, autenticacionWS::$_clave_ws_servidor_7);
-
+        {_comandoEspecial_}
         /**
-         * Llamdo a la funcion
+         * Llamado a la funcion {_nombreAccion_} en el servidor
          */
         $_rpta = $_CLI_WS->call(
             $metodoALlamar, // Funcion a llamar
@@ -42,7 +40,7 @@
             "uri:{$serverURL}{$serverScript}/$metodoALlamar"       // SOAPAction
         );
 
-        // Verificacion que los parametros estan ok, y si lo estan. mostrar rta.
+        // Verificacion que los parametros estan bien, y si lo estan devolver respuesta.
         if ($_CLI_WS->fault) {
             $return['errorWS'] = $_rpta['faultstring'];
         } else {

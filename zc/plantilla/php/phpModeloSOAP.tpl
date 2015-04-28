@@ -21,7 +21,7 @@ class {_nombreModelo_} extends CI_Model {
     function __construct() {
         parent::__construct();
         $this->load->helper('url');
-        $this->load->library(array('nusoap', 'zc'));
+        $this->load->library(array('nusoap', 'zc', 'session'));
         $this->load->database();
     }
 

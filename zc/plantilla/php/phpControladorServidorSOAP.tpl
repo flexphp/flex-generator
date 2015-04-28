@@ -21,6 +21,7 @@ class {_nombreControlador_} extends CI_Controller{
         $this->_SRV_WS = new soap_server();
         $this->_SRV_WS->configureWSDL('{_nombreControlador_}', $this->_miURL);
         $this->_SRV_WS->wsdl->schemaTargetNamespace = $this->_miURL;
+        {_comandoEspecial_}
      }
 
 {_accionesServidorWS_}
