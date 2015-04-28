@@ -9,15 +9,18 @@ class {_nombreControlador_} extends CI_Controller{
         parent::__construct();
 
         // Libreria para el manejode WS
+        $this->load->helper('url');
         $this->load->library('nusoap');
         /**
          * Clase para el manejo de Servidor WS
          */
-        $this->_miURL = '';
+        $this->_miURL = current_url();
+        $this->_miSOAPACTION = false;
+        $this->_miUSE = 'rpc';
+        $this->_miSTYLE = 'encoded';
         $this->_SRV_WS = new soap_server();
         $this->_SRV_WS->configureWSDL('{_nombreControlador_}', $this->_miURL);
         $this->_SRV_WS->wsdl->schemaTargetNamespace = $this->_miURL;
-        $this->_SRV_WS->wsdl->setDebugLevel(9);
      }
 
 {_accionesServidorWS_}

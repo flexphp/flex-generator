@@ -37,6 +37,16 @@ class zc {
         }
         return $rpta;
     }
+    
+    /**
+     * Permite validar que el usuario tenga una session activa, de lo contrario termina la ejecucion
+     * devolviendo un error de Acceso restringido (401)
+     */
+    function validarSesion() {
+        header('WWW-Authenticate: Basic realm="Autenticacion"');
+        header('HTTP/1.1 401 Unauthorized');
+        die('401: Acceso restringido');
+    }
 
     public function __destruct() {
 

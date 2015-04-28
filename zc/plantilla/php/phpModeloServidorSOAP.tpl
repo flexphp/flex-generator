@@ -64,7 +64,11 @@ function {_nombreAccion_}(){
             '{_nombreFuncion_}', // Nombre de la funcion
             ${_nombreAccion_}Parametros, // Parametros de entrada
             ${_nombreAccion_}Returns, // Parametros de salida
-            $this->_miURL
+            $this->_miURL,
+            $this->_miSOAPACTION,
+            $this->_miUSE,
+            $this->_miSTYLE,
+            'Servicio web creado para controlar la accion {_nombreAccion_} de {_nombreControlador_}.'
         );
 
         function {_nombreFuncion_}({_asignacionFuncion_}){
@@ -84,7 +88,7 @@ function {_nombreAccion_}(){
                 $Resultado[0]['cta'] = $cta;
             }
 
-            file_put_contents(getcwd() . '/application/logs/{_nombreControlador_}_' . date('Ymd') . '.log', __FUNCTION__ . "\n" . ' $data: ' . print_r(func_get_args(), 1) . "\n" . ' $Resultado: ' . print_r($Resultado, 1) . "\n", FILE_APPEND);
+            file_put_contents(getcwd() . '/application/logs/ws_{_nombreControlador_}_' . date('Ymd') . '.log', __FUNCTION__ . "\n" . ' $data: ' . print_r(func_get_args(), 1) . "\n" . ' $Resultado: ' . print_r($Resultado, 1) . "\n", FILE_APPEND);
             return new soapval('return', 'tns:{_nombreAccion_}ResptaArray', $Resultado);
         }
 
