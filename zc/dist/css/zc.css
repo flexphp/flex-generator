@@ -9,7 +9,8 @@ body{
     margin-top: 80px;
 }
 #contenido {
-    text-align: center;
+    width: 600px;
+    height: 300px;
     font-size: 12px;
 }
 #pie {
@@ -20,6 +21,10 @@ body{
 #marco {
     width: 600px;
     height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.centrado {
     margin-left: auto;
     margin-right: auto;
 }
