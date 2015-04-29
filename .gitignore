@@ -2,11 +2,13 @@
 ########################
 zc/log/*.log
 
-# Archivos cargados de prueba
+# Archivos cargados de prueba en los diferentes formatos posibles
 ########################
 zc/archivos/*.ods
 zc/archivos/*.xls
 zc/archivos/*.xlsx
+zc/archivos/*.txt
+zc/archivos/*.zcs
 
 # Archivos de configuracion conexion a base de datos
 ########################

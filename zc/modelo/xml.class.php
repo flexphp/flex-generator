@@ -81,7 +81,8 @@ class procesarXML {
     private $propiedad = array();
 
     function __construct() {
-
+        // Se inhabilita los errores para devolver una respuesta al usuario del tipo de JSON
+        error_reporting(0);
     }
 
     /**

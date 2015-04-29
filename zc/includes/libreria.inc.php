@@ -55,28 +55,6 @@ function miLog($log, $archivo = '') {
 }
 
 /**
- * Verifica que la sesion este activa
- * @return boolean
- */
-function sesionActiva() {
-    if (isset($_SESSION['ID_USUARIO_LOGUEADO']) && $_SESSION['ID_USUARIO_LOGUEADO'] > 0) {
-        return true;
-    }
-    return false;
-}
-
-/**
- * Elimina las variables de sesion
- * @return boolean
- */
-function sesionInactivar() {
-    foreach ($_SESSION as $key => $value) {
-        unset($_SESSION[$key]);
-    }
-    return true;
-}
-
-/**
  * Extra el nombre sin la extension de la ruta|nombre dado
  * @param string $nombreArchivo Ruta o nombre del archivo
  * @return string Unicamente nombre de archivo, sin extension
