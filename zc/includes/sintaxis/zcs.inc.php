@@ -56,9 +56,11 @@ class zcs {
         // Une las palabras que estan entre comillas simples
         $palabrasTemporales = $this->_todasPalabras;
         foreach ($palabrasTemporales as $numero => $palabra) {
+            // Inicia con comilla sencilla
             if (substr($palabra, 0, 1) == '\'') {
                 $this->_todasPalabras[$numero] = $palabra;
                 if (substr($palabra, -1) != '\'') {
+                    // Recorre hasta encontrar la comilla de cierre
                     $numeroTemporal = $numero;
                     while (true) {
                         ++$numeroTemporal;
@@ -135,13 +137,10 @@ class zcs {
                     // Agregar tipo de dato
                     $this->_xml .= insertarEspacios(12) . '<' . ZC_DATO . '>' . $palabra . '</' . ZC_DATO . '>' . FIN_DE_LINEA;
                     break;
-                case ZC_ELEMENTO_CAJA_TEXTO:
-                case ZC_ELEMENTO_BOTON:
+                case ZC_ELEMENTO_CAJA:
                 case ZC_ELEMENTO_RADIO:
                 case ZC_ELEMENTO_CHECKBOX:
                 case ZC_ELEMENTO_SELECT:
-                case ZC_ELEMENTO_RESTABLECER:
-                case ZC_ELEMENTO_CANCELAR:
                     // Agregar el tipo de elemento a crear
                     $this->_xml .= insertarEspacios(12) . '<' . ZC_ELEMENTO . '>' . $palabra . '</' . ZC_ELEMENTO . '>' . FIN_DE_LINEA;
                     break;

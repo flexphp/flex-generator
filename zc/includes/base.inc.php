@@ -14,13 +14,7 @@ require RUTA_GENERADOR_CODIGO . '/modelo/formulario.class.php';
 // Mostrar todos los errores generados
 error_reporting(E_ALL);
 
-/**
- * Description of crearFormulario
- *
- * @author root
- */
-try {
-
+function plantillas() {
     /**
      * Imagenes e Iconos homologados
      */
@@ -31,7 +25,6 @@ try {
      * Eliminar archivos xml generados en ejecuciones pasadas del generador de codigo
      */
     eliminar(RUTA_GENERADOR_CODIGO . '/xml', false);
-
 
     /**
      * Libreria donde estan metodos traversales (comunes) a toda la aplicacion
@@ -161,7 +154,9 @@ try {
     $index = new plantilla();
     $index->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/index.html');
     $index->crearPlantilla('../www/publico', 'html');
+}
 
+function config() {    
     /**
      * Configuracion para los archivos de paginacion
      */
@@ -177,17 +172,17 @@ try {
      */
     $db = new plantilla();
     $db->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/ci/database.tpl');
-    if (defined('ZC_CONEXION_SERVIDOR')) {
-        $db->asignarEtiqueta('servidor', ZC_CONEXION_SERVIDOR);
+    if (defined('ZC_BD_SERVIDOR')) {
+        $db->asignarEtiqueta('servidor', ZC_BD_SERVIDOR);
     }
-    if (defined('ZC_CONEXION_USUARIO')) {
-        $db->asignarEtiqueta('usuario', ZC_CONEXION_USUARIO);
+    if (defined('ZC_BD_USUARIO')) {
+        $db->asignarEtiqueta('usuario', ZC_BD_USUARIO);
     }
-    if (defined('ZC_CONEXION_CLAVE')) {
-        $db->asignarEtiqueta('clave', ZC_CONEXION_CLAVE);
+    if (defined('ZC_BD_CLAVE')) {
+        $db->asignarEtiqueta('clave', ZC_BD_CLAVE);
     }
-    if (defined('ZC_CONEXION_BD')) {
-        $db->asignarEtiqueta('bd', ZC_CONEXION_BD);
+    if (defined('ZC_BD_ESQUEMA')) {
+        $db->asignarEtiqueta('bd', ZC_BD_ESQUEMA);
     }
     if (defined('ZC_MOTOR_MYSQL')) {
         $db->asignarEtiqueta('motor', ZC_MOTOR_MYSQL);
@@ -199,6 +194,4 @@ try {
         $db->asignarEtiqueta('collation', ZC_MOTOR_DEFAULT_COLLATION);
     }
     $db->crearPlantilla('../www/application/config', 'php');
-} catch (Exception $e) {
-    die($e->getMessage());
 }

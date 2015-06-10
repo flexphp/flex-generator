@@ -116,17 +116,17 @@ class boton extends elemento {
                 $this->_id = ZC_ACCION_AJAX;
                 $this->_prop[ZC_ID] = ZC_ACCION_AJAX;
                 break;
-            case ZC_ELEMENTO_CANCELAR:
+            case ZC_ACCION_CANCELAR:
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
                 //Agrega clase especial, determina que accion tomar
                 $this->_presentacion = 'btn-warning zc-boton-cancelar';
                 break;
-            case ZC_ELEMENTO_RESTABLECER:
+            case ZC_ACCION_RESTABLECER:
                 $this->_tipo = 'reset';
                 $this->_presentacion = 'btn-default';
                 break;
-            case ZC_ELEMENTO_BOTON:
+            case ZC_ACCION_BOTON:
             default :
                 $this->_tipo = 'button';
                 $this->_presentacion = 'btn-default';

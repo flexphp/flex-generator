@@ -113,7 +113,7 @@ class elemento {
         /**
          * No todos los elementos necesitan todas las propedades, minimiza uso de memoria
          */
-        if (in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA_TEXTO, ZC_ELEMENTO_CHECKBOX, ZC_ELEMENTO_RADIO, ZC_ELEMENTO_SELECT))) {
+        if (in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA, ZC_ELEMENTO_CHECKBOX, ZC_ELEMENTO_RADIO, ZC_ELEMENTO_SELECT))) {
             // Tipo de dato
             $this->_prop[ZC_DATO] = (isset($this->_prop[ZC_DATO]) && '' != $this->_prop[ZC_DATO]) ? $this->_prop[ZC_DATO] : null;
             $this->_prop[ZC_DATO_ERROR] = (isset($this->_prop[ZC_DATO_ERROR]) && '' != $this->_prop[ZC_DATO_ERROR]) ? $this->_prop[ZC_DATO_ERROR] : null;
@@ -143,7 +143,7 @@ class elemento {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
             }
             // Valida la longitud del campo, es obligatoria para las cajas
-            if (isset($this->_prop[ZC_ELEMENTO]) && $this->_prop[ZC_ELEMENTO] == ZC_ELEMENTO_CAJA_TEXTO && !isset($this->_prop[ZC_LONGITUD_MAXIMA])) {
+            if (isset($this->_prop[ZC_ELEMENTO]) && $this->_prop[ZC_ELEMENTO] == ZC_ELEMENTO_CAJA && !isset($this->_prop[ZC_LONGITUD_MAXIMA])) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
             }
             $this->_prop[ZC_ELEMENTO_OPCIONES] = (isset($this->_prop[ZC_ELEMENTO_OPCIONES])) ? $this->_prop[ZC_ELEMENTO_OPCIONES] : null;

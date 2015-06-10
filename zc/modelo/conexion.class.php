@@ -26,9 +26,9 @@ class conexion {
         if (is_file($this->_archivoConexion)) {
             // Archivo con datos de conexion
             return miTrim(file($this->_archivoConexion));
-        } elseif (defined('ZC_CONEXION_SERVIDOR') && defined('ZC_CONEXION_USUARIO') && defined('ZC_CONEXION_CLAVE') && defined('ZC_CONEXION_BD')) {
+        } elseif (defined('ZC_BD_SERVIDOR') && defined('ZC_BD_USUARIO') && defined('ZC_BD_CLAVE') && defined('ZC_BD_ESQUEMA')) {
             // Datos de conexion
-            return array(ZC_CONEXION_SERVIDOR, ZC_CONEXION_USUARIO, ZC_CONEXION_CLAVE, ZC_CONEXION_BD);
+            return array(ZC_BD_SERVIDOR, ZC_BD_USUARIO, ZC_BD_CLAVE, ZC_BD_ESQUEMA);
         } else {
             mostrarErrorZC(__FILE__, __FUNCTION__, 'Datos de conexion sin definir');
         }

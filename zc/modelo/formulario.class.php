@@ -583,7 +583,7 @@ class formulario {
             }
             $caracteristicas[ZC_AUTOFOCO] = $this->aplicarAutofoco();
             switch ($caracteristicas[ZC_ELEMENTO]) {
-                case ZC_ELEMENTO_CAJA_TEXTO:
+                case ZC_ELEMENTO_CAJA:
                     $this->agregarElementoCajaFormulario($caracteristicas);
                     break;
                 case ZC_ELEMENTO_RADIO:
@@ -595,9 +595,9 @@ class formulario {
                 case ZC_ELEMENTO_SELECT:
                     $this->agregarElementoListaFormulario($caracteristicas);
                     break;
-                case ZC_ELEMENTO_RESTABLECER:
-                case ZC_ELEMENTO_CANCELAR:
-                case ZC_ELEMENTO_BOTON:
+                case ZC_ACCION_RESTABLECER:
+                case ZC_ACCION_CANCELAR:
+                case ZC_ACCION_BOTON:
                 case ZC_ACCION_AGREGAR:
                 case ZC_ACCION_BUSCAR:
                 case ZC_ACCION_MODIFICAR:
@@ -827,7 +827,7 @@ class formulario {
      */
     private function modeloControladorAcciones() {
         foreach ($this->_acciones as $nro => $caracteristicas) {
-            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR))) {
+            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ACCION_RESTABLECER, ZC_ACCION_CANCELAR))) {
                 // Los botones tipo restablecer, cancelar no crean acciones
                 continue;
             }
@@ -874,7 +874,7 @@ class formulario {
      */
     private function crearAccionesClienteFormulario() {
         foreach ($this->_acciones as $nro => $caracteristicas) {
-            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR)) || $this->_tipoPlantilla[$caracteristicas[ZC_ID]] == '') {
+            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ACCION_RESTABLECER, ZC_ACCION_CANCELAR)) || $this->_tipoPlantilla[$caracteristicas[ZC_ID]] == '') {
                 // Los botones tipo restablecer no crean accciones de envio, ya tiene la
                 // accion preferida
                 // No siempre tienen accion predefinida, para el caso de precarga no debe crear una accion
@@ -904,7 +904,7 @@ class formulario {
      */
     private function modeloWsSOAPClienteFormulario() {
         foreach ($this->_acciones as $nro => $caracteristicas) {
-            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR))) {
+            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ACCION_RESTABLECER, ZC_ACCION_CANCELAR))) {
                 // Los botones tipo restablecer, cancelar no crean acciones
                 continue;
             }
@@ -940,7 +940,7 @@ class formulario {
      */
     private function controladorWsSOAPServidorFormulario() {
         foreach ($this->_acciones as $nro => $caracteristicas) {
-            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR))) {
+            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ACCION_RESTABLECER, ZC_ACCION_CANCELAR))) {
                 // Los botones tipo restablecer, cancelar no crean acciones
                 continue;
             }
@@ -996,7 +996,7 @@ class formulario {
 
     private function propiedadesAccion() {
         foreach ($this->_acciones as $nro => $caracteristicas) {
-            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ELEMENTO_RESTABLECER, ZC_ELEMENTO_CANCELAR))) {
+            if (in_array($caracteristicas[ZC_ELEMENTO], array(ZC_ACCION_RESTABLECER, ZC_ACCION_CANCELAR))) {
                 // Los botones tipo restablecer, cancelar no crean acciones
                 continue;
             }

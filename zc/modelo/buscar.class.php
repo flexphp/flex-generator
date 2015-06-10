@@ -208,7 +208,7 @@ class buscar extends accion {
                 case ZC_ELEMENTO_CHECKBOX:
                     $filtro = new checkbox($this->_campos[$nro]);
                     break;
-                case ZC_ELEMENTO_CAJA_TEXTO:
+                case ZC_ELEMENTO_CAJA:
                 default :
                     $filtro = new caja($this->_campos[$nro]);
                     break;

@@ -46,7 +46,7 @@ require_once 'bd.class.php';
  *     </pruebas>
  * </crear>
  */
-class procesarXML {
+class xml {
 
     /**
      * Carpeta donde estan los archivos por defecto
@@ -121,9 +121,9 @@ class procesarXML {
             // Permite eleiminar el registro (desactivarlo)
             $this->elementos[] = array(ZC_ID => 'eliminar', ZC_ELEMENTO => ZC_ACCION_BORRAR, ZC_ETIQUETA => 'Eliminar');
             // Boton para cancelar la accion actual
-            $this->elementos[] = array(ZC_ID => 'cancelar', ZC_ELEMENTO => ZC_ELEMENTO_CANCELAR, ZC_ETIQUETA => 'Cancelar');
+            $this->elementos[] = array(ZC_ID => 'cancelar', ZC_ELEMENTO => ZC_ACCION_CANCELAR, ZC_ETIQUETA => 'Cancelar');
             // Boton para limpiar el contenido del dormulario
-            //$this->elementos[] = array(ZC_ID => 'limpiar', ZC_ELEMENTO => ZC_ELEMENTO_RESTABLECER, ZC_ETIQUETA => 'Limpiar');
+            //$this->elementos[] = array(ZC_ID => 'limpiar', ZC_ELEMENTO => ZC_ACCION_RESTABLECER, ZC_ETIQUETA => 'Limpiar');
         } else {
             // Crear pagina login
             // Boton para hacer login

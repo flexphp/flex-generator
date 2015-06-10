@@ -88,6 +88,7 @@ class bd extends conexion {
             'CONDICIONAL_TABLA' => 'IF NOT EXISTS',
             'LLAVE_PRIMARIA' => 'PRIMARY KEY',
             'CHARSET' => 'DEFAULT CHARACTER SET',
+            ZC_VALOR_PREDETERMINADO => 'DEFAULT',
         );
     }
 
@@ -158,6 +159,17 @@ class bd extends conexion {
     }
 
     /**
+     * Determina si el campo es obligatorio
+     * @param string $obligatorio Valor true|false o 1|0
+     */
+    protected function predeterminado($valor) {
+        if ($valor != '') {
+            return ' ' . $this->_equivalencias[$this->_motor][ZC_VALOR_PREDETERMINADO] . " '$valor'";
+        }
+        return '';
+    }
+
+    /**
      * Comentario del campo en la base de datos
      * @param string $etiqueta Descripcion del campo
      * @return string
@@ -177,8 +189,8 @@ class bd extends conexion {
      * @param string $coma Union de los campos
      * @return string
      */
-    private function campo($nombre, $dato, $longitud, $nulo, $comentario, $coma) {
-        return $coma . FIN_DE_LINEA . insertarEspacios(4) . $nombre . ' ' . $this->dato($dato) . $this->longitud($dato, $longitud) . ' ' . $this->nulo($nulo) . ' ' . $this->comentario($comentario);
+    private function campo($nombre, $dato, $longitud, $nulo, $default ,$comentario, $coma) {
+        return $coma . FIN_DE_LINEA . insertarEspacios(4) . $nombre . ' ' . $this->dato($dato) . $this->longitud($dato, $longitud) . ' ' . $this->nulo($nulo) . $this->predeterminado($default) . ' ' . $this->comentario($comentario);
     }
 
     /**
@@ -215,7 +227,7 @@ class bd extends conexion {
         $bd = '';
         switch ($this->_motor) {
             case ZC_MOTOR_MYSQL:
-                $bd = $this->_equivalencias[$this->_motor]['CREACION_BD'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_BD'] . ' ' . ZC_CONEXION_BD . ' ' . $this->charset();
+                $bd = $this->_equivalencias[$this->_motor]['CREACION_BD'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_BD'] . ' ' . ZC_BD_ESQUEMA . ' ' . $this->charset();
                 break;
             default:
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
@@ -283,7 +295,7 @@ class bd extends conexion {
                 default:
                     // Inserta coma si el siguiente campo existe
                     $coma = ('' != $campos) ? ',' : '';
-                    $campos .= $this->campo($caracteristicas[ZC_ID], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_ETIQUETA], $coma);
+                    $campos .= $this->campo($caracteristicas[ZC_ID], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_VALOR_PREDETERMINADO], $caracteristicas[ZC_ETIQUETA], $coma);
                     $this->join($caracteristicas[ZC_ID], $caracteristicas[ZC_ELEMENTO_OPCIONES]);
                     break;
             }
@@ -291,7 +303,7 @@ class bd extends conexion {
         $tabla .= $campos;
         // Agrega campo para determinar el estado del registro, los registros no se eliminan
         // de la base de datos, cambian de estado
-        $tabla .= $this->campo('zc_eliminado', 'ZC_DATO_NUMERICO_PEQUENO', 1, ZC_OBLIGATORIO_NO, 'Registro eliminado?', ',');
+        $tabla .= $this->campo('zc_eliminado', 'ZC_DATO_NUMERICO_PEQUENO', 1, ZC_OBLIGATORIO_NO, 0, 'Registro eliminado?', ',');
         $tabla .= $this->llave('id', ',');
         $tabla .= FIN_DE_LINEA . ') ' . $this->charset();
         $this->_sentencias[] = $tabla;
@@ -349,7 +361,7 @@ class bd extends conexion {
             if ($nro == 0) {
                 // Despues de crear base de datos (sentencia 0)
                 // Se conecta a la base de datos creada
-                $this->seleccionarBD(ZC_CONEXION_BD);
+                $this->seleccionarBD(ZC_BD_ESQUEMA);
             }
         }
         return $this;
