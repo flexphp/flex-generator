@@ -1,5 +1,6 @@
 <?php
 
+$time = microtime(true);
 // Archivo de configuracion
 require 'conf/conf.php';
 // Configuracion inicial, crea plantillas y demas recursos utilizados
@@ -127,5 +128,6 @@ try {
     $rpta['error'] = 'Error: ' . $e->getMessage();
 }
 
+$rpta['tiempo_ejecucion'] = microtime(true) - $time;
 
 echo json_encode($rpta);

@@ -37,18 +37,15 @@ class conexion {
 
     /**
      * Establece la conexion de base de datos segun los parametros dados
-     * @return boolean
+     * @return resource
      * @throws Exception
      */
     protected function conectar() {
-        $datos = $this->datosConexion();
-        if ($datos) {
-            error_reporting(0);
+        if (!isset($this->_link)) {
+            $datos = $this->datosConexion();
             $this->_link = mysqli_connect($datos[0], $datos[1], $datos[2]);
-            $this->existeConexion();
-            return $this->_link;
         }
-        return false;
+        return $this->_link;
     }
 
     /**
@@ -79,10 +76,7 @@ class conexion {
      * @throws Exception
      */
     private function desconectar() {
-        if (!isset($this->_link) || false === $this->_link) {
-            return true;
-        }
-        if (!mysqli_close($this->_link)) {
+        if (isset($this->_link) && !mysqli_close($this->_link)) {
             mostrarErrorZC(__FILE__, __FUNCTION__, 'No se pudo desconectar');
         }
         return true;
@@ -96,7 +90,7 @@ class conexion {
      */
     protected function query($sql) {
         if (strlen(trim($sql)) > 0) {
-            if ($this->existeConexion()) {
+            if ($this->conectar()) {
                 $ressql = mysqli_query($this->_link, $sql);
                 if (!$ressql) {
                     mostrarErrorZC(__FILE__, __FUNCTION__, 'Error en sentencia : ' . mysqli_error($this->_link));

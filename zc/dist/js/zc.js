@@ -13,7 +13,7 @@ Dropzone.options.cargarArchivos = {
         if (rpta.error !== undefined && rpta.error !== '') {
             alert(rpta.error);
         } else {
-            alert('Felicidades! Proyecto creado exitosamente');
+            alert('Felicidades! Proyecto creado exitosamente\nTiempo de ejecucion: ' + rpta.tiempo_ejecucion + ' seg');
         }
     }
 }

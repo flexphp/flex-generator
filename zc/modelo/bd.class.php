@@ -344,7 +344,6 @@ class bd extends conexion {
      * Ejejcuta las sentencias en las tablas
      */
     public function ejecutar() {
-        $this->conectar();
         foreach ($this->_sentencias as $nro => $sentencia) {
             $this->query($sentencia);
             if ($nro == 0) {
