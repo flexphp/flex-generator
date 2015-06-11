@@ -50,7 +50,7 @@ try {
             $restar = ('xls' == strtolower($tipoArchivo)) ? 1 : 0;
             // Recorre cada una de las hojas
             foreach ($cadaHoja as $numeroHoja => $nombreHoja) {
-                if ($nombreHoja == 'ZeroCode') {
+                if (strtolower($nombreHoja) == ZC_ZC_PAGINA) {
                     // La hoja donde estan las listas desplegables no la tiene encuenta
                     continue;
                 } elseif (strtolower($nombreHoja) == ZC_CONFIG_PAGINA) {
@@ -76,15 +76,17 @@ try {
                         }
                     }
                     // Configuracion del conexion a base de datos, 
-                    define('ZC_BD_SERVIDOR', $config[ZC_CONFIG_BD_SERVIDOR]);
-                    define('ZC_BD_PUERTO', $config[ZC_CONFIG_BD_PUERTO]);
-                    define('ZC_BD_ESQUEMA', $config[ZC_CONFIG_BD_ESQUEMA]);
-                    define('ZC_BD_USUARIO', $config[ZC_CONFIG_BD_USUARIO]);
-                    define('ZC_BD_CLAVE', $config[ZC_CONFIG_BD_CLAVE]);
+                    define('ZC_BD_MOTOR', (isset($config[ZC_CONFIG_BD_MOTOR]) ? strtolower($config[ZC_CONFIG_BD_MOTOR]) : null));
+                    define('ZC_BD_SERVIDOR', (isset($config[ZC_CONFIG_BD_SERVIDOR]) ? $config[ZC_CONFIG_BD_SERVIDOR] : null));
+                    define('ZC_BD_PUERTO', (isset($config[ZC_CONFIG_BD_PUERTO]) ? $config[ZC_CONFIG_BD_PUERTO] : null));
+                    define('ZC_BD_ESQUEMA', (isset($config[ZC_CONFIG_BD_ESQUEMA]) ? $config[ZC_CONFIG_BD_ESQUEMA] : null));
+                    define('ZC_BD_USUARIO', (isset($config[ZC_CONFIG_BD_USUARIO]) ? $config[ZC_CONFIG_BD_USUARIO] : null));
+                    define('ZC_BD_CLAVE', (isset($config[ZC_CONFIG_BD_CLAVE]) ? $config[ZC_CONFIG_BD_CLAVE] : null));
+                    define('ZC_BD_CHARSET', (isset($config[ZC_CONFIG_BD_CHARSET]) ? $config[ZC_CONFIG_BD_CHARSET] : 'latin1'));
+                    define('ZC_BD_COLLATION', (isset($config[ZC_CONFIG_BD_COLLATION]) ? $config[ZC_CONFIG_BD_COLLATION] : 'latin1_swedish_ci'));
                     // Numero de registros por pagina, para la funcion buscar
-                    $registrosPorPagina = (isset($config[ZC_CONFIG_REGISTROS_POR_PAGINA]) && $config[ZC_CONFIG_REGISTROS_POR_PAGINA] != '') ? $config[ZC_CONFIG_REGISTROS_POR_PAGINA] : ZC_REGISTROS_POR_PAGINA_PREDETERMINADO;
-                    define('ZC_REGISTROS_POR_PAGINA', $registrosPorPagina);
-                    // Crea los archivos y estrucutura de directorios base
+                    define('ZC_REGISTROS_POR_PAGINA', (isset($config[ZC_CONFIG_REGISTROS_POR_PAGINA]) ? $config[ZC_CONFIG_REGISTROS_POR_PAGINA] : 10));
+                    // Crea los archivos y estructura de directorios base
                     plantillas();
                     // Crea los archivos de configuracion segun los valores dados
                     config();

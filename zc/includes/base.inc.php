@@ -39,26 +39,26 @@ function plantillas() {
     $usuariosxml = new plantilla();
     $usuariosxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlUsuarios.tpl');
     $usuariosxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
-    $usuariosxml->asignarEtiqueta('tipoMotor', ZC_MOTOR_MYSQL);
+    $usuariosxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
     $usuariosxml->crearPlantilla('xml', 'xml', 'usuarios');
 
     $estados_usuarioxml = new plantilla();
     $estados_usuarioxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlEstadosUsuario.tpl');
     $estados_usuarioxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
-    $estados_usuarioxml->asignarEtiqueta('tipoMotor', ZC_MOTOR_MYSQL);
+    $estados_usuarioxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
     $estados_usuarioxml->crearPlantilla('xml', 'xml', 'estados_usuario');
 
     $tipos_usuarioxml = new plantilla();
     $tipos_usuarioxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlTiposUsuario.tpl');
     $tipos_usuarioxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
-    $tipos_usuarioxml->asignarEtiqueta('tipoMotor', ZC_MOTOR_MYSQL);
+    $tipos_usuarioxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
     $tipos_usuarioxml->crearPlantilla('xml', 'xml', 'tipos_usuario');
 
     $loginxml = new plantilla();
     $loginxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlLogin.tpl');
     $loginxml->asignarEtiqueta('paginaLogin', ZC_LOGIN_PAGINA);
     $loginxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
-    $loginxml->asignarEtiqueta('tipoMotor', ZC_MOTOR_MYSQL);
+    $loginxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
     $loginxml->crearPlantilla('xml', 'xml', 'login');
     
     /**
@@ -172,6 +172,9 @@ function config() {
      */
     $db = new plantilla();
     $db->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/ci/database.tpl');
+    if (defined('ZC_BD_MOTOR')) {
+        $db->asignarEtiqueta('motor', ZC_BD_MOTOR);
+    }
     if (defined('ZC_BD_SERVIDOR')) {
         $db->asignarEtiqueta('servidor', ZC_BD_SERVIDOR);
     }
@@ -184,14 +187,11 @@ function config() {
     if (defined('ZC_BD_ESQUEMA')) {
         $db->asignarEtiqueta('bd', ZC_BD_ESQUEMA);
     }
-    if (defined('ZC_MOTOR_MYSQL')) {
-        $db->asignarEtiqueta('motor', ZC_MOTOR_MYSQL);
+    if (defined('ZC_BD_CHARSET')) {
+        $db->asignarEtiqueta('charset', ZC_BD_CHARSET);
     }
-    if (defined('ZC_MOTOR_DEFAULT_CHARSET')) {
-        $db->asignarEtiqueta('charset', ZC_MOTOR_DEFAULT_CHARSET);
-    }
-    if (defined('ZC_MOTOR_DEFAULT_COLLATION')) {
-        $db->asignarEtiqueta('collation', ZC_MOTOR_DEFAULT_COLLATION);
+    if (defined('ZC_BD_COLLATION')) {
+        $db->asignarEtiqueta('collation', ZC_BD_COLLATION);
     }
     $db->crearPlantilla('../www/application/config', 'php');
 }

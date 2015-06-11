@@ -87,7 +87,7 @@ class bd extends conexion {
             'CONDICIONAL_BD' => 'IF NOT EXISTS',
             'CONDICIONAL_TABLA' => 'IF NOT EXISTS',
             'LLAVE_PRIMARIA' => 'PRIMARY KEY',
-            'CHARSET' => 'DEFAULT CHARACTER SET',
+            ZC_BD_CHARSET => 'DEFAULT CHARACTER SET',
             ZC_VALOR_PREDETERMINADO => 'DEFAULT',
         );
     }
@@ -206,13 +206,13 @@ class bd extends conexion {
      * @return string
      */
     private function charset() {
-        if (ZC_MOTOR_DEFAULT_CHARSET == '') {
+        if (ZC_BD_CHARSET == '') {
             return '';
         }
         $charset = '';
         switch ($this->_motor) {
             case ZC_MOTOR_MYSQL:
-                $charset = $this->_equivalencias[$this->_motor]['CHARSET'] . ' ' . ZC_MOTOR_DEFAULT_CHARSET;
+                $charset = $this->_equivalencias[$this->_motor][ZC_BD_CHARSET] . ' ' . ZC_BD_CHARSET;
                 break;
             default:
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
@@ -288,7 +288,7 @@ class bd extends conexion {
         foreach ($this->_prop as $nro => $caracteristicas) {
             switch (true) {
                 case $nro == 0:
-                // Primer elemento es la descripcion del formulario
+                    // Primer elemento es la descripcion del formulario
                 case $caracteristicas[ZC_DATO] === null:
                     // No hay tipo de dato definido, normalmente porque es boton
                     continue;

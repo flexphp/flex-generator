@@ -8,14 +8,14 @@ define('RUTA_GENERADOR_CODIGO', '../zc');
 define('FIN_DE_LINEA', "\n");
 // Define el fin de linea para los archivos html
 define('FIN_DE_LINEA_HTML', '<br/>');
-// Numero de registro por pagina, se usa para paginar los resultados
-define('ZC_REGISTROS_POR_PAGINA_PREDETERMINADO', 10);
-// Nombre de la bista que muestra el menu de navegacion
+// Nombre de la vista que muestra el menu de navegacion
 define('ZC_NAVEGACION_PAGINA', 'vista_navegacion');
 // Nombre de la hoja para crear ventana de logueo, se define en la hoja de calculo
 define('ZC_LOGIN_PAGINA', 'zlogin');
 // Nombre de la hoja de configuracion, se define en la hoja de calculo
 define('ZC_CONFIG_PAGINA', 'config');
+// Nombre de la hoja de listas desplegables, se define en la hoja de calculo
+define('ZC_ZC_PAGINA', 'zerocode');
 // Nombre de la tabla contra la que se hace la validacion del login
 define('ZC_LOGIN_TABLA', 'usuarios');
 // Identificador del campo dentro del formulario
@@ -76,10 +76,7 @@ define('ZC_OBLIGATORIO_ERROR_PREDETERMINADO', 'Campo obligatorio');
 // Define el valor predeterminado del campo
 define('ZC_VALOR_PREDETERMINADO', 'por_defecto_es');
 // Configuracion de la base datos
-define('ZC_MOTOR', 'motor_bd');
 define('ZC_MOTOR_MYSQL', 'mysql');
-define('ZC_MOTOR_DEFAULT_CHARSET', 'latin1');
-define('ZC_MOTOR_DEFAULT_COLLATION', 'latin1_swedish_ci');
 define('ZC_MOTOR_AUTOINCREMENTAL', 'auto');
 // Seperador de los listas (select html) que no utilizan tablas de datos
 define('ZC_MOTOR_SEPARADOR', '=');
@@ -104,9 +101,12 @@ define('ZC_ACCION_SIN_VALIDACION', ZC_ACCION_BUSCAR . ',' . ZC_ACCION_BORRAR);
 // Mensajes de error en caso de que no se seleccionen filtros de busqueda
 define('ZC_MENSAJE_ERROR_BUSCAR', 'Seleccione los filtros de busqueda.');
 // Opciones de configuracion, se configuran en la hoja llamada ZC_CONFIG_PAGINA
+define('ZC_CONFIG_BD_MOTOR', 'bd_motor');
 define('ZC_CONFIG_BD_SERVIDOR', 'bd_servidor');
 define('ZC_CONFIG_BD_PUERTO', 'bd_puerto');
 define('ZC_CONFIG_BD_ESQUEMA', 'bd_esquema');
 define('ZC_CONFIG_BD_USUARIO', 'bd_usuario');
 define('ZC_CONFIG_BD_CLAVE', 'bd_clave');
+define('ZC_CONFIG_BD_CHARSET', 'bd_charset');
+define('ZC_CONFIG_BD_COLLATION', 'bd_collation');
 define('ZC_CONFIG_REGISTROS_POR_PAGINA', 'registros_por_pagina');
