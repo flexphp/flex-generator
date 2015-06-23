@@ -228,12 +228,6 @@ class formulario {
     private $_nombreArchivoControlador = '';
 
     /**
-     * Nombre del archivo login creado en /views
-     * @var string
-     */
-    private $_nombreArchivoLogin = '';
-    
-    /**
      * Nombre del archivo vista creado en /views
      * @var string
      */
@@ -263,9 +257,9 @@ class formulario {
     private $_autofocoAplicado = false;
 
     /**
-     * Funcion de inicializacion del formulario, reqeuire que seha suministradas
+     * Funcion de inicializacion del formulario, requiere que se han suministradas
      * unos datos basicos relacionados al formulario
-     * @param array $caracteristicas
+     * @param array $caracteristicas Datos basicos, solo es obligatorio el ZC_ID
      * @throws Exception
      */
     function __construct($caracteristicas) {
@@ -288,8 +282,6 @@ class formulario {
      * @return \formulario
      */
     private function inicio() {
-        // Nombre login
-        $this->_nombreArchivoLogin = 'vista_' . strtolower(ZC_LOGIN_PAGINA);
         // Nombre vista
         $this->_nombreArchivoVista = 'vista_' . $this->_id;
         // Nombre modelo
@@ -374,7 +366,7 @@ class formulario {
         $plantilla->asignarEtiqueta('contenidoFormulario', $this->unirElementosFormulario($this->_formulario));
         $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
 
-        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoLogin);
+        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoVista);
     }
     
     /**
@@ -444,7 +436,7 @@ class formulario {
 
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('idFormulario', $this->_id);
-        $plantilla->asignarEtiqueta('nombreVista', $this->_nombreArchivoLogin . '.html');
+        $plantilla->asignarEtiqueta('nombreVista', $this->_nombreArchivoVista . '.html');
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('accionServidor', $this->_funcionControlador);
 

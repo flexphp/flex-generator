@@ -9,17 +9,13 @@
  *         <tipoWS>SOAP</tipoWS>
  *         <crearWS>1</crearWS>
  *         <metodo>POST</metodo>
- *         <numero1>
- *             <tipo>cajaTexto</tipo>
- *             <etiqueta>Numero 1</etiqueta>
- *             <dato>numero</dato>
- *             <obligatorio>true</obligatorio>
- *         </numero1>
+ *         <numero1 tipo = 'cajaTexto' etiqueta = 'Numero1' dato = 'numero1' obligatorio = 'true' numero1> <-- Atributos del elemento
  *         <numero2>
- *             <tipo>cajaTexto</tipo>
- *             <etiqueta>Numero 1</etiqueta>
- *             <dato>numero</dato>
- *             <obligatorio>true</obligatorio>
+ *             <tipo>cajaTexto</tipo>           <-
+ *             <etiqueta>Numero 1</etiqueta>    <--
+ *             <dato>numero</dato>              <--- Otra forma de agregar atributos
+ *             <por_defecto_es>2</dato>         <--
+ *             <obligatorio>true</obligatorio>  <-
  *         </numero2>
  *         <resultado>
  *             <tipo>cajaTexto</tipo>
@@ -49,20 +45,22 @@ class xml {
     protected $elementos = array();
 
     function __construct() {
-        // error_reporting(0);
     }
 
     /**
      * Recorre la estructura del archivo xml
-     * @param SimpleXML $xml Archivo procesado por simplexml_load_file
+     * @param string $rutaXML Ruta del archivo xml a procesar
      */
-    protected function estructuraArchivoXML($xml) {
+    protected function estructuraArchivoXML($rutaXML) {
+        $xml = simplexml_load_file($rutaXML);
         foreach ($xml as $padre => $hijos) {
             // $padre es el nombre de la hoja de calculo en el archivo
             $form[ZC_ID] = $this->nombreHoja = strtolower($padre);
+            // Reserva el elemento en posicion 0
             $this->elementos[0] = array();
             $this->atributosXPathXML($hijos, $form);
             $this->hijosXPathXML($hijos, $form);
+            // Asigna al primer elemento las caracteristicas del formulario
             $this->elementos[0] = $form;
         }
     }

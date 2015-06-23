@@ -12,7 +12,7 @@ class bd extends conexion {
 
     /**
      * Motor de base de datos seleccionado por el usuario (mysql)
-     * @var strig
+     * @var string
      */
     private $_motor;
 
@@ -223,7 +223,7 @@ class bd extends conexion {
     /**
      * Establece las sentencias para la creacion de la base de datos del sistema
      */
-    public function db() {
+    private function esquema() {
         $bd = '';
         switch ($this->_motor) {
             case ZC_MOTOR_MYSQL:
@@ -275,7 +275,7 @@ class bd extends conexion {
      * @param array $prop Caracteristicas de las tablas
      * @return \bd
      */
-    public function tabla($prop) {
+    private function tabla($prop) {
         $this->_prop = $prop;
         if (in_array($this->_prop[0][ZC_ID], array(ZC_LOGIN_PAGINA))) {
             // La ventana de logueo no crea tabla, usa campos definidos en otros tablas
@@ -352,6 +352,8 @@ class bd extends conexion {
             $this->_prop[$nro][ZC_LONGITUD_MAXIMA] = (isset($this->_prop[$nro][ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[$nro][ZC_LONGITUD_MAXIMA])) ? $this->_prop[$nro][ZC_LONGITUD_MAXIMA] : ZC_LONGITUD_PREDETERMINADA;
             // Llaves foraneas
             $this->_prop[$nro][ZC_ELEMENTO_OPCIONES] = (isset($this->_prop[$nro][ZC_ELEMENTO_OPCIONES]) && '' != $this->_prop[$nro][ZC_ELEMENTO_OPCIONES]) ? $this->_prop[$nro][ZC_ELEMENTO_OPCIONES] : null;
+            // Valor por defecto
+            $this->_prop[$nro][ZC_VALOR_PREDETERMINADO] = (isset($this->_prop[$nro][ZC_VALOR_PREDETERMINADO])) ? $this->_prop[$nro][ZC_VALOR_PREDETERMINADO] : null;
         }
         return $this;
     }
@@ -392,7 +394,7 @@ class bd extends conexion {
      * Agrega los join al fianl del scrip de creacion de sentencias
      * @return \bd
      */
-    public function fin() {
+    private function fin() {
         foreach ($this->_join as $join) {
             array_push($this->_sentencias, $join);
         }
@@ -415,9 +417,23 @@ class bd extends conexion {
      * Crea el archivo sql para la creacion de la base de datos
      * @return \bd
      */
-    public function crear() {
+    private function crear() {
         crearArchivo('sql/', 'script_' . $this->_motor, 'sql', $this->devolver());
         return $this;
     }
 
+    /**
+     * Agrupa toda la funcionalidad para crear la base de datos
+     */
+    public function crearModelo($tablas) {
+        if (count($tablas) > 0) {
+            $this->esquema();
+            foreach ($tablas as $nro => $tabla) {
+                $this->tabla($tabla);
+            }
+            $this->fin();
+            $this->crear();
+            $this->ejecutar();
+        }
+    }
 }

@@ -41,7 +41,7 @@ function miTrim($var) {
  */
 function miLog($log, $archivo = '') {
     if ($archivo == '') {
-        $archivo = 'log/Log_' . date('Ymd') . '.log';
+        $archivo = 'logs/Log_' . date('Ymd') . '.log';
     }
     $h = fopen($archivo, 'a+');
     if ($h) {

@@ -8,6 +8,8 @@ require RUTA_GENERADOR_CODIGO . '/modelo/plantilla.class.php';
 require RUTA_GENERADOR_CODIGO . '/modelo/navegacion.class.php';
 // Clase utilizada para el procesamiento del archivo XML
 require RUTA_GENERADOR_CODIGO . '/modelo/hoja.class.php';
+// Clase para la creacion del script de la base de datos
+require RUTA_GENERADOR_CODIGO . '/modelo/bd.class.php';
 // Clase central del generador de codigo
 require RUTA_GENERADOR_CODIGO . '/modelo/formulario.class.php';
 

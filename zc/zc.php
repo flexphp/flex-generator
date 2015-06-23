@@ -148,10 +148,15 @@ try {
             $rpta['error'] = 'Formato (' . $tipoArchivo . ') no soportado.';
             break;
     }
-    
+
     // Crea los formularios, depende de los archivos xml existentes en 
     $xml = new hoja();
     $xml->cargarArchivosXML('xml');
+
+    // Crea la base de datos 
+    $bd = new bd(ZC_BD_MOTOR);
+    $bd->crearModelo($xml->devolverTablas());
+
 } catch (Exception $e) {
     // Error encontrado durante el proceso
     $rpta['error'] = 'Error: ' . $e->getMessage();
@@ -159,5 +164,6 @@ try {
 
 // Calcula el tiempo de ejecucion
 $rpta['tiempo_ejecucion'] = microtime(true) - $time;
+miLog($rpta['tiempo_ejecucion'], 'logs/tiempoEjecucion.log');
 // Devuelve la respuesta
 echo json_encode($rpta);
