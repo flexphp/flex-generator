@@ -1,5 +1,5 @@
 // Configuracion de la carga del archivo
-var extensionesPermitidas = '.xls,.xlsx,.ods,.zcl,.txt';
+var extensionesPermitidas = '.xls,.xlsx,.ods';
 Dropzone.options.cargarArchivos = {
     dictDefaultMessage: '<h2>Arrastra los archivos</h2> (o haz click)',
     addRemoveLinks: true,

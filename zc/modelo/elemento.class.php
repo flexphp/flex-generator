@@ -129,6 +129,8 @@ class elemento {
             // Si no se define longitud maxima se asume una por defecto
             $this->_prop[ZC_LONGITUD_MAXIMA] = (isset($this->_prop[ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[ZC_LONGITUD_MAXIMA])) ? $this->_prop[ZC_LONGITUD_MAXIMA] : ZC_LONGITUD_PREDETERMINADA;
             $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] = (isset($this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) && '' != $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) ? $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] : null;
+            // Valor predeterminado, se utiliza en base de datos
+            $this->_prop[ZC_VALOR_PREDETERMINADO] = (isset($this->_prop[ZC_VALOR_PREDETERMINADO])) ? $this->_prop[ZC_VALOR_PREDETERMINADO] : null;
             // Campo donde se posiciona el puntero al cargar el formulario
             $this->_prop[ZC_AUTOFOCO] = (isset($this->_prop[ZC_AUTOFOCO]) ) ? $this->_prop[ZC_AUTOFOCO] : null;
             // La longitud de los campos predefinidos

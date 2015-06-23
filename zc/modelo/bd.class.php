@@ -296,6 +296,10 @@ class bd extends conexion {
                     // Inserta coma si el siguiente campo existe
                     $coma = ('' != $campos) ? ',' : '';
                     $campos .= $this->campo($caracteristicas[ZC_ID], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_VALOR_PREDETERMINADO], $caracteristicas[ZC_ETIQUETA], $coma);
+                    if(error_get_last()){
+                        var_dump($caracteristicas);
+                        die;
+                    }
                     $this->join($caracteristicas[ZC_ID], $caracteristicas[ZC_ELEMENTO_OPCIONES]);
                     break;
             }

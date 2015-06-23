@@ -174,7 +174,7 @@ class accion extends elemento {
      * @return string
      */
     protected function comando($cmd, $espacios = 0) {
-        return insertarEspacios($espacios) . $cmd . FIN_DE_LINEA;
+        return tabular($cmd, $espacios = 0);
     }
 
     /**

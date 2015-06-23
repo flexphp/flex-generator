@@ -4,27 +4,23 @@
 $time = microtime(true);
 // Archivo de configuracion
 require 'conf/conf.php';
-// Configuracion inicial, crea plantillas y demas recursos utilizados
+// Configuracion inicial y demas recursos utilizados
 require RUTA_GENERADOR_CODIGO . '/includes/base.inc.php';
 // Respuesta devuelta durante el proceso
 $rpta = array();
 // Ruta del archivo cargado
-$rutaArchivo = '';
-// Log del archivo cargado por el usuario
-miLog($_FILES);
+$rutaArchivoDefinitiva = '';
 
 if (isset($_FILES['file'])) {
     // Ruta temporal del archivo
-    $rutaTemporal = $_FILES['file']['tmp_name'];
-    $rutaArchivo = RUTA_GENERADOR_CODIGO . '/archivos/' . $_FILES['file']['name'];
-    // Mueve el archivo a la ruta definitica
-    if (!move_uploaded_file($rutaTemporal, $rutaArchivo)) {
-        $rpta['error'] = 'Error moviendo archivo: $rutaArchivo';
+    $rutaArchivoTemporal = $_FILES['file']['tmp_name'];
+    $rutaArchivoDefinitiva = RUTA_GENERADOR_CODIGO . '/archivos/' . $_FILES['file']['name'];
+    // Mueve el archivo a la ruta definitiva
+    if (!move_uploaded_file($rutaArchivoTemporal, $rutaArchivoDefinitiva)) {
+        $rpta['error'] = 'Error moviendo archivo: $rutaArchivoDefinitiva';
     }
-    // Extraer la extension del nombre del archivo
-    $extension = explode('.', $_FILES['file']['name']);
     // Extension del archivo, con este se determina que proceso aplicar
-    $tipoArchivo = end($extension);
+    $tipoArchivo = extensionArchivo($_FILES['file']['name']);
 } else {
     // No es un acceso valido al recurso
     header('Location: index.html');
@@ -43,7 +39,7 @@ try {
             require RUTA_GENERADOR_CODIGO . '/includes/SpreadsheetReader/SpreadsheetReader.php';
 
             // Inicializar libro desde la hoja
-            $hojas = new SpreadsheetReader($rutaArchivo);
+            $hojas = new SpreadsheetReader($rutaArchivoDefinitiva);
             // Extraer cada una de las hojas del libro
             $cadaHoja = $hojas->Sheets();
             // Para las hoja de calculo excel 97 el numero de la fila no inicia en la posicion 0, se deja en la posicion - 1
@@ -63,13 +59,13 @@ try {
                                 continue;
                             }
                             switch (true) {
-                                // Los encabezados son las filas pares (0,2,4,6,...)
                                 case $numeroFila%2 == 0:
+                                    // Los encabezados son las filas pares (0,2,4,6,...,n)
                                     // Encabezados
-                                    $tag[$numeroColumna] = reemplazarCaracteresEspeciales(strtolower($contenido));
+                                    $tag[$numeroColumna] = reemplazarCaracteresEspeciales($contenido);
                                     break;
                                 default:
-                                    // Valores
+                                    // Valores de los encabezados
                                     $config[$tag[$numeroColumna]] = $contenido;
                                     break;
                             }
@@ -91,15 +87,15 @@ try {
                     // Crea los archivos de configuracion segun los valores dados
                     config();
                 } else {
-                    // Identificador de la hoja, seusa como nombre del XML generado
-                    $idHoja = reemplazarCaracteresEspeciales(strtolower($nombreHoja));
+                    // Identificador de la hoja, se usa como nombre del XML generado
+                    $idHoja = reemplazarCaracteresEspeciales($nombreHoja);
                     // Establece la hoja que se va a procesar
                     $hojas->ChangeSheet($numeroHoja);
 
                     // Crear un archivo XML por cada hoja
-                    $xml = insertarEspacios(0) . '<?xml version="1.0" encoding="UTF-8"?>' . FIN_DE_LINEA;
-                    $xml .= insertarEspacios(0) . '<crear>' . FIN_DE_LINEA;
-                    $xml .= insertarEspacios(4) . '<' . $idHoja . '>' . FIN_DE_LINEA;
+                    $xml = tabular('<?xml version="1.0" encoding="UTF-8"?>', 0);
+                    $xml .= tabular('<crear>', 0);
+                    $xml .= tabular('<' . $idHoja . '>', 4);
 
                     // Cada fila
                     foreach ($hojas as $numeroFila => $columnas) {
@@ -107,68 +103,61 @@ try {
                         if ($numeroFila > 2 && $columnas[0] !== '') {
                             // Comienza a procesar cada uno de los campos que estan configurados 
                             // en la hoja de calculo
-                            $idCampo = reemplazarCaracteresEspeciales(strtolower($columnas[1]));
-                            $xml .= insertarEspacios(8) . '<' . $idCampo . '>' . FIN_DE_LINEA;
+                            $idCampo = reemplazarCaracteresEspeciales($columnas[1]);
+                            $xml .= tabular('<' . $idCampo . '>', 8);
                         }
                         foreach ($columnas as $numeroColumna => $contenido) {
                             if ($contenido == '') {
-                                // No tiene contenido, sigue con la siguiente columna
+                                // No tiene contenido, pasa a la siguiente columna
                                 continue;
                             }
                             // Inicia Informacion de seguimiento, se puede eliminar
-                            $info = $numeroFila . ':' . $numeroColumna . ' = ' . $contenido . "\n";
-                            miLog($info);
+                            // $info = $numeroFila . ':' . $numeroColumna . ' = ' . $contenido . "\n";
+                            // miLog($info);
                             // Fin Informacion de seguimiento
                             switch ($numeroFila) {
                                 case 0:
                                     // Encabezados con caracteristicas del formulario
                                 case 2:
                                     // Descripciones caracteristicas campos del formulario
-                                    $tag[$numeroColumna] = reemplazarCaracteresEspeciales(strtolower($contenido));
+                                    $tag[$numeroColumna] = reemplazarCaracteresEspeciales($contenido);
                                     break;
                                 case 1:
                                     // Detalles del encabezado
-                                    $xml .= insertarEspacios(8) . '<' . $tag[$numeroColumna] . '>' . $contenido . '</' . $tag[$numeroColumna] . '>' . FIN_DE_LINEA;
+                                    $xml .= tabular('<' . $tag[$numeroColumna] . '>' . $contenido . '</' . $tag[$numeroColumna] . '>', 8);
                                     break;
                                 default:
                                     // Detalles de los campos
-                                    $xml .= insertarEspacios(12) . '<' . $tag[$numeroColumna] . '>' . $contenido . '</' . $tag[$numeroColumna] . '>' . FIN_DE_LINEA;
+                                    $xml .= tabular('<' . $tag[$numeroColumna] . '>' . $contenido . '</' . $tag[$numeroColumna] . '>', 12);
                                     break;
                             }
                         }
                         if ($numeroFila > 2 && $columnas[0] !== '') {
-                            $xml .= insertarEspacios(8) . '</' . $idCampo . '>' . FIN_DE_LINEA;
+                            $xml .= tabular('</' . $idCampo . '>', 8);
                         }
                     }
-                    $xml .= insertarEspacios(4) . '</' . $idHoja . '>' . FIN_DE_LINEA;
-                    $xml .= insertarEspacios(0) . '</crear>' . FIN_DE_LINEA;
+                    $xml .= tabular('</' . $idHoja . '>', 4);
+                    $xml .= tabular('</crear>', 0);
                     // Crear el archivo XML por cada hoja
-                    file_put_contents('xml/' . $idHoja . '.xml', $xml);
+                    crearArchivo('xml', $idHoja , 'xml', $xml);
                 }
             }
             break;
-        case 'txt':
-            // Texto plano
-        case 'zcs':
-            // Sintaxis ZC
-            require RUTA_GENERADOR_CODIGO . '/includes/sintaxis/zcs.inc.php';
-            $zcl = new zcs($rutaArchivo);
-            $rpta['error'] = $zcl->devolverError();
-            break;
         default:
+            // Extensiones de archivo no soportado
             $rpta['error'] = 'Formato (' . $tipoArchivo . ') no soportado.';
             break;
     }
     
-    /**
-     * Crea los formularios, depende de los archivos xml recien creados
-     */
-    $xml = new xml();
+    // Crea los formularios, depende de los archivos xml existentes en 
+    $xml = new hoja();
     $xml->cargarArchivosXML('xml');
 } catch (Exception $e) {
+    // Error encontrado durante el proceso
     $rpta['error'] = 'Error: ' . $e->getMessage();
 }
 
 // Calcula el tiempo de ejecucion
 $rpta['tiempo_ejecucion'] = microtime(true) - $time;
+// Devuelve la respuesta
 echo json_encode($rpta);

@@ -6,7 +6,6 @@
  * @param mixed $bool Defien si mostrar en pantalla o en archivo, por defecto en pantalla (false)
  */
 function preprint($var, $bool = false) {
-
     $x = '<pre>';
     $x .= print_r($var, 1);
     $x .= '</pre>';
@@ -55,7 +54,7 @@ function miLog($log, $archivo = '') {
 }
 
 /**
- * Extra el nombre sin la extension de la ruta|nombre dado
+ * Extrae el nombre sin la extension de la ruta|nombre dado
  * @param string $nombreArchivo Ruta o nombre del archivo
  * @return string Unicamente nombre de archivo, sin extension
  */
@@ -91,7 +90,7 @@ function nombreArchivo($nombreArchivo) {
  */
 function crearArchivo($directorioArchivo = '', $nombreArchivo = '', $extensionArchivo = '', $contenidoArchivo = '<vacio>') {
     if ($directorioArchivo == '') {
-        mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la el contenido del archivo!?");
+        mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el nombre del archivo!?");
     } else {
 
         $nombreArchivo = nombreArchivo($nombreArchivo) . '.' . $extensionArchivo;
@@ -437,14 +436,38 @@ function validarJoinTipo($tipo) {
 
 /**
  * Reemplaza caracteres no validas en cadenas
- * @param string $cadena Cadena a convertir
+ * @param string $texto Cadena a convertir
  * @return string
  */
-function reemplazarCaracteresEspeciales($cadena) {
+function reemplazarCaracteresEspeciales($texto) {
     // Buscar, EN UTF e ISO 8859-1
     $buscar = array(' ', '?', 'Ã¡', 'Ã©', 'Ã­', 'Ã³', ' Ãº', 'Ã±', 'Ã‘', 'á', 'é', 'í', 'ó', 'ú', 'ñ', 'Ñ');
     // Reemplazar
     $reemplazar = array('_', '', 'a', 'e', 'i', 'o', 'u', 'n', 'n', 'a', 'e', 'i', 'o', 'u', 'n', 'n');
     // Devuelve la cadena transformada
-    return str_replace($buscar, $reemplazar, strtolower($cadena));
+    return str_replace($buscar, $reemplazar, strtolower($texto));
+}
+
+/**
+ * Tabular el contenido de los archivos a crear
+ * @param string $texto Linea de Texto a tabular
+ * @param int $espacios Cantidad de espacios antes de colocar el texto
+ * @return string
+ */
+function tabular($texto, $espacios = 0) {
+    return insertarEspacios($espacios) . $texto . FIN_DE_LINEA;
+}
+
+/**
+ * Determina las extension valida de los archivos de configuracion. Extrae
+ * la ultima parte del nombre y la devuelve, sino tiene extension devuelve vacio
+ * Ejemplo:
+ * archivo.de.prueba.xml
+ * devuelve: xml
+ * @param string $archivo Nombre del archivo
+ * @return string
+ */
+function extensionArchivo($archivo) {
+    $ext = explode('.', $archivo);
+    return strtolower(end($ext));
 }

@@ -24,17 +24,15 @@ define('ZC_ID', 'id');
 define('ZC_ETIQUETA', 'como_se_llama');
 // Nombre del campo en la base de datos
 define('ZC_CAMPO_BD', 'nombre_campo_bd');
-// Tipo de web service a utilizar REST|SOAP
-define('ZC_TIPO_WS', 'tipo_ws');
 // Descripcion del nombre en el formulario
 define('ZC_FORMULARIO_NOMBRE', 'nombre_formulario');
 // Tipo de envio del formulario POST|GET
 define('ZC_FORMULARIO_METODO', 'se_envia');
-// ? Se puede borrar
-// define('ZC_NOMBRE_ACCION_CLIENTE', 'nombre_accion');
+// Tipo de web service a utilizar REST|SOAP
 // Tipos de WS SOAP con XML, menos lento, mas seguro
-define('ZC_WS_SOAP', 'soap');
 // Tipos de WS REST con JSON, mas rapido, menos seguro
+define('ZC_WS_TIPO', 'ws_tipo');
+define('ZC_WS_SOAP', 'soap');
 define('ZC_WS_REST', 'rest');
 // Define el campo principal dentro del formulario, donde se coloca el puntero al cargar el formulario
 define('ZC_AUTOFOCO', 'campo_principal');
