@@ -62,8 +62,6 @@ class buscar extends accion {
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('$pagina = (!is_int($pagina)) ? 1 : $pagina;', 8);
         $php .= $this->comando('$porPagina = ' . ZC_REGISTROS_POR_PAGINA . ';', 8);
-        // $php .= $this->comando('$CI = new CI_Controller;', 8);
-        // $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
         $php .= $this->comando('$validacion = $this->zc->validarFiltros($campos, $accion);', 8);
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (isset($validacion[\'error\']) && \'\' != $validacion[\'error\']):', 12);

@@ -283,15 +283,15 @@ class formulario {
      */
     private function inicio() {
         // Nombre vista
-        $this->_nombreArchivoVista = 'vista_' . $this->_id;
+        $this->_nombreArchivoVista = 'v_' . $this->_id;
         // Nombre modelo
-        $this->_nombreArchivoModelo = 'modelo_' . $this->_id;
+        $this->_nombreArchivoModelo = 'm_' . $this->_id;
         // Nombre modelo
         $this->_nombreArchivoControlador = $this->_id;
         // Nombre del listado
-        $this->_nombreArchivoListar = 'vista_listar_' . $this->_id;
+        $this->_nombreArchivoListar = 'l_' . $this->_id;
         // Nombre del archivo que guarda las funcionalidades del servidor
-        $this->_nombreArchivoServidor = $this->_id . '_' . $this->_tipoWS;
+        $this->_nombreArchivoServidor = 'ws_' . $this->_id;
         // Nombre javascript
         $this->_nombreArchivoJs = $this->_id;
         // Nombre de la funcion de validacion

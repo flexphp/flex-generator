@@ -61,8 +61,6 @@ class ajax extends accion {
         $php = '';
         $php .= $this->comando('function ajax($tablas, $campos){', 4);
         $php .= $this->comando('$rpta = array();', 8);
-        // $php .= $this->comando('$CI = new CI_Controller;', 8);
-        // $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (!isset($campos) || \'\' == $campos):', 12);
         $php .= $this->comando('case (!isset($tablas) || \'\' == $tablas):', 12);
