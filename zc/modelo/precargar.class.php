@@ -70,8 +70,8 @@ class precargar extends accion {
         $php = '';
         $php .= $this->comando('function precargar($id, $accion){', 4);
         $php .= $this->comando('$rpta = array();', 8);
-        $php .= $this->comando('$CI = new CI_Controller;', 8);
-        $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
+        // $php .= $this->comando('$CI = new CI_Controller;', 8);
+        // $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (!isset($id) || \'\' == $id):', 12);
         $php .= $this->comando('// El campo id es obligatorio para la busqueda', 16);

@@ -62,9 +62,9 @@ class buscar extends accion {
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('$pagina = (!is_int($pagina)) ? 1 : $pagina;', 8);
         $php .= $this->comando('$porPagina = ' . ZC_REGISTROS_POR_PAGINA . ';', 8);
-        $php .= $this->comando('$CI = new CI_Controller;', 8);
-        $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
-        $php .= $this->comando('$validacion = $this->modelo_' . $this->_tabla . '->validarFiltros($campos, $accion);', 8);
+        // $php .= $this->comando('$CI = new CI_Controller;', 8);
+        // $php .= $this->comando('$CI->load->model(\'modelo_' . $this->_tabla . '\');', 8);
+        $php .= $this->comando('$validacion = $this->zc->validarFiltros($campos, $accion);', 8);
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (isset($validacion[\'error\']) && \'\' != $validacion[\'error\']):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos', 16);
@@ -92,7 +92,7 @@ class buscar extends accion {
         $php .= $this->comando('// Existen resultados', 16);
         $php .= $this->comando('if($ressql->num_rows() > 0){', 16);
         $php .= $this->comando('// Numero total de elementos, esto segun los filtros de busqueda', 20);
-        $php .= $this->comando('$rpta[\'cta\'] = $this->modelo_' . $this->_tabla . '->totalRegistros($campos, \'' . $this->_tabla . '\');', 20);
+        $php .= $this->comando('$rpta[\'cta\'] = $ressql->num_rows();', 20);
         $php .= $this->comando('$i = 0;', 20);
         $php .= $this->comando('foreach($ressql->result_array() as $row){', 20);
         $php .= $this->comando('$rpta[\'resultado\'][$i] = $row;', 24);

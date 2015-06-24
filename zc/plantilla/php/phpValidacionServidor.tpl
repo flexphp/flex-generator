@@ -3,7 +3,7 @@ function {_nombreValidacion_}($dato){
         $rpta['error'] = '';
         $validarDato = true;
 
-        // Los campos a vaidar deben llegar en forma de arreglo
+        // Los campos a validar deben llegar en forma de arreglo
         if(!is_array($dato)){
             $rpta['error'] = 'Error durante la validacion.';
             return $rpta;

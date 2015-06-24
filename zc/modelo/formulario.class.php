@@ -295,7 +295,7 @@ class formulario {
         // Nombre javascript
         $this->_nombreArchivoJs = $this->_id;
         // Nombre de la funcion de validacion
-        $this->_nombreFuncionValidacion = 'validacion_' . $this->_id;
+        $this->_nombreFuncionValidacion = 'validarDatos';
         
         if ($this->_id == strtolower(ZC_LOGIN_PAGINA)){
             $this->_esLogin = true;
@@ -828,19 +828,18 @@ class formulario {
             $comandoEspecial = '';
             switch ($caracteristicas[ZC_ELEMENTO]) {
                 case ZC_ACCION_BUSCAR:
-                    $comando .= str_replace('{_nombreModelo_}', $this->_nombreArchivoModelo, "\$rpta = \$this->{_nombreModelo_}->validarFiltros(\$datos['filtros'], \$datos['accion']);");
+                    $comando .= "\$rpta = \$this->{$this->_nombreArchivoModelo}->validarFiltros(\$datos['filtros'], \$datos['accion']);";
                     // Construir la paginacion
                     $comandoEspecial = 'if (isset($rpta[\'cta\'])){';
                     $comandoEspecial .= '$rpta[\'paginacion\'] = $this->paginar($rpta[\'cta\']);';
                     $comandoEspecial .= '}';
                     break;
                 case ZC_ACCION_LOGIN:
-                    $comando .= str_replace(array('{_nombreModelo_}', '{_nombreValidacion_}'), array($this->_nombreArchivoModelo, $this->_nombreFuncionValidacion), "\$rpta = \$this->{_nombreModelo_}->{_nombreValidacion_}(\$datos);");
                     // Registrar el inicio de sesion del usuario
                     $comandoEspecial = '$rpta = $this->loguear($rpta);';
-                    break;
+                    // Continua con la accion por defecto ya que es la misma
                 default:
-                    $comando .= str_replace(array('{_nombreModelo_}', '{_nombreValidacion_}'), array($this->_nombreArchivoModelo, $this->_nombreFuncionValidacion), "\$rpta = \$this->{_nombreModelo_}->{_nombreValidacion_}(\$datos);");
+                    $comando .= "\$rpta = \$this->{$this->_nombreArchivoModelo}->{$this->_nombreFuncionValidacion}(\$datos);";
                     break;
             }
             /**
@@ -994,7 +993,7 @@ class formulario {
             }
 
             // Determina la accion a ejecutar en el cvontrolador
-            $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO]);
+            $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO], $this->_nombreFuncionValidacion);
             // Funciones creada en el servidor
             $this->_funcionServidor[$caracteristicas[ZC_ID]] = $accion->crear()->devolverElemento();
             // Concatena las funciones que se ejecutaran en el modelo

@@ -112,15 +112,21 @@ class accion extends elemento {
     protected $_yaInicio = null;
 
     /**
+     * Nombre de la funcion de validacion
+     */ 
+    protected $_funcionValidacion;
+
+    /**
      * Crear las acciones, segun el tipo de elemento
      * @param array $caracteristicas Caracteristicas de la accion a crear
      * @param string $tabla Nombre de la tabla a manejar
      * @param string $accion Tipo de boton a crear
      */
-    function __construct($caracteristicas, $tabla, $accion) {
+    function __construct($caracteristicas, $tabla, $accion, $funcionValidacion = null) {
         $this->_accion = $accion;
         $this->_tabla = strtolower($tabla);
         $this->_campos = $caracteristicas;
+        $this->_funcionValidacion = $funcionValidacion;
     }
 
     /**
@@ -129,13 +135,13 @@ class accion extends elemento {
     public function crear() {
         switch ($this->_accion) {
             case ZC_ACCION_AGREGAR:
-                $accion = new agregar($this->_campos, $this->_tabla, $this->_accion);
+                $accion = new agregar($this->_campos, $this->_tabla, $this->_accion, $this->_funcionValidacion);
                 break;
             case ZC_ACCION_BUSCAR:
                 $accion = new buscar($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ACCION_MODIFICAR:
-                $accion = new modificar($this->_campos, $this->_tabla, $this->_accion);
+                $accion = new modificar($this->_campos, $this->_tabla, $this->_accion, $this->_funcionValidacion);
                 break;
             case ZC_ACCION_BORRAR:
                 $accion = new borrar($this->_campos, $this->_tabla, $this->_accion);
