@@ -1,44 +1,39 @@
 <?php
 
 /**
- * Clase base para la creacion de elemento HTML
- */
-require_once 'elemento.class.php';
-
-/**
  * Crea la funcion de agregar (insert)
  */
-require_once 'agregar.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/agregar.class.php';
 
 /**
  * Crea la funcion de listar/buscar (select)
  */
-require_once 'buscar.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/buscar.class.php';
 
 /**
  * Crea la funcion de borrar (update a zc_eliminado)
  */
-require_once 'borrar.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/borrar.class.php';
 
 /**
  * Crea la funcion de modificar/actualizar (update)
  */
-require_once 'modificar.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/modificar.class.php';
 
 /**
  * Crea la funcion para precargar los datos a editar
  */
-require_once 'precargar.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/precargar.class.php';
 
 /**
  * Crea la ventana y acciones de logueo
  */
-require_once 'login.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/login.class.php';
 
 /**
  * Crea las funciones para precargar las listas de seleccion
  */
-require_once 'ajax.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/ajax.class.php';
 
 /**
  * Crea acciones: agregar, buscar, modificar, eliminar, cancelar, defecto
@@ -161,6 +156,7 @@ class accion extends elemento {
             default :
                 break;
         }
+        $accion->modelo($this->_modelo);
         // Establece la accion creada
         $this->_html = (isset($accion)) ? $accion->crear()->devolverElemento() : $this->comando('$resultado = implode(\'+\', func_get_args());$cta = 1;', 12);
         $this->_funcion = (isset($accion)) ? $accion->funcion()->devolverFuncion() : $this->comando('//$rpta[\'resultado\'] = implode(\'|\', $datos);');
@@ -264,6 +260,10 @@ class accion extends elemento {
 
     public function devolverTipoPlantilla() {
         return $this->_tipoPlantilla;
+    }
+
+    public function modelo($modelo) {
+        $this->_modelo = $modelo;
     }
 
 }

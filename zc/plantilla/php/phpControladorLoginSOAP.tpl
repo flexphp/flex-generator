@@ -32,7 +32,6 @@ class {_nombreControlador_} extends CI_Controller {
      */
     public function index() {
         $this->enSesion();
-        $this->_data['vista'] = '{_nombreVista_}';
         $this->load->view($this->_data['vista']);
     }
     
@@ -41,7 +40,7 @@ class {_nombreControlador_} extends CI_Controller {
      */
     public function enSesion() {
         if ($this->session->userdata('zc_logueado') === true) {
-            // No esta logueado
+            // Esta logueado en la aplicacion
             redirect('inicio');
         } 
     }

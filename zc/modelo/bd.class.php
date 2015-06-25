@@ -3,7 +3,7 @@
 /**
  * Ejecucion de sentencias en base de datos
  */
-require_once 'conexion.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/conexion.class.php';
 
 /**
  * Clase para la creacion del modelo de base de datos dependiendo del motor

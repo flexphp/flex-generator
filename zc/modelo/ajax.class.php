@@ -31,7 +31,7 @@ class ajax extends accion {
         $php .= $this->comando('//Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
-        $php .= $this->comando('$CI->load->model(\'modelo_\' . $tabla, $tabla);', 12);
+        $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', $tabla);', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
         $php .= $this->comando('$rpta = $CI->$tabla->ajax($tablas, $campos);', 12);
         $php .= $this->comando('switch (true){', 12);

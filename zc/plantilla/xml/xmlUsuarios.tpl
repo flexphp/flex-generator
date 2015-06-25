@@ -39,14 +39,14 @@
             <como_se_llama>Tipo usuario</como_se_llama>
             <que_dato_recibira>numero</que_dato_recibira>
             <es_obligatorio>si</es_obligatorio>
-            <posibles_valores>Tipos usuario::nombre</posibles_valores>
+            <valores>Tipos usuario::nombre</valores>
         </tipo_usuario>
         <estado>
             <que_quieres>Lista</que_quieres>
             <como_se_llama>Estado</como_se_llama>
             <que_dato_recibira>numero</que_dato_recibira>
             <es_obligatorio>si</es_obligatorio>
-            <posibles_valores>Estados usuario::nombre</posibles_valores>
+            <valores>Estados usuario::nombre</valores>
         </estado>
         <ultimo_ingreso>
             <que_quieres>Caja</que_quieres>

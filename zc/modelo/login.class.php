@@ -30,7 +30,7 @@ class login extends accion {
         $php .= $this->comando('//Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
-        $php .= $this->comando('$CI->load->model(\'modelo_\' . $tabla, $tabla);', 12);
+        $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', $tabla);', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
         $php .= $this->comando('$rpta = $CI->$tabla->login($data, \'login\');', 12);
         $php .= $this->comando('switch (true){', 12);
@@ -57,8 +57,7 @@ class login extends accion {
             // No es la accion esperada, no crea nada
             mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_LOGIN);
         }
-        $php = '';
-        $php .= $this->comando('function login($campos, $accion){', 4);
+        $php = $this->comando('function login($campos, $accion){', 0);
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('$validacion = $this->zc->validarFiltros($campos, $accion);', 8);
         $php .= $this->comando('switch (true){', 8);

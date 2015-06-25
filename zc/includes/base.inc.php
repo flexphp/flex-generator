@@ -69,7 +69,7 @@ function plantillas() {
     $iniciophp = new plantilla();
     $iniciophp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorInicio.tpl');
     $iniciophp->asignarEtiqueta('nombreFormulario', 'Bienvenida');
-    $iniciophp->asignarEtiqueta('nombreVista', 'vista_inicio.html');
+    $iniciophp->asignarEtiqueta('nombreVista', ZC_PREFIJO_VISTA . 'inicio.html');
     $iniciophp->asignarEtiqueta('nombreControlador', 'inicio');
     $iniciophp->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
     $iniciophp->crearPlantilla('../www/application/controllers', 'php', 'inicio');
@@ -77,9 +77,9 @@ function plantillas() {
     $iniciohtml = new plantilla();
     $iniciohtml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlInicio.tpl');
     $iniciohtml->asignarEtiqueta('nombreFormulario', 'Bienvenida');
-    $iniciohtml->asignarEtiqueta('nombreVista', 'vista_inicio.html');
+    $iniciohtml->asignarEtiqueta('nombreVista', ZC_PREFIJO_VISTA . 'inicio.html');
     $iniciohtml->asignarEtiqueta('nombreControlador', 'inicio');
-    $iniciohtml->crearPlantilla('../www/application/views', 'html', 'vista_inicio');
+    $iniciohtml->crearPlantilla('../www/application/views', 'html', ZC_PREFIJO_VISTA . 'inicio');
 
     /**
      * JQuery homologado

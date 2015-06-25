@@ -9,7 +9,7 @@ define('FIN_DE_LINEA', "\n");
 // Define el fin de linea para los archivos html
 define('FIN_DE_LINEA_HTML', '<br/>');
 // Nombre de la vista que muestra el menu de navegacion
-define('ZC_NAVEGACION_PAGINA', 'vista_navegacion');
+define('ZC_NAVEGACION_PAGINA', 'v_navegacion');
 // Nombre de la hoja para crear ventana de logueo, se define en la hoja de calculo
 define('ZC_LOGIN_PAGINA', 'zlogin');
 // Nombre de la hoja de configuracion, se define en la hoja de calculo
@@ -28,6 +28,8 @@ define('ZC_CAMPO_BD', 'nombre_campo_bd');
 define('ZC_FORMULARIO_NOMBRE', 'nombre_formulario');
 // Tipo de envio del formulario POST|GET
 define('ZC_FORMULARIO_METODO', 'se_envia');
+// Tipo de formulario a crear tabla|autenticacion
+define('ZC_FORMULARIO_TIPO', 'tipo_formulario');
 // Tipo de web service a utilizar REST|SOAP
 // Tipos de WS SOAP con XML, menos lento, mas seguro
 // Tipos de WS REST con JSON, mas rapido, menos seguro
@@ -108,3 +110,9 @@ define('ZC_CONFIG_BD_CLAVE', 'bd_clave');
 define('ZC_CONFIG_BD_CHARSET', 'bd_charset');
 define('ZC_CONFIG_BD_COLLATION', 'bd_collation');
 define('ZC_CONFIG_REGISTROS_POR_PAGINA', 'registros_por_pagina');
+// Prefijos de los archivos
+define('ZC_PREFIJO_VISTA', 'v_');
+define('ZC_PREFIJO_LISTA', 'l_');
+define('ZC_PREFIJO_CONTROLADOR', '');
+define('ZC_PREFIJO_MODELO', 'm_');
+define('ZC_PREFIJO_WS', 'ws_');

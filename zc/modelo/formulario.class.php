@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Mediador para crear las paginas
+ */
+require RUTA_GENERADOR_CODIGO . '/modelo/pagina.class.php';
+
+/**
+ * Clase para crear caja|radio|lista|checkbox
+ */
+require RUTA_GENERADOR_CODIGO . '/modelo/elemento.class.php';
+
+/**
  * Clase para la creacion de cajas (text, password, textarea)
  */
 require RUTA_GENERADOR_CODIGO . '/modelo/caja.class.php';
@@ -60,6 +70,12 @@ class formulario {
      * @var string
      */
     private $_tipoWS = ZC_WS_SOAP;
+
+    /**
+     * Tipo de formulario a crear
+     * @var string
+     */
+    private $_tipoFormulario = 'tabla';
 
     /**
      * Almacena las funciones que se crearan en el controlador, una funcion corresponde
@@ -209,10 +225,10 @@ class formulario {
     private $_nombreArchivoServidor = '';
     
     /**
-     * Bandera para determinar si es el formulario de login
+     * Caracteristicas de la pagina en creacion
      * @var string
      */
-    private $_esLogin = false;
+    private $_pagina;
 
     /**
      * Nombre del archivo modelo creado en /models
@@ -270,6 +286,7 @@ class formulario {
             $this->_nombre = ($caracteristicas[ZC_FORMULARIO_NOMBRE] != '') ? ucwords($caracteristicas[ZC_FORMULARIO_NOMBRE]) : ucwords($this->_id);
             $this->_tipoWS = (isset($caracteristicas[ZC_WS_TIPO])) ? strtolower($caracteristicas[ZC_TIPO_WS]) : strtolower($this->_tipoWS);
             $this->_metodo = (isset($caracteristicas[ZC_FORMULARIO_METODO])) ? strtoupper($caracteristicas[ZC_FORMULARIO_METODO]) : strtoupper($this->_metodo);
+            $this->_tipoFormulario = (isset($caracteristicas[ZC_FORMULARIO_TIPO])) ? strtolower($caracteristicas[ZC_FORMULARIO_TIPO]) : strtolower($this->_tipoFormulario);
             $this->inicio();
         }
     }
@@ -283,24 +300,21 @@ class formulario {
      */
     private function inicio() {
         // Nombre vista
-        $this->_nombreArchivoVista = 'v_' . $this->_id;
+        $this->_nombreArchivoVista = ZC_PREFIJO_VISTA . $this->_id;
         // Nombre modelo
-        $this->_nombreArchivoModelo = 'm_' . $this->_id;
+        $this->_nombreArchivoModelo = ZC_PREFIJO_MODELO . $this->_id;
         // Nombre modelo
-        $this->_nombreArchivoControlador = $this->_id;
+        $this->_nombreArchivoControlador = ZC_PREFIJO_CONTROLADOR . $this->_id;
         // Nombre del listado
-        $this->_nombreArchivoListar = 'l_' . $this->_id;
+        $this->_nombreArchivoListar = ZC_PREFIJO_LISTA . $this->_id;
         // Nombre del archivo que guarda las funcionalidades del servidor
-        $this->_nombreArchivoServidor = 'ws_' . $this->_id;
+        $this->_nombreArchivoServidor = ZC_PREFIJO_WS . $this->_id;
         // Nombre javascript
         $this->_nombreArchivoJs = $this->_id;
         // Nombre de la funcion de validacion
         $this->_nombreFuncionValidacion = 'validarDatos';
-        
-        if ($this->_id == strtolower(ZC_LOGIN_PAGINA)){
-            $this->_esLogin = true;
-        }
-
+        // Caracteristicas de la pagina en creacion
+        $this->_pagina = new pagina($this->_tipoFormulario, $this->_nombreArchivoControlador);
         return $this;
     }
 
@@ -358,11 +372,9 @@ class formulario {
          * Plantilla para la vista (view), se puede devolver, por eso se deja en una variable $this
          */
         $this->_plantilla = new plantilla($opciones);
-        if (!$this->_esLogin) {
-            $this->_plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlFluid.tpl');
-            $this->crearListarFormulario('../www/application/views', 'html', $opciones);
-        } else {
-            $this->_plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlLogin.tpl');
+        $this->_plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/' . $this->_pagina->_modelo->devolverPlantillaVista());
+        if (!$this->_pagina->_modelo->esLogin()){
+            $this->crearListarFormulario();
         }
 
         $this->_plantilla->asignarEtiqueta('idFormulario', $this->_id);
@@ -389,7 +401,6 @@ class formulario {
          */
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlListarFluid.tpl');
-
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('idFormulario', $this->_id);
         $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
@@ -414,12 +425,7 @@ class formulario {
          * Plantilla para el controlador (controller)
          */
         $plantilla = new plantilla($opciones);
-        if (!$this->_esLogin) {
-            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorSOAP.tpl');
-        } else {
-            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorLoginSOAP.tpl');
-        }
-
+        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/' . $this->_pagina->_modelo->devolverPlantillaControlador());
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('idFormulario', $this->_id);
         $plantilla->asignarEtiqueta('nombreVista', $this->_nombreArchivoVista . '.html');
@@ -446,12 +452,7 @@ class formulario {
          */
         $plantilla = new plantilla($opciones);
         
-        if (!$this->_esLogin) {
-            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsInicializacionjQuery.js');
-        } else {
-            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsLoginjQuery.js');
-        }
-
+        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/' . $this->_pagina->_modelo->devolverPlantillaJavascript());
         $plantilla->asignarEtiqueta('idFormulario', $this->_id);
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('accionAgregar', ZC_ACCION_AGREGAR);
@@ -482,21 +483,7 @@ class formulario {
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorServidorSOAP.tpl');
         
-        if (!$this->_esLogin) {
-            $comandoEspecial .= insertarEspacios(0) . '// Valida que el usuario este autenticado para poder usar los ws' . FIN_DE_LINEA;
-            $comandoEspecial .= insertarEspacios(8) . '// solo si es un llamado remoto' . FIN_DE_LINEA;
-            $comandoEspecial .= insertarEspacios(8) . '$this->load->library(\'zc\');' . FIN_DE_LINEA;
-            $comandoEspecial .= insertarEspacios(8) . 'if (!$this->zc->esWebService()) {' . FIN_DE_LINEA;
-            $comandoEspecial .= insertarEspacios(12) . '$datos = $this->zc->validarSesion();' . FIN_DE_LINEA;
-            $comandoEspecial .= insertarEspacios(12) . '$this->load->model(\'modelo_' . ZC_LOGIN_PAGINA . '\', \'zlogin\');' . FIN_DE_LINEA;
-            $comandoEspecial .= insertarEspacios(12) . '$rpta = $this->zlogin->loginCliente($datos);' . FIN_DE_LINEA;
-            $comandoEspecial .= insertarEspacios(12) . 'if (isset($rpta[\'error\'])) {' . FIN_DE_LINEA;
-            $comandoEspecial .= insertarEspacios(16) . 'die($rpta[\'error\']);' . FIN_DE_LINEA;
-            $comandoEspecial .= insertarEspacios(12) . '}' . FIN_DE_LINEA;
-            $comandoEspecial .= insertarEspacios(8) . '}' . FIN_DE_LINEA;
-        }
-
-        $plantilla->asignarEtiqueta('comandoEspecial', $comandoEspecial);
+        $plantilla->asignarEtiqueta('comandoEspecial', $this->_pagina->_modelo->devolverServidorAutenticacion());
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoServidor);
         $plantilla->asignarEtiqueta('accionesServidorWS', $this->_accionesServidorWS);
 
@@ -529,7 +516,7 @@ class formulario {
              * Se debe dejar, en este punto no ha pasado por la funcion elementos::verificar
              */
             $caracteristicas[ZC_ELEMENTO] = (strtolower($caracteristicas[ZC_ELEMENTO]));
-            if ($this->_esLogin) {
+            if ($this->_pagina->_modelo->esLogin()) {
                 // A los campos de formularios NO se les valida la longitud
                 $caracteristicas[ZC_LONGITUD_MAXIMA] = -1;
                 $caracteristicas[ZC_LONGITUD_MINIMA] = -1;
@@ -583,7 +570,7 @@ class formulario {
         $this->crearJavascriptFormulario();
         // La vista se debe crear despues de los archivos javascript (esto para cargar bien las rutas del js)
         // La vista de busqueda y listado de campos de la tabla
-        $this->crearVistaFormulario('../www/application/views', 'html');
+        $this->crearVistaFormulario();
         $this->fin();
         return $this;
     }
@@ -597,34 +584,13 @@ class formulario {
         $elementosFormulario = '';
         foreach ($elementos as $elemento => $valor) {
             // Hasta el momento solo se utilizan para los botones
-            $estiloInicio = $estiloFin = '';
+            $tpl = '{_elementoHTML_}';
             if ($elemento == 'acciones') {
                 // Las acciones son muchas en una sola fila, se agrupan al final del proceso
-                if (!$this->_esLogin) {
-                    $estiloInicio = "
-                        <div class='row'>
-                            <div class='col-md-1'></div>
-                            <div class='col-md-5'>
-                                <div class='text-right'>
-                            ";
-                    $estiloFin = "
-                                </div>
-                            </div>
-                            <div class='col-md-5'></div>
-                            <div class='col-md-1'></div>
-                        </div>
-                    ";
-                } else {
-                    $estiloInicio = "
-                        <div class='row'>
-                            ";
-                    $estiloFin = "
-                        </div>
-                    ";
-                }
+                $tpl = $this->_pagina->_modelo->devolverPlantillaBotones();
             }
             if (is_array($elementos[$elemento])) {
-                $elementosFormulario .= $estiloInicio . $this->unirElementosFormulario($elementos[$elemento]) . $estiloFin;
+                $elementosFormulario .= str_replace('{_elementoHTML_}', $this->unirElementosFormulario($elementos[$elemento]), $tpl);
             } else {
                 $elementosFormulario .= $elementos[$elemento];
             }
@@ -641,7 +607,7 @@ class formulario {
     private function agregarElementoCajaFormulario($caracteristicas) {
         $html = new caja($caracteristicas);
         $html->crear();
-        $this->_formulario['elementos'][$html->devolverId()] = (!$this->_esLogin) ? $html->devolver() : $html->devolverLogin();
+        $this->_formulario['elementos'][$html->devolverId()] = $html->{$this->_pagina->_modelo->devolverFuncionAgregar()}();
         $this->_elementos[] = $html->devolverProp();
         return $this;
     }
@@ -655,7 +621,7 @@ class formulario {
     private function agregarElementoRadioFormulario($caracteristicas) {
         $html = new radio($caracteristicas);
         $html->crear();
-        $this->_formulario['elementos'][$html->devolverId()] = (!$this->_esLogin) ? $html->devolver() : $html->devolverLogin();
+        $this->_formulario['elementos'][$html->devolverId()] = $html->{$this->_pagina->_modelo->devolverFuncionAgregar()}();
         $this->_elementos[] = $html->devolverProp();
         return $this;
     }
@@ -669,7 +635,7 @@ class formulario {
     private function agregarElementoCheckboxFormulario($caracteristicas) {
         $html = new checkbox($caracteristicas);
         $html->crear();
-        $this->_formulario['elementos'][$html->devolverId()] = (!$this->_esLogin) ? $html->devolver() : $html->devolverLogin();
+        $this->_formulario['elementos'][$html->devolverId()] = $html->{$this->_pagina->_modelo->devolverFuncionAgregar()}();
         $this->_elementos[] = $html->devolverProp();
         return $this;
     }
@@ -682,7 +648,7 @@ class formulario {
     private function agregarElementoListaFormulario($caracteristicas) {
         $html = new lista($caracteristicas, $this->_nombreArchivoControlador);
         $html->crear();
-        $this->_formulario['elementos'][$html->devolverId()] = (!$this->_esLogin) ? $html->devolver() : $html->devolverLogin();
+        $this->_formulario['elementos'][$html->devolverId()] = $html->{$this->_pagina->_modelo->devolverFuncionAgregar()}();
         $this->_elementos[] = $html->devolverProp();
         $this->javascriptFormulario($html->devolverAjax());
         return $this;
@@ -729,7 +695,7 @@ class formulario {
     private function modeloValidacionFormulario() {
         $validacion = '';
         // Determina la tabla a la que pertenece el campo
-        $tabla = (!$this->_esLogin) ? $this->_nombreArchivoControlador : ZC_LOGIN_TABLA;
+        $tabla = $this->_pagina->_modelo->devolverArchivoControlador();
         // Agrega el id, necesario para busqueda y modificacion de registro
         $this->_aliasCampos .= aliasCampos('id', 'id', $tabla);
         foreach ($this->_elementos as $nro => $caracteristicas) {
@@ -747,7 +713,7 @@ class formulario {
                 $this->_tablasRelacionadas .= tablasRelacionadas($caracteristicas[ZC_ID], $joinTablas['tabla'], $joinTablas['join']);
                 // Nombre de los campos usados
                 $this->_aliasCampos .= aliasCampos($joinTablas['campo'], $caracteristicas[ZC_ETIQUETA], $joinTablas['tabla']);
-            } elseif ($caracteristicas[ZC_DATO] !== ZC_DATO_CONTRASENA || ($caracteristicas[ZC_DATO] === ZC_DATO_CONTRASENA && $this->_esLogin)) {
+            } elseif (($caracteristicas[ZC_DATO] !== ZC_DATO_CONTRASENA) || ($caracteristicas[ZC_DATO] === ZC_DATO_CONTRASENA && $this->_pagina->_modelo->esLogin())) {
                 // Las contrasenas se omiten en el listado del formulario de busqueda, excepto para el caso de login
                 // La contrasena se almacena en los datos de session para autencicarse con los WS
                 $this->_aliasCampos .= aliasCampos($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $tabla);
@@ -853,19 +819,9 @@ class formulario {
             /**
              * Plantilla para la creacion de acciones en el cliente
              */
-            $comandoEspecial = '';
-            
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpCrearAccion.tpl');
-            
-            if (!$this->_esLogin) {
-                $comandoEspecial .= insertarEspacios(0) . '/**' . FIN_DE_LINEA;
-                $comandoEspecial .= insertarEspacios(9) . '* Define los datos de acceso al WS ' . FIN_DE_LINEA;
-                $comandoEspecial .= insertarEspacios(9) . '*/' . FIN_DE_LINEA;
-                $comandoEspecial .= insertarEspacios(8) . '$_CLI_WS->setCredentials($this->session->userdata(\'Login\'), $this->session->userdata(\'Clave\'), \'basic\');' . FIN_DE_LINEA;
-            }
-            
-            $plantilla->asignarEtiqueta('comandoEspecial', $comandoEspecial);
+            $plantilla->asignarEtiqueta('comandoEspecial', $this->_pagina->_modelo->devolverClienteAutenticacion());
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
             $plantilla->asignarEtiqueta('servidorAccion', $this->_nombreArchivoServidor);
             $plantilla->asignarEtiqueta('asignacionCliente', $this->_inicializarCliente[$caracteristicas[ZC_ID]]);
@@ -945,6 +901,8 @@ class formulario {
 
             // Determina la accion a ejecutar en el cvontrolador
             $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO], $this->_nombreFuncionValidacion);
+            // Nombre de los archivos usados
+            $accion->modelo($this->_nombreArchivoModelo);
             // Funciones creada en el servidor
             $this->_funcionServidor[$caracteristicas[ZC_ID]] = $accion->crear()->devolverElemento();
             // Concatena las funciones que se ejecutaran en el modelo

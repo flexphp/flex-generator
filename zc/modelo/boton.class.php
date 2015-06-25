@@ -1,11 +1,6 @@
 <?php
 
 /**
- * Clase base para la creacion de elemento HTML
- */
-require_once 'elemento.class.php';
-
-/**
  * Crea botones: button, reset
  */
 class boton extends elemento {

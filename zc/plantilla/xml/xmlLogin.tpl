@@ -4,6 +4,7 @@
         <nombre_formulario>Login</nombre_formulario>
         <tipo_de_servicio>{_tipoServicio_}</tipo_de_servicio>
         <se_guardara_en>{_tipoMotor_}</se_guardara_en>
+        <tipo_formulario>autenticacion</tipo_formulario>
         <login>
             <que_quieres>Caja</que_quieres>
             <como_se_llama>Login</como_se_llama>
