@@ -39,9 +39,9 @@ define('ZC_AUTOFOCO', 'campo_principal');
 // Tipos de elementos aceptados
 define('ZC_ELEMENTO', 'que_quieres');
 define('ZC_ELEMENTO_CAJA', 'caja');
-define('ZC_ELEMENTO_RADIO', 'circulo');
-define('ZC_ELEMENTO_CHECKBOX', 'cuadrado');
-define('ZC_ELEMENTO_SELECT', 'listado');
+define('ZC_ELEMENTO_RADIO', 'radio');
+define('ZC_ELEMENTO_CHECKBOX', 'checkbox');
+define('ZC_ELEMENTO_LISTA', 'lista');
 define('ZC_ELEMENTO_OPCIONES', 'valores');
 // Tipos de datos aceptados
 define('ZC_DATO', 'que_dato_recibira');

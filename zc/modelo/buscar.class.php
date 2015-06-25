@@ -173,7 +173,7 @@ class buscar extends accion {
             switch (true) {
                 case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_CHECKBOX:
                 case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_RADIO:
-                case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_SELECT:
+                case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_LISTA:
                     $operador .= $operadorLista;
                     break;
                 case $campo[ZC_DATO] == ZC_DATO_NUMERICO:
@@ -200,7 +200,7 @@ class buscar extends accion {
                 case ZC_ELEMENTO_RADIO:
                     $filtro = new radio($this->_campos[$nro]);
                     break;
-                case ZC_ELEMENTO_SELECT:
+                case ZC_ELEMENTO_LISTA:
                     $filtro = new lista($this->_campos[$nro], $this->_tabla);
                     break;
                 case ZC_ELEMENTO_CHECKBOX:

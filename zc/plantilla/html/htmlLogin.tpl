@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{_nombreFormulario_}</title>
         <!-- CSS Bootstrap -->
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/bootstrap.css">
         <!-- CSS Parsley -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/parsley.css">
 
@@ -69,13 +69,13 @@
         <!-- URL del proyecto, se usa en los llamados ajax -->
         <input type="hidden" id="URLProyecto" name="URLProyecto" value="<?php echo base_url(); ?>"/>
         <!-- JS jQuery -->
-        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/jquery.v2.1.1.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/jquery.js"></script>
         <!-- JS BootStrap -->
-        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/bootstrap.v3.3.2.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/bootstrap.js"></script>
         <!-- JS Parsley -->
-        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/parsley.v2.0.5.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/parsley.js"></script>
         <!-- Utilidades ZC -->
-        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/zc.v1.0.0.js"></script>
+        <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/zc.js"></script>
         {_archivoJavascript_}
     </body>
 </html>

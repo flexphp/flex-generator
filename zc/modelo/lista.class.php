@@ -139,7 +139,7 @@ class lista extends elemento {
      * Devuelve la ruta del archivo ajax si existe
      * @return type
      */
-    function devolverAjax() {
+    public function devolverAjax() {
         return (isset($this->_ajax)) ? $this->_ajax : null;
     }
 

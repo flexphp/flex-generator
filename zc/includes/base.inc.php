@@ -86,32 +86,32 @@ function plantillas() {
      */
     $jqueryjs = new plantilla();
     $jqueryjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jquery.v2.1.1.min.js');
-    $jqueryjs->crearPlantilla('../www/publico/js', 'js');
+    $jqueryjs->crearPlantilla('../www/publico/js', 'js', 'jquery');
 
     /**
      * Parsley Homologado
      */
     $parsleyjs = new plantilla();
     $parsleyjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/parsley.v2.0.5.js');
-    $parsleyjs->crearPlantilla('../www/publico/js', 'js');
+    $parsleyjs->crearPlantilla('../www/publico/js', 'js', 'parsley');
 
     /**
      * Boostrap Homologado
      */
     $bootstrapjs = new plantilla();
     $bootstrapjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/bootstrap.v3.3.2.min.js');
-    $bootstrapjs->crearPlantilla('../www/publico/js', 'js');
+    $bootstrapjs->crearPlantilla('../www/publico/js', 'js', 'bootstrap');
 
     /**
      * Datapicker
      */
     $datetimepickerjs = new plantilla();
     $datetimepickerjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/datetimepicker.v4.7.14.min.js');
-    $datetimepickerjs->crearPlantilla('../www/publico/js', 'js');
+    $datetimepickerjs->crearPlantilla('../www/publico/js', 'js', 'datetimepicker');
 
     $momentjs = new plantilla();
     $momentjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/moment.v2.9.0.min.js');
-    $momentjs->crearPlantilla('../www/publico/js', 'js');
+    $momentjs->crearPlantilla('../www/publico/js', 'js', 'moment');
 
     /**
      * Lenguaje datapicker
@@ -125,7 +125,7 @@ function plantillas() {
      */
     $zcjs = new plantilla();
     $zcjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/zc.v1.0.0.js');
-    $zcjs->crearPlantilla('../www/publico/js', 'js');
+    $zcjs->crearPlantilla('../www/publico/js', 'js', 'zc');
 
     $indexjs = new plantilla();
     $indexjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/index.html');
@@ -136,11 +136,11 @@ function plantillas() {
      */
     $bootstrapcss = new plantilla();
     $bootstrapcss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/bootstrap.min.css');
-    $bootstrapcss->crearPlantilla('../www/publico/css', 'css');
+    $bootstrapcss->crearPlantilla('../www/publico/css', 'css', 'bootstrap');
 
     $datetimepicker = new plantilla();
     $datetimepicker->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/datetimepicker.min.css');
-    $datetimepicker->crearPlantilla('../www/publico/css', 'css');
+    $datetimepicker->crearPlantilla('../www/publico/css', 'css', 'datetimepicker');
 
     $parsleycss = new plantilla();
     $parsleycss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/parsley.css');

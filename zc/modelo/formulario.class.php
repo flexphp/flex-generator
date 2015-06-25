@@ -94,7 +94,7 @@ class formulario {
      * Almacena la plantilla html de la vista seleccionada, formulario de ingreso/modificacion
      * @var \plantilla
      */
-    private $_plantillaHTML = null;
+    private $_plantilla = null;
 
     /**
      * Elementos utilizados por el formulario, pueden ser text, select, radio, checkbox.
@@ -316,7 +316,7 @@ class formulario {
      * @return string
      */
     public function devolver() {
-        return $this->_plantillaHTML->devolverPlantilla();
+        return $this->_plantilla->devolverPlantilla();
     }
 
     /**
@@ -353,43 +353,25 @@ class formulario {
      * @param array $opciones Opciones a aplicar a la plantilla del formulario creado, minimizar, abrir
      * @return \formulario
      */
-    public function crearVistaLogin($directorioSalida = '../www/application/views', $extension = 'html', $opciones = array()) {
-        /**
-         * Plantilla para la vista (view), se puede devolver, por eso se deja en una variable $this
-         */
-        $plantilla = new plantilla($opciones);
-        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlLogin.tpl');
-
-        $plantilla->asignarEtiqueta('idFormulario', $this->_id);
-        $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
-        $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
-        $plantilla->asignarEtiqueta('contenidoFormulario', $this->unirElementosFormulario($this->_formulario));
-        $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
-
-        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoVista);
-    }
-    
-    /**
-     * Crear un arhivo html para la creacion/modificacion de un registro
-     * @param string $directorioSalida Ruta donde se creara el archivo
-     * @param string $extension Extension del archivo creado
-     * @param array $opciones Opciones a aplicar a la plantilla del formulario creado, minimizar, abrir
-     * @return \formulario
-     */
     public function crearVistaFormulario($directorioSalida = '../www/application/views', $extension = 'html', $opciones = array()) {
         /**
          * Plantilla para la vista (view), se puede devolver, por eso se deja en una variable $this
          */
-        $this->_plantillaHTML = new plantilla($opciones);
-        $this->_plantillaHTML->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlFluid.tpl');
+        $this->_plantilla = new plantilla($opciones);
+        if (!$this->_esLogin) {
+            $this->_plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlFluid.tpl');
+            $this->crearListarFormulario('../www/application/views', 'html', $opciones);
+        } else {
+            $this->_plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlLogin.tpl');
+        }
 
-        $this->_plantillaHTML->asignarEtiqueta('idFormulario', $this->_id);
-        $this->_plantillaHTML->asignarEtiqueta('nombreFormulario', $this->_nombre);
-        $this->_plantillaHTML->asignarEtiqueta('metodoFormulario', $this->_metodo);
-        $this->_plantillaHTML->asignarEtiqueta('contenidoFormulario', $this->unirElementosFormulario($this->_formulario));
-        $this->_plantillaHTML->asignarEtiqueta('archivoJavascript', $this->_js);
+        $this->_plantilla->asignarEtiqueta('idFormulario', $this->_id);
+        $this->_plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
+        $this->_plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
+        $this->_plantilla->asignarEtiqueta('contenidoFormulario', $this->unirElementosFormulario($this->_formulario));
+        $this->_plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
 
-        $this->_plantillaHTML->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoVista);
+        $this->_plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoVista);
 
         return $this;
     }
@@ -427,37 +409,16 @@ class formulario {
      * @param array $opciones Opciones a aplicar a la plantilla creada
      * @return \formulario
      */
-    private function crearControladorLogin($directorioSalida = '../www/application/controllers', $extension = 'php', $opciones = array()) {
-        /**
-         * Plantilla para el controlador (controller)
-         */
-        $plantilla = new plantilla($opciones);
-        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorLoginSOAP.tpl');
-
-        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
-        $plantilla->asignarEtiqueta('idFormulario', $this->_id);
-        $plantilla->asignarEtiqueta('nombreVista', $this->_nombreArchivoVista . '.html');
-        $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
-        $plantilla->asignarEtiqueta('accionServidor', $this->_funcionControlador);
-
-        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoControlador);
-
-        return $this;
-    }
-    
-    /**
-     * Crea el controlador del formulario del tipo CodeIgniter
-     * @param string $directorioSalida Ruta donde se creara el archivos
-     * @param string $extension Extension con la cual se creara el archivo
-     * @param array $opciones Opciones a aplicar a la plantilla creada
-     * @return \formulario
-     */
     private function crearControladorFormulario($directorioSalida = '../www/application/controllers', $extension = 'php', $opciones = array()) {
         /**
          * Plantilla para el controlador (controller)
          */
         $plantilla = new plantilla($opciones);
-        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorSOAP.tpl');
+        if (!$this->_esLogin) {
+            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorSOAP.tpl');
+        } else {
+            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorLoginSOAP.tpl');
+        }
 
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('idFormulario', $this->_id);
@@ -569,7 +530,7 @@ class formulario {
              */
             $caracteristicas[ZC_ELEMENTO] = (strtolower($caracteristicas[ZC_ELEMENTO]));
             if ($this->_esLogin) {
-                // A los campos de formularios NO se les valida la logintud
+                // A los campos de formularios NO se les valida la longitud
                 $caracteristicas[ZC_LONGITUD_MAXIMA] = -1;
                 $caracteristicas[ZC_LONGITUD_MINIMA] = -1;
             }
@@ -584,7 +545,7 @@ class formulario {
                 case ZC_ELEMENTO_CHECKBOX:
                     $this->agregarElementoCheckboxFormulario($caracteristicas);
                     break;
-                case ZC_ELEMENTO_SELECT:
+                case ZC_ELEMENTO_LISTA:
                     $this->agregarElementoListaFormulario($caracteristicas);
                     break;
                 case ZC_ACCION_RESTABLECER:
@@ -598,7 +559,7 @@ class formulario {
                 case ZC_ACCION_PRECARGAR:
                 case ZC_ACCION_AJAX:
                 case ZC_ACCION_LOGIN:
-                    $this->agregarElementoBotonFormulario($caracteristicas);
+                    $this->agregarAccionBotonFormulario($caracteristicas);
                     break;
                 default:
                     mostrarErrorZC(__FILE__, __FUNCTION__, ": Tipo de elemento no definido: {$caracteristicas[ZC_ELEMENTO]}!");
@@ -613,28 +574,16 @@ class formulario {
      */
     public function finFormulario() {
         $this->procesarFormulario();
-        if (!$this->_esLogin) {
-            $this->crearControladorFormulario();
-        } else {
-            $this->crearControladorLogin();
-        }
+        $this->crearControladorFormulario();
         $this->crearModeloFormulario();
         $this->crearControladorServidorFormulario();
         // Las acciones del cliente se deben procesar despues de crear el controlador,
         // ya que este ultimo hace referencia a la URL
         $this->crearAccionesClienteFormulario();
         $this->crearJavascriptFormulario();
-        // La vista se debe crear despues de los archivos javascript (cargar bien rutas js)
-//        $opciones = array('minimizar' => true);
-        $opciones = array();
-        if (!$this->_esLogin) {
-            $this->crearVistaFormulario('../www/application/views', 'html', $opciones);
-            // La vista de busqueda y listado de campos de la tabla
-            $this->crearListarFormulario('../www/application/views', 'html', $opciones);
-        }else{
-            // Vista de login
-            $this->crearVistaLogin('../www/application/views', 'html', $opciones);
-        }
+        // La vista se debe crear despues de los archivos javascript (esto para cargar bien las rutas del js)
+        // La vista de busqueda y listado de campos de la tabla
+        $this->crearVistaFormulario('../www/application/views', 'html');
         $this->fin();
         return $this;
     }
@@ -684,27 +633,41 @@ class formulario {
     }
 
     /**
-     * Agrega las botones dentro del formulario, segun caracteristicas
-     * @param string $caracteristicas Caracteristicas extraidas del XML
-     * @param string $tipoAccion Tipo de acciones boton|restablecer
-     * @return \formulario
-     */
-    private function agregarElementoBotonFormulario($caracteristicas, $tipoAccion = 'boton') {
-        $html = new boton($caracteristicas, $tipoAccion);
-        $html->crear();
-        // Devuelve el elemento, no usa devoverl() t a que los botones no usan la plantilla
-        $this->_formulario['acciones'][$html->devolverId()] = $html->devolverElemento();
-        $this->_acciones[] = $html->devolverProp();
-        return $this;
-    }
-
-    /**
-     * Agrega las cajas de texto dentro del formulario, segun caracteristicas
+     * Agrega las cajas dentro del formulario, segun caracteristicas del XML
+     * @param string $tipo Caracteristicas extraidas del XML
      * @param string $caracteristicas Caracteristicas extraidas del XML
      * @return \formulario
      */
     private function agregarElementoCajaFormulario($caracteristicas) {
         $html = new caja($caracteristicas);
+        $html->crear();
+        $this->_formulario['elementos'][$html->devolverId()] = (!$this->_esLogin) ? $html->devolver() : $html->devolverLogin();
+        $this->_elementos[] = $html->devolverProp();
+        return $this;
+    }
+
+    /**
+     * Agrega las radios dentro del formulario, segun caracteristicas del XML
+     * @param string $tipo Caracteristicas extraidas del XML
+     * @param string $caracteristicas Caracteristicas extraidas del XML
+     * @return \formulario
+     */
+    private function agregarElementoRadioFormulario($caracteristicas) {
+        $html = new radio($caracteristicas);
+        $html->crear();
+        $this->_formulario['elementos'][$html->devolverId()] = (!$this->_esLogin) ? $html->devolver() : $html->devolverLogin();
+        $this->_elementos[] = $html->devolverProp();
+        return $this;
+    }
+
+    /**
+     * Agrega las checkbox dentro del formulario, segun caracteristicas del XML
+     * @param string $tipo Caracteristicas extraidas del XML
+     * @param string $caracteristicas Caracteristicas extraidas del XML
+     * @return \formulario
+     */
+    private function agregarElementoCheckboxFormulario($caracteristicas) {
+        $html = new checkbox($caracteristicas);
         $html->crear();
         $this->_formulario['elementos'][$html->devolverId()] = (!$this->_esLogin) ? $html->devolver() : $html->devolverLogin();
         $this->_elementos[] = $html->devolverProp();
@@ -726,28 +689,16 @@ class formulario {
     }
 
     /**
-     * Agrega las radios dentro del formulario, segun caracteristicas
+     * Agrega las botones dentro del formulario, segun caracteristicas
      * @param string $caracteristicas Caracteristicas extraidas del XML
      * @return \formulario
      */
-    private function agregarElementoRadioFormulario($caracteristicas) {
-        $html = new radio($caracteristicas);
+    private function agregarAccionBotonFormulario($caracteristicas) {
+        $html = new boton($caracteristicas);
         $html->crear();
-        $this->_formulario['elementos'][$html->devolverId()] = (!$this->_esLogin) ? $html->devolver() : $html->devolverLogin();
-        $this->_elementos[] = $html->devolverProp();
-        return $this;
-    }
-
-    /**
-     * Agrega las checkbox dentro del formulario, segun caracteristicas
-     * @param string $caracteristicas Caracteristicas extraidas del XML
-     * @return \formulario
-     */
-    private function agregarElementoCheckboxFormulario($caracteristicas) {
-        $html = new checkbox($caracteristicas);
-        $html->crear();
-        $this->_formulario['elementos'][$html->devolverId()] = (!$this->_esLogin) ? $html->devolver() : $html->devolverLogin();
-        $this->_elementos[] = $html->devolverProp();
+        // Devuelve el elemento, no usa devover() ya que los botones no usan la plantilla
+        $this->_formulario['acciones'][$html->devolverId()] = $html->devolverElemento();
+        $this->_acciones[] = $html->devolverProp();
         return $this;
     }
 

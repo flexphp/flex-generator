@@ -140,7 +140,7 @@ class zcs {
                 case ZC_ELEMENTO_CAJA:
                 case ZC_ELEMENTO_RADIO:
                 case ZC_ELEMENTO_CHECKBOX:
-                case ZC_ELEMENTO_SELECT:
+                case ZC_ELEMENTO_LISTA:
                     // Agregar el tipo de elemento a crear
                     $this->_xml .= insertarEspacios(12) . '<' . ZC_ELEMENTO . '>' . $palabra . '</' . ZC_ELEMENTO . '>' . FIN_DE_LINEA;
                     break;
