@@ -6,34 +6,14 @@
 require RUTA_GENERADOR_CODIGO . '/modelo/pagina.class.php';
 
 /**
- * Clase para crear caja|radio|lista|checkbox
+ * Mediador para crear elementos HTML caja|radio|lista|checkbox
  */
 require RUTA_GENERADOR_CODIGO . '/modelo/elemento.class.php';
 
 /**
- * Clase para la creacion de cajas (text, password, textarea)
- */
-require RUTA_GENERADOR_CODIGO . '/modelo/caja.class.php';
-
-/**
- * Clase para la creacion de botones (button)
+ * Clase para crear botones
  */
 require RUTA_GENERADOR_CODIGO . '/modelo/boton.class.php';
-
-/**
- * Clase para la creacion de listas (select)
- */
-require RUTA_GENERADOR_CODIGO . '/modelo/lista.class.php';
-
-/**
- * Clase para la creacion de unica seleccion (radio)
- */
-require RUTA_GENERADOR_CODIGO . '/modelo/radio.class.php';
-
-/**
- * Clase para la creacion de selecciones multiples (checkbox)
- */
-require RUTA_GENERADOR_CODIGO . '/modelo/checkbox.class.php';
 
 /**
  * Clase para la creacion de acciones segun el boton seleccionado
@@ -367,7 +347,7 @@ class formulario {
      * @param array $opciones Opciones a aplicar a la plantilla del formulario creado, minimizar, abrir
      * @return \formulario
      */
-    public function crearVistaFormulario($directorioSalida = '../www/application/views', $extension = 'html', $opciones = array()) {
+    private function crearVistaFormulario($directorioSalida = '../www/application/views', $extension = 'html', $opciones = array()) {
         /**
          * Plantilla para la vista (view), se puede devolver, por eso se deja en una variable $this
          */
@@ -496,9 +476,9 @@ class formulario {
      * Alias de la funcion para agregar elementos desde otras clases, se puede omitir el tipo
      * de elemento, la funcion se encarga de escoger el adecuado, ademas acepta multiles elementos separados por coma
      */
-    public function agregarElemento() {
+    public function agregarAtributo() {
         $elementos = func_get_args();
-        $this->agregarElementoFormulario($elementos);
+        $this->agregarAtributoFormulario($elementos);
     }
 
     /**
@@ -506,7 +486,7 @@ class formulario {
      * @param array $elementos Caracteristicas de los elementos a entregar
      * @return \formulario
      */
-    private function agregarElementoFormulario($elementos) {
+    private function agregarAtributoFormulario($elementos) {
         foreach ($elementos as $caracteristicas) {
             if (!is_array($caracteristicas)) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': Y las caracteristicas del elemento!?');
@@ -524,16 +504,10 @@ class formulario {
             $caracteristicas[ZC_AUTOFOCO] = $this->aplicarAutofoco();
             switch ($caracteristicas[ZC_ELEMENTO]) {
                 case ZC_ELEMENTO_CAJA:
-                    $this->agregarElementoCajaFormulario($caracteristicas);
-                    break;
                 case ZC_ELEMENTO_RADIO:
-                    $this->agregarElementoRadioFormulario($caracteristicas);
-                    break;
                 case ZC_ELEMENTO_CHECKBOX:
-                    $this->agregarElementoCheckboxFormulario($caracteristicas);
-                    break;
                 case ZC_ELEMENTO_LISTA:
-                    $this->agregarElementoListaFormulario($caracteristicas);
+                    $this->agregarElementoFormulario($caracteristicas);
                     break;
                 case ZC_ACCION_RESTABLECER:
                 case ZC_ACCION_CANCELAR:
@@ -546,10 +520,10 @@ class formulario {
                 case ZC_ACCION_PRECARGAR:
                 case ZC_ACCION_AJAX:
                 case ZC_ACCION_LOGIN:
-                    $this->agregarAccionBotonFormulario($caracteristicas);
+                    $this->agregarAccionFormulario($caracteristicas);
                     break;
                 default:
-                    mostrarErrorZC(__FILE__, __FUNCTION__, ": Tipo de elemento no definido: {$caracteristicas[ZC_ELEMENTO]}!");
+                    mostrarErrorZC(__FILE__, __FUNCTION__, ": Tipo de atributo no definido: {$caracteristicas[ZC_ELEMENTO]}!");
             }
         }
         return $this;
@@ -599,58 +573,21 @@ class formulario {
     }
 
     /**
-     * Agrega las cajas dentro del formulario, segun caracteristicas del XML
-     * @param string $tipo Caracteristicas extraidas del XML
+     * Agrega las cajas, radios, checkboxs, select dentro del formulario, segun caracteristicas del XML
      * @param string $caracteristicas Caracteristicas extraidas del XML
      * @return \formulario
      */
-    private function agregarElementoCajaFormulario($caracteristicas) {
-        $html = new caja($caracteristicas);
-        $html->crear();
-        $this->_formulario['elementos'][$html->devolverId()] = $html->{$this->_pagina->_modelo->devolverFuncionAgregar()}();
-        $this->_elementos[] = $html->devolverProp();
-        return $this;
-    }
-
-    /**
-     * Agrega las radios dentro del formulario, segun caracteristicas del XML
-     * @param string $tipo Caracteristicas extraidas del XML
-     * @param string $caracteristicas Caracteristicas extraidas del XML
-     * @return \formulario
-     */
-    private function agregarElementoRadioFormulario($caracteristicas) {
-        $html = new radio($caracteristicas);
-        $html->crear();
-        $this->_formulario['elementos'][$html->devolverId()] = $html->{$this->_pagina->_modelo->devolverFuncionAgregar()}();
-        $this->_elementos[] = $html->devolverProp();
-        return $this;
-    }
-
-    /**
-     * Agrega las checkbox dentro del formulario, segun caracteristicas del XML
-     * @param string $tipo Caracteristicas extraidas del XML
-     * @param string $caracteristicas Caracteristicas extraidas del XML
-     * @return \formulario
-     */
-    private function agregarElementoCheckboxFormulario($caracteristicas) {
-        $html = new checkbox($caracteristicas);
-        $html->crear();
-        $this->_formulario['elementos'][$html->devolverId()] = $html->{$this->_pagina->_modelo->devolverFuncionAgregar()}();
-        $this->_elementos[] = $html->devolverProp();
-        return $this;
-    }
-
-    /**
-     * Agrega las listas dentro del formulario, segun caracteristicas
-     * @param string $caracteristicas Caracteristicas extraidas del XML
-     * @return \formulario
-     */
-    private function agregarElementoListaFormulario($caracteristicas) {
-        $html = new lista($caracteristicas, $this->_nombreArchivoControlador);
-        $html->crear();
-        $this->_formulario['elementos'][$html->devolverId()] = $html->{$this->_pagina->_modelo->devolverFuncionAgregar()}();
-        $this->_elementos[] = $html->devolverProp();
-        $this->javascriptFormulario($html->devolverAjax());
+    private function agregarElementoFormulario($caracteristicas) {
+        $html = new elemento($caracteristicas);
+        $html->propiedad('controlador', $this->_nombreArchivoControlador);
+        // Instancia del elemento creado
+        $elemento = $html->crear();
+        $this->_formulario['elementos'][$elemento->devolverId()] = $elemento->{$this->_pagina->_modelo->devolverFuncionAgregar()}();
+        $this->_elementos[] = $elemento->devolverProp();
+        if (method_exists($elemento, 'devolverAjax')){
+            // Si el metodo devolverAjax existe es una lista y verifica si se creo un archivo de consulta Ajax
+            $this->javascriptFormulario($elemento->devolverAjax());
+        }
         return $this;
     }
 
@@ -659,7 +596,7 @@ class formulario {
      * @param string $caracteristicas Caracteristicas extraidas del XML
      * @return \formulario
      */
-    private function agregarAccionBotonFormulario($caracteristicas) {
+    private function agregarAccionFormulario($caracteristicas) {
         $html = new boton($caracteristicas);
         $html->crear();
         // Devuelve el elemento, no usa devover() ya que los botones no usan la plantilla

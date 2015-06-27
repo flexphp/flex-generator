@@ -3,7 +3,7 @@
 /**
  * Crea cajas texto
  */
-class caja extends elemento {
+class caja extends Aelemento {
 
     /**
      * Tipo de datos que recibira el campo, ver AZ_DATO_*

@@ -3,7 +3,7 @@
 /**
  * Crea elementos de lista, (select)
  */
-class checkbox extends elemento {
+class checkbox extends Aelemento {
 
     /**
      * HTML con el conjunto de opciones posibles para la lista

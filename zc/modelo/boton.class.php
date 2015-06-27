@@ -3,7 +3,7 @@
 /**
  * Crea botones: button, reset
  */
-class boton extends elemento {
+class boton extends Aelemento {
 
     /**
      * Tipo de boton/accion a ejecutar

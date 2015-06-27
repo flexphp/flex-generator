@@ -81,6 +81,19 @@ function plantillas() {
     $iniciohtml->asignarEtiqueta('nombreControlador', 'inicio');
     $iniciohtml->crearPlantilla('../www/application/views', 'html', ZC_PREFIJO_VISTA . 'inicio');
 
+
+    /**
+     * Compatiblilidad con HTML5
+     * IE8 support of HTML5 elements and media queries
+     */
+    $html5js = new plantilla();
+    $html5js->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/html5shiv.v3.7.2.js');
+    $html5js->crearPlantilla('../www/publico/js', 'js', 'html5shiv');
+
+    $respondjs = new plantilla();
+    $respondjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/respond.v1.4.2.js');
+    $respondjs->crearPlantilla('../www/publico/js', 'js', 'respond');
+
     /**
      * JQuery homologado
      */

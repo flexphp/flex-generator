@@ -471,3 +471,21 @@ function extensionArchivo($archivo) {
     $ext = explode('.', $archivo);
     return strtolower(end($ext));
 }
+
+/**
+ * Carga la clase para para ser usada por el proceso
+ * @param string $archivo Nombre del archivo que hace la solicitud
+ * @param string $funcion Nombre de la desde la cual se invoca
+ * @param string $clase Nombre de la clase a verificar
+ */
+function cargarClase($archivo, $funcion, $clase) {
+    if(!class_exists($clase)) {
+        // Si la clase a un no se ha definido carga la definicion
+        $rutaClase = RUTA_GENERADOR_CODIGO . '/modelo/' . $clase . '.class.php';
+        if (file_exists($rutaClase)) {
+            require $rutaClase;
+        } else {
+            mostrarErrorZC($archivo, $funcion, ': Clase no existe: ' . $clase . '->' . $rutaClase);
+        }
+    }
+}

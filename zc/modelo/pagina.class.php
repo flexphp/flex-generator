@@ -16,15 +16,7 @@ class pagina {
      * @return string
      */
     public function __construct($tipo, $controlador = '') {
-        if (!class_exists($tipo)) {
-            // Si la clase a un no se ha definido carga la definicion
-            $rutaClase = RUTA_GENERADOR_CODIGO . '/modelo/' . $tipo . '.class.php';
-            if (file_exists($rutaClase)) {
-                require $rutaClase;
-            } else {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de pagina no soportada: ' . $tipo);
-            }
-        }
+        cargarClase(__FILE__, __FUNCTION__, $tipo);
         // Asigna el modelo a crear
         $this->_modelo = new $tipo($controlador);
     }

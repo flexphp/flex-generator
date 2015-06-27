@@ -38,7 +38,7 @@ require RUTA_GENERADOR_CODIGO . '/modelo/ajax.class.php';
 /**
  * Crea acciones: agregar, buscar, modificar, eliminar, cancelar, defecto
  */
-class accion extends elemento {
+class accion extends Aelemento {
 
     /**
      * Formulario o tabla relacionado

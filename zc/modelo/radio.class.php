@@ -3,7 +3,7 @@
 /**
  * Crea elementos de lista, (select)
  */
-class radio extends elemento {
+class radio extends Aelemento {
 
     /**
      * HTML con el conjunto de opciones posibles para la lista

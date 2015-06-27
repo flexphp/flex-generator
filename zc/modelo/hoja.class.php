@@ -103,7 +103,7 @@ class hoja extends xml {
                 /**
                  * Otros atributos no definidos, esta funcion se encarga de validar el tipo
                  */
-                $formulario->agregarElemento($value);
+                $formulario->agregarAtributo($value);
             } else {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': No existe el elemento ' . preprint($value, 1));
             }
