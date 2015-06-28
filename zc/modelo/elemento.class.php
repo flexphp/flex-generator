@@ -96,7 +96,7 @@ class elemento {
      * @return \formulario
      */
     private function agregarElementoLista($caracteristicas) {
-        $this->_elemento = new lista($caracteristicas, $this->_propiedad['controlador']);
+        $this->_elemento = new lista($caracteristicas, ((isset($this->_propiedad['controlador'])) ? $this->_propiedad['controlador'] : ''));
         $this->_elemento->crear();
         return $this;
     }

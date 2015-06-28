@@ -66,8 +66,7 @@ class lista extends Aelemento {
                 $this->ayuda() .
                 "/>
                     {$this->_opciones}
-                    </select>
-                    <span class='help-block'></span>";
+                    </select><span class='help-block'></span>";
         return $this;
     }
 

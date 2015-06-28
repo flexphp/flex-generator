@@ -78,16 +78,16 @@ abstract class Apaginas {
      * @return string
      */
     public function devolverPlantillaBotones() {
-        $tpl = tabular("<div class='row'>", 4);
-        $tpl .= tabular("<div class='col-md-1'></div>", 4);
-        $tpl .= tabular("<div class='col-md-5'>", 4);
-        $tpl .= tabular("<div class='text-right'>", 4);
-        $tpl .= tabular("{_elementoHTML_}", 4);
-        $tpl .= tabular("</div>", 4);
-        $tpl .= tabular("</div>", 4);
-        $tpl .= tabular("<div class='col-md-5'></div>", 4);
-        $tpl .= tabular("<div class='col-md-1'></div>", 4);
-        $tpl .= tabular("</div>", 4);
+        $tpl = tabular("<div class='row'>", 20);
+        $tpl .= tabular("<div class='col-md-1'></div>", 24);
+        $tpl .= tabular("<div class='col-md-5'>", 24);
+        $tpl .= tabular("<div class='text-right'>", 28);
+        $tpl .= tabular("{_elementoHTML_}", 60);
+        $tpl .= tabular("</div>", 28);
+        $tpl .= tabular("</div>", 24);
+        $tpl .= tabular("<div class='col-md-5'></div>", 24);
+        $tpl .= tabular("<div class='col-md-1'></div>", 24);
+        $tpl .= tabular("</div>", 20);
         return $tpl;
     }
 
@@ -114,9 +114,7 @@ abstract class Apaginas {
      * @return string
      */
     public function devolverClienteAutenticacion() {
-        $tpl = tabular('/**', 0);
-        $tpl .= tabular('* Define los datos de acceso al WS ', 9);
-        $tpl .= tabular('*/', 9);
+        $tpl = tabular('// Define los datos de acceso al WS ', 9);
         $tpl .= tabular('$_CLI_WS->setCredentials($this->session->userdata(\'Login\'), $this->session->userdata(\'Clave\'), \'basic\');', 8);
         return $tpl;
     }

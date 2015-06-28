@@ -27,7 +27,7 @@ class navegacion {
         $formulario = $info['formulario'];
         if ($controlador != ZC_LOGIN_PAGINA) {
             // El controlador de login no se incluye en la pagina de navegacion
-            $this->_html .= '<li id="zc-menu-' . $controlador . '"><a href="<?php echo base_url(). \'index.php/' . $controlador . '\'; ?>">' . $formulario . '</a></li>' . FIN_DE_LINEA . insertarEspacios(30);
+            $this->_html .= tabular('<li id="zc-menu-' . $controlador . '"><a href="<?php echo base_url(). \'index.php/' . $controlador . '\'; ?>">' . $formulario . '</a></li>', 24);
         }
     }
 

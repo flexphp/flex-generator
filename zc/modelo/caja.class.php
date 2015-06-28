@@ -151,8 +151,8 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
-                "/>
-                    <span class='help-block'></span>";
+                "/>".
+                "<span class='help-block'></span>";
         return $this;
     }
 
@@ -160,8 +160,8 @@ class caja extends Aelemento {
      * Crea un elemento con el formato de fecha, aplica datapicker
      */
     private function crearFecha() {
-        $this->_html = "<div class='input-group date zc-caja-fecha' id='fecha-{$this->_id}'>
-                        <input" .
+        $this->_html = "<div class='input-group date zc-caja-fecha' id='fecha-{$this->_id}'>".
+                "<input" .
                 " type='text'" .
                 " class='form-control'" .
                 // Identificador
@@ -180,12 +180,12 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
-                "/>
-                        <span class='input-group-addon'>
-                            <span class='glyphicon glyphicon-calendar'></span>
-                        </span>
-                    </div>
-                    <span class='help-block'></span>";
+                "/>" .
+                "<span class='input-group-addon'>" .
+                "<span class='glyphicon glyphicon-calendar'></span>" .
+                "</span>" .
+                "</div>" .
+                "<span class='help-block'></span>";
         return $this;
     }
     
@@ -295,8 +295,8 @@ class caja extends Aelemento {
                     " data-parsley-equalto-message='La confirmación no coincide'" .
                     // Ayuda visual
                     $this->ayuda('Confirmación ' . $this->_etiqueta) .
-                    "/>
-                    <span class='help-block'></span>";
+                    "/>".
+                    "<span class='help-block'></span>";
         }
         return $this;
     }

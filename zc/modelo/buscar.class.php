@@ -130,10 +130,10 @@ class buscar extends accion {
             '!=' => 'deferente de',
         );
         $filtrosTexto = array(
-            '=' => '',
+            'both%' => '',
             '=' => 'igual a',
-            'after%' => 'inicia con',
             'both%' => 'contiene',
+            'after%' => 'inicia con',
             'before%' => 'termina con',
             '!=' => 'deferente de',
         );
@@ -143,42 +143,41 @@ class buscar extends accion {
         $operadorTexto = '';
 
         foreach ($filtrosNumericos as $key => $value) {
-            $operadorNumerico .= "<option value='$key'>$value</option>" . FIN_DE_LINEA;
+            $operadorNumerico .= tabular("<option value='$key'>$value</option>", 36);
         }
         foreach ($filtrosListas as $key => $value) {
-            $operadorLista .= "<option value='$key'>$value</option>" . FIN_DE_LINEA;
+            $operadorLista .= tabular("<option value='$key'>$value</option>", 36);
         }
         foreach ($filtrosTexto as $key => $value) {
-            $operadorTexto .= "<option value='$key'>$value</option>" . FIN_DE_LINEA;
+            $operadorTexto .= tabular("<option value='$key'>$value</option>", 36);
         }
 
         $html = '';
-        $elementos = '';
         $columnas = '';
-        $elementos .= "<select class='form-control zc-filtros-busqueda'>" . FIN_DE_LINEA;
+        $listaFiltros = tabular("<select class='form-control zc-filtros-busqueda'>", 32);
 
         //El boton de quitar se agrega en el proceso jQuery
-        $buscar = "<button type='button' title='Realizar la busqueda' zc-accion-tipo='" . ZC_ACCION_BUSCAR . "' id='buscar' name='buscar' class='btn btn-primary zc-accion'><span class='glyphicon glyphicon-search' aria-hidden='true'></span> Buscar</button>" . FIN_DE_LINEA;
-        $ocultar = "<button type='button' title='Ocultar filtros' class='btn btn-default zc-filtros-ocultar'><span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
-        $mostrar = "<button type='button' title='Mostrar filtros' class='btn btn-default zc-filtros-mostrar hidden'><span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span></button>" . FIN_DE_LINEA;
-        $nuevo = "<button type='button' title='Crear nuevo registro' class='btn btn-success zc-nuevo-registro'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span> Nuevo registro</button>" . FIN_DE_LINEA;
+        $buscar = tabular("<button type='button' title='Realizar la busqueda' zc-accion-tipo='" . ZC_ACCION_BUSCAR . "' id='buscar' name='buscar' class='btn btn-primary zc-accion'><span class='glyphicon glyphicon-search' aria-hidden='true'></span>Buscar</button>", 36);
+        $ocultar = tabular("<button type='button' title='Ocultar filtros' class='btn btn-default zc-filtros-ocultar'><span class='glyphicon glyphicon-chevron-up' aria-hidden='true'></span></button>", 36);
+        $mostrar = tabular("<button type='button' title='Mostrar filtros' class='btn btn-default zc-filtros-mostrar hidden'><span class='glyphicon glyphicon-chevron-down' aria-hidden='true'></span></button>", 36);
+        $nuevo = tabular("<button type='button' title='Crear nuevo registro' class='btn btn-success zc-nuevo-registro'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span>Nuevo registro</button>", 36);
         foreach ($this->_campos as $nro => $campo) {
             if ($campo[ZC_DATO] == ZC_DATO_CONTRASENA) {
                 // Los campos tipo contrasena no admiten busquedas
                 continue;
             }
-            $elementos .= "<option value='{$campo[ZC_ID]}'>{$campo[ZC_ETIQUETA]}</option>" . FIN_DE_LINEA;
-            $operador = "<select id='operador-{$campo[ZC_ID]}' name='operador-{$campo[ZC_ID]}' class='form-control'>" . FIN_DE_LINEA;
-            $agregar = "<button class='btn zc-filtros-agregar btn-default' title='Agregar filtro a la busqueda' id='agregar-{$campo[ZC_ID]}' name='agregar-{$campo[ZC_ID]}'><span class='glyphicon glyphicon-plus-sign' aria-hidden='true'></span> Agregar</button>" . FIN_DE_LINEA;
+            $listaFiltros .= tabular("<option value='{$campo[ZC_ID]}'>{$campo[ZC_ETIQUETA]}</option>", 36);
+            $listaOperadores = tabular("<select id='operador-{$campo[ZC_ID]}' name='operador-{$campo[ZC_ID]}' class='form-control'>", 32);
+            $agregar = tabular("<button class='btn zc-filtros-agregar btn-default' title='Agregar filtro a la busqueda' id='agregar-{$campo[ZC_ID]}' name='agregar-{$campo[ZC_ID]}'><span class='glyphicon glyphicon-plus-sign' aria-hidden='true'></span>Agregar</button>", 36);
             switch (true) {
                 case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_CHECKBOX:
                 case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_RADIO:
                 case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_LISTA:
-                    $operador .= $operadorLista;
+                    $listaOperadores .= $operadorLista;
                     break;
                 case $campo[ZC_DATO] == ZC_DATO_NUMERICO:
                 case $campo[ZC_DATO] == ZC_DATO_FECHA:
-                    $operador .= $operadorNumerico;
+                    $listaOperadores .= $operadorNumerico;
                     break;
                 case $campo[ZC_DATO] == ZC_DATO_URL:
                 case $campo[ZC_DATO] == ZC_DATO_TEXTO:
@@ -186,60 +185,64 @@ class buscar extends accion {
                 case $campo[ZC_DATO] == ZC_DATO_AREA_TEXTO:
                 case $campo[ZC_DATO] == ZC_DATO_CONTRASENA:
                 default :
-                    $operador .= $operadorTexto;
+                    $listaOperadores .= $operadorTexto;
                     break;
             }
-            $operador .= '</select>' . FIN_DE_LINEA;
+            $listaOperadores .= tabular('</select>', 32);
             // Inactiva la creacion de campos con validaciones de obligatoriedad y sin longitudes
             $this->_campos[$nro][ZC_OBLIGATORIO] = null;
             $this->_campos[$nro][ZC_LONGITUD_MAXIMA] = -1;
             $this->_campos[$nro][ZC_LONGITUD_MINIMA] = -1;
             // Los tipos de caja especiales los valida como cajas para evitar validaciones de datos, por ejemplo para los email
             $this->_campos[$nro][ZC_DATO] = (in_array($this->_campos[$nro][ZC_DATO], array(ZC_DATO_EMAIL, ZC_DATO_URL))) ? ZC_DATO_TEXTO : $this->_campos[$nro][ZC_DATO];
-            switch ($this->_campos[$nro][ZC_ELEMENTO]) {
-                case ZC_ELEMENTO_RADIO:
-                    $filtro = new radio($this->_campos[$nro]);
-                    break;
-                case ZC_ELEMENTO_LISTA:
-                    $filtro = new lista($this->_campos[$nro], $this->_tabla);
-                    break;
-                case ZC_ELEMENTO_CHECKBOX:
-                    $filtro = new checkbox($this->_campos[$nro]);
-                    break;
-                case ZC_ELEMENTO_CAJA:
-                default :
-                    $filtro = new caja($this->_campos[$nro]);
-                    break;
-            }
-            $valor = $filtro->crear()->devolverElemento() . FIN_DE_LINEA;
-            unset($filtro);
-
-            $oculto = ($html == '') ? '' : 'hidden';
+            // Crea el elemento
+            $elemento = new elemento($this->_campos[$nro]);
+            $elemento->propiedad('controlador', $this->_tabla);
+            $filtro = $elemento->crear();
+            $cajaFiltro = $filtro->devolverElemento();
+            $oculto = ($html == '') ? '' : ' hidden';
             // La distribucion de estos div debe ser igual a la de los creados por la funcion ZCAccionAgregarFiltro,
             // Se carga el boton de accion solo una vez
-            $html .=
-                    "<div class='col-md-8 zc-filtros zc-filtros-{$campo[ZC_ID]} {$oculto}'>" .
-                    "   <div class='row'>" .
-                    "       <div class='col-md-3'>{_elementos_}</div>" .
-                    "       <div class='col-md-3'>{$operador}</div>" .
-                    "       <div class='col-md-4'>{$valor}</div>" .
-                    "       <div class='col-md-2'>{$agregar}</div>" .
-                    "   </div>" .
-                    "</div>" . FIN_DE_LINEA;
+            $html .= tabular("<div class='col-md-8 zc-filtros zc-filtros-{$filtro->devolverId()}{$oculto}'>", 24);
+            $html .= tabular("<div class='row'>", 28);
+            $html .= tabular("<div class='col-md-3'>", 32);
+            $html .= "{_elementos_}";
+            $html .= tabular("</div>", 32);
+            $html .= tabular("<div class='col-md-3'>", 32);
+            $html .= "{$listaOperadores}";
+            $html .= tabular("</div>", 32);
+            $html .= tabular("<div class='col-md-4'>", 32);
+            $html .= tabular("{$cajaFiltro}", 36);
+            $html .= tabular("</div>", 32);
+            $html .= tabular("<div class='col-md-2'>", 32);
+            $html .= "{$agregar}";
+            $html .= tabular("</div>", 32);
+            $html .= tabular("</div>", 28);
+            $html .= tabular("</div>", 24);
+            unset($filtro);
         }
-        $plantilla = "<div class='row'>" .
-                "" . $html .
-                "    <div class='col-md-4'> " .
-                "       <div class='row'>" .
-                "           <div class='col-md-3'>{$buscar}</div>" .
-                "           <div class='col-md-3'>{$ocultar}{$mostrar}</div>" .
-                "           <div class='col-md-1'>{$nuevo}</div>" .
-                "           <div class='col-md-3'>{_columnas_}</div>" .
-                "       </div>" .
-                "   </div>" .
-                "</div>" . FIN_DE_LINEA;
-        $elementos .= "</select>" . FIN_DE_LINEA;
-        $this->_filtro = str_replace('{_columnas_}', $columnas, str_replace('{_elementos_}', $elementos, $plantilla));
+        $plantilla = tabular("<div class='row'>", 20);
+        $plantilla .= $html;
+        $plantilla .= tabular("<div class='col-md-4'>", 24);
+        $plantilla .= tabular("<div class='row'>", 28);
+        $plantilla .= tabular("<div class='col-md-3'>", 32);
+        $plantilla .= "{$buscar}";
+        $plantilla .= tabular("</div>", 32);
+        $plantilla .= tabular("<div class='col-md-3'>", 32);
+        $plantilla .= "{$ocultar}";
+        $plantilla .= "{$mostrar}";
+        $plantilla .= tabular("</div>", 32);
+        $plantilla .= tabular("<div class='col-md-1'>", 32);
+        $plantilla .= "{$nuevo}";
+        $plantilla .= tabular("</div>", 32);
+        $plantilla .= tabular("<div class='col-md-3'>", 32);
+        $plantilla .= "{_columnas_}";
+        $plantilla .= tabular("</div>", 32);
+        $plantilla .= tabular("</div>", 28);
+        $plantilla .= tabular("</div>", 24);
+        $plantilla .= tabular("</div>", 20);
+        $listaFiltros .= tabular('</select>', 32);
+        $this->_filtro = str_replace('{_columnas_}', $columnas, str_replace('{_elementos_}', $listaFiltros, $plantilla));
         return $this;
     }
 

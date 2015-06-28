@@ -7,7 +7,7 @@
                 <!-- Menus -->
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        {_menuNavegacion_}
+{_menuNavegacion_}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="https://github.com/freddiegar/zerocodigo" title="Ir a ZeroCodigo">ZeroCodigo</a></li>

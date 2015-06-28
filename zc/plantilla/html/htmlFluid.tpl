@@ -30,7 +30,7 @@
             <div class="col-md-5 text-center">
                 <h2>{_nombreFormulario_}</h2>
                 <!-- Barra de progreso -->
-                <div class="progress ">
+                <div class="progress">
                     <div id="progreso-{_idFormulario_}" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                         <span id="msj-progreso-{_idFormulario_}" style="color: black">0%</span>
                     </div>
@@ -53,7 +53,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
                 <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}">
-                    {_contenidoFormulario_}
+{_contenidoFormulario_}
                 </form>
             </div>
             <div class="col-md-1"></div>

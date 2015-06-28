@@ -48,7 +48,7 @@ class boton extends Aelemento {
                 " class='btn {$this->_presentacion}'" .
                 ">" .
                 " {$this->_icono}" .
-                " {$this->_etiqueta}" .
+                "{$this->_etiqueta}" .
                 "</button>";
         return $this;
     }

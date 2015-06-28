@@ -261,19 +261,17 @@ abstract class Aelemento {
      * @return string
      */
     protected function plantilla($campo) {
-        $html = "
-            <div class='row'>
-                <div class='col-md-1'></div>
-                <div class='col-md-2 text-right'>
-                    <label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
-                </div>
-                <div class='col-md-3'>
-                    {$campo}
-                </div>
-                <div class='col-md-5'></div>
-                <div class='col-md-1'></div>
-            </div>
-        ";
+        $html = tabular("<div class='row'>", 20);
+        $html .= tabular("<div class='col-md-1'></div>", 24);
+        $html .= tabular("<div class='col-md-2 text-right'>", 24);
+        $html .= tabular("<label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>", 28);
+        $html .= tabular("</div>", 24);
+        $html .= tabular("<div class='col-md-3'>", 24);
+        $html .= tabular("{$campo}", 28);
+        $html .= tabular("</div>", 24);
+        $html .= tabular("<div class='col-md-5'></div>", 24);
+        $html .= tabular("<div class='col-md-1'></div>", 24);
+        $html .= tabular("</div>", 20);
         return $html;
     }
 
