@@ -51,12 +51,12 @@ $(document).ready(function () {
 
     // Accion boton zc-nuevo-registro permite agregar un nuevo registro
     $('.zc-nuevo-registro').click(function(e){
-        ZCAccionNuevoRegistro(e, '{_nombreControlador_}', this);
+        ZCAccionNuevoRegistro(e);
     });
 
     // Accion boton zc-modificar-registro permite modificar el registro
     $('.zc-editar-registro').click(function(e){
-        ZCAccionModificarRegistro(e, '{_nombreControlador_}', this);
+        ZCAccionModificarRegistro(e, this);
     });
 
     // Se agrega la validacion cuando los elementos pierden el foco
@@ -69,12 +69,10 @@ $(document).ready(function () {
     $('#{_idFormulario_} .zc-accion').click(function (e) {
         e.preventDefault();
         $('.parsley-errors-list').show();
+        // Tipo de accion que tiene el boton
         var nombreAccion = ($(this).attr('zc-accion-tipo'));
-        if($('#{_idFormulario_}').parsley().validate()){
-            // Accion seleccionada por el usuario
-            // Selecciona la accion dependiendo el boton seleccionado
-            {_llamadosAjax_}
-        }
+        // Selecciona la accion dependiendo el boton seleccionado
+        {_llamadosAjax_}
     });
 
     // Busqueda predefinida, se deja al final cuando ya se ha cargado todo
@@ -82,7 +80,7 @@ $(document).ready(function () {
     // Botones a mostrar
     ZCAccionBotones('{_idFormulario_}', '{_accionAgregar_}', '{_accionModificar_}', '{_accionBorrar_}', '{_accionPrecargar_}');
     // Menu actual
-    ZCMenuActual('{_nombreControlador_}');
+    ZCMenuActual();
     
     // Inicializa los cajas de texto para las fechas
     $('.zc-caja-fecha').datetimepicker({

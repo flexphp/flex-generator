@@ -154,7 +154,7 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
         return '';
     }
     $validacion = '';
-    $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_DATO_ERROR_PREDETERMINADO;
+    $msjValidacion = (trim($msj) != '') ? $msj : ZC_DATO_ERROR_PREDETERMINADO;
     switch ($dato) {
         case ZC_DATO_NUMERICO:
             $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && filter_var(\$dato['{$id}'],  FILTER_VALIDATE_INT) === false && '' != \$dato['{$id}']) {" . FIN_DE_LINEA;
@@ -163,13 +163,13 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
             $validacion = insertarEspacios(8) . "if (\$validarDato && isset(\$dato['{$id}']) && filter_var(\$dato['{$id}'], FILTER_VALIDATE_EMAIL) === false && '' != \$dato['{$id}']) {" . FIN_DE_LINEA;
             break;
         case ZC_DATO_FECHA:
-            $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && !preg_match('/^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$/', \$dato['{$id}']) && '' != \$dato['{$id}']) {" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (\$dato['accion'] != '" . ZC_ACCION_BORRAR . "' && isset(\$dato['{$id}']) && !preg_match('/^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$/', \$dato['{$id}']) && '' != \$dato['{$id}']) {" . FIN_DE_LINEA;
             break;
         case ZC_DATO_FECHA_HORA:
-            $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && !preg_match('/(\d{2}|\d{4})(?:\-)?([0]{1}\d{1}|[1]{1}[0-2]{1})(?:\-)?([0-2]{1}\d{1}|[3]{1}[0-1]{1})(?:\s)?([0-1]{1}\d{1}|[2]{1}[0-3]{1})(?::)?([0-5]{1}\d{1})(?::)?([0-5]{1}\d{1})/', \$dato['{$id}']) && '' != \$dato['{$id}']) {" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (\$dato['accion'] != '" . ZC_ACCION_BORRAR . "' && isset(\$dato['{$id}']) && !preg_match('/(\d{2}|\d{4})(?:\-)?([0]{1}\d{1}|[1]{1}[0-2]{1})(?:\-)?([0-2]{1}\d{1}|[3]{1}[0-1]{1})(?:\s)?([0-1]{1}\d{1}|[2]{1}[0-3]{1})(?::)?([0-5]{1}\d{1})(?::)?([0-5]{1}\d{1})/', \$dato['{$id}']) && '' != \$dato['{$id}']) {" . FIN_DE_LINEA;
             break;
         case ZC_DATO_HORA:
-            $validacion = insertarEspacios(8) . "if (isset(\$dato['{$id}']) && !preg_match('/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/', \$dato['{$id}']) && '' != \$dato['{$id}']) {" . FIN_DE_LINEA;
+            $validacion = insertarEspacios(8) . "if (\$dato['accion'] != '" . ZC_ACCION_BORRAR . "' && isset(\$dato['{$id}']) && !preg_match('/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/', \$dato['{$id}']) && '' != \$dato['{$id}']) {" . FIN_DE_LINEA;
             break;
         case ZC_DATO_URL:
             $validacion = insertarEspacios(8) . "if (\$validarDato && isset(\$dato['{$id}']) && filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) === false && '' != \$dato['{$id}']) {" . FIN_DE_LINEA;
@@ -181,7 +181,7 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
     if ('' != $validacion) {
         // Determina se se debe agregar validacion
         $validacion = FIN_DE_LINEA . $validacion;
-        $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '{$msjValidacion}';" . FIN_DE_LINEA;
+        $validacion .= insertarEspacios(12) . "\$rpta['error']['{$id}'] = '{$msjValidacion}';" . FIN_DE_LINEA;
         $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
     }
     return $validacion;
@@ -198,13 +198,13 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
  */
 function validarArgumentoObligatorio($id, $etiqueta, $obligatorio = 'no', $msj = '') {
     $validacion = '';
-    $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_OBLIGATORIO_ERROR_PREDETERMINADO;
+    $msjValidacion = (trim($msj) != '') ? $msj : ZC_OBLIGATORIO_ERROR_PREDETERMINADO;
 
     switch (trim(strtolower($obligatorio))) {
         case ZC_OBLIGATORIO_SI:
             $validacion .= FIN_DE_LINEA;
             $validacion .= insertarEspacios(8) . "if (\$validarDato && isset(\$dato['{$id}']) && '' == \$dato['{$id}']) {" . FIN_DE_LINEA;
-            $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '{$msjValidacion}';" . FIN_DE_LINEA;
+            $validacion .= insertarEspacios(12) . "\$rpta['error']['{$id}'] = '{$msjValidacion}';" . FIN_DE_LINEA;
             $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
             break;
         case ZC_OBLIGATORIO_NO:
@@ -226,7 +226,7 @@ function validarArgumentoObligatorio($id, $etiqueta, $obligatorio = 'no', $msj =
  */
 function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitudMaxima = -1, $msj = '') {
     $validacion = '';
-    $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO;
+    $msjValidacion = (trim($msj) != '') ? $msj : ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO;
 
     switch ($tipo) {
         case ZC_DATO_NUMERICO:
@@ -238,7 +238,7 @@ function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitudMaxima =
             if ($longitudMaxima > 0) {
                 $validacion .= FIN_DE_LINEA;
                 $validacion .= insertarEspacios(8) . "if (\$validarDato && isset(\$dato['{$id}']) && strlen(\$dato['$id']) >  {$longitudMaxima} && '' != \$dato['$id']) {" . FIN_DE_LINEA;
-                $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '" . str_replace('&[Longitud]&', $longitudMaxima, $msjValidacion) . "';" . FIN_DE_LINEA;
+                $validacion .= insertarEspacios(12) . "\$rpta['error']['{$id}'] = '" . str_replace('&[Longitud]&', $longitudMaxima, $msjValidacion) . "';" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
             }
             break;
@@ -258,7 +258,7 @@ function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitudMaxima =
  */
 function validarArgumentoLongitudMinima($id, $etiqueta, $tipo, $longitudMinima = 0, $msj = '') {
     $validacion = '';
-    $msjValidacion = (trim($msj) != '') ? $etiqueta . ': ' . $msj : $etiqueta . ': ' . ZC_LONGITUD_MINIMA_ERROR_PREDETERMINADO;
+    $msjValidacion = (trim($msj) != '') ? $msj : ZC_LONGITUD_MINIMA_ERROR_PREDETERMINADO;
 
     switch ($tipo) {
         case ZC_DATO_NUMERICO:
@@ -268,7 +268,7 @@ function validarArgumentoLongitudMinima($id, $etiqueta, $tipo, $longitudMinima =
             if ($longitudMinima > 0) {
                 $validacion .= FIN_DE_LINEA;
                 $validacion .= insertarEspacios(8) . "if (\$validarDato && isset(\$dato['{$id}']) && strlen(\$dato['$id']) <  {$longitudMinima} && '' != \$dato['$id']) {" . FIN_DE_LINEA;
-                $validacion .= insertarEspacios(12) . "\$rpta['error'] .= '" . str_replace('&[Longitud]&', $longitudMinima, $msjValidacion) . "';" . FIN_DE_LINEA;
+                $validacion .= insertarEspacios(12) . "\$rpta['error']['{$id}'] = '" . str_replace('&[Longitud]&', $longitudMinima, $msjValidacion) . "';" . FIN_DE_LINEA;
                 $validacion .= insertarEspacios(8) . "}" . FIN_DE_LINEA;
             }
             break;

@@ -264,7 +264,7 @@ abstract class Aelemento {
         $html = tabular("<div class='row'>", 20);
         $html .= tabular("<div class='col-md-1'></div>", 24);
         $html .= tabular("<div class='col-md-2 text-right'>", 24);
-        $html .= tabular("<label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>", 28);
+        $html .= tabular("<label id='zc-label-{$this->_id}' name='zc-label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>", 28);
         $html .= tabular("</div>", 24);
         $html .= tabular("<div class='col-md-3'>", 24);
         $html .= tabular("{$campo}", 28);
@@ -284,7 +284,7 @@ abstract class Aelemento {
         $html = "
             <div class='row'>
                 <div class='col-md-4 text-right'>
-                    <label for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
+                    <label id='zc-label-{$this->_id}' name='zc-label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
                 </div>
                 <div class='col-md-8'>
                     {$campo}

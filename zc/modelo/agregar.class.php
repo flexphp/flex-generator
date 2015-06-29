@@ -36,7 +36,7 @@ class agregar extends accion {
         $php .= $this->comando('// Ejecucion de la accion', 12);
         $php .= $this->comando('$rpta = $CI->$tabla->agregar($data);', 12);
         $php .= $this->comando('switch (true){', 12);
-        $php .= $this->comando('case (isset($rpta[\'error\']) && \'\' != $rpta[\'error\']):', 16);
+        $php .= $this->comando('case (isset($rpta[\'error\']) && count($rpta[\'error\']) > 0):', 16);
         $php .= $this->comando('// Errores durante la ejecucion', 20);
         $php .= $this->comando('$Resultado[0][\'error\'] = json_encode($rpta[\'error\']);', 20);
         $php .= $this->comando('break;', 20);
@@ -64,7 +64,7 @@ class agregar extends accion {
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('$validacion = $this->' . $this->_tabla . '->' . $this->_funcionValidacion . '($campos);', 8);
         $php .= $this->comando('switch (true){', 8);
-        $php .= $this->comando('case (isset($validacion[\'error\']) && \'\' != $validacion[\'error\']):', 12);
+        $php .= $this->comando('case (isset($validacion[\'error\']) && count($validacion[\'error\']) > 0):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode($validacion[\'error\']);', 16);
         $php .= $this->comando('break;', 16);

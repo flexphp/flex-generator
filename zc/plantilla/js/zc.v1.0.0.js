@@ -128,6 +128,8 @@ function ZCCamposDeBusqueda(e, formulario, id){
  */
 function ZCAccionAgregarFiltro(e, formulario, id){
     e.preventDefault();
+    // Nombre del controlador
+    var controlador = $('#zc-controlador').val()
     // Determina el campo por el ual se desea filtrar
     var filtro = $('.zc-filtros-busqueda option:selected').val();
     // Determina el tipo de operador a aplicar segun el campo (texto, numerico, lista)
@@ -187,7 +189,7 @@ function ZCAccionAgregarFiltro(e, formulario, id){
     "<div class='col-md-2 text-center'>"+textoValor+"</div>" +
     // Boton para quitar filtro
     "<div class='col-md-2'><button title='Quitar filtro de busqueda' onclick='javascript:ZCAccionQuitarFiltro(event ,this);'class='btn btn-warning zc-filtros-quitar' id='quitar-"+identificadorFiltro+"' name='quitar-"+identificadorFiltro+"'><span class='glyphicon glyphicon-minus-sign' aria-hidden='true'></span> Quitar</button></div>" +
-    "<div class='col-md-1'><input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='"+$('#zc-controlador').val() + '|?|' + filtro+"|?|"+operador+"|?|"+valor+"'/></div>" +
+    "<div class='col-md-1'><input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='"+ controlador + '|?|' + filtro+"|?|"+operador+"|?|"+valor+"'/></div>" +
     "<div class='col-md-1'></div>" +
     "<div class='col-md-1'></div>" +
     "</div>");
@@ -282,12 +284,11 @@ function ZCAccionMostrarFiltro(e, formulario, id){
 /**
  * Crea el listado de campos devueltos por el servidor, agrega enlace para la edicion del registro
  * @param {string} formulario Nombre del formulario donde se creara la el listado
- * @param {string} controlador Nombre del controlador a utilizar
  * @param {json} rpta Valores devueltos por la consulta
  * @returns {undefined}
  */
 
-function ZCListarResultados(formulario, controlador, rpta){
+function ZCListarResultados(formulario, rpta){
     var tabla = "<table class='table table-bordered table-hover'>";
     var encabezados = '';
     var columnas = '';
@@ -318,7 +319,7 @@ function ZCListarResultados(formulario, controlador, rpta){
             break;
         }
         // Agrega accion de enlace a la edicion del registro
-        tabla += '<tr style="cursor: pointer;" onclick="ZCAccionModificarRegistro(event, \''+controlador+'\', this);" zc-id-registro="'+id+'">'+columnas+'</tr>';
+        tabla += '<tr style="cursor: pointer;" onclick="ZCAccionModificarRegistro(event, this);" zc-id-registro="'+id+'">'+columnas+'</tr>';
         columnas = '';
         id = -1;
     }
@@ -342,26 +343,29 @@ function ZCAccionCondicion(formulario){
 /**
  * Direcciona a la pagina para agregar un nuevo registro
  * @param {event} e Evento disparador
- * @param {string} controlador Identificador del formulario
  * @param {type} id
  * @returns {Boolean}
  */
-function ZCAccionNuevoRegistro(e, controlador, id){
+function ZCAccionNuevoRegistro(e){
     e.preventDefault;
+    // Nombre del controlador
+    var controlador = $('#zc-controlador').val();
     // Direcciona a la pagina de agregar
-    window.location.assign($('#URLProyecto').val()+'index.php/'+controlador+'/nuevo');
+    window.location.assign($('#URLProyecto').val() + 'index.php/' + controlador + '/nuevo');
 }
 
 /**
  * Direcciona a la pagina para la edicion del registro
  * @param {event} e Evento disparador
- * @param {string} controlador Identificador del formulario
  * @param {object} enlace This del enlace dado
  * @returns {Boolean}
  */
-function ZCAccionModificarRegistro(e, controlador, enlace){
+function ZCAccionModificarRegistro(e, enlace){
     e.preventDefault;
+    // Id del registro a modificar
     var id = $(enlace).attr('zc-id-registro');
+    // Nombre del controlador
+    var controlador = $('#zc-controlador').val();
     // Direcciona a la pagina de agregar
     window.location.assign($('#URLProyecto').val()+'index.php/'+controlador+'/editar/'+id);
 }
@@ -376,6 +380,7 @@ function ZCAccionModificarRegistro(e, controlador, enlace){
  * @returns {String}
  */
 function ZCAccionBotones(formulario, agregar, modificar, borrar, precargar){
+    // Id del registro a modificar
     var id = $.trim($('#zc-id-'+formulario).val());
 
     if('' === id){
@@ -453,8 +458,6 @@ function ZCAccionPaginar(miURL, formulario){
     var filtrosAEnviar = ZCAccionBuscarFiltro(formulario);
     // Extrae el numero de la pagina
     var paginaActual = miURL.substring(miURL.lastIndexOf('/')+1);
-    // Nombre del controlador, se saca de la pagina
-    var controlador = $('#zc-controlador').val();
 
     $.ajax({
         // Para construir la paginacion se necesita el numero de la pagina en la url
@@ -480,12 +483,12 @@ function ZCAccionPaginar(miURL, formulario){
             $('#cargando-'+formulario).removeClass('hidden');
         },
         success: function(rpta){
-            if(rpta.error !== undefined && '' !== rpta.error){
+            if(rpta.error !== undefined &&  Object.keys(rpta.error).length > 0){
                 // Muestra mensaje de error
                 $('#error-'+formulario).text(rpta.error);
                 $('.alert-danger').show();
             }else{
-                ZCListarResultados(formulario, controlador, rpta);
+                ZCListarResultados(formulario, rpta);
             }
         },
         complete: function(){
@@ -535,17 +538,18 @@ function ZCPrecargarSeleccion(lista, rpta){
 
 /**
  * Resalta el menu actual
- * @param {string} controlador
  * @returns {undefined}
  */
-function ZCMenuActual(controlador){
-    $('#zc-menu-' + controlador).addClass('active');
-    $('#zc-menu-' + controlador).css('font-weight', 'bold');
+function ZCMenuActual(){
+    // Nonbre del controlador
+    var controlador = $('#zc-controlador').val();
+    $('#zc-menu-' + controlador).addClass('active').css('font-weight', 'bold');
 }
 
 
 /**
- * Activa la accion 
+ * Activa la accion por defecto al dar enter en cualquier campo del formulario
+ * @param {string} formulario
  */
 function ZCActivarBotonPrincipal(formulario){
     $('body').delegate(':text, :password', 'keypress', function(e) {
@@ -565,6 +569,7 @@ function ZCActivarBotonPrincipal(formulario){
  * @param {string} modificar
  */
 function ZCAccionPrecargar(formulario, id, precargar, modificar){
+    // Nonbre del controlador
     var controlador = $('#zc-controlador').val();
     $.ajax({
         url: $('#URLProyecto').val()+'index.php/' + controlador + '/' + precargar + '/',
@@ -603,4 +608,20 @@ function ZCAccionPrecargar(formulario, id, precargar, modificar){
             $('.alert-danger').show();
         }
     });
+}
+
+/**
+ * Asigna los errores devueltos por el servidor a cada uno de los campos
+ * @param {string} formulario
+ * @param {json} rpta
+ */
+function ZCAsignarErrores(formulario, rpta){
+    var msjError = '';
+    $.each(rpta.error, function(campo, error){
+        var label = $('#zc-label-' + campo).text();
+        msjError += label + ': ' + error + '<br />';
+        // Agrega clase error
+        $('#' + campo).addClass('parsley-error');
+    });
+    $('#error-' + formulario).html(msjError);
 }

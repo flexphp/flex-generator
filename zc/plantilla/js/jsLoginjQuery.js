@@ -17,12 +17,10 @@ $(document).ready(function () {
     $('#{_idFormulario_} .zc-accion').click(function (e) {
         e.preventDefault();
         $('.parsley-errors-list').show();
+        // Tipo de accion que tiene el boton
         var nombreAccion = ($(this).attr('zc-accion-tipo'));
-        if($('#{_idFormulario_}').parsley().validate()){
-            // Accion seleccionada por el usuario
-            // Selecciona la accion dependiendo el boton seleccionado
-            {_llamadosAjax_}
-        }
+        // Selecciona la accion dependiendo el boton seleccionado
+        {_llamadosAjax_}
     });
     // Activar botones de acciones
     ZCActivarBotonPrincipal('{_idFormulario_}');

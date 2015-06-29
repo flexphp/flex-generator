@@ -47,7 +47,7 @@ abstract class Apaginas {
         $tpl .= tabular('$this->load->library(\'zc\');', 8);
         $tpl .= tabular('if (!$this->zc->esWebService()) {', 8);
         $tpl .= tabular('$datos = $this->zc->validarSesion();', 12);
-        $tpl .= tabular('$this->load->model(\'modelo_' . ZC_LOGIN_PAGINA . '\', \'zlogin\');', 12);
+        $tpl .= tabular('$this->load->model(\'' . ZC_PREFIJO_MODELO . ZC_LOGIN_PAGINA . '\', \'zlogin\');', 12);
         $tpl .= tabular('$rpta = $this->zlogin->loginCliente($datos);', 12);
         $tpl .= tabular('if (isset($rpta[\'error\'])) {', 12);
         $tpl .= tabular('die($rpta[\'error\']);', 16);
@@ -106,16 +106,6 @@ abstract class Apaginas {
      */
     public function devolverArchivoControlador() {
         $tpl = $this->_controlador;
-        return $tpl;
-    }
-
-    /**
-     * Crear cliente WS para consumir el servicio web, se hace por cada accion
-     * @return string
-     */
-    public function devolverClienteAutenticacion() {
-        $tpl = tabular('// Define los datos de acceso al WS ', 9);
-        $tpl .= tabular('$_CLI_WS->setCredentials($this->session->userdata(\'Login\'), $this->session->userdata(\'Clave\'), \'basic\');', 8);
         return $tpl;
     }
 

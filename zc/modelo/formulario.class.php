@@ -294,7 +294,7 @@ class formulario {
         // Nombre de la funcion de validacion
         $this->_nombreFuncionValidacion = 'validarDatos';
         // Caracteristicas de la pagina en creacion
-        $this->_pagina = new pagina($this->_tipoFormulario, $this->_nombreArchivoControlador);
+        $this->_pagina = new pagina($this->_tipoFormulario, $this->_nombreArchivoControlador, $this->_nombreArchivoModelo);
         return $this;
     }
 
@@ -354,7 +354,7 @@ class formulario {
         $this->_plantilla = new plantilla($opciones);
         $this->_plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/' . $this->_pagina->_modelo->devolverPlantillaVista());
         if (!$this->_pagina->_modelo->esLogin()){
-            $this->crearListarFormulario();
+            $this->crearListarFormulario($directorioSalida, $extension, $opciones);
         }
 
         $this->_plantilla->asignarEtiqueta('idFormulario', $this->_id);
@@ -435,7 +435,6 @@ class formulario {
         
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/' . $this->_pagina->_modelo->devolverPlantillaJavascript());
         $plantilla->asignarEtiqueta('idFormulario', $this->_id);
-        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('accionAgregar', ZC_ACCION_AGREGAR);
         $plantilla->asignarEtiqueta('accionModificar', ZC_ACCION_MODIFICAR);
         $plantilla->asignarEtiqueta('accionBorrar', ZC_ACCION_BORRAR);
@@ -763,7 +762,6 @@ class formulario {
              */
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpCrearAccion.tpl');
-            $plantilla->asignarEtiqueta('comandoEspecial', $this->_pagina->_modelo->devolverClienteAutenticacion());
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
             $plantilla->asignarEtiqueta('servidorAccion', $this->_nombreArchivoServidor);
             $plantilla->asignarEtiqueta('asignacionCliente', $this->_inicializarCliente[$caracteristicas[ZC_ID]]);

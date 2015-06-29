@@ -1,6 +1,5 @@
 function {_nombreValidacion_}($dato){
-        $rpta = array();
-        $rpta['error'] = '';
+        $rpta['error'] = array();
         $validarDato = true;
 
         // Los campos a validar deben llegar en forma de arreglo

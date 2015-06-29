@@ -7,7 +7,7 @@ public function {_nombreAccion_}() {
             redirect('404');
         }
         {_asignacionCliente_}
-        if (isset($rpta['error']) && '' != $rpta['error']) {
+        if (isset($rpta['error']) && count($rpta['error']) > 0) {
             // Pasa al final
         } else if ($datos['accion'] == '{_nombreAccion_}') {
             // Hace el llamado al WS {_nombreAccion_}

@@ -60,7 +60,7 @@ class modificar extends accion {
         $php .= $this->comando('// Ejecucion de la accion', 12);
         $php .= $this->comando('$rpta = $CI->$tabla->modificar($data, $id);', 12);
         $php .= $this->comando('switch (true){', 12);
-        $php .= $this->comando('case (isset($rpta[\'error\']) && \'\' != $rpta[\'error\']):', 16);
+        $php .= $this->comando('case (isset($rpta[\'error\']) && count($rpta[\'error\']) > 0):', 16);
         $php .= $this->comando('// Errores durante la ejecucion', 20);
         $php .= $this->comando('$Resultado[0][\'error\'] = json_encode($rpta[\'error\']);', 20);
         $php .= $this->comando('break;', 20);
@@ -88,7 +88,7 @@ class modificar extends accion {
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('$validacion = $this->' . $this->_tabla . '->' . $this->_funcionValidacion . '($campos);', 8);
         $php .= $this->comando('switch (true){', 8);
-        $php .= $this->comando('case (isset($validacion[\'error\']) && \'\' != $validacion[\'error\']):', 12);
+        $php .= $this->comando('case (isset($validacion[\'error\']) && count($validacion[\'error\']) > 0):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode($validacion[\'error\']);', 16);
         $php .= $this->comando('break;', 16);
@@ -110,7 +110,7 @@ class modificar extends accion {
         $php .= $this->comando('// Condicion aplicada en la actualizacion', 16);
         $php .= $this->comando('$this->db->where(array(\'id\' => $id, \'zc_eliminado is null\' => null));', 16);
         $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
-        $php .= $this->comando('$rpta[\'error\'] = (!$this->db->update(\'' . $this->_tabla . '\')) ? json_encode($this->db->_error_message()) : \'\';', 16);
+        $php .= $this->comando('$rpta[\'error\'] = (!$this->db->update(\'' . $this->_tabla . '\')) ? json_encode($this->db->_error_message()) : array();', 16);
         $php .= $this->comando('// Devuelve el id actualizado', 16);
         $php .= $this->comando('$rpta[\'resultado\'] = $id;', 16);
         $php .= $this->comando('// Siempre devuelve 1, aun el registro no se cambie', 16);

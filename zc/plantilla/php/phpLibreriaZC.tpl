@@ -22,39 +22,6 @@ class zc {
         $this->CI =& get_instance();
         $this->modelo = $params[0];
     }
-
-    /**
-     * Procesa la respuesta devuelta por el servidor WS, verifica si existen errores
-     * @param array Respuesta del servidor de WS
-     * @return array
-     */ 
-    function procesarRespuestaWS($ws) {
-        if (isset($ws['errorWS'])) {
-            /**
-            * Error durante consulta webservice
-            */
-            $rpta['error'] = $ws['errorWS'];
-        } else {
-            $rptaWS = $ws['rptaWS'];
-            if ($rptaWS) {
-                if ($rptaWS[0]['error'] != '') {
-                    $rpta['error'] = json_decode($rptaWS[0]['error'], true);
-                } elseif ($rptaWS[0]['cta'] > 0) {
-                    // Informacion devuelta
-                    $rpta['infoEncabezado'] = json_decode($rptaWS[0]['infoEncabezado'], true);
-                    // Cantidad de registros devueltos
-                    $rpta['cta'] = $rptaWS[0]['cta'];
-                    // Devuelve respuesta procesada
-                    return $rpta;
-                } else {
-                    $rpta['error'] = 'No se encontraron datos.';
-                }
-            } else {
-                $rpta['error'] = 'Error en servidor WS';
-            }
-        }
-        return $rpta;
-    }
     
     /**
      * Permite validar que el usuario tenga una session activa, de lo contrario termina la ejecucion
@@ -91,6 +58,39 @@ class zc {
     }
 
     /**
+     * Procesa la respuesta devuelta por el servidor WS, verifica si existen errores
+     * @param array Respuesta del servidor de WS
+     * @return array
+     */ 
+    function procesarRespuestaWS($ws) {
+        if (isset($ws['errorWS'])) {
+            /**
+            * Error durante consulta webservice
+            */
+            $rpta['error'] = $ws['errorWS'];
+        } else {
+            $rptaWS = $ws['rptaWS'];
+            if ($rptaWS) {
+                if ($rptaWS[0]['error'] != '') {
+                    $rpta['error'] = json_decode($rptaWS[0]['error'], true);
+                } elseif ($rptaWS[0]['cta'] > 0) {
+                    // Informacion devuelta
+                    $rpta['infoEncabezado'] = json_decode($rptaWS[0]['infoEncabezado'], true);
+                    // Cantidad de registros devueltos
+                    $rpta['cta'] = $rptaWS[0]['cta'];
+                    // Devuelve respuesta procesada
+                    return $rpta;
+                } else {
+                    $rpta['error'] = 'No se encontraron datos.';
+                }
+            } else {
+                $rpta['error'] = 'Error en servidor WS';
+            }
+        }
+        return $rpta;
+    }
+
+    /**
      * Valida los filtros aplicados en el formulario de busqueda
      * @param string $campos Filtros de busqueda seleccionados por el cliente
      * @param string $accion Accion solicitado por parte del cliente
@@ -98,7 +98,7 @@ class zc {
      */
     function validarFiltros($campos, $accion){
         // Errores durante la validacion
-        $rpta['error'] = '';
+        $rpta['error'] = array();
         // Accion que se esta ejecutando
         $datos['accion'] = $accion;
         // Determina si se deben validar los filtros
@@ -119,8 +119,10 @@ class zc {
             }
             $datos[$campo] = $valor;
             $rptaValidacion = call_user_func(array(&$this->CI->{$this->modelo}, 'validarDatos'), $datos);
-            if (isset($rptaValidacion['error']) && '' != $rptaValidacion['error']) {
-                $rpta['error'] .=  $rptaValidacion['error'];
+            if (isset($rptaValidacion['error']) && count($rptaValidacion['error']) > 0) {
+                foreach ($rptaValidacion['error'] as $id => $error) {
+                    $rpta['error'][$id] = $error;
+                }
             }
             // Concatena la tabla, si existe
             $campo = ($tabla != '') ? $tabla . '.' . $campo : $campo;
@@ -132,6 +134,45 @@ class zc {
             }
         }
         return $rpta;
+    }
+
+    function llamarWS($login, $clave, $serverURL, $serverScript, $metodoALlamar, $parametros) {
+
+        $tiempo_inicio = microtime(true);
+
+        $_CLI_WS = new nusoap_client($serverURL . $serverScript . '?wsdl', 'wsdl');
+
+        $error = $_CLI_WS->getError();
+        if ($error) {
+            $return['errorWS'] = $error;
+        }
+
+        // Define los datos de acceso al WS 
+        $_CLI_WS->setCredentials($login, $clave, 'basic');
+
+        // Llamado a la funcion  en el servidor
+        $_rpta = $_CLI_WS->call(
+            $metodoALlamar, // Funcion a llamar
+            $parametros, // Parametros pasados a la funcion
+            "uri:{$serverURL}{$serverScript}", // namespace
+            "uri:{$serverURL}{$serverScript}/$metodoALlamar"       // SOAPAction
+        );
+
+        // Verificacion que los parametros estan bien, y si lo estan devolver respuesta.
+        if ($_CLI_WS->fault) {
+            $return['errorWS'] = $_rpta['faultstring'];
+        } else {
+            $error = $_CLI_WS->getError();
+            if ($error) {
+                $return['errorWS'] = $error;
+            } else {
+                $return['rptaWS'] = $_rpta;
+            }
+        }
+        $tiempo_fin = microtime(true);
+        $return['timeWS'] = ($tiempo_fin - $tiempo_inicio);
+        $return['metodoWS'] = $metodoALlamar;
+        return $this->procesarRespuestaWS($return);
     }
 
     public function __destruct() {

@@ -18,9 +18,9 @@
                     },
                     success: function(rpta){
                         console.log(rpta);
-                        if(rpta.error !== undefined && '' !== rpta.error){
+                        if(rpta.error !== undefined &&  Object.keys(rpta.error).length > 0){
                             // Muestra mensaje de error
-                            $('#error-{_idFormulario_}').text(rpta.error); 
+                            ZCAsignarErrores('{_idFormulario_}', rpta); 
                             $('.alert-danger').show();
                         }else{
                             {_accionCliente_}

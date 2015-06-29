@@ -92,14 +92,6 @@ class autenticacion extends Apaginas {
     }
 
     /**
-     * En login no se autentica
-     * @return string
-     */
-    public function devolverClienteAutenticacion() {
-        return '';
-    }
-
-    /**
      * Define si de se debe crear la vista de busqueda
      */
     public function esLogin(){

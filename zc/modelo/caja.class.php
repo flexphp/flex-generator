@@ -99,12 +99,14 @@ class caja extends Aelemento {
             case ZC_DATO_FECHA:
                 $formatoRegExp = "^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$";
                 $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
-                $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFecha}): {$this->_msjTipo}'";
+                // $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFecha}): {$this->_msjTipo}'";
+                $this->_msjTipo = "data-parsley-pattern-message='{$this->_msjTipo}'";
                 break;
             case ZC_DATO_FECHA_HORA:
                 $formatoRegExp = "(\d{2}|\d{4})(?:\-)?([0]{1}\d{1}|[1]{1}[0-2]{1})(?:\-)?([0-2]{1}\d{1}|[3]{1}[0-1]{1})(?:\s)?([0-1]{1}\d{1}|[2]{1}[0-3]{1})(?::)?([0-5]{1}\d{1})(?::)?([0-5]{1}\d{1})";
                 $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
-                $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFechaHora}): {$this->_msjTipo}'";
+                // $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFechaHora}): {$this->_msjTipo}'";
+                $this->_msjTipo = "data-parsley-pattern-message='{$this->_msjTipo}'";
                 break;
             case ZC_DATO_HORA:
                 $formatoRegExp = "^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$";

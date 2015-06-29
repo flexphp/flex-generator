@@ -45,9 +45,6 @@ class pagina {
     function devolverArchivoControlador() {
         return $this->_modelo->devolverArchivoControlador();
     }
-    function devolverClienteAutenticacion() {
-        return $this->_modelo->devolverClienteAutenticacion();
-    }
     function esLogin(){
         return $this->_modelo->esLogin();
     }
