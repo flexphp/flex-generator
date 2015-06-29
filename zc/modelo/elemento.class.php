@@ -26,6 +26,35 @@ class elemento {
     private $_propiedad = array();
 
     /**
+     * Filtros permitidos segun el tipo de dato del campo
+     * @var array
+     */
+    private $_operadores = array(
+        'lista' => array(
+            '=' => '',
+            '=' => 'igual a',
+            '!=' => 'deferente de',
+        ),
+        'numero' => array(
+            '=' => '',
+            '=' => 'igual a',
+            '>' => 'mayor a',
+            '>=' => 'mayor o igual a',
+            '<' => 'menor a',
+            '<=' => 'menor o igual a',
+            '!=' => 'deferente de',
+        ),
+        'texto' => array(
+            'both%' => '',
+            '=' => 'igual a',
+            'both%' => 'contiene',
+            'after%' => 'inicia con',
+            'before%' => 'termina con',
+            '!=' => 'deferente de',
+        ),
+    );
+
+    /**
      * Crea el tipo de elemento segun las caracteristicas entregadas
      */
     function __construct($caracteristicas) {
@@ -102,10 +131,33 @@ class elemento {
     }
 
     /**
-     * Permite agregar caracterisiticas adicionales a los elementos
+     * Permite agregar caracteristicas adicionales a los elementos
+     * @param string $nombre Nombre de la propiedad a agregar
+     * @param string $valor Valor de la propiedad a agregar
      */
     public function propiedad($nombre, $valor) {
         $this->_propiedad[$nombre] = $valor;
+    }
+
+    /**
+     * Devuelve la lista de operadores que pueden ser aplicados para la busqueda
+     * @param string $tipo Tipo de dato que recibe el campo texto|numero|lista
+     * @param string $oculto Establece si se debe mostrar por defecto el campo
+     * @return string
+     */
+    public function operadores($tipo = '', $oculto = '') {
+        if ('' == $tipo) {
+            mostrarErrorZC(__FILE__, __FUNCTION__, 'Tipo de dato para saber los operadores!?');
+        }
+        // Opciones de filtro, se envuelve en un div para manejar la ocultacion de forma mas efectiva
+        $operadores = tabular("<div id='operador-{$tipo}' name='operador-{$tipo}' class='zc-operador{$oculto}'>", 32);
+        $operadores .= tabular("<select id='zc-operador-{$tipo}' name='zc-operador-{$tipo}' class='form-control'>", 36);
+        foreach ($this->_operadores[$tipo] as $key => $value) {
+            $operadores .= tabular("<option value='$key'>$value</option>", 40);
+        }
+        $operadores .= tabular('</select>', 36);
+        $operadores .= tabular('</div>', 32);
+        return $operadores;
     }
 
 }

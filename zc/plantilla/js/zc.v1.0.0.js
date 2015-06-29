@@ -103,19 +103,20 @@ function ZCCamposDeBusqueda(e, formulario, id){
         console.log('Elemento no encontrado');
         return false;
     }
-
     // Filtro actual
     var filtro = $(id).val();
-    // Resetea el formulario para evitar errores en las validaciones o filtros no agregados
-    $('#'+formulario).trigger('reset');
-    // Oculta todos los posibles filtros
-    $('.zc-filtros').addClass('hidden');
-    // Muestra el filtro seleccionado de la lista
-    $('.zc-filtros-'+filtro).removeClass('hidden');
-    // Establece elvalor seleccionado del filtro
-    $('.zc-filtros-busqueda').val(filtro);
+    // Determina el tipo de operador a aplicar segun el campo (texto, numerico, lista)
+    var operadorFiltro = $('.zc-filtros-busqueda option:selected').attr('zc-operador');
+    // Oculta la lista de filtros que no aplican
+    $('.zc-operador').addClass('hidden');
+    // Solo deja a la vista el tipo de filtro para el campo seleccionado
+    $('#operador-' + operadorFiltro).removeClass('hidden');
+    // Oculta todos los campos de la lista de campos
+    $('.zc-campos').addClass('hidden');
+    // Muestra el campos seleccionado
+    $('#campo-' + filtro).removeClass('hidden');
     // Deja el valor nuevamente en vacio para una nueva asignacion
-    $('#'+filtro).val('');
+    $('#' + filtro).val('');
 }
 
 /**
@@ -127,10 +128,16 @@ function ZCCamposDeBusqueda(e, formulario, id){
  */
 function ZCAccionAgregarFiltro(e, formulario, id){
     e.preventDefault();
-    var filtro = $(id).attr('id').replace('agregar-', '');
-    var operador = $('#operador-' + filtro).val();
+    // Determina el campo por el ual se desea filtrar
+    var filtro = $('.zc-filtros-busqueda option:selected').val();
+    // Determina el tipo de operador a aplicar segun el campo (texto, numerico, lista)
+    var operadorFiltro = $('.zc-filtros-busqueda option:selected').attr('zc-operador');
+    // Determina el filtro aplicado (=,>,>=,etc)
+    var operador = $('#zc-operador-' + operadorFiltro).val();
+    // Valor y nombre del filtro selecionado
     var valor = textoValor = '';
 
+    // Determina como debe extraer el valor del campo
     switch(true){
         case $('input[name^='+filtro+']').attr('type') === 'checkbox':
             $('input[name^='+filtro+']:checked').each(function(){
@@ -155,11 +162,12 @@ function ZCAccionAgregarFiltro(e, formulario, id){
     }
 
     if (!$('#'+formulario).parsley().validate()){
+        // Valida que sea un valor permitido
         return false;
     }
 
-    var textoFiltro = $('.zc-filtros-busqueda:first option:selected').html();
-    var textoOperador = $('#operador-' + filtro + " option:selected").html();
+    var textoFiltro = $('.zc-filtros-busqueda option:selected').html();
+    var textoOperador = $('#zc-operador-' + operadorFiltro + ' option:selected').html();
     var textoValor = (textoValor !== '') ? textoValor : '<i>(vacio)</i>';
 
     // Evita eliminar filtros repetidos, se maneja como numero
@@ -168,7 +176,7 @@ function ZCAccionAgregarFiltro(e, formulario, id){
     // Suma al numero de filtros, nunca se repite el id, asi no importa el orden en el que son eliminados
     $('#zc-filtros-cantidad-filtros').val((cantidadFiltros+1));
 
-    // Agrega un campo oculto al formaulario con los valores a enviar
+    // Agrega un campo oculto al formulario con los valores a enviar
     $('#' + formulario).append("<div class='row zc-filtros-disponibles' id='zc-filtros-aplicados-"+identificadorFiltro+"'>"+
     "<div class='col-md-1'></div>"+
     // Etiqueta del campo
