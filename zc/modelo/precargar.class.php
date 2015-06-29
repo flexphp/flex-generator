@@ -37,7 +37,7 @@ class precargar extends accion {
 //        $php .= $this->inicializar();
         $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
-        $php .= $this->comando('//Nombre de la tabla afectada', 12);
+        $php .= $this->comando('// Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', $tabla);', 12);
@@ -109,7 +109,6 @@ class precargar extends accion {
         $this->_inicializarCliente[] = "'id' => \$datos['id']";
         $this->_inicializarServidor[] = "'id' => 'xsd:string'";
         $this->_parametrosServidor[] = '$id';
-        $this->_asignacionControlador[] = $this->comando("\$datos['id'] = \$this->input->post('id');");
 
         //Desactiva nuevas peticiones de inicializacion
         $this->_yaInicio = true;

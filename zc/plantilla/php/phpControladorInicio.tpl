@@ -28,7 +28,7 @@ class {_nombreControlador_} extends CI_Controller {
      */
     public function validarSesion() {
         if ($this->session->userdata('zc_logueado') !== true) {
-            // No esta logueado
+            // No esta logueado, pide iniciar sesion
             redirect('zlogin');
         } 
     } 

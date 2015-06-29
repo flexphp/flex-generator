@@ -62,6 +62,8 @@
                 
         <!-- Id del registro actual, si esta vacio, es un registro nuevo, de lo contrario es una actualizacion -->
         <input type="hidden" id="zc-id-{_idFormulario_}" name="zc-id-{_idFormulario_}" value="<?php echo $id; ?>"/>
+        <!-- Pagina para ejecutar acciones desde JS -->
+        <input type="hidden" id="zc-controlador" name="zc-controlador" value="{_nombreControlador_}"/>
         <!-- URL del proyecto, se usa en los llamados ajax -->
         <input type="hidden" id="URLProyecto" name="URLProyecto" value="<?php echo base_url(); ?>"/>
         <!-- JS jQuery -->

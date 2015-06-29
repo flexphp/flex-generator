@@ -25,7 +25,7 @@ class buscar extends accion {
         }
         $php = '';
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
-        $php .= $this->comando('//Nombre de la tabla afectada', 12);
+        $php .= $this->comando('// Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', $tabla);', 12);
@@ -226,9 +226,6 @@ class buscar extends accion {
         $this->_inicializarServidor[] = "'pagina' => 'xsd:int'";
 
         $this->_parametrosServidor[] = '$filtros, $pagina';
-
-        $this->_asignacionControlador[] = "\$datos['filtros'] = \$this->input->post('filtros');";
-        $this->_asignacionControlador[] = "\$datos['pagina'] = \$this->input->post('pagina');";
 
         $this->_tipoPlantilla = 'jsLlamadosBuscarAjax.js';
 

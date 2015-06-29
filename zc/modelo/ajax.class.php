@@ -28,7 +28,7 @@ class ajax extends accion {
 //        $php .= $this->inicializar();
         $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
-        $php .= $this->comando('//Nombre de la tabla afectada', 12);
+        $php .= $this->comando('// Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', $tabla);', 12);
@@ -115,9 +115,6 @@ class ajax extends accion {
         $this->_inicializarServidor[] = "'campos' => 'xsd:string'";
 
         $this->_parametrosServidor[] = '$tablas, $campos';
-
-        $this->_asignacionControlador[] = "\$datos['tablas'] = \$this->input->post('tablas');";
-        $this->_asignacionControlador[] = "\$datos['campos'] = \$this->input->post('campos');";
 
         $this->_tipoPlantilla = '';
 

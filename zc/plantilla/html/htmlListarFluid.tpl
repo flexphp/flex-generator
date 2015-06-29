@@ -78,7 +78,7 @@
 
         <!-- Busquedas hechas desde la url, se usa en la accion de crear -->
         <input type="hidden" id="zc-filtros-predefinidos" name="zc-filtros-predefinidos" value="<?php echo $busquedaPredefinida; ?>"/>
-        <!-- Pagina para las busquedas -->
+        <!-- Pagina para ejecutar acciones desde JS -->
         <input type="hidden" id="zc-controlador" name="zc-controlador" value="{_nombreControlador_}"/>
         <!-- URL del proyecto, se usa en los llamados ajax -->
         <input type="hidden" id="URLProyecto" name="URLProyecto" value="<?php echo base_url(); ?>"/>

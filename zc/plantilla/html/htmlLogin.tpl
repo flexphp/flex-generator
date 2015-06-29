@@ -63,8 +63,7 @@
             </div>
         </div>
 
-        <!-- Busquedas hechas desde la url, se usa en la accion de crear -->
-        <!-- Pagina para las busquedas -->
+        <!-- Pagina para ejecutar acciones desde JS -->
         <input type="hidden" id="zc-controlador" name="zc-controlador" value="{_nombreControlador_}"/>
         <!-- URL del proyecto, se usa en los llamados ajax -->
         <input type="hidden" id="URLProyecto" name="URLProyecto" value="<?php echo base_url(); ?>"/>

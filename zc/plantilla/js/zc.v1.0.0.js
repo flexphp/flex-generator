@@ -414,7 +414,7 @@ function ZCAccionPrecargarResultado(formulario, rpta){
             $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);
             break;
         case $('#'+campo).attr('type') === 'password':
-            // No se deja obligatorios, si la persona lo diligencia se cambia en el servidor, delo contrario se
+            // No se deja obligatorios, si la persona lo diligencia se cambia en el servidor, de lo contrario se
             // deja el valor que estaba
             $('#'+formulario + ' #'+campo + ', #x'+campo).removeAttr('data-parsley-required');
             // Las contrasenas las dejan vacias
@@ -553,6 +553,54 @@ function ZCActivarBotonPrincipal(formulario){
             e.preventDefault();
             // Ejecuta boton primario no oculto
             $('#'+formulario+' .btn-primary').not('.hidden').trigger('click');
+        }
+    });
+}
+
+/**
+ * Consulta los datos del registros y los precarga para poder modificar los datos
+ * @param {string} formulario
+ * @param {int} id
+ * @param {string} precargar
+ * @param {string} modificar
+ */
+function ZCAccionPrecargar(formulario, id, precargar, modificar){
+    var controlador = $('#zc-controlador').val();
+    $.ajax({
+        url: $('#URLProyecto').val()+'index.php/' + controlador + '/' + precargar + '/',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+            // Envia filtros de busqueda al servidor
+            id: id,
+            accion: precargar
+        },
+        beforeSend: function(){
+            // Desactiva todos los campos
+            $('input, textarea, select, button').addClass('disabled').prop('disabled', true);
+            // Oculta ventana con mensajes
+            $('.alert').hide();
+            // Mostrar cargando
+            $('#'+modificar+' span').addClass('glyphicon-refresh glyphicon-refresh-animate');
+        },
+        success: function(rpta){
+            if(rpta.error !== undefined && '' !== rpta.error){
+                // Muestra mensaje de error
+                $('#error-' + formulario).text(rpta.error);
+                $('.alert-danger').show();
+            }else{
+                ZCAccionPrecargarResultado(formulario, rpta);
+            }
+        },
+        complete: function(){
+            // Activar los campos para la modificacion
+            $('input, textarea, select, button').removeClass('disabled').prop('disabled', false);
+            // Ocultar cargando
+            $('#'+modificar+' span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
+        },
+        error: function(rpta){
+            $('#error-' + formulario).text('Error en el servicio');
+            $('.alert-danger').show();
         }
     });
 }

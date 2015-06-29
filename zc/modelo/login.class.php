@@ -27,7 +27,7 @@ class login extends accion {
         $php .= $this->comando('//Establece los valores de cada uno de los campos', 12);
         $php .= $this->inicializar();
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
-        $php .= $this->comando('//Nombre de la tabla afectada', 12);
+        $php .= $this->comando('// Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', $tabla);', 12);

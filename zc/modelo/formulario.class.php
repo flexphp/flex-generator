@@ -358,6 +358,7 @@ class formulario {
         }
 
         $this->_plantilla->asignarEtiqueta('idFormulario', $this->_id);
+        $this->_plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $this->_plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
         $this->_plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
         $this->_plantilla->asignarEtiqueta('contenidoFormulario', $this->unirElementosFormulario($this->_formulario));
@@ -381,8 +382,8 @@ class formulario {
          */
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlListarFluid.tpl');
-        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('idFormulario', $this->_id);
+        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
         $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
         $plantilla->asignarEtiqueta('contenidoFormulario', implode(FIN_DE_LINEA, $this->_filtros));
@@ -677,23 +678,27 @@ class formulario {
                 // Los botones tipo restablecer, cancelar no crean acciones
                 continue;
             }
-            // Determina la accion a ejecutar en el cvontrolador
+            // Determina la accion a ejecutar en el controlador
             $comando = $this->_asignacionControlador[$caracteristicas[ZC_ID]] . FIN_DE_LINEA . insertarEspacios(8);
             $comandoEspecial = '';
             switch ($caracteristicas[ZC_ELEMENTO]) {
                 case ZC_ACCION_BUSCAR:
-                    $comando .= "\$rpta = \$this->{$this->_nombreArchivoModelo}->validarFiltros(\$datos['filtros'], \$datos['accion']);";
+                    $comando .= tabular('// Aplica filtros seleccionados', 0);
+                    $comando .= tabular("\$rpta = \$this->{$this->_nombreArchivoModelo}->validarFiltros(\$datos['filtros'], \$datos['accion']);", 8);
                     // Construir la paginacion
-                    $comandoEspecial = 'if (isset($rpta[\'cta\'])){';
-                    $comandoEspecial .= '$rpta[\'paginacion\'] = $this->paginar($rpta[\'cta\']);';
-                    $comandoEspecial .= '}';
+                    $comandoEspecial .= tabular('// Establece los valores para la paginacion', 0);
+                    $comandoEspecial .= tabular('if (isset($rpta[\'cta\']) && $rpta[\'cta\'] > 0){', 12);
+                    $comandoEspecial .= tabular('$rpta[\'paginacion\'] = $this->paginar($rpta[\'cta\']);', 16);
+                    $comandoEspecial .= tabular('}', 12);
                     break;
                 case ZC_ACCION_LOGIN:
                     // Registrar el inicio de sesion del usuario
-                    $comandoEspecial = '$rpta = $this->loguear($rpta);';
+                    $comandoEspecial = tabular('// Inicia session el sistema', 8);
+                    $comandoEspecial = tabular('$rpta = $this->loguear($rpta);', 8);
                     // Continua con la accion por defecto ya que es la misma
                 default:
-                    $comando .= "\$rpta = \$this->{$this->_nombreArchivoModelo}->{$this->_nombreFuncionValidacion}(\$datos);";
+                    $comando .= tabular('// Valida los datos pasados por POST', 0);
+                    $comando .= tabular("\$rpta = \$this->{$this->_nombreArchivoModelo}->{$this->_nombreFuncionValidacion}(\$datos);", 8);
                     break;
             }
             /**

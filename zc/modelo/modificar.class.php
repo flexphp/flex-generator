@@ -53,7 +53,7 @@ class modificar extends accion {
         // Agrega la condicion de busqueda
         $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
-        $php .= $this->comando('//Nombre de la tabla afectada', 12);
+        $php .= $this->comando('// Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', $tabla);', 12);
@@ -142,11 +142,7 @@ class modificar extends accion {
         $this->_parametrosServidor = parent::inicializarAccion()->devolverParametrosServidor();
         $this->_parametrosServidor[] = '$id';
 
-        // Los valores ya se habian asignado, se borran para establecer los nuevos
-        unset ($this->_asignacionControlador);
-        // Reasina el valor inicial
-        $this->_asignacionControlador[] = "\$datos['accion'] = \$this->input->post('accion');";
-        // La inicializacion se ace diferente para manejar los campos tipo passsword, si no se diligencian
+        // La inicializacion se hace diferente para manejar los campos tipo passsword, si no se diligencian
         // es porque no cambian
         foreach ($this->_campos as $nro => $campo) {
             switch ($campo[ZC_DATO]){
@@ -155,13 +151,8 @@ class modificar extends accion {
                     $this->_asignacionControlador[] = '// Clave modificada';
                     $this->_asignacionControlador[] = "\$datos['{$campo[ZC_ID]}'] = (\$this->input->post('{$campo[ZC_ID]}') != '') ? \$this->input->post('{$campo[ZC_ID]}') : null;";
                     break;
-                default :
-                    $this->_asignacionControlador[] = "\$datos['{$campo[ZC_ID]}'] = \$this->input->post('{$campo[ZC_ID]}');";
-                    break;
             }
         }
-        // Ademas de uno nuevo para el manejo de la id de actualizacion
-        $this->_asignacionControlador[] = "\$datos['id'] = \$this->input->post('id');";
 
         $this->_tipoPlantilla = 'jsLlamadosModificarAjax.js';
 

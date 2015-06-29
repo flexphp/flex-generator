@@ -10,6 +10,7 @@ public function {_nombreAccion_}() {
         if (isset($rpta['error']) && '' != $rpta['error']) {
             // Pasa al final
         } else if ($datos['accion'] == '{_nombreAccion_}') {
+            // Hace el llamado al WS {_nombreAccion_}
             $rpta = $this->{_nombreModelo_}->{_nombreAccion_}Cliente($datos);
             {_comandoEspecial_}
         } else if (isset($datos['accion'])) {

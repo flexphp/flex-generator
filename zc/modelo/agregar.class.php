@@ -29,7 +29,7 @@ class agregar extends accion {
         $php .= $this->inicializar($this->_campos);
         $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
-        $php .= $this->comando('//Nombre de la tabla afectada', 12);
+        $php .= $this->comando('// Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', $tabla);', 12);
@@ -100,7 +100,6 @@ class agregar extends accion {
         $this->_inicializarServidor = parent::inicializarAccion()->devolverInicializarServidor();
         $this->_parametrosServidor = parent::inicializarAccion()->devolverParametrosServidor();
         $this->_asignacionControlador = parent::inicializarAccion()->devolverAsignacionControlador();
-        $this->_asignacionControlador[] = $this->comando('');
         $this->_tipoPlantilla = 'jsLlamadosCrearAjax.js';
 
         //Desactiva nuevas peticiones de inicializacion

@@ -14,7 +14,7 @@
         $server = base_url() . 'index.php/';
         $serverURL = $server . '{_servidorAccion_}/';
         $serverScript = '{_nombreAccion_}';
-        $metodoALlamar = $datos['accion'] . 'Servidor';
+        $metodoALlamar = '{_nombreAccion_}Servidor';
 
         /**
          * Parametros de la funcion a llamar

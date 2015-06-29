@@ -92,7 +92,12 @@ class accion extends Aelemento {
      * Inicializa los valores recibidos por el controlador
      * @var array
      */
-    protected $_asignacionControlador = array("\$datos['accion'] = \$this->input->post('accion');");
+    protected $_asignacionControlador = array(
+        "// Aplica filtro XSS a todo el POST",
+        "\$datos = \$this->input->post(null, true);",
+        "// Establece la accion a aplicar",
+        "\$datos['accion'] = \$this->input->post('accion');",
+    );
 
     /**
      * Tipo de plantilla a utilizar para los llamoados ajax
@@ -216,6 +221,7 @@ class accion extends Aelemento {
             // Ya esta definido, no los vuelve a cargar
             return $this;
         }
+
         foreach ($this->_campos as $nro => $campo) {
             // Los datos se envia codificados para evitar errores con caracteres especiales, ademas
             //permite enviar 'cualquier' tipo de dato
@@ -224,8 +230,6 @@ class accion extends Aelemento {
             $this->_inicializarServidor[] = "'{$campo[ZC_ID]}' => 'xsd:{$campo[ZC_DATO_WS]}'";
 
             $this->_parametrosServidor[] = "\${$campo[ZC_ID]}";
-
-            $this->_asignacionControlador[] = "\$datos['{$campo[ZC_ID]}'] = \$this->input->post('{$campo[ZC_ID]}');";
         }
         $this->_tipoPlantilla = 'jsLlamadosDefaultAjax.js';
 

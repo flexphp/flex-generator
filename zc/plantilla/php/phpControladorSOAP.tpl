@@ -41,7 +41,7 @@ class {_nombreControlador_} extends CI_Controller {
      */
     public function validarSesion() {
         if ($this->session->userdata('zc_logueado') !== true) {
-            // No esta logueado
+            // No esta logueado, pide iniciar sesion
             redirect('zlogin');
         } 
     } 
@@ -76,6 +76,7 @@ class {_nombreControlador_} extends CI_Controller {
 
     /**
      * Pagina los resultados mostrados en la consulta
+     * @param int $cta Numero de registros devueltos por la consulta
      */
     public function paginar($cta = 0) {
         $config['base_url'] = base_url() . '/index.php/' . $this->_data['controlador'] . '/buscar/';

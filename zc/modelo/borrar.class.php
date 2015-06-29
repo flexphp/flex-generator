@@ -27,7 +27,7 @@ class borrar extends accion {
         // Agrega la condicion de busqueda
         $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
-        $php .= $this->comando('//Nombre de la tabla afectada', 12);
+        $php .= $this->comando('// Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', $tabla);', 12);
@@ -96,18 +96,8 @@ class borrar extends accion {
         }
         // Herada los de la clase padre
         $this->_inicializarCliente[] = "'id' => \$datos['id']";
-
         $this->_inicializarServidor[] = "'id' => 'xsd:int'";
-
         $this->_parametrosServidor[] = '$id';
-
-        // Los valores ya se habian asignado, se borran para establecer los nuevos
-        unset ($this->_asignacionControlador);
-        // Reasina el valor inicial
-        $this->_asignacionControlador[] = "\$datos['accion'] = \$this->input->post('accion');";
-        // Ademas de uno nuevo para el manejo de la id de actualizacion
-        $this->_asignacionControlador[] = "\$datos['id'] = \$this->input->post('id');";
-
         $this->_tipoPlantilla = 'jsLlamadosBorrarAjax.js';
 
         $this->_yaInicio = true;
