@@ -17,27 +17,19 @@ require RUTA_GENERADOR_CODIGO . '/modelo/formulario.class.php';
 error_reporting(E_ALL);
 
 function plantillas() {
-    /**
-     * Imagenes e Iconos homologados
-     */
+    // Imagenes e Iconos homologados
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/fonts', '../www/publico/fonts');
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/img', '../www/publico/img');
 
-    /**
-     * Eliminar archivos xml generados en ejecuciones pasadas del generador de codigo
-     */
+    // Eliminar archivos xml generados en ejecuciones pasadas del generador de codigo
     eliminar(RUTA_GENERADOR_CODIGO . '/xml', false);
 
-    /**
-     * Libreria donde estan metodos traversales (comunes) a toda la aplicacion
-     */
+    // Libreria donde estan metodos traversales (comunes) a toda la aplicacion
     $zcphp = new plantilla();
     $zcphp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpLibreriaZC.tpl');
     $zcphp->crearPlantilla('../www/application/libraries', 'php', 'zc');
 
-    /**
-     * Tablas de configuracion, para usuarios, tipos de usuario, estados de usuario y login
-     */
+    // Tablas de configuracion, para usuarios, tipos de usuario, estados de usuario y login
     $usuariosxml = new plantilla();
     $usuariosxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlUsuarios.tpl');
     $usuariosxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
@@ -63,12 +55,9 @@ function plantillas() {
     $loginxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
     $loginxml->crearPlantilla('xml', 'xml', 'login');
     
-    /**
-     * Pagina y bienvenida de la aplicacion
-     */
+    // Pagina y bienvenida de la aplicacion
     $iniciophp = new plantilla();
     $iniciophp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorInicio.tpl');
-    $iniciophp->asignarEtiqueta('nombreFormulario', 'Bienvenida');
     $iniciophp->asignarEtiqueta('nombreVista', ZC_PREFIJO_VISTA . 'inicio.html');
     $iniciophp->asignarEtiqueta('nombreControlador', 'inicio');
     $iniciophp->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
@@ -77,15 +66,11 @@ function plantillas() {
     $iniciohtml = new plantilla();
     $iniciohtml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlInicio.tpl');
     $iniciohtml->asignarEtiqueta('nombreFormulario', 'Bienvenida');
-    $iniciohtml->asignarEtiqueta('nombreVista', ZC_PREFIJO_VISTA . 'inicio.html');
-    $iniciohtml->asignarEtiqueta('nombreControlador', 'inicio');
     $iniciohtml->crearPlantilla('../www/application/views', 'html', ZC_PREFIJO_VISTA . 'inicio');
 
 
-    /**
-     * Compatiblilidad con HTML5
-     * IE8 support of HTML5 elements and media queries
-     */
+    // Compatiblilidad con HTML5
+    // IE8 support of HTML5 elements and media queries
     $html5js = new plantilla();
     $html5js->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/html5shiv.v3.7.2.js');
     $html5js->crearPlantilla('../www/publico/js', 'js', 'html5shiv');
@@ -94,30 +79,22 @@ function plantillas() {
     $respondjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/respond.v1.4.2.js');
     $respondjs->crearPlantilla('../www/publico/js', 'js', 'respond');
 
-    /**
-     * JQuery homologado
-     */
+    // JQuery homologado
     $jqueryjs = new plantilla();
     $jqueryjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jquery.v2.1.1.min.js');
     $jqueryjs->crearPlantilla('../www/publico/js', 'js', 'jquery');
 
-    /**
-     * Parsley Homologado
-     */
+    // Parsley Homologado
     $parsleyjs = new plantilla();
     $parsleyjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/parsley.v2.0.5.js');
     $parsleyjs->crearPlantilla('../www/publico/js', 'js', 'parsley');
 
-    /**
-     * Boostrap Homologado
-     */
+    // Boostrap Homologado
     $bootstrapjs = new plantilla();
     $bootstrapjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/bootstrap.v3.3.2.min.js');
     $bootstrapjs->crearPlantilla('../www/publico/js', 'js', 'bootstrap');
 
-    /**
-     * Datapicker
-     */
+    // Datapicker
     $datetimepickerjs = new plantilla();
     $datetimepickerjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/datetimepicker.v4.7.14.min.js');
     $datetimepickerjs->crearPlantilla('../www/publico/js', 'js', 'datetimepicker');
@@ -126,16 +103,12 @@ function plantillas() {
     $momentjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/moment.v2.9.0.min.js');
     $momentjs->crearPlantilla('../www/publico/js', 'js', 'moment');
 
-    /**
-     * Lenguaje datapicker
-     */
+    // Lenguaje datapicker
     $lenguajejs = new plantilla();
     $lenguajejs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/es.js');
     $lenguajejs->crearPlantilla('../www/publico/js', 'js');
 
-    /**
-     * JS con funciones javascript utilizadas por el sistema
-     */
+    // JS con funciones javascript utilizadas por el sistema
     $zcjs = new plantilla();
     $zcjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/zc.v1.0.0.js');
     $zcjs->crearPlantilla('../www/publico/js', 'js', 'zc');
@@ -144,9 +117,7 @@ function plantillas() {
     $indexjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/index.html');
     $indexjs->crearPlantilla('../www/publico/js', 'html');
 
-    /**
-     * CSS Homologado
-     */
+    // CSS Homologado
     $bootstrapcss = new plantilla();
     $bootstrapcss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/bootstrap.min.css');
     $bootstrapcss->crearPlantilla('../www/publico/css', 'css', 'bootstrap');
@@ -163,18 +134,14 @@ function plantillas() {
     $indexcss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/index.html');
     $indexcss->crearPlantilla('../www/publico/css', 'html');
 
-    /**
-     * Index de la carpeta publico
-     */
+    // Index de la carpeta publico
     $index = new plantilla();
     $index->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/index.html');
     $index->crearPlantilla('../www/publico', 'html');
 }
 
 function config() {    
-    /**
-     * Configuracion para los archivos de paginacion
-     */
+    // Configuracion para los archivos de paginacion
     $pagina = new plantilla();
     $pagina->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/ci/pagination.tpl');
     if (defined('ZC_REGISTROS_POR_PAGINA')) {
@@ -182,9 +149,7 @@ function config() {
     }
     $pagina->crearPlantilla('../www/application/config', 'php');
 
-    /**
-     * Crear archivo de configuracion de base de datos, valida y setea la configuracion segun corresponda
-     */
+    // Crear archivo de configuracion de base de datos, valida y setea la configuracion segun corresponda
     $db = new plantilla();
     $db->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/ci/database.tpl');
     if (defined('ZC_BD_MOTOR')) {

@@ -4,7 +4,7 @@ class {_nombreModelo_} extends CI_Model {
 
     /**
      * Nombres de los campos a utilizar en los alias, (Accion buscar)
-     * $var array
+     * @var array
      */
     private $_aliasCampo = array(
         {_aliasCampos_}
@@ -12,7 +12,7 @@ class {_nombreModelo_} extends CI_Model {
     
     /**
      * Cada una de las tablas relacionadas con el formulario
-     * $var array
+     * @var array
      */
     private $_tablasRelacionadas = array(
         {_tablasRelacionadas_}

@@ -4,9 +4,7 @@ if(!defined('BASEPATH')){
     exit('Direct Access Not Allowed');
 }
 
-/**
- * Configuracion para usar BS3
- */
+// Configuracion para usar BS3
 $config['full_tag_open'] = '<div class="text-center"><ul class="pagination pagination-small pagination-centered">';
 $config['full_tag_close'] = '</ul></div>';
 $config['num_tag_open'] = '<li>';

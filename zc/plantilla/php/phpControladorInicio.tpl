@@ -11,7 +11,6 @@ class {_nombreControlador_} extends CI_Controller {
      * @var array
      */
     private $_data = array(
-        'formulario' => '{_idFormulario_}',
         'vista' => '{_nombreVista_}',
         'navegacion' => '',
     );
@@ -46,7 +45,6 @@ class {_nombreControlador_} extends CI_Controller {
     public function inicio() {
         // Valida que el usuario este logueado
         $this->validarSesion();
-
         $this->load->view($this->_data['vista'], $this->_data);
     }
 

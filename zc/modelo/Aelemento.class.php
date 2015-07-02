@@ -99,9 +99,7 @@ abstract class Aelemento {
      * @throws Exception
      */
     protected function verificar() {
-        /**
-         * Id del objeto dentro del formulario
-         */
+        // Id del objeto dentro del formulario
         if (!isset($this->_prop[ZC_ID]) || '' == trim($this->_prop[ZC_ID]) || !is_string($this->_prop[ZC_ID])) {
             mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo NO tiene un identificador valido [a-Z_].");
         }
@@ -112,9 +110,7 @@ abstract class Aelemento {
         // Tipo Elemento
         $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : null;
 
-        /**
-         * No todos los elementos necesitan todas las propedades, minimiza uso de memoria
-         */
+        // No todos los elementos necesitan todas las propedades, minimiza uso de memoria
         if (in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA, ZC_ELEMENTO_CHECKBOX, ZC_ELEMENTO_RADIO, ZC_ELEMENTO_LISTA))) {
             // Tipo de dato
             $this->_prop[ZC_DATO] = (isset($this->_prop[ZC_DATO]) && '' != $this->_prop[ZC_DATO]) ? $this->_prop[ZC_DATO] : null;

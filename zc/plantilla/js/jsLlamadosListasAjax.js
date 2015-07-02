@@ -1,5 +1,5 @@
 /**
- * Definicion de la accion {_nombreAccion_}
+ * Carga mediante Ajax la lista desplegable {_nombreSelect_}
  */
 $(document).ready(function () {
     $.ajax({

@@ -85,7 +85,6 @@ $(document).ready(function () {
     // Inicializa los cajas de texto para las fechas
     $('.zc-caja-fecha').datetimepicker({
         format: 'YYYY-MM-DD',
-//        showClose: true,
         toolbarPlacement: 'top',
         showClear: true
     });
@@ -93,7 +92,6 @@ $(document).ready(function () {
     // Inicializa los cajas de texto para las fecha hora
     $('.zc-caja-fecha-hora').datetimepicker({
         format: 'YYYY-MM-DD HH:mm:ss',
-//        showClose: true,
         toolbarPlacement: 'top',
         sideBySide: true,
         showClear: true
@@ -102,7 +100,6 @@ $(document).ready(function () {
     // Inicializa los cajas de texto para las hora
     $('.zc-caja-hora').datetimepicker({
         format: 'HH:mm:ss',
-//        showClose: true,
         toolbarPlacement: 'top',
         showClear: true
     });

@@ -42,7 +42,7 @@ class plantilla {
      * Ruta completa donde se exporta la plantilla, directorio y nombre
      * @var string
      */
-    public $_salidaPlantilla = '';
+    private $_salidaPlantilla = '';
 
     /**
      * Constructor
@@ -123,7 +123,7 @@ class plantilla {
             mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else {
             if (isset($this->_etiquetasValidas[$etiqueta])) {
-//                No es necesario que la etiqueta este en la plantilla
+                // No es necesario que la etiqueta este en la plantilla
                 $this->_plantilla = str_replace('{_' . $etiqueta . '_}', $valor, $this->_plantilla);
             }
         }
@@ -176,17 +176,16 @@ class plantilla {
         if (!$this->_plantilla) {
             mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else if (isset($this->_opciones['minimizar']) && $this->_opciones['minimizar'] === true) {
-            //return $this;
             $patron = array(
-//            Quitar comentarios html
+                // Quitar comentarios html
                 '#<!--(.)*-->#',
                 // Quitar comentarios multiples php, js, css (ua sola linea /* comentario */) :(
                 //'#/\*(.)*\*/#',
-//            Reemplazar saltos de linea, tabs
+                // Reemplazar saltos de linea, tabs
                 '#[\n][\r][\r\n][\t]#',
-//            Reemplazar varios espacios por un solo espacio (HTML no los tiene encuenta)
+                // Reemplazar varios espacios por un solo espacio (HTML no los tiene encuenta)
                 '#\s+#',
-//            Quitar espacios entre etiquetas html
+                // Quitar espacios entre etiquetas html
                 '#>(\s*)<#',
             );
             $reemplazar = array(
@@ -197,18 +196,6 @@ class plantilla {
                 '><',
             );
             $this->_plantilla = preg_replace($patron, $reemplazar, $this->_plantilla);
-            //            Quitar comentarios html
-//            $patron = '#<!--([A-z0-9\s\.\>\<])*-->#';
-//            $reemplazar = '';
-//            $this->_plantilla = preg_replace($patron, $reemplazar, $this->_plantilla);
-////            Quitar comentarios html
-//            $patron = '#(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|((?<!:)//.*)|[\t\r\n]#i';
-//            $reemplazar = '';
-//            $this->_plantilla = preg_replace($patron, $reemplazar, $this->_plantilla);
-//            Quitar comentarios /* */
-//            $patron = "(\/\*(\s*|.*?)*\*\/)|(\/\/.*)";
-//            $reemplazar = '';
-//            $this->_plantilla = preg_replace($patron, $reemplazar, $this->_plantilla);
         }
 
         return $this;
@@ -271,13 +258,20 @@ class plantilla {
 
     /**
      * Abre la plantilla en el navegador, depende de las opciones pasadas a la plantilla
-     * @param string $paramsGET Para get pasdos a la plantilla
+     * @param string $paramsGET Para parametros GET pasados a la plantilla
      */
     private function abrirPlantilla($paramsGET = '') {
         if (isset($this->_opciones['abrir']) && $this->_opciones['abrir'] === true) {
-            header('Location: ' . $this->_salidaPlantilla . $paramsGET);
+            header('Location: ' . $this->devolver() . $paramsGET);
             die();
         }
+    }
+
+    /**
+     * Devuelve la ruta donde se creara la pantilla
+     */
+    public function devolver() {
+        return $this->_salidaPlantilla;
     }
 
 }

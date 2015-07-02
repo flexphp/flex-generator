@@ -111,27 +111,23 @@ class lista extends Aelemento {
             mostrarErrorZC(__FILE__, __FUNCTION__, 'No se ha definido el controlador para el llamado ajax');
         }
         if (isset($this->_joinTablas)) {
-            /**
-             * Plantilla para el manejo de javascript
-             */
+            // Plantilla para el manejo de javascript
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsLlamadosListasAjax.js');
-
             $plantilla->asignarEtiqueta('nombreControlador', $this->_controlador);
             $plantilla->asignarEtiqueta('nombreTabla', $this->_joinTablas['tabla']);
             $plantilla->asignarEtiqueta('nombreCampos', $this->_joinTablas['campo']);
             $plantilla->asignarEtiqueta('nombreSelect', $this->_id);
-
             $plantilla->crearPlantilla('../www/publico/js', 'js', 'ajax_' . $this->_joinTablas['tabla']);
             // Agregar archivo creado al javascript al formulario
-            $this->_ajax = $plantilla->_salidaPlantilla;
+            $this->_ajax = $plantilla->devolver();
         }
         return $this;
     }
 
     /**
-     * Devuelve la ruta del archivo ajax si existe
-     * @return type
+     * Devuelve la ruta del archivo ajax creado, solo si existe
+     * @return string
      */
     public function devolverAjax() {
         return (isset($this->_ajax)) ? $this->_ajax : null;

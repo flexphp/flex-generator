@@ -24,9 +24,6 @@ class ajax extends accion {
             mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_AJAX);
         }
         $php = '';
-        $php .= $this->comando('//Establece los valores de cada uno de los campos', 12);
-//        $php .= $this->inicializar();
-        $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
         $php .= $this->comando('// Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);

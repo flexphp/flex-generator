@@ -1,7 +1,5 @@
 function {_nombreAccion_}(){
-    	/**
-         * Definir los tipo de variables que se devolveran en la repuesta
-         */
+        // Definir los tipo de variables que se devolveran en la repuesta
         $this->_SRV_WS->wsdl->addComplexType(
             '{_nombreAccion_}Respta',
             'complexType',
@@ -24,9 +22,7 @@ function {_nombreAccion_}(){
             )
         );
 
-        /**
-         * Definir la manera de devolver el resultado
-         */
+        // Definir la manera de devolver el resultado
         $this->_SRV_WS->wsdl->addComplexType(
             '{_nombreAccion_}ResptaArray',
             'complexType',
@@ -43,23 +39,17 @@ function {_nombreAccion_}(){
             'tns:{_nombreAccion_}Respta'
         );
 
-        /**
-         * Parametros que recibe la funcion
-         */
+        // Parametros que recibe la funcion
         ${_nombreAccion_}Parametros = array(
             {_asignacionCliente_}
         );
 
-        /**
-         * Definir el tipo de respuesta que devuelve el servidor
-         */
+        // Definir el tipo de respuesta que devuelve el servidor
         ${_nombreAccion_}Returns = array(
             'return' => 'tns:{_nombreAccion_}ResptaArray'
         );
 
-        /**
-         * Registrar la funcion en el servidor
-         */
+        // Registrar la funcion en el servidor
         $this->_SRV_WS->register(
             '{_nombreFuncion_}', // Nombre de la funcion
             ${_nombreAccion_}Parametros, // Parametros de entrada
@@ -81,7 +71,6 @@ function {_nombreAccion_}(){
             );
 
 {_accionServidor_}
-
             if (isset($resultado)) {
                 // Si existe respuesta valida por parte del servidor
                 $Resultado[$i]['infoEncabezado'] = json_encode($resultado);

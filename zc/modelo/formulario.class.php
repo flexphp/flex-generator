@@ -1,23 +1,15 @@
 <?php
 
-/**
- * Mediador para crear las paginas
- */
+//Mediador para crear las paginas
 require RUTA_GENERADOR_CODIGO . '/modelo/pagina.class.php';
 
-/**
- * Mediador para crear elementos HTML caja|radio|lista|checkbox
- */
+//Mediador para crear elementos HTML caja|radio|lista|checkbox
 require RUTA_GENERADOR_CODIGO . '/modelo/elemento.class.php';
 
-/**
- * Clase para crear botones
- */
+//Clase para crear botones
 require RUTA_GENERADOR_CODIGO . '/modelo/boton.class.php';
 
-/**
- * Clase para la creacion de acciones segun el boton seleccionado
- */
+//Clase para la creacion de acciones segun el boton seleccionado
 require RUTA_GENERADOR_CODIGO . '/modelo/accion.class.php';
 
 /**
@@ -321,12 +313,9 @@ class formulario {
      * @return \formulario
      */
     private function crearModeloFormulario($directorioSalida = '../www/application/models', $extension = 'php', $opciones = array()) {
-        /**
-         * Plantilla para el modelo (model)
-         */
+        // Plantilla para el modelo (model)
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloSOAP.tpl');
-
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('llamadosModelo', $this->_llamadosModelo);
         $plantilla->asignarEtiqueta('funcionesModelo', implode(FIN_DE_LINEA, $this->_funcionesModelo));
@@ -334,9 +323,7 @@ class formulario {
         $plantilla->asignarEtiqueta('nombreValidacion', $this->_nombreFuncionValidacion);
         $plantilla->asignarEtiqueta('aliasCampos', $this->_aliasCampos);
         $plantilla->asignarEtiqueta('tablasRelacionadas', $this->_tablasRelacionadas);
-
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModelo);
-
         return $this;
     }
 
@@ -348,24 +335,19 @@ class formulario {
      * @return \formulario
      */
     private function crearVistaFormulario($directorioSalida = '../www/application/views', $extension = 'html', $opciones = array()) {
-        /**
-         * Plantilla para la vista (view), se puede devolver, por eso se deja en una variable $this
-         */
+        // Plantilla para la vista (view), se puede devolver, por eso se deja en una variable $this
         $this->_plantilla = new plantilla($opciones);
         $this->_plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/' . $this->_pagina->_modelo->devolverPlantillaVista());
         if (!$this->_pagina->_modelo->esLogin()){
             $this->crearListarFormulario($directorioSalida, $extension, $opciones);
         }
-
         $this->_plantilla->asignarEtiqueta('idFormulario', $this->_id);
         $this->_plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $this->_plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
         $this->_plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
         $this->_plantilla->asignarEtiqueta('contenidoFormulario', $this->unirElementosFormulario($this->_formulario));
         $this->_plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
-
         $this->_plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoVista);
-
         return $this;
     }
 
@@ -377,9 +359,7 @@ class formulario {
      * @return \formulario
      */
     public function crearListarFormulario($directorioSalida = '../www/application/views', $extension = 'html', $opciones = array()) {
-        /**
-         * Plantilla para la vista (view)
-         */
+        // Plantilla para la vista (view)
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlListarFluid.tpl');
         $plantilla->asignarEtiqueta('idFormulario', $this->_id);
@@ -388,9 +368,7 @@ class formulario {
         $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
         $plantilla->asignarEtiqueta('contenidoFormulario', implode(FIN_DE_LINEA, $this->_filtros));
         $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
-
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoListar);
-
         return $this;
     }
 
@@ -402,9 +380,7 @@ class formulario {
      * @return \formulario
      */
     private function crearControladorFormulario($directorioSalida = '../www/application/controllers', $extension = 'php', $opciones = array()) {
-        /**
-         * Plantilla para el controlador (controller)
-         */
+        // Plantilla para el controlador (controller)
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/' . $this->_pagina->_modelo->devolverPlantillaControlador());
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
@@ -414,9 +390,7 @@ class formulario {
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('accionServidor', $this->_funcionControlador);
         $plantilla->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
-
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoControlador);
-
         return $this;
     }
 
@@ -428,11 +402,8 @@ class formulario {
      * @return \formulario
      */
     private function crearJavascriptFormulario($directorioSalida = '../www/publico/js', $extension = 'js', $opciones = array()) {
-        /**
-         * Plantilla para el manejo de javascript
-         */
+        // Plantilla para el manejo de javascript
         $plantilla = new plantilla($opciones);
-        
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/' . $this->_pagina->_modelo->devolverPlantillaJavascript());
         $plantilla->asignarEtiqueta('idFormulario', $this->_id);
         $plantilla->asignarEtiqueta('accionAgregar', ZC_ACCION_AGREGAR);
@@ -440,11 +411,9 @@ class formulario {
         $plantilla->asignarEtiqueta('accionBorrar', ZC_ACCION_BORRAR);
         $plantilla->asignarEtiqueta('accionPrecargar', ZC_ACCION_PRECARGAR);
         $plantilla->asignarEtiqueta('llamadosAjax', $this->_llamadosAjax);
-
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoJs);
         // Agregar archivo creado al javascript al formulario
-        $this->javascriptFormulario($plantilla->_salidaPlantilla);
-
+        $this->javascriptFormulario($plantilla->devolver());
         return $this;
     }
 
@@ -456,19 +425,13 @@ class formulario {
      * @return \formulario
      */
     private function crearControladorServidorFormulario($directorioSalida = '../www/application/controllers', $extension = 'php', $opciones = array()) {
-        /**
-         * Plantilla para el modelo (model)
-         */
-        $comandoEspecial = '';
+        // Plantilla para el modelo (model)
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorServidorSOAP.tpl');
-        
         $plantilla->asignarEtiqueta('comandoEspecial', $this->_pagina->_modelo->devolverServidorAutenticacion());
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoServidor);
         $plantilla->asignarEtiqueta('accionesServidorWS', $this->_accionesServidorWS);
-
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoServidor);
-
         return $this;
     }
 
@@ -491,10 +454,8 @@ class formulario {
             if (!is_array($caracteristicas)) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': Y las caracteristicas del elemento!?');
             }
-            /**
-             * Se valida en minuscula para evitar ambiguedades: Boton, boton, BOTON, etc
-             * Se debe dejar, en este punto no ha pasado por la funcion elementos::verificar
-             */
+            // Se valida en minuscula para evitar ambiguedades: Boton, boton, BOTON, etc
+            // Se debe dejar, en este punto no ha pasado por la funcion elementos::verificar
             $caracteristicas[ZC_ELEMENTO] = (strtolower($caracteristicas[ZC_ELEMENTO]));
             if ($this->_pagina->_modelo->esLogin()) {
                 // A los campos de formularios NO se les valida la longitud
@@ -700,9 +661,7 @@ class formulario {
                     $comando .= tabular("\$rpta = \$this->{$this->_nombreArchivoModelo}->{$this->_nombreFuncionValidacion}(\$datos);", 8);
                     break;
             }
-            /**
-             * Plantilla para la creacion de acciones en el controlador
-             */
+            // Plantilla para la creacion de acciones en el controlador
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorAccionSOAP.tpl');
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
@@ -729,9 +688,7 @@ class formulario {
                 // No siempre tienen accion predefinida, para el caso de precarga no debe crear una accion
                 continue;
             }
-            /**
-             * Plantilla para los envio con AJAX en javascript (jQuery)
-             */
+            // Plantilla para los envio con AJAX en javascript (jQuery)
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/' . $this->_tipoPlantilla[$caracteristicas[ZC_ID]]);
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
@@ -740,7 +697,6 @@ class formulario {
             $plantilla->asignarEtiqueta('idFormulario', $this->_id);
             $plantilla->asignarEtiqueta('accionCliente', '//Accion Cliente va aqui');
             $plantilla->asignarEtiqueta('mensajeError', ZC_MENSAJE_ERROR_BUSCAR);
-
             // Concatena cada accion del cliente
             $this->_llamadosAjax .= $plantilla->devolverPlantilla() . FIN_DE_LINEA;
         }
@@ -757,9 +713,7 @@ class formulario {
                 // Los botones tipo restablecer, cancelar no crean acciones
                 continue;
             }
-            /**
-             * Plantilla para la creacion de acciones en el cliente
-             */
+            // Plantilla para la creacion de acciones en el cliente
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpCrearAccion.tpl');
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
@@ -782,10 +736,7 @@ class formulario {
                 // Los botones tipo restablecer, cancelar no crean acciones
                 continue;
             }
-
-            /**
-             * Plantilla para la creacion de acciones en el cliente
-             */
+            // Plantilla para la creacion de acciones en el cliente
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloServidorSOAP.tpl');
             $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
@@ -794,7 +745,6 @@ class formulario {
             $plantilla->asignarEtiqueta('asignacionCliente', $this->_inicializarServidor[$caracteristicas[ZC_ID]]);
             $plantilla->asignarEtiqueta('asignacionFuncion', $this->_parametrosServidor[$caracteristicas[ZC_ID]]);
             $plantilla->asignarEtiqueta('accionServidor', $this->_funcionServidor[$caracteristicas[ZC_ID]]);
-
             // Concatena las acciones que se pueden llamar desde el cliente
             $this->_accionesServidorWS .= FIN_DE_LINEA . insertarEspacios(4) . $plantilla->devolverPlantilla() . FIN_DE_LINEA;
         }
@@ -838,7 +788,6 @@ class formulario {
                 // Los botones tipo restablecer, cancelar no crean acciones
                 continue;
             }
-
             // Determina la accion a ejecutar en el cvontrolador
             $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO], $this->_nombreFuncionValidacion);
             // Nombre de los archivos usados

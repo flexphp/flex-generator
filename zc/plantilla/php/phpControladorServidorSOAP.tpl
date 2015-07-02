@@ -7,13 +7,10 @@ error_reporting(1);
 class {_nombreControlador_} extends CI_Controller{
     function {_nombreControlador_}(){
         parent::__construct();
-
         // Libreria para el manejo de WS
         $this->load->helper('url');
         $this->load->library('nusoap');
-        /**
-         * Clase para el manejo de Servidor WS
-         */
+        // Clase para el manejo de Servidor WS
         $this->_miURL = current_url();
         $this->_miSOAPACTION = false;
         $this->_miUSE = 'rpc';

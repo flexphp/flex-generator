@@ -11,6 +11,7 @@ class zc {
      * @var object
      */
     protected $CI;
+
     /**
      * Modelo a usar para cargar el modelo
      * @var string
@@ -40,7 +41,7 @@ class zc {
         }
         return $rpta;
     }
-    
+
     /**
      * Muestra el mensaje de dialogo para capturar nombre de usuario y contrasena
      */
@@ -49,7 +50,7 @@ class zc {
         header('HTTP/1.1 401 Unauthorized');
         die('401: Acceso restringido');
     }
-    
+
     /**
      * Valida si el llamado se hace desde un webservice
      */
@@ -64,9 +65,7 @@ class zc {
      */ 
     function procesarRespuestaWS($ws) {
         if (isset($ws['errorWS'])) {
-            /**
-            * Error durante consulta webservice
-            */
+            // Error durante consulta webservice
             $rpta['error'] = $ws['errorWS'];
         } else {
             $rptaWS = $ws['rptaWS'];
@@ -136,6 +135,17 @@ class zc {
         return $rpta;
     }
 
+    /**
+     * Hace los llamados a los WS, se centraliza en este punto, esta es la funcion utilizada
+     * por los controladores
+     * @param string $login Usuario a usar para loguearse en el sistema
+     * @param string $clave Clave a usar para loguearse en el sistema
+     * @param string $serverURL URL donde esta ubicado el WS => http://localhost
+     * @param string $serverScript Recurso donde esta la logica a utilizar => Clientes.php
+     * @param string $metodoALlamar Metodo a llamar dentro del recurso => crearCliente
+     * @param string $parametros Cada uno de los datos recibidos por el usuario
+     * @return array
+     */
     function llamarWS($login, $clave, $serverURL, $serverScript, $metodoALlamar, $parametros) {
 
         $tiempo_inicio = microtime(true);
@@ -155,7 +165,7 @@ class zc {
             $metodoALlamar, // Funcion a llamar
             $parametros, // Parametros pasados a la funcion
             "uri:{$serverURL}{$serverScript}", // namespace
-            "uri:{$serverURL}{$serverScript}/$metodoALlamar"       // SOAPAction
+            "uri:{$serverURL}{$serverScript}/$metodoALlamar" // SOAPAction
         );
 
         // Verificacion que los parametros estan bien, y si lo estan devolver respuesta.
@@ -175,6 +185,6 @@ class zc {
         return $this->procesarRespuestaWS($return);
     }
 
-    public function __destruct() {
-    }
+    public function __destruct() {}
+
 }

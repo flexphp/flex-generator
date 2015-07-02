@@ -59,18 +59,13 @@ function miLog($log, $archivo = '') {
  * @return string Unicamente nombre de archivo, sin extension
  */
 function nombreArchivo($nombreArchivo) {
-    /**
-     * Valida que tenga el signo (/ y .)para hacer el explode
-     * sino lo tiene asigna un array para el siguiente paso
-     */
+    // Valida que tenga el signo (/ y .)para hacer el explode
+    // sino lo tiene asigna un array para el siguiente paso
     $info = (strpos($nombreArchivo, '/')) ? explode('/', $nombreArchivo) : array($nombreArchivo);
     $infoArchivo = (strpos(end($info), '.')) ? explode('.', end($info)) : $nombreArchivo;
-    /**
-     * Freddie 20140914 Para evitar errores con nombre que tiene varios puntos (ie: jquery.ui.js),
-     * se toma todo el nombre, exceptuando la ultima parte, que se elimina
-     * y despues se vuelve a unir
-     * Solo si tiene mas de un elemento lo quita
-     */
+    // Freddie 20140914 Para evitar errores con nombre que tiene varios puntos (ie: jquery.ui.js),
+    // se toma todo el nombre, exceptuando la ultima parte, que se elimina y despues se vuelve a unir
+    // Solo si tiene mas de un elemento lo quita
     if (count($infoArchivo) > 1) {
         unset($infoArchivo[count($infoArchivo) - 1]);
     } else {

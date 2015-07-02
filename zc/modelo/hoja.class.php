@@ -68,9 +68,7 @@ class hoja extends xml {
                 // Agrega los botones a los formularios
                 // Crea los campos dinamicamente
                 $this->agregarAcciones($this->nombreHoja);
-                /**
-                 * Por lo menos se debio crear un elemento para tener una estructura valida
-                 */
+                // Por lo menos se debio crear un elemento para tener una estructura valida
                 $this->xml2form($rutaXML, $this->elementos);
                 // Guarda los datos del formulario
                 $this->tablas[] = $this->elementos;
@@ -78,7 +76,6 @@ class hoja extends xml {
                 $this->elementos = array();
             }
         }
-//        $opciones = array('minimizar' => true);
         $opciones = array();
         $this->navegacion->fin('../www/application/views', 'html', $opciones);
     }
@@ -95,14 +92,10 @@ class hoja extends xml {
 
         foreach ($elementos as $key => $value) {
             if (!isset($value[ZC_ELEMENTO]) && $key == 0) {
-                /**
-                 * Atributos Formulario, crear una variable con el id del formulario
-                 */
+                // Atributos Formulario, crear una variable con el id del formulario
                 $formulario = new formulario($value);
             } elseif (isset($value[ZC_ELEMENTO]) && $key > 0) {
-                /**
-                 * Otros atributos no definidos, esta funcion se encarga de validar el tipo
-                 */
+                // Otros atributos no definidos, esta funcion se encarga de validar el tipo
                 $formulario->agregarAtributo($value);
             } else {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': No existe el elemento ' . preprint($value, 1));
@@ -110,9 +103,7 @@ class hoja extends xml {
 
             if (!isset($elementos[($key + 1)]) && $key > 0) {
                 $this->navegacion->crear($formulario->infoNavegacion());
-                /**
-                 * En el ultimo elemento, finaliza el formulario
-                 */
+                // En el ultimo elemento, finaliza el formulario
                 $formulario->finFormulario();
                 unset($formulario);
             }

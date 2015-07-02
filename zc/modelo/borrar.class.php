@@ -25,7 +25,6 @@ class borrar extends accion {
         }
         $php = '';
         // Agrega la condicion de busqueda
-        $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
         $php .= $this->comando('// Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);

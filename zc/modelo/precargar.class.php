@@ -8,7 +8,7 @@ class precargar extends accion {
     /**
      * Crea la accion de buscar, es decir todo el proceso de creacion del SELECT en SQL
      * @param array $caracteristicas Caracteristicas de la accion
-     * @param string $accion  Accion a crear
+     * @param string $accion Accion a crear
      */
     function __construct($caracteristicas, $tabla, $accion) {
         parent::__construct($caracteristicas, $tabla, $accion);
@@ -16,7 +16,7 @@ class precargar extends accion {
 
     /**
      * Redefine la duncion de inicializacion para manejar las vearialbes de vusqueda
-     * @return type
+     * @return string
      */
     function inicializar() {
         $cmd = $this->comando("\$data = \$id;", 12);
@@ -33,9 +33,6 @@ class precargar extends accion {
             mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_PRECARGAR);
         }
         $php = '';
-        $php .= $this->comando('//Establece los valores de cada uno de los campos', 12);
-//        $php .= $this->inicializar();
-        $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
         $php .= $this->comando('// Nombre de la tabla afectada', 12);
         $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);

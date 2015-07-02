@@ -1,8 +1,6 @@
 <?php
 
-/**
- * Ejecucion de sentencias en base de datos
- */
+// Ejecucion de sentencias en base de datos
 require RUTA_GENERADOR_CODIGO . '/modelo/conexion.class.php';
 
 /**
@@ -52,7 +50,7 @@ class bd extends conexion {
 
     /**
      * Valoda el motor utilizado para la creacion de la base de datos
-     * @param type $motor
+     * @param string $motor
      */
     function motor($motor) {
         $this->_motor = trim(strtolower($motor));

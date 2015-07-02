@@ -1,8 +1,6 @@
 <?php
 
-/**
- * Clase padre de donde herada los metodos
- */
+// Clase padre de donde herada los metodos
 require_once RUTA_GENERADOR_CODIGO . '/modelo/Apaginas.class.php';
 
 /**

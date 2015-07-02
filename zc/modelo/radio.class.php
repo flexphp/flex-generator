@@ -6,8 +6,8 @@
 class radio extends Aelemento {
 
     /**
-     * HTML con el conjunto de opciones posibles para la lista
-     * @var type
+     * HTML con el conjunto de opciones "<option></option>" posibles para la lista
+     * @var string
      */
     private $_opciones = '';
 

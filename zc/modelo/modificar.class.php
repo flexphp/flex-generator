@@ -48,9 +48,8 @@ class modificar extends accion {
             mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_MODIFICAR);
         }
         $php = '';
-        $php .= $this->comando('//Establece los valores de cada uno de los campos', 12);
+        $php .= $this->comando('// Establece los valores de cada uno de los campos', 12);
         $php .= $this->inicializar($this->_campos);
-        // Agrega la condicion de busqueda
         $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
         $php .= $this->comando('// Nombre de la tabla afectada', 12);

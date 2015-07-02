@@ -5,6 +5,10 @@
  */
 abstract class Apaginas {
 
+    /**
+     * Nombre del controlador, lo usa para crear archivos Ajax
+     * @var string
+     */
     public $_controlador;
 
     public function __construct($controlador) {

@@ -1,38 +1,24 @@
 <?php
 
-/**
- * Crea la funcion de agregar (insert)
- */
+// Crea la funcion de agregar (insert)
 require RUTA_GENERADOR_CODIGO . '/modelo/agregar.class.php';
 
-/**
- * Crea la funcion de listar/buscar (select)
- */
+// Crea la funcion de listar/buscar (select)
 require RUTA_GENERADOR_CODIGO . '/modelo/buscar.class.php';
 
-/**
- * Crea la funcion de borrar (update a zc_eliminado)
- */
+// Crea la funcion de borrar (update a zc_eliminado)
 require RUTA_GENERADOR_CODIGO . '/modelo/borrar.class.php';
 
-/**
- * Crea la funcion de modificar/actualizar (update)
- */
+// Crea la funcion de modificar/actualizar (update)
 require RUTA_GENERADOR_CODIGO . '/modelo/modificar.class.php';
 
-/**
- * Crea la funcion para precargar los datos a editar
- */
+// Crea la funcion para precargar los datos a editar
 require RUTA_GENERADOR_CODIGO . '/modelo/precargar.class.php';
 
-/**
- * Crea la ventana y acciones de logueo
- */
+// Crea la ventana y acciones de logueo
 require RUTA_GENERADOR_CODIGO . '/modelo/login.class.php';
 
-/**
- * Crea las funciones para precargar las listas de seleccion
- */
+// Crea las funciones para precargar las listas de seleccion
 require RUTA_GENERADOR_CODIGO . '/modelo/ajax.class.php';
 
 /**
@@ -113,6 +99,7 @@ class accion extends Aelemento {
 
     /**
      * Nombre de la funcion de validacion
+     * @var string
      */ 
     protected $_funcionValidacion;
 

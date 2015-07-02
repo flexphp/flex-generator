@@ -10,6 +10,7 @@ class elemento {
 
     /**
      * Instancia del elemento creado
+     * @var \Aelemento
      */
     public $_elemento;
 
@@ -56,12 +57,16 @@ class elemento {
 
     /**
      * Crea el tipo de elemento segun las caracteristicas entregadas
+     * @param array $caracteristicas Propiedades del elemento a crear
      */
     function __construct($caracteristicas) {
         $this->_caracteristicas = $caracteristicas;
         unset($caracteristicas);
     }
 
+    /**
+     * Crea el elmento segun su tipo devolviendo la instancia del elemento
+     */
     public function crear() {
         cargarClase(__FILE__, __FUNCTION__, $this->_caracteristicas[ZC_ELEMENTO]);
         switch ($this->_caracteristicas[ZC_ELEMENTO]) {
@@ -87,7 +92,7 @@ class elemento {
     /**
      * Agrega las cajas, radios, checkboxs, select dentro del formulario, segun caracteristicas del XML
      * @param string $caracteristicas Caracteristicas extraidas del XML
-     * @return \formulario
+     * @return \elemento
      */
     private function agregarElementoCaja($caracteristicas) {
         $this->_elemento = new caja($caracteristicas);
@@ -97,9 +102,8 @@ class elemento {
 
     /**
      * Agrega las radios dentro del formulario, segun caracteristicas del XML
-     * @param string $tipo Caracteristicas extraidas del XML
      * @param string $caracteristicas Caracteristicas extraidas del XML
-     * @return \formulario
+     * @return \elemento
      */
     private function agregarElementoRadio($caracteristicas) {
         $this->_elemento = new radio($caracteristicas);
@@ -109,9 +113,8 @@ class elemento {
 
     /**
      * Agrega las checkbox dentro del formulario, segun caracteristicas del XML
-     * @param string $tipo Caracteristicas extraidas del XML
      * @param string $caracteristicas Caracteristicas extraidas del XML
-     * @return \formulario
+     * @return \elemento
      */
     private function agregarElementoCheckbox($caracteristicas) {
         $this->_elemento = new checkbox($caracteristicas);
@@ -122,7 +125,7 @@ class elemento {
     /**
      * Agrega las listas dentro del formulario, segun caracteristicas
      * @param string $caracteristicas Caracteristicas extraidas del XML
-     * @return \formulario
+     * @return \elemento
      */
     private function agregarElementoLista($caracteristicas) {
         $this->_elemento = new lista($caracteristicas, ((isset($this->_propiedad['controlador'])) ? $this->_propiedad['controlador'] : ''));

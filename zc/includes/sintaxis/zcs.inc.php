@@ -31,6 +31,7 @@ class zcs {
 
     /**
      * Inicializador de la clase
+     * @param string $rutaArchivo Ruta del archivo
      */
     function __construct($rutaArchivo) {
         // Extrae el contenido del archivo

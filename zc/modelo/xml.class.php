@@ -84,16 +84,12 @@ class xml {
         foreach ($hijos as $propiedad => $valor) {
             $contadorHijos = 0;
             if (count($hijos->{$propiedad}[$contadorHijos]) == 0) {
-                /**
-                 * Solo agrega la propiedad sino fue definida en los atributos
-                 */
+                // Solo agrega la propiedad sino fue definida en los atributos
                 if (!isset($propiedades[strtolower((string) $propiedad)])) {
                     $propiedades = $this->agregarPropiedad($propiedades, $propiedad, $valor);
                 }
             } else {
-                /**
-                 * Crea variable con el nombre del elemento
-                 */
+                // Crea variable con el nombre del elemento
                 $$propiedad = array(ZC_ID => $propiedad);
                 $this->atributosXPathXML($valor, $$propiedad);
                 $this->hijosXPathXML($hijos->{$propiedad}[$contadorHijos], $$propiedad);
