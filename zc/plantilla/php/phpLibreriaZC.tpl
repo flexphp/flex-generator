@@ -64,27 +64,27 @@ class zc {
      * @return array
      */ 
     function procesarRespuestaWS($ws) {
+        $rpta = array();
         if (isset($ws['errorWS'])) {
             // Error durante consulta webservice
             $rpta['error'] = $ws['errorWS'];
-        } else {
+        } elseif (isset($ws['rptaWS'])) {
             $rptaWS = $ws['rptaWS'];
-            if ($rptaWS) {
-                if ($rptaWS[0]['error'] != '') {
-                    $rpta['error'] = json_decode($rptaWS[0]['error'], true);
-                } elseif ($rptaWS[0]['cta'] > 0) {
-                    // Informacion devuelta
-                    $rpta['infoEncabezado'] = json_decode($rptaWS[0]['infoEncabezado'], true);
-                    // Cantidad de registros devueltos
-                    $rpta['cta'] = $rptaWS[0]['cta'];
-                    // Devuelve respuesta procesada
-                    return $rpta;
-                } else {
-                    $rpta['error'] = 'No se encontraron datos.';
-                }
+            if ($rptaWS[0]['error'] != '') {
+                // Existe error durante el prpcesp
+                $rpta['error'] = json_decode($rptaWS[0]['error'], true);
+            } elseif ($rptaWS[0]['cta'] > 0) {
+                // Informacion devuelta
+                $rpta['infoEncabezado'] = json_decode($rptaWS[0]['infoEncabezado'], true);
+                // Cantidad de registros devueltos
+                $rpta['cta'] = $rptaWS[0]['cta'];
+                // Devuelve respuesta procesada
+                return $rpta;
             } else {
-                $rpta['error'] = 'Error en servidor WS';
+                $rpta['error'] = 'No se encontraron datos.';
             }
+        } else {
+            $rpta['error'] = 'Error en servidor WS';
         }
         return $rpta;
     }

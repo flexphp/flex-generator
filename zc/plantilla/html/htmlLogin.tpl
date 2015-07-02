@@ -55,7 +55,7 @@
                                 <h1>{_nombreFormulario_}</h1>
                             </div>
                             <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}" class="form-signin">
-                                {_contenidoFormulario_}
+{_contenidoFormulario_}
                             </form>
                         </div>
                     </div>

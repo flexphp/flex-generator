@@ -1,7 +1,7 @@
 function {_nombreAccion_}(){
         // Definir los tipo de variables que se devolveran en la repuesta
         $this->_SRV_WS->wsdl->addComplexType(
-            '{_nombreAccion_}Respta',
+            '{_nombreAccion_}Rpta',
             'complexType',
             'struct',
             'all',
@@ -24,7 +24,7 @@ function {_nombreAccion_}(){
 
         // Definir la manera de devolver el resultado
         $this->_SRV_WS->wsdl->addComplexType(
-            '{_nombreAccion_}ResptaArray',
+            '{_nombreAccion_}RptaArray',
             'complexType',
             'array',
             '',
@@ -33,10 +33,10 @@ function {_nombreAccion_}(){
             array(
                 array(
                     'ref' => 'SOAP-ENC:arrayType',
-                    'wsdl:arrayType' => 'tns:{_nombreAccion_}Respta[]'
+                    'wsdl:arrayType' => 'tns:{_nombreAccion_}Rpta[]'
                 )
             ),
-            'tns:{_nombreAccion_}Respta'
+            'tns:{_nombreAccion_}Rpta'
         );
 
         // Parametros que recibe la funcion
@@ -46,7 +46,7 @@ function {_nombreAccion_}(){
 
         // Definir el tipo de respuesta que devuelve el servidor
         ${_nombreAccion_}Returns = array(
-            'return' => 'tns:{_nombreAccion_}ResptaArray'
+            'return' => 'tns:{_nombreAccion_}RptaArray'
         );
 
         // Registrar la funcion en el servidor
@@ -63,22 +63,25 @@ function {_nombreAccion_}(){
 
         function {_nombreFuncion_}({_asignacionFuncion_}){
             // Incializacion de variables de respuesta
-            $i = 0;
-            $Resultado[0] = array(
+            // Es OBLIGATORIO manejar indice numerico [0] para el correcto funcionamiento de NuSOAP
+            $RptaWS[0] = array(
                 'cta' => 0,
                 'infoEncabezado' => '',
                 'error' => '',
             );
 
 {_accionServidor_}
-            if (isset($resultado)) {
+            if (isset($error)) {
+                // Existe error, devuelve el error
+                $RptaWS[0]['error'] = json_encode($error);
+            } elseif (isset($resultado)) {
                 // Si existe respuesta valida por parte del servidor
-                $Resultado[$i]['infoEncabezado'] = json_encode($resultado);
-                $Resultado[0]['cta'] = $cta;
+                $RptaWS[0]['infoEncabezado'] = json_encode($resultado);
+                $RptaWS[0]['cta'] = $cta;
             }
 
-            file_put_contents(getcwd() . '/application/logs/ws_{_nombreControlador_}_' . date('Ymd') . '.log', __FUNCTION__ . "\n" . ' $data: ' . print_r(func_get_args(), 1) . "\n" . ' $Resultado: ' . print_r($Resultado, 1) . "\n", FILE_APPEND);
-            return new soapval('return', 'tns:{_nombreAccion_}ResptaArray', $Resultado);
+            file_put_contents(getcwd() . '/application/logs/ws_{_nombreControlador_}_' . date('Ymd') . '.log', __FUNCTION__ . "\n" . ' $data: ' . print_r(func_get_args(), 1) . "\n" . ' $RptaWS: ' . print_r($RptaWS, 1) . "\n", FILE_APPEND);
+            return new soapval('return', 'tns:{_nombreAccion_}RptaArray', $RptaWS);
         }
 
         $this->_SRV_WS->service(file_get_contents('php://input'));

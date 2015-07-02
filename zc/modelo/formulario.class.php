@@ -653,8 +653,8 @@ class formulario {
                     break;
                 case ZC_ACCION_LOGIN:
                     // Registrar el inicio de sesion del usuario
-                    $comandoEspecial = tabular('// Inicia session el sistema', 8);
-                    $comandoEspecial = tabular('$rpta = $this->loguear($rpta);', 8);
+                    $comandoEspecial = tabular('// Inicia session el sistema', 0);
+                    $comandoEspecial .= tabular('$rpta = $this->loguear($rpta);', 12);
                     // Continua con la accion por defecto ya que es la misma
                 default:
                     $comando .= tabular('// Valida los datos pasados por POST', 0);

@@ -277,16 +277,14 @@ abstract class Aelemento {
      * @return string
      */
     protected function plantillaLogin($campo) {
-        $html = "
-            <div class='row'>
-                <div class='col-md-4 text-right'>
-                    <label id='zc-label-{$this->_id}' name='zc-label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>
-                </div>
-                <div class='col-md-8'>
-                    {$campo}
-                </div>
-            </div>
-        ";
+        $html = tabular("<div class='row'>", 32);
+        $html .= tabular("<div class='col-md-4 text-right'>", 36);
+        $html .= tabular("<label id='zc-label-{$this->_id}' name='zc-label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>", 40);
+        $html .= tabular("</div>", 36);
+        $html .= tabular("<div class='col-md-8'>", 36);
+        $html .= tabular("{$campo}", 40);
+        $html .= tabular("</div>", 36);
+        $html .= tabular("</div>", 32);
         return $html;
     }
 

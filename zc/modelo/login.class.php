@@ -36,7 +36,7 @@ class login extends accion {
         $php .= $this->comando('switch (true){', 12);
         $php .= $this->comando('case (isset($rpta[\'error\']) && count($rpta[\'error\']) > 0):', 16);
         $php .= $this->comando('// Errores durante la ejecucion', 20);
-        $php .= $this->comando('$Resultado[0][\'error\'] = json_encode($rpta[\'error\']);', 20);
+        $php .= $this->comando('$error = $rpta[\'error\'];', 20);
         $php .= $this->comando('break;', 20);
         $php .= $this->comando('default:', 16);
         $php .= $this->comando('// Resultado', 20);
