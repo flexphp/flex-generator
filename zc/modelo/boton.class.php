@@ -37,8 +37,7 @@ class boton extends Aelemento {
      * Define todos los parametros del boton a crear, funcion principal de la clase
      */
     function crear() {
-        $this->_html = "
-            <button" .
+        $this->_html = tabular("<button" .
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
                 " type='{$this->_tipo}'" .
@@ -49,7 +48,7 @@ class boton extends Aelemento {
                 ">" .
                 " {$this->_icono}" .
                 "{$this->_etiqueta}" .
-                "</button>";
+                "</button>", 32);
         return $this;
     }
 

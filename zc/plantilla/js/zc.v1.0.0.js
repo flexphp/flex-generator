@@ -229,10 +229,8 @@ function ZCAccionBuscarFiltro(formulario){
             $('#'+this.id).val('');
         }
     });
-
     //Establece el valor de los filtros a utilizar en la busqueda
     return filtrosAEnviar;
-
 }
 
 /**
@@ -258,7 +256,6 @@ function ZCAccionBuscarPredefinido(formulario){
  * @param {string} id
  * @returns {undefined}
  */
-
 function ZCAccionOcultarFiltro(e, formulario, id){
     e.preventDefault();
     $('#'+formulario).find($('.zc-filtros-disponibles')).addClass('hidden');
@@ -273,7 +270,6 @@ function ZCAccionOcultarFiltro(e, formulario, id){
  * @param {string} id
  * @returns {undefined}
  */
-
 function ZCAccionMostrarFiltro(e, formulario, id){
     e.preventDefault();
     $('#'+formulario).find($('.zc-filtros-disponibles')).removeClass('hidden');
@@ -287,7 +283,6 @@ function ZCAccionMostrarFiltro(e, formulario, id){
  * @param {json} rpta Valores devueltos por la consulta
  * @returns {undefined}
  */
-
 function ZCListarResultados(formulario, rpta){
     var tabla = "<table class='table table-bordered table-hover'>";
     var encabezados = '';
@@ -334,7 +329,6 @@ function ZCListarResultados(formulario, rpta){
  * @param {String} formulario
  * @returns {String}
  */
-
 function ZCAccionCondicion(formulario){
     var id = $.trim($('#zc-id-'+formulario).val());
     return id;
@@ -546,7 +540,6 @@ function ZCMenuActual(){
     $('#zc-menu-' + controlador).addClass('active').css('font-weight', 'bold');
 }
 
-
 /**
  * Activa la accion por defecto al dar enter en cualquier campo del formulario
  * @param {string} formulario
@@ -618,7 +611,7 @@ function ZCAccionPrecargar(formulario, id, precargar, modificar){
 function ZCAsignarErrores(formulario, rpta){
     var msjError = '';
     $.each(rpta.error, function(campo, error){
-        var label = $('#zc-label-' + campo).text();
+        var label = $('#label-' + campo).text();
         msjError += label + ': ' + error + '<br />';
         // Agrega clase error
         $('#' + campo).addClass('parsley-error');

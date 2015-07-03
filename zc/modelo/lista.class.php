@@ -52,7 +52,7 @@ class lista extends Aelemento {
      * Cada una inicia con una columna en blanco (margen) derecho
      */
     public function crear() {
-        $this->_html = "<select" .
+        $this->_html = tabular("<select" .
                 " class='form-control'" .
                 // Identificador
                 " id='{$this->_id}'" .
@@ -64,9 +64,9 @@ class lista extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
-                "/>
-                    {$this->_opciones}
-                    </select><span class='help-block'></span>";
+                "/>", 0) .
+                $this->_opciones .
+                tabular("</select>", 28);
         return $this;
     }
 
@@ -100,11 +100,15 @@ class lista extends Aelemento {
         }
 
         foreach ($opcion as $id => $valor) {
-            $this->_opciones .= insertarEspacios(14) . "<option value='$id'>$valor</option>" . FIN_DE_LINEA;
+            $this->_opciones .= tabular("<option value='$id'>$valor</option>", 32);
         }
         return $this;
     }
 
+    /**
+     * Crear un archivo javascript para jacer solicitudes Ajax
+     * @param string $join Valida las tablas relacionadas
+     */
     private function opcionesAjax($join) {
         $this->_joinTablas = joinTablas($join);
         if ('' == $this->_controlador) {

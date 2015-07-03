@@ -560,7 +560,7 @@ class formulario {
     private function agregarAccionFormulario($caracteristicas) {
         $html = new boton($caracteristicas);
         $html->crear();
-        // Devuelve el elemento, no usa devover() ya que los botones no usan la plantilla
+        // Devuelve el elemento, no usa devolver() ya que los botones no usan la plantilla
         $this->_formulario['acciones'][$html->devolverId()] = $html->devolverElemento();
         $this->_acciones[] = $html->devolverProp();
         return $this;
@@ -623,7 +623,7 @@ class formulario {
         $plantilla->asignarEtiqueta('nombreValidacion', $this->_nombreFuncionValidacion);
         $plantilla->asignarEtiqueta('elementosFormulario', $validacion);
         $plantilla->asignarEtiqueta('accionesSinValidacion', ZC_ACCION_SIN_VALIDACION);
-        $this->_validacionModelo = $plantilla->devolverPlantilla() . FIN_DE_LINEA;
+        $this->_validacionModelo = $plantilla->devolverPlantilla();
         return $this;
     }
 
@@ -639,38 +639,36 @@ class formulario {
                 continue;
             }
             // Determina la accion a ejecutar en el controlador
-            $comando = $this->_asignacionControlador[$caracteristicas[ZC_ID]] . FIN_DE_LINEA . insertarEspacios(8);
+            $comando = tabular($this->_asignacionControlador[$caracteristicas[ZC_ID]], 8);
             $comandoEspecial = '';
             switch ($caracteristicas[ZC_ELEMENTO]) {
                 case ZC_ACCION_BUSCAR:
-                    $comando .= tabular('// Aplica filtros seleccionados', 0);
-                    $comando .= tabular("\$rpta = \$this->{$this->_nombreArchivoModelo}->validarFiltros(\$datos['filtros'], \$datos['accion']);", 8);
+                    $comando .= tabular('// Aplica filtros seleccionados', 8);
+                    $comando .= tabular("\$rpta = \$this->modelo->validarFiltros(\$datos['filtros'], \$datos['accion']);", 8);
                     // Construir la paginacion
-                    $comandoEspecial .= tabular('// Establece los valores para la paginacion', 0);
+                    $comandoEspecial .= tabular('// Establece los valores para la paginacion', 12);
                     $comandoEspecial .= tabular('if (isset($rpta[\'cta\']) && $rpta[\'cta\'] > 0){', 12);
                     $comandoEspecial .= tabular('$rpta[\'paginacion\'] = $this->paginar($rpta[\'cta\']);', 16);
                     $comandoEspecial .= tabular('}', 12);
                     break;
                 case ZC_ACCION_LOGIN:
                     // Registrar el inicio de sesion del usuario
-                    $comandoEspecial = tabular('// Inicia session el sistema', 0);
+                    $comandoEspecial = tabular('// Inicia sesion el sistema', 12);
                     $comandoEspecial .= tabular('$rpta = $this->loguear($rpta);', 12);
                     // Continua con la accion por defecto ya que es la misma
                 default:
-                    $comando .= tabular('// Valida los datos pasados por POST', 0);
-                    $comando .= tabular("\$rpta = \$this->{$this->_nombreArchivoModelo}->{$this->_nombreFuncionValidacion}(\$datos);", 8);
+                    $comando .= tabular('// Valida los datos pasados por POST', 8);
+                    $comando .= tabular("\$rpta = \$this->modelo->{$this->_nombreFuncionValidacion}(\$datos);", 8);
                     break;
             }
             // Plantilla para la creacion de acciones en el controlador
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorAccionSOAP.tpl');
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
-            // Se crean durante el proceso de los elementos para las validaciones
             $plantilla->asignarEtiqueta('asignacionCliente', $comando);
-            $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
             $plantilla->asignarEtiqueta('comandoEspecial', $comandoEspecial);
             // Concatena cada accion del cliente
-            $this->_funcionControlador .= FIN_DE_LINEA . insertarEspacios(4) . $plantilla->devolverPlantilla() . FIN_DE_LINEA;
+            $this->_funcionControlador .= tabular($plantilla->devolverPlantilla(), 4);
         }
         return $this;
     }
@@ -698,7 +696,7 @@ class formulario {
             $plantilla->asignarEtiqueta('accionCliente', '//Accion Cliente va aqui');
             $plantilla->asignarEtiqueta('mensajeError', ZC_MENSAJE_ERROR_BUSCAR);
             // Concatena cada accion del cliente
-            $this->_llamadosAjax .= $plantilla->devolverPlantilla() . FIN_DE_LINEA;
+            $this->_llamadosAjax .= $plantilla->devolverPlantilla();
         }
         return $this;
     }
@@ -720,7 +718,7 @@ class formulario {
             $plantilla->asignarEtiqueta('servidorAccion', $this->_nombreArchivoServidor);
             $plantilla->asignarEtiqueta('asignacionCliente', $this->_inicializarCliente[$caracteristicas[ZC_ID]]);
             // Concatena las acciones que se pueden llamar desde el cliente
-            $this->_llamadosModelo .= $plantilla->devolverPlantilla() . FIN_DE_LINEA;
+            $this->_llamadosModelo .= tabular($plantilla->devolverPlantilla(), 4);
         }
         return $this;
     }
@@ -746,7 +744,7 @@ class formulario {
             $plantilla->asignarEtiqueta('asignacionFuncion', $this->_parametrosServidor[$caracteristicas[ZC_ID]]);
             $plantilla->asignarEtiqueta('accionServidor', $this->_funcionServidor[$caracteristicas[ZC_ID]]);
             // Concatena las acciones que se pueden llamar desde el cliente
-            $this->_accionesServidorWS .= FIN_DE_LINEA . insertarEspacios(4) . $plantilla->devolverPlantilla() . FIN_DE_LINEA;
+            $this->_accionesServidorWS .= tabular($plantilla->devolverPlantilla(), 4);
         }
         return $this;
     }
@@ -762,9 +760,9 @@ class formulario {
             if (isset($ruta) && !is_file($ruta)) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, " Ruta de archivo no valida: {$ruta}!");
             } else if (isset($ruta)) {
-                $this->_js .= '<!--Inclusion archivo js  -->' . FIN_DE_LINEA . insertarEspacios(8);
+                $this->_js .= tabular('<!--Inclusion archivo js  -->', 8);
                 // Cambia la ruta relativa, por una ruta absoluta
-                $this->_js .= "<script type='text/javascript' src='" . convertir2UrlLocal($ruta) . "'></script>" . FIN_DE_LINEA . insertarEspacios(8);
+                $this->_js .= tabular("<script type='text/javascript' src='" . convertir2UrlLocal($ruta) . "'></script>", 8);
             }
         }
         return $this;
@@ -804,9 +802,9 @@ class formulario {
             $this->_inicializarServidor[$caracteristicas[ZC_ID]] = implode(',' . FIN_DE_LINEA . insertarEspacios(12), $accion->devolverInicializarServidor());
             // Parametros recibidos por el servidor
             $this->_parametrosServidor[$caracteristicas[ZC_ID]] = implode(', ', $accion->devolverParametrosServidor());
-            // Asginacion controlador
+            // Asignacion controlador
             $this->_asignacionControlador[$caracteristicas[ZC_ID]] = implode(FIN_DE_LINEA . insertarEspacios(8), $accion->devolverAsignacionControlador());
-            // Asginacion controlador
+            // Tipo de plantilla javascript a utilizar
             $this->_tipoPlantilla[$caracteristicas[ZC_ID]] = $accion->devolverTipoPlantilla();
         }
         return $this;

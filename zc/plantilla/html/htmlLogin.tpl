@@ -9,7 +9,6 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/bootstrap.css">
         <!-- CSS Parsley -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/parsley.css">
-
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -36,7 +35,6 @@
         <br/>
         <br/>
         <br/>
-
         <div class="container-fluid">
             <!-- Errores devueltos por el servidor -->
             <div class="text-center">
@@ -62,7 +60,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Pagina para ejecutar acciones desde JS -->
         <input type="hidden" id="zc-controlador" name="zc-controlador" value="{_nombreControlador_}"/>
         <!-- URL del proyecto, se usa en los llamados ajax -->
@@ -75,6 +72,6 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/parsley.js"></script>
         <!-- Utilidades ZC -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/zc.js"></script>
-        {_archivoJavascript_}
+{_archivoJavascript_}
     </body>
 </html>

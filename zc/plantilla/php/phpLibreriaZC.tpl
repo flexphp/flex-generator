@@ -23,7 +23,7 @@ class zc {
         $this->CI =& get_instance();
         $this->modelo = $params[0];
     }
-    
+
     /**
      * Permite validar que el usuario tenga una session activa, de lo contrario termina la ejecucion
      * devolviendo un error de Acceso restringido (401)
@@ -147,19 +147,15 @@ class zc {
      * @return array
      */
     function llamarWS($login, $clave, $serverURL, $serverScript, $metodoALlamar, $parametros) {
-
         $tiempo_inicio = microtime(true);
-
+        // Nueva instancia de NuSOAP
         $_CLI_WS = new nusoap_client($serverURL . $serverScript . '?wsdl', 'wsdl');
-
         $error = $_CLI_WS->getError();
         if ($error) {
             $return['errorWS'] = $error;
         }
-
         // Define los datos de acceso al WS 
         $_CLI_WS->setCredentials($login, $clave, 'basic');
-
         // Llamado a la funcion  en el servidor
         $_rpta = $_CLI_WS->call(
             $metodoALlamar, // Funcion a llamar
@@ -167,7 +163,6 @@ class zc {
             "uri:{$serverURL}{$serverScript}", // namespace
             "uri:{$serverURL}{$serverScript}/$metodoALlamar" // SOAPAction
         );
-
         // Verificacion que los parametros estan bien, y si lo estan devolver respuesta.
         if ($_CLI_WS->fault) {
             $return['errorWS'] = $_rpta['faultstring'];

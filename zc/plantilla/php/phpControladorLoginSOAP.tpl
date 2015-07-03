@@ -24,7 +24,7 @@ class {_nombreControlador_} extends CI_Controller {
         parent::__construct();
         $this->load->helper('url');
         $this->load->library('session');
-        $this->load->model($this->_data['modelo']);
+        $this->load->model($this->_data['modelo'], 'modelo');
     }
 
     /**
@@ -34,7 +34,7 @@ class {_nombreControlador_} extends CI_Controller {
         $this->enSesion();
         $this->load->view($this->_data['vista']);
     }
-    
+
     /**
      * Si el usuario ya tiene session iniciada lo envia a la pagina de inicio
      */

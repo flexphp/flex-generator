@@ -25,12 +25,10 @@ class buscar extends accion {
         }
         $php = '';
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
-        $php .= $this->comando('// Nombre de la tabla afectada', 12);
-        $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
-        $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', $tabla);', 12);
+        $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', \'modelo\');', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
-        $php .= $this->comando('$rpta = $CI->$tabla->buscar($filtros, \'buscar\', $pagina);', 12);
+        $php .= $this->comando('$rpta = $CI->modelo->buscar($filtros, \'buscar\', $pagina);', 12);
         $php .= $this->comando('switch (true){', 12);
         $php .= $this->comando('case (isset($rpta[\'error\']) && count($rpta[\'error\']) > 0):', 16);
         $php .= $this->comando('// Errores durante la ejecucion', 20);
@@ -114,7 +112,7 @@ class buscar extends accion {
         }
 
         $html = '';
-        $listaFiltros = tabular("<select class='form-control zc-filtros-busqueda'>", 32);
+        $listaFiltros = tabular("<select class='form-control zc-filtros-busqueda'>", 36);
         $listaCampos = $listaOperadores = '';
 
         //El boton de quitar se agrega en el proceso jQuery
@@ -149,7 +147,7 @@ class buscar extends accion {
                     break;
             }
             $oculto = ($listaOperadores == '') ? '' : ' hidden';
-            $listaFiltros .= tabular("<option value='{$campo[ZC_ID]}' zc-operador='{$operador}'>{$campo[ZC_ETIQUETA]}</option>", 36);
+            $listaFiltros .= tabular("<option value='{$campo[ZC_ID]}' zc-operador='{$operador}'>{$campo[ZC_ETIQUETA]}</option>", 40);
             // Inactiva la creacion de campos con validaciones de obligatoriedad y sin longitudes
             $this->_campos[$nro][ZC_OBLIGATORIO] = null;
             $this->_campos[$nro][ZC_LONGITUD_MAXIMA] = -1;
@@ -170,7 +168,7 @@ class buscar extends accion {
             }
             unset($filtro);
         }
-        $listaFiltros .= tabular('</select>', 32);
+        $listaFiltros .= tabular('</select>', 36);
 
         $plantilla = tabular("<div class='row'>", 20);
         $plantilla .= tabular("<div class='col-md-8 zc-filtros'>", 24);

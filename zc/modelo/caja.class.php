@@ -153,8 +153,7 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
-                "/>".
-                "<span class='help-block'></span>";
+                "/>";
         return $this;
     }
 
@@ -186,8 +185,7 @@ class caja extends Aelemento {
                 "<span class='input-group-addon'>" .
                 "<span class='glyphicon glyphicon-calendar'></span>" .
                 "</span>" .
-                "</div>" .
-                "<span class='help-block'></span>";
+                "</div>";
         return $this;
     }
     
@@ -215,12 +213,11 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
-                "/>
-                        <span class='input-group-addon'>
-                            <span class='glyphicon glyphicon-calendar'></span>
-                        </span>
-                    </div>
-                    <span class='help-block'></span>";
+                "/> " .
+                "<span class='input-group-addon'>" .
+                "<span class='glyphicon glyphicon-calendar'></span>" .
+                "</span>" .
+                "</div>";
         return $this;
     }
     
@@ -248,12 +245,11 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
-                "/>
-                        <span class='input-group-addon'>
-                            <span class=\"glyphicon glyphicon-time\"></span>
-                        </span>
-                    </div>
-                    <span class='help-block'></span>";
+                "/>" .
+                "<span class='input-group-addon'>" .
+                "<span class=\"glyphicon glyphicon-time\"></span>" .
+                "</span>" .
+                "</div>";
         return $this;
     }
 
@@ -280,8 +276,7 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
-                "/>" . 
-                " <span class='help-block'></span>";
+                "/>";
         if ($this->_prop[ZC_LONGITUD_MAXIMA] !== -1) {
             // No es de la pantalla login
             $this->_html .= "<input" .
@@ -297,8 +292,7 @@ class caja extends Aelemento {
                     " data-parsley-equalto-message='La confirmación no coincide'" .
                     // Ayuda visual
                     $this->ayuda('Confirmación ' . $this->_etiqueta) .
-                    "/>".
-                    "<span class='help-block'></span>";
+                    "/>";
         }
         return $this;
     }
@@ -327,8 +321,7 @@ class caja extends Aelemento {
                 // Ayuda visual
                 $this->ayuda() .
                 "/>" .
-                " </textarea>" .
-                "<span class='help-block'></span>";
+                " </textarea>";
         return $this;
     }
     

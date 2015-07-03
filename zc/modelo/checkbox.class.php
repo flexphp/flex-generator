@@ -31,12 +31,11 @@ class checkbox extends Aelemento {
      * Cada una inicia con una columna en blanco (margen) derecho
      */
     public function crear() {
-        $this->_html = "<div class='table table-bordered'>
-                        <div class='text-center'>
-                            {$this->_opciones}
-                        </div>
-                        <span id='error-{$this->_id}'></span>
-                    </div>";
+        $this->_html = tabular("<div class='table table-bordered'>", 0);
+        $this->_html .= tabular("<div class='text-center'>", 32);
+        $this->_html .= tabular("{$this->_opciones}", 36);
+        $this->_html .= tabular("</div>", 32);
+        $this->_html .= tabular("</div>", 28);
         return $this;
     }
 
@@ -61,7 +60,7 @@ class checkbox extends Aelemento {
 
         foreach ($opciones as $id => $valor) {
             $idOpcion = $this->_id . '_' . $id;
-            $this->_opciones .= insertarEspacios(14) .
+            $this->_opciones .= 
                     "<label for='{$idOpcion}'>" .
                     "<input" .
                     " type='checkbox'" .
@@ -89,7 +88,7 @@ class checkbox extends Aelemento {
                     " data-parsley-errors-container='#error-{$this->_id}'" .
                     "/>" .
                     "$valor" .
-                    "</label>" . FIN_DE_LINEA;
+                    "</label>";
         }
     }
 

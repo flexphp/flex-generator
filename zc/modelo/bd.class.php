@@ -188,7 +188,7 @@ class bd extends conexion {
      * @return string
      */
     private function campo($nombre, $dato, $longitud, $nulo, $default ,$comentario, $coma) {
-        return $coma . FIN_DE_LINEA . insertarEspacios(4) . $nombre . ' ' . $this->dato($dato) . $this->longitud($dato, $longitud) . ' ' . $this->nulo($nulo) . $this->predeterminado($default) . ' ' . $this->comentario($comentario);
+        return tabular($nombre . ' ' . $this->dato($dato) . $this->longitud($dato, $longitud) . ' ' . $this->nulo($nulo) . $this->predeterminado($default) . ' ' . $this->comentario($comentario) . $coma, 4);
     }
 
     /**
@@ -196,7 +196,7 @@ class bd extends conexion {
      * @return type
      */
     private function autoincremental() {
-        return insertarEspacios(4) . 'id INT ' . $this->nulo(ZC_OBLIGATORIO_SI) . ' ' . $this->_equivalencias[$this->_motor][ZC_MOTOR_AUTOINCREMENTAL] . ',';
+        return tabular('id INT ' . $this->nulo(ZC_OBLIGATORIO_SI) . ' ' . $this->_equivalencias[$this->_motor][ZC_MOTOR_AUTOINCREMENTAL] . ',', 4);
     }
 
     /**
@@ -243,7 +243,7 @@ class bd extends conexion {
         $nombre = '';
         switch ($this->_motor) {
             case ZC_MOTOR_MYSQL:
-                $nombre = $this->_equivalencias[$this->_motor]['CREACION_TABLA'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_TABLA'] . ' ' . $this->_prop[0][ZC_ID] . ' (' . FIN_DE_LINEA;
+                $nombre = tabular($this->_equivalencias[$this->_motor]['CREACION_TABLA'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_TABLA'] . ' ' . $this->_prop[0][ZC_ID] . ' (', 0);
                 break;
             default:
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
@@ -260,7 +260,7 @@ class bd extends conexion {
         $key = '';
         switch ($this->_motor) {
             case ZC_MOTOR_MYSQL:
-                $key = $coma . FIN_DE_LINEA . insertarEspacios(4) . $this->_equivalencias[$this->_motor]['LLAVE_PRIMARIA'] . ' (' . $campo . ')';
+                $key = tabular($this->_equivalencias[$this->_motor]['LLAVE_PRIMARIA'] . ' (' . $campo . ')' . $coma, 4);
                 break;
             default:
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
@@ -307,7 +307,7 @@ class bd extends conexion {
         // de la base de datos, cambian de estado
         $tabla .= $this->campo('zc_eliminado', 'ZC_DATO_NUMERICO_PEQUENO', 1, ZC_OBLIGATORIO_NO, 0, 'Registro eliminado?', ',');
         $tabla .= $this->llave('id', ',');
-        $tabla .= FIN_DE_LINEA . ') ' . $this->charset();
+        $tabla .= ') ' . $this->charset();
         $this->_sentencias[] = $tabla;
         return $this;
     }
@@ -385,7 +385,7 @@ class bd extends conexion {
      * @return string
      */
     public function devolver() {
-        return implode(';' . FIN_DE_LINEA . FIN_DE_LINEA, $this->_sentencias);
+        return implode(';' . FIN_DE_LINEA, $this->_sentencias);
     }
 
     /**

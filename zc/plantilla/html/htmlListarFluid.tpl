@@ -11,7 +11,6 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/datetimepicker.css">
         <!-- CSS Parsley -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/parsley.css">
-
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -20,11 +19,10 @@
         <![endif]-->
     </head>
     <body>
-        <?php echo $navegacion;?>
+        <?php echo $navegacion; ?>
         <div class="container-fluid">
             <!-- Seperacion del top -->
             <div class="col-md-12"> </div>
-
             <!-- Nombre del formulario actual -->
             <div class="col-md-1"></div>
             <div class="col-md-10 text-center">
@@ -32,20 +30,18 @@
             </div>
             <div class="col-md-1"></div>
             <!-- Fin Nombre del formulario actual -->
-
             <!-- Formulario con filtros/opciones de busqueda datos -->
             <div class="col-md-1"></div>
             <div class="col-md-10">
                 <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}">
                     <!-- Contador de los filtros utilizados, se us para no repetir ID de filtros -->
                     <input id="zc-filtros-cantidad-filtros" name="zc-filtros-cantidad-filtros" type="hidden" value="0"/>
-                    {_contenidoFormulario_}
+{_contenidoFormulario_}
                 </form>
             </div>
                 <!-- Fin Errores devueltos por el servidor -->
             <div class="col-md-1"></div>
             <!-- Fin Formulario con filtros/opciones de busqueda datos -->
-
             <!-- Errores devueltos por el servidor -->
             <div class="col-md-1"></div>
             <div class="col-md-10 text-center">
@@ -57,7 +53,6 @@
                 </div>
             </div>
             <div class="col-md-1"></div>
-
             <!-- Formulario con resultados de la busqueda -->
             <div class="col-md-1"></div>
             <div class="col-md-10">
@@ -75,7 +70,6 @@
             <div class="col-md-1"></div>
             <!-- Fin Formulario con resultados de la busqueda -->
         </div>
-
         <!-- Busquedas hechas desde la url, se usa en la accion de crear -->
         <input type="hidden" id="zc-filtros-predefinidos" name="zc-filtros-predefinidos" value="<?php echo $busquedaPredefinida; ?>"/>
         <!-- Pagina para ejecutar acciones desde JS -->
@@ -95,6 +89,6 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/parsley.js"></script>
         <!-- Utilidades ZC -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/zc.js"></script>
-        {_archivoJavascript_}
+{_archivoJavascript_}
     </body>
 </html>

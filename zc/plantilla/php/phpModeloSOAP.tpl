@@ -7,15 +7,15 @@ class {_nombreModelo_} extends CI_Model {
      * @var array
      */
     private $_aliasCampo = array(
-        {_aliasCampos_}
+{_aliasCampos_}
     );
-    
+
     /**
      * Cada una de las tablas relacionadas con el formulario
      * @var array
      */
     private $_tablasRelacionadas = array(
-        {_tablasRelacionadas_}
+{_tablasRelacionadas_}
     );
 
     function __construct() {
@@ -28,7 +28,7 @@ class {_nombreModelo_} extends CI_Model {
         $this->load->library('zc', $zc_params);
     }
 
-    {_llamadosModelo_}
+{_llamadosModelo_}
     {_funcionesModelo_}
     {_validacionModelo_}
 

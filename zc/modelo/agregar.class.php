@@ -27,14 +27,11 @@ class agregar extends accion {
         $php = '';
         $php .= $this->comando('// Establece los valores de cada uno de los campos', 12);
         $php .= $this->inicializar($this->_campos);
-        $php .= $this->comando('', 12);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
-        $php .= $this->comando('// Nombre de la tabla afectada', 12);
-        $php .= $this->comando('$tabla = \'' . $this->_tabla . '\';', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
-        $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', $tabla);', 12);
+        $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', \'modelo\');', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
-        $php .= $this->comando('$rpta = $CI->$tabla->agregar($data);', 12);
+        $php .= $this->comando('$rpta = $CI->modelo->agregar($data);', 12);
         $php .= $this->comando('switch (true){', 12);
         $php .= $this->comando('case (isset($rpta[\'error\']) && count($rpta[\'error\']) > 0):', 16);
         $php .= $this->comando('// Errores durante la ejecucion', 20);
@@ -75,6 +72,7 @@ class agregar extends accion {
         $php .= $this->comando('case $this->db->insert(\'' . $this->_tabla . '\', $campos) == false:', 12);
         $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
+        $php .= $this->comando('break;', 16);
         $php .= $this->comando('default:', 12);
         $php .= $this->comando('// Devuelve el id insertado campo y el numero de filas efectadas', 16);
         $php .= $this->comando('$rpta[\'resultado\'] = $this->db->insert_id();', 16);

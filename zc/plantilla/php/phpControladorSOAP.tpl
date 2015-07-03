@@ -23,7 +23,7 @@ class {_nombreControlador_} extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('url');
-        $this->load->model($this->_data['modelo']);
+        $this->load->model($this->_data['modelo'], 'modelo');
         $this->load->library(array('session', 'pagination'));
         // Establece el menu de navegacion
         $this->_data['navegacion'] = $this->load->view('{_paginaNavegacion_}.html', null, true);
@@ -34,27 +34,6 @@ class {_nombreControlador_} extends CI_Controller {
      */
     public function index() {
         $this->listar();
-    }
-
-    /**
-     * Validar lo solicitud sea valida
-     */
-    public function validarSesion() {
-        if ($this->session->userdata('zc_logueado') !== true) {
-            // No esta logueado, pide iniciar sesion
-            redirect('zlogin');
-        } 
-    } 
-    
-    /**
-     * Formulario de busqueda para la tabla {_nombreControlador_}
-     */
-    public function listar() {
-        $this->validarSesion();
-        $this->_data['vista'] = '{_nombreVistaListar_}';
-        $this->_data['busquedaPredefinida'] = (is_numeric($this->uri->segment(3)))? $this->_data['controlador'] . '|?|id|?|=|?|'.$this->uri->segment(3) : '';
-        $this->_data['paginaActual'] = ($this->uri->segment(3) === 'paginar')? $this->uri->segment(4) : '';
-        $this->load->view($this->_data['vista'], $this->_data);
     }
 
     /**
@@ -75,6 +54,17 @@ class {_nombreControlador_} extends CI_Controller {
     }
 
     /**
+     * Formulario de busqueda para la tabla {_nombreControlador_}
+     */
+    public function listar() {
+        $this->validarSesion();
+        $this->_data['vista'] = '{_nombreVistaListar_}';
+        $this->_data['busquedaPredefinida'] = (is_numeric($this->uri->segment(3)))? $this->_data['controlador'] . '|?|id|?|=|?|'.$this->uri->segment(3) : '';
+        $this->_data['paginaActual'] = ($this->uri->segment(3) === 'paginar')? $this->uri->segment(4) : '';
+        $this->load->view($this->_data['vista'], $this->_data);
+    }
+
+    /**
      * Pagina los resultados mostrados en la consulta
      * @param int $cta Numero de registros devueltos por la consulta
      */
@@ -85,6 +75,16 @@ class {_nombreControlador_} extends CI_Controller {
         $this->pagination->initialize($config);
         return $this->pagination->create_links();
     }
+
+    /**
+     * Validar que el usuario este en sesion
+     */
+    public function validarSesion() {
+        if ($this->session->userdata('zc_logueado') !== true) {
+            // No esta logueado, pide iniciar sesion
+            redirect('zlogin');
+        } 
+    } 
 
 {_accionServidor_}
 

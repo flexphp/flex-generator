@@ -95,22 +95,22 @@ class zcs {
                     break;
                 case 'favor':
                     // Inicia el encabezado del XML
-                    $this->_xml .= insertarEspacios(0) . '<?xml version="1.0" encoding="UTF-8"?>' . FIN_DE_LINEA;;
+                    $this->_xml .= tabular('<?xml version="1.0" encoding="UTF-8"?>', 0);
                     break;
                 case 'crear':
                     // Inicia el cuerpo de XML
-                    $this->_xml .= insertarEspacios(0) . '<crear>' . FIN_DE_LINEA;
+                    $this->_xml .= tabular('<crear>', 0);
                     $tipo = 'tabla';
                     break;
                 case 'gracias':
                     if(isset($idCampo)) {
                         // Se termina de cerrar el ultimo campo
-                        $this->_xml .= insertarEspacios(8) . '</' . $idCampo . '>' . FIN_DE_LINEA;
+                        $this->_xml .= tabular('</' . $idCampo . '>', 8);
                     }
                     // Cierra la hoja
-                    $this->_xml .= insertarEspacios(4) . '</' . $idHoja . '>' . FIN_DE_LINEA;
+                    $this->_xml .= tabular('</' . $idHoja . '>', 4);
                     // Cierrar el cuerpo de XML
-                    $this->_xml .= insertarEspacios(0) . '</crear>' . FIN_DE_LINEA;
+                    $this->_xml .= tabular('</crear>', 0);
                     // Crear el archivo XML
                     file_put_contents('xml/' . $idHoja . '.xml', $this->_xml);
                     // Reinicia las variables para el nuevo XML
@@ -123,7 +123,7 @@ class zcs {
                     $tipo = 'campo';
                     if(isset($idCampo)) {
                         // Cierra el campo anterior, solo si existe
-                        $this->_xml .= insertarEspacios(8) . '</' . $idCampo . '>' . FIN_DE_LINEA;
+                        $this->_xml .= tabular('</' . $idCampo . '>', 8);
                     }
                     break;
                 case ZC_DATO_NUMERICO:
@@ -136,23 +136,23 @@ class zcs {
                 case ZC_DATO_TEXTO:
                 case ZC_DATO_AREA_TEXTO:
                     // Agregar tipo de dato
-                    $this->_xml .= insertarEspacios(12) . '<' . ZC_DATO . '>' . $palabra . '</' . ZC_DATO . '>' . FIN_DE_LINEA;
+                    $this->_xml .= tabular('<' . ZC_DATO . '>' . $palabra . '</' . ZC_DATO . '>', 12);
                     break;
                 case ZC_ELEMENTO_CAJA:
                 case ZC_ELEMENTO_RADIO:
                 case ZC_ELEMENTO_CHECKBOX:
                 case ZC_ELEMENTO_LISTA:
                     // Agregar el tipo de elemento a crear
-                    $this->_xml .= insertarEspacios(12) . '<' . ZC_ELEMENTO . '>' . $palabra . '</' . ZC_ELEMENTO . '>' . FIN_DE_LINEA;
+                    $this->_xml .= tabular('<' . ZC_ELEMENTO . '>' . $palabra . '</' . ZC_ELEMENTO . '>', 12);
                     break;
                 case 'obligatorio':
                     // Campo obligatorio
-                    $this->_xml .= insertarEspacios(12) . '<' . ZC_OBLIGATORIO . '>' . ZC_OBLIGATORIO_SI . '</' . ZC_OBLIGATORIO . '>' . FIN_DE_LINEA;
+                    $this->_xml .= tabular('<' . ZC_OBLIGATORIO . '>' . ZC_OBLIGATORIO_SI . '</' . ZC_OBLIGATORIO . '>', 12);
                     break;
                 default:
                     if (is_numeric($palabra)) {
                         // Agrega la longitud maxima si esta definida
-                        $this->_xml .= insertarEspacios(12) . '<' . ZC_LONGITUD_MAXIMA . '>' . $palabra . '</' . ZC_LONGITUD_MAXIMA . '>' . FIN_DE_LINEA;
+                        $this->_xml .= tabular('<' . ZC_LONGITUD_MAXIMA . '>' . $palabra . '</' . ZC_LONGITUD_MAXIMA . '>', 12);
                         break;
                     }
                     if(!isset($tipo)){
@@ -162,14 +162,14 @@ class zcs {
                         case 'tabla':
                             // Agrega la creacion del formulario
                             $idHoja = reemplazarCaracteresEspeciales($palabra);
-                            $this->_xml .= insertarEspacios(4) . '<' . $idHoja . '>' . FIN_DE_LINEA;
-                            $this->_xml .= insertarEspacios(8) . '<' . ZC_FORMULARIO_NOMBRE . '>' . ucwords($palabra) . '</' . ZC_FORMULARIO_NOMBRE . '>' . FIN_DE_LINEA;
+                            $this->_xml .= tabular('<' . $idHoja . '>', 4);
+                            $this->_xml .= tabular('<' . ZC_FORMULARIO_NOMBRE . '>' . ucwords($palabra) . '</' . ZC_FORMULARIO_NOMBRE . '>', 8);
                             break;
                         case 'campo':
                             // Agrega la creacion del campo
                             $idCampo = str_replace('\'', '', reemplazarCaracteresEspeciales($palabra));
-                            $this->_xml .= insertarEspacios(8) . '<' . $idCampo . '>' . FIN_DE_LINEA;
-                            $this->_xml .= insertarEspacios(12) . '<' . ZC_ETIQUETA . '>' . ucfirst(str_replace('\'', '', $palabra)) . '</' . ZC_ETIQUETA . '>' . FIN_DE_LINEA;
+                            $this->_xml .= tabular('<' . $idCampo . '>', 8);
+                            $this->_xml .= tabular('<' . ZC_ETIQUETA . '>' . ucfirst(str_replace('\'', '', $palabra)) . '</' . ZC_ETIQUETA . '>', 12);
                             break;
                         default:
                             $this->_error = 'Palabra inesperada: ' . $palabra;
