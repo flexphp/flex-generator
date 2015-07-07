@@ -15,5 +15,7 @@ public function {_nombreAccion_}() {
         } else if (isset($datos['accion'])) {
             $rpta['error'] = 'Error, datos inesperados';
         }
-        echo json_encode($rpta, true);
+
+        // Permite manejar o no Cache en la pagina
+        $this->output->set_output(json_encode($rpta));
     }

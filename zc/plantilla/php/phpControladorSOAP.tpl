@@ -27,6 +27,8 @@ class {_nombreControlador_} extends CI_Controller {
         $this->load->library(array('session', 'pagination'));
         // Establece el menu de navegacion
         $this->_data['navegacion'] = $this->load->view('{_paginaNavegacion_}.html', null, true);
+        // Almacena cache durate (15 min)
+        $this->output->cache(15);
     }
 
     /**

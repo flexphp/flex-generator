@@ -15,6 +15,10 @@ zc/archivos/*.zcs
 www/application/config/database.php
 www/application/config/pagination.php
 
+# Archivos de cache de paginas
+########################
+www/application/cache/*
+
 # Archivos de configuracion
 ########################
 zc/xml/*.xml

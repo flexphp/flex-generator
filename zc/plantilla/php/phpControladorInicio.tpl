@@ -20,6 +20,8 @@ class {_nombreControlador_} extends CI_Controller {
         $this->load->helper('url');
         $this->load->library('session');
         $this->_data['navegacion'] = $this->load->view('{_paginaNavegacion_}.html', null, true);
+        // Almacena cache durate (15 min)
+        $this->output->cache(15);
     }
 
     /**
