@@ -3,7 +3,7 @@
 /**
  * Crea las funciones para realizar el logue con los campos seleccionados, se base 
  */
-class login extends accion {
+class loguear extends accion {
 
     /**
      * Crea la accion de logueo, es decir todo el proceso de creacion del SELECT en SQL
@@ -15,13 +15,13 @@ class login extends accion {
     }
 
     /**
-     * Crea la accion login. el resultado de la accion se almacena en la
+     * Crea la accion loguear. el resultado de la accion se almacena en la
      * variable $resultado (IMPORTANTE)
      */
     public function crear() {
-        if ($this->_accion !== ZC_ACCION_LOGIN) {
+        if ($this->_accion !== ZC_ACCION_LOGUEAR) {
             // No es la accion esperada, no crea nada
-            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_LOGIN);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_LOGUEAR);
         }
         $php = '';
         $php .= $this->comando('// Establece los valores de cada uno de los campos', 12);
@@ -30,7 +30,7 @@ class login extends accion {
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', \'modelo\');', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
-        $php .= $this->comando('$rpta = $CI->modelo->login($data, \'login\');', 12);
+        $php .= $this->comando('$rpta = $CI->modelo->' . ZC_ACCION_LOGUEAR . '($data, \'' . ZC_ACCION_LOGUEAR . '\');', 12);
         $php .= $this->comando('switch (true){', 12);
         $php .= $this->comando('case (isset($rpta[\'error\']) && count($rpta[\'error\']) > 0):', 16);
         $php .= $this->comando('// Errores durante la ejecucion', 20);
@@ -51,11 +51,11 @@ class login extends accion {
      * variable $resultado (IMPORTANTE)
      */
     public function funcion() {
-        if ($this->_accion !== ZC_ACCION_LOGIN) {
+        if ($this->_accion !== ZC_ACCION_LOGUEAR) {
             // No es la accion esperada, no crea nada
-            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_LOGIN);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_LOGUEAR);
         }
-        $php = $this->comando('function login($campos, $accion){', 0);
+        $php = $this->comando('function ' . ZC_ACCION_LOGUEAR . '($campos, $accion){', 0);
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('$validacion = $this->zc->validarFiltros($campos, $accion);', 8);
         $php .= $this->comando('switch (true){', 8);

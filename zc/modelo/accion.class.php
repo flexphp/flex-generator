@@ -16,7 +16,7 @@ require RUTA_GENERADOR_CODIGO . '/modelo/modificar.class.php';
 require RUTA_GENERADOR_CODIGO . '/modelo/precargar.class.php';
 
 // Crea la ventana y acciones de logueo
-require RUTA_GENERADOR_CODIGO . '/modelo/login.class.php';
+require RUTA_GENERADOR_CODIGO . '/modelo/loguear.class.php';
 
 // Crea las funciones para precargar las listas de seleccion
 require RUTA_GENERADOR_CODIGO . '/modelo/ajax.class.php';
@@ -139,8 +139,8 @@ class accion extends Aelemento {
             case ZC_ACCION_AJAX:
                 $accion = new ajax($this->_campos, $this->_tabla, $this->_accion);
                 break;
-            case ZC_ACCION_LOGIN:
-                $accion = new login($this->_campos, $this->_tabla, $this->_accion);
+            case ZC_ACCION_LOGUEAR:
+                $accion = new loguear($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ACCION_RESTABLECER:
             case ZC_ACCION_CANCELAR:

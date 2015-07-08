@@ -56,7 +56,7 @@ class {_nombreControlador_} extends CI_Controller {
     /**
      * Crea la sesion para el usuario
      */
-    public function loguear($rpta = array()) {
+    public function sesion($rpta = array()) {
         if (count($rpta) == 0) {
             // No es un llamado valido (no es desde un Ajax, sino por la url)
             redirect('404');

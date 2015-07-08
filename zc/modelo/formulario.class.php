@@ -266,7 +266,7 @@ class formulario {
     /**
      * Define nombres de archivos utilizados por las plantillas a lo largo del proceso
      * Define nombres de los archivos creados: modelo, vista, controlador
-     * Los nombres se manejan en minuscula y seperados con underscore segun
+     * Los nombres se manejan en matuscula solo la primera y seperados con underscore segun
      * recomendacion de CodeIgniter
      * @return \formulario
      */
@@ -274,13 +274,13 @@ class formulario {
         // Nombre vista
         $this->_nombreArchivoVista = ZC_PREFIJO_VISTA . $this->_id;
         // Nombre modelo
-        $this->_nombreArchivoModelo = ZC_PREFIJO_MODELO . $this->_id;
+        $this->_nombreArchivoModelo = ucfirst(ZC_PREFIJO_MODELO . $this->_id);
         // Nombre modelo
-        $this->_nombreArchivoControlador = ZC_PREFIJO_CONTROLADOR . $this->_id;
+        $this->_nombreArchivoControlador = ucfirst(ZC_PREFIJO_CONTROLADOR . $this->_id);
         // Nombre del listado
         $this->_nombreArchivoListar = ZC_PREFIJO_LISTA . $this->_id;
         // Nombre del archivo que guarda las funcionalidades del servidor
-        $this->_nombreArchivoServidor = ZC_PREFIJO_WS . $this->_id;
+        $this->_nombreArchivoServidor = ucfirst(ZC_PREFIJO_WS . $this->_id);
         // Nombre javascript
         $this->_nombreArchivoJs = $this->_id;
         // Nombre de la funcion de validacion
@@ -479,7 +479,7 @@ class formulario {
                 case ZC_ACCION_NUEVO:
                 case ZC_ACCION_PRECARGAR:
                 case ZC_ACCION_AJAX:
-                case ZC_ACCION_LOGIN:
+                case ZC_ACCION_LOGUEAR:
                     $this->agregarAccionFormulario($caracteristicas);
                     break;
                 default:
@@ -650,10 +650,10 @@ class formulario {
                     $comandoEspecial .= tabular('$rpta[\'paginacion\'] = $this->paginar($rpta[\'cta\']);', 16);
                     $comandoEspecial .= tabular('}', 12);
                     break;
-                case ZC_ACCION_LOGIN:
+                case ZC_ACCION_LOGUEAR:
                     // Registrar el inicio de sesion del usuario
                     $comandoEspecial = tabular('// Inicia sesion el sistema', 12);
-                    $comandoEspecial .= tabular('$rpta = $this->loguear($rpta);', 12);
+                    $comandoEspecial .= tabular('$rpta = $this->sesion($rpta);', 12);
                     // Continua con la accion por defecto ya que es la misma
                 default:
                     $comando .= tabular('// Valida los datos pasados por POST', 8);

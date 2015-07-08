@@ -28,7 +28,7 @@ class hoja extends xml {
         switch (strtolower($nombreHoja)) {
             case ZC_LOGIN_PAGINA:
                 // Crear pagina login, boton para hacer login
-                $this->elementos[] = array(ZC_ID => 'ingresar', ZC_ELEMENTO => ZC_ACCION_LOGIN, ZC_ETIQUETA => 'Ingresar');
+                $this->elementos[] = array(ZC_ID => 'loguear', ZC_ELEMENTO => ZC_ACCION_LOGUEAR, ZC_ETIQUETA => 'Ingresar');
                 break;
             default:
                 // Creacion de las demas paginas

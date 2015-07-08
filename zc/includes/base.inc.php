@@ -24,10 +24,15 @@ function plantillas() {
     // Eliminar archivos xml generados en ejecuciones pasadas del generador de codigo
     eliminar(RUTA_GENERADOR_CODIGO . '/xml', false);
 
+    // Libreria para el manejo de la paginacion
+    $paginacionphp = new plantilla();
+    $paginacionphp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpPaginacion.tpl');
+    $paginacionphp->crearPlantilla('../www/application/libraries', 'php', 'Pagination');
+
     // Libreria donde estan metodos traversales (comunes) a toda la aplicacion
     $zcphp = new plantilla();
     $zcphp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpLibreriaZC.tpl');
-    $zcphp->crearPlantilla('../www/application/libraries', 'php', 'zc');
+    $zcphp->crearPlantilla('../www/application/libraries', 'php', 'Zc');
 
     // Tablas de configuracion, para usuarios, tipos de usuario, estados de usuario y login
     $usuariosxml = new plantilla();

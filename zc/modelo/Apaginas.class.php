@@ -52,7 +52,7 @@ abstract class Apaginas {
         $tpl .= tabular('if (!$this->zc->esWebService()) {', 8);
         $tpl .= tabular('$datos = $this->zc->validarSesion();', 12);
         $tpl .= tabular('$this->load->model(\'' . ZC_PREFIJO_MODELO . ZC_LOGIN_PAGINA . '\', \'zlogin\');', 12);
-        $tpl .= tabular('$rpta = $this->zlogin->loginCliente($datos);', 12);
+        $tpl .= tabular('$rpta = $this->zlogin->' . ZC_ACCION_LOGUEAR . 'Cliente($datos);', 12);
         $tpl .= tabular('if (isset($rpta[\'error\'])) {', 12);
         $tpl .= tabular('die($rpta[\'error\']);', 16);
         $tpl .= tabular('}', 12);
