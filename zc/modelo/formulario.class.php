@@ -317,12 +317,11 @@ class formulario {
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloSOAP.tpl');
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
+        $plantilla->asignarEtiqueta('aliasCampos', $this->_aliasCampos);
+        $plantilla->asignarEtiqueta('tablasRelacionadas', $this->_tablasRelacionadas);
         $plantilla->asignarEtiqueta('llamadosModelo', $this->_llamadosModelo);
         $plantilla->asignarEtiqueta('funcionesModelo', implode(FIN_DE_LINEA, $this->_funcionesModelo));
         $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
-        $plantilla->asignarEtiqueta('nombreValidacion', $this->_nombreFuncionValidacion);
-        $plantilla->asignarEtiqueta('aliasCampos', $this->_aliasCampos);
-        $plantilla->asignarEtiqueta('tablasRelacionadas', $this->_tablasRelacionadas);
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModelo);
         return $this;
     }
