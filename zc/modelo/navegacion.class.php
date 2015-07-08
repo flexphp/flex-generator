@@ -25,7 +25,8 @@ class navegacion {
     public function crear($info) {
         $controlador = $info['controlador'];
         $formulario = $info['formulario'];
-        if ($controlador != ZC_LOGIN_PAGINA) {
+        // La comparacion se hace en minusculas, ya que el contenido puede variar
+        if (strtolower($controlador) != strtolower(ZC_LOGIN_PAGINA)) {
             // El controlador de login no se incluye en la pagina de navegacion
             $this->_html .= tabular('<li id="zc-menu-' . $controlador . '"><a href="<?php echo base_url(). \'index.php/' . $controlador . '\'; ?>">' . $formulario . '</a></li>', 24);
         }
