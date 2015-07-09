@@ -85,8 +85,7 @@ class zcs {
      */
     private function procesarPalabras() {
         foreach ($this->_todasPalabras as $palabra) {
-            $palabra = strtolower($palabra);
-            switch ($palabra) {
+            switch (strtolower($palabra)) {
                 case '':
                 case 'campo':
                 case 'formulario':
@@ -161,7 +160,7 @@ class zcs {
                     switch ($tipo) {
                         case 'tabla':
                             // Agrega la creacion del formulario
-                            $idHoja = reemplazarCaracteresEspeciales($palabra);
+                            $idHoja = strtolower(reemplazarCaracteresEspeciales($palabra));
                             $this->_xml .= tabular('<' . $idHoja . '>', 4);
                             $this->_xml .= tabular('<' . ZC_FORMULARIO_NOMBRE . '>' . ucwords($palabra) . '</' . ZC_FORMULARIO_NOMBRE . '>', 8);
                             break;

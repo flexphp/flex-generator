@@ -407,9 +407,9 @@ function tablasRelacionadas($id, $tablas, $join = '') {
 function joinTablas($join) {
     $separador = (strpos($join, ZC_MOTOR_JOIN_SEPARADOR) === false) ? null : ZC_MOTOR_JOIN_SEPARADOR;
     if (isset($separador)) {
-        $parametros = explode(ZC_MOTOR_JOIN_SEPARADOR, strtolower($join));
+        $parametros = explode(ZC_MOTOR_JOIN_SEPARADOR, $join);
         $joinTabla = (isset($parametros[0])) ? reemplazarCaracteresEspeciales($parametros[0]) : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el nombre la tabla a relacionar!?");
-        $joinCampos = (isset($parametros[1])) ? $parametros[1] : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el los campos de relacion!?");
+        $joinCampos = (isset($parametros[1])) ? reemplazarCaracteresEspeciales($parametros[1]) : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el los campos de relacion!?");
         $joinTipo = (isset($parametros[2])) ? validarJoinTipo($parametros[2]) : '';
 
         return array('tabla' => $joinTabla, 'campo' => $joinCampos, 'join' => $joinTipo);
@@ -436,11 +436,11 @@ function validarJoinTipo($tipo) {
  */
 function reemplazarCaracteresEspeciales($texto) {
     // Buscar, EN UTF e ISO 8859-1
-    $buscar = array(' ', '?', 'Ã¡', 'Ã©', 'Ã­', 'Ã³', ' Ãº', 'Ã±', 'Ã‘', 'á', 'é', 'í', 'ó', 'ú', 'ñ', 'Ñ');
+    $buscar = array(' ', '?', 'Ã¡', 'Ã©', 'Ã­', 'Ã³', ' Ãº', 'Ã±', 'Ã‘', 'á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ');
     // Reemplazar
-    $reemplazar = array('_', '', 'a', 'e', 'i', 'o', 'u', 'n', 'n', 'a', 'e', 'i', 'o', 'u', 'n', 'n');
+    $reemplazar = array('_', '', 'a', 'e', 'i', 'o', 'u', 'n', 'n', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'n');
     // Devuelve la cadena transformada
-    return str_replace($buscar, $reemplazar, strtolower($texto));
+    return str_replace($buscar, $reemplazar, $texto);
 }
 
 /**
@@ -454,8 +454,7 @@ function tabular($texto, $espacios = 0) {
 }
 
 /**
- * Determina las extension valida de los archivos de configuracion. Extrae
- * la ultima parte del nombre y la devuelve, sino tiene extension devuelve vacio
+ * Determina las extension del archivov, sino tiene extension devuelve vacio
  * Ejemplo:
  * archivo.de.prueba.xml
  * devuelve: xml
@@ -463,8 +462,8 @@ function tabular($texto, $espacios = 0) {
  * @return string
  */
 function extensionArchivo($archivo) {
-    $ext = explode('.', $archivo);
-    return strtolower(end($ext));
+    $extension = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+    return $extension;
 }
 
 /**

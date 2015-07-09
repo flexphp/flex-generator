@@ -66,6 +66,7 @@ function plantillas() {
     $iniciophp->asignarEtiqueta('nombreVista', ZC_PREFIJO_VISTA . 'inicio.html');
     $iniciophp->asignarEtiqueta('nombreControlador', 'inicio');
     $iniciophp->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
+    $iniciophp->asignarEtiqueta('paginaLogin', ZC_LOGIN_PAGINA);
     $iniciophp->crearPlantilla('../www/application/controllers', 'php', 'Inicio');
 
     $iniciohtml = new plantilla();

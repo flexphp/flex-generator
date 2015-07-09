@@ -11,7 +11,7 @@ define('FIN_DE_LINEA_HTML', '<br/>');
 // Nombre de la vista que muestra el menu de navegacion
 define('ZC_NAVEGACION_PAGINA', 'v_navegacion');
 // Nombre de la hoja para crear ventana de logueo, se define en la hoja de calculo
-define('ZC_LOGIN_PAGINA', 'zlogin');
+define('ZC_LOGIN_PAGINA', 'Login');
 // Nombre de la hoja de configuracion, se define en la hoja de calculo
 define('ZC_CONFIG_PAGINA', 'config');
 // Nombre de la hoja de listas desplegables, se define en la hoja de calculo

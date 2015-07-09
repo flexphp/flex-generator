@@ -389,6 +389,7 @@ class formulario {
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('accionServidor', $this->_funcionControlador);
         $plantilla->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
+        $plantilla->asignarEtiqueta('paginaLogin', ZC_LOGIN_PAGINA);
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoControlador);
         return $this;
     }

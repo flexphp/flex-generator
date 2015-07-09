@@ -49,16 +49,16 @@ class bd extends conexion {
     }
 
     /**
-     * Valoda el motor utilizado para la creacion de la base de datos
+     * Valida el motor utilizado para la creacion de la base de datos
      * @param string $motor
      */
     function motor($motor) {
-        $this->_motor = trim(strtolower($motor));
+        $this->_motor = strtolower(trim($motor));
         switch ($this->_motor) {
             case ZC_MOTOR_MYSQL:
                 break;
             case '':
-                mostrarErrorZC(__FILE__, __FUNCTION__, 'Seleccione una opcion de guardado de datos.');
+                mostrarErrorZC(__FILE__, __FUNCTION__, 'Seleccione una opcion de guardado de datos [' . $this->_motor . '].');
             default:
                 mostrarErrorZC(__FILE__, __FUNCTION__, 'Motor (' . $this->_motor . ') no soportado por la herramienta, quizas proximamente.');
         }
@@ -337,7 +337,7 @@ class bd extends conexion {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo NO tiene un identificador valido [a-Z_].");
             }
             // Nombre del campo
-            $this->_prop[$nro][ZC_ID] =(isset($this->_prop[$nro][ZC_CAMPO_BD]) && '' != $this->_prop[$nro][ZC_CAMPO_BD]) ? strtolower(trim($this->_prop[$nro][ZC_CAMPO_BD])) : strtolower(trim($this->_prop[$nro][ZC_ID]));
+            $this->_prop[$nro][ZC_ID] =(isset($this->_prop[$nro][ZC_CAMPO_BD]) && '' != $this->_prop[$nro][ZC_CAMPO_BD]) ? trim($this->_prop[$nro][ZC_CAMPO_BD]) : trim($this->_prop[$nro][ZC_ID]);
             // Comentario
             $this->_prop[$nro][ZC_ETIQUETA] = (isset($this->_prop[$nro][ZC_ETIQUETA]) && '' != trim($this->_prop[$nro][ZC_ETIQUETA])) ? ucwords(trim($this->_prop[$nro][ZC_ETIQUETA])) : ucwords($this->_prop[$nro][ZC_ID]);
             // Tipo de elmento

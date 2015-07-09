@@ -106,7 +106,7 @@ abstract class Aelemento {
         // Identificadores del elemento
         // Si existe el nombre de campo en la base de datos lo asigna, el id debe conincidir con el nombre de campo para el resto de la funcionalidad
         // Por eso se deja en minucula, igual al procesamiento en bd
-        $this->_prop[ZC_ID] =(isset($this->_prop[ZC_CAMPO_BD]) && '' != $this->_prop[ZC_CAMPO_BD]) ? strtolower(trim($this->_prop[ZC_CAMPO_BD])) : strtolower(trim($this->_prop[ZC_ID]));
+        $this->_prop[ZC_ID] =(isset($this->_prop[ZC_CAMPO_BD]) && '' != $this->_prop[ZC_CAMPO_BD]) ? trim($this->_prop[ZC_CAMPO_BD]) : trim($this->_prop[ZC_ID]);
         $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? ucfirst(trim($this->_prop[ZC_ETIQUETA])) : ucfirst($this->_prop[ZC_ID]);
         // Tipo Elemento
         $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : null;

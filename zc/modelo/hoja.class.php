@@ -25,8 +25,8 @@ class hoja extends xml {
      * @param string $nombreHoja Nombre de la hoja a crear
      */
     private function agregarAcciones($nombreHoja) {
-        switch (strtolower($nombreHoja)) {
-            case ZC_LOGIN_PAGINA:
+        switch (true) {
+            case (strtolower($nombreHoja) == strtolower(ZC_LOGIN_PAGINA)):
                 // Crear pagina login, boton para hacer login
                 $this->elementos[] = array(ZC_ID => 'loguear', ZC_ELEMENTO => ZC_ACCION_LOGUEAR, ZC_ETIQUETA => 'Ingresar');
                 break;

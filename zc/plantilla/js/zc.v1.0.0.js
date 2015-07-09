@@ -610,10 +610,9 @@ function ZCAccionPrecargar(formulario, id, precargar, modificar) {
  */
 function ZCAsignarErrores(formulario, rpta) {
     var msjError = '';
-    if (IsJsonString(rpta.error)) {
+    if (typeof rpta.error === 'object') {
         // Error en un campo
         $.each(rpta.error, function(campo, error) {
-            console.log(campo+'|'+error);
             var label = $('#label-' + campo).text();
             msjError += label + ': ' + error + '<br />';
             // Agrega clase error
@@ -624,17 +623,4 @@ function ZCAsignarErrores(formulario, rpta) {
         msjError = rpta.error;
     }
     $('#error-' + formulario).html(msjError);
-}
-
-/**
- * Valida si la cadena pasada es una JSON valido
- * @param {string} str
- */
-function IsJsonString(str) {
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        return false;
-    }
-    return true;
 }
