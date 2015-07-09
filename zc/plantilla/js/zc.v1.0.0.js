@@ -4,7 +4,7 @@
  * @param {object} formasValidar Id del formulario al que se la va validar el progreso
  * @returns {Boolean}
  */
-function ZCBarraProgreso(formulario, formasValidar){
+function ZCBarraProgreso(formulario, formasValidar) {
     // Cantidad de campos encontrados en el formulario
     var contadorCampos = 0;
     // Cantidad de campos validos
@@ -12,13 +12,13 @@ function ZCBarraProgreso(formulario, formasValidar){
     // Valida que los cambpos checkbox y radio no se cuenten mas de una vez
     var nombres = [];
     // Todos campos del formulario
-    $('#'+formulario).find($(formasValidar)).each(function(){
+    $('#'+formulario).find($(formasValidar)).each(function() {
         //Verifica que no se halla contado antes
         //Salta elementos que no tengan id definido
-        if(nombres.indexOf(this.name) === -1 && this.id !== ''){
+        if (nombres.indexOf(this.name) === -1 && this.id !== '') {
             nombres.push(this.name);
             contadorCampos++;
-            if ($('#'+this.id).parsley().isValid('#'+this.id)){
+            if ($('#'+this.id).parsley().isValid('#'+this.id)) {
                 contadorCamposValidos++;
             }
         }
@@ -27,10 +27,10 @@ function ZCBarraProgreso(formulario, formasValidar){
     var progreso = Math.ceil((contadorCamposValidos*100)/contadorCampos);
     $('#progreso-'+formulario).css('width', progreso + '%').attr('aria-valuenow', progreso);
     $('#msj-progreso-'+formulario).html(progreso + '%');
-    if(progreso === 100){
+    if (progreso === 100) {
         // Deja clases de exito
         $('#progreso-'+formulario).addClass('progress-bar-success').removeClass('progress-bar-striped').removeClass('active');
-    }else{
+    } else {
         // Deja clases iniciales
         $('#progreso-'+formulario).removeClass('progress-bar-success').addClass('progress-bar-striped').addClass('active');
     }
@@ -42,7 +42,7 @@ function ZCBarraProgreso(formulario, formasValidar){
  * @param {string} formulario
  * @returns {undefined}
  */
-function ZCAccionReiniciarFormulario(e, formulario){
+function ZCAccionReiniciarFormulario(e, formulario) {
     e.preventDefault();
     $('.parsley-errors-list').hide();
     $('#error-'+formulario).text('');
@@ -57,19 +57,19 @@ function ZCAccionReiniciarFormulario(e, formulario){
  * @param {object} formasValidar Id del formulario al que se la va validar el progreso
  * @returns {Boolean}
  */
-function ZCAccionCancelar(e, formulario, formasValidar){
+function ZCAccionCancelar(e, formulario, formasValidar) {
     e.preventDefault();
     // Todos campos del formulario
     var existenCamposDiligenciados = false;
     var valorCampo = '';
     var nombres = [];
-    $('#'+formulario).find($(formasValidar)).each(function(){
-        if(nombres.indexOf(this.name) === -1){
+    $('#'+formulario).find($(formasValidar)).each(function() {
+        if (nombres.indexOf(this.name) === -1) {
             nombres.push(this.name);
-            switch(true){
+            switch(true) {
                 case $('#'+this.id).attr('type') == 'checkbox':
                     var marcados = 0;
-                    if ($('#'+this.id).prop("checked")){
+                    if ($('#'+this.id).prop("checked")) {
                         marcados++;
                     }
                     valorCampo = (marcados === 0) ? '' : 'Lleno';
@@ -81,7 +81,7 @@ function ZCAccionCancelar(e, formulario, formasValidar){
                     valorCampo = $.trim($('#'+this.id).val());
                     break;
             }
-            if (valorCampo !== '' && valorCampo !== undefined){
+            if (valorCampo !== '' && valorCampo !== undefined) {
                 existenCamposDiligenciados = true;
             }
         }
@@ -97,9 +97,9 @@ function ZCAccionCancelar(e, formulario, formasValidar){
  * @param {type} id
  * @returns {Boolean}
  */
-function ZCCamposDeBusqueda(e, formulario, id){
+function ZCCamposDeBusqueda(e, formulario, id) {
     e.preventDefault();
-    if(!$(id).length){
+    if (!$(id).length) {
         console.log('Elemento no encontrado');
         return false;
     }
@@ -126,7 +126,7 @@ function ZCCamposDeBusqueda(e, formulario, id){
  * @param {$} id
  * @returns {undefined}
  */
-function ZCAccionAgregarFiltro(e, formulario, id){
+function ZCAccionAgregarFiltro(e, formulario, id) {
     e.preventDefault();
     // Nombre del controlador
     var controlador = $('#zc-controlador').val()
@@ -140,9 +140,9 @@ function ZCAccionAgregarFiltro(e, formulario, id){
     var valor = textoValor = '';
 
     // Determina como debe extraer el valor del campo
-    switch(true){
+    switch(true) {
         case $('input[name^='+filtro+']').attr('type') === 'checkbox':
-            $('input[name^='+filtro+']:checked').each(function(){
+            $('input[name^='+filtro+']:checked').each(function() {
                 valor = $('#'+this.id).val();
                 textoValor = $('#'+this.id).attr('zc-texto');
             });
@@ -163,7 +163,7 @@ function ZCAccionAgregarFiltro(e, formulario, id){
             break;
     }
 
-    if (!$('#'+formulario).parsley().validate()){
+    if (!$('#'+formulario).parsley().validate()) {
         // Valida que sea un valor permitido
         return false;
     }
@@ -203,7 +203,7 @@ function ZCAccionAgregarFiltro(e, formulario, id){
  * @param {$} id
  * @returns {undefined}
  */
-function ZCAccionQuitarFiltro(e, id){
+function ZCAccionQuitarFiltro(e, id) {
     e.preventDefault();
     var filtro = $(id).attr('id').replace('quitar-', '');
     $('div').remove('#zc-filtros-aplicados-'+filtro);
@@ -214,17 +214,17 @@ function ZCAccionQuitarFiltro(e, id){
  * @param {string} formulario
  * @returns {undefined}
  */
-function ZCAccionBuscarFiltro(formulario){
+function ZCAccionBuscarFiltro(formulario) {
     var filtrosAEnviar = '';
-    $('#'+formulario).find($('.zc-filtros-seleccionado')).each(function(){
+    $('#'+formulario).find($('.zc-filtros-seleccionado')).each(function() {
         //Verifica que no se halla contado antes
         //Salta elementos que no tengan id definido
         var filtro = $('#'+this.id).val();
-        if(filtro !== '' && filtro !== undefined){
+        if (filtro !== '' && filtro !== undefined) {
             filtrosAEnviar += (filtrosAEnviar !== '') ? '|??|' : '';
             filtrosAEnviar += filtro;
         }
-        if(this.id === 'filtros-seleccionados-0'){
+        if (this.id === 'filtros-seleccionados-0') {
             //Elimina el filtro predefinido, esto evita utilizar el filtro en otras busquedas
             $('#'+this.id).val('');
         }
@@ -238,9 +238,9 @@ function ZCAccionBuscarFiltro(formulario){
  * @param {string} formulario Nombre del formaulario a utilizar
  * @returns {String}
  */
-function ZCAccionBuscarPredefinido(formulario){
+function ZCAccionBuscarPredefinido(formulario) {
     var filtrosPredefinidos = $('#zc-filtros-predefinidos').val();
-    if(filtrosPredefinidos !== undefined && filtrosPredefinidos !== ''){
+    if (filtrosPredefinidos !== undefined && filtrosPredefinidos !== '') {
         //Establece el valor de los filtros a utilizar en la busqueda
         $('#'+formulario).append('<input id="filtros-seleccionados-0" type="hidden" class="zc-filtros-seleccionado" value="'+filtrosPredefinidos+'">');
         // Ejecuta accion boton buscar
@@ -256,7 +256,7 @@ function ZCAccionBuscarPredefinido(formulario){
  * @param {string} id
  * @returns {undefined}
  */
-function ZCAccionOcultarFiltro(e, formulario, id){
+function ZCAccionOcultarFiltro(e, formulario, id) {
     e.preventDefault();
     $('#'+formulario).find($('.zc-filtros-disponibles')).addClass('hidden');
     $('#'+formulario).find($('.zc-filtros-mostrar')).removeClass('hidden');
@@ -270,7 +270,7 @@ function ZCAccionOcultarFiltro(e, formulario, id){
  * @param {string} id
  * @returns {undefined}
  */
-function ZCAccionMostrarFiltro(e, formulario, id){
+function ZCAccionMostrarFiltro(e, formulario, id) {
     e.preventDefault();
     $('#'+formulario).find($('.zc-filtros-disponibles')).removeClass('hidden');
     $('#'+formulario).find($('.zc-filtros-ocultar')).removeClass('hidden');
@@ -283,21 +283,21 @@ function ZCAccionMostrarFiltro(e, formulario, id){
  * @param {json} rpta Valores devueltos por la consulta
  * @returns {undefined}
  */
-function ZCListarResultados(formulario, rpta){
+function ZCListarResultados(formulario, rpta) {
     var tabla = "<table class='table table-bordered table-hover'>";
     var encabezados = '';
     var columnas = '';
     var id = -1;
 
-    for(var i = 0; i < rpta.cta; ++i){
+    for(var i = 0; i < rpta.cta; ++i) {
         for (var key in rpta.infoEncabezado[i]) {
             if (rpta.infoEncabezado[i].hasOwnProperty(key)) {
                 // El campo Id no se muestra
-                if(i === 0 && $.trim(key) !== '' && key !== 'id'){
+                if (i === 0 && $.trim(key) !== '' && key !== 'id') {
                     //Crea los encabezados
                     encabezados += '<th>'+key+'</th>';
                 }
-                if(key === 'id'  && id === -1){
+                if (key === 'id'  && id === -1) {
                     // Agrega el id del registro para el caso de modificacion
                     id = rpta.infoEncabezado[i][key];
                 } else {
@@ -306,10 +306,10 @@ function ZCListarResultados(formulario, rpta){
                 }
             }
         }
-        if(i === 0){
+        if (i === 0) {
             tabla += '<tr>'+encabezados+'</tr>';
         }
-        if(!rpta.infoEncabezado[i]){
+        if (!rpta.infoEncabezado[i]) {
             // No existen mas registros, termina el ciclo
             break;
         }
@@ -329,7 +329,7 @@ function ZCListarResultados(formulario, rpta){
  * @param {String} formulario
  * @returns {String}
  */
-function ZCAccionCondicion(formulario){
+function ZCAccionCondicion(formulario) {
     var id = $.trim($('#zc-id-'+formulario).val());
     return id;
 }
@@ -340,7 +340,7 @@ function ZCAccionCondicion(formulario){
  * @param {type} id
  * @returns {Boolean}
  */
-function ZCAccionNuevoRegistro(e){
+function ZCAccionNuevoRegistro(e) {
     e.preventDefault;
     // Nombre del controlador
     var controlador = $('#zc-controlador').val();
@@ -354,7 +354,7 @@ function ZCAccionNuevoRegistro(e){
  * @param {object} enlace This del enlace dado
  * @returns {Boolean}
  */
-function ZCAccionModificarRegistro(e, enlace){
+function ZCAccionModificarRegistro(e, enlace) {
     e.preventDefault;
     // Id del registro a modificar
     var id = $(enlace).attr('zc-id-registro');
@@ -373,15 +373,15 @@ function ZCAccionModificarRegistro(e, enlace){
  * @param {String} precargar Nombre de la funcion precargar
  * @returns {String}
  */
-function ZCAccionBotones(formulario, agregar, modificar, borrar, precargar){
+function ZCAccionBotones(formulario, agregar, modificar, borrar, precargar) {
     // Id del registro a modificar
     var id = $.trim($('#zc-id-'+formulario).val());
 
-    if('' === id){
+    if ('' === id) {
         // Oculta los botones de modificar y borrar
         $('#'+modificar).addClass('hidden');
         $('#'+borrar).addClass('hidden');
-    }else{
+    } else {
         // Oculta el boton de agregar
         $('#'+agregar).addClass('hidden');
         // Consulta la informacion en la base de datos
@@ -397,9 +397,9 @@ function ZCAccionBotones(formulario, agregar, modificar, borrar, precargar){
  * @param {json} rpta Datos devueltos por el servidor
  * @returns {undefined}
  */
-function ZCAccionPrecargarResultado(formulario, rpta){
+function ZCAccionPrecargarResultado(formulario, rpta) {
     for (var campo in rpta.infoEncabezado) {
-        switch(true){
+        switch(true) {
         case $('input[name^='+campo+']').attr('type') === 'checkbox':
             $('#'+formulario + ' #'+campo+'_'+rpta.infoEncabezado[campo]).prop('checked', true);
             break;
@@ -433,7 +433,7 @@ function ZCAccionPrecargarResultado(formulario, rpta){
  * @param {$} id Objeto javascript
  * @returns {undefined}
  */
-function ZCAccionPaginarResultado(e, formulario, id){
+function ZCAccionPaginarResultado(e, formulario, id) {
     e.preventDefault();
     var href = $(id).attr('href');
     ZCAccionPaginar(href, formulario);
@@ -446,7 +446,7 @@ function ZCAccionPaginarResultado(e, formulario, id){
  * @param {string} formulario Nombre del formulario de trabajo actual
  * @returns {undefined}
  */
-function ZCAccionPaginar(miURL, formulario){
+function ZCAccionPaginar(miURL, formulario) {
     var nombreAccion = 'buscar';
     // Filtros usados para la busqueda
     var filtrosAEnviar = ZCAccionBuscarFiltro(formulario);
@@ -464,7 +464,7 @@ function ZCAccionPaginar(miURL, formulario){
             pagina: paginaActual,
             accion: nombreAccion
         },
-        beforeSend: function(){
+        beforeSend: function() {
             // Inactivar el boton, solo permite un envio a la vez
             $('#'+nombreAccion).addClass('disabled').prop('disabled', true);
             // Oculta ventana con mensajes
@@ -476,22 +476,22 @@ function ZCAccionPaginar(miURL, formulario){
             // Mostrar cargando
             $('#cargando-'+formulario).removeClass('hidden');
         },
-        success: function(rpta){
-            if(rpta.error !== undefined &&  Object.keys(rpta.error).length > 0){
+        success: function(rpta) {
+            if (rpta.error !== undefined &&  Object.keys(rpta.error).length > 0) {
                 // Muestra mensaje de error
                 $('#error-'+formulario).text(rpta.error);
                 $('.alert-danger').show();
-            }else{
+            } else {
                 ZCListarResultados(formulario, rpta);
             }
         },
-        complete: function(){
+        complete: function() {
             // Activar el boton cuando se completa la accion, con error o sin error
             $('#'+nombreAccion).removeClass('disabled').prop('disabled', false);
             // Ocultar cargando
             $('#cargando-'+formulario).addClass('hidden');
         },
-        error: function(rpta){
+        error: function(rpta) {
             $('#error-'+formulario).text('Error en el servicio');
             $('.alert-danger').show();
         }
@@ -504,19 +504,19 @@ function ZCAccionPaginar(miURL, formulario){
  * @param {json} rpta Respuesta de los valores devueltos por el ervidor
  * @returns {undefined}
  */
-function ZCPrecargarSeleccion(lista, rpta){
+function ZCPrecargarSeleccion(lista, rpta) {
     // Valor de campo
     var id = '';
     // Descripcon del campo
     var valor = '';
     var opcion = '';
-    for(var i = 0; i < rpta.cta; ++i){
+    for(var i = 0; i < rpta.cta; ++i) {
         for (var key in rpta.infoEncabezado[i]) {
             if (rpta.infoEncabezado[i].hasOwnProperty(key)) {
-                if(key === 'id'){
+                if (key === 'id') {
                     id = rpta.infoEncabezado[i][key];
                     continue;
-                }else{
+                } else {
                     valor += ' ' + rpta.infoEncabezado[i][key]
                 }
             }
@@ -534,7 +534,7 @@ function ZCPrecargarSeleccion(lista, rpta){
  * Resalta el menu actual
  * @returns {undefined}
  */
-function ZCMenuActual(){
+function ZCMenuActual() {
     // Nonbre del controlador
     var controlador = $('#zc-controlador').val();
     $('#zc-menu-' + controlador).addClass('active').css('font-weight', 'bold');
@@ -544,7 +544,7 @@ function ZCMenuActual(){
  * Activa la accion por defecto al dar enter en cualquier campo del formulario
  * @param {string} formulario
  */
-function ZCActivarBotonPrincipal(formulario){
+function ZCActivarBotonPrincipal(formulario) {
     $('body').delegate(':text, :password', 'keypress', function(e) {
         if (e.which === 13) {
             e.preventDefault();
@@ -561,7 +561,7 @@ function ZCActivarBotonPrincipal(formulario){
  * @param {string} precargar
  * @param {string} modificar
  */
-function ZCAccionPrecargar(formulario, id, precargar, modificar){
+function ZCAccionPrecargar(formulario, id, precargar, modificar) {
     // Nonbre del controlador
     var controlador = $('#zc-controlador').val();
     $.ajax({
@@ -573,7 +573,7 @@ function ZCAccionPrecargar(formulario, id, precargar, modificar){
             id: id,
             accion: precargar
         },
-        beforeSend: function(){
+        beforeSend: function() {
             // Desactiva todos los campos
             $('input, textarea, select, button').addClass('disabled').prop('disabled', true);
             // Oculta ventana con mensajes
@@ -581,22 +581,22 @@ function ZCAccionPrecargar(formulario, id, precargar, modificar){
             // Mostrar cargando
             $('#'+modificar+' span').addClass('glyphicon-refresh glyphicon-refresh-animate');
         },
-        success: function(rpta){
-            if(rpta.error !== undefined && '' !== rpta.error){
+        success: function(rpta) {
+            if (rpta.error !== undefined && '' !== rpta.error) {
                 // Muestra mensaje de error
                 $('#error-' + formulario).text(rpta.error);
                 $('.alert-danger').show();
-            }else{
+            } else {
                 ZCAccionPrecargarResultado(formulario, rpta);
             }
         },
-        complete: function(){
+        complete: function() {
             // Activar los campos para la modificacion
             $('input, textarea, select, button').removeClass('disabled').prop('disabled', false);
             // Ocultar cargando
             $('#'+modificar+' span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
         },
-        error: function(rpta){
+        error: function(rpta) {
             $('#error-' + formulario).text('Error en el servicio');
             $('.alert-danger').show();
         }
@@ -608,13 +608,33 @@ function ZCAccionPrecargar(formulario, id, precargar, modificar){
  * @param {string} formulario
  * @param {json} rpta
  */
-function ZCAsignarErrores(formulario, rpta){
+function ZCAsignarErrores(formulario, rpta) {
     var msjError = '';
-    $.each(rpta.error, function(campo, error){
-        var label = $('#label-' + campo).text();
-        msjError += label + ': ' + error + '<br />';
-        // Agrega clase error
-        $('#' + campo).addClass('parsley-error');
-    });
+    if (IsJsonString(rpta.error)) {
+        // Error en un campo
+        $.each(rpta.error, function(campo, error) {
+            console.log(campo+'|'+error);
+            var label = $('#label-' + campo).text();
+            msjError += label + ': ' + error + '<br />';
+            // Agrega clase error
+            $('#' + campo).addClass('parsley-error');
+        });
+    } else {
+        // Error sin asociacion de campo
+        msjError = rpta.error;
+    }
     $('#error-' + formulario).html(msjError);
+}
+
+/**
+ * Valida si la cadena pasada es una JSON valido
+ * @param {string} str
+ */
+function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }

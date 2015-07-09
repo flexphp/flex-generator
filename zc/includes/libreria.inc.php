@@ -371,7 +371,7 @@ function mostrarErrorZC($archivo, $funcion, $error) {
 }
 
 /**
- * Asigna los nombres de cada uno de los campos
+ * Asigna los nombres de cada uno de los campos, se maneja en minuscula para evitar errores en *unix
  * @param string $id Identificador del campo
  * @param string $etiqueta Nombre descriptivo del campo
  * @param string $tabla Nombre de la tabla a la que corresponde el campo
@@ -382,17 +382,20 @@ function aliasCampos($id, $etiqueta, $tabla = '') {
         // Solo lo agrega si la tabla es diferente de vacio
         $tabla .= '.';
     }
+    $tabla = strtolower($tabla);
     // Se incluye la tabla en el id, esto para evitar sobreescibir campos con el mismo nombre
     return tabular("'{$tabla}{$id}' => '{$tabla}{$id} \'{$etiqueta}\'',", 8);
 }
 
 /**
  * Extrae cada una de las tablas relacionadas con el formulario, se usa para contruir los join
+ * se maneja en minuscula para evitar errores en *unix
  * @param string $id Identificador del campo donde se establece la relacion
  * @param string $tablas Tabla relacionada
  * @return string
  */
 function tablasRelacionadas($id, $tablas, $join = '') {
+    $tablas = strtolower($tablas);
     return tabular("'{$tablas}' => array('campo' => '{$id}', 'join' => '{$join}'),", 8);
 }
 

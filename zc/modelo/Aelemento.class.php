@@ -104,9 +104,10 @@ abstract class Aelemento {
             mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo NO tiene un identificador valido [a-Z_].");
         }
         // Identificadores del elemento
-        $this->_prop[ZC_ID] = strtolower(trim($this->_prop[ZC_ID]));
-        $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? trim($this->_prop[ZC_ETIQUETA]) : $this->_prop[ZC_ID];
-        $this->_prop[ZC_ETIQUETA] = ucfirst(trim($this->_prop[ZC_ETIQUETA]));
+        // Si existe el nombre de campo en la base de datos lo asigna, el id debe conincidir con el nombre de campo para el resto de la funcionalidad
+        // Por eso se deja en minucula, igual al procesamiento en bd
+        $this->_prop[ZC_ID] =(isset($this->_prop[ZC_CAMPO_BD]) && '' != $this->_prop[ZC_CAMPO_BD]) ? strtolower(trim($this->_prop[ZC_CAMPO_BD])) : strtolower(trim($this->_prop[ZC_ID]));
+        $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? ucfirst(trim($this->_prop[ZC_ETIQUETA])) : ucfirst($this->_prop[ZC_ID]);
         // Tipo Elemento
         $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : null;
 

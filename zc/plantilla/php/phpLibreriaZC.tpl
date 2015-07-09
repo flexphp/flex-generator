@@ -4,7 +4,7 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class zc {
+class Zc {
 
     /**
      * Instancia CodeIgniter
@@ -21,6 +21,7 @@ class zc {
     public function __construct($params) {
         // Asigna el super-objecto CodeIgniter
         $this->CI =& get_instance();
+        $this->CI->load->model($this->modelo, 'modelo');
         $this->modelo = $params[0];
     }
 
@@ -117,7 +118,7 @@ class zc {
                 $valor = $cadaFiltro;
             }
             $datos[$campo] = $valor;
-            $rptaValidacion = call_user_func(array(&$this->CI->{$this->modelo}, 'validarDatos'), $datos);
+            $rptaValidacion = $this->CI->modelo->validarDatos($datos);
             if (isset($rptaValidacion['error']) && count($rptaValidacion['error']) > 0) {
                 foreach ($rptaValidacion['error'] as $id => $error) {
                     $rpta['error'][$id] = $error;

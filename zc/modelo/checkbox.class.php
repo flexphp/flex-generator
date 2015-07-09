@@ -84,8 +84,6 @@ class checkbox extends Aelemento {
             $this->_opciones .= "" .
                     // Ayuda visual
                     $this->ayuda() .
-                    // Elemento donde se mostraran los errores
-                    " data-parsley-errors-container='#error-{$this->_id}'" .
                     "/>" .
                     "$valor" .
                     "</label>";

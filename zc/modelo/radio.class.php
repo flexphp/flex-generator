@@ -83,8 +83,6 @@ class radio extends Aelemento {
             $this->_opciones .= "" .
                     // Ayuda visual
                     $this->ayuda($this->_etiqueta . ': ' . $valor) .
-                    // Elemento donde se mostraran los errores
-                    " data-parsley-errors-container='#error-{$this->_id}'" .
                     "/>" .
                     "$valor" .
                     "</label>";

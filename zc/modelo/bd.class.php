@@ -282,7 +282,7 @@ class bd extends conexion {
         $this->verificar();
         $campos = '';
         $tabla = $this->nombreTabla();
-        $tabla .= $this->autoincremental();
+        $campos .= $this->autoincremental();
         foreach ($this->_prop as $nro => $caracteristicas) {
             switch (true) {
                 case $nro == 0:
@@ -292,7 +292,7 @@ class bd extends conexion {
                     continue;
                 default:
                     // Inserta coma si el siguiente campo existe
-                    $coma = ('' != $campos) ? ',' : '';
+                    $coma = (isset($this->_prop[($nro + 1)])) ? ',' : '';
                     $campos .= $this->campo($caracteristicas[ZC_ID], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_VALOR_PREDETERMINADO], $caracteristicas[ZC_ETIQUETA], $coma);
                     if(error_get_last()){
                         var_dump($caracteristicas);
@@ -306,7 +306,7 @@ class bd extends conexion {
         // Agrega campo para determinar el estado del registro, los registros no se eliminan
         // de la base de datos, cambian de estado
         $tabla .= $this->campo('zc_eliminado', 'ZC_DATO_NUMERICO_PEQUENO', 1, ZC_OBLIGATORIO_NO, 0, 'Registro eliminado?', ',');
-        $tabla .= $this->llave('id', ',');
+        $tabla .= $this->llave('id');
         $tabla .= ') ' . $this->charset();
         $this->_sentencias[] = $tabla;
         return $this;
@@ -336,10 +336,10 @@ class bd extends conexion {
             if (!isset($this->_prop[$nro][ZC_ID]) || '' == trim($this->_prop[$nro][ZC_ID]) || !is_string($this->_prop[$nro][ZC_ID])) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo NO tiene un identificador valido [a-Z_].");
             }
-            $this->_prop[$nro][ZC_ID] = strtolower(trim($this->_prop[$nro][ZC_ID]));
+            // Nombre del campo
+            $this->_prop[$nro][ZC_ID] =(isset($this->_prop[$nro][ZC_CAMPO_BD]) && '' != $this->_prop[$nro][ZC_CAMPO_BD]) ? strtolower(trim($this->_prop[$nro][ZC_CAMPO_BD])) : strtolower(trim($this->_prop[$nro][ZC_ID]));
             // Comentario
-            $this->_prop[$nro][ZC_ETIQUETA] = (isset($this->_prop[$nro][ZC_ETIQUETA]) && '' != trim($this->_prop[$nro][ZC_ETIQUETA])) ? $this->_prop[$nro][ZC_ETIQUETA] : $this->_prop[$nro][ZC_ID];
-            $this->_prop[$nro][ZC_ETIQUETA] = ucwords(trim($this->_prop[$nro][ZC_ETIQUETA]));
+            $this->_prop[$nro][ZC_ETIQUETA] = (isset($this->_prop[$nro][ZC_ETIQUETA]) && '' != trim($this->_prop[$nro][ZC_ETIQUETA])) ? ucwords(trim($this->_prop[$nro][ZC_ETIQUETA])) : ucwords($this->_prop[$nro][ZC_ID]);
             // Tipo de elmento
             $this->_prop[$nro][ZC_ELEMENTO] = (isset($this->_prop[$nro][ZC_ELEMENTO]) && '' != trim($this->_prop[$nro][ZC_ELEMENTO])) ? trim($this->_prop[$nro][ZC_ELEMENTO]) : null;
             // Tipo de dato
@@ -385,7 +385,7 @@ class bd extends conexion {
      * @return string
      */
     public function devolver() {
-        return implode(';' . FIN_DE_LINEA, $this->_sentencias);
+        return implode(';' . str_repeat(FIN_DE_LINEA, 2), $this->_sentencias);
     }
 
     /**

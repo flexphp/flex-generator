@@ -212,7 +212,7 @@ class accion extends Aelemento {
         foreach ($this->_campos as $nro => $campo) {
             // Los datos se envia codificados para evitar errores con caracteres especiales, ademas
             //permite enviar 'cualquier' tipo de dato
-            $this->_inicializarCliente[] = ($campo[ZC_ELEMENTO] != ZC_ELEMENTO_CHECKBOX) ? "'{$campo[ZC_ID]}' => \$datos['{$campo[ZC_ID]}']" : "'{$campo[ZC_ID]}' => json_encode(\$datos['{$campo[ZC_ID]}'])";
+            $this->_inicializarCliente[] = ($campo[ZC_ELEMENTO] != ZC_ELEMENTO_CHECKBOX) ? "'{$campo[ZC_ID]}' => \$datos['{$campo[ZC_ID]}']" : "'{$campo[ZC_ID]}' => ((isset(\$datos['{$campo[ZC_ID]}'])) ? json_encode(\$datos['{$campo[ZC_ID]}']) : '')";
             // Inicilizar servidor
             $this->_inicializarServidor[] = "'{$campo[ZC_ID]}' => 'xsd:{$campo[ZC_DATO_WS]}'";
 
