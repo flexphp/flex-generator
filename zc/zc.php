@@ -46,10 +46,11 @@ try {
             $restar = ('xls' == strtolower($tipoArchivo)) ? 1 : 0;
             // Recorre cada una de las hojas
             foreach ($cadaHoja as $numeroHoja => $nombreHoja) {
-                if (strtolower($nombreHoja) == ZC_ZC_PAGINA) {
+                $nombreHoja = strtolower($nombreHoja);
+                if (strtolower(ZC_ZC_PAGINA) == $nombreHoja) {
                     // La hoja donde estan las listas desplegables no la tiene encuenta
                     continue;
-                } elseif (strtolower($nombreHoja) == ZC_CONFIG_PAGINA) {
+                } elseif (strtolower(ZC_CONFIG_PAGINA) == $nombreHoja) {
                     // Hoja de parametrizacion general de la aplicacion
                     foreach ($hojas as $numeroFila => $columnas) {
                         $numeroFila -= $restar; 
@@ -88,7 +89,7 @@ try {
                     config();
                 } else {
                     // Identificador de la hoja, se usa como nombre del XML generado
-                    $idHoja = reemplazarCaracteresEspeciales($nombreHoja);
+                    $idHoja = strtolower(reemplazarCaracteresEspeciales($nombreHoja));
                     // Establece la hoja que se va a procesar
                     $hojas->ChangeSheet($numeroHoja);
 
@@ -103,7 +104,7 @@ try {
                         if ($numeroFila > 2 && $columnas[0] !== '') {
                             // Comienza a procesar cada uno de los campos que estan configurados 
                             // en la hoja de calculo
-                            $idCampo = reemplazarCaracteresEspeciales($columnas[1]);
+                            $idCampo = strtolower(reemplazarCaracteresEspeciales($columnas[1]));
                             $xml .= tabular('<' . $idCampo . '>', 8);
                         }
                         foreach ($columnas as $numeroColumna => $contenido) {
@@ -120,7 +121,7 @@ try {
                                     // Encabezados con caracteristicas del formulario
                                 case 2:
                                     // Descripciones caracteristicas campos del formulario
-                                    $tag[$numeroColumna] = reemplazarCaracteresEspeciales($contenido);
+                                    $tag[$numeroColumna] = strtolower(reemplazarCaracteresEspeciales($contenido));
                                     break;
                                 case 1:
                                     // Detalles del encabezado
@@ -152,10 +153,12 @@ try {
     // Crea los formularios, depende de los archivos xml existentes en 
     $xml = new hoja();
     $xml->cargarArchivosXML('xml');
-
     // Crea la base de datos 
     $bd = new bd(ZC_BD_MOTOR);
     $bd->crearModelo($xml->devolverTablas());
+    // Pasar al proyecto el sql de creacion de base de datos
+    copiar(RUTA_GENERADOR_CODIGO . '/sql/script_' . ZC_BD_MOTOR . '.sql', '../www/conf/scrip_bd.sql');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/html/index.html', '../www/publico/conf/index.html');
 
 } catch (Exception $e) {
     // Error encontrado durante el proceso

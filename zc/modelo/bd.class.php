@@ -275,7 +275,7 @@ class bd extends conexion {
      */
     private function tabla($prop) {
         $this->_prop = $prop;
-        if (in_array($this->_prop[0][ZC_ID], array(ZC_LOGIN_PAGINA))) {
+        if (in_array(strtolower($this->_prop[0][ZC_ID]), array(strtolower(ZC_LOGIN_PAGINA)))) {
             // La ventana de logueo no crea tabla, usa campos definidos en otros tablas
             return $this;
         }

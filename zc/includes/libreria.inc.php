@@ -277,20 +277,20 @@ function validarArgumentoLongitudMinima($id, $etiqueta, $tipo, $longitudMinima =
 function copiar($origen, $destino) {
     // Enlace simbolicos
     if (is_link($origen)) {
+        crearCarpeta($destino);
         return symlink(readlink($origen), $destino);
     }
     // Archivos
     if (is_file($origen)) {
+        crearCarpeta($destino);
         return copy($origen, $destino);
     }
     // No es carpeta
     if (!is_dir($origen)) {
         return false;
     }
-    //Destino no existe
-    if (!is_dir($destino)) {
-        mkdir($destino, 0770);
-    }
+    // Verifica que el destino exista
+    crearCarpeta($destino);
 
     //Recorrer carpeta
     $dir = dir($origen);
@@ -438,7 +438,7 @@ function reemplazarCaracteresEspeciales($texto) {
     // Buscar, EN UTF e ISO 8859-1
     $buscar = array(' ', '?', 'Ã¡', 'Ã©', 'Ã­', 'Ã³', ' Ãº', 'Ã±', 'Ã‘', 'á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ');
     // Reemplazar
-    $reemplazar = array('_', '', 'a', 'e', 'i', 'o', 'u', 'n', 'n', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'n');
+    $reemplazar = array('_', '', 'a', 'e', 'i', 'o', 'u', 'n', 'N', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N');
     // Devuelve la cadena transformada
     return str_replace($buscar, $reemplazar, $texto);
 }
@@ -482,4 +482,18 @@ function cargarClase($archivo, $funcion, $clase) {
             mostrarErrorZC($archivo, $funcion, ': Clase no existe: ' . $clase . '->' . $rutaClase);
         }
     }
+}
+
+/**
+ * Crea la carpeta si no existe la ruta
+ * @param string $ruta Rutu de directorios a verificar
+ */
+function crearCarpeta($ruta) {
+    // Verifica que la carpeta de destino exista
+    $tmp = pathinfo($ruta, PATHINFO_DIRNAME);
+    if (!is_dir($tmp)) {
+        // Se crean las carpetas recursivamente
+        return mkdir($tmp, 0770, true);
+    }
+    return true;
 }

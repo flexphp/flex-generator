@@ -13,10 +13,7 @@ $(document).ready(function () {
             $('#{_nombreSelect_}').addClass('disabled').prop('disabled', true);
         },
         success: function(rpta){
-            if(rpta.error !== undefined &&  Object.keys(rpta.error).length > 0){
-                // Muestra mensaje de error
-                console.log(rpta.error);
-            }else{
+            if(rpta.error === undefined){
                 // Agrega las opciones al select
                 ZCPrecargarSeleccion('{_nombreSelect_}', rpta);
             }

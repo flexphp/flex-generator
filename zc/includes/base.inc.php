@@ -17,23 +17,18 @@ require RUTA_GENERADOR_CODIGO . '/modelo/formulario.class.php';
 error_reporting(E_ALL);
 
 function plantillas() {
+    // Eliminar archivos xml generados en ejecuciones pasadas del generador de codigo
+    eliminar(RUTA_GENERADOR_CODIGO . '/xml', false);
     // Imagenes e Iconos homologados
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/fonts', '../www/publico/fonts');
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/img', '../www/publico/img');
-
-    // Eliminar archivos xml generados en ejecuciones pasadas del generador de codigo
-    eliminar(RUTA_GENERADOR_CODIGO . '/xml', false);
-
+    // Libreria para el manejo de web services
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/ci/nusoap.tpl', '../www/application/libraries/Nusoap.php');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/ci/nusoap', '../www/application/libraries/nusoap');
     // Libreria para el manejo de la paginacion
-    $paginacionphp = new plantilla();
-    $paginacionphp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpPaginacion.tpl');
-    $paginacionphp->crearPlantilla('../www/application/libraries', 'php', 'Pagination');
-
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpPaginacion.tpl', '../www/application/libraries/Pagination.php');
     // Libreria donde estan metodos traversales (comunes) a toda la aplicacion
-    $zcphp = new plantilla();
-    $zcphp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpLibreriaZC.tpl');
-    $zcphp->crearPlantilla('../www/application/libraries', 'php', 'Zc');
-
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpLibreriaZC.tpl', '../www/application/libraries/Zc.php');
     // Tablas de configuracion, para usuarios, tipos de usuario, estados de usuario y login
     $usuariosxml = new plantilla();
     $usuariosxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlUsuarios.tpl');
@@ -55,7 +50,7 @@ function plantillas() {
 
     $loginxml = new plantilla();
     $loginxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlLogin.tpl');
-    $loginxml->asignarEtiqueta('paginaLogin', ZC_LOGIN_PAGINA);
+    $loginxml->asignarEtiqueta('paginaLogin', strtolower(ZC_LOGIN_PAGINA));
     $loginxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
     $loginxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
     $loginxml->crearPlantilla('xml', 'xml', 'login');
@@ -64,9 +59,9 @@ function plantillas() {
     $iniciophp = new plantilla();
     $iniciophp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorInicio.tpl');
     $iniciophp->asignarEtiqueta('nombreVista', ZC_PREFIJO_VISTA . 'inicio.html');
-    $iniciophp->asignarEtiqueta('nombreControlador', 'inicio');
+    $iniciophp->asignarEtiqueta('nombreControlador', 'Inicio');
     $iniciophp->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
-    $iniciophp->asignarEtiqueta('paginaLogin', ZC_LOGIN_PAGINA);
+    $iniciophp->asignarEtiqueta('paginaLogin', strtolower(ZC_LOGIN_PAGINA));
     $iniciophp->crearPlantilla('../www/application/controllers', 'php', 'Inicio');
 
     $iniciohtml = new plantilla();
@@ -77,73 +72,29 @@ function plantillas() {
 
     // Compatiblilidad con HTML5
     // IE8 support of HTML5 elements and media queries
-    $html5js = new plantilla();
-    $html5js->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/html5shiv.v3.7.2.js');
-    $html5js->crearPlantilla('../www/publico/js', 'js', 'html5shiv');
-
-    $respondjs = new plantilla();
-    $respondjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/respond.v1.4.2.js');
-    $respondjs->crearPlantilla('../www/publico/js', 'js', 'respond');
-
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/html5shiv.v3.7.2.js', '../www/publico/js/html5shiv.js');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/respond.v1.4.2.js', '../www/publico/js/respond.js');
     // JQuery homologado
-    $jqueryjs = new plantilla();
-    $jqueryjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jquery.v2.1.1.min.js');
-    $jqueryjs->crearPlantilla('../www/publico/js', 'js', 'jquery');
-
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/jquery.v2.1.1.min.js', '../www/publico/js/jquery.js');
     // Parsley Homologado
-    $parsleyjs = new plantilla();
-    $parsleyjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/parsley.v2.0.5.js');
-    $parsleyjs->crearPlantilla('../www/publico/js', 'js', 'parsley');
-
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/parsley.v2.0.5.js', '../www/publico/js/parsley.js');
     // Boostrap Homologado
-    $bootstrapjs = new plantilla();
-    $bootstrapjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/bootstrap.v3.3.2.min.js');
-    $bootstrapjs->crearPlantilla('../www/publico/js', 'js', 'bootstrap');
-
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/bootstrap.v3.3.2.min.js', '../www/publico/js/bootstrap.js');
     // Datapicker
-    $datetimepickerjs = new plantilla();
-    $datetimepickerjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/datetimepicker.v4.7.14.min.js');
-    $datetimepickerjs->crearPlantilla('../www/publico/js', 'js', 'datetimepicker');
-
-    $momentjs = new plantilla();
-    $momentjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/moment.v2.9.0.min.js');
-    $momentjs->crearPlantilla('../www/publico/js', 'js', 'moment');
-
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/datetimepicker.v4.7.14.min.js', '../www/publico/js/datetimepicker.js');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/moment.v2.9.0.min.js', '../www/publico/js/moment.js');
     // Lenguaje datapicker
-    $lenguajejs = new plantilla();
-    $lenguajejs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/es.js');
-    $lenguajejs->crearPlantilla('../www/publico/js', 'js');
-
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/es.js', '../www/publico/js/es.js');
     // JS con funciones javascript utilizadas por el sistema
-    $zcjs = new plantilla();
-    $zcjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/zc.v1.0.0.js');
-    $zcjs->crearPlantilla('../www/publico/js', 'js', 'zc');
-
-    $indexjs = new plantilla();
-    $indexjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/index.html');
-    $indexjs->crearPlantilla('../www/publico/js', 'html');
-
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/zc.v1.0.0.js', '../www/publico/js/zc.js');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/index.html', '../www/publico/js/index.html');
     // CSS Homologado
-    $bootstrapcss = new plantilla();
-    $bootstrapcss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/bootstrap.min.css');
-    $bootstrapcss->crearPlantilla('../www/publico/css', 'css', 'bootstrap');
-
-    $datetimepicker = new plantilla();
-    $datetimepicker->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/datetimepicker.min.css');
-    $datetimepicker->crearPlantilla('../www/publico/css', 'css', 'datetimepicker');
-
-    $parsleycss = new plantilla();
-    $parsleycss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/parsley.css');
-    $parsleycss->crearPlantilla('../www/publico/css', 'css');
-
-    $indexcss = new plantilla();
-    $indexcss->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/css/index.html');
-    $indexcss->crearPlantilla('../www/publico/css', 'html');
-
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/css/bootstrap.min.css', '../www/publico/css/bootstrap.css');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/css/datetimepicker.min.css', '../www/publico/css/datetimepicker.css');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/css/parsley.css', '../www/publico/css/parsley.css');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/css/index.html', '../www/publico/css/index.html');
     // Index de la carpeta publico
-    $index = new plantilla();
-    $index->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/index.html');
-    $index->crearPlantilla('../www/publico', 'html');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/html/index.html', '../www/publico/index.html');
 }
 
 function config() {    

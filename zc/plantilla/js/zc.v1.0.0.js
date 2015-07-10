@@ -100,7 +100,6 @@ function ZCAccionCancelar(e, formulario, formasValidar) {
 function ZCCamposDeBusqueda(e, formulario, id) {
     e.preventDefault();
     if (!$(id).length) {
-        console.log('Elemento no encontrado');
         return false;
     }
     // Filtro actual

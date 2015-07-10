@@ -14,7 +14,7 @@ class {_nombreControlador_} extends CI_Controller {
         'formulario' => '{_idFormulario_}',
         'modelo' => '{_nombreModelo_}',
         'vista' => '{_nombreVistaListar_}',
-        'controlador' => '{_nombreControlador_}',
+        'controlador' => '{_llamadoControlador_}',
         'id' => '',
         'paginaActual' => '',
         'navegacion' => '',

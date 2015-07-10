@@ -4,14 +4,14 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class nusoap {
+class Nusoap {
 
-    function nusoap() {
+    function __construct() {
         /**
          * Define zona horaro utilizada por ala aplicacion
          */
         date_default_timezone_set('America/Bogota');
-        require_once APPPATH . 'libraries/nusoap/nusoap' . EXT;
+        require_once APPPATH . 'libraries/nusoap/Nusoap.php';
     }
 
 }

@@ -274,13 +274,13 @@ class formulario {
         // Nombre vista
         $this->_nombreArchivoVista = ZC_PREFIJO_VISTA . $this->_id;
         // Nombre modelo
-        $this->_nombreArchivoModelo = ucfirst(ZC_PREFIJO_MODELO . $this->_id);
+        $this->_nombreArchivoModelo = ZC_PREFIJO_MODELO . $this->_id;
         // Nombre modelo
-        $this->_nombreArchivoControlador = ucfirst(ZC_PREFIJO_CONTROLADOR . $this->_id);
+        $this->_nombreArchivoControlador = ZC_PREFIJO_CONTROLADOR . $this->_id;
         // Nombre del listado
         $this->_nombreArchivoListar = ZC_PREFIJO_LISTA . $this->_id;
         // Nombre del archivo que guarda las funcionalidades del servidor
-        $this->_nombreArchivoServidor = ucfirst(ZC_PREFIJO_WS . $this->_id);
+        $this->_nombreArchivoServidor = ZC_PREFIJO_WS . $this->_id;
         // Nombre javascript
         $this->_nombreArchivoJs = $this->_id;
         // Nombre de la funcion de validacion
@@ -316,13 +316,13 @@ class formulario {
         // Plantilla para el modelo (model)
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloSOAP.tpl');
-        $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
+        $plantilla->asignarEtiqueta('nombreModelo', ucfirst($this->_nombreArchivoModelo));
         $plantilla->asignarEtiqueta('aliasCampos', $this->_aliasCampos);
         $plantilla->asignarEtiqueta('tablasRelacionadas', $this->_tablasRelacionadas);
         $plantilla->asignarEtiqueta('llamadosModelo', $this->_llamadosModelo);
         $plantilla->asignarEtiqueta('funcionesModelo', implode(FIN_DE_LINEA, $this->_funcionesModelo));
         $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
-        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModelo);
+        $plantilla->crearPlantilla($directorioSalida, $extension, ucfirst($this->_nombreArchivoModelo));
         return $this;
     }
 
@@ -382,15 +382,18 @@ class formulario {
         // Plantilla para el controlador (controller)
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/' . $this->_pagina->_modelo->devolverPlantillaControlador());
-        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
+        // Para CI 3.0 Los nombre de los archivos debe ser con la primera en mayuscula
+        $plantilla->asignarEtiqueta('nombreControlador', ucfirst($this->_nombreArchivoControlador));
+        // Se usa para completar la URL de las consultas ajax
+        $plantilla->asignarEtiqueta('llamadoControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('idFormulario', $this->_id);
         $plantilla->asignarEtiqueta('nombreVista', $this->_nombreArchivoVista . '.html');
         $plantilla->asignarEtiqueta('nombreVistaListar', $this->_nombreArchivoListar . '.html');
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('accionServidor', $this->_funcionControlador);
         $plantilla->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
-        $plantilla->asignarEtiqueta('paginaLogin', ZC_LOGIN_PAGINA);
-        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoControlador);
+        $plantilla->asignarEtiqueta('paginaLogin', strtolower(ZC_LOGIN_PAGINA));
+        $plantilla->crearPlantilla($directorioSalida, $extension, ucfirst($this->_nombreArchivoControlador));
         return $this;
     }
 
@@ -429,9 +432,9 @@ class formulario {
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorServidorSOAP.tpl');
         $plantilla->asignarEtiqueta('comandoEspecial', $this->_pagina->_modelo->devolverServidorAutenticacion());
-        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoServidor);
+        $plantilla->asignarEtiqueta('nombreControlador', ucfirst($this->_nombreArchivoServidor));
         $plantilla->asignarEtiqueta('accionesServidorWS', $this->_accionesServidorWS);
-        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoServidor);
+        $plantilla->crearPlantilla($directorioSalida, $extension, ucfirst($this->_nombreArchivoServidor));
         return $this;
     }
 

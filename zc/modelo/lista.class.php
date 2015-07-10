@@ -37,7 +37,8 @@ class lista extends Aelemento {
      */
     function __construct($caracteristicas, $controlador = '') {
         parent::__construct($caracteristicas);
-        $this->_controlador = $controlador;
+        // Crear el nombre de controlador en minuscula
+        $this->_controlador = strtolower($controlador);
         $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
         $this->opciones($this->_prop[ZC_ELEMENTO_OPCIONES]);
         $this->autofoco($this->_prop[ZC_AUTOFOCO]);
@@ -115,6 +116,7 @@ class lista extends Aelemento {
             mostrarErrorZC(__FILE__, __FUNCTION__, 'No se ha definido el controlador para el llamado ajax');
         }
         if (isset($this->_joinTablas)) {
+            $this->_joinTablas['tabla'] = strtolower($this->_joinTablas['tabla']);
             // Plantilla para el manejo de javascript
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsLlamadosListasAjax.js');
