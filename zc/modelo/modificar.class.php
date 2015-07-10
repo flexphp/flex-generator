@@ -88,7 +88,7 @@ class modificar extends accion {
         $php .= $this->comando('// Errores durante la validacion de campos', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode($validacion[\'error\']);', 16);
         $php .= $this->comando('break;', 16);
-        $php .= $this->comando('case (!isset($id)):', 12);
+        $php .= $this->comando('case (!isset($id) || \'\' == $id):', 12);
         $php .= $this->comando('// No existe id de actualizacion', 16);
         $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, no se puede actualizar.\');', 16);
         $php .= $this->comando('break;', 16);

@@ -102,7 +102,7 @@ class precargar extends accion {
             return $this;
         }
         $this->_inicializarCliente[] = "'id' => \$datos['id']";
-        $this->_inicializarServidor[] = "'id' => 'xsd:string'";
+        $this->_inicializarServidor[] = "'id' => 'xsd:int'";
         $this->_parametrosServidor[] = '$id';
 
         //Desactiva nuevas peticiones de inicializacion

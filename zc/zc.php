@@ -62,7 +62,7 @@ try {
                                 case $numeroFila%2 == 0:
                                     // Los encabezados son las filas pares (0,2,4,6,...,n)
                                     // Encabezados
-                                    $tag[$numeroColumna] = reemplazarCaracteresEspeciales($contenido);
+                                    $tag[$numeroColumna] = strtolower(reemplazarCaracteresEspeciales($contenido));
                                     break;
                                 default:
                                     // Valores de los encabezados

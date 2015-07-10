@@ -109,15 +109,29 @@ class Zc {
                 //Sin filtros de busqueda
                 continue;
             }
+            // Valores por defecto de los campos
+            $tabla = '';
+            $campo = $llave;
+            $operador = '=';
+            $valor = $cadaFiltro;
+            
             if (strpos($cadaFiltro, '|?|') !== false) {
-                list($tabla, $campo, $operador, $valor) = explode('|?|', $cadaFiltro);
-            } else {
-                $tabla = '';
-                $operador = '=';
-                $campo = $llave;
-                $valor = $cadaFiltro;
+                $info = explode('|?|', $cadaFiltro);
+                $cta = count($info);
+                if ($cta == 4) {
+                    //Datos de la forma: tabla|?|campo|?|operador|?|valor
+                    list($tabla, $campo, $operador, $valor) = $info;
+                } elseif ($cta == 3) {
+                    //Datos de la forma: campo|?|operador|?|valor
+                    list($campo, $operador, $valor) = $info;
+                } else {
+                    // Termina ejecucion, opcion no comtemplada
+                    $rpta['error'] = 'Filtros invalidos';
+                    break;
+                }
             }
             $datos[$campo] = $valor;
+            
             $rptaValidacion = $this->CI->modelo->validarDatos($datos);
             if (isset($rptaValidacion['error']) && count($rptaValidacion['error']) > 0) {
                 foreach ($rptaValidacion['error'] as $id => $error) {
