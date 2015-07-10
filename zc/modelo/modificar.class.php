@@ -55,17 +55,7 @@ class modificar extends accion {
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', \'modelo\');', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
         $php .= $this->comando('$rpta = $CI->modelo->modificar($data, $id);', 12);
-        $php .= $this->comando('switch (true){', 12);
-        $php .= $this->comando('case (isset($rpta[\'error\']) && count($rpta[\'error\']) > 0):', 16);
-        $php .= $this->comando('// Errores durante la ejecucion', 20);
-        $php .= $this->comando('$error = $rpta[\'error\'];', 20);
-        $php .= $this->comando('break;', 20);
-        $php .= $this->comando('default:', 16);
-        $php .= $this->comando('// Resultado', 20);
-        $php .= $this->comando('$resultado = $rpta[\'resultado\'];', 20);
-        $php .= $this->comando('$cta = $rpta[\'cta\'];', 20);
-        $php .= $this->comando('break;', 20);
-        $php .= $this->comando('}', 12);
+
         $this->_html = $php;
         return $this;
     }
@@ -105,8 +95,10 @@ class modificar extends accion {
         $php .= $this->comando('}', 16);
         $php .= $this->comando('// Condicion aplicada en la actualizacion', 16);
         $php .= $this->comando('$this->db->where(array(\'id\' => $id, \'zc_eliminado is null\' => null));', 16);
-        $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
-        $php .= $this->comando('$rpta[\'error\'] = (!$this->db->update(\'' . $this->_tabla . '\')) ? json_encode($this->db->_error_message()) : array();', 16);
+        $php .= $this->comando('if (!$this->db->update(\'' . $this->_tabla . '\')) {;', 16);
+        $php .= $this->comando('// Mensaje/causa de error devuelto', 20);
+        $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 20);
+        $php .= $this->comando('}', 16);
         $php .= $this->comando('// Devuelve el id actualizado', 16);
         $php .= $this->comando('$rpta[\'resultado\'] = $id;', 16);
         $php .= $this->comando('// Siempre devuelve 1, aun el registro no se cambie', 16);

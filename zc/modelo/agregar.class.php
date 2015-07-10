@@ -32,17 +32,7 @@ class agregar extends accion {
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', \'modelo\');', 12);
         $php .= $this->comando('// Ejecucion de la accion', 12);
         $php .= $this->comando('$rpta = $CI->modelo->agregar($data);', 12);
-        $php .= $this->comando('switch (true){', 12);
-        $php .= $this->comando('case (isset($rpta[\'error\']) && count($rpta[\'error\']) > 0):', 16);
-        $php .= $this->comando('// Errores durante la ejecucion', 20);
-        $php .= $this->comando('$error = $rpta[\'error\'];', 20);
-        $php .= $this->comando('break;', 20);
-        $php .= $this->comando('default:', 16);
-        $php .= $this->comando('// Resultado', 20);
-        $php .= $this->comando('$resultado = $rpta[\'resultado\'];', 20);
-        $php .= $this->comando('$cta = $rpta[\'cta\'];', 20);
-        $php .= $this->comando('break;', 20);
-        $php .= $this->comando('}', 12);
+
         $this->_html = $php;
         return $this;
     }

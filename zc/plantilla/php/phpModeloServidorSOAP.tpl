@@ -58,25 +58,16 @@ function {_nombreAccion_}(){
         );
 
         function {_nombreFuncion_}({_asignacionFuncion_}){
-            // Incializacion de variables de respuesta
-            // Es OBLIGATORIO manejar indice numerico [0] para el correcto funcionamiento de NuSOAP
-            $RptaWS[0] = array(
-                'cta' => 0,
-                'infoEncabezado' => '',
-                'error' => '',
-            );
-
 {_accionServidor_}
-            if (isset($error)) {
-                // Existe error, devuelve el error
-                $RptaWS[0]['error'] = json_encode($error);
-            } elseif (isset($resultado)) {
-                // Si existe respuesta valida por parte del servidor
-                $RptaWS[0]['infoEncabezado'] = json_encode($resultado);
-                $RptaWS[0]['cta'] = $cta;
-            }
+            // Existe error, devuelve el error
+            $RptaWS['error'] = (isset($rpta['error'])) ? json_encode($rpta['error']) : '';
+            // Si existe respuesta valida por parte del servidor
+            $RptaWS['infoEncabezado'] = (isset($rpta['resultado'])) ? json_encode($rpta['resultado']) : '';
+            $RptaWS['cta'] = (isset($rpta['cta'])) ? $rpta['cta'] : 0;
+            
             file_put_contents(getcwd() . '/application/logs/ws_{_nombreControlador_}_' . date('Ymd') . '.log', __FUNCTION__ . "\n" . ' $data: ' . print_r(func_get_args(), 1) . "\n" . ' $RptaWS: ' . print_r($RptaWS, 1) . "\n", FILE_APPEND);
-            return new soapval('return', 'tns:{_nombreAccion_}RptaArray', $RptaWS);
+            // Es obligatorio devolver un array
+            return new soapval('return', 'tns:{_nombreAccion_}RptaArray', array($RptaWS));
         }
         $this->_SRV_WS->service(file_get_contents('php://input'));
     }

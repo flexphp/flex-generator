@@ -70,11 +70,12 @@ class Zc {
             // Error durante consulta webservice
             $rpta['error'] = $ws['errorWS'];
         } elseif (isset($ws['rptaWS'])) {
+            // Respuesta del WS
             $rptaWS = $ws['rptaWS'];
-            if ($rptaWS[0]['error'] != '') {
-                // Existe error durante el prpcesp
+            if (isset($rptaWS[0]['error']) && $rptaWS[0]['error'] != '') {
+                // Existe error durante el proceso
                 $rpta['error'] = json_decode($rptaWS[0]['error'], true);
-            } elseif ($rptaWS[0]['cta'] > 0) {
+            } elseif (isset($rptaWS[0]['cta']) && $rptaWS[0]['cta'] > 0) {
                 // Informacion devuelta
                 $rpta['infoEncabezado'] = json_decode($rptaWS[0]['infoEncabezado'], true);
                 // Cantidad de registros devueltos
