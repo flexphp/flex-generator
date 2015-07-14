@@ -50,15 +50,15 @@ class borrar extends accion {
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (!isset($id) || \'\' == $id):', 12);
         $php .= $this->comando('// No existe id de busqueda', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, no se puede eliminar.\');', 16);
+        $php .= $this->comando('$rpta[\'error\'] = \'Error, no se puede eliminar.\';', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case !$this->db->initialize():', 12);
         $php .= $this->comando('// Error en la conexion a la base de campos', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 16);
+        $php .= $this->comando('$rpta[\'error\'] = \'Error, intentelo nuevamente.\';', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case !$this->db->update(\'' . $this->_tabla . '\', array(\'zc_eliminado\' => 1), array(\'id\' => $id)):', 12);
         $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
+        $php .= $this->comando('$rpta[\'error\'] = $this->db->_error_message();', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('default:', 12);
         $php .= $this->comando('// Devuelve el id borrado campo', 16);

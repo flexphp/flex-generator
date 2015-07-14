@@ -76,15 +76,15 @@ class modificar extends accion {
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (isset($validacion[\'error\']) && count($validacion[\'error\']) > 0):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode($validacion[\'error\']);', 16);
+        $php .= $this->comando('$rpta[\'error\'] = $validacion[\'error\'];', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case (!isset($id) || \'\' == $id):', 12);
         $php .= $this->comando('// No existe id de actualizacion', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, no se puede actualizar.\');', 16);
+        $php .= $this->comando('$rpta[\'error\'] = \'Error, no se puede actualizar.\';', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case !$this->db->initialize():', 12);
         $php .= $this->comando('// Error en la conexion a la base de campos', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 16);
+        $php .= $this->comando('$rpta[\'error\'] = \'Error, intentelo nuevamente.\';', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case count($campos) == 0:', 12);
         $php .= $this->comando('// No hay campos para actualizar', 16);
@@ -97,7 +97,7 @@ class modificar extends accion {
         $php .= $this->comando('$this->db->where(array(\'id\' => $id, \'zc_eliminado is null\' => null));', 16);
         $php .= $this->comando('if (!$this->db->update(\'' . $this->_tabla . '\')) {;', 16);
         $php .= $this->comando('// Mensaje/causa de error devuelto', 20);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 20);
+        $php .= $this->comando('$rpta[\'error\'] = $this->db->_error_message();', 20);
         $php .= $this->comando('}', 16);
         $php .= $this->comando('// Devuelve el id actualizado', 16);
         $php .= $this->comando('$rpta[\'resultado\'] = $id;', 16);

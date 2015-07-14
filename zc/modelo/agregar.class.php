@@ -53,15 +53,15 @@ class agregar extends accion {
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (isset($validacion[\'error\']) && count($validacion[\'error\']) > 0):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode($validacion[\'error\']);', 16);
+        $php .= $this->comando('$rpta[\'error\'] = $validacion[\'error\'];', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case !$this->db->initialize():', 12);
         $php .= $this->comando('// Error en la conexion a la base de campos', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 16);
+        $php .= $this->comando('$rpta[\'error\'] = \'Error, intentelo nuevamente.\';', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case $this->db->insert(\'' . $this->_tabla . '\', $campos) == false:', 12);
         $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode($this->db->_error_message());', 16);
+        $php .= $this->comando('$rpta[\'error\'] = $this->db->_error_message();', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('default:', 12);
         $php .= $this->comando('// Devuelve el id insertado campo y el numero de filas efectadas', 16);

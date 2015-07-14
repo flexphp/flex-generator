@@ -5,7 +5,7 @@
             if(id == ''){
                 $('#error-{_idFormulario_}').text('Error durante la accion');
                 $('.alert-danger').show();
-            }else{
+            }else if (confirm('El registro sera eliminado, desea continuar?')) {
                 $.ajax({
                     url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}/',
                     type: 'POST',

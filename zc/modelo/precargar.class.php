@@ -58,11 +58,11 @@ class precargar extends accion {
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (!isset($id) || \'\' == $id):', 12);
         $php .= $this->comando('// El campo id es obligatorio para la busqueda', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error en la precarga (id)\');', 16);
+        $php .= $this->comando('$rpta[\'error\'] = \'Error en la precarga (id)\';', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case !$this->db->initialize():', 12);
         $php .= $this->comando('// Error en la conexion a la base de campos', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 16);
+        $php .= $this->comando('$rpta[\'error\'] = \'Error, intentelo nuevamente.\';', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('default:', 12);
         $php .= $this->comando('// Devuelve los ddatos del id enviado', 16);

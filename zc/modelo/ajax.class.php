@@ -50,11 +50,11 @@ class ajax extends accion {
         $php .= $this->comando('case (!isset($campos) || \'\' == $campos):', 12);
         $php .= $this->comando('case (!isset($tablas) || \'\' == $tablas):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos y tablas', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo mas tarde\');', 16);
+        $php .= $this->comando('$rpta[\'error\'] = \'Error, intentelo mas tarde\';', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case !$this->db->initialize():', 12);
         $php .= $this->comando('// Error en la conexion a la base de campos', 16);
-        $php .= $this->comando('$rpta[\'error\'] = json_encode(\'Error, intentelo nuevamente.\');', 16);
+        $php .= $this->comando('$rpta[\'error\'] = \'Error, intentelo nuevamente.\';', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('default:', 12);
         $php .= $this->comando('// Agregar alias a los campos', 16);
