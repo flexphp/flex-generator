@@ -28,7 +28,20 @@ function plantillas() {
     // Libreria para el manejo de la paginacion
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpPaginacion.tpl', '../www/application/libraries/Pagination.php');
     // Libreria donde estan metodos traversales (comunes) a toda la aplicacion
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpLibreriaZC.tpl', '../www/application/libraries/Zc.php');
+    $zcphp = new plantilla();
+    $zcphp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpLibreriaZC.tpl');
+    $zcphp->asignarEtiqueta('datoNumerico', ZC_DATO_NUMERICO);
+    $zcphp->asignarEtiqueta('datoEmail', ZC_DATO_EMAIL);
+    $zcphp->asignarEtiqueta('datoFecha', ZC_DATO_FECHA);
+    $zcphp->asignarEtiqueta('datoFechaHora', ZC_DATO_FECHA_HORA);
+    $zcphp->asignarEtiqueta('datoHora', ZC_DATO_HORA);
+    $zcphp->asignarEtiqueta('datoContrasena', ZC_DATO_CONTRASENA);
+    $zcphp->asignarEtiqueta('datoUrl', ZC_DATO_URL);
+    $zcphp->asignarEtiqueta('datoTexto', ZC_DATO_TEXTO);
+    $zcphp->asignarEtiqueta('datoAreaTexto', ZC_DATO_AREA_TEXTO);
+    $zcphp->asignarEtiqueta('obligatorio', ZC_OBLIGATORIO_SI);
+    $zcphp->crearPlantilla('../www/application/libraries', 'php', 'Zc');
+
     // Tablas de configuracion, para usuarios, tipos de usuario, estados de usuario y login
     $usuariosxml = new plantilla();
     $usuariosxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlUsuarios.tpl');

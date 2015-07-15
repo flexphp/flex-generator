@@ -16,5 +16,9 @@ function {_nombreValidacion_}($dato){
         }
         // Cada uno de los campos a validar
 {_elementosFormulario_}
+        if ($this->zc->cantidadErrores() > 0) {
+            // Existen errores
+            $rpta['error'] = $this->zc->devolverErrores();
+        }
         return $rpta;
     }

@@ -152,32 +152,16 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
     $msjValidacion = (trim($msj) != '') ? $msj : ZC_DATO_ERROR_PREDETERMINADO;
     switch ($dato) {
         case ZC_DATO_NUMERICO:
-            $validacion = tabular("if (isset(\$dato['{$id}']) && filter_var(\$dato['{$id}'],  FILTER_VALIDATE_INT) === false && '' != \$dato['{$id}']) {", 8);
-            break;
         case ZC_DATO_EMAIL:
-            $validacion = tabular("if (\$validarDato && isset(\$dato['{$id}']) && filter_var(\$dato['{$id}'], FILTER_VALIDATE_EMAIL) === false && '' != \$dato['{$id}']) {", 8);
-            break;
         case ZC_DATO_FECHA:
-            $validacion = tabular("if (\$dato['accion'] != '" . ZC_ACCION_BORRAR . "' && isset(\$dato['{$id}']) && !preg_match('/^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$/', \$dato['{$id}']) && '' != \$dato['{$id}']) {", 8);
-            break;
         case ZC_DATO_FECHA_HORA:
-            $validacion = tabular("if (\$dato['accion'] != '" . ZC_ACCION_BORRAR . "' && isset(\$dato['{$id}']) && !preg_match('/(\d{2}|\d{4})(?:\-)?([0]{1}\d{1}|[1]{1}[0-2]{1})(?:\-)?([0-2]{1}\d{1}|[3]{1}[0-1]{1})(?:\s)?([0-1]{1}\d{1}|[2]{1}[0-3]{1})(?::)?([0-5]{1}\d{1})(?::)?([0-5]{1}\d{1})/', \$dato['{$id}']) && '' != \$dato['{$id}']) {", 8);
-            break;
         case ZC_DATO_HORA:
-            $validacion = tabular("if (\$dato['accion'] != '" . ZC_ACCION_BORRAR . "' && isset(\$dato['{$id}']) && !preg_match('/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/', \$dato['{$id}']) && '' != \$dato['{$id}']) {", 8);
-            break;
         case ZC_DATO_URL:
-            $validacion = tabular("if (\$validarDato && isset(\$dato['{$id}']) && filter_var(\$dato['{$id}'], FILTER_VALIDATE_URL) === false && '' != \$dato['{$id}']) {", 8);
+            $validacion = tabular("\$this->zc->tipoDato('{$id}', \$dato['{$id}'], '{$dato}', '{$msjValidacion}');", 12);
             break;
         case ZC_DATO_TEXTO:
         default :
             break;
-    }
-    if ('' != $validacion) {
-        // Determina se se debe agregar validacion
-        $validacion = $validacion;
-        $validacion .= tabular("\$rpta['error']['{$id}'] = '{$msjValidacion}';", 12);
-        $validacion .= tabular("}", 8);
     }
     return $validacion;
 }
@@ -194,18 +178,14 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
 function validarArgumentoObligatorio($id, $etiqueta, $obligatorio = 'no', $msj = '') {
     $validacion = '';
     $msjValidacion = (trim($msj) != '') ? $msj : ZC_OBLIGATORIO_ERROR_PREDETERMINADO;
-
     switch (trim(strtolower($obligatorio))) {
         case ZC_OBLIGATORIO_SI:
-            $validacion .= tabular("if (\$validarDato && isset(\$dato['{$id}']) && '' == \$dato['{$id}']) {", 8);
-            $validacion .= tabular("\$rpta['error']['{$id}'] = '{$msjValidacion}';", 12);
-            $validacion .= tabular("}", 8);
+            $validacion = tabular("\$this->zc->obligatorio('{$id}', \$dato['{$id}'], '" . trim(strtolower($obligatorio)) . "', '{$msjValidacion}');", 12);
             break;
         case ZC_OBLIGATORIO_NO:
         default :
             break;
     }
-
     return $validacion;
 }
 
@@ -214,29 +194,25 @@ function validarArgumentoObligatorio($id, $etiqueta, $obligatorio = 'no', $msj =
  * @param string $id Identificador del elemento a validar
  * @param string $etiqueta Nombre mostrado al cliente en el formulario
  * @param string $tipo Tipo de dato a validar ver ZC_DATO
- * @param string $longitudMaxima Longitud maxima definida por el usuario para el campo
+ * @param string $longitud Longitud maxima definida por el usuario para el campo
  * @param string $msj Mensaje de error definido por el usuario en la plantilla
  * @return string
  */
-function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitudMaxima = -1, $msj = '') {
+function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitud = -1, $msj = '') {
     $validacion = '';
     $msjValidacion = (trim($msj) != '') ? $msj : ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO;
-
     switch ($tipo) {
         case ZC_DATO_NUMERICO:
-        // Datos numericos no se les valida la longitud?
+            // Datos numericos no se les valida la longitud?
         case ZC_DATO_CONTRASENA:
             // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
             break;
         default :
-            if ($longitudMaxima > 0) {
-                $validacion .= tabular("if (\$validarDato && isset(\$dato['{$id}']) && strlen(\$dato['$id']) >  {$longitudMaxima} && '' != \$dato['$id']) {", 8);
-                $validacion .= tabular("\$rpta['error']['{$id}'] = '" . str_replace('&[Longitud]&', $longitudMaxima, $msjValidacion) . "';", 12);
-                $validacion .= tabular("}", 8);
+            if ($longitud > 0) {
+                $validacion = tabular("\$this->zc->longitudMaxima('{$id}', \$dato['{$id}'], '{$tipo}', $longitud, '{$msjValidacion}');", 12);
             }
             break;
     }
-
     return $validacion;
 }
 
@@ -245,27 +221,25 @@ function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitudMaxima =
  * @param string $id Identificador del elemento a validar
  * @param string $etiqueta Nombre mostrado al cliente en el formulario
  * @param string $tipo Tipo de dato a validar ver ZC_DATO
- * @param string $longitudMinima Longitud minima definida por el usuario para el campo
+ * @param string $longitud Longitud minima definida por el usuario para el campo
  * @param string $msj Mensaje de error definido por el usuario en la plantilla
  * @return string
  */
-function validarArgumentoLongitudMinima($id, $etiqueta, $tipo, $longitudMinima = 0, $msj = '') {
+function validarArgumentoLongitudMinima($id, $etiqueta, $tipo, $longitud = 0, $msj = '') {
     $validacion = '';
     $msjValidacion = (trim($msj) != '') ? $msj : ZC_LONGITUD_MINIMA_ERROR_PREDETERMINADO;
-
     switch ($tipo) {
         case ZC_DATO_NUMERICO:
             // Datos numericos no se les valida la longitud?
+        case ZC_DATO_CONTRASENA:
+            // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
             break;
         default :
-            if ($longitudMinima > 0) {
-                $validacion .= tabular("if (\$validarDato && isset(\$dato['{$id}']) && strlen(\$dato['$id']) <  {$longitudMinima} && '' != \$dato['$id']) {", 8);
-                $validacion .= tabular("\$rpta['error']['{$id}'] = '" . str_replace('&[Longitud]&', $longitudMinima, $msjValidacion) . "';", 12);
-                $validacion .= tabular("}", 8);
+            if ($longitud > 0) {
+                $validacion = tabular("\$this->zc->longitudMinima('{$id}', \$dato['{$id}'], '{$tipo}', $longitud, '{$msjValidacion}');", 12);
             }
             break;
     }
-
     return $validacion;
 }
 

@@ -601,6 +601,7 @@ class formulario {
         $this->_aliasCampos .= aliasCampos('id', 'id', $tabla);
         foreach ($this->_elementos as $nro => $caracteristicas) {
             // Validacion obligatoriedad
+            $validacion .= tabular("if (\$validarDato && isset(\$dato['{$caracteristicas[ZC_ID]}'])) {", 8);
             $validacion .= validarArgumentoObligatorio($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
             // Validacion tipo de dato Entero
             $validacion .= validarArgumentoTipoDato($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_ELEMENTO], $caracteristicas[ZC_DATO], $caracteristicas[ZC_DATO_ERROR]);
@@ -608,6 +609,7 @@ class formulario {
             $validacion .= validarArgumentoLongitudMinima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MINIMA], $caracteristicas[ZC_LONGITUD_MINIMA_ERROR]);
             // Validacion longitud maxima del campo
             $validacion .= validarArgumentoLongitudMaxima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_LONGITUD_MAXIMA_ERROR]);
+            $validacion .= tabular('}', 8);
             // Nombre de tablas utilizados, se usa para los join
             $joinTablas = joinTablas($caracteristicas[ZC_ELEMENTO_OPCIONES]);
             if (isset($joinTablas)) {

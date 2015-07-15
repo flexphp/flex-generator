@@ -18,7 +18,28 @@ class Zc {
      */
     protected $modelo;
 
-    public function __construct($params) {
+    /**
+     * Error encontrados durante la validacion de datos
+     * @var array
+     */
+    protected $_error = array();
+
+    /**
+     * Descripcion tipo de datos utilizado
+     * @var string
+     */
+    const NUMERICO = '{_datoNumerico_}';
+    const EMAIL = '{_datoEmail_}';
+    const FECHA = '{_datoFecha_}';
+    const FECHA_HORA = '{_datoFechaHora_}';
+    const HORA = '{_datoHora_}';
+    const CONTRASENA = '{_datoContrasena_}';
+    const URL = '{_datoUrl_}';
+    const TEXTO = '{_datoTexto_}';
+    const AREA_TEXTO = '{_datoAreaTexto_}';
+    const OBLIGATORIO = '{_obligatorio_}';
+
+    function __construct($params) {
         // Asigna el super-objecto CodeIgniter
         $this->CI =& get_instance();
         $this->CI->load->model($this->modelo, 'modelo');
@@ -194,6 +215,182 @@ class Zc {
         $return['timeWS'] = ($tiempo_fin - $tiempo_inicio);
         $return['metodoWS'] = $metodoALlamar;
         return $this->procesarRespuestaWS($return);
+    }
+
+    /**
+     * Validacion de campos obligatorios
+     * @param string $id Identificador unico del campo
+     * @param string $valor Valor del campo a validar
+     * @param string $obligatorio Determina si es obligatio o no, valores si|no
+     * @param string $textoError Error a devolver en caso de error en validacion
+     * @return string
+     */
+    function obligatorio($id, $valor, $obligatorio = 'no', $textoError = '') {
+        if ($obligatorio == self::OBLIGATORIO && '' == $valor) {
+            $this->setearError($id, $textoError);
+        }
+        // Sin Error
+        return $this->obtenerError($id);
+    }
+
+    /**
+     * Validacion de longitud maxima para el campo
+     * @param string $id Identificador unico del campo
+     * @param string $valor Valor del campo a validar
+     * @param string $tipo Determina el tipo de dato para saber si se debe validar o no
+     * @param string $longitud Longitud maxima permitida para el campo, valores por encima generan error
+     * @param string $textoError Error a devolver en caso de error en validacion
+     * @return string
+     */
+    function longitudMaxima($id, $valor, $tipo, $longitud = 0, $textoError = '') {
+        if ('' == $valor) {
+            return $this->obtenerError($id);
+        }
+        switch ($tipo) {
+            case self::NUMERICO:
+                // Datos numericos no se les valida la longitud
+            case self::CONTRASENA:
+                // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
+                break;
+            default :
+                if ($longitud > 0 && strlen($valor) > $longitud) {
+                    $this->setearError($id, str_replace('&[Longitud]&', $longitud, $textoError));
+                }
+            break;
+        }
+        return $this->obtenerError($id);
+    }
+
+    /**
+     * Validacion de longitud minima para el campo
+     * @param string $id Identificador unico del campo
+     * @param string $valor Valor del campo a validar
+     * @param string $tipo Determina el tipo de dato para saber si se debe validar o no
+     * @param string $longitud Longitud minims permitida para el campo, valores por debajo generan error
+     * @param string $textoError Error a devolver en caso de error en validacion
+     * @return string
+     */
+    function longitudMinima($id, $valor, $tipo, $longitud = 0, $textoError = '') {
+        if ('' == $valor) {
+            return $this->obtenerError($id);
+        }
+        switch ($tipo) {
+            case self::NUMERICO:
+                // Datos numericos no se les valida la longitud
+            case self::CONTRASENA:
+                // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
+                break;
+            default :
+                if ($longitud > 0 && strlen($valor) < $longitud) {
+                    $this->setearError($id, str_replace('&[Longitud]&', $longitud, $textoError));
+                }
+            break;
+        }
+        return $this->obtenerError($id);
+    }
+
+    /**
+     * Validacion del tipo de dato para el campo
+     * @param string $id Identificador unico del campo
+     * @param string $valor Valor del campo a validar
+     * @param string $tipo Determina el tipo de dato para saber si se debe validar o no
+     * @param string $textoError Error a devolver en caso de error en validacion
+     * @return string
+     */
+    function tipoDato($id, $valor, $tipo = 'texto', $textoError = '') {
+        if('' == $valor) {
+            // Campo vacio no se valida
+            return $this->obtenerError($id);
+        }
+        // Determina si el tipo de dato tiene error
+        $error = false;
+        // Determina la validacion a hacer con base en el tipo de dato
+        switch ($tipo) {
+            case self::NUMERICO:
+                if (filter_var($valor,  FILTER_VALIDATE_INT) === false) {
+                    $error = true;
+                }
+                break;
+            case self::EMAIL:
+                if (filter_var($valor, FILTER_VALIDATE_EMAIL) === false) {
+                    $error = true;
+                }
+                break;
+            case self::URL:
+                if (filter_var($valor, FILTER_VALIDATE_URL) === false) {
+                    $error = true;
+                }
+                break;
+            case self::FECHA:
+                // Formato YYYY-MM-DD
+                if (!preg_match('/^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$/', $valor)) {
+                    $error = true;
+                }
+                break;
+            case self::FECHA_HORA:
+                // Formato YYYY-MM-DD HH:MM:SS
+                if (!preg_match('/(\d{2}|\d{4})(?:\-)?([0]{1}\d{1}|[1]{1}[0-2]{1})(?:\-)?([0-2]{1}\d{1}|[3]{1}[0-1]{1})(?:\s)?([0-1]{1}\d{1}|[2]{1}[0-3]{1})(?::)?([0-5]{1}\d{1})(?::)?([0-5]{1}\d{1})/', $valor)) {
+                    $error = true;
+                }
+                break;
+            case self::HORA:
+                // Formato HH:MM:SS
+                if (!preg_match('/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/', $valor)) {
+                    $error = true;
+                }
+                break;
+            default:
+                $error = false;
+                break;
+        }
+        if($error) {
+            // Marca error si la validacion no fue exitosa
+            $this->setearError($id, $textoError);
+        }
+        return $this->obtenerError($id);
+    }
+
+    /**
+     * Establece el error para el campo, ya que un campo puede generar varios errore, solo se tiene encuenta
+     * el primer error encontrado
+     * @param string $id Nombre del campo con error
+     * @param string $textoError Descripcion del error encontrado
+     * @return void
+     */
+    function setearError($id, $textoError = '') {
+        if (!isset($this->_error[$id])) {
+            // Si no existe error para el campo lo configura
+            $this->_error[$id] = $textoError;
+        }
+    }
+
+    /**
+     * Devuelve el error asociado al campo
+     * @param string $id Nombre del campo con error
+     * @return string
+     */
+    function obtenerError($id) {
+        if (isset($this->_error[$id])) {
+            // Si  existe el error lo devuele
+            return $this->_error[$id];
+        }
+        return null;
+    }
+
+    /**
+     * Devuelve la cantidad errores hasta el momento
+     * @return int
+     */
+    function cantidadErrores() {
+        return count($this->_error);
+    }
+
+    /**
+     * Devuelve todo los errores encontrados durante la validacion en forma de arreglo
+     * @return array
+     */
+    function devolverErrores() {
+        return $this->_error;
     }
 
     public function __destruct() {}
