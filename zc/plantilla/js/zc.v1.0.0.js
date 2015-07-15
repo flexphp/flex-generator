@@ -516,11 +516,11 @@ function ZCPrecargarSeleccion(lista, rpta) {
                     id = rpta.infoEncabezado[i][key];
                     continue;
                 } else {
-                    valor += ' ' + rpta.infoEncabezado[i][key]
+                    valor = rpta.infoEncabezado[i][key]
                 }
             }
         }
-        opcion += '<option value=' + id + '>' + valor + '</option>';
+        opcion += '<option value="' + id + '">' + valor + '</option>';
         // Reinicia los valores
         id = '';
         valor = '';
