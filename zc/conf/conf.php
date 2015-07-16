@@ -115,4 +115,7 @@ define('ZC_PREFIJO_VISTA', 'v_');
 define('ZC_PREFIJO_LISTA', 'l_');
 define('ZC_PREFIJO_CONTROLADOR', '');
 define('ZC_PREFIJO_MODELO', 'm_');
-define('ZC_PREFIJO_WS', 'ws_');
+define('ZC_PREFIJO_CONTROLADOR_WS', 'ws_');
+define('ZC_PREFIJO_MODELO_WS', 'mws_');
+// Nombre funciones utilizados a traves de los archivos
+define('ZC_FUNCION_VALIDACION_DATOS', 'validarDatos');

@@ -41,9 +41,9 @@ class Zc {
 
     function __construct($params) {
         // Asigna el super-objecto CodeIgniter
+        $this->modelo = $params[0];
         $this->CI =& get_instance();
         $this->CI->load->model($this->modelo, 'modelo');
-        $this->modelo = $params[0];
     }
 
     /**
@@ -154,7 +154,7 @@ class Zc {
             }
             $datos[$campo] = $valor;
             
-            $rptaValidacion = $this->CI->modelo->validarDatos($datos);
+            $rptaValidacion = $this->CI->modelo->{_funcionValidacionDatos_}($datos);
             if (isset($rptaValidacion['error']) && count($rptaValidacion['error']) > 0) {
                 foreach ($rptaValidacion['error'] as $id => $error) {
                     $rpta['error'][$id] = $error;

@@ -47,7 +47,7 @@ class loguear extends accion {
         }
         $php = $this->comando('function ' . ZC_ACCION_LOGUEAR . '($campos, $accion){', 0);
         $php .= $this->comando('$rpta = array();', 8);
-        $php .= $this->comando('$validacion = $this->zc->validarFiltros($campos, $accion);', 8);
+        $php .= $this->comando('$validacion = $this->validarFiltros($campos, $accion);', 8);
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (isset($validacion[\'error\']) && count($validacion[\'error\']) > 0):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos', 16);

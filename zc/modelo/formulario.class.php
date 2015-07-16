@@ -194,7 +194,13 @@ class formulario {
      * Nombre del archivo controlador del WS creado en /controllers
      * @var string
      */
-    private $_nombreArchivoServidor = '';
+    private $_nombreArchivoControladorServidor = '';
+
+     /**
+     * Nombre del archivo modelo del WS creado en /models
+     * @var string
+     */
+    private $_nombreArchivoModeloServidor = '';
     
     /**
      * Caracteristicas de la pagina en creacion
@@ -280,11 +286,13 @@ class formulario {
         // Nombre del listado
         $this->_nombreArchivoListar = ZC_PREFIJO_LISTA . $this->_id;
         // Nombre del archivo que guarda las funcionalidades del servidor
-        $this->_nombreArchivoServidor = ZC_PREFIJO_WS . $this->_id;
+        $this->_nombreArchivoControladorServidor = ZC_PREFIJO_CONTROLADOR_WS . $this->_id;
+        // Nombre del archivo que guarda la logica del servidor WS
+        $this->_nombreArchivoModeloServidor = ZC_PREFIJO_MODELO_WS . $this->_id;
         // Nombre javascript
         $this->_nombreArchivoJs = $this->_id;
         // Nombre de la funcion de validacion
-        $this->_nombreFuncionValidacion = 'validarDatos';
+        $this->_nombreFuncionValidacion = ZC_FUNCION_VALIDACION_DATOS;
         // Caracteristicas de la pagina en creacion
         $this->_pagina = new pagina($this->_tipoFormulario, $this->_nombreArchivoControlador, $this->_nombreArchivoModelo);
         return $this;
@@ -317,10 +325,7 @@ class formulario {
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloSOAP.tpl');
         $plantilla->asignarEtiqueta('nombreModelo', ucfirst($this->_nombreArchivoModelo));
-        $plantilla->asignarEtiqueta('aliasCampos', $this->_aliasCampos);
-        $plantilla->asignarEtiqueta('tablasRelacionadas', $this->_tablasRelacionadas);
         $plantilla->asignarEtiqueta('llamadosModelo', $this->_llamadosModelo);
-        $plantilla->asignarEtiqueta('funcionesModelo', implode(FIN_DE_LINEA, $this->_funcionesModelo));
         $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
         $plantilla->crearPlantilla($directorioSalida, $extension, ucfirst($this->_nombreArchivoModelo));
         return $this;
@@ -421,6 +426,26 @@ class formulario {
     }
 
     /**
+     * Crear el archivo con el modelo (model) para el servidor
+     * @param string $directorioSalida ruta donde se creara el archivo
+     * @param string $extension Extension del archivo creado
+     * @param array $opciones Opciones a aplicar a la plantilla creada
+     * @return \formulario
+     */
+    private function crearModeloServidorFormulario($directorioSalida = '../www/application/models', $extension = 'php', $opciones = array()) {
+        // Plantilla para el modelo (model)
+        $plantilla = new plantilla($opciones);
+        $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloWSSOAP.tpl');
+        $plantilla->asignarEtiqueta('nombreModelo', ucfirst($this->_nombreArchivoModeloServidor));
+        $plantilla->asignarEtiqueta('aliasCampos', $this->_aliasCampos);
+        $plantilla->asignarEtiqueta('tablasRelacionadas', $this->_tablasRelacionadas);
+        $plantilla->asignarEtiqueta('funcionesModelo', implode(FIN_DE_LINEA, $this->_funcionesModelo));
+        $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
+        $plantilla->crearPlantilla($directorioSalida, $extension, ucfirst($this->_nombreArchivoModeloServidor));
+        return $this;
+    }
+    
+    /**
      * Crea el archivo controlador que manejan las funciones de WS del lado servidor
      * @param string $directorioSalida Ruta de salida donde se creara el archivo
      * @param string $extension Extension que tendra el archivo de salida
@@ -432,9 +457,9 @@ class formulario {
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorServidorSOAP.tpl');
         $plantilla->asignarEtiqueta('comandoEspecial', $this->_pagina->_modelo->devolverServidorAutenticacion());
-        $plantilla->asignarEtiqueta('nombreControlador', ucfirst($this->_nombreArchivoServidor));
+        $plantilla->asignarEtiqueta('nombreControlador', ucfirst($this->_nombreArchivoControladorServidor));
         $plantilla->asignarEtiqueta('accionesServidorWS', $this->_accionesServidorWS);
-        $plantilla->crearPlantilla($directorioSalida, $extension, ucfirst($this->_nombreArchivoServidor));
+        $plantilla->crearPlantilla($directorioSalida, $extension, ucfirst($this->_nombreArchivoControladorServidor));
         return $this;
     }
 
@@ -502,6 +527,7 @@ class formulario {
         $this->crearControladorFormulario();
         $this->crearModeloFormulario();
         $this->crearControladorServidorFormulario();
+        $this->crearModeloServidorFormulario();
         // Las acciones del cliente se deben procesar despues de crear el controlador,
         // ya que este ultimo hace referencia a la URL
         $this->crearAccionesClienteFormulario();
@@ -720,7 +746,7 @@ class formulario {
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpCrearAccion.tpl');
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
-            $plantilla->asignarEtiqueta('servidorAccion', $this->_nombreArchivoServidor);
+            $plantilla->asignarEtiqueta('servidorAccion', $this->_nombreArchivoControladorServidor);
             $plantilla->asignarEtiqueta('asignacionCliente', $this->_inicializarCliente[$caracteristicas[ZC_ID]]);
             // Concatena las acciones que se pueden llamar desde el cliente
             $this->_llamadosModelo .= tabular($plantilla->devolverPlantilla(), 4);
@@ -794,7 +820,7 @@ class formulario {
             // Determina la accion a ejecutar en el cvontrolador
             $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO], $this->_nombreFuncionValidacion);
             // Nombre de los archivos usados
-            $accion->modelo($this->_nombreArchivoModelo);
+            $accion->modelo($this->_nombreArchivoModeloServidor);
             // Funciones creada en el servidor
             $this->_funcionServidor[$caracteristicas[ZC_ID]] = $accion->crear()->devolverElemento();
             // Concatena las funciones que se ejecutaran en el modelo

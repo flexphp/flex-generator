@@ -40,6 +40,7 @@ function plantillas() {
     $zcphp->asignarEtiqueta('datoTexto', ZC_DATO_TEXTO);
     $zcphp->asignarEtiqueta('datoAreaTexto', ZC_DATO_AREA_TEXTO);
     $zcphp->asignarEtiqueta('obligatorio', ZC_OBLIGATORIO_SI);
+    $zcphp->asignarEtiqueta('funcionValidacionDatos', ZC_FUNCION_VALIDACION_DATOS);
     $zcphp->crearPlantilla('../www/application/libraries', 'php', 'Zc');
 
     // Tablas de configuracion, para usuarios, tipos de usuario, estados de usuario y login
