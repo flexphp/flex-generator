@@ -258,13 +258,15 @@ class formulario {
      */
     function __construct($caracteristicas) {
         if (!is_array($caracteristicas)) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, 'Y las caracteristicas del formulario!?');
+            mostrarErrorZC(__FILE__, __FUNCTION__, 'Y las caracteristicas del formulario?');
+        } elseif (!isset($caracteristicas[ZC_ID]) || '' == $caracteristicas[ZC_ID]) {
+            mostrarErrorZC(__FILE__, __FUNCTION__, 'Falta el identificador de la tabla!?');
         } else {
-            $this->_id = strtolower($caracteristicas[ZC_ID]);
-            $this->_nombre = ($caracteristicas[ZC_FORMULARIO_NOMBRE] != '') ? ucwords($caracteristicas[ZC_FORMULARIO_NOMBRE]) : ucwords($this->_id);
-            $this->_tipoWS = (isset($caracteristicas[ZC_WS_TIPO])) ? strtolower($caracteristicas[ZC_TIPO_WS]) : strtolower($this->_tipoWS);
-            $this->_metodo = (isset($caracteristicas[ZC_FORMULARIO_METODO])) ? strtoupper($caracteristicas[ZC_FORMULARIO_METODO]) : strtoupper($this->_metodo);
-            $this->_tipoFormulario = (isset($caracteristicas[ZC_FORMULARIO_TIPO])) ? strtolower($caracteristicas[ZC_FORMULARIO_TIPO]) : strtolower($this->_tipoFormulario);
+            $this->_id = (isset($caracteristicas[ZC_TABLA_BD]) && '' != $caracteristicas[ZC_TABLA_BD]) ? strtolower($caracteristicas[ZC_TABLA_BD]) : strtolower($caracteristicas[ZC_ID]);
+            $this->_nombre = (isset($caracteristicas[ZC_FORMULARIO_NOMBRE]) && '' != $caracteristicas[ZC_FORMULARIO_NOMBRE]) ? ucwords($caracteristicas[ZC_FORMULARIO_NOMBRE]) : ucwords($this->_id);
+            $this->_tipoWS = (isset($caracteristicas[ZC_WS_TIPO]) && '' != $caracteristicas[ZC_WS_TIPO]) ? strtolower($caracteristicas[ZC_TIPO_WS]) : strtolower($this->_tipoWS);
+            $this->_metodo = (isset($caracteristicas[ZC_FORMULARIO_METODO]) && '' != $caracteristicas[ZC_FORMULARIO_METODO]) ? strtoupper($caracteristicas[ZC_FORMULARIO_METODO]) : strtoupper($this->_metodo);
+            $this->_tipoFormulario = (isset($caracteristicas[ZC_FORMULARIO_TIPO]) && '' != $caracteristicas[ZC_FORMULARIO_TIPO]) ? strtolower($caracteristicas[ZC_FORMULARIO_TIPO]) : strtolower($this->_tipoFormulario);
             $this->inicio();
         }
     }

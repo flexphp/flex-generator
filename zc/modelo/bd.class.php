@@ -275,7 +275,10 @@ class bd extends conexion {
      */
     private function tabla($prop) {
         $this->_prop = $prop;
-        if (in_array(strtolower($this->_prop[0][ZC_ID]), array(strtolower(ZC_LOGIN_PAGINA)))) {
+        unset($prop);
+        // Determina el nombre de la tabla segun las caracteristicas del formulario
+        $this->_prop[0][ZC_ID] = (isset($this->_prop[0][ZC_TABLA_BD]) && '' != $this->_prop[0][ZC_TABLA_BD]) ? strtolower($this->_prop[0][ZC_TABLA_BD]) : strtolower($this->_prop[0][ZC_ID]);
+        if (in_array($this->_prop[0][ZC_ID], array(strtolower(ZC_LOGIN_PAGINA)))) {
             // La ventana de logueo no crea tabla, usa campos definidos en otros tablas
             return $this;
         }
@@ -321,7 +324,8 @@ class bd extends conexion {
     private function join($campo, $join) {
         $joinTabla = joinTablas($join);
         if (isset($joinTabla)) {
-            $this->_join[] = "ALTER TABLE {$this->_prop[0][ZC_ID]} ADD CONSTRAINT zc_fk_2_{$joinTabla['tabla']} FOREIGN KEY ({$campo}) REFERENCES {$joinTabla['tabla']} (id) ON UPDATE CASCADE ON DELETE RESTRICT";
+            $joinTabla['tabla'] = strtolower($joinTabla['tabla']);
+            $this->_join[] = "ALTER TABLE {$this->_prop[0][ZC_ID]} ADD CONSTRAINT zc_fk_2_{$joinTabla['tabla']} FOREIGN KEY ({$campo}) REFERENCES {$joinTabla['tabla']}(id) ON UPDATE CASCADE ON DELETE RESTRICT";
         }
         return $this;
     }

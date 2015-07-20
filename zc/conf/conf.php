@@ -18,6 +18,8 @@ define('ZC_CONFIG_PAGINA', 'config');
 define('ZC_ZC_PAGINA', 'zerocode');
 // Nombre de la tabla contra la que se hace la validacion del login
 define('ZC_LOGIN_TABLA', 'usuarios');
+// Nombre de la tabla, se extrae de la hoja de calculo
+define('ZC_TABLA_BD', 'nombre_tabla');
 // Identificador del campo dentro del formulario
 define('ZC_ID', 'id');
 // Etiqueta (Label) del campo
