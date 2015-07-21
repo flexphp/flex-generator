@@ -38,6 +38,13 @@ define('ZC_FORMULARIO_TIPO', 'tipo_formulario');
 define('ZC_WS_TIPO', 'ws_tipo');
 define('ZC_WS_SOAP', 'soap');
 define('ZC_WS_REST', 'rest');
+// URL de consulta de webservices
+define('ZC_FORMULARIO_WS_AGREGAR', 'ws_agregar');
+define('ZC_FORMULARIO_WS_BUSCAR', 'ws_buscar');
+define('ZC_FORMULARIO_WS_MODIFICAR', 'ws_modificar');
+define('ZC_FORMULARIO_WS_BORRAR', 'ws_borrar');
+define('ZC_FORMULARIO_WS_AJAX', 'ws_ajax');
+define('ZC_FORMULARIO_WS_PRECARGAR', 'ws_precargar');
 // Define el campo principal dentro del formulario, donde se coloca el puntero al cargar el formulario
 define('ZC_AUTOFOCO', 'campo_principal');
 // Tipos de elementos aceptados

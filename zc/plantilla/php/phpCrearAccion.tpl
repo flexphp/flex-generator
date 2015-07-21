@@ -5,10 +5,7 @@
      */
     function {_nombreAccion_}Cliente($datos) {
         // Establece ubicacion del WS
-        $server = base_url() . 'index.php/';
-        $serverURL = $server . '{_servidorAccion_}/';
-        $serverScript = '{_nombreAccion_}';
-        $metodoALlamar = '{_nombreAccion_}Servidor';
+        {_asignacionWS_}
         // Parametros recibidos por el WS a llamar
         $parametros = array(
             {_asignacionCliente_}

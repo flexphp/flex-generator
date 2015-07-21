@@ -63,6 +63,12 @@ class accion extends Aelemento {
     protected $_inicializarCliente = array();
 
     /**
+     * Inicializa el codigo para el llamado al WS
+     * @var string
+     */
+    protected $_inicializarWS = '';
+
+    /**
      * Inicializa los parametros recibidos por el servidor
      * @var array
      */
@@ -101,7 +107,19 @@ class accion extends Aelemento {
      * Nombre de la funcion de validacion
      * @var string
      */ 
-    protected $_funcionValidacion;
+    protected $_funcionValidacion = 'validarDatos';
+
+    /**
+     * Nombre del modelo al que se le esta creando la accion
+     * @var string
+     */ 
+    protected $_modelo = '';
+
+    /**
+     * Direccion URL donde esta ubicacido el WS, si es vacio se asume un llamado local
+     * @var string
+     */ 
+    protected $_urlWS = null;
 
     /**
      * Crear las acciones, segun el tipo de elemento
@@ -149,11 +167,13 @@ class accion extends Aelemento {
                 break;
         }
         $accion->modelo($this->_modelo);
+        $accion->ws($this->_urlWS);
         // Establece la accion creada
         $this->_html = (isset($accion)) ? $accion->crear()->devolverElemento() : $this->comando('$resultado = implode(\'+\', func_get_args());$cta = 1;', 12);
         $this->_funcion = (isset($accion)) ? $accion->funcion()->devolverFuncion() : $this->comando('//$rpta[\'resultado\'] = implode(\'|\', $datos);');
         $this->_filtro = (isset($accion)) ? $accion->filtro()->devolverFiltro() : '';
         $this->_inicializarCliente = (isset($accion)) ? $accion->inicializarAccion()->devolverInicializarCliente() : $this->inicializarAccion()->devolverInicializarCliente();
+        $this->_inicializarWS = (isset($accion)) ? $accion->inicializarWS()->devolverInicializarWS() : $this->inicializarAccion()->devolverInicializarCliente();
         $this->_inicializarServidor = (isset($accion)) ? $accion->inicializarAccion()->devolverInicializarServidor() : $this->inicializarAccion()->devolverInicializarServidor();
         $this->_parametrosServidor = (isset($accion)) ? $accion->inicializarAccion()->devolverParametrosServidor() : $this->inicializarAccion()->devolverParametrosServidor();
         $this->_asignacionControlador = (isset($accion)) ? $accion->inicializarAccion()->devolverAsignacionControlador() : $this->inicializarAccion()->devolverAsignacionControlador();
@@ -225,6 +245,34 @@ class accion extends Aelemento {
         return $this;
     }
 
+    protected function inicializarWS() {
+        if (isset($this->_urlWS)) {
+            // WS definido por el usuario en el archivo de configuracion
+            // Si tiene unslash al final lo quita para evitar errores en la siguientes tareas
+            // Las URL son de la forma
+            // http://dominio/zerocodigo/www/index.php/ws_paises/agregar/agregarServidor
+            // donde 
+            // $metodoALlamar = agregarServidor
+            // $serverScript = agregar
+            // $serverURL = http://dominio/zerocodigo/www/index.php/ws_paises/
+            // Separa los elmentos por el slash
+            $url = explode('/', rtrim(trim($this->_urlWS), '/'));
+            $metodoALlamar = array_pop($url);
+            $serverScript = array_pop($url);
+            // Se debe unir despues de quitar las partes
+            $serverURL = implode('/', $url) . '/';
+            $this->_inicializarWS = tabular("\$serverURL = '{$serverURL}';", 0);
+            $this->_inicializarWS .= tabular("\$serverScript = '{$serverScript}';", 8);
+            $this->_inicializarWS .= tabular("\$metodoALlamar = '{$metodoALlamar}';", 8);
+        } else {
+            // WS para llamado local
+            $this->_inicializarWS = tabular("\$serverURL = base_url() . 'index.php/{_servidorAccion_}/';", 0);
+            $this->_inicializarWS .= tabular("\$serverScript = '{_nombreAccion_}';", 8);
+            $this->_inicializarWS .= tabular("\$metodoALlamar = '{_nombreAccion_}Servidor';", 8);
+        }
+        return $this;
+    }
+
     public function devolverFuncion() {
         return $this->_funcion;
     }
@@ -235,6 +283,10 @@ class accion extends Aelemento {
 
     public function devolverInicializarCliente() {
         return $this->_inicializarCliente;
+    }
+
+    public function devolverInicializarWS() {
+        return $this->_inicializarWS;
     }
 
     public function devolverInicializarServidor() {
@@ -257,4 +309,7 @@ class accion extends Aelemento {
         $this->_modelo = $modelo;
     }
 
+    public function ws($urlWS) {
+        $this->_urlWS = $urlWS;
+    }
 }

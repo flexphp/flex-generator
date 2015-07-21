@@ -44,6 +44,12 @@ class formulario {
     private $_tipoWS = ZC_WS_SOAP;
 
     /**
+     * URL de los WS a utilizar, estos se definen por cada accion
+     * @var array
+     */
+    private $_urlWS = array();
+
+    /**
      * Tipo de formulario a crear
      * @var string
      */
@@ -113,6 +119,13 @@ class formulario {
      * @var array
      */
     private $_inicializarCliente = array();
+
+    /**
+     * Configuracion del llamado al WS, se define si es un llamado local o externo
+     * segun la configuracion hecha en la hoja de calculo
+     * @var array
+     */
+    private $_inicializarWS = array();
 
     /**
      * Lista de parametros aceptados por la funcion del WS Servidor, corresponde a cada uno
@@ -267,6 +280,13 @@ class formulario {
             $this->_tipoWS = (isset($caracteristicas[ZC_WS_TIPO]) && '' != $caracteristicas[ZC_WS_TIPO]) ? strtolower($caracteristicas[ZC_TIPO_WS]) : strtolower($this->_tipoWS);
             $this->_metodo = (isset($caracteristicas[ZC_FORMULARIO_METODO]) && '' != $caracteristicas[ZC_FORMULARIO_METODO]) ? strtoupper($caracteristicas[ZC_FORMULARIO_METODO]) : strtoupper($this->_metodo);
             $this->_tipoFormulario = (isset($caracteristicas[ZC_FORMULARIO_TIPO]) && '' != $caracteristicas[ZC_FORMULARIO_TIPO]) ? strtolower($caracteristicas[ZC_FORMULARIO_TIPO]) : strtolower($this->_tipoFormulario);
+            // URL del WS a crear
+            $this->_urlWS[ZC_ACCION_AGREGAR] = (isset($caracteristicas[ZC_FORMULARIO_WS_AGREGAR]) && '' != $caracteristicas[ZC_FORMULARIO_WS_AGREGAR]) ? $caracteristicas[ZC_FORMULARIO_WS_AGREGAR] : null;
+            $this->_urlWS[ZC_ACCION_BUSCAR] = (isset($caracteristicas[ZC_FORMULARIO_WS_BUSCAR]) && '' != $caracteristicas[ZC_FORMULARIO_WS_BUSCAR]) ? $caracteristicas[ZC_FORMULARIO_WS_BUSCAR] : null;
+            $this->_urlWS[ZC_ACCION_MODIFICAR] = (isset($caracteristicas[ZC_FORMULARIO_WS_MODIFICAR]) && '' != $caracteristicas[ZC_FORMULARIO_WS_MODIFICAR]) ? $caracteristicas[ZC_FORMULARIO_WS_MODIFICAR] : null;
+            $this->_urlWS[ZC_ACCION_BORRAR] = (isset($caracteristicas[ZC_FORMULARIO_WS_BORRAR]) && '' != $caracteristicas[ZC_FORMULARIO_WS_BORRAR]) ? $caracteristicas[ZC_FORMULARIO_WS_BORRAR] : null;
+            $this->_urlWS[ZC_ACCION_AJAX] = (isset($caracteristicas[ZC_FORMULARIO_WS_AJAX]) && '' != $caracteristicas[ZC_FORMULARIO_WS_AJAX]) ? $caracteristicas[ZC_FORMULARIO_WS_AJAX] : null;
+            $this->_urlWS[ZC_ACCION_PRECARGAR] = (isset($caracteristicas[ZC_FORMULARIO_WS_PRECARGAR]) && '' != $caracteristicas[ZC_FORMULARIO_WS_PRECARGAR]) ? $caracteristicas[ZC_FORMULARIO_WS_PRECARGAR] : null;
             $this->inicio();
         }
     }
@@ -750,6 +770,10 @@ class formulario {
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
             $plantilla->asignarEtiqueta('servidorAccion', $this->_nombreArchivoControladorServidor);
             $plantilla->asignarEtiqueta('asignacionCliente', $this->_inicializarCliente[$caracteristicas[ZC_ID]]);
+            // Reemplaza etiquetas que posiblemente se creen despues de cargar la plantilla
+            $this->_inicializarWS[$caracteristicas[ZC_ID]] = str_replace('{_nombreAccion_}', $caracteristicas[ZC_ID], $this->_inicializarWS[$caracteristicas[ZC_ID]]);
+            $this->_inicializarWS[$caracteristicas[ZC_ID]] = str_replace('{_servidorAccion_}', $this->_nombreArchivoControladorServidor, $this->_inicializarWS[$caracteristicas[ZC_ID]]);
+            $plantilla->asignarEtiqueta('asignacionWS', $this->_inicializarWS[$caracteristicas[ZC_ID]]);
             // Concatena las acciones que se pueden llamar desde el cliente
             $this->_llamadosModelo .= tabular($plantilla->devolverPlantilla(), 4);
         }
@@ -823,6 +847,10 @@ class formulario {
             $accion = new accion($this->_elementos, $this->_id, $caracteristicas[ZC_ELEMENTO], $this->_nombreFuncionValidacion);
             // Nombre de los archivos usados
             $accion->modelo($this->_nombreArchivoModeloServidor);
+            // Direccion URL del WS, solo si fue pasada en el XML
+            if (isset($this->_urlWS[$caracteristicas[ZC_ELEMENTO]])) {
+                $accion->ws($this->_urlWS[$caracteristicas[ZC_ELEMENTO]]);
+            }
             // Funciones creada en el servidor
             $this->_funcionServidor[$caracteristicas[ZC_ID]] = $accion->crear()->devolverElemento();
             // Concatena las funciones que se ejecutaran en el modelo
@@ -831,6 +859,8 @@ class formulario {
             $this->_filtros[$caracteristicas[ZC_ID]] = $accion->devolverFiltro();
             // Asignacion variables en el modelo para el llamado WS
             $this->_inicializarCliente[$caracteristicas[ZC_ID]] = implode(',' . FIN_DE_LINEA . insertarEspacios(12), $accion->devolverInicializarCliente());
+            // Asignacion para el llamado WS
+            $this->_inicializarWS[$caracteristicas[ZC_ID]] = $accion->devolverInicializarWS();
             // Inicializacion de variables en el servidor
             $this->_inicializarServidor[$caracteristicas[ZC_ID]] = implode(',' . FIN_DE_LINEA . insertarEspacios(12), $accion->devolverInicializarServidor());
             // Parametros recibidos por el servidor
