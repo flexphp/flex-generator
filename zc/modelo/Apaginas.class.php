@@ -14,6 +14,7 @@ abstract class Apaginas {
     public function __construct($controlador) {
         $this->_controlador = $controlador;
     }
+
     /**
      * Plantilla a utilizar para crear la vista de creacion y modificacion de la tabla
      * @return string
@@ -51,7 +52,7 @@ abstract class Apaginas {
         $tpl .= tabular('$this->load->library(\'zc\');', 8);
         $tpl .= tabular('if (!$this->zc->esWebService()) {', 8);
         $tpl .= tabular('$datos = $this->zc->validarSesion();', 12);
-        $tpl .= tabular('$this->load->model(\'' . ZC_PREFIJO_MODELO . strtolower(ZC_LOGIN_PAGINA) . '\', \'modelo\');', 12);
+        $tpl .= tabular('$this->load->model(\'' . nombreModelo(ZC_LOGIN_PAGINA) . '\', \'modelo\');', 12);
         $tpl .= tabular('$rpta = $this->modelo->' . ZC_ACCION_LOGUEAR . 'Cliente($datos);', 12);
         $tpl .= tabular('if (isset($rpta[\'error\'])) {', 12);
         $tpl .= tabular('die($rpta[\'error\']);', 16);
@@ -116,5 +117,8 @@ abstract class Apaginas {
     /**
      * Define si de se debe crear la vista de busqueda
      */
-    public function esLogin(){}
+    public function esLogin() {
+
+    }
+
 }

@@ -84,7 +84,7 @@ class Zc {
      * Procesa la respuesta devuelta por el servidor WS, verifica si existen errores
      * @param array Respuesta del servidor de WS
      * @return array
-     */ 
+     */
     function procesarRespuestaWS($ws) {
         $rpta = array();
         if (isset($ws['errorWS'])) {
@@ -136,7 +136,7 @@ class Zc {
             $campo = $llave;
             $operador = '=';
             $valor = $cadaFiltro;
-            
+
             if (strpos($cadaFiltro, '|?|') !== false) {
                 $info = explode('|?|', $cadaFiltro);
                 $cta = count($info);
@@ -152,8 +152,14 @@ class Zc {
                     break;
                 }
             }
+            // Limpia los espacios para evitar en las validaciones posteriores
+            // Al valor no se le aplica ya que puede tener espacios y estos se deben tener encuenta
+            $tabla = trim($tabla);
+            $campo = trim($campo);
+            $operador = trim($operador);
+            // Para la validaciones es necesario que se un array, de lo contrario daria error
             $datos[$campo] = $valor;
-            
+
             $rptaValidacion = $this->CI->modelo->{_funcionValidacionDatos_}($datos);
             if (isset($rptaValidacion['error']) && count($rptaValidacion['error']) > 0) {
                 foreach ($rptaValidacion['error'] as $id => $error) {
@@ -191,7 +197,7 @@ class Zc {
         if ($error) {
             $return['errorWS'] = $error;
         }
-        // Define los datos de acceso al WS 
+        // Define los datos de acceso al WS
         $_CLI_WS->setCredentials($login, $clave, 'basic');
         // Llamado a la funcion  en el servidor
         $_rpta = $_CLI_WS->call(

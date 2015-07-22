@@ -23,10 +23,10 @@ function plantillas() {
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/fonts', '../www/publico/fonts');
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/img', '../www/publico/img');
     // Libreria para el manejo de web services
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/ci/nusoap.tpl', '../www/application/libraries/Nusoap.php');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/ci/nusoap.tpl', '../www/application/libraries/' . nombreControlador('nusoap.php'));
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/ci/nusoap', '../www/application/libraries/nusoap');
     // Libreria para el manejo de la paginacion
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpPaginacion.tpl', '../www/application/libraries/Pagination.php');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpPaginacion.tpl', '../www/application/libraries/' . nombreControlador('pagination.php'));
     // Libreria donde estan metodos traversales (comunes) a toda la aplicacion
     $zcphp = new plantilla();
     $zcphp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpLibreriaZC.tpl');
@@ -40,8 +40,8 @@ function plantillas() {
     $zcphp->asignarEtiqueta('datoTexto', ZC_DATO_TEXTO);
     $zcphp->asignarEtiqueta('datoAreaTexto', ZC_DATO_AREA_TEXTO);
     $zcphp->asignarEtiqueta('obligatorio', ZC_OBLIGATORIO_SI);
-    $zcphp->asignarEtiqueta('funcionValidacionDatos', ZC_FUNCION_VALIDACION_DATOS);
-    $zcphp->crearPlantilla('../www/application/libraries', 'php', 'Zc');
+    $zcphp->asignarEtiqueta('funcionValidacionDatos', nombreFuncionValidacionDatos());
+    $zcphp->crearPlantilla('../www/application/libraries', 'php', nombreControlador('zc'));
 
     // Tablas de configuracion, para usuarios, tipos de usuario, estados de usuario y login
     $usuariosxml = new plantilla();
@@ -68,20 +68,20 @@ function plantillas() {
     $loginxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
     $loginxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
     $loginxml->crearPlantilla('xml', 'xml', 'login');
-    
+
     // Pagina y bienvenida de la aplicacion
     $iniciophp = new plantilla();
     $iniciophp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorInicio.tpl');
-    $iniciophp->asignarEtiqueta('nombreVista', ZC_PREFIJO_VISTA . 'inicio.html');
-    $iniciophp->asignarEtiqueta('nombreControlador', 'Inicio');
+    $iniciophp->asignarEtiqueta('nombreVista', nombreVista('inicio.html'));
+    $iniciophp->asignarEtiqueta('nombreControlador', nombreControlador('inicio'));
     $iniciophp->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
     $iniciophp->asignarEtiqueta('paginaLogin', strtolower(ZC_LOGIN_PAGINA));
-    $iniciophp->crearPlantilla('../www/application/controllers', 'php', 'Inicio');
+    $iniciophp->crearPlantilla('../www/application/controllers', 'php', nombreControlador('inicio'));
 
     $iniciohtml = new plantilla();
     $iniciohtml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlInicio.tpl');
     $iniciohtml->asignarEtiqueta('nombreFormulario', 'Bienvenida');
-    $iniciohtml->crearPlantilla('../www/application/views', 'html', ZC_PREFIJO_VISTA . 'inicio');
+    $iniciohtml->crearPlantilla('../www/application/views', 'html', nombreVista('inicio'));
 
 
     // Compatiblilidad con HTML5
@@ -111,7 +111,7 @@ function plantillas() {
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/html/index.html', '../www/publico/index.html');
 }
 
-function config() {    
+function config() {
     // Configuracion para los archivos de paginacion
     $pagina = new plantilla();
     $pagina->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/ci/pagination.tpl');

@@ -167,7 +167,7 @@ function validarArgumentoTipoDato($id, $etiqueta, $elemento, $dato, $msj = '') {
 }
 
 /**
- * Crea validacion para los datos obligatorios, segun sea definido por el usuario en la configuracion, 
+ * Crea validacion para los datos obligatorios, segun sea definido por el usuario en la configuracion,
  * por defecto ningun campo es obligatorio
  * @param string $id Identificador del elemento a validar
  * @param string $etiqueta Nombre mostrado al cliente en el formulario
@@ -203,7 +203,7 @@ function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitud = -1, $
     $msjValidacion = (trim($msj) != '') ? $msj : ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO;
     switch ($tipo) {
         case ZC_DATO_NUMERICO:
-            // Datos numericos no se les valida la longitud?
+        // Datos numericos no se les valida la longitud?
         case ZC_DATO_CONTRASENA:
             // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
             break;
@@ -230,7 +230,7 @@ function validarArgumentoLongitudMinima($id, $etiqueta, $tipo, $longitud = 0, $m
     $msjValidacion = (trim($msj) != '') ? $msj : ZC_LONGITUD_MINIMA_ERROR_PREDETERMINADO;
     switch ($tipo) {
         case ZC_DATO_NUMERICO:
-            // Datos numericos no se les valida la longitud?
+        // Datos numericos no se les valida la longitud?
         case ZC_DATO_CONTRASENA:
             // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
             break;
@@ -447,7 +447,7 @@ function extensionArchivo($archivo) {
  * @param string $clase Nombre de la clase a verificar
  */
 function cargarClase($archivo, $funcion, $clase) {
-    if(!class_exists($clase)) {
+    if (!class_exists($clase)) {
         // Si la clase a un no se ha definido carga la definicion
         $rutaClase = RUTA_GENERADOR_CODIGO . '/modelo/' . $clase . '.class.php';
         if (file_exists($rutaClase)) {
@@ -470,4 +470,68 @@ function crearCarpeta($ruta) {
         return mkdir($tmp, 0770, true);
     }
     return true;
+}
+
+/**
+ * Define la nomencaltura del nombre de los archivos tipo modelo usado por CodeIgniter
+ * @param string $nombre Nombre del modelo
+ * @return string
+ */
+function nombreModelo($nombre) {
+    return strtolower(ZC_PREFIJO_MODELO . $nombre);
+}
+
+/**
+ * Define la nomencaltura del nombre de los archivos tipo controlador usado por CodeIgniter
+ * @param string $nombre Nombre del modelo
+ * @return string
+ */
+function nombreControlador($nombre) {
+    return strtolower(ZC_PREFIJO_CONTROLADOR . $nombre);
+}
+
+/**
+ * Define la nomencaltura del nombre de los archivos tipo vista usado por CodeIgniter
+ * @param string $nombre Nombre del modelo
+ * @return string
+ */
+function nombreVista($nombre) {
+    return strtolower(ZC_PREFIJO_VISTA . $nombre);
+}
+
+/**
+ * Define la nomencaltura del nombre de los archivos tipo vista usado por CodeIgniter
+ * @param string $nombre Nombre del modelo
+ * @return string
+ */
+function nombreLista($nombre) {
+    return strtolower(ZC_PREFIJO_LISTA . $nombre);
+}
+
+/**
+ * Define la nomencaltura del nombre de los archivos tipo modelo usado por CodeIgniter
+ * * del lado servidor
+ * @param string $nombre Nombre del modelo
+ * @return string
+ */
+function nombreModeloServidor($nombre) {
+    return strtolower(ZC_PREFIJO_MODELO_WS . $nombre);
+}
+
+/**
+ * Define la nomencaltura del nombre de los archivos tipo controlador usado por CodeIgniter
+ * del lado servidor
+ * @param string $nombre Nombre del modelo
+ * @return string
+ */
+function nombreControladorServidor($nombre) {
+    return strtolower(ZC_PREFIJO_CONTROLADOR_WS . $nombre);
+}
+
+/**
+ * Define la nomencaltura del nombre de la funcion de validacion
+ * @return string
+ */
+function nombreFuncionValidacionDatos() {
+    return ZC_FUNCION_VALIDACION_DATOS;
 }

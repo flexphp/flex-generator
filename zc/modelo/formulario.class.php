@@ -22,7 +22,7 @@ class formulario {
      * @var string
      */
     public $_id = '';
-    
+
     /**
      * Nombre del formulario, corresponde a la descripcion mostrada en el menu de navegacion
      * y otras cabeceras descriptivas
@@ -209,12 +209,12 @@ class formulario {
      */
     private $_nombreArchivoControladorServidor = '';
 
-     /**
+    /**
      * Nombre del archivo modelo del WS creado en /models
      * @var string
      */
     private $_nombreArchivoModeloServidor = '';
-    
+
     /**
      * Caracteristicas de la pagina en creacion
      * @var string
@@ -300,21 +300,21 @@ class formulario {
      */
     private function inicio() {
         // Nombre vista
-        $this->_nombreArchivoVista = ZC_PREFIJO_VISTA . $this->_id;
-        // Nombre modelo
-        $this->_nombreArchivoModelo = ZC_PREFIJO_MODELO . $this->_id;
-        // Nombre modelo
-        $this->_nombreArchivoControlador = ZC_PREFIJO_CONTROLADOR . $this->_id;
+        $this->_nombreArchivoVista = nombreVista($this->_id);
         // Nombre del listado
-        $this->_nombreArchivoListar = ZC_PREFIJO_LISTA . $this->_id;
-        // Nombre del archivo que guarda las funcionalidades del servidor
-        $this->_nombreArchivoControladorServidor = ZC_PREFIJO_CONTROLADOR_WS . $this->_id;
+        $this->_nombreArchivoListar = nombreLista($this->_id);
+        // Nombre modelo
+        $this->_nombreArchivoModelo = nombreModelo($this->_id);
+        // Nombre modelo
+        $this->_nombreArchivoControlador = nombreControlador($this->_id);
         // Nombre del archivo que guarda la logica del servidor WS
-        $this->_nombreArchivoModeloServidor = ZC_PREFIJO_MODELO_WS . $this->_id;
+        $this->_nombreArchivoModeloServidor = nombreModeloServidor($this->_id);
+        // Nombre del archivo que guarda las funcionalidades del servidor
+        $this->_nombreArchivoControladorServidor = nombreControladorServidor($this->_id);
         // Nombre javascript
         $this->_nombreArchivoJs = $this->_id;
         // Nombre de la funcion de validacion
-        $this->_nombreFuncionValidacion = ZC_FUNCION_VALIDACION_DATOS;
+        $this->_nombreFuncionValidacion = nombreFuncionValidacionDatos();
         // Caracteristicas de la pagina en creacion
         $this->_pagina = new pagina($this->_tipoFormulario, $this->_nombreArchivoControlador, $this->_nombreArchivoModelo);
         return $this;
@@ -346,10 +346,10 @@ class formulario {
         // Plantilla para el modelo (model)
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloSOAP.tpl');
-        $plantilla->asignarEtiqueta('nombreModelo', ucfirst($this->_nombreArchivoModelo));
+        $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('llamadosModelo', $this->_llamadosModelo);
         $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
-        $plantilla->crearPlantilla($directorioSalida, $extension, ucfirst($this->_nombreArchivoModelo));
+        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModelo);
         return $this;
     }
 
@@ -364,7 +364,7 @@ class formulario {
         // Plantilla para la vista (view), se puede devolver, por eso se deja en una variable $this
         $this->_plantilla = new plantilla($opciones);
         $this->_plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/' . $this->_pagina->_modelo->devolverPlantillaVista());
-        if (!$this->_pagina->_modelo->esLogin()){
+        if (!$this->_pagina->_modelo->esLogin()) {
             $this->crearListarFormulario($directorioSalida, $extension, $opciones);
         }
         $this->_plantilla->asignarEtiqueta('idFormulario', $this->_id);
@@ -410,7 +410,7 @@ class formulario {
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/' . $this->_pagina->_modelo->devolverPlantillaControlador());
         // Para CI 3.0 Los nombre de los archivos debe ser con la primera en mayuscula
-        $plantilla->asignarEtiqueta('nombreControlador', ucfirst($this->_nombreArchivoControlador));
+        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         // Se usa para completar la URL de las consultas ajax
         $plantilla->asignarEtiqueta('llamadoControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('idFormulario', $this->_id);
@@ -420,7 +420,7 @@ class formulario {
         $plantilla->asignarEtiqueta('accionServidor', $this->_funcionControlador);
         $plantilla->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
         $plantilla->asignarEtiqueta('paginaLogin', strtolower(ZC_LOGIN_PAGINA));
-        $plantilla->crearPlantilla($directorioSalida, $extension, ucfirst($this->_nombreArchivoControlador));
+        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoControlador);
         return $this;
     }
 
@@ -458,15 +458,15 @@ class formulario {
         // Plantilla para el modelo (model)
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloWSSOAP.tpl');
-        $plantilla->asignarEtiqueta('nombreModelo', ucfirst($this->_nombreArchivoModeloServidor));
+        $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModeloServidor);
         $plantilla->asignarEtiqueta('aliasCampos', $this->_aliasCampos);
         $plantilla->asignarEtiqueta('tablasRelacionadas', $this->_tablasRelacionadas);
         $plantilla->asignarEtiqueta('funcionesModelo', implode(FIN_DE_LINEA, $this->_funcionesModelo));
         $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
-        $plantilla->crearPlantilla($directorioSalida, $extension, ucfirst($this->_nombreArchivoModeloServidor));
+        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModeloServidor);
         return $this;
     }
-    
+
     /**
      * Crea el archivo controlador que manejan las funciones de WS del lado servidor
      * @param string $directorioSalida Ruta de salida donde se creara el archivo
@@ -479,9 +479,9 @@ class formulario {
         $plantilla = new plantilla($opciones);
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorServidorSOAP.tpl');
         $plantilla->asignarEtiqueta('comandoEspecial', $this->_pagina->_modelo->devolverServidorAutenticacion());
-        $plantilla->asignarEtiqueta('nombreControlador', ucfirst($this->_nombreArchivoControladorServidor));
+        $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControladorServidor);
         $plantilla->asignarEtiqueta('accionesServidorWS', $this->_accionesServidorWS);
-        $plantilla->crearPlantilla($directorioSalida, $extension, ucfirst($this->_nombreArchivoControladorServidor));
+        $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoControladorServidor);
         return $this;
     }
 
@@ -596,7 +596,7 @@ class formulario {
         $elemento = $html->crear();
         $this->_formulario['elementos'][$elemento->devolverId()] = $elemento->{$this->_pagina->_modelo->devolverFuncionAgregar()}();
         $this->_elementos[] = $elemento->devolverProp();
-        if (method_exists($elemento, 'devolverAjax')){
+        if (method_exists($elemento, 'devolverAjax')) {
             // Si el metodo devolverAjax existe es una lista y verifica si se creo un archivo de consulta Ajax
             $this->javascriptFormulario($elemento->devolverAjax());
         }
@@ -708,7 +708,7 @@ class formulario {
                     // Registrar el inicio de sesion del usuario
                     $comandoEspecial = tabular('// Inicia sesion el sistema', 12);
                     $comandoEspecial .= tabular('$rpta = $this->sesion($rpta);', 12);
-                    // Continua con la accion por defecto ya que es la misma
+                // Continua con la accion por defecto ya que es la misma
                 default:
                     $comando .= tabular('// Valida los datos pasados por POST', 8);
                     $comando .= tabular("\$rpta = \$this->modelo->{$this->_nombreFuncionValidacion}(\$datos);", 8);
@@ -891,4 +891,5 @@ class formulario {
         }
         return false;
     }
+
 }

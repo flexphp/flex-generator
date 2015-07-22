@@ -29,7 +29,7 @@ abstract class Aelemento {
     protected $_etiqueta;
 
     /**
-     * Bandera para definir si es un camp obligatorio
+     * Bandera para definir si es un campo obligatorio
      * @var string
      */
     protected $_obligatorio = '';
@@ -78,13 +78,14 @@ abstract class Aelemento {
     protected $_html;
 
     /**
-     * Contrucutor de la caja de texto, define las caracteristicas que tendra el elemento
+     * Constructor, define las caracteristicas que tendra el elemento
      * @param array $caracteristicas Valores seleccionados por el cliente
      * @throws Exception
      */
     function __construct($caracteristicas) {
         /**
-         * Para evitar errores con valores vacios se hace la validacion previa
+         * Para evitar errores con valores vacios se hace la validacion previa de
+         * los datos recibidos
          */
         $this->_prop = $caracteristicas;
         unset($caracteristicas);
@@ -106,7 +107,7 @@ abstract class Aelemento {
         // Identificadores del elemento
         // Si existe el nombre de campo en la base de datos lo asigna, el id debe conincidir con el nombre de campo para el resto de la funcionalidad
         // Por eso se deja en minucula, igual al procesamiento en bd
-        $this->_prop[ZC_ID] =(isset($this->_prop[ZC_CAMPO_BD]) && '' != $this->_prop[ZC_CAMPO_BD]) ? trim($this->_prop[ZC_CAMPO_BD]) : trim($this->_prop[ZC_ID]);
+        $this->_prop[ZC_ID] = (isset($this->_prop[ZC_CAMPO_BD]) && '' != $this->_prop[ZC_CAMPO_BD]) ? trim($this->_prop[ZC_CAMPO_BD]) : trim($this->_prop[ZC_ID]);
         $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? ucfirst(trim($this->_prop[ZC_ETIQUETA])) : ucfirst($this->_prop[ZC_ID]);
         // Tipo Elemento
         $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : null;
@@ -233,8 +234,9 @@ abstract class Aelemento {
     }
 
     /**
-     * Construye el html para el autofoco del campo
-     * @param string $autofoco Bandera para saber si se debe crear o no: true | false
+     * Construye el html para el autofoco del campo, esto permite posicinar el puntero
+     * en el primer campo editable del formulario
+     * @param string $autofoco Bandera para saber si se debe crear o no: true|false
      */
     protected function autofoco($autofoco = false) {
         $this->_autofoco = ($autofoco) ? ' autofocus=\'autofocus\'' : '';
@@ -253,18 +255,17 @@ abstract class Aelemento {
     }
 
     /**
-     * Plantilla para la ventanas diferentes a las de login
-     * @param string $campo Elemento html creado
+     * Plantilla para la ventanas de agregar y editar informacion
      * @return string
      */
-    protected function plantilla($campo) {
+    protected function plantilla() {
         $html = tabular("<div class='row'>", 20);
         $html .= tabular("<div class='col-md-1'></div>", 24);
         $html .= tabular("<div class='col-md-2 text-right'>", 24);
-        $html .= tabular("<label id='label-{$this->_id}' name='label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>", 28);
+        $html .= tabular($this->devolverLabel(), 28);
         $html .= tabular("</div>", 24);
         $html .= tabular("<div class='col-md-3'>", 24);
-        $html .= tabular("{$campo}", 28);
+        $html .= tabular($this->devolverElemento(), 28);
         $html .= tabular("</div>", 24);
         $html .= tabular("<div class='col-md-5'></div>", 24);
         $html .= tabular("<div class='col-md-1'></div>", 24);
@@ -274,16 +275,15 @@ abstract class Aelemento {
 
     /**
      * Plantilla para la ventana tipo login
-     * @param string $campo Elemento html creado
      * @return string
      */
-    protected function plantillaLogin($campo) {
+    protected function plantillaLogin() {
         $html = tabular("<div class='row'>", 32);
         $html .= tabular("<div class='col-md-4 text-right'>", 36);
-        $html .= tabular("<label id='label-{$this->_id}' name='label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>", 40);
+        $html .= tabular($this->devolverLabel(), 40);
         $html .= tabular("</div>", 36);
         $html .= tabular("<div class='col-md-8'>", 36);
-        $html .= tabular("{$campo}", 40);
+        $html .= tabular($this->devolverElemento(), 40);
         $html .= tabular("</div>", 36);
         $html .= tabular("</div>", 32);
         return $html;
@@ -311,41 +311,51 @@ abstract class Aelemento {
      * @return string
      */
     public function devolver() {
-        return $this->plantilla($this->_html);
+        return $this->plantilla();
     }
-    
+
     /**
      * Retorna el codigo HTML del elemento con la plantilla div para el login
      * Es un metodo publico, se utiliza desde fuera de la clase, ver class formulario
      * @return string
      */
     public function devolverLogin() {
-        return $this->plantillaLogin($this->_html);
-    }
-
-    /**
-     * Retorna el codigo HTML del elemento SIN la plantilla div
-     * Es un metodo publico, se utiliza desde fuera de la clase, ver class buscar
-     * @return string
-     */
-    public function devolverElemento() {
-        return $this->_html;
+        return $this->plantillaLogin();
     }
 
     /**
      * Devolver las propiedades del elemento
-     * @return type
+     * @return array
      */
     public function devolverProp() {
         return $this->_prop;
     }
 
     /**
-     * Devolver las propiedades del elemento
-     * @return type
+     * Devolver el id del elemento
+     * @return string
      */
     public function devolverId() {
         return $this->_id;
+    }
+
+    /**
+     * Devolver la etiqueta creada para el elemento, se utiliza en la creacion de plantillas
+     * personalizadas, la etiqueta puede estar ubicada en un sitio diferente al campo de entreda
+     * Es un metodo publico, se utiliza desde fuera de la clase
+     * @return string
+     */
+    public function devolverLabel() {
+        return "<label id='label-{$this->_id}' name='label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>";
+    }
+
+    /**
+     * Retorna el codigo HTML del elemento SIN la plantilla
+     * Es un metodo publico, se utiliza desde fuera de la clase, ver class buscar
+     * @return string
+     */
+    public function devolverElemento() {
+        return $this->_html;
     }
 
 }

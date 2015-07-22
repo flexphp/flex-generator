@@ -476,7 +476,7 @@ function ZCAccionPaginar(miURL, formulario) {
             $('#cargando-'+formulario).removeClass('hidden');
         },
         success: function(rpta) {
-            if (rpta.error !== undefined &&  Object.keys(rpta.error).length > 0) {
+            if (rpta.error !== undefined || (typeof rpta.error === 'object' && Object.keys(rpta.error).length > 0)) {
                 // Muestra mensaje de error
                 $('#error-'+formulario).text(rpta.error);
                 $('.alert-danger').show();

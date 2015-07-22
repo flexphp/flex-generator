@@ -15,7 +15,7 @@
                         $('#'+nombreAccion+' span').addClass('glyphicon-refresh glyphicon-refresh-animate');
                     },
                     success: function(rpta){
-                        if(rpta.error !== undefined &&  Object.keys(rpta.error).length > 0){
+                        if (rpta.error !== undefined || (typeof rpta.error === 'object' && Object.keys(rpta.error).length > 0)) {
                             // Muestra mensaje de error
                             ZCAsignarErrores('{_idFormulario_}', rpta); 
                             $('.alert-danger').show();
