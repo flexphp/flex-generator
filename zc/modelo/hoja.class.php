@@ -36,9 +36,15 @@ class hoja extends xml {
                 $this->elementos[] = array(ZC_ID => 'enviar', ZC_ELEMENTO => ZC_ACCION_AGREGAR, ZC_ETIQUETA => 'Agregar');
                 // Necesario para crear el formulario de busqueda
                 $this->elementos[] = array(ZC_ID => 'encontrar', ZC_ELEMENTO => ZC_ACCION_BUSCAR, ZC_ETIQUETA => 'Encontrar');
-                // Permite buscar la informacion de forma asincrona, se usa enconjunto con buscar
-                // Para cargar listas desplegables en los campos de busqueda
-                $this->elementos[] = array(ZC_ID => 'ajax', ZC_ELEMENTO => ZC_ACCION_AJAX, ZC_ETIQUETA => 'Ajax');
+                foreach ($this->elementos as $nro => $elemento) {
+                    if (isset($elemento[ZC_ELEMENTO_OPCIONES]) && strpos($elemento[ZC_ELEMENTO_OPCIONES], ZC_MOTOR_JOIN_SEPARADOR)) {
+                        // Para cargar listas desplegables
+                        // Permite buscar la informacion de forma asincrona, se usa enconjunto con buscar
+                        // Ajax solo se agrega si el formulario tiene join con otras tablas
+                        $this->elementos[] = array(ZC_ID => 'ajax', ZC_ELEMENTO => ZC_ACCION_AJAX, ZC_ETIQUETA => 'Ajax');
+                        break;
+                    }
+                }
                 // Permite actualizar el registro en la base de datos
                 $this->elementos[] = array(ZC_ID => 'actualizar', ZC_ELEMENTO => ZC_ACCION_MODIFICAR, ZC_ETIQUETA => 'Actualizar');
                 // Permite precargar la informacion del regitros a modificar, se usa en conjunto con actualizar

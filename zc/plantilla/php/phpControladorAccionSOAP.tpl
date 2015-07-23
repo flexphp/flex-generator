@@ -6,16 +6,13 @@ public function {_nombreAccion_}() {
             redirect('404');
         }
 {_asignacionCliente_}
-        if (isset($rpta['error']) && count($rpta['error']) > 0) {
-            // Pasa al final
-        } else if ($datos['accion'] == '{_nombreAccion_}') {
+        // Error por defecto
+        $rpta['error'] = 'Error, datos inesperados';
+        if ($datos['accion'] == '{_nombreAccion_}') {
             // Hace el llamado al WS {_nombreAccion_}
             $rpta = $this->modelo->{_nombreAccion_}Cliente($datos);
 {_comandoEspecial_}
-        } else if (isset($datos['accion'])) {
-            $rpta['error'] = 'Error, datos inesperados';
         }
-
         // Permite manejar o no Cache en la pagina
         $this->output->set_output(json_encode($rpta));
     }

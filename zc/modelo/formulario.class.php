@@ -348,7 +348,6 @@ class formulario {
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloSOAP.tpl');
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('llamadosModelo', $this->_llamadosModelo);
-        $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModelo);
         return $this;
     }
@@ -696,8 +695,6 @@ class formulario {
             $comandoEspecial = '';
             switch ($caracteristicas[ZC_ELEMENTO]) {
                 case ZC_ACCION_BUSCAR:
-                    $comando .= tabular('// Aplica filtros seleccionados', 8);
-                    $comando .= tabular("\$rpta = \$this->modelo->validarFiltros(\$datos['filtros'], \$datos['accion']);", 8);
                     // Construir la paginacion
                     $comandoEspecial .= tabular('// Establece los valores para la paginacion', 12);
                     $comandoEspecial .= tabular('if (isset($rpta[\'cta\']) && $rpta[\'cta\'] > 0){', 12);
@@ -708,10 +705,8 @@ class formulario {
                     // Registrar el inicio de sesion del usuario
                     $comandoEspecial = tabular('// Inicia sesion el sistema', 12);
                     $comandoEspecial .= tabular('$rpta = $this->sesion($rpta);', 12);
-                // Continua con la accion por defecto ya que es la misma
+                    // Continua con la accion por defecto ya que es la misma
                 default:
-                    $comando .= tabular('// Valida los datos pasados por POST', 8);
-                    $comando .= tabular("\$rpta = \$this->modelo->{$this->_nombreFuncionValidacion}(\$datos);", 8);
                     break;
             }
             // Plantilla para la creacion de acciones en el controlador

@@ -23,8 +23,7 @@ class {_nombreModelo_} extends CI_Model {
         $this->load->helper('url');
         $this->load->database();
         // Los parametros se DEBEN pasar en un array segun CodeIgniter
-        $zc_params[0] = '{_nombreModelo_}';
-        $this->load->library('zc', $zc_params);
+        $this->load->library('zc', array(get_class()));
     }
 
     {_funcionesModelo_}

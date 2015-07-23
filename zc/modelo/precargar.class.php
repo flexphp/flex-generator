@@ -70,7 +70,7 @@ class precargar extends accion {
         $php .= $this->comando('// Omite los registros que se encuentran en estado eliminado', 16);
         $php .= $this->comando('$this->db->where(array(\'zc_eliminado is null\' => null));', 16);
         $php .= $this->comando('$ressql = $this->db->get(\'' . $this->_tabla . '\');', 16);
-        $php .= $this->comando('if($ressql->num_rows() > 0){', 16);
+        $php .= $this->comando('if($ressql && $ressql->num_rows() > 0){', 16);
         $php .= $this->comando('$rpta[\'resultado\'] = $ressql->row();', 20);
         $php .= $this->comando('$rpta[\'cta\'] = $ressql->num_rows();', 20);
         $php .= $this->comando('}', 16);
