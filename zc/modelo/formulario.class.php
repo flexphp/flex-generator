@@ -791,7 +791,7 @@ class formulario {
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpModeloServidorSOAP.tpl');
             $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
-            $plantilla->asignarEtiqueta('nombreFuncion', $caracteristicas[ZC_ID] . 'Servidor');
+            $plantilla->asignarEtiqueta('nombreFuncion', $caracteristicas[ZC_ID]);
             $plantilla->asignarEtiqueta('asignacionCliente', $this->_inicializarServidor[$caracteristicas[ZC_ID]]);
             $plantilla->asignarEtiqueta('asignacionFuncion', $this->_parametrosServidor[$caracteristicas[ZC_ID]]);
             $plantilla->asignarEtiqueta('accionServidor', $this->_funcionServidor[$caracteristicas[ZC_ID]]);

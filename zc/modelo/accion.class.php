@@ -102,12 +102,6 @@ class accion extends Aelemento {
     protected $_yaInicio = null;
 
     /**
-     * Nombre de la funcion de validacion
-     * @var string
-     */ 
-    protected $_funcionValidacion = 'validarDatos';
-
-    /**
      * Nombre del modelo al que se le esta creando la accion
      * @var string
      */ 
@@ -125,11 +119,10 @@ class accion extends Aelemento {
      * @param string $tabla Nombre de la tabla a manejar
      * @param string $accion Tipo de boton a crear
      */
-    function __construct($caracteristicas, $tabla, $accion, $funcionValidacion = null) {
+    function __construct($caracteristicas, $tabla, $accion) {
         $this->_accion = $accion;
         $this->_tabla = strtolower($tabla);
         $this->_campos = $caracteristicas;
-        $this->_funcionValidacion = $funcionValidacion;
     }
 
     /**
@@ -138,13 +131,13 @@ class accion extends Aelemento {
     public function crear() {
         switch ($this->_accion) {
             case ZC_ACCION_AGREGAR:
-                $accion = new agregar($this->_campos, $this->_tabla, $this->_accion, $this->_funcionValidacion);
+                $accion = new agregar($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ACCION_BUSCAR:
                 $accion = new buscar($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ACCION_MODIFICAR:
-                $accion = new modificar($this->_campos, $this->_tabla, $this->_accion, $this->_funcionValidacion);
+                $accion = new modificar($this->_campos, $this->_tabla, $this->_accion);
                 break;
             case ZC_ACCION_BORRAR:
                 $accion = new borrar($this->_campos, $this->_tabla, $this->_accion);
@@ -246,7 +239,7 @@ class accion extends Aelemento {
     protected function inicializarWS() {
         if (isset($this->_urlWS)) {
             // WS definido por el usuario en el archivo de configuracion
-            // Si tiene unslash al final lo quita para evitar errores en la siguientes tareas
+            // Si tiene un slash al final lo quita para evitar errores en la siguientes tareas
             // Las URL son de la forma
             // http://dominio/zerocodigo/www/index.php/ws_paises/agregar/agregarServidor
             // donde 
@@ -266,7 +259,7 @@ class accion extends Aelemento {
             // WS para llamado local
             $this->_inicializarWS = tabular("\$serverURL = base_url() . 'index.php/{_servidorAccion_}/';", 0);
             $this->_inicializarWS .= tabular("\$serverScript = '{_nombreAccion_}';", 8);
-            $this->_inicializarWS .= tabular("\$metodoALlamar = '{_nombreAccion_}Servidor';", 8);
+            $this->_inicializarWS .= tabular("\$metodoALlamar = '{_nombreAccion_}';", 8);
         }
         return $this;
     }

@@ -10,9 +10,8 @@ class modificar extends accion {
      * @param array $caracteristicas Caracteristicas de la accion
      * @param string $accion  Accion a crear
      */
-    function __construct($caracteristicas, $tabla, $accion, $funcionValidacion = null) {
+    function __construct($caracteristicas, $tabla, $accion) {
         parent::__construct($caracteristicas, $tabla, $accion);
-        $this->_funcionValidacion = $funcionValidacion;
     }
 
     public function inicializar() {
@@ -73,7 +72,7 @@ class modificar extends accion {
         $php .= $this->comando('function modificar($campos, $id = null){', 4);
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('$campos = $this->security->xss_clean($campos);', 8);
-        $php .= $this->comando('$validacion = $this->' . $this->_funcionValidacion . '($campos);', 8);
+        $php .= $this->comando('$validacion = $this->' . nombreFuncionValidacionDatos() . '($campos);', 8);
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (isset($validacion[\'error\']) && count($validacion[\'error\']) > 0):', 12);
         $php .= $this->comando('// Errores durante la validacion de campos', 16);
