@@ -85,8 +85,8 @@ class accion extends Aelemento {
      * @var array
      */
     protected $_asignacionControlador = array(
-        "// Aplica filtro XSS a todo el POST",
-        "\$datos = \$this->input->post(null, true);",
+        "// Asigna los datos pasado por POST",
+        "\$datos = \$this->input->post(null);",
     );
 
     /**

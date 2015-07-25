@@ -3,7 +3,7 @@
      * @param array $datos
      * @return array Respuesta del servidor WS
      */
-    function {_nombreAccion_}Cliente($datos) {
+    function {_nombreAccion_}($datos) {
         // Establece ubicacion del WS
         {_asignacionWS_}
         // Parametros recibidos por el WS a llamar

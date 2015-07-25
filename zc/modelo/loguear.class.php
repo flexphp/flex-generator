@@ -24,11 +24,11 @@ class loguear extends accion {
             mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_LOGUEAR);
         }
         $php = '';
-        $php .= $this->comando('// Establece los valores de cada uno de los campos', 12);
-        $php .= $this->inicializar();
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', \'modelo\');', 12);
+        $php .= $this->comando('// Establece los valores de cada uno de los campos', 12);
+        $php .= $this->inicializar();
         $php .= $this->comando('// Ejecucion de la accion', 12);
         $php .= $this->comando('$rpta = $CI->modelo->' . ZC_ACCION_LOGUEAR . '($data, \'' . ZC_ACCION_LOGUEAR . '\');', 12);
 

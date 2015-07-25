@@ -25,11 +25,11 @@ class agregar extends accion {
             mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_AGREGAR);
         }
         $php = '';
-        $php .= $this->comando('// Establece los valores de cada uno de los campos', 12);
-        $php .= $this->inicializar($this->_campos);
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
         $php .= $this->comando('$CI = new CI_Controller;', 12);
         $php .= $this->comando('$CI->load->model(\'' . $this->_modelo . '\', \'modelo\');', 12);
+        $php .= $this->comando('// Establece los valores de cada uno de los campos', 12);
+        $php .= $this->inicializar($this->_campos);
         $php .= $this->comando('// Ejecucion de la accion', 12);
         $php .= $this->comando('$rpta = $CI->modelo->agregar($data);', 12);
 
@@ -49,6 +49,7 @@ class agregar extends accion {
         $php = '';
         $php .= $this->comando('function agregar($campos){');
         $php .= $this->comando('$rpta = array();', 8);
+        $php .= $this->comando('$campos = $this->security->xss_clean($campos);', 8);
         $php .= $this->comando('$validacion = $this->' . $this->_funcionValidacion . '($campos);', 8);
         $php .= $this->comando('switch (true){', 8);
         $php .= $this->comando('case (isset($validacion[\'error\']) && count($validacion[\'error\']) > 0):', 12);

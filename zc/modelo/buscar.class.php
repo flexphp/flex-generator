@@ -46,6 +46,7 @@ class buscar extends accion {
         $php = '';
         $php .= $this->comando('function buscar($campos, $accion, $pagina){', 4);
         $php .= $this->comando('$rpta = array();', 8);
+        $php .= $this->comando('$campos = $this->security->xss_clean($campos);', 8);
         $php .= $this->comando('$pagina = (!is_int($pagina)) ? 1 : $pagina;', 8);
         $php .= $this->comando('$porPagina = ' . ZC_REGISTROS_POR_PAGINA . ';', 8);
         $php .= $this->comando('$validacion = $this->validarFiltros($campos, $accion);', 8);

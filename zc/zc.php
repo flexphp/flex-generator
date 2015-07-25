@@ -79,8 +79,8 @@ try {
                     define('ZC_BD_ESQUEMA', (isset($config[ZC_CONFIG_BD_ESQUEMA]) ? $config[ZC_CONFIG_BD_ESQUEMA] : null));
                     define('ZC_BD_USUARIO', (isset($config[ZC_CONFIG_BD_USUARIO]) ? $config[ZC_CONFIG_BD_USUARIO] : null));
                     define('ZC_BD_CLAVE', (isset($config[ZC_CONFIG_BD_CLAVE]) ? $config[ZC_CONFIG_BD_CLAVE] : null));
-                    define('ZC_BD_CHARSET', (isset($config[ZC_CONFIG_BD_CHARSET]) ? $config[ZC_CONFIG_BD_CHARSET] : 'latin1'));
-                    define('ZC_BD_COLLATION', (isset($config[ZC_CONFIG_BD_COLLATION]) ? $config[ZC_CONFIG_BD_COLLATION] : 'latin1_swedish_ci'));
+                    define('ZC_BD_CHARSET', (isset($config[ZC_CONFIG_BD_CHARSET]) ? $config[ZC_CONFIG_BD_CHARSET] : 'utf8'));
+                    define('ZC_BD_COLLATION', (isset($config[ZC_CONFIG_BD_COLLATION]) ? $config[ZC_CONFIG_BD_COLLATION] : 'utf8_general_ci'));
                     // Numero de registros por pagina, para la funcion buscar
                     define('ZC_REGISTROS_POR_PAGINA', (isset($config[ZC_CONFIG_REGISTROS_POR_PAGINA]) ? $config[ZC_CONFIG_REGISTROS_POR_PAGINA] : 10));
                     // Crea los archivos y estructura de directorios base

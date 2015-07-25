@@ -10,7 +10,7 @@ public function {_nombreAccion_}() {
         $rpta['error'] = 'Error, datos inesperados';
         if ($datos['accion'] == '{_nombreAccion_}') {
             // Hace el llamado al WS {_nombreAccion_}
-            $rpta = $this->modelo->{_nombreAccion_}Cliente($datos);
+            $rpta = $this->modelo->{_nombreAccion_}($datos);
 {_comandoEspecial_}
         }
         // Permite manejar o no Cache en la pagina

@@ -92,22 +92,25 @@ class Zc {
             $rpta['error'] = $ws['errorWS'];
         } elseif (isset($ws['rptaWS'])) {
             // Respuesta del WS
-            $rptaWS = $ws['rptaWS'];
-            if (isset($rptaWS[0]['error']) && $rptaWS[0]['error'] != '') {
+            $rptaWS = $ws['rptaWS'][0];
+            $error = (isset($rptaWS['error']) && $rptaWS['error'] != '') ? json_decode($rptaWS['error'], true) : null;
+            $infoEncabezado = (isset($rptaWS['infoEncabezado']) && $rptaWS['infoEncabezado'] != '') ? json_decode($rptaWS['infoEncabezado'], true) : null;
+            $cta = (isset($rptaWS['cta']) && $rptaWS['cta'] > 0 && $infoEncabezado) ? $rptaWS['cta'] : 0;
+            if ($error) {
                 // Existe error durante el proceso
-                $rpta['error'] = json_decode($rptaWS[0]['error'], true);
-            } elseif (isset($rptaWS[0]['cta']) && $rptaWS[0]['cta'] > 0) {
+                $rpta['error'] = $error;
+            } elseif ($cta > 0) {
                 // Informacion devuelta
-                $rpta['infoEncabezado'] = json_decode($rptaWS[0]['infoEncabezado'], true);
+                $rpta['infoEncabezado'] = $infoEncabezado;
                 // Cantidad de registros devueltos
-                $rpta['cta'] = $rptaWS[0]['cta'];
+                $rpta['cta'] = $cta;
                 // Devuelve respuesta procesada
                 return $rpta;
             } else {
                 $rpta['error'] = 'No se encontraron datos.';
             }
         } else {
-            $rpta['error'] = 'Error en servidor WS';
+            $rpta['error'] = 'Error en servidor.';
         }
         return $rpta;
     }
@@ -193,6 +196,9 @@ class Zc {
         $tiempo_inicio = microtime(true);
         // Nueva instancia de NuSOAP
         $_CLI_WS = new nusoap_client($serverURL . $serverScript . '?wsdl', 'wsdl');
+        // Manejo de caracteres especiales
+        $_CLI_WS->soap_defencoding = 'UTF-8';
+        $_CLI_WS->decode_utf8 = false;
         $error = $_CLI_WS->getError();
         if ($error) {
             $return['errorWS'] = $error;
@@ -202,7 +208,7 @@ class Zc {
         // Llamado a la funcion  en el servidor
         $_rpta = $_CLI_WS->call(
             $metodoALlamar, // Funcion a llamar
-            $parametros, // Parametros pasados a la funcion
+            $this->CI->security->xss_clean($parametros), // Parametros pasados a la funcion, aplica XSS
             "uri:{$serverURL}{$serverScript}", // namespace
             "uri:{$serverURL}{$serverScript}/$metodoALlamar" // SOAPAction
         );

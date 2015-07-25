@@ -18,6 +18,10 @@ class {_nombreControlador_} extends CI_Controller{
         $this->_SRV_WS = new soap_server();
         $this->_SRV_WS->configureWSDL('{_nombreControlador_}', $this->_miURL);
         $this->_SRV_WS->wsdl->schemaTargetNamespace = $this->_miURL;
+        // Para manejo de caracteres especiales, tildes, &, etc.
+        $this->_SRV_WS->soap_defencoding = 'UTF-8';
+        $this->_SRV_WS->decode_utf8 = false;
+        $this->_SRV_WS->encode_utf8 = true;
         {_comandoEspecial_}
      }
 
