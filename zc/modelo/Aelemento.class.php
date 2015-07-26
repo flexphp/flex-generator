@@ -328,6 +328,11 @@ abstract class Aelemento {
      * @return array
      */
     public function devolverProp() {
+        // Etiqueta del elemento
+        $this->_prop['e' . $this->devolverId()] = $this->devolverLabel();
+        // Elemento tipo HTML
+        $this->_prop['c' . $this->devolverId()] = $this->devolverElemento();
+        // Pirpiedades del elemento
         return $this->_prop;
     }
 

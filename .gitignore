@@ -24,6 +24,14 @@ www/application/cache/*
 zc/xml/*.xml
 zc/sql/*.sql
 
-# Archivos publicos generados por la aplicaion
+# Archivos publicos generados por la aplicacion
 ########################
 www/publico/*
+
+# Archivos de configuracion propios de la aplicacion
+########################
+www/conf/*
+
+# Plantillas personalizadas
+########################
+zc/plantilla/html/*.tpl

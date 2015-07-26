@@ -188,18 +188,18 @@ class accion extends Aelemento {
      */
     protected function inicializar() {
         $cmd = $this->comando('$data = array();', 12);
-        foreach ($this->_campos as $nro => $campo) {
+        foreach ($this->_campos as $id => $campo) {
             switch (true) {
                 case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_CHECKBOX:
                     // Devuelve el alemento al array original
-                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = implode(',', json_decode(\${$campo[ZC_ID]}, true));", 12);
+                    $cmd .= $this->comando("\$data['{$id}'] = implode(',', json_decode(\${$id}, true));", 12);
                     break;
                 case $campo[ZC_DATO] == ZC_DATO_CONTRASENA:
                     // Encripta las contrasenas
-                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = sha1(\${$campo[ZC_ID]});", 12);
+                    $cmd .= $this->comando("\$data['{$id}'] = sha1(\${$id});", 12);
                     break;
                 default:
-                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = \${$campo[ZC_ID]};", 12);
+                    $cmd .= $this->comando("\$data['{$id}'] = \${$id};", 12);
                     break;
             }
         }
@@ -220,14 +220,14 @@ class accion extends Aelemento {
             return $this;
         }
 
-        foreach ($this->_campos as $nro => $campo) {
+        foreach ($this->_campos as $id => $campo) {
             // Los datos se envia codificados para evitar errores con caracteres especiales, ademas
-            //permite enviar 'cualquier' tipo de dato
-            $this->_inicializarCliente[] = ($campo[ZC_ELEMENTO] != ZC_ELEMENTO_CHECKBOX) ? "'{$campo[ZC_ID]}' => \$datos['{$campo[ZC_ID]}']" : "'{$campo[ZC_ID]}' => ((isset(\$datos['{$campo[ZC_ID]}'])) ? json_encode(\$datos['{$campo[ZC_ID]}']) : '')";
-            // Inicilizar servidor
-            $this->_inicializarServidor[] = "'{$campo[ZC_ID]}' => 'xsd:{$campo[ZC_DATO_WS]}'";
-
-            $this->_parametrosServidor[] = "\${$campo[ZC_ID]}";
+            // permite enviar 'cualquier' tipo de dato
+            $this->_inicializarCliente[] = ($campo[ZC_ELEMENTO] != ZC_ELEMENTO_CHECKBOX) ? "'{$id}' => \$datos['{$id}']" : "'{$id}' => ((isset(\$datos['{$id}'])) ? json_encode(\$datos['{$id}']) : '')";
+            // Inicializar servidor
+            $this->_inicializarServidor[] = "'{$id}' => 'xsd:{$campo[ZC_DATO_WS]}'";
+            // Parametros recibidos por la funcion servidor
+            $this->_parametrosServidor[] = "\${$id}";
         }
         $this->_tipoPlantilla = 'jsLlamadosDefaultAjax.js';
 

@@ -16,21 +16,21 @@ class modificar extends accion {
 
     public function inicializar() {
         $cmd = $this->comando('$data = array();', 12);
-        foreach ($this->_campos as $nro => $campo) {
+        foreach ($this->_campos as $id => $campo) {
             switch (true) {
                 case $campo[ZC_ELEMENTO] == ZC_ELEMENTO_CHECKBOX:
                     // Devuelve el alemento al array original
-                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = implode(',', json_decode(\${$campo[ZC_ID]}, true));", 12);
+                    $cmd .= $this->comando("\$data['{$id}'] = implode(',', json_decode(\${$id}, true));", 12);
                     break;
                 case $campo[ZC_DATO] == ZC_DATO_CONTRASENA:
                     // Encripta las contrasenas
-                    $cmd .= $this->comando("if(\${$campo[ZC_ID]} != ''){", 12);
+                    $cmd .= $this->comando("if(\${$id} != ''){", 12);
                     $cmd .= $this->comando("// La contrasena cambio", 16);
-                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = sha1(\${$campo[ZC_ID]});", 16);
+                    $cmd .= $this->comando("\$data['{$id}'] = sha1(\${$id});", 16);
                     $cmd .= $this->comando("}", 12);
                     break;
                 default:
-                    $cmd .= $this->comando("\$data['{$this->_campos[$nro][ZC_ID]}'] = \${$campo[ZC_ID]};", 12);
+                    $cmd .= $this->comando("\$data['{$id}'] = \${$id};", 12);
                     break;
             }
         }
@@ -123,25 +123,21 @@ class modificar extends accion {
         // Herada los de la clase padre
         $this->_inicializarCliente = parent::inicializarAccion()->devolverInicializarCliente();
         $this->_inicializarCliente[] = "'id' => \$datos['id']";
-
         $this->_inicializarServidor = parent::inicializarAccion()->devolverInicializarServidor();
         $this->_inicializarServidor[] = "'id' => 'xsd:int'";
-
         $this->_parametrosServidor = parent::inicializarAccion()->devolverParametrosServidor();
         $this->_parametrosServidor[] = '$id';
-
         // La inicializacion se hace diferente para manejar los campos tipo passsword, si no se diligencian
         // es porque no cambian
-        foreach ($this->_campos as $nro => $campo) {
+        foreach ($this->_campos as $id => $campo) {
             switch ($campo[ZC_DATO]){
                 case ZC_DATO_CONTRASENA:
                     // Se valida que la contrasena este diligenciada
                     $this->_asignacionControlador[] = '// Clave modificada';
-                    $this->_asignacionControlador[] = "\$datos['{$campo[ZC_ID]}'] = (\$this->input->post('{$campo[ZC_ID]}') != '') ? \$this->input->post('{$campo[ZC_ID]}') : null;";
+                    $this->_asignacionControlador[] = "\$datos['{$id}'] = (\$this->input->post('{$id}') != '') ? \$this->input->post('{$id}') : null;";
                     break;
             }
         }
-
         $this->_tipoPlantilla = 'jsLlamadosModificarAjax.js';
 
         $this->_yaInicio = true;

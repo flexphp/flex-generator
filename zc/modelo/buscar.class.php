@@ -113,7 +113,7 @@ class buscar extends accion {
         $nuevo = tabular("<button type='button' title='Crear nuevo registro' class='btn btn-success zc-nuevo-registro'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span>Nuevo registro</button>", 36);
         $agregar = tabular("<button title='Agregar filtro a la busqueda' class='btn btn-default zc-filtros-agregar'><span class='glyphicon glyphicon-plus-sign' aria-hidden='true'></span>Agregar</button>", 36);
 
-        foreach ($this->_campos as $nro => $campo) {
+        foreach ($this->_campos as $id => $campo) {
             if ($campo[ZC_DATO] == ZC_DATO_CONTRASENA) {
                 // Los campos tipo contrasena no admiten busquedas
                 continue;
@@ -138,18 +138,18 @@ class buscar extends accion {
                     break;
             }
             $oculto = ($listaOperadores == '') ? '' : ' hidden';
-            $listaFiltros .= tabular("<option value='{$campo[ZC_ID]}' zc-operador='{$operador}'>{$campo[ZC_ETIQUETA]}</option>", 40);
+            $listaFiltros .= tabular("<option value='{$id}' zc-operador='{$operador}'>{$campo[ZC_ETIQUETA]}</option>", 40);
             // Inactiva la creacion de campos con validaciones de obligatoriedad y sin longitudes
-            $this->_campos[$nro][ZC_OBLIGATORIO] = null;
-            $this->_campos[$nro][ZC_LONGITUD_MAXIMA] = -1;
-            $this->_campos[$nro][ZC_LONGITUD_MINIMA] = -1;
+            $this->_campos[$id][ZC_OBLIGATORIO] = null;
+            $this->_campos[$id][ZC_LONGITUD_MAXIMA] = -1;
+            $this->_campos[$id][ZC_LONGITUD_MINIMA] = -1;
             // Los tipos de caja especiales los valida como cajas para evitar validaciones de datos, por ejemplo para los email
-            $this->_campos[$nro][ZC_DATO] = (in_array($this->_campos[$nro][ZC_DATO], array(ZC_DATO_EMAIL, ZC_DATO_URL))) ? ZC_DATO_TEXTO : $this->_campos[$nro][ZC_DATO];
+            $this->_campos[$id][ZC_DATO] = (in_array($this->_campos[$id][ZC_DATO], array(ZC_DATO_EMAIL, ZC_DATO_URL))) ? ZC_DATO_TEXTO : $this->_campos[$id][ZC_DATO];
             // Crea el elemento
-            $elemento = new elemento($this->_campos[$nro]);
+            $elemento = new elemento($this->_campos[$id]);
             $elemento->propiedad('controlador', $this->_tabla);
             $filtro = $elemento->crear();
-            $listaCampos .= tabular("<div id='campo-{$campo[ZC_ID]}' name='campo-{$campo[ZC_ID]}' class='zc-campos{$oculto}'>", 36);
+            $listaCampos .= tabular("<div id='campo-{$id}' name='campo-{$id}' class='zc-campos{$oculto}'>", 36);
             $listaCampos .= tabular($filtro->devolverElemento(), 40);
             $listaCampos .= tabular('</div>', 36);
             if (!isset($tipo[$operador])) {
@@ -210,12 +210,9 @@ class buscar extends accion {
         }
         $this->_inicializarCliente[] = "'filtros' => \$datos['filtros']";
         $this->_inicializarCliente[] = "'pagina' => \$datos['pagina']";
-
         $this->_inicializarServidor[] = "'filtros' => 'xsd:string'";
         $this->_inicializarServidor[] = "'pagina' => 'xsd:int'";
-
         $this->_parametrosServidor[] = '$filtros, $pagina';
-
         $this->_tipoPlantilla = 'jsLlamadosBuscarAjax.js';
 
         //Desactiva nuevas peticiones de inicializacion

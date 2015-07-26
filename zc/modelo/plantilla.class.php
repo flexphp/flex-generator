@@ -222,6 +222,8 @@ class plantilla {
         if (!$this->_plantilla) {
             mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else {
+            // Elimina etiquetas no reemplazadas
+            $this->quitarEtiquetas();
             // Verifica si debe minimizar la plantilla
             $this->minimizarPlantilla();
             return $this->_plantilla;

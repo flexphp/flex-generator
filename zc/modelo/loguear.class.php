@@ -98,13 +98,9 @@ class loguear extends accion {
             return $this;
         }
         $this->_inicializarCliente = parent::inicializarAccion()->devolverInicializarCliente();
-
         $this->_inicializarServidor = parent::inicializarAccion()->devolverInicializarServidor();
-
         $this->_parametrosServidor = parent::inicializarAccion()->devolverParametrosServidor();
-
         $this->_asignacionControlador = parent::inicializarAccion()->devolverAsignacionControlador();
-
         $this->_tipoPlantilla = 'jsLlamadosLoginAjax.js';
 
         //Desactiva nuevas peticiones de inicializacion

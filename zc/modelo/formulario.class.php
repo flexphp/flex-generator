@@ -370,7 +370,7 @@ class formulario {
         $this->_plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $this->_plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
         $this->_plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
-        $this->_plantilla->asignarEtiqueta('contenidoFormulario', $this->unirElementosFormulario($this->_formulario));
+        $this->_plantilla->asignarEtiqueta('contenidoFormulario', $this->contenidoFormulario($opciones));
         $this->_plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
         $this->_plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoVista);
         return $this;
@@ -594,7 +594,7 @@ class formulario {
         // Instancia del elemento creado
         $elemento = $html->crear();
         $this->_formulario['elementos'][$elemento->devolverId()] = $elemento->{$this->_pagina->_modelo->devolverFuncionAgregar()}();
-        $this->_elementos[] = $elemento->devolverProp();
+        $this->_elementos[$elemento->devolverId()] = $elemento->devolverProp();
         if (method_exists($elemento, 'devolverAjax')) {
             // Si el metodo devolverAjax existe es una lista y verifica si se creo un archivo de consulta Ajax
             $this->javascriptFormulario($elemento->devolverAjax());
@@ -646,7 +646,7 @@ class formulario {
         $tabla = $this->_pagina->_modelo->devolverArchivoControlador();
         // Agrega el id, necesario para busqueda y modificacion de registro
         $this->_aliasCampos .= aliasCampos('id', 'id', $tabla);
-        foreach ($this->_elementos as $nro => $caracteristicas) {
+        foreach ($this->_elementos as $id => $caracteristicas) {
             // Validacion obligatoriedad
             $validacion .= tabular("if (\$validarDato && isset(\$dato['{$caracteristicas[ZC_ID]}'])) {", 8);
             $validacion .= validarArgumentoObligatorio($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
@@ -866,6 +866,32 @@ class formulario {
             $this->_tipoPlantilla[$caracteristicas[ZC_ID]] = $accion->devolverTipoPlantilla();
         }
         return $this;
+    }
+
+    /**
+     * Define el contenido del formulario segun la vista personalizada del cliente, si existe
+     * @param array $opciones Opciones para creacion de la plantilla
+     * @return string
+     */
+    private function contenidoFormulario($opciones) {
+        if (is_file(RUTA_GENERADOR_CODIGO . '/plantilla/html/' . $this->_nombreArchivoControlador . '.tpl')) {
+            // Vista personalizada para el formulario
+            $contenidoFormulario = '';
+            $plantilla = new plantilla($opciones);
+            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/' . $this->_nombreArchivoControlador . '.tpl');
+            foreach ($this->_elementos as $id => $prop) {
+                $plantilla->asignarEtiqueta('e' . $id, $prop['e' . $id]);
+                $plantilla->asignarEtiqueta('c' . $id, $prop['c' . $id]);
+            }
+            $contenidoFormulario .= $plantilla->devolverPlantilla();
+            // Elimina los elementos cargados
+            unset($this->_formulario['elementos']);
+            // Agrega los botones al final del formulario
+            $contenidoFormulario .= $this->unirElementosFormulario($this->_formulario);
+        } else {
+            $contenidoFormulario = $this->unirElementosFormulario($this->_formulario);
+        }
+        return $contenidoFormulario;
     }
 
     /**

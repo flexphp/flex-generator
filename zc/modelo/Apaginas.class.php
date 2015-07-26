@@ -118,7 +118,7 @@ abstract class Apaginas {
      * Define si de se debe crear la vista de busqueda
      */
     public function esLogin() {
-
+        return false;
     }
 
 }

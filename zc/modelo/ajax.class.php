@@ -95,12 +95,9 @@ class ajax extends accion {
         }
         $this->_inicializarCliente[] = "'tablas' => \$datos['tablas']";
         $this->_inicializarCliente[] = "'campos' => \$datos['campos']";
-
         $this->_inicializarServidor[] = "'tablas' => 'xsd:string'";
         $this->_inicializarServidor[] = "'campos' => 'xsd:string'";
-
         $this->_parametrosServidor[] = '$tablas, $campos';
-
         $this->_tipoPlantilla = '';
 
         //Desactiva nuevas peticiones de inicializacion
