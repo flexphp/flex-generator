@@ -76,8 +76,8 @@ class buscar extends accion {
         $php .= $this->comando('$ressql = $this->db->get();', 16);
         $php .= $this->comando('// Existen resultados', 16);
         $php .= $this->comando('if($ressql && $ressql->num_rows() > 0){', 16);
-        $php .= $this->comando('// Numero total de elementos, esto segun los filtros de busqueda', 20);
-        $php .= $this->comando('$rpta[\'cta\'] = $ressql->num_rows();', 20);
+        $php .= $this->comando('// Numero total de elementos, esto segun los filtros de busqueda, necesario para la paginacion', 20);
+        $php .= $this->comando('$rpta[\'cta\'] = $this->zc->totalRegistros($campos, \'' . $this->_tabla . '\');', 20);
         $php .= $this->comando('$i = 0;', 20);
         $php .= $this->comando('foreach($ressql->result_array() as $row){', 20);
         $php .= $this->comando('$rpta[\'resultado\'][$i] = $row;', 24);

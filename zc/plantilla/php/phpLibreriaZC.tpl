@@ -182,6 +182,21 @@ class Zc {
     }
 
     /**
+     * Devuelve el numero total de registros que cumplen con los filtros aplicados 
+     * en el formulario de busqueda
+     * @param string $campos Filtros de busqueda seleccionados por el cliente
+     * @param string $tabla Nombre de la tabla
+     * @return int Numero de registros encontrados
+     */
+    function totalRegistros($campos, $tabla){
+        $this->CI->db->select('COUNT(1) cta');
+        // Agrega los filtros de busqueda
+        $this->validarFiltros($campos, 'buscar');
+        $ressql = $this->CI->db->get($tabla);
+        return ($ressql) ? $ressql->row()->cta : 0;
+    }
+
+    /**
      * Hace los llamados a los WS, se centraliza en este punto, esta es la funcion utilizada
      * por los controladores
      * @param string $login Usuario a usar para loguearse en el sistema
