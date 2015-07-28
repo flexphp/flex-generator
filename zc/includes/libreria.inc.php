@@ -410,7 +410,7 @@ function validarJoinTipo($tipo) {
  */
 function reemplazarCaracteresEspeciales($texto) {
     // Buscar, EN UTF e ISO 8859-1
-    $buscar = array(' ', '?', 'Ã¡', 'Ã©', 'Ã­', 'Ã³', ' Ãº', 'Ã±', 'Ã‘', 'á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ');
+    $buscar = array(' ', '?', 'Ã¡', 'Ã©', 'Ã­', 'Ã³', ' Ãº', 'Ã±', 'Ã‘', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½');
     // Reemplazar
     $reemplazar = array('_', '', 'a', 'e', 'i', 'o', 'u', 'n', 'N', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N');
     // Devuelve la cadena transformada

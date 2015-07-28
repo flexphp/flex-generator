@@ -18,7 +18,7 @@
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">ZC</a>
                 </div>
@@ -52,7 +52,7 @@
                                     <span id="error-{_idFormulario_}"></span>
                                 </div>
                             </div>
-                            <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}" class="form-signin">
+                            <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}" class="form-signin form-horizontal" role="form">
 {_contenidoFormulario_}
                             </form>
                         </div>

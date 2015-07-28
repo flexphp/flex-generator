@@ -48,7 +48,7 @@
             <!-- Formulario para el ingreso de datos -->
             <div class="col-md-1"></div>
             <div class="col-md-10">
-                <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}">
+                <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}" class="form-horizontal" role="form">
 {_contenidoFormulario_}
                 </form>
             </div>

@@ -32,8 +32,8 @@ class checkbox extends Aelemento {
      */
     public function crear() {
         $this->_html = tabular("<div class='table table-bordered'>", 0);
-        $this->_html .= tabular("<div class='text-center'>", 32);
-        $this->_html .= tabular("{$this->_opciones}", 36);
+        $this->_html .= tabular("<div class='text-center checkbox'>", 32);
+        $this->_html .= $this->_opciones;
         $this->_html .= tabular("</div>", 32);
         $this->_html .= tabular("</div>", 28);
         return $this;
@@ -59,9 +59,16 @@ class checkbox extends Aelemento {
         }
 
         foreach ($opciones as $id => $valor) {
+            if (!isset($config)) {
+                // Solo agrega la configuracion a un elemento dentro del grupo
+                $config = // Autofoco
+                        " {$this->_autofoco}" .
+                        " {$this->_obligatorio}" .
+                        " {$this->_msjObligatorio}";
+            }
             $idOpcion = $this->_id . '_' . $id;
-            $this->_opciones .= 
-                    "<label for='{$idOpcion}'>" .
+            $this->_opciones .= tabular('' .
+                    "<label class='checkbox-inline' for='{$idOpcion}'>" .
                     "<input" .
                     " type='checkbox'" .
                     " class='checkbox'" .
@@ -71,22 +78,15 @@ class checkbox extends Aelemento {
                     // El nombre se maneja como arreglo para permitir enviar varios valores
                     " id='{$idOpcion}'" .
                     " name='{$this->_id}[]'" .
-                    " value='{$id}'";
-            if (!isset($config)) {
-                // Solo agrega la configuracion a un elemento dentro del grupo
-                $config = true;
-                $this->_opciones .= "" .
-                        // Autofoco
-                        " {$this->_autofoco}" .
-                        " {$this->_obligatorio}" .
-                        " {$this->_msjObligatorio}";
-            }
-            $this->_opciones .= "" .
+                    " value='{$id}'" .
+                    $config .
                     // Ayuda visual
                     $this->ayuda() .
                     "/>" .
                     "$valor" .
-                    "</label>";
+                    "</label>", 36);
+            // Solo aplica para un elemento
+            $config = '';
         }
     }
 

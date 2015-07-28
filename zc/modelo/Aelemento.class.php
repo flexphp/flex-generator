@@ -259,16 +259,11 @@ abstract class Aelemento {
      * @return string
      */
     protected function plantilla() {
-        $html = tabular("<div class='row'>", 20);
-        $html .= tabular("<div class='col-md-1'></div>", 24);
-        $html .= tabular("<div class='col-md-2 text-right'>", 24);
-        $html .= tabular($this->devolverLabel(), 28);
-        $html .= tabular("</div>", 24);
-        $html .= tabular("<div class='col-md-3'>", 24);
+        $html = tabular("<div class='form-group'>", 20);
+        $html .= tabular($this->devolverLabel(), 24);
+        $html .= tabular("<div class='col-md-9 col-lg-8'>", 24);
         $html .= tabular($this->devolverElemento(), 28);
         $html .= tabular("</div>", 24);
-        $html .= tabular("<div class='col-md-5'></div>", 24);
-        $html .= tabular("<div class='col-md-1'></div>", 24);
         $html .= tabular("</div>", 20);
         return $html;
     }
@@ -278,11 +273,9 @@ abstract class Aelemento {
      * @return string
      */
     protected function plantillaLogin() {
-        $html = tabular("<div class='row'>", 32);
-        $html .= tabular("<div class='col-md-4 text-right'>", 36);
-        $html .= tabular($this->devolverLabel(), 40);
-        $html .= tabular("</div>", 36);
-        $html .= tabular("<div class='col-md-8'>", 36);
+        $html = tabular("<div class='form-group'>", 32);
+        $html .= tabular($this->devolverLabel(), 36);
+        $html .= tabular("<div class='col-md-8 col-lg-8'>", 36);
         $html .= tabular($this->devolverElemento(), 40);
         $html .= tabular("</div>", 36);
         $html .= tabular("</div>", 32);
@@ -351,7 +344,7 @@ abstract class Aelemento {
      * @return string
      */
     public function devolverLabel() {
-        return "<label id='label-{$this->_id}' name='label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>";
+        return "<label class='control-label col-md-3 col-lg-4' id='label-{$this->_id}' name='label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>";
     }
 
     /**

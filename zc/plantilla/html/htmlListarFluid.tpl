@@ -33,7 +33,7 @@
             <!-- Formulario con filtros/opciones de busqueda datos -->
             <div class="col-md-1"></div>
             <div class="col-md-10">
-                <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}">
+                <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}" role="form">
                     <!-- Contador de los filtros utilizados, se us para no repetir ID de filtros -->
                     <input id="zc-filtros-cantidad-filtros" name="zc-filtros-cantidad-filtros" type="hidden" value="0"/>
 {_contenidoFormulario_}
