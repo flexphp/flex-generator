@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <title>{_nombreFormulario_}</title>
         <!-- CSS Bootstrap -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/bootstrap.css">
@@ -41,7 +41,7 @@
                     <div class="tab-content">
                         <div class="tab-pane active">
                             <div class="text-center">
-                                <img src="<?php echo base_url(); ?>publico/img/login.jpg" style="width: 70%; height: 70%" alt="Bienvenido"/>
+                                <img src="<?php echo base_url(); ?>publico/img/login.jpg" class="hidden-xs hidden-sm" style="width: 70%; height: 70%" alt="Login"/>
                                 <h1>{_nombreFormulario_}</h1>
                             </div>
                             <!-- Errores devueltos por el servidor -->

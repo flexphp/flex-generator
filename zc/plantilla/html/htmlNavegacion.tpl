@@ -17,7 +17,7 @@
 {_menuNavegacion_}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="https://github.com/freddiegar/zerocodigo" title="Ir a ZeroCodigo">ZeroCodigo</a></li>
+                        <li><a href="https://github.com/freddiegar/zerocodigo" class="hidden-xs hidden-sm" title="Ir a ZeroCodigo">ZeroCodigo</a></li>
                         <li><a href="{_accionSalir_}"><span class="glyphicon glyphicon-log-out"></span> Salir</a></li>
                     </ul>
                 </div>

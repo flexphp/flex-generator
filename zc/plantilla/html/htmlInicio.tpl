@@ -29,7 +29,7 @@
                 </br>
                 Por favor elige una opci&oacute;n <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>.
                 <p class="text-center">
-                    <img src="<?php echo base_url(); ?>publico/img/inicio.jpg" style="width: 90%; height: 90%" alt="Bienvenido"/>
+                    <img src="<?php echo base_url(); ?>publico/img/inicio.jpg" class="hidden-xs hidden-sm" style="width: 90%; height: 90%" alt="Bienvenido"/>
                     </br>
                     Bienvenido, esta aplicaci&oacute;n fue generada automaticamente con <i>ZeroCodigo</i>, gracias por usarlo.
                 </p>

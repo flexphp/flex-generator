@@ -118,7 +118,7 @@ class boton extends Aelemento {
                 break;
             case ZC_ACCION_RESTABLECER:
                 $this->_tipo = 'reset';
-                $this->_presentacion = 'btn-default';
+                $this->_presentacion = 'btn-default hidden-xs';
                 break;
             case ZC_ACCION_BOTON:
             default :
