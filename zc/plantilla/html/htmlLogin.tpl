@@ -36,7 +36,7 @@
         <br/>
         <br/>
         <div class="container-fluid">
-            <div class="col-sm-6 col-md-offset-4 col-md-4">
+            <div class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4">
                 <div class="text-center">
                     <img src="<?php echo base_url(); ?>publico/img/login.jpg" class="hidden-xs hidden-sm" style="width: 70%; height: 70%" alt="Login"/>
                     <h1>{_nombreFormulario_}</h1>
