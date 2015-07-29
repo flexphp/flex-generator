@@ -20,7 +20,7 @@ abstract class Apaginas {
      * @return string
      */
     public function devolverPlantillaVista() {
-        $tpl = 'htmlFluid.tpl';
+        $tpl = 'htmlVistaFluid.tpl';
         return $tpl;
     }
 
@@ -83,15 +83,8 @@ abstract class Apaginas {
      * @return string
      */
     public function devolverPlantillaBotones() {
-        $tpl = tabular("<div class='row'>", 20);
-        $tpl .= tabular("<div class='col-md-1'></div>", 24);
-        $tpl .= tabular("<div class='col-md-5'>", 24);
-        $tpl .= tabular("<div class='text-right'>", 28);
-        $tpl .= tabular("{_elementoHTML_}", 0);
-        $tpl .= tabular("</div>", 28);
-        $tpl .= tabular("</div>", 24);
-        $tpl .= tabular("<div class='col-md-5'></div>", 24);
-        $tpl .= tabular("<div class='col-md-1'></div>", 24);
+        $tpl = tabular("<div class='form-group col-sm-11 col-md-12 col-lg-12 text-right'>", 20);
+        $tpl .= '{_elementoHTML_}';
         $tpl .= tabular("</div>", 20);
         return $tpl;
     }

@@ -65,9 +65,7 @@ class autenticacion extends Apaginas {
      * @return string
      */
     public function devolverPlantillaBotones() {
-        $tpl = tabular("<div class='row'>", 32);
-        $tpl .= tabular("{_elementoHTML_}", 4);
-        $tpl .= tabular("</div>", 32);
+        $tpl = '{_elementoHTML_}';
         return $tpl;
     }
 

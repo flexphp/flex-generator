@@ -25,7 +25,7 @@
             <div class="col-md-12"> </div>
             <!-- Nombre del formulario actual -->
             <div class="col-md-1"></div>
-            <div class="col-md-5 text-center">
+            <div class="col-md-10 text-center">
                 <h2>{_nombreFormulario_}</h2>
                 <!-- Barra de progreso -->
                 <div class="progress">
@@ -42,7 +42,6 @@
                 </div>
                 <!-- Fin Errores devueltos por el servidor -->
             </div>
-            <div class="col-md-5"></div>
             <div class="col-md-1"></div>
             <!-- Fin Nombre del formulario actual -->
             <!-- Formulario para el ingreso de datos -->

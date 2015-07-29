@@ -2,8 +2,6 @@
  * Ejecucion del login
  */
 $(document).ready(function () {
-    // Agrega descripciones de ayuda a las cajas de texto
-    $('body').tooltip({selector: '[data-toggle=tooltip]'});
     // Oculta ventana con mensajes de error
     $('.alert').hide();
     // Habilita la validacion del formulario

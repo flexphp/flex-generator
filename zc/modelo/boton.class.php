@@ -37,18 +37,21 @@ class boton extends Aelemento {
      * Define todos los parametros del boton a crear, funcion principal de la clase
      */
     function crear() {
-        $this->_html = tabular("<button" .
-                " id='{$this->_id}'" .
-                " name='{$this->_id}'" .
-                " type='{$this->_tipo}'" .
-                // Es la acicon que se ejecuta en el llamado ajax
-                " zc-accion-tipo='{$this->_id}'" .
-                // zc-accion indica al sistema que es un boton en el cual debe hacer envio
-                " class='btn {$this->_presentacion}'" .
-                ">" .
-                " {$this->_icono}" .
-                "{$this->_etiqueta}" .
-                "</button>", 32);
+        if (isset($this->_tipo)) {
+            // Verifica si se debe crear el boton, por ejemplo los botones de precargar y ajax no se crean
+            $this->_html = tabular("<button" .
+                    " id='{$this->_id}'" .
+                    " name='{$this->_id}'" .
+                    " type='{$this->_tipo}'" .
+                    // Es la accion que se ejecuta en el llamado ajax
+                    " zc-accion-tipo='{$this->_id}'" .
+                    // zc-accion indica al sistema que es un boton en el cual debe hacer envio
+                    " class='btn {$this->_presentacion}'" .
+                    ">" .
+                    " {$this->_icono}" .
+                    "{$this->_etiqueta}" .
+                    "</button>", 24);
+        }
         return $this;
     }
 
@@ -64,13 +67,6 @@ class boton extends Aelemento {
                 // Para la funcionalidad de ocultar botones
                 $this->_id = ZC_ACCION_AGREGAR;
                 $this->_prop[ZC_ID] = ZC_ACCION_AGREGAR;
-                break;
-            case ZC_ACCION_BUSCAR:
-                $this->_tipo = 'button';
-                $this->_icono = '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>';
-                $this->_presentacion = 'btn-primary zc-accion hidden';
-                // Para la funcionalidad del buscador, este id debe ser 'buscar'
-                $this->_prop[ZC_ID] = 'buscar';
                 break;
             case ZC_ACCION_MODIFICAR:
                 $this->_tipo = 'button';
@@ -96,25 +92,18 @@ class boton extends Aelemento {
                 $this->_id = ZC_ACCION_LOGUEAR;
                 $this->_prop[ZC_ID] = ZC_ACCION_LOGUEAR;
                 break;
+            case ZC_ACCION_BUSCAR:
+                // Para la funcionalidad del buscador, este id debe ser 'buscar'
+                $this->_prop[ZC_ID] = 'buscar';
             case ZC_ACCION_PRECARGAR:
-                $this->_tipo = 'button';
-                $this->_presentacion = 'btn-default hidden';
-                // Para la funcionalidad de ocultar botones
-                $this->_id = ZC_ACCION_PRECARGAR;
-                $this->_prop[ZC_ID] = ZC_ACCION_PRECARGAR;
-                break;
             case ZC_ACCION_AJAX:
-                $this->_tipo = 'button';
-                $this->_presentacion = 'btn-default hidden';
-                // Para la funcionalidad de ocultar botones
-                $this->_id = ZC_ACCION_AJAX;
-                $this->_prop[ZC_ID] = ZC_ACCION_AJAX;
+                $this->_tipo = null;
                 break;
             case ZC_ACCION_CANCELAR:
                 $this->_tipo = 'button';
                 $this->_icono = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
                 //Agrega clase especial, determina que accion tomar
-                $this->_presentacion = 'btn-warning zc-boton-cancelar';
+                $this->_presentacion = 'btn-warning hidden-xs zc-boton-cancelar';
                 break;
             case ZC_ACCION_RESTABLECER:
                 $this->_tipo = 'reset';

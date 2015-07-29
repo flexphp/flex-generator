@@ -36,28 +36,20 @@
         <br/>
         <br/>
         <div class="container-fluid">
-            <div class="col-sm-6 col-md-4 col-md-offset-4">
-                <div class="account-wall">
-                    <div class="tab-content">
-                        <div class="tab-pane active">
-                            <div class="text-center">
-                                <img src="<?php echo base_url(); ?>publico/img/login.jpg" class="hidden-xs hidden-sm" style="width: 70%; height: 70%" alt="Login"/>
-                                <h1>{_nombreFormulario_}</h1>
-                            </div>
-                            <!-- Errores devueltos por el servidor -->
-                            <div class="text-center">
-                                <div class="alert alert-danger" style="display: none;" role="alert">
-                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                    <span class="sr-only">Error:</span>
-                                    <span id="error-{_idFormulario_}"></span>
-                                </div>
-                            </div>
-                            <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}" class="form-signin form-horizontal" role="form">
-{_contenidoFormulario_}
-                            </form>
-                        </div>
+            <div class="col-sm-6 col-md-offset-4 col-md-4">
+                <div class="text-center">
+                    <img src="<?php echo base_url(); ?>publico/img/login.jpg" class="hidden-xs hidden-sm" style="width: 70%; height: 70%" alt="Login"/>
+                    <h1>{_nombreFormulario_}</h1>
+                    <!-- Errores devueltos por el servidor -->
+                    <div class="alert alert-danger" style="display: none;" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        <span id="error-{_idFormulario_}"></span>
                     </div>
                 </div>
+                <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}" class="form-horizontal" role="form">
+{_contenidoFormulario_}
+                </form>
             </div>
         </div>
         <!-- Pagina para ejecutar acciones desde JS -->

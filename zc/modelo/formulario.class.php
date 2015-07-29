@@ -568,16 +568,19 @@ class formulario {
     private function unirElementosFormulario($elementos) {
         $elementosFormulario = '';
         foreach ($elementos as $elemento => $valor) {
-            // Hasta el momento solo se utilizan para los botones
-            $tpl = '{_elementoHTML_}';
-            if ($elemento == 'acciones') {
-                // Las acciones son muchas en una sola fila, se agrupan al final del proceso
-                $tpl = $this->_pagina->_modelo->devolverPlantillaBotones();
-            }
-            if (is_array($elementos[$elemento])) {
-                $elementosFormulario .= str_replace('{_elementoHTML_}', $this->unirElementosFormulario($elementos[$elemento]), $tpl);
-            } else {
-                $elementosFormulario .= $elementos[$elemento];
+            // El elemento es valido
+            if (isset($valor)) {
+                // Hasta el momento solo se utilizan para los botones
+                $tpl = '{_elementoHTML_}';
+                if ($elemento == 'acciones') {
+                    // Las acciones son muchas en una sola fila, se agrupan al final del proceso
+                    $tpl = $this->_pagina->_modelo->devolverPlantillaBotones();
+                }
+                if (is_array($elementos[$elemento])) {
+                    $elementosFormulario .= str_replace('{_elementoHTML_}', $this->unirElementosFormulario($elementos[$elemento]), $tpl);
+                } else {
+                    $elementosFormulario .= $elementos[$elemento];
+                }
             }
         }
         return $elementosFormulario;

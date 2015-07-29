@@ -261,7 +261,7 @@ abstract class Aelemento {
     protected function plantilla() {
         $html = tabular("<div class='form-group'>", 20);
         $html .= tabular($this->devolverLabel(), 24);
-        $html .= tabular("<div class='col-md-9 col-lg-8'>", 24);
+        $html .= tabular("<div class='col-sm-9 col-md-9 col-lg-8'>", 24);
         $html .= tabular($this->devolverElemento(), 28);
         $html .= tabular("</div>", 24);
         $html .= tabular("</div>", 20);
@@ -273,13 +273,7 @@ abstract class Aelemento {
      * @return string
      */
     protected function plantillaLogin() {
-        $html = tabular("<div class='form-group'>", 32);
-        $html .= tabular($this->devolverLabel(), 36);
-        $html .= tabular("<div class='col-md-8 col-lg-8'>", 36);
-        $html .= tabular($this->devolverElemento(), 40);
-        $html .= tabular("</div>", 36);
-        $html .= tabular("</div>", 32);
-        return $html;
+        return $this->plantilla();
     }
 
     /**
@@ -344,7 +338,7 @@ abstract class Aelemento {
      * @return string
      */
     public function devolverLabel() {
-        return "<label class='control-label col-md-3 col-lg-4' id='label-{$this->_id}' name='label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>";
+        return "<label class='control-label col-sm-2 col-md-3 col-lg-4' id='label-{$this->_id}' name='label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>";
     }
 
     /**
