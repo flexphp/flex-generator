@@ -24,27 +24,21 @@
             <!-- Seperacion del top -->
             <div class="col-md-12"> </div>
             <!-- Nombre del formulario actual -->
-            <div class="col-md-1"></div>
-            <div class="col-md-10 text-center">
+            <div class="col-md-12 text-center">
                 <h2>{_nombreFormulario_}</h2>
             </div>
-            <div class="col-md-1"></div>
             <!-- Fin Nombre del formulario actual -->
             <!-- Formulario con filtros/opciones de busqueda datos -->
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-                <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}" role="form">
+            <div class="col-md-12">
+                <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}" class="form-horizontal" role="form">
                     <!-- Contador de los filtros utilizados, se us para no repetir ID de filtros -->
                     <input id="zc-filtros-cantidad-filtros" name="zc-filtros-cantidad-filtros" type="hidden" value="0"/>
 {_contenidoFormulario_}
                 </form>
             </div>
-                <!-- Fin Errores devueltos por el servidor -->
-            <div class="col-md-1"></div>
             <!-- Fin Formulario con filtros/opciones de busqueda datos -->
             <!-- Errores devueltos por el servidor -->
-            <div class="col-md-1"></div>
-            <div class="col-md-10 text-center">
+            <div class="col-md-12 text-center">
                 <br/>
                 <div class="alert alert-danger" style="display: none;" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -52,10 +46,8 @@
                     <span id="error-{_idFormulario_}"></span>
                 </div>
             </div>
-            <div class="col-md-1"></div>
             <!-- Formulario con resultados de la busqueda -->
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div id="cargando-{_idFormulario_}" class="hidden text-center form-control">
                     <!-- Cargando -->
                     <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Cargando...
@@ -67,7 +59,6 @@
                     <!-- Paginacion de la busqueda -->
                 </div>
             </div>
-            <div class="col-md-1"></div>
             <!-- Fin Formulario con resultados de la busqueda -->
         </div>
         <!-- Busquedas hechas desde la url, se usa en la accion de crear -->

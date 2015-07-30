@@ -391,7 +391,7 @@ class formulario {
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
         $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
-        $plantilla->asignarEtiqueta('contenidoFormulario', implode(FIN_DE_LINEA, $this->_filtros));
+        $plantilla->asignarEtiqueta('contenidoFormulario', $this->_filtros[ZC_ACCION_BUSCAR]);
         $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoListar);
         return $this;
@@ -883,8 +883,12 @@ class formulario {
             $plantilla = new plantilla($opciones);
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/' . $this->_nombreArchivoControlador . '.tpl');
             foreach ($this->_elementos as $id => $prop) {
+                // Etiqueta
                 $plantilla->asignarEtiqueta('e' . $id, $prop['e' . $id]);
+                // Input
                 $plantilla->asignarEtiqueta('c' . $id, $prop['c' . $id]);
+                // Etiqueta e input
+                $plantilla->asignarEtiqueta('g' . $id, $prop['g' . $id]);
             }
             $contenidoFormulario .= $plantilla->devolverPlantilla();
             // Elimina los elementos cargados

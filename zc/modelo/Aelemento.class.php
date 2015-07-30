@@ -319,6 +319,8 @@ abstract class Aelemento {
         $this->_prop['e' . $this->devolverId()] = $this->devolverLabel();
         // Elemento tipo HTML
         $this->_prop['c' . $this->devolverId()] = $this->devolverElemento();
+        // Label y Elemento
+        $this->_prop['g' . $this->devolverId()] = $this->plantilla();
         // Pirpiedades del elemento
         return $this->_prop;
     }

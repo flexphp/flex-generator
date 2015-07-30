@@ -153,13 +153,13 @@ class elemento {
             mostrarErrorZC(__FILE__, __FUNCTION__, 'Tipo de dato para saber los operadores!?');
         }
         // Opciones de filtro, se envuelve en un div para manejar la ocultacion de forma mas efectiva
-        $operadores = tabular("<div id='operador-{$tipo}' name='operador-{$tipo}' class='zc-operador{$oculto}'>", 32);
-        $operadores .= tabular("<select id='zc-operador-{$tipo}' name='zc-operador-{$tipo}' class='form-control'>", 36);
+        $operadores = tabular("<div id='operador-{$tipo}' name='operador-{$tipo}' class='zc-operador{$oculto}'>", 24);
+        $operadores .= tabular("<select id='zc-operador-{$tipo}' name='zc-operador-{$tipo}' class='form-control'>", 28);
         foreach ($this->_operadores[$tipo] as $key => $value) {
-            $operadores .= tabular("<option value='$key'>$value</option>", 40);
+            $operadores .= tabular("<option value='$key'>$value</option>", 32);
         }
-        $operadores .= tabular('</select>', 36);
-        $operadores .= tabular('</div>', 32);
+        $operadores .= tabular('</select>', 28);
+        $operadores .= tabular('</div>', 24);
         return $operadores;
     }
 

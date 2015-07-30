@@ -130,7 +130,7 @@ function ZCAccionAgregarFiltro(e, formulario, id) {
     // Nombre del controlador
     var controlador = $('#zc-controlador').val()
     // Determina el campo por el ual se desea filtrar
-    var filtro = $('.zc-filtros-busqueda option:selected').val();
+    var filtro = $.trim($('.zc-filtros-busqueda option:selected').val());
     // Determina el tipo de operador a aplicar segun el campo (texto, numerico, lista)
     var operadorFiltro = $('.zc-filtros-busqueda option:selected').attr('zc-operador');
     // Determina el filtro aplicado (=,>,>=,etc)
@@ -178,34 +178,34 @@ function ZCAccionAgregarFiltro(e, formulario, id) {
     $('#zc-filtros-cantidad-filtros').val((cantidadFiltros+1));
 
     // Agrega un campo oculto al formulario con los valores a enviar
-    $('#' + formulario).append("<div class='row zc-filtros-disponibles' id='zc-filtros-aplicados-"+identificadorFiltro+"'>"+
-    "<div class='col-md-1'></div>"+
+    $('#' + formulario).append("<div class='row zc-filtros-disponibles' id='zc-filtros-aplicados-" + identificadorFiltro + "'>" +
+    "<div class='col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center'>" +
     // Etiqueta del campo
-    "<div class='col-md-2 text-center'>"+textoFiltro+"</div>" +
+    textoFiltro + ' ' +
     // Operador
-    "<div class='col-md-2 text-center'>"+textoOperador+"</div>" +
+    textoOperador + ' ' +
     // Valor
-    "<div class='col-md-2 text-center'>"+textoValor+"</div>" +
+    textoValor + ' ' +
     // Boton para quitar filtro
-    "<div class='col-md-2'><button title='Quitar filtro de busqueda' onclick='javascript:ZCAccionQuitarFiltro(event ,this);'class='btn btn-warning zc-filtros-quitar' id='quitar-"+identificadorFiltro+"' name='quitar-"+identificadorFiltro+"'><span class='glyphicon glyphicon-minus-sign' aria-hidden='true'></span> Quitar</button></div>" +
-    "<div class='col-md-1'><input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='"+ controlador + '|?|' + filtro+"|?|"+operador+"|?|"+valor+"'/></div>" +
-    "<div class='col-md-1'></div>" +
-    "<div class='col-md-1'></div>" +
+    "<button title='Quitar filtro de busqueda' onclick=\"javascript:ZCAccionQuitarFiltro(event , '" + identificadorFiltro + "');\" class='btn btn-warning zc-filtros-quitar'><span class='glyphicon glyphicon-minus-sign' aria-hidden='true'></span><span class='hidden-xs'>Quitar</span></button>" +
+    "<input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='"+ controlador + '|?|' + filtro+"|?|"+operador+"|?|"+valor+"'/>" +
+    "</div>" +
     "</div>");
-    // Deja en blaco nuevamente el campo para el ingreso de datos
+    // Deja en blanco nuevamente el campo para el ingreso de datos
     $('#' + filtro).val('');
 }
 
 /**
  * Quitar filtro de busqueda de los filtros seleccionados
  * @param {event} e Evento disparador
- * @param {$} id
+ * @param {$} filtro
  * @returns {undefined}
  */
-function ZCAccionQuitarFiltro(e, id) {
+function ZCAccionQuitarFiltro(e, filtro) {
     e.preventDefault();
-    var filtro = $(id).attr('id').replace('quitar-', '');
     $('div').remove('#zc-filtros-aplicados-'+filtro);
+    // Oculta mensajes de error, evita error generado por el paso anterior
+    $('.alert').hide();
 }
 
 /**
