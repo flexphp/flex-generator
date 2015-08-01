@@ -50,7 +50,7 @@ class Zc {
      * Permite validar que el usuario tenga una session activa, de lo contrario termina la ejecucion
      * devolviendo un error de Acceso restringido (401)
      */
-    function validarSesion() {
+    function validarAutenticacion() {
         $rpta = array();
         if (!isset($_SERVER['PHP_AUTH_USER']) && !isset($_SERVER['PHP_AUTH_PW'])) {
             $this->autenticacion();

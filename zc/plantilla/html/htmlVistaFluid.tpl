@@ -27,13 +27,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10 text-center">
                 <h2>{_nombreFormulario_}</h2>
-                <!-- Barra de progreso -->
-                <div class="progress">
-                    <div id="progreso-{_idFormulario_}" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                        <span id="msj-progreso-{_idFormulario_}" style="color: black">0%</span>
-                    </div>
-                </div>
-                <!-- Fin Barra de progreso -->
+                {_barraProgreso_}
                 <!-- Errores devueltos por el servidor -->
                 <div class="alert alert-danger" style="display: none;" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

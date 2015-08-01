@@ -25,8 +25,7 @@ class {_nombreControlador_} extends CI_Controller {
         $this->load->helper('url');
         $this->load->model($this->_data['modelo'], 'modelo');
         $this->load->library(array('session', 'pagination'));
-        // Establece el menu de navegacion
-        $this->_data['navegacion'] = $this->load->view('{_paginaNavegacion_}.html', null, true);
+        {_navegacion_}
     }
 
     /**

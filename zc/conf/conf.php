@@ -18,8 +18,6 @@ define('ZC_CONFIG_PAGINA', 'config');
 define('ZC_ZC_PAGINA', 'zerocode');
 // Nombre de la tabla contra la que se hace la validacion del login
 define('ZC_LOGIN_TABLA', 'usuarios');
-// Nombre de la tabla, se extrae de la hoja de calculo
-define('ZC_TABLA_BD', 'nombre_tabla');
 // Identificador del campo dentro del formulario
 define('ZC_ID', 'id');
 // Etiqueta (Label) del campo
@@ -119,6 +117,9 @@ define('ZC_CONFIG_BD_CLAVE', 'bd_clave');
 define('ZC_CONFIG_BD_CHARSET', 'bd_charset');
 define('ZC_CONFIG_BD_COLLATION', 'bd_collation');
 define('ZC_CONFIG_REGISTROS_POR_PAGINA', 'registros_por_pagina');
+define('ZC_CONFIG_INCLUIR_NAVBAR', 'con_navegacion');
+define('ZC_CONFIG_INCLUIR_LOGIN', 'con_login');
+define('ZC_CONFIG_INCLUIR_PROGRESO', 'con_barra_progreso');
 // Prefijos de los archivos
 define('ZC_PREFIJO_VISTA', 'v_');
 define('ZC_PREFIJO_LISTA', 'l_');

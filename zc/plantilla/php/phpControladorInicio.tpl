@@ -19,7 +19,7 @@ class {_nombreControlador_} extends CI_Controller {
         parent::__construct();
         $this->load->helper('url');
         $this->load->library('session');
-        $this->_data['navegacion'] = $this->load->view('{_paginaNavegacion_}.html', null, true);
+        {_navegacion_}
     }
 
     /**

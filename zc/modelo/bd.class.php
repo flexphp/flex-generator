@@ -277,7 +277,7 @@ class bd extends conexion {
         $this->_prop = $prop;
         unset($prop);
         // Determina el nombre de la tabla segun las caracteristicas del formulario
-        $this->_prop[0][ZC_ID] = (isset($this->_prop[0][ZC_TABLA_BD]) && '' != $this->_prop[0][ZC_TABLA_BD]) ? strtolower($this->_prop[0][ZC_TABLA_BD]) : strtolower($this->_prop[0][ZC_ID]);
+        $this->_prop[0][ZC_ID] = strtolower($this->_prop[0][ZC_ID]);
         if (in_array($this->_prop[0][ZC_ID], array(strtolower(ZC_LOGIN_PAGINA)))) {
             // La ventana de logueo no crea tabla, usa campos definidos en otros tablas
             return $this;

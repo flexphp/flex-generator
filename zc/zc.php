@@ -83,6 +83,9 @@ try {
                     define('ZC_BD_COLLATION', (isset($config[ZC_CONFIG_BD_COLLATION]) ? $config[ZC_CONFIG_BD_COLLATION] : 'utf8_general_ci'));
                     // Numero de registros por pagina, para la funcion buscar
                     define('ZC_REGISTROS_POR_PAGINA', (isset($config[ZC_CONFIG_REGISTROS_POR_PAGINA]) ? $config[ZC_CONFIG_REGISTROS_POR_PAGINA] : 10));
+                    define('ZC_CREAR_NAVBAR', (isset($config[ZC_CONFIG_INCLUIR_NAVBAR]) ? $config[ZC_CONFIG_INCLUIR_NAVBAR] : ''));
+                    define('ZC_CREAR_LOGIN', (isset($config[ZC_CONFIG_INCLUIR_LOGIN]) ? $config[ZC_CONFIG_INCLUIR_LOGIN] : ''));
+                    define('ZC_CREAR_PREGRESO', (isset($config[ZC_CONFIG_INCLUIR_PROGRESO]) ? $config[ZC_CONFIG_INCLUIR_PROGRESO] : ''));
                     // Crea los archivos y estructura de directorios base
                     plantillas();
                     // Crea los archivos de configuracion segun los valores dados

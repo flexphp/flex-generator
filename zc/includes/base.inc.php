@@ -74,7 +74,7 @@ function plantillas() {
     $iniciophp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorInicio.tpl');
     $iniciophp->asignarEtiqueta('nombreVista', nombreVista('inicio.html'));
     $iniciophp->asignarEtiqueta('nombreControlador', nombreControlador('inicio'));
-    $iniciophp->asignarEtiqueta('paginaNavegacion', ZC_NAVEGACION_PAGINA);
+    $iniciophp->asignarEtiqueta('navegacion', devolverNavegacion());
     $iniciophp->asignarEtiqueta('paginaLogin', strtolower(ZC_LOGIN_PAGINA));
     $iniciophp->crearPlantilla('../www/application/controllers', 'php', nombreControlador('inicio'));
 

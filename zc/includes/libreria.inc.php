@@ -535,3 +535,16 @@ function nombreControladorServidor($nombre) {
 function nombreFuncionValidacionDatos() {
     return ZC_FUNCION_VALIDACION_DATOS;
 }
+
+/**
+ * Devuelve llamado a la vista de navegacion
+ * Se crea fuenra de la clase paginas porque se puede usar sin la clase, cer controlador inicio
+ * @return string
+ */
+function devolverNavegacion() {
+    $tpl = '';
+    if (ZC_CREAR_NAVBAR == ZC_OBLIGATORIO_SI) {
+        $tpl = tabular("\$this->_data['navegacion'] = \$this->load->view('v_navegacion.html', null, true);", 0);
+    }
+    return $tpl;
+}

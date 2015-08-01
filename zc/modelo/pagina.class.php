@@ -9,16 +9,16 @@ class pagina {
      * Instancia de la pagina creada
      * @var \modelo
      */
-    public $_modelo;
+    private $_modelo;
 
     /**
      * Crea una instancia del tipo de pagina a crear
      * @return string
      */
-    public function __construct($tipo, $controlador = '') {
+    public function __construct($id, $tipo, $controlador = '', $modelo = '') {
         cargarClase(__FILE__, __FUNCTION__, $tipo);
         // Asigna el modelo a crear
-        $this->_modelo = new $tipo($controlador);
+        $this->_modelo = new $tipo($id, $controlador, $modelo);
     }
 
     function devolverPlantillaVista() {
@@ -44,6 +44,18 @@ class pagina {
     }
     function devolverArchivoControlador() {
         return $this->_modelo->devolverArchivoControlador();
+    }
+    function devolverJsBarraProgreso() {
+        return $this->_modelo->devolverJsBarraProgreso();
+    }
+    function devolverHTMLBarraProgreso() {
+        return $this->_modelo->devolverHTMLBarraProgreso();
+    }
+    function devolverNavegacion() {
+        return $this->_modelo->devolverNavegacion();
+    }
+    function devolverJsNavegacion() {
+        return $this->_modelo->devolverJsNavegacion();
     }
     function esLogin(){
         return $this->_modelo->esLogin();

@@ -50,11 +50,7 @@ $(document).ready(function () {
     $('.zc-editar-registro').click(function(e){
         ZCAccionModificarRegistro(e, this);
     });
-    // Se agrega la validacion cuando los elementos pierden el foco
-    $('#{_idFormulario_}').find($(formasValidar)).focusout(function (e) {
-        // Manejo de la barra de progreso
-        ZCBarraProgreso('{_idFormulario_}', formasValidar);
-    });
+    {_procesoBarraProgreso_}
     // Habilita la validacion del formulario
     $('#{_idFormulario_} .zc-accion').click(function (e) {
         e.preventDefault();
@@ -83,8 +79,7 @@ $(document).ready(function () {
         toolbarPlacement: 'top',
         showClear: true
     });
-    // Menu actual
-    ZCMenuActual();
+    {_navegacion_}
     // Botones a mostrar
     ZCAccionBotones('{_idFormulario_}', '{_accionAgregar_}', '{_accionModificar_}', '{_accionBorrar_}', '{_accionPrecargar_}');
     // Busqueda predefinida, se deja al final cuando ya se ha cargado todo
