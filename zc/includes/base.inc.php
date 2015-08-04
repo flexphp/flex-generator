@@ -43,46 +43,48 @@ function plantillas() {
     $zcphp->asignarEtiqueta('funcionValidacionDatos', nombreFuncionValidacionDatos());
     $zcphp->crearPlantilla('../www/application/libraries', 'php', nombreControlador('zc'));
 
-    // Tablas de configuracion, para usuarios, tipos de usuario, estados de usuario y login
-    $usuariosxml = new plantilla();
-    $usuariosxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlUsuarios.tpl');
-    $usuariosxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
-    $usuariosxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
-    $usuariosxml->crearPlantilla('xml', 'xml', 'usuarios');
+    // Solo son necesarios cuando se crea login
+    if (ZC_CREAR_LOGIN == ZC_OBLIGATORIO_SI) {
+        // Tablas de configuracion, para usuarios, tipos de usuario, estados de usuario y login
+        $usuariosxml = new plantilla();
+        $usuariosxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlUsuarios.tpl');
+        $usuariosxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
+        $usuariosxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
+        $usuariosxml->crearPlantilla('xml', 'xml', 'usuarios');
 
-    $estados_usuarioxml = new plantilla();
-    $estados_usuarioxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlEstadosUsuario.tpl');
-    $estados_usuarioxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
-    $estados_usuarioxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
-    $estados_usuarioxml->crearPlantilla('xml', 'xml', 'estados_usuario');
+        $estados_usuarioxml = new plantilla();
+        $estados_usuarioxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlEstadosUsuario.tpl');
+        $estados_usuarioxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
+        $estados_usuarioxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
+        $estados_usuarioxml->crearPlantilla('xml', 'xml', 'estados_usuario');
 
-    $tipos_usuarioxml = new plantilla();
-    $tipos_usuarioxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlTiposUsuario.tpl');
-    $tipos_usuarioxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
-    $tipos_usuarioxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
-    $tipos_usuarioxml->crearPlantilla('xml', 'xml', 'tipos_usuario');
+        $tipos_usuarioxml = new plantilla();
+        $tipos_usuarioxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlTiposUsuario.tpl');
+        $tipos_usuarioxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
+        $tipos_usuarioxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
+        $tipos_usuarioxml->crearPlantilla('xml', 'xml', 'tipos_usuario');
 
-    $loginxml = new plantilla();
-    $loginxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlLogin.tpl');
-    $loginxml->asignarEtiqueta('paginaLogin', strtolower(ZC_LOGIN_PAGINA));
-    $loginxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
-    $loginxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
-    $loginxml->crearPlantilla('xml', 'xml', 'login');
+        $loginxml = new plantilla();
+        $loginxml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/xml/xmlLogin.tpl');
+        $loginxml->asignarEtiqueta('paginaLogin', strtolower(ZC_LOGIN_PAGINA));
+        $loginxml->asignarEtiqueta('tipoServicio', ZC_WS_SOAP);
+        $loginxml->asignarEtiqueta('tipoMotor', ZC_BD_MOTOR);
+        $loginxml->crearPlantilla('xml', 'xml', 'login');
 
-    // Pagina y bienvenida de la aplicacion
-    $iniciophp = new plantilla();
-    $iniciophp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorInicio.tpl');
-    $iniciophp->asignarEtiqueta('nombreVista', nombreVista('inicio.html'));
-    $iniciophp->asignarEtiqueta('nombreControlador', nombreControlador('inicio'));
-    $iniciophp->asignarEtiqueta('navegacion', devolverNavegacion());
-    $iniciophp->asignarEtiqueta('paginaLogin', strtolower(ZC_LOGIN_PAGINA));
-    $iniciophp->crearPlantilla('../www/application/controllers', 'php', nombreControlador('inicio'));
+        // Pagina y bienvenida de la aplicacion
+        $iniciophp = new plantilla();
+        $iniciophp->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorInicio.tpl');
+        $iniciophp->asignarEtiqueta('nombreVista', nombreVista('inicio.html'));
+        $iniciophp->asignarEtiqueta('nombreControlador', nombreControlador('inicio'));
+        $iniciophp->asignarEtiqueta('navegacion', devolverNavegacion());
+        $iniciophp->asignarEtiqueta('paginaLogin', strtolower(ZC_LOGIN_PAGINA));
+        $iniciophp->crearPlantilla('../www/application/controllers', 'php', nombreControlador('inicio'));
 
-    $iniciohtml = new plantilla();
-    $iniciohtml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlInicio.tpl');
-    $iniciohtml->asignarEtiqueta('nombreFormulario', 'Bienvenida');
-    $iniciohtml->crearPlantilla('../www/application/views', 'html', nombreVista('inicio'));
-
+        $iniciohtml = new plantilla();
+        $iniciohtml->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/html/htmlInicio.tpl');
+        $iniciohtml->asignarEtiqueta('nombreFormulario', 'Bienvenida');
+        $iniciohtml->crearPlantilla('../www/application/views', 'html', nombreVista('inicio'));
+    }
 
     // Compatiblilidad con HTML5
     // IE8 support of HTML5 elements and media queries

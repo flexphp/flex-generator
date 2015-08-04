@@ -530,6 +530,50 @@ function ZCPrecargarSeleccion(lista, rpta) {
 }
 
 /**
+ * Carga de forma ajax los posibles valores del campo
+ * @param {string} lista Nombre del campo que se esta contruyendo
+ * @param {json} rpta Respuesta de los valores devueltos por el ervidor
+ * @returns {undefined}
+ */
+function ZCPrecargarRadio(radio, rpta) {
+    // Valor de campo
+    var id = '';
+    // Descripcon del campo
+    var valor = '';
+    var opcion = '';
+    for(var i = 0; i < rpta.cta; ++i) {
+        for (var key in rpta.infoEncabezado[i]) {
+            if (rpta.infoEncabezado[i].hasOwnProperty(key)) {
+                if (key === 'id') {
+                    id = rpta.infoEncabezado[i][key];
+                    continue;
+                } else {
+                    valor = rpta.infoEncabezado[i][key]
+                }
+            }
+        }
+        opcion += "<label class='radio-inline' for='" + id + "'>" +
+                    "<input" +
+                    " type='radio'" +
+                    " class='radio'" +
+                    // Permite extraer rapidamente la descripcion de la opcion, se usa en el buscador
+                    " zc-texto='" + valor +"'" +
+                    // Identificador campo
+                    " id='" + id + "'" +
+                    " name='" + id + "'" +
+                    " value='" + valor + "'" +
+                    "/>" +
+                    valor +
+                    "</label>";
+        // Reinicia los valores
+        id = '';
+        valor = '';
+    }
+    // Agrega las opciones al campo
+    $('#'+radio).append(opcion);
+}
+
+/**
  * Resalta el menu actual
  * @returns {undefined}
  */

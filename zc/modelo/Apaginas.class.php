@@ -177,6 +177,28 @@ abstract class Apaginas {
     }
 
     /**
+     * Devuelve las funciones de logueo
+     * @return string
+     */
+    public function devolverValidarSesion() {
+        $tpl = tabular('/**', 0);
+        $tpl .= tabular('* Validar que el usuario este en sesion', 5);
+        $tpl .= tabular('*/', 5);
+        $tpl .= tabular('public function validarSesion() {', 4);
+        if (ZC_CREAR_LOGIN == ZC_OBLIGATORIO_SI) {
+            $tpl .= tabular('if ($this->session->userdata(\'zc_logueado\') !== true) {', 8);
+            $tpl .= tabular('// No esta logueado, pide iniciar sesion', 12);
+            $tpl .= tabular('redirect(\'' . nombreControlador(ZC_LOGIN_PAGINA) . '\');', 12);
+            $tpl .= tabular('} ', 8);
+        } else {
+            // No se valida session
+            $tpl .= tabular('return true;', 8);
+        }   
+        $tpl .= tabular('} ', 4);
+        return $tpl;
+    }
+
+    /**
      * Define si de se debe crear la vista de busqueda
      */
     public function esLogin() {

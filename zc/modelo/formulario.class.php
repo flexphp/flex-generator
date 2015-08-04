@@ -420,7 +420,7 @@ class formulario {
         $plantilla->asignarEtiqueta('nombreModelo', $this->_nombreArchivoModelo);
         $plantilla->asignarEtiqueta('accionServidor', $this->_funcionControlador);
         $plantilla->asignarEtiqueta('navegacion', $this->_pagina->devolverNavegacion());
-        $plantilla->asignarEtiqueta('paginaLogin', strtolower(ZC_LOGIN_PAGINA));
+        $plantilla->asignarEtiqueta('validarSesion', $this->_pagina->devolverValidarSesion());
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoControlador);
         return $this;
     }

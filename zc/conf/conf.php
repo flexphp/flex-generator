@@ -9,7 +9,7 @@ define('FIN_DE_LINEA', "\n");
 // Define el fin de linea para los archivos html
 define('FIN_DE_LINEA_HTML', '<br/>');
 // Nombre de la vista que muestra el menu de navegacion
-define('ZC_NAVEGACION_PAGINA', 'v_navegacion');
+define('ZC_NAVEGACION_PAGINA', 'navegacion');
 // Nombre de la hoja para crear ventana de logueo, se define en la hoja de calculo
 define('ZC_LOGIN_PAGINA', 'Login');
 // Nombre de la hoja de configuracion, se define en la hoja de calculo

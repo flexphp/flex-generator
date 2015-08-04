@@ -128,11 +128,12 @@ try {
                                     break;
                                 case 1:
                                     // Detalles del encabezado
-                                    $xml .= tabular('<' . $tag[$numeroColumna] . '>' . $contenido . '</' . $tag[$numeroColumna] . '>', 8);
+                                    // Se reemplazan caracteres especiales para no afectar el XML
+                                    $xml .= tabular('<' . $tag[$numeroColumna] . '>' . htmlspecialchars($contenido) . '</' . $tag[$numeroColumna] . '>', 8);
                                     break;
                                 default:
                                     // Detalles de los campos
-                                    $xml .= tabular('<' . $tag[$numeroColumna] . '>' . $contenido . '</' . $tag[$numeroColumna] . '>', 12);
+                                    $xml .= tabular('<' . $tag[$numeroColumna] . '>' . htmlspecialchars($contenido) . '</' . $tag[$numeroColumna] . '>', 12);
                                     break;
                             }
                         }

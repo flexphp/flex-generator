@@ -57,6 +57,9 @@ class pagina {
     function devolverJsNavegacion() {
         return $this->_modelo->devolverJsNavegacion();
     }
+    function devolverValidarSesion() {
+        return $this->_modelo->devolverValidarSesion();
+    }
     function esLogin(){
         return $this->_modelo->esLogin();
     }

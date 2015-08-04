@@ -75,16 +75,7 @@ class {_nombreControlador_} extends CI_Controller {
         return $this->pagination->create_links();
     }
 
-    /**
-     * Validar que el usuario este en sesion
-     */
-    public function validarSesion() {
-        if ($this->session->userdata('zc_logueado') !== true) {
-            // No esta logueado, pide iniciar sesion
-            redirect('{_paginaLogin_}');
-        } 
-    } 
-
+    {_validarSesion_}
 {_accionServidor_}
 
 }

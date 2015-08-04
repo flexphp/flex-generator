@@ -41,7 +41,7 @@ class navegacion {
         $plantilla->asignarEtiqueta('menuNavegacion', $this->_html);
         $plantilla->asignarEtiqueta('accionInicio', '<?php echo base_url(). \'index.php/inicio\'; ?>');
         $plantilla->asignarEtiqueta('accionSalir', '<?php echo base_url(). \'index.php/' . nombreControlador(ZC_LOGIN_PAGINA) . '/desloguear\'; ?>');
-        $plantilla->crearPlantilla($directorioSalida, $extension, ZC_NAVEGACION_PAGINA);
+        $plantilla->crearPlantilla($directorioSalida, $extension, nombreVista(ZC_NAVEGACION_PAGINA));
     }
 
     /**

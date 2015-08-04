@@ -410,11 +410,11 @@ function validarJoinTipo($tipo) {
  */
 function reemplazarCaracteresEspeciales($texto) {
     // Buscar, EN UTF e ISO 8859-1
-    $buscar = array(' ', '?', 'á', 'é', 'í', 'ó', ' ú', 'ñ', 'Ñ', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�');
+    $buscar = array(' ', ':', '?', 'á', 'é', 'í', 'ó', ' ú', 'ñ', 'Ñ', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�', '�');
     // Reemplazar
-    $reemplazar = array('_', '', 'a', 'e', 'i', 'o', 'u', 'n', 'N', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N');
-    // Devuelve la cadena transformada
-    return str_replace($buscar, $reemplazar, $texto);
+    $reemplazar = array('_', '', '', 'a', 'e', 'i', 'o', 'u', 'n', 'N', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N');
+    // Devuelve la cadena transformada, elimina cualquier caracter no alfanumerico
+    return preg_replace('/\W/', '', str_replace($buscar, $reemplazar, $texto));
 }
 
 /**
@@ -544,7 +544,7 @@ function nombreFuncionValidacionDatos() {
 function devolverNavegacion() {
     $tpl = '';
     if (ZC_CREAR_NAVBAR == ZC_OBLIGATORIO_SI) {
-        $tpl = tabular("\$this->_data['navegacion'] = \$this->load->view('v_navegacion.html', null, true);", 0);
+        $tpl = tabular("\$this->_data['navegacion'] = \$this->load->view('" . nombreVista(ZC_NAVEGACION_PAGINA) . ".html', null, true);", 0);
     }
     return $tpl;
 }

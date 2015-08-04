@@ -106,7 +106,7 @@ class elemento {
      * @return \elemento
      */
     private function agregarElementoRadio($caracteristicas) {
-        $this->_elemento = new radio($caracteristicas);
+        $this->_elemento = new radio($caracteristicas, ((isset($this->_propiedad['controlador'])) ? $this->_propiedad['controlador'] : ''));
         $this->_elemento->crear();
         return $this;
     }

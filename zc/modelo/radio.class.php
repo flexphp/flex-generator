@@ -14,9 +14,12 @@ class radio extends Aelemento {
     /**
      * Contrucutor de listas (input select), define las caracteristicas que tendra el elemento
      * @param array $caracteristicas Valores seleccionados por el cliente
+     * @param array $controlador Valores seleccionados por el cliente
      */
-    function __construct($caracteristicas) {
+    function __construct($caracteristicas, $controlador = '') {
         parent::__construct($caracteristicas);
+        // Crear el nombre de controlador en minuscula
+        $this->_controlador = strtolower($controlador);
         $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
         $this->opciones($this->_prop[ZC_ELEMENTO_OPCIONES]);
         $this->autofoco($this->_prop[ZC_AUTOFOCO]);
@@ -32,7 +35,7 @@ class radio extends Aelemento {
      */
     public function crear() {
         $this->_html = tabular("<div class='table table-bordered'>", 0);
-        $this->_html .= tabular("<div class='text-center radio'>", 32);
+        $this->_html .= tabular("<div id='radio-{$this->_id}' class='text-center radio'>", 32);
         $this->_html .= $this->_opciones;
         $this->_html .= tabular("</div>", 32);
         $this->_html .= tabular("</div>", 28);
@@ -45,20 +48,46 @@ class radio extends Aelemento {
      * debe ser del tipo: id1 = valor1, id2 = valor2
      */
     private function opciones($opciones) {
+        /*$opcion = array();
         if (is_string($opciones)) {
             // Se agrega la opcion vacia al inicio del listado
             $cada_opcion = explode(',', $opciones);
-            $opciones = array();
             foreach ($cada_opcion as $value) {
                 if (strpos($value, '=') === false) {
-                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de radio no valido, se espera id1=valor1, id2=valor2');
+                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de radio (' . $this->_id . ') no valido, se espera id1=valor1, id2=valor2');
                 }
                 list($id, $valor) = explode('=', $value);
-                $opciones[trim($id)] = trim($valor);
+                $opcion[trim($id)] = trim($valor);
             }
         }
 
-        foreach ($opciones as $id => $valor) {
+        if (!is_array($opcion) || count($opcion) == 0) {
+            mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de radio (' . $this->_id . ') no valido, [' . $opciones . ']');
+        }*/
+
+        $opcion = array();
+        if (is_string($opciones)) {
+            if (strpos($opciones, ZC_MOTOR_SEPARADOR) === false && strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) {
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista no valido, se espera id1=valor1 o tabla::campo::tipoJoin');
+            }
+            // Agrega la opcion vacia a la lista de seleccion, aplica para el ajax como para el proceso no ajax
+            $separador = (strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) ? ZC_MOTOR_SEPARADOR : ZC_MOTOR_JOIN_SEPARADOR;
+            if ($separador != ZC_MOTOR_JOIN_SEPARADOR) {
+                $cada_opcion = explode(',', $opciones);
+                foreach ($cada_opcion as $value) {
+                    if (strpos($value, $separador) === false) {
+                        mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista no valido, se espera id1' . ZC_MOTOR_SEPARADOR . 'valor1');
+                    }
+                    list($id, $valor) = explode(ZC_MOTOR_SEPARADOR, $value);
+                    $opcion[trim($id)] = trim($valor);
+                }
+            } else {
+                // Campos llenados por base de datos, se valida que sea una opcion valida
+                $this->opcionesAjax($opciones);
+            }
+        }
+
+        foreach ($opcion as $id => $valor) {
             if (!isset($config)) {
                 // Solo agrega la configuracion a un elemento dentro del grupo
                 $config = // Autofoco
@@ -89,4 +118,36 @@ class radio extends Aelemento {
         }
     }
 
+    /**
+     * Crear un archivo javascript para jacer solicitudes Ajax
+     * @param string $join Valida las tablas relacionadas
+     */
+    private function opcionesAjax($join) {
+        $this->_joinTablas = joinTablas($join);
+        if ('' == $this->_controlador) {
+            mostrarErrorZC(__FILE__, __FUNCTION__, 'No se ha definido el controlador para el llamado ajax');
+        }
+        if (isset($this->_joinTablas)) {
+            $this->_joinTablas['tabla'] = strtolower($this->_joinTablas['tabla']);
+            // Plantilla para el manejo de javascript
+            $plantilla = new plantilla();
+            $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/jsLlamadosRadioAjax.js');
+            $plantilla->asignarEtiqueta('nombreControlador', $this->_controlador);
+            $plantilla->asignarEtiqueta('nombreTabla', $this->_joinTablas['tabla']);
+            $plantilla->asignarEtiqueta('nombreCampos', $this->_joinTablas['campo']);
+            $plantilla->asignarEtiqueta('nombreRadio', 'radio-' . $this->_id);
+            $plantilla->crearPlantilla('../www/publico/js', 'js', 'ajax_' . $this->_joinTablas['tabla']);
+            // Agregar archivo creado al javascript al formulario
+            $this->_ajax = $plantilla->devolver();
+        }
+        return $this;
+    }
+
+    /**
+     * Devuelve la ruta del archivo ajax creado, solo si existe
+     * @return string
+     */
+    public function devolverAjax() {
+        return (isset($this->_ajax)) ? $this->_ajax : null;
+    }
 }
