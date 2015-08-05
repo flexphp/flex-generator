@@ -100,11 +100,11 @@ class plantilla {
         if (!$this->_plantilla) {
             mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else {
-            $patron = '#\{_([A-z0-9\s\.])*_\}#';
+            $patron = '#\{_([A-z0-9\s\._])*_\}#';
             preg_match_all($patron, $this->_plantilla, $this->_etiquetas);
             if (count($this->_etiquetas[0]) > 0) {
                 foreach ($this->_etiquetas[0] as $key => $value) {
-                    $value = str_replace(array('{', '}', '_'), '', $value);
+                    $value = str_replace(array('{_', '_}'), '', $value);
                     $this->_etiquetasValidas[$value] = 1;
                 }
             }
@@ -159,7 +159,7 @@ class plantilla {
         if (!$this->_plantilla) {
             mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
         } else {
-            $patron = '#\{_([A-z0-9\s\.])*_\}#';
+            $patron = '#\{_([A-z0-9\s\._])*_\}#';
             $reemplazar = '';
             $this->_plantilla = preg_replace($patron, $reemplazar, $this->_plantilla);
         }
