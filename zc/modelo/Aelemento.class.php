@@ -36,10 +36,10 @@ abstract class Aelemento {
 
     /**
      * Posicion en la que se ubicara el mensaje de ayuda que se muestra al posicionar
-     * el puntero sobre el elemento. Valores: right | left | top | bottom
+     * el puntero sobre el elemento. Valores: right|left|top|bottom
      * @var string
      */
-    protected $_posicionTitle = 'right';
+    protected $_posicionTitle = 'top';
 
     /**
      * Signo que identifica los campos obligatorios
@@ -149,6 +149,8 @@ abstract class Aelemento {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
             }
             $this->_prop[ZC_ELEMENTO_OPCIONES] = (isset($this->_prop[ZC_ELEMENTO_OPCIONES])) ? $this->_prop[ZC_ELEMENTO_OPCIONES] : null;
+            // Se puede incluir caracteres HTML y saltos de linea
+            $this->_prop[ZC_MENSAJE_AYUDA] = (isset($this->_prop[ZC_MENSAJE_AYUDA])) ? htmlspecialchars_decode($this->_prop[ZC_MENSAJE_AYUDA]) : null;
         }
         return $this;
     }
@@ -248,9 +250,10 @@ abstract class Aelemento {
      * @param string $msj Mensaje de ayuda a mostrar, por defecto es la etiqueta del campo
      */
     protected function ayuda($msj = '') {
-        $html = " data-placement='{$this->_posicionTitle}'" .
+        $html = " rel='tooltip' data-html='true'" .
+                " data-placement='{$this->_posicionTitle}'" .
                 " data-toggle='tooltip'" .
-                " data-original-title='" . (($msj == '') ? $this->_etiqueta : $msj) . "'";
+                " data-original-title='" . (($msj == '') ? $this->_prop[ZC_MENSAJE_AYUDA] : $msj) . "'";
         return $html;
     }
 

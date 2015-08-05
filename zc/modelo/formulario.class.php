@@ -85,6 +85,12 @@ class formulario {
     private $_js = '';
 
     /**
+     * Archivos javascript agregados al formulario, evita que se agregue el mismo archivo mas de una vez
+     * @var string
+     */
+    private $_jsCargados = array();
+
+    /**
      * Almacena la plantilla html de la vista seleccionada, formulario de ingreso/modificacion
      * @var \plantilla
      */
@@ -818,7 +824,9 @@ class formulario {
         foreach ($rutaJavascript as $ruta) {
             if (isset($ruta) && !is_file($ruta)) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, " Ruta de archivo no valida: {$ruta}!");
-            } else if (isset($ruta)) {
+            } else if (isset($ruta) && !isset($this->_jsCargados[$ruta])) {
+                // Registra el archivo como cargado
+                $this->_jsCargados[$ruta] = true;
                 $this->_js .= tabular('<!--Inclusion archivo js  -->', 8);
                 // Cambia la ruta relativa, por una ruta absoluta
                 $this->_js .= tabular("<script type='text/javascript' src='" . convertir2UrlLocal($ruta) . "'></script>", 8);

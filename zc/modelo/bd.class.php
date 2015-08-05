@@ -400,15 +400,17 @@ class bd extends conexion {
         foreach ($this->_join as $join) {
             array_push($this->_sentencias, $join);
         }
-        // Carga los insert por defecto
-        $archivo = 'plantilla/sql/preinsert_' . $this->_motor . '.sql';
-        if(is_file($archivo)) {
-            // Valida que exista el archivo
-            $insert = explode(';', file_get_contents($archivo));
-            foreach ($insert as $sql) {
-                $sql = trim(preg_replace('/\s+/', ' ', $sql));
-                if (strlen($sql) > 0) {
-                    array_push($this->_sentencias, $sql);   
+        if (ZC_CREAR_LOGIN == ZC_OBLIGATORIO_SI) {
+            // Carga los insert por defecto para funcionamiento del login
+            $archivo = 'plantilla/sql/preinsert_' . $this->_motor . '.sql';
+            if(is_file($archivo)) {
+                // Valida que exista el archivo
+                $insert = explode(';', file_get_contents($archivo));
+                foreach ($insert as $sql) {
+                    $sql = trim(preg_replace('/\s+/', ' ', $sql));
+                    if (strlen($sql) > 0) {
+                        array_push($this->_sentencias, $sql);   
+                    }
                 }
             }
         }
