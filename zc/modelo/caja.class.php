@@ -282,16 +282,16 @@ class caja extends Aelemento {
             $this->_html .= "<input" .
                     " type='password'" .
                     " class='form-control'" .
-                    " placeholder='Confirmación {$this->_etiqueta}'" .
+                    " placeholder='Confirmaci&oacute;n {$this->_etiqueta}'" .
                     // Identificador
                     " id='x{$this->_id}'" .
                     " name='x{$this->_id}'" .
                     // Debe ser igual al otro campo
                     " data-parsley-validate-if-empty" .
                     " data-parsley-equalto='#{$this->_id}'" .
-                    " data-parsley-equalto-message='La confirmación no coincide'" .
+                    " data-parsley-equalto-message='La confirmaci&oacute;n no coincide'" .
                     // Ayuda visual
-                    $this->ayuda('Confirmación ' . $this->_etiqueta) .
+                    $this->ayuda('Confirmaci&oacute;n ' . $this->_etiqueta) .
                     "/>";
         }
         return $this;

@@ -88,21 +88,21 @@ function plantillas() {
 
     // Compatiblilidad con HTML5
     // IE8 support of HTML5 elements and media queries
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/html5shiv.v3.7.2.js', '../www/publico/js/html5shiv.js');
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/respond.v1.4.2.js', '../www/publico/js/respond.js');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/html5shiv.min.js', '../www/publico/js/html5shiv.js');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/respond.min.js', '../www/publico/js/respond.js');
     // JQuery homologado
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/jquery.v2.1.1.min.js', '../www/publico/js/jquery.js');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/jquery.min.js', '../www/publico/js/jquery.js');
     // Parsley Homologado
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/parsley.v2.0.5.js', '../www/publico/js/parsley.js');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/parsley.min.js', '../www/publico/js/parsley.js');
     // Boostrap Homologado
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/bootstrap.v3.3.2.min.js', '../www/publico/js/bootstrap.js');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/bootstrap.min.js', '../www/publico/js/bootstrap.js');
     // Datapicker
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/datetimepicker.v4.7.14.min.js', '../www/publico/js/datetimepicker.js');
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/moment.v2.9.0.min.js', '../www/publico/js/moment.js');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/datetimepicker.min.js', '../www/publico/js/datetimepicker.js');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/moment.min.js', '../www/publico/js/moment.js');
     // Lenguaje datapicker
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/es.js', '../www/publico/js/es.js');
     // JS con funciones javascript utilizadas por el sistema
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/zc.v1.0.0.js', '../www/publico/js/zc.js');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/zc.js', '../www/publico/js/zc.js');
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/index.html', '../www/publico/js/index.html');
     // CSS Homologado
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/css/bootstrap.min.css', '../www/publico/css/bootstrap.css');
