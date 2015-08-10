@@ -263,7 +263,7 @@ abstract class Aelemento {
      */
     protected function plantilla() {
         $html = tabular("<div class='form-group'>", 20);
-        $html .= tabular($this->devolverLabel(), 24);
+        $html .= tabular($this->devolverLabel('col-sm-2 col-md-3 col-lg-4'), 24);
         $html .= tabular("<div class='col-sm-9 col-md-9 col-lg-8'>", 24);
         $html .= tabular($this->devolverElemento(), 28);
         $html .= tabular("</div>", 24);
@@ -340,10 +340,11 @@ abstract class Aelemento {
      * Devolver la etiqueta creada para el elemento, se utiliza en la creacion de plantillas
      * personalizadas, la etiqueta puede estar ubicada en un sitio diferente al campo de entreda
      * Es un metodo publico, se utiliza desde fuera de la clase
+     * @param string $dimensiones Define las dimensiones segun el tipo de dispositivo, ejm: col-xs-2 col-sm-3 col-md-4 col-lg-5
      * @return string
      */
-    public function devolverLabel() {
-        return "<label class='control-label col-sm-2 col-md-3 col-lg-4' id='label-{$this->_id}' name='label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>";
+    public function devolverLabel($dimensiones = '') {
+        return "<label class='control-label {$dimensiones}' id='label-{$this->_id}' name='label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>";
     }
 
     /**
