@@ -28,8 +28,11 @@ define('ZC_CAMPO_BD', 'nombre_campo_bd');
 define('ZC_FORMULARIO_NOMBRE', 'nombre_formulario');
 // Tipo de envio del formulario POST|GET
 define('ZC_FORMULARIO_METODO', 'se_envia');
-// Tipo de formulario a crear tabla|autenticacion
+// Tipo de formulario a crear tabla|autenticacion|personalizado
 define('ZC_FORMULARIO_TIPO', 'tipo_formulario');
+define('ZC_FORMULARIO_TIPO_TABLA', 'tabla');
+define('ZC_FORMULARIO_TIPO_AUTENTICACION', 'autenticacion');
+define('ZC_FORMULARIO_TIPO_PERSONALIZADO', 'personalizado');
 // Tipo de web service a utilizar REST|SOAP
 // Tipos de WS SOAP con XML, menos lento, mas seguro
 // Tipos de WS REST con JSON, mas rapido, menos seguro

@@ -168,12 +168,12 @@ class bd extends conexion {
     }
 
     /**
-     * Comentario del campo en la base de datos
+     * Comentario del campo en la base de datos, los caracteres HTML se pasan a su equivalente
      * @param string $etiqueta Descripcion del campo
      * @return string
      */
     protected function comentario($etiqueta) {
-        return $this->_equivalencias[$this->_motor][ZC_ETIQUETA] . " '$etiqueta'";
+        return $this->_equivalencias[$this->_motor][ZC_ETIQUETA] . " '" . html_entity_decode($etiqueta) . "'";
     }
 
     /**
@@ -278,8 +278,8 @@ class bd extends conexion {
         unset($prop);
         // Determina el nombre de la tabla segun las caracteristicas del formulario
         $this->_prop[0][ZC_ID] = strtolower($this->_prop[0][ZC_ID]);
-        if (in_array($this->_prop[0][ZC_ID], array(strtolower(ZC_LOGIN_PAGINA)))) {
-            // La ventana de logueo no crea tabla, usa campos definidos en otros tablas
+        if (in_array($this->_prop[0][ZC_FORMULARIO_TIPO], array(strtolower(ZC_FORMULARIO_TIPO_AUTENTICACION)))) {
+            // El formulario tipo autenticacion no crea tablas, usa campos definidos en otros tablas
             return $this;
         }
         $this->verificar();
@@ -294,9 +294,7 @@ class bd extends conexion {
                     // No hay tipo de dato definido, normalmente porque es boton
                     continue;
                 default:
-                    // Inserta coma si el siguiente campo existe
-                    $coma = (isset($this->_prop[($nro + 1)])) ? ',' : '';
-                    $campos .= $this->campo($caracteristicas[ZC_ID], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_VALOR_PREDETERMINADO], $caracteristicas[ZC_ETIQUETA], $coma);
+                    $campos .= $this->campo($caracteristicas[ZC_ID], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_VALOR_PREDETERMINADO], $caracteristicas[ZC_ETIQUETA], ',');
                     if(error_get_last()){
                         var_dump($caracteristicas);
                         die;
@@ -325,7 +323,7 @@ class bd extends conexion {
         $joinTabla = joinTablas($join);
         if (isset($joinTabla)) {
             $joinTabla['tabla'] = strtolower($joinTabla['tabla']);
-            $this->_join[] = "ALTER TABLE {$this->_prop[0][ZC_ID]} ADD CONSTRAINT zc_fk_2_{$joinTabla['tabla']} FOREIGN KEY ({$campo}) REFERENCES {$joinTabla['tabla']}(id) ON UPDATE CASCADE ON DELETE RESTRICT";
+            $this->_join[] = "ALTER TABLE {$this->_prop[0][ZC_ID]} ADD CONSTRAINT zc_fk_2_{$campo} FOREIGN KEY ({$campo}) REFERENCES {$joinTabla['tabla']}(id) ON UPDATE CASCADE ON DELETE RESTRICT";
         }
         return $this;
     }

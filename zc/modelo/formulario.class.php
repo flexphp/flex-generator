@@ -399,7 +399,8 @@ class formulario {
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
         $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
         $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
-        $plantilla->asignarEtiqueta('contenidoFormulario', $this->_filtros[ZC_ACCION_BUSCAR]);
+        // Los formularios que no tienen la accion buscar no crean este elemento
+        $plantilla->asignarEtiqueta('contenidoFormulario', (isset($this->_filtros[ZC_ACCION_BUSCAR]) ? $this->_filtros[ZC_ACCION_BUSCAR] : ''));
         $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoListar);
         return $this;

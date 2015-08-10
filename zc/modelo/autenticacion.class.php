@@ -44,22 +44,6 @@ class autenticacion extends Apaginas {
     }
 
     /**
-     * Crea los elementos dentro del formulario segun las caracteristicas entregadas por el xml
-     * @param array $elementos Caracteristicas de los elementos a entregar
-     * @return \formulario
-     */
-    public function agregarElementoFormulario($elementos) {
-        foreach ($elementos as $caracteristicas) {
-            if ($this->_esLogin) {
-                // A los campos de formularios NO se les valida la longitud
-                $caracteristicas[ZC_LONGITUD_MAXIMA] = -1;
-                $caracteristicas[ZC_LONGITUD_MINIMA] = -1;
-            }
-        }
-        return $this;
-    }
-
-    /**
      * Devuelve la plantilla para la distribucion de los botones
      * @param array $elementos Elementos del formlario
      * @return string

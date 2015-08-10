@@ -22,16 +22,20 @@ class hoja extends xml {
 
     /**
      * Agrega los botones de accion al formulario
-     * @param string $nombreHoja Nombre de la hoja a crear
+     * @param string $tipoFormulario Tipo de formulario a crear
      */
-    private function agregarAcciones($nombreHoja) {
-        switch (true) {
-            case (strtolower($nombreHoja) == strtolower(ZC_LOGIN_PAGINA)):
+    private function agregarAcciones($tipoFormulario) {
+        switch (strtolower($tipoFormulario)) {
+            case ZC_FORMULARIO_TIPO_AUTENTICACION:
                 // Crear pagina login, boton para hacer login
                 $this->elementos[] = array(ZC_ID => 'loguear', ZC_ELEMENTO => ZC_ACCION_LOGUEAR, ZC_ETIQUETA => 'Ingresar');
                 break;
+            case ZC_FORMULARIO_TIPO_PERSONALIZADO:
+                // Formulario personalizado, los botones deben ser agregados directamente en la hoja de calculo
+                break;
+            case ZC_FORMULARIO_TIPO_TABLA:
+                // Creacion de las demas paginas con funciones CRUD
             default:
-                // Creacion de las demas paginas
                 // Boton para crear un nuevo registro
                 $this->elementos[] = array(ZC_ID => 'enviar', ZC_ELEMENTO => ZC_ACCION_AGREGAR, ZC_ETIQUETA => 'Agregar');
                 // Necesario para crear el formulario de busqueda
@@ -71,9 +75,11 @@ class hoja extends xml {
             if (extensionArchivo($cadaArchivo) == 'xml') {
                 $rutaXML = $rutaArchivosXML . "/" . $cadaArchivo;
                 $this->estructuraArchivoXML($rutaXML);
-                // Agrega los botones a los formularios
                 // Crea los campos dinamicamente
-                $this->agregarAcciones($this->nombreHoja);
+                // Determina si esta definido el tipo de formulaio a crear
+                $this->elementos[0][ZC_FORMULARIO_TIPO] = (isset($this->elementos[0][ZC_FORMULARIO_TIPO])) ? $this->elementos[0][ZC_FORMULARIO_TIPO] : '';
+                // Agrega los botones a los formularios segun el tipo de formulario
+                $this->agregarAcciones($this->elementos[0][ZC_FORMULARIO_TIPO]);
                 // Por lo menos se debio crear un elemento para tener una estructura valida
                 $this->xml2form($rutaXML, $this->elementos);
                 // Guarda los datos del formulario
@@ -101,7 +107,7 @@ class hoja extends xml {
                 // Atributos Formulario, crear una variable con el id del formulario
                 $formulario = new formulario($value);
             } elseif (isset($value[ZC_ELEMENTO]) && $key > 0) {
-                // Otros atributos no definidos, esta funcion se encarga de validar el tipo
+                // Otros atributos no definidos, esta funcion se encarga de validar el tipo de elemento a crear
                 $formulario->agregarAtributo($value);
             } else {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ': No existe el elemento ' . preprint($value, 1));
