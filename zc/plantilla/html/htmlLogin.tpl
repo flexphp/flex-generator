@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/bootstrap.css">
         <!-- CSS Parsley -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/parsley.css">
+{_archivoCSS_}
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>

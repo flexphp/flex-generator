@@ -79,6 +79,24 @@ class formulario {
     private $_formulario = array();
 
     /**
+     * Archivos css creados durante el proceso, estos son utilizados por los archivos html
+     * @var string
+     */
+    private $_css = '';
+
+    /**
+     * Archivos css agregados al formulario, evita que se agregue el mismo archivo mas de una vez
+     * @var array
+     */
+    private $_cssCargados = array();
+
+    /**
+     * Archivos css extras agregados al formulario
+     * @var array
+     */
+    private $_cssExtra = array();
+
+    /**
      * Archivos javascript creados durante el proceso, estos son utilizados por los archivos html
      * @var string
      */
@@ -86,9 +104,15 @@ class formulario {
 
     /**
      * Archivos javascript agregados al formulario, evita que se agregue el mismo archivo mas de una vez
-     * @var string
+     * @var array
      */
     private $_jsCargados = array();
+
+    /**
+     * Archivos javascript extras agregados al formulario
+     * @var array
+     */
+    private $_jsExtra = array();
 
     /**
      * Almacena la plantilla html de la vista seleccionada, formulario de ingreso/modificacion
@@ -287,6 +311,8 @@ class formulario {
             $this->_tipoWS = (isset($caracteristicas[ZC_WS_TIPO]) && '' != $caracteristicas[ZC_WS_TIPO]) ? strtolower($caracteristicas[ZC_TIPO_WS]) : strtolower($this->_tipoWS);
             $this->_metodo = (isset($caracteristicas[ZC_FORMULARIO_METODO]) && '' != $caracteristicas[ZC_FORMULARIO_METODO]) ? strtoupper($caracteristicas[ZC_FORMULARIO_METODO]) : strtoupper($this->_metodo);
             $this->_tipoFormulario = (isset($caracteristicas[ZC_FORMULARIO_TIPO]) && '' != $caracteristicas[ZC_FORMULARIO_TIPO]) ? strtolower($caracteristicas[ZC_FORMULARIO_TIPO]) : strtolower($this->_tipoFormulario);
+            $this->_jsExtra = (isset($caracteristicas[ZC_FORMULARIO_JS_EXTRA]) && '' != $caracteristicas[ZC_FORMULARIO_JS_EXTRA]) ? $caracteristicas[ZC_FORMULARIO_JS_EXTRA] : null;
+            $this->_cssExtra = (isset($caracteristicas[ZC_FORMULARIO_CSS_EXTRA]) && '' != $caracteristicas[ZC_FORMULARIO_CSS_EXTRA]) ? $caracteristicas[ZC_FORMULARIO_CSS_EXTRA] : null;
             // URL del WS a crear
             $this->_urlWS[ZC_ACCION_AGREGAR] = (isset($caracteristicas[ZC_FORMULARIO_WS_AGREGAR]) && '' != $caracteristicas[ZC_FORMULARIO_WS_AGREGAR]) ? $caracteristicas[ZC_FORMULARIO_WS_AGREGAR] : null;
             $this->_urlWS[ZC_ACCION_BUSCAR] = (isset($caracteristicas[ZC_FORMULARIO_WS_BUSCAR]) && '' != $caracteristicas[ZC_FORMULARIO_WS_BUSCAR]) ? $caracteristicas[ZC_FORMULARIO_WS_BUSCAR] : null;
@@ -324,6 +350,10 @@ class formulario {
         $this->_nombreFuncionValidacion = nombreFuncionValidacionDatos();
         // Caracteristicas de la pagina en creacion
         $this->_pagina = new pagina($this->_id, $this->_tipoFormulario, $this->_nombreArchivoControlador, $this->_nombreArchivoModelo);
+        // Agregar archivos javascript extra al formulario
+        $this->javascriptFormulario(explode(';', $this->_jsExtra));
+        // Agregar archivos css extra al formulario
+        $this->cssFormulario(explode(';', $this->_cssExtra));
         return $this;
     }
 
@@ -378,6 +408,7 @@ class formulario {
         $this->_plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
         $this->_plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
         $this->_plantilla->asignarEtiqueta('contenidoFormulario', $this->contenidoFormulario($opciones));
+        $this->_plantilla->asignarEtiqueta('archivoCSS', $this->_css);
         $this->_plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
         $this->_plantilla->asignarEtiqueta('barraProgreso', $this->_pagina->devolverHTMLBarraProgreso());
         $this->_plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoVista);
@@ -401,6 +432,7 @@ class formulario {
         $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
         // Los formularios que no tienen la accion buscar no crean este elemento
         $plantilla->asignarEtiqueta('contenidoFormulario', (isset($this->_filtros[ZC_ACCION_BUSCAR]) ? $this->_filtros[ZC_ACCION_BUSCAR] : ''));
+        $plantilla->asignarEtiqueta('archivoCSS', $this->_css);
         $plantilla->asignarEtiqueta('archivoJavascript', $this->_js);
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoListar);
         return $this;
@@ -631,12 +663,22 @@ class formulario {
     }
 
     /**
-     * Agrea los archivos javascript al formulario
+     * Agrega los archivos javascript al formulario
      * @return \formulario
      */
     public function javascriptFormulario() {
         $javascript = func_get_args();
         $this->agregarJavascriptFormulario($javascript);
+        return $this;
+    }
+
+    /**
+     * Agrega los archivos css al formulario
+     * @return \formulario
+     */
+    public function cssFormulario() {
+        $css = func_get_args();
+        $this->agregarCSSFormulario($css);
         return $this;
     }
 
@@ -823,14 +865,85 @@ class formulario {
     private function agregarJavascriptFormulario($javascript) {
         $rutaJavascript = (is_array($javascript)) ? $javascript : array($javascript);
         foreach ($rutaJavascript as $ruta) {
-            if (isset($ruta) && !is_file($ruta)) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, " Ruta de archivo no valida: {$ruta}!");
-            } else if (isset($ruta) && !isset($this->_jsCargados[$ruta])) {
+            // Si es un array hace un llamado recursivo
+            if (is_array($ruta)) {
+                $this->agregarJavascriptFormulario($ruta);
+                continue;
+            }
+            if (!isset($ruta) || $ruta == '') {
+                // Ruta no valida
+                continue;
+            }
+            // Verifica que el archivo en cuestion exista
+            // 1ro hace la validacion en publico/js, si no existe hace 2da verificacion
+            if (!is_file($ruta)) {
+                // 2do hace la validacion en plantilla/js, sino existe error
+                // Nombre del archivo
+                $js = $ruta;
+                // Ruta hacia el archivo
+                $ruta = '../www/publico/js/' . $js;
+                $rutaTemp = RUTA_GENERADOR_CODIGO . '/plantilla/js/' . $js;
+                if (!is_file($rutaTemp)) {
+                    mostrarErrorZC(__FILE__, __FUNCTION__, " Ruta de archivo js no valida: {$rutaTemp}!");
+                    unset($ruta);
+                } else {
+                    // Copia el archivo de la carpeta plantilla/js a la carpeta publico/js, si existe los sobreescribe
+                    copiar($rutaTemp, $ruta);
+                }
+            }
+            // Archivo existe, lo incluye en el formulario
+            if (isset($ruta) && !isset($this->_jsCargados[$ruta])) {
                 // Registra el archivo como cargado
                 $this->_jsCargados[$ruta] = true;
                 $this->_js .= tabular('<!--Inclusion archivo js  -->', 8);
                 // Cambia la ruta relativa, por una ruta absoluta
-                $this->_js .= tabular("<script type='text/javascript' src='" . convertir2UrlLocal($ruta) . "'></script>", 8);
+                $this->_js .= tabular("<script type=\"text/javascript\" src=\"" . convertir2UrlLocal($ruta) . "\"></script>", 8);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Agrega los archivos css manejados por el formulario
+     * @param array $CSS
+     * @return \formulario
+     */
+    private function agregarCSSFormulario($CSS) {
+        $rutaCSS = (is_array($CSS)) ? $CSS : array($CSS);
+        foreach ($rutaCSS as $ruta) {
+            // Si es un array hace un llamado recursivo
+            if (is_array($ruta)) {
+                $this->agregarCSSFormulario($ruta);
+                continue;
+            }
+            if (!isset($ruta) || $ruta == '') {
+                // Ruta no valida
+                continue;
+            }
+            // Verifica que el archivo en cuestion exista
+            // 1ro hace la validacion en publico/css, si no existe hace 2da verificacion
+            if (!is_file($ruta)) {
+                // 2do hace la validacion en plantilla/css, sino existe error
+                // Nombre del archivo
+                $css = $ruta;
+                // Ruta hacia el archivo
+                $ruta = '../www/publico/css/' . $css;
+                $rutaTemp = RUTA_GENERADOR_CODIGO . '/plantilla/css/' . $css;
+                if (!is_file($rutaTemp)) {
+                    mostrarErrorZC(__FILE__, __FUNCTION__, " Ruta de archivo css no valida: {$rutaTemp}!");
+                    unset($ruta);
+                } else {
+                    // Copia el archivo de la carpeta plantilla/css a la carpeta publico/css, si existe los sobreescribe
+                    copiar($rutaTemp, $ruta);
+                }
+            }
+            // Archivo existe, lo incluye en el formulario
+            if (isset($ruta) && !isset($this->_cssCargados[$ruta])) {
+                // Registra el archivo como cargado
+                $this->_cssCargados[$ruta] = true;
+                $this->_css .= tabular('<!--Inclusion archivo css  -->', 8);
+                // Cambia la ruta relativa, por una ruta absoluta
+                $this->_css .= tabular("<link rel=\"stylesheet\" type=\"text/css\" href=\"" . convertir2UrlLocal($ruta) . "\">", 8);
             }
         }
         return $this;

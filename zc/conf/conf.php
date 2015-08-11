@@ -46,6 +46,11 @@ define('ZC_FORMULARIO_WS_MODIFICAR', 'ws_modificar');
 define('ZC_FORMULARIO_WS_BORRAR', 'ws_borrar');
 define('ZC_FORMULARIO_WS_AJAX', 'ws_ajax');
 define('ZC_FORMULARIO_WS_PRECARGAR', 'ws_precargar');
+// Archivos javascript extra que se deben cargar, estos deben
+// estar ubicados en la carpeta plantilla/js, deben estar seprados por ;
+// Igual que los archivos js
+define('ZC_FORMULARIO_JS_EXTRA', 'javascript_extra');
+define('ZC_FORMULARIO_CSS_EXTRA', 'css_extra');
 // Define el campo principal dentro del formulario, donde se coloca el puntero al cargar el formulario
 define('ZC_AUTOFOCO', 'campo_principal');
 // Tipos de elementos aceptados
