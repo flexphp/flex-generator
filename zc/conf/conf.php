@@ -91,6 +91,8 @@ define('ZC_OBLIGATORIO_ERROR_PREDETERMINADO', 'Campo obligatorio');
 // Define el valor predeterminado del campo
 define('ZC_VALOR_PREDETERMINADO', 'por_defecto_es');
 define('ZC_MENSAJE_AYUDA', 'mensaje_ayuda');
+define('ZC_DISTRIBUCION_ETIQUETA', 'distribucion_etiqueta');
+define('ZC_DISTRIBUCION_ELEMENTO', 'distribucion_elemento');
 // Configuracion de la base datos
 define('ZC_MOTOR_MYSQL', 'mysql');
 define('ZC_MOTOR_AUTOINCREMENTAL', 'auto');

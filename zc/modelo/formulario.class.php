@@ -1015,6 +1015,8 @@ class formulario {
                 $plantilla->asignarEtiqueta('c' . $id, $prop['c' . $id]);
                 // Etiqueta e input
                 $plantilla->asignarEtiqueta('g' . $id, $prop['g' . $id]);
+                // Mensaje de ayuda
+                $plantilla->asignarEtiqueta('a' . $id, $prop['a' . $id]);
             }
             $contenidoFormulario .= $plantilla->devolverPlantilla();
             // Elimina los elementos cargados

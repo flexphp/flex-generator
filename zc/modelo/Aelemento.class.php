@@ -111,6 +111,9 @@ abstract class Aelemento {
         $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? ucfirst(trim($this->_prop[ZC_ETIQUETA])) : ucfirst($this->_prop[ZC_ID]);
         // Tipo Elemento
         $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : null;
+        // Distribucion en medidas bootstrap de los campos col-xs-X col-sm-X col-md-X col-lg-X
+        $this->_prop[ZC_DISTRIBUCION_ETIQUETA] = (isset($this->_prop[ZC_DISTRIBUCION_ETIQUETA]) && '' != $this->_prop[ZC_DISTRIBUCION_ETIQUETA]) ? $this->_prop[ZC_DISTRIBUCION_ETIQUETA] : null;
+        $this->_prop[ZC_DISTRIBUCION_ELEMENTO] = (isset($this->_prop[ZC_DISTRIBUCION_ELEMENTO]) && '' != $this->_prop[ZC_DISTRIBUCION_ELEMENTO]) ? $this->_prop[ZC_DISTRIBUCION_ELEMENTO] : null;
 
         // No todos los elementos necesitan todas las propedades, minimiza uso de memoria
         if (in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA, ZC_ELEMENTO_CHECKBOX, ZC_ELEMENTO_RADIO, ZC_ELEMENTO_LISTA))) {
@@ -263,8 +266,8 @@ abstract class Aelemento {
      */
     protected function plantilla() {
         $html = tabular("<div class='form-group'>", 20);
-        $html .= tabular($this->devolverLabel('col-sm-2 col-md-3 col-lg-4'), 24);
-        $html .= tabular("<div class='col-sm-9 col-md-9 col-lg-8'>", 24);
+        $html .= tabular($this->devolverLabel($this->_prop[ZC_DISTRIBUCION_ETIQUETA]), 24);
+        $html .= tabular("<div class='" . $this->_prop[ZC_DISTRIBUCION_ETIQUETA] . "'>", 24);
         $html .= tabular($this->devolverElemento(), 28);
         $html .= tabular("</div>", 24);
         $html .= tabular("</div>", 20);
@@ -324,6 +327,8 @@ abstract class Aelemento {
         $this->_prop['c' . $this->devolverId()] = $this->devolverElemento();
         // Label y Elemento
         $this->_prop['g' . $this->devolverId()] = $this->plantilla();
+        // Mensaje de ayuda
+        $this->_prop['a' . $this->devolverId()] = $this->devolverAyuda();
         // Pirpiedades del elemento
         return $this->_prop;
     }
@@ -356,4 +361,17 @@ abstract class Aelemento {
         return $this->_html;
     }
 
+    /**
+     * Retorna la ayuda para colocarla dentro de un elemento personalizado
+     * Es un metodo publico, se utiliza desde fuera de la clase, ver class buscar
+     * @return string
+     */
+    public function devolverAyuda() {
+        $html = '';
+        if(isset($this->_prop[ZC_MENSAJE_AYUDA])) {
+            // Solo los campos tipo input tienen esta propiedad
+            $html = $this->ayuda();
+        }
+        return $html;
+    }
 }
