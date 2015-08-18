@@ -47,13 +47,13 @@ class checkbox extends Aelemento {
     private function opciones($opciones) {
         if (is_string($opciones)) {
             // Se agrega la opcion vacia al inicio del listado
-            $cada_opcion = explode(',', $opciones);
+            $cada_opcion = explode(ZC_ELEMENTO_OPCIONES_SEPARADOR, $opciones);
             $opciones = array();
             foreach ($cada_opcion as $value) {
-                if (strpos($value, '=') === false) {
-                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de checkbox no valido, se espera id1=valor1, id2=valor2');
+                if (strpos($value, ZC_ELEMENTO_OPCIONES_ASIGNADOR) === false) {
+                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de checkbox [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_ELEMENTO_OPCIONES_SEPARADOR . 'id2 ' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor2');
                 }
-                list($id, $valor) = explode('=', $value);
+                list($id, $valor) = explode(ZC_ELEMENTO_OPCIONES_ASIGNADOR, $value);
                 $opciones[trim($id)] = trim($valor);
             }
         }
@@ -73,7 +73,7 @@ class checkbox extends Aelemento {
                     " type='checkbox'" .
                     " class='checkbox'" .
                     // Permite extraer rapidamente la descripcion de la opcion, se usa en el buscador
-                    " zc-texto='{$valor}'" .
+                    " zc-texto='" . htmlentities($valor) . "'" .
                     // Idenfitificador
                     // El nombre se maneja como arreglo para permitir enviar varios valores
                     " id='{$idOpcion}'" .
@@ -83,7 +83,7 @@ class checkbox extends Aelemento {
                     // Ayuda visual
                     $this->ayuda() .
                     "/>" .
-                    "$valor" .
+                    html_entity_decode($valor) .
                     "</label>", 36);
             // Solo aplica para un elemento
             $config = '';

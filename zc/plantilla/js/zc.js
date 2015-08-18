@@ -506,7 +506,7 @@ function ZCAccionPaginar(miURL, formulario) {
 function ZCPrecargarSeleccion(lista, rpta) {
     // Valor de campo
     var id = '';
-    // Descripcon del campo
+    // Descripcion del campo
     var valor = '';
     var opcion = '';
     for(var i = 0; i < rpta.cta; ++i) {

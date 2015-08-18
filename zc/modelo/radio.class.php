@@ -48,37 +48,21 @@ class radio extends Aelemento {
      * debe ser del tipo: id1 = valor1, id2 = valor2
      */
     private function opciones($opciones) {
-        /*$opcion = array();
-        if (is_string($opciones)) {
-            // Se agrega la opcion vacia al inicio del listado
-            $cada_opcion = explode(',', $opciones);
-            foreach ($cada_opcion as $value) {
-                if (strpos($value, '=') === false) {
-                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de radio (' . $this->_id . ') no valido, se espera id1=valor1, id2=valor2');
-                }
-                list($id, $valor) = explode('=', $value);
-                $opcion[trim($id)] = trim($valor);
-            }
-        }
-
-        if (!is_array($opcion) || count($opcion) == 0) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de radio (' . $this->_id . ') no valido, [' . $opciones . ']');
-        }*/
-
         $opcion = array();
         if (is_string($opciones)) {
-            if (strpos($opciones, ZC_MOTOR_SEPARADOR) === false && strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista no valido, se espera id1=valor1 o tabla::campo::tipoJoin');
+            if (strpos($opciones, ZC_ELEMENTO_OPCIONES_ASIGNADOR) === false && strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) {
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de radio [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_ELEMENTO_OPCIONES_SEPARADOR . 'id2' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor2 o tabla' . ZC_MOTOR_JOIN_SEPARADOR . 'campo' . ZC_MOTOR_JOIN_SEPARADOR . 'tipoJoin');
             }
             // Agrega la opcion vacia a la lista de seleccion, aplica para el ajax como para el proceso no ajax
-            $separador = (strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) ? ZC_MOTOR_SEPARADOR : ZC_MOTOR_JOIN_SEPARADOR;
+            $separador = (strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) ? ZC_ELEMENTO_OPCIONES_SEPARADOR : ZC_MOTOR_JOIN_SEPARADOR;
             if ($separador != ZC_MOTOR_JOIN_SEPARADOR) {
-                $cada_opcion = explode(',', $opciones);
+                $cada_opcion = explode($separador, $opciones);
                 foreach ($cada_opcion as $value) {
-                    if (strpos($value, $separador) === false) {
-                        mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista no valido, se espera id1' . ZC_MOTOR_SEPARADOR . 'valor1');
+                    if (strpos($value, ZC_ELEMENTO_OPCIONES_ASIGNADOR) === false) {
+                        die('XXX: '. $value . '->' . ZC_ELEMENTO_OPCIONES_ASIGNADOR);
+                        mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de radio [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_ELEMENTO_OPCIONES_SEPARADOR . 'id2 ' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor2');
                     }
-                    list($id, $valor) = explode(ZC_MOTOR_SEPARADOR, $value);
+                    list($id, $valor) = explode(ZC_ELEMENTO_OPCIONES_ASIGNADOR, $value);
                     $opcion[trim($id)] = trim($valor);
                 }
             } else {
@@ -88,6 +72,7 @@ class radio extends Aelemento {
         }
 
         foreach ($opcion as $id => $valor) {
+            $valor = html_entity_decode($valor);
             if (!isset($config)) {
                 // Solo agrega la configuracion a un elemento dentro del grupo
                 $config = // Autofoco
@@ -102,7 +87,7 @@ class radio extends Aelemento {
                     " type='radio'" .
                     " class='radio'" .
                     // Permite extraer rapidamente la descripcion de la opcion, se usa en el buscador
-                    " zc-texto='{$valor}'" .
+                    " zc-texto='" . htmlentities($valor) . "'" .
                     // Identificador campo
                     " id='{$idOpcion}'" .
                     " name='{$this->_id}'" .
@@ -111,7 +96,7 @@ class radio extends Aelemento {
                     // Ayuda visual
                     $this->ayuda($this->_etiqueta . ': ' . $valor) .
                     "/>" .
-                    "$valor" .
+                    html_entity_decode($valor) .
                     "</label>", 36);
             // Solo aplica para un elemento
             $config = '';

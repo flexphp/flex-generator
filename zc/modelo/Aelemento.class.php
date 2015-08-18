@@ -243,6 +243,15 @@ abstract class Aelemento {
      * en el primer campo editable del formulario
      * @param string $autofoco Bandera para saber si se debe crear o no: true|false
      */
+    protected function placeholder() {
+        return (isset($this->_prop[ZC_PLACEHOLDER])) ? " placeholder='" . $this->_prop[ZC_PLACEHOLDER] . "'" : '';
+    }
+
+    /**
+     * Construye el html para el autofoco del campo, esto permite posicinar el puntero
+     * en el primer campo editable del formulario
+     * @param string $autofoco Bandera para saber si se debe crear o no: true|false
+     */
     protected function autofoco($autofoco = false) {
         $this->_autofoco = ($autofoco) ? ' autofocus=\'autofocus\'' : '';
         return $this;
@@ -253,11 +262,10 @@ abstract class Aelemento {
      * @param string $msj Mensaje de ayuda a mostrar, por defecto es la etiqueta del campo
      */
     protected function ayuda($msj = '') {
-        $html = " rel='tooltip' data-html='true'" .
+        return " rel='tooltip' data-html='true'" .
                 " data-placement='{$this->_posicionTitle}'" .
                 " data-toggle='tooltip'" .
                 " data-original-title='" . (($msj == '') ? $this->_prop[ZC_MENSAJE_AYUDA] : $msj) . "'";
-        return $html;
     }
 
     /**

@@ -72,6 +72,14 @@ class lista extends Aelemento {
     }
 
     /**
+     * La opcion por defecto tienen el placeholder y por css se  oculta
+     * @return string
+     */
+    function placeholder() {
+        return "<option value='' selected='selected'>" . ((isset($this->_prop[ZC_PLACEHOLDER])) ? $this->_prop[ZC_PLACEHOLDER] : '') . "</option>";
+    }
+
+    /**
      * Devuelve el html con el conjunto de valores posible para el listado
      * @param type $opciones Valores que puede adoptar la lista de seleccion,
      * debe ser del tipo: id1 = valor1, id2 = valor2
@@ -79,19 +87,19 @@ class lista extends Aelemento {
     private function opciones($opciones) {
         $opcion = array();
         if (is_string($opciones)) {
-            if (strpos($opciones, ZC_MOTOR_SEPARADOR) === false && strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista no valido, se espera id1=valor1 o tabla::campo::tipoJoin');
+            if (strpos($opciones, ZC_ELEMENTO_OPCIONES_SEPARADOR) === false && strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) {
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_MOTOR_JOIN_SEPARADOR . 'id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1 o tabla' . ZC_MOTOR_JOIN_SEPARADOR . 'campo' . ZC_MOTOR_JOIN_SEPARADOR . 'tipoJoin');
             }
             // Agrega la opcion vacia a la lista de seleccion, aplica para el ajax como para el proceso no ajax
-            $opcion[''] = '';
-            $separador = (strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) ? ZC_MOTOR_SEPARADOR : ZC_MOTOR_JOIN_SEPARADOR;
+            $this->_opciones .= tabular($this->placeholder(), 32);
+            $separador = (strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) ? ZC_ELEMENTO_OPCIONES_SEPARADOR : ZC_MOTOR_JOIN_SEPARADOR;
             if ($separador != ZC_MOTOR_JOIN_SEPARADOR) {
                 $cada_opcion = explode(',', $opciones);
                 foreach ($cada_opcion as $value) {
-                    if (strpos($value, $separador) === false) {
-                        mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista no valido, se espera id1' . ZC_MOTOR_SEPARADOR . 'valor1');
+                    if (strpos($value, ZC_ELEMENTO_OPCIONES_ASIGNADOR) === false) {
+                        mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1');
                     }
-                    list($id, $valor) = explode(ZC_MOTOR_SEPARADOR, $value);
+                    list($id, $valor) = explode(ZC_ELEMENTO_OPCIONES_SEPARADOR, $value);
                     $opcion[trim($id)] = trim($valor);
                 }
             } else {

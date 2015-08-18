@@ -60,6 +60,9 @@ define('ZC_ELEMENTO_RADIO', 'radio');
 define('ZC_ELEMENTO_CHECKBOX', 'checkbox');
 define('ZC_ELEMENTO_LISTA', 'lista');
 define('ZC_ELEMENTO_OPCIONES', 'valores');
+// Separador y asignador de los valores html que no utilizan tablas de datos
+define('ZC_ELEMENTO_OPCIONES_SEPARADOR', '||');
+define('ZC_ELEMENTO_OPCIONES_ASIGNADOR', '==');
 // Tipos de datos aceptados
 define('ZC_DATO', 'que_dato_recibira');
 define('ZC_DATO_NUMERICO', 'numero');
@@ -93,11 +96,10 @@ define('ZC_VALOR_PREDETERMINADO', 'por_defecto_es');
 define('ZC_MENSAJE_AYUDA', 'mensaje_ayuda');
 define('ZC_DISTRIBUCION_ETIQUETA', 'distribucion_etiqueta');
 define('ZC_DISTRIBUCION_ELEMENTO', 'distribucion_elemento');
+define('ZC_PLACEHOLDER', 'placeholder');
 // Configuracion de la base datos
 define('ZC_MOTOR_MYSQL', 'mysql');
 define('ZC_MOTOR_AUTOINCREMENTAL', 'auto');
-// Seperador de los listas (select html) que no utilizan tablas de datos
-define('ZC_MOTOR_SEPARADOR', '=');
 // Seperador de los parametros para hacer el join entres las tablas
 define('ZC_MOTOR_JOIN_SEPARADOR', '::');
 define('ZC_MOTOR_JOIN_IZQUIERDA', 'left');

@@ -153,6 +153,7 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
+                $this->placeholder() .
                 "/>";
         return $this;
     }
@@ -181,6 +182,7 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
+                $this->placeholder() .
                 "/>" .
                 "<span class='input-group-addon'>" .
                 "<span class='glyphicon glyphicon-calendar'></span>" .
@@ -213,6 +215,7 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
+                $this->placeholder() .
                 "/> " .
                 "<span class='input-group-addon'>" .
                 "<span class='glyphicon glyphicon-calendar'></span>" .
@@ -245,6 +248,7 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
+                $this->placeholder() .
                 "/>" .
                 "<span class='input-group-addon'>" .
                 "<span class=\"glyphicon glyphicon-time\"></span>" .
@@ -276,6 +280,7 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
+                $this->placeholder() .
                 "/>";
         if ($this->_prop[ZC_LONGITUD_MAXIMA] !== -1) {
             // No es de la pantalla login
@@ -320,6 +325,7 @@ class caja extends Aelemento {
                 " {$this->_autofoco}" .
                 // Ayuda visual
                 $this->ayuda() .
+                $this->placeholder() .
                 "/>" .
                 " </textarea>";
         return $this;
