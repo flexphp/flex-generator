@@ -130,7 +130,7 @@ class bd extends conexion {
             case ZC_DATO_EMAIL:
             case ZC_DATO_URL:
                 if (!is_numeric($maxima) || $maxima == 0) {
-                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en longitud maxima, por el tipo de campo es obligatorio colocarlo');
+                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en longitud maxima, por el tipo de campo (' . $dato . ') es obligatorio colocarlo');
                 }
                 $longitud = "($maxima)";
                 break;

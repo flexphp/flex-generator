@@ -205,15 +205,34 @@ abstract class Aelemento {
 
     /**
      * Hace las validaciones de la longitud en el campo
+     * @param string $tipo Tipo de dato del campo, numerico, texto, fecha, etc
      * @param string $minima Longitud minima del campo
      * @param string $maxima Longitud maxima del campo
      * @param string $errorMinima Error de la longitud minima del campo
      * @param string $errorMaxima Error de la longitud maxima del campo
      */
-    protected function longitud($minima, $maxima, $errorMinima, $errorMaxima) {
+    protected function longitud($tipo, $minima, $maxima, $errorMinima, $errorMaxima) {
         $errorMin = (isset($errorMinima)) ? $errorMinima : str_replace('&[Longitud]&', $minima, ZC_LONGITUD_MINIMA_ERROR_PREDETERMINADO);
         $errorMax = (isset($errorMaxima)) ? $errorMaxima : str_replace('&[Longitud]&', $maxima, ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO);
         switch (true) {
+            // Para datos numericos
+            // Tiene valor maxima y minima
+            case $tipo == ZC_DATO_NUMERICO && isset($minima) && $minima > 0 && isset($maxima) && $maxima > 0:
+                $this->_longitud = "data-parsley-range='[$minima,$maxima]'";
+                $this->_msjLongitud = "data-parsley-range-message='Valor entre entre ($minima,$maxima)'";
+                break;
+            // Tiene valor minima
+            case $tipo == ZC_DATO_NUMERICO && isset($minima) && $minima > 0:
+                $this->_longitud = "data-parsley-min='$minima'";
+                $this->_msjLongitud = "data-parsley-min-message='$errorMin'";
+                break;
+            // Tiene valor maximo
+            case $tipo == ZC_DATO_NUMERICO && isset($maxima) && $maxima > 0:
+                $this->_longitud = "data-parsley-max='$maxima'";
+                $this->_msjLongitud = "data-parsley-max-message='$errorMax'";
+                break;
+
+            // Para cualquier otro tipo de dato
             // Tiene longitud maxima y minima
             case isset($minima) && $minima > 0 && isset($maxima) && $maxima > 0:
                 $this->_longitud = "data-parsley-length='[$minima,$maxima]'";

@@ -202,10 +202,14 @@ function validarArgumentoLongitudMaxima($id, $etiqueta, $tipo, $longitud = -1, $
     $validacion = '';
     $msjValidacion = (trim($msj) != '') ? $msj : ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO;
     switch ($tipo) {
-        case ZC_DATO_NUMERICO:
-        // Datos numericos no se les valida la longitud?
         case ZC_DATO_CONTRASENA:
             // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
+            break;
+        case ZC_DATO_NUMERICO:
+            // Datos numericos no se les valida la longitud, se les valida el valor maximo
+            if ($longitud > 0) {
+                $validacion = tabular("\$this->zc->valorMaximo('{$id}', \$dato['{$id}'], '{$tipo}', $longitud, '{$msjValidacion}');", 12);
+            }
             break;
         default :
             if ($longitud > 0) {
@@ -229,10 +233,14 @@ function validarArgumentoLongitudMinima($id, $etiqueta, $tipo, $longitud = 0, $m
     $validacion = '';
     $msjValidacion = (trim($msj) != '') ? $msj : ZC_LONGITUD_MINIMA_ERROR_PREDETERMINADO;
     switch ($tipo) {
-        case ZC_DATO_NUMERICO:
-        // Datos numericos no se les valida la longitud?
         case ZC_DATO_CONTRASENA:
             // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
+            break;
+        case ZC_DATO_NUMERICO:
+            // Datos numericos no se les valida la longitud, se les valida el valor minimo
+            if ($longitud > 0) {
+                $validacion = tabular("\$this->zc->valorMinimo('{$id}', \$dato['{$id}'], '{$tipo}', $longitud, '{$msjValidacion}');", 12);
+            }
             break;
         default :
             if ($longitud > 0) {

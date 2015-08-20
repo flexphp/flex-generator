@@ -261,6 +261,58 @@ class Zc {
     }
 
     /**
+     * Validacion del valor maximo para el campo
+     * @param string $id Identificador unico del campo
+     * @param string $valor Valor del campo a validar
+     * @param string $tipo Determina el tipo de dato para saber si se debe validar o no
+     * @param string $valorMaximo Valor maximo permitido para el campo, valores por encima generan error
+     * @param string $textoError Error a devolver en caso de error en validacion
+     * @return string
+     */
+    function valorMaximo($id, $valor, $tipo, $valorMaximo = 0, $textoError = '') {
+        if ('' == $valor) {
+            return $this->obtenerError($id);
+        }
+        switch ($tipo) {
+            case self::NUMERICO:
+                if ($valorMaximo > 0 && $valor > $valorMaximo) {
+                    $this->setearError($id, str_replace('&[Longitud]&', $valorMaximo, $textoError));
+                }
+                break;
+            default:
+                break;
+
+        }
+        return $this->obtenerError($id);
+    }
+
+        /**
+     * Validacion del valor minimo para el campo
+     * @param string $id Identificador unico del campo
+     * @param string $valor Valor del campo a validar
+     * @param string $tipo Determina el tipo de dato para saber si se debe validar o no
+     * @param string $valorMinimo Valor minimo permitido para el campo, valores por debajo generan error
+     * @param string $textoError Error a devolver en caso de error en validacion
+     * @return string
+     */
+    function valorMinimo($id, $valor, $tipo, $valorMinimo = 0, $textoError = '') {
+        if ('' == $valor) {
+            return $this->obtenerError($id);
+        }
+        switch ($tipo) {
+            case self::NUMERICO:
+                if ($valorMinimo > 0 && $valor < $valorMinimo) {
+                    $this->setearError($id, str_replace('&[Longitud]&', $valorMinimo, $textoError));
+                }
+                break;
+            default:
+                break;
+
+        }
+        return $this->obtenerError($id);
+    }
+
+    /**
      * Validacion de longitud maxima para el campo
      * @param string $id Identificador unico del campo
      * @param string $valor Valor del campo a validar
@@ -274,8 +326,6 @@ class Zc {
             return $this->obtenerError($id);
         }
         switch ($tipo) {
-            case self::NUMERICO:
-                // Datos numericos no se les valida la longitud
             case self::CONTRASENA:
                 // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
                 break;
@@ -283,7 +333,7 @@ class Zc {
                 if ($longitud > 0 && strlen($valor) > $longitud) {
                     $this->setearError($id, str_replace('&[Longitud]&', $longitud, $textoError));
                 }
-            break;
+                break;
         }
         return $this->obtenerError($id);
     }
@@ -302,8 +352,6 @@ class Zc {
             return $this->obtenerError($id);
         }
         switch ($tipo) {
-            case self::NUMERICO:
-                // Datos numericos no se les valida la longitud
             case self::CONTRASENA:
                 // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
                 break;
@@ -311,7 +359,7 @@ class Zc {
                 if ($longitud > 0 && strlen($valor) < $longitud) {
                     $this->setearError($id, str_replace('&[Longitud]&', $longitud, $textoError));
                 }
-            break;
+                break;
         }
         return $this->obtenerError($id);
     }
