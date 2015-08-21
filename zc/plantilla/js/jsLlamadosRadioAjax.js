@@ -9,18 +9,16 @@ $(document).ready(function () {
         dataType: 'JSON',
         data: 'accion=ajax&tablas={_nombreTabla_}&campos={_nombreCampos_}',
         beforeSend: function(){
-            // Inactivar la lista desplegable mientras se cargan los valores
-            $('#{_nombreRadio_}').addClass('disabled').prop('disabled', true);
+            // Agregar aqui el codigo
         },
         success: function(rpta){
             if(rpta.error === undefined){
                 // Agrega las opciones al select
-                ZCPrecargarRadio('{_nombreRadio_}', rpta);
+                ZCPrecargarRadio("{_nombreContenedor_}", "{_nombreRadio_}", "{_obligatorio_}", "{_mensajeObligatorio_}", rpta);
             }
         },
         complete: function(){
-            // Activar el boton cuando se completa la accion, con error o sin error
-            $('#{_nombreRadio_}').removeClass('disabled').prop('disabled', false);
+            // Agregar aqui el codigo
         },
         error: function(){
             console.log('Error en el servicio');

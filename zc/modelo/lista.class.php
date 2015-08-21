@@ -94,12 +94,12 @@ class lista extends Aelemento {
             $this->_opciones .= tabular($this->placeholder(), 32);
             $separador = (strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) ? ZC_ELEMENTO_OPCIONES_SEPARADOR : ZC_MOTOR_JOIN_SEPARADOR;
             if ($separador != ZC_MOTOR_JOIN_SEPARADOR) {
-                $cada_opcion = explode(',', $opciones);
+                $cada_opcion = explode(ZC_ELEMENTO_OPCIONES_SEPARADOR, $opciones);
                 foreach ($cada_opcion as $value) {
                     if (strpos($value, ZC_ELEMENTO_OPCIONES_ASIGNADOR) === false) {
                         mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1');
                     }
-                    list($id, $valor) = explode(ZC_ELEMENTO_OPCIONES_SEPARADOR, $value);
+                    list($id, $valor) = explode(ZC_ELEMENTO_OPCIONES_ASIGNADOR, $value);
                     $opcion[trim($id)] = trim($valor);
                 }
             } else {

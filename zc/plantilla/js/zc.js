@@ -531,16 +531,20 @@ function ZCPrecargarSeleccion(lista, rpta) {
 
 /**
  * Carga de forma ajax los posibles valores del campo
- * @param {string} lista Nombre del campo que se esta contruyendo
+ * @param {string} contenedor Nombre del div donde se agregaran las opciones
+ * @param {string} radio Nombre del campo que se esta contruyendo
+ * @param {string} obligatorio indica si es obligatorio el campo
+ * @param {string} msjObligatorio Mensaje deerror para los campos obligatorios
  * @param {json} rpta Respuesta de los valores devueltos por el ervidor
  * @returns {undefined}
  */
-function ZCPrecargarRadio(radio, rpta) {
+function ZCPrecargarRadio(contenedor, radio, obligatorio, msjObligatorio, rpta) {
     // Valor de campo
     var id = '';
     // Descripcon del campo
     var valor = '';
     var opcion = '';
+    var htmlExtra = '';
     for(var i = 0; i < rpta.cta; ++i) {
         for (var key in rpta.infoEncabezado[i]) {
             if (rpta.infoEncabezado[i].hasOwnProperty(key)) {
@@ -552,6 +556,13 @@ function ZCPrecargarRadio(radio, rpta) {
                 }
             }
         }
+        if(0 == i && '' != obligatorio) {
+            // Solo se anade en el primer elemento
+            htmlExtra = obligatorio + ' ' + msjObligatorio;
+        } else {
+            htmlExtra = '';
+        }
+
         opcion += "<label class='radio-inline' for='" + id + "'>" +
                     "<input" +
                     " type='radio'" +
@@ -559,9 +570,10 @@ function ZCPrecargarRadio(radio, rpta) {
                     // Permite extraer rapidamente la descripcion de la opcion, se usa en el buscador
                     " zc-texto='" + valor +"'" +
                     // Identificador campo
-                    " id='" + id + "'" +
-                    " name='" + id + "'" +
+                    " id='" + radio + "_" + id + "'" +
+                    " name='" + radio + "'" +
                     " value='" + valor + "'" +
+                    htmlExtra +
                     "/>" +
                     valor +
                     "</label>";
@@ -570,7 +582,7 @@ function ZCPrecargarRadio(radio, rpta) {
         valor = '';
     }
     // Agrega las opciones al campo
-    $('#'+radio).append(opcion);
+    $('#' + contenedor).append(opcion);
 }
 
 /**

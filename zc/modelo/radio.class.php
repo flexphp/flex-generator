@@ -6,6 +6,11 @@
 class radio extends Aelemento {
 
     /**
+     * Id del contanenedor de los radio, se utiliza para ir anadiendo cada una de las opciones
+     */
+    private $_contenedorRadio = '';
+
+    /**
      * HTML con el conjunto de opciones "<option></option>" posibles para la lista
      * @var string
      */
@@ -20,9 +25,12 @@ class radio extends Aelemento {
         parent::__construct($caracteristicas);
         // Crear el nombre de controlador en minuscula
         $this->_controlador = strtolower($controlador);
+        // Nombre del contenedor donde se crearan los campos
+        $this->_contenedorRadio = 'radio_' . $this->_id;
         $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
         $this->opciones($this->_prop[ZC_ELEMENTO_OPCIONES]);
         $this->autofoco($this->_prop[ZC_AUTOFOCO]);
+
     }
 
     /**
@@ -34,10 +42,11 @@ class radio extends Aelemento {
      * Cada una inicia con una columna en blanco (margen) derecho
      */
     public function crear() {
+
         $this->_html = tabular("<div class='table table-bordered'>", 0);
-        $this->_html .= tabular("<div id='radio-{$this->_id}' class='text-center radio'>", 32);
+        $this->_html .= tabular("<div id='{$this->_contenedorRadio}' class='text-center'>", 32);
         $this->_html .= $this->_opciones;
-        $this->_html .= tabular("</div>", 32);
+        $this->_html .= tabular("</div>", 0);
         $this->_html .= tabular("</div>", 28);
         return $this;
     }
@@ -59,7 +68,6 @@ class radio extends Aelemento {
                 $cada_opcion = explode($separador, $opciones);
                 foreach ($cada_opcion as $value) {
                     if (strpos($value, ZC_ELEMENTO_OPCIONES_ASIGNADOR) === false) {
-                        die('XXX: '. $value . '->' . ZC_ELEMENTO_OPCIONES_ASIGNADOR);
                         mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de radio [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_ELEMENTO_OPCIONES_SEPARADOR . 'id2 ' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor2');
                     }
                     list($id, $valor) = explode(ZC_ELEMENTO_OPCIONES_ASIGNADOR, $value);
@@ -120,7 +128,10 @@ class radio extends Aelemento {
             $plantilla->asignarEtiqueta('nombreControlador', $this->_controlador);
             $plantilla->asignarEtiqueta('nombreTabla', $this->_joinTablas['tabla']);
             $plantilla->asignarEtiqueta('nombreCampos', $this->_joinTablas['campo']);
-            $plantilla->asignarEtiqueta('nombreRadio', 'radio-' . $this->_id);
+            $plantilla->asignarEtiqueta('nombreContenedor', $this->_contenedorRadio);
+            $plantilla->asignarEtiqueta('nombreRadio', $this->_id);
+            $plantilla->asignarEtiqueta('obligatorio', $this->_obligatorio);
+            $plantilla->asignarEtiqueta('mensajeObligatorio', $this->_msjObligatorio);
             $plantilla->crearPlantilla('../www/publico/js', 'js', 'ajax_' . $this->_joinTablas['tabla']);
             // Agregar archivo creado al javascript al formulario
             $this->_ajax = $plantilla->devolver();

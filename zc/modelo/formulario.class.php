@@ -1018,6 +1018,12 @@ class formulario {
                 // Mensaje de ayuda
                 $plantilla->asignarEtiqueta('a' . $id, $prop['a' . $id]);
             }
+            // Hace el reemplazo de otros  reemplazos normales
+            $plantilla->asignarEtiqueta('idFormulario', $this->_id);
+            $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControlador);
+            $plantilla->asignarEtiqueta('nombreFormulario', $this->_nombre);
+            $plantilla->asignarEtiqueta('metodoFormulario', $this->_metodo);
+
             $contenidoFormulario .= $plantilla->devolverPlantilla();
             // Elimina los elementos cargados
             unset($this->_formulario['elementos']);
