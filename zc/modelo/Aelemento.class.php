@@ -62,6 +62,7 @@ abstract class Aelemento {
         $this->verificar();
         $this->_id = $this->_prop[ZC_ID];
         $this->_etiqueta = $this->_prop[ZC_ETIQUETA];
+        $this->autofoco($this->_prop[ZC_AUTOFOCO]);
     }
 
     /**
