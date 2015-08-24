@@ -15,4 +15,6 @@ $(document).ready(function () {
     });
     // Activar botones de acciones
     ZCActivarBotonPrincipal('{_idFormulario_}');
+    // Inicializa las restricciones de los campos del formulario {_idFormulario_}
+    init('{_accionInit_}', '{_idFormulario_}');
 });

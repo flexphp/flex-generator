@@ -234,6 +234,12 @@ class formulario {
     private $_tablasRelacionadas = '';
 
     /**
+     * Configuracion de los campos para las validaciones
+     * @var string
+     */
+    private $_configuracionCampo = '';
+
+    /**
      * Nombre del archivo controlador del WS creado en /controllers
      * @var string
      */
@@ -480,6 +486,7 @@ class formulario {
         $plantilla->asignarEtiqueta('accionModificar', ZC_ACCION_MODIFICAR);
         $plantilla->asignarEtiqueta('accionBorrar', ZC_ACCION_BORRAR);
         $plantilla->asignarEtiqueta('accionPrecargar', ZC_ACCION_PRECARGAR);
+        $plantilla->asignarEtiqueta('accionInit', ZC_ACCION_INIT);
         $plantilla->asignarEtiqueta('llamadosAjax', $this->_llamadosAjax);
         $plantilla->asignarEtiqueta('procesoBarraProgreso', $this->_pagina->devolverJsBarraProgreso());
         $plantilla->asignarEtiqueta('navegacion', $this->_pagina->devolverJsNavegacion());
@@ -505,6 +512,7 @@ class formulario {
         $plantilla->asignarEtiqueta('tablasRelacionadas', $this->_tablasRelacionadas);
         $plantilla->asignarEtiqueta('funcionesModelo', implode(FIN_DE_LINEA, $this->_funcionesModelo));
         $plantilla->asignarEtiqueta('validacionModelo', $this->_validacionModelo);
+        $plantilla->asignarEtiqueta('configuracionCampo', $this->_configuracionCampo);
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoModeloServidor);
         return $this;
     }
@@ -573,6 +581,7 @@ class formulario {
                 case ZC_ACCION_PRECARGAR:
                 case ZC_ACCION_AJAX:
                 case ZC_ACCION_LOGUEAR:
+                case ZC_ACCION_INIT:
                     $this->agregarAccionFormulario($caracteristicas);
                     break;
                 default:
@@ -704,15 +713,22 @@ class formulario {
         $this->_aliasCampos .= aliasCampos('id', 'id', $tabla);
         foreach ($this->_elementos as $id => $caracteristicas) {
             // Validacion obligatoriedad
-            $validacion .= tabular("if (\$validarDato && isset(\$dato['{$caracteristicas[ZC_ID]}'])) {", 8);
-            $validacion .= validarArgumentoObligatorio($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
+            $configuracionCampo = validarArgumentoObligatorio($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_OBLIGATORIO], $caracteristicas[ZC_OBLIGATORIO_ERROR]);
             // Validacion tipo de dato Entero
-            $validacion .= validarArgumentoTipoDato($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_ELEMENTO], $caracteristicas[ZC_DATO], $caracteristicas[ZC_DATO_ERROR]);
+            $configuracionCampo .= validarArgumentoTipoDato($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_ELEMENTO], $caracteristicas[ZC_DATO], $caracteristicas[ZC_DATO_ERROR]);
             // Validacion longitud minima del campo
-            $validacion .= validarArgumentoLongitudMinima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MINIMA], $caracteristicas[ZC_LONGITUD_MINIMA_ERROR]);
+            $configuracionCampo .= validarArgumentoLongitudMinima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MINIMA], $caracteristicas[ZC_LONGITUD_MINIMA_ERROR]);
             // Validacion longitud maxima del campo
-            $validacion .= validarArgumentoLongitudMaxima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_LONGITUD_MAXIMA_ERROR]);
+            $configuracionCampo .= validarArgumentoLongitudMaxima($caracteristicas[ZC_ID], $caracteristicas[ZC_ETIQUETA], $caracteristicas[ZC_DATO], $caracteristicas[ZC_LONGITUD_MAXIMA], $caracteristicas[ZC_LONGITUD_MAXIMA_ERROR]);
+            // Agrega la validacion del campo
+            $validacion .= tabular("if (\$validarDato && isset(\$dato['{$caracteristicas[ZC_ID]}'])) {", 8);
+            $validacion .= tabular("\$this->zc->validarCampo('{$caracteristicas[ZC_ID]}', \$dato['{$caracteristicas[ZC_ID]}']);", 12);
             $validacion .= tabular('}', 8);
+            // Restricciones de los campos
+            $this->_configuracionCampo .= tabular('', 8);
+            $this->_configuracionCampo .= tabular("\$campo['{$caracteristicas[ZC_ID]}'] = array(", 8);
+            $this->_configuracionCampo .= $configuracionCampo;
+            $this->_configuracionCampo .= tabular(');', 8);
             // Nombre de tablas utilizados, se usa para los join
             $joinTablas = joinTablas($caracteristicas[ZC_ELEMENTO_OPCIONES]);
             if (isset($joinTablas)) {
@@ -729,7 +745,6 @@ class formulario {
         $plantilla = new plantilla();
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpValidacionServidor.tpl');
         $plantilla->asignarEtiqueta('nombreValidacion', $this->_nombreFuncionValidacion);
-        $plantilla->asignarEtiqueta('elementosFormulario', $validacion);
         $plantilla->asignarEtiqueta('accionesSinValidacion', ZC_ACCION_SIN_VALIDACION);
         $this->_validacionModelo = $plantilla->devolverPlantilla();
         return $this;

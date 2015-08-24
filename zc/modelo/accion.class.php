@@ -21,6 +21,9 @@ require RUTA_GENERADOR_CODIGO . '/modelo/loguear.class.php';
 // Crea las funciones para precargar las listas de seleccion
 require RUTA_GENERADOR_CODIGO . '/modelo/ajax.class.php';
 
+// Crea las funciones para precargar las listas de seleccion
+require RUTA_GENERADOR_CODIGO . '/modelo/init.class.php';
+
 /**
  * Crea acciones: agregar, buscar, modificar, eliminar, cancelar, defecto
  */
@@ -151,6 +154,9 @@ class accion extends Aelemento {
             case ZC_ACCION_LOGUEAR:
                 $accion = new loguear($this->_campos, $this->_tabla, $this->_accion);
                 break;
+            case ZC_ACCION_INIT:
+                $accion = new init($this->_campos, $this->_tabla, $this->_accion);
+                break;
             case ZC_ACCION_RESTABLECER:
             case ZC_ACCION_CANCELAR:
             case ZC_ACCION_BOTON:
@@ -223,7 +229,16 @@ class accion extends Aelemento {
         foreach ($this->_campos as $id => $campo) {
             // Los datos se envia codificados para evitar errores con caracteres especiales, ademas
             // permite enviar 'cualquier' tipo de dato
-            $this->_inicializarCliente[] = ($campo[ZC_ELEMENTO] != ZC_ELEMENTO_CHECKBOX) ? "'{$id}' => \$datos['{$id}']" : "'{$id}' => ((isset(\$datos['{$id}'])) ? json_encode(\$datos['{$id}']) : '')";
+            switch ($campo[ZC_ELEMENTO]) {
+                case ZC_ELEMENTO_CHECKBOX:
+                case ZC_ELEMENTO_RADIO:
+                case ZC_ELEMENTO_LISTA:
+                    $this->_inicializarCliente[] = "'{$id}' => ((isset(\$datos['{$id}'])) ? json_encode(\$datos['{$id}']) : '')";
+                    break;
+                default:
+                    $this->_inicializarCliente[] = "'{$id}' => ((isset(\$datos['{$id}'])) ? \$datos['{$id}'] : null)";
+                    break;
+            }
             // Inicializar servidor
             $this->_inicializarServidor[] = "'{$id}' => 'xsd:{$campo[ZC_DATO_WS]}'";
             // Parametros recibidos por la funcion servidor

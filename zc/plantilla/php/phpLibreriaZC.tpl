@@ -19,31 +19,47 @@ class Zc {
     protected $modelo;
 
     /**
+     * Restrucciones del modelo que se esta validando
+     */
+    protected $_restricciones = array();
+
+    /**
      * Error encontrados durante la validacion de datos
      * @var array
      */
     protected $_error = array();
 
     /**
+     * Expresiones regulares para formatos especiales
+     * @var array
+     */
+    protected $_formatos = array(
+        '{_datoFecha_}' => '^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$',
+        '{_datoFechaHora_}' => '(\d{2}|\d{4})(?:\-)?([0]{1}\d{1}|[1]{1}[0-2]{1})(?:\-)?([0-2]{1}\d{1}|[3]{1}[0-1]{1})(?:\s)?([0-1]{1}\d{1}|[2]{1}[0-3]{1})(?::)?([0-5]{1}\d{1})(?::)?([0-5]{1}\d{1})',
+        '{_datoHora_}' => '^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$',
+    );
+
+    /**
      * Descripcion tipo de datos utilizado
      * @var string
      */
-    const NUMERICO = '{_datoNumerico_}';
-    const EMAIL = '{_datoEmail_}';
+    const OBLIGATORIO = 'true';
+    const NUMERICO = 'digits';
+    const EMAIL = 'email';
+    const URL = 'url';
     const FECHA = '{_datoFecha_}';
     const FECHA_HORA = '{_datoFechaHora_}';
     const HORA = '{_datoHora_}';
     const CONTRASENA = '{_datoContrasena_}';
-    const URL = '{_datoUrl_}';
     const TEXTO = '{_datoTexto_}';
     const AREA_TEXTO = '{_datoAreaTexto_}';
-    const OBLIGATORIO = '{_obligatorio_}';
 
-    function __construct($params) {
-        // Asigna el super-objecto CodeIgniter
-        $this->modelo = $params[0];
+    function __construct($params = null) {
         $this->CI =& get_instance();
-        $this->CI->load->model($this->modelo, 'modelo');
+        if (isset($params)) {
+            // Asigna el super-objecto CodeIgniter
+            $this->CI->load->model($params[0], 'modelo');
+        }
     }
 
     /**
@@ -169,6 +185,8 @@ class Zc {
                     $rpta['error'][$id] = $error;
                 }
             }
+            // Elimina el valor para no volverlo a validar en el siguiente ciclo
+            unset($datos[$campo]);
             // Concatena la tabla, si existe
             $campo = ($tabla != '') ? $tabla . '.' . $campo : $campo;
             // Agrega condiciones de busqueda segun los filtros
@@ -252,7 +270,7 @@ class Zc {
      * @param string $textoError Error a devolver en caso de error en validacion
      * @return string
      */
-    function obligatorio($id, $valor, $obligatorio = 'no', $textoError = '') {
+    function _required($id, $valor, $obligatorio = 'false', $textoError = '') {
         if ($obligatorio == self::OBLIGATORIO && '' == $valor) {
             $this->setearError($id, $textoError);
         }
@@ -264,24 +282,16 @@ class Zc {
      * Validacion del valor maximo para el campo
      * @param string $id Identificador unico del campo
      * @param string $valor Valor del campo a validar
-     * @param string $tipo Determina el tipo de dato para saber si se debe validar o no
      * @param string $valorMaximo Valor maximo permitido para el campo, valores por encima generan error
      * @param string $textoError Error a devolver en caso de error en validacion
      * @return string
      */
-    function valorMaximo($id, $valor, $tipo, $valorMaximo = 0, $textoError = '') {
+    function _max($id, $valor, $valorMaximo = 0, $textoError = '') {
         if ('' == $valor) {
             return $this->obtenerError($id);
         }
-        switch ($tipo) {
-            case self::NUMERICO:
-                if ($valorMaximo > 0 && $valor > $valorMaximo) {
-                    $this->setearError($id, str_replace('&[Longitud]&', $valorMaximo, $textoError));
-                }
-                break;
-            default:
-                break;
-
+        if ($valorMaximo > 0 && $valor > $valorMaximo) {
+            $this->setearError($id, str_replace('&[Longitud]&', $valorMaximo, $textoError));
         }
         return $this->obtenerError($id);
     }
@@ -290,24 +300,16 @@ class Zc {
      * Validacion del valor minimo para el campo
      * @param string $id Identificador unico del campo
      * @param string $valor Valor del campo a validar
-     * @param string $tipo Determina el tipo de dato para saber si se debe validar o no
      * @param string $valorMinimo Valor minimo permitido para el campo, valores por debajo generan error
      * @param string $textoError Error a devolver en caso de error en validacion
      * @return string
      */
-    function valorMinimo($id, $valor, $tipo, $valorMinimo = 0, $textoError = '') {
+    function _min($id, $valor, $valorMinimo = 0, $textoError = '') {
         if ('' == $valor) {
             return $this->obtenerError($id);
         }
-        switch ($tipo) {
-            case self::NUMERICO:
-                if ($valorMinimo > 0 && $valor < $valorMinimo) {
-                    $this->setearError($id, str_replace('&[Longitud]&', $valorMinimo, $textoError));
-                }
-                break;
-            default:
-                break;
-
+        if ($valorMinimo > 0 && $valor < $valorMinimo) {
+            $this->setearError($id, str_replace('&[Longitud]&', $valorMinimo, $textoError));
         }
         return $this->obtenerError($id);
     }
@@ -316,24 +318,16 @@ class Zc {
      * Validacion de longitud maxima para el campo
      * @param string $id Identificador unico del campo
      * @param string $valor Valor del campo a validar
-     * @param string $tipo Determina el tipo de dato para saber si se debe validar o no
      * @param string $longitud Longitud maxima permitida para el campo, valores por encima generan error
      * @param string $textoError Error a devolver en caso de error en validacion
      * @return string
      */
-    function longitudMaxima($id, $valor, $tipo, $longitud = 0, $textoError = '') {
+    function _maxlength($id, $valor, $longitud = 0, $textoError = '') {
         if ('' == $valor) {
             return $this->obtenerError($id);
         }
-        switch ($tipo) {
-            case self::CONTRASENA:
-                // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
-                break;
-            default :
-                if ($longitud > 0 && strlen($valor) > $longitud) {
-                    $this->setearError($id, str_replace('&[Longitud]&', $longitud, $textoError));
-                }
-                break;
+        if ($longitud > 0 && strlen($valor) > $longitud) {
+            $this->setearError($id, str_replace('&[Longitud]&', $longitud, $textoError));
         }
         return $this->obtenerError($id);
     }
@@ -342,24 +336,16 @@ class Zc {
      * Validacion de longitud minima para el campo
      * @param string $id Identificador unico del campo
      * @param string $valor Valor del campo a validar
-     * @param string $tipo Determina el tipo de dato para saber si se debe validar o no
-     * @param string $longitud Longitud minims permitida para el campo, valores por debajo generan error
+     * @param string $longitud Longitud minima permitida para el campo, valores por debajo generan error
      * @param string $textoError Error a devolver en caso de error en validacion
      * @return string
      */
-    function longitudMinima($id, $valor, $tipo, $longitud = 0, $textoError = '') {
+    function _minlength($id, $valor, $longitud = 0, $textoError = '') {
         if ('' == $valor) {
             return $this->obtenerError($id);
         }
-        switch ($tipo) {
-            case self::CONTRASENA:
-                // Datos de contrasena no se les valida la longitud, por defecto es 40 (SHA1)
-                break;
-            default :
-                if ($longitud > 0 && strlen($valor) < $longitud) {
-                    $this->setearError($id, str_replace('&[Longitud]&', $longitud, $textoError));
-                }
-                break;
+        if ($longitud > 0 && strlen($valor) < $longitud) {
+            $this->setearError($id, str_replace('&[Longitud]&', $longitud, $textoError));
         }
         return $this->obtenerError($id);
     }
@@ -372,7 +358,7 @@ class Zc {
      * @param string $textoError Error a devolver en caso de error en validacion
      * @return string
      */
-    function tipoDato($id, $valor, $tipo = 'texto', $textoError = '') {
+    function _type($id, $valor, $tipo = '{_datoTexto_}', $textoError = '') {
         if('' == $valor) {
             // Campo vacio no se valida
             return $this->obtenerError($id);
@@ -398,19 +384,11 @@ class Zc {
                 break;
             case self::FECHA:
                 // Formato YYYY-MM-DD
-                if (!preg_match('/^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$/', $valor)) {
-                    $error = true;
-                }
-                break;
             case self::FECHA_HORA:
                 // Formato YYYY-MM-DD HH:MM:SS
-                if (!preg_match('/(\d{2}|\d{4})(?:\-)?([0]{1}\d{1}|[1]{1}[0-2]{1})(?:\-)?([0-2]{1}\d{1}|[3]{1}[0-1]{1})(?:\s)?([0-1]{1}\d{1}|[2]{1}[0-3]{1})(?::)?([0-5]{1}\d{1})(?::)?([0-5]{1}\d{1})/', $valor)) {
-                    $error = true;
-                }
-                break;
             case self::HORA:
                 // Formato HH:MM:SS
-                if (!preg_match('/^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/', $valor)) {
+                if (!preg_match($this->formatos($tipo), $valor)) {
                     $error = true;
                 }
                 break;
@@ -423,6 +401,32 @@ class Zc {
             $this->setearError($id, $textoError);
         }
         return $this->obtenerError($id);
+    }
+
+    /**
+     * Valida los campos del formulario segun las restricciones y el valor
+     * @param array $dato Arreglo asociativo del tipo $dato[nombreCampo] = 'valorCampo';
+     * @param array $restricciones Arreglo asociativo de las restricciones del campo
+     * @return
+     */
+    function validarCampo($dato, $restricciones) {
+        foreach ($dato as $campo => $valor) {
+            if (!isset($restricciones[$campo])) {
+                // No existen restricciones para este campo
+                continue;
+            }
+
+            // Recorre cada campo
+            foreach ($restricciones[$campo] as $funcion => $descripcion) {
+                //Recorre cada restriccion para el campo
+                if (stripos($funcion, '-message') === false) {
+                    // Mensaje de error para la restriccion especifica
+                    $mensajeError = (isset($restricciones[$campo][$funcion . '-message'])) ? $restricciones[$campo][$funcion . '-message'] : null;
+                    // Llamado a la restriccion para validar dato
+                    call_user_func_array(array($this, '_' . $funcion), array($campo, $valor, $descripcion, $mensajeError));
+                }
+            }
+        }
     }
 
     /**
@@ -466,6 +470,17 @@ class Zc {
      */
     function devolverErrores() {
         return $this->_error;
+    }
+
+    /**
+     * Tipo de formato a devolver la expresion regular
+     * @param string $tipo Tipo de formato a devolver {_datoFecha_}|{_datoFechaHora_}|{_datoHora_}
+     */
+    public function formatos($tipo) {
+        if (isset($this->_formatos[$tipo])) {
+            return $this->_formatos[$tipo];
+        }
+        return '';
     }
 
     public function __destruct() {}

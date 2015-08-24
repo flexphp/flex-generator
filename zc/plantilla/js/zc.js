@@ -668,8 +668,11 @@ function ZCAsignarErrores(formulario, rpta) {
     if (typeof rpta.error === 'object') {
         // Error en un campo
         $.each(rpta.error, function(campo, error) {
-            var label = $('#label-' + campo).text();
-            msjError += label + ': ' + error + '<br />';
+            var label = $("label[for='" + campo + "']").text();
+            if (label != ''){
+                // Solo si el label existe
+                msjError += label + ': ' + error + '<br />';
+            }
             // Agrega clase error
             $('#' + campo).addClass('parsley-error');
         });
@@ -677,5 +680,72 @@ function ZCAsignarErrores(formulario, rpta) {
         // Error sin asociacion de campo
         msjError = rpta.error;
     }
+    // Establecer error e ir al principio de la pagina
     $('#error-' + formulario).html(msjError);
+    $('html, body').animate({ scrollTop: 0 }, 'slow');
+}
+
+/**
+ * Inicializacion de las restricciones del formulario
+ * @param {string} campo
+ */
+function init(init, formulario, campo) {
+    // Nonbre del controlador
+    var controlador = $('#zc-controlador').val();
+    $.ajax({
+        url: $('#URLProyecto').val()+'index.php/' + controlador + '/' + init + '/',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+            // Envia filtros de busqueda al servidor
+            campo: ((campo !== undefined) ? campo : ''),
+            accion: init
+        },
+        beforeSend: function() {
+            // Desactiva todos los campos
+            $('input, textarea, select, button').addClass('disabled').prop('disabled', true);
+            // Oculta ventana con mensajes
+            $('.alert').hide();
+            // Mostrar cargando
+            $('button span').addClass('glyphicon-refresh glyphicon-refresh-animate');
+        },
+        success: function(rpta) {
+            if (rpta.error !== undefined && '' !== rpta.error) {
+                // Muestra mensaje de error
+                $('#error-' + formulario).text(rpta.error);
+                $('.alert-danger').show();
+            } else {
+                initParsley(formulario, rpta);
+            }
+        },
+        complete: function() {
+            // Activar los campos para la modificacion
+            $('input, textarea, select, button').removeClass('disabled').prop('disabled', false);
+            // Ocultar cargando
+            $('button span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
+        },
+        error: function(rpta) {
+            $('#error-' + formulario).text('Error en el servicio');
+            $('.alert-danger').show();
+        }
+    });
+}
+
+/**
+ * Inicializa los campos con las restricciones parsley
+ * @param {string} formulario Identificador del formulario con los campos a inicilizar
+ * @param {json} rpta Restricciones de los campos segun el servidor
+ */
+function initParsley(formulario, rpta){
+    // Deshabilitar configuracion anterior
+    $('#' + formulario).parsley().destroy();
+    for (var campo in rpta.infoEncabezado) {
+        for (var cont in rpta.infoEncabezado[campo]) {
+            var valor= rpta.infoEncabezado[campo][cont];
+            // Asigna la restriccion al campo
+            $('#' + campo).attr('data-parsley-' + cont, valor);
+        }
+    }
+    // Asignar configuracion
+    $('#' + formulario).parsley();
 }

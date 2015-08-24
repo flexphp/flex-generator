@@ -90,41 +90,41 @@ class caja extends Aelemento {
      * @param string $tipo
      */
     private function tipo($tipo, $msjTipo = '') {
-        $this->_msjTipo = ('' != $msjTipo) ? $msjTipo : ZC_DATO_ERROR_PREDETERMINADO;
+        // $this->_msjTipo = ('' != $msjTipo) ? $msjTipo : ZC_DATO_ERROR_PREDETERMINADO;
         switch ($tipo) {
             case ZC_DATO_NUMERICO:
-                $this->_tipo = "data-parsley-type='digits'";
-                $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
+                // $this->_tipo = "data-parsley-type='digits'";
+                // $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
                 break;
             case ZC_DATO_FECHA:
                 $formatoRegExp = "^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$";
-                $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
-                // $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFecha}): {$this->_msjTipo}'";
-                $this->_msjTipo = "data-parsley-pattern-message='{$this->_msjTipo}'";
+                // $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
+                // // $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFecha}): {$this->_msjTipo}'";
+                // $this->_msjTipo = "data-parsley-pattern-message='{$this->_msjTipo}'";
                 break;
             case ZC_DATO_FECHA_HORA:
                 $formatoRegExp = "(\d{2}|\d{4})(?:\-)?([0]{1}\d{1}|[1]{1}[0-2]{1})(?:\-)?([0-2]{1}\d{1}|[3]{1}[0-1]{1})(?:\s)?([0-1]{1}\d{1}|[2]{1}[0-3]{1})(?::)?([0-5]{1}\d{1})(?::)?([0-5]{1}\d{1})";
-                $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
-                // $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFechaHora}): {$this->_msjTipo}'";
-                $this->_msjTipo = "data-parsley-pattern-message='{$this->_msjTipo}'";
+                // $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
+                // // $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFechaHora}): {$this->_msjTipo}'";
+                // $this->_msjTipo = "data-parsley-pattern-message='{$this->_msjTipo}'";
                 break;
             case ZC_DATO_HORA:
                 $formatoRegExp = "^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$";
-                $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
-                $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoHora}): {$this->_msjTipo}'";
+                // $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
+                // $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoHora}): {$this->_msjTipo}'";
                 break;
             case ZC_DATO_EMAIL:
-                $this->_tipo = "data-parsley-type='email'";
-                $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
+                // $this->_tipo = "data-parsley-type='email'";
+                // $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
                 break;
             case ZC_DATO_URL:
-                $this->_tipo = "data-parsley-type='url'";
-                $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
+                // $this->_tipo = "data-parsley-type='url'";
+                // $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
                 break;
             case ZC_DATO_TEXTO:
             default:
-                $this->_tipo = '';
-                $this->_msjTipo = '';
+                // $this->_tipo = '';
+                // $this->_msjTipo = '';
                 break;
         }
     }

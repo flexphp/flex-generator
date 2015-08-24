@@ -69,7 +69,7 @@ abstract class Apaginas {
         $tpl .= tabular('$this->load->model(\'' . nombreModelo(ZC_LOGIN_PAGINA) . '\', \'modelo\');', 12);
         $tpl .= tabular('$rpta = $this->modelo->' . ZC_ACCION_LOGUEAR . '($datos);', 12);
         $tpl .= tabular('if (isset($rpta[\'error\'])) {', 12);
-        $tpl .= tabular('die($rpta[\'error\']);', 16);
+        $tpl .= tabular('die(\'Error de autenticacion: \' . $rpta[\'error\']);', 16);
         $tpl .= tabular('}', 12);
         $tpl .= tabular('}', 8);
         return $tpl;

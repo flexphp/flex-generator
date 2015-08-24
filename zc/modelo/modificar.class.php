@@ -95,7 +95,7 @@ class modificar extends accion {
         $php .= $this->comando('}', 16);
         $php .= $this->comando('// Condicion aplicada en la actualizacion', 16);
         $php .= $this->comando('$this->db->where(array(\'id\' => $id, \'zc_eliminado is null\' => null));', 16);
-        $php .= $this->comando('if (!$this->db->update(\'' . $this->_tabla . '\')) {;', 16);
+        $php .= $this->comando('if (!$this->db->update(\'' . $this->_tabla . '\')) {', 16);
         $php .= $this->comando('// Mensaje/causa de error devuelto', 20);
         $php .= $this->comando('$rpta[\'error\'] = $this->db->_error_message();', 20);
         $php .= $this->comando('}', 16);

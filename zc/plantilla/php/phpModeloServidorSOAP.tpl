@@ -65,7 +65,7 @@ function {_nombreAccion_}(){
             $RptaWS['infoEncabezado'] = (isset($rpta['resultado'])) ? json_encode($rpta['resultado']) : '';
             $RptaWS['cta'] = (isset($rpta['cta'])) ? $rpta['cta'] : 0;
             
-            file_put_contents(getcwd() . '/application/logs/ws_{_nombreControlador_}_' . date('Ymd') . '.log', __FUNCTION__ . "\n" . ' $data: ' . print_r(func_get_args(), 1) . "\n" . ' $RptaWS: ' . print_r($RptaWS, 1) . "\n", FILE_APPEND);
+            file_put_contents(getcwd() . '/application/logs/ws_{_nombreControlador_}_' . date('Ymd') . '.log', date('H:m:i') . '::' . __FUNCTION__ . "\n" . ' $data: ' . print_r(func_get_args(), 1) . "\n" . ' $RptaWS: ' . print_r($RptaWS, 1) . "\n", FILE_APPEND);
             // Es obligatorio devolver un array
             return new soapval('return', 'tns:{_nombreAccion_}RptaArray', array($RptaWS));
         }

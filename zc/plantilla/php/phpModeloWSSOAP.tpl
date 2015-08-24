@@ -26,6 +26,17 @@ class {_nombreModelo_} extends CI_Model {
         $this->load->library('zc', array(get_class()));
     }
 
+    /**
+     * Configuracion de los campos utilizados por el formulario,
+     * se usa en las validaciones del lado servidor y del lado cliente
+     * @param string $id Identificador del campo
+     * @return array
+     */
+    public function configuracionCampo($id = null) {
+{_configuracionCampo_}
+        return (isset($id) && isset($campo[$id])) ? $campo[$id] : $campo;
+    }
+
     {_funcionesModelo_}
     {_validacionModelo_}
     /**

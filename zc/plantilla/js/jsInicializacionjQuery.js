@@ -84,4 +84,6 @@ $(document).ready(function () {
     ZCAccionBotones('{_idFormulario_}', '{_accionAgregar_}', '{_accionModificar_}', '{_accionBorrar_}', '{_accionPrecargar_}');
     // Busqueda predefinida, se deja al final cuando ya se ha cargado todo
     ZCAccionBuscarPredefinido('{_idFormulario_}');
+    // Inicializa las restricciones de los campos del formulario {_idFormulario_}
+    init('{_accionInit_}', '{_idFormulario_}');
 });

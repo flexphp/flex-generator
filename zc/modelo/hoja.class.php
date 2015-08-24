@@ -61,6 +61,8 @@ class hoja extends xml {
                 $this->elementos[] = array(ZC_ID => 'limpiar', ZC_ELEMENTO => ZC_ACCION_RESTABLECER, ZC_ETIQUETA => 'Limpiar');
                 break;
         }
+        // Carga las restricciones de los campos del formulario, esto es para TODOS los tipos de formularios
+        $this->elementos[] = array(ZC_ID => 'init', ZC_ELEMENTO => ZC_ACCION_INIT, ZC_ETIQUETA => 'Inicializar');
         return $this;
     }
 

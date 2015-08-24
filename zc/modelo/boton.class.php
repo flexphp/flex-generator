@@ -97,6 +97,7 @@ class boton extends Aelemento {
                 $this->_prop[ZC_ID] = 'buscar';
             case ZC_ACCION_PRECARGAR:
             case ZC_ACCION_AJAX:
+            case ZC_ACCION_INIT:
                 $this->_tipo = null;
                 break;
             case ZC_ACCION_CANCELAR:

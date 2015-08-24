@@ -112,8 +112,8 @@ abstract class Aelemento {
         // Tipo Elemento
         $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : null;
         // Distribucion en medidas bootstrap de los campos col-xs-X col-sm-X col-md-X col-lg-X
-        $this->_prop[ZC_DISTRIBUCION_ETIQUETA] = (isset($this->_prop[ZC_DISTRIBUCION_ETIQUETA]) && '' != $this->_prop[ZC_DISTRIBUCION_ETIQUETA]) ? $this->_prop[ZC_DISTRIBUCION_ETIQUETA] : null;
-        $this->_prop[ZC_DISTRIBUCION_ELEMENTO] = (isset($this->_prop[ZC_DISTRIBUCION_ELEMENTO]) && '' != $this->_prop[ZC_DISTRIBUCION_ELEMENTO]) ? $this->_prop[ZC_DISTRIBUCION_ELEMENTO] : null;
+        $this->_prop[ZC_DISTRIBUCION_ETIQUETA] = (isset($this->_prop[ZC_DISTRIBUCION_ETIQUETA]) && '' != $this->_prop[ZC_DISTRIBUCION_ETIQUETA]) ? $this->_prop[ZC_DISTRIBUCION_ETIQUETA] : 'col-sm-2 col-md-3 col-lg-4';
+        $this->_prop[ZC_DISTRIBUCION_ELEMENTO] = (isset($this->_prop[ZC_DISTRIBUCION_ELEMENTO]) && '' != $this->_prop[ZC_DISTRIBUCION_ELEMENTO]) ? $this->_prop[ZC_DISTRIBUCION_ELEMENTO] : 'col-sm-9 col-md-9 col-lg-8';
 
         // No todos los elementos necesitan todas las propedades, minimiza uso de memoria
         if (in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA, ZC_ELEMENTO_CHECKBOX, ZC_ELEMENTO_RADIO, ZC_ELEMENTO_LISTA))) {
@@ -196,9 +196,9 @@ abstract class Aelemento {
      */
     protected function obligatorio($obligatorio, $error) {
         if (isset($obligatorio) && $obligatorio == ZC_OBLIGATORIO_SI) {
-            $this->_signoObligatorio = '<font style="color: red;">*</font>';
-            $this->_obligatorio = "data-parsley-required='true'";
-            $this->_msjObligatorio = (isset($error)) ? "data-parsley-required-message='{$error}'" : "data-parsley-required-message='" . ZC_OBLIGATORIO_ERROR_PREDETERMINADO . "'";
+            // $this->_signoObligatorio = '<font style="color: red;">*</font>';
+            // $this->_obligatorio = "data-parsley-required='true'";
+            // $this->_msjObligatorio = (isset($error)) ? "data-parsley-required-message='{$error}'" : "data-parsley-required-message='" . ZC_OBLIGATORIO_ERROR_PREDETERMINADO . "'";
         }
         return $this;
     }
@@ -218,40 +218,40 @@ abstract class Aelemento {
             // Para datos numericos
             // Tiene valor maxima y minima
             case $tipo == ZC_DATO_NUMERICO && isset($minima) && $minima > 0 && isset($maxima) && $maxima > 0:
-                $this->_longitud = "data-parsley-range='[$minima,$maxima]'";
-                $this->_msjLongitud = "data-parsley-range-message='Valor entre entre ($minima,$maxima)'";
+                // $this->_longitud = "data-parsley-range='[$minima,$maxima]'";
+                // $this->_msjLongitud = "data-parsley-range-message='Valor entre entre ($minima,$maxima)'";
                 break;
             // Tiene valor minima
             case $tipo == ZC_DATO_NUMERICO && isset($minima) && $minima > 0:
-                $this->_longitud = "data-parsley-min='$minima'";
-                $this->_msjLongitud = "data-parsley-min-message='$errorMin'";
+                // $this->_longitud = "data-parsley-min='$minima'";
+                // $this->_msjLongitud = "data-parsley-min-message='$errorMin'";
                 break;
             // Tiene valor maximo
             case $tipo == ZC_DATO_NUMERICO && isset($maxima) && $maxima > 0:
-                $this->_longitud = "data-parsley-max='$maxima'";
-                $this->_msjLongitud = "data-parsley-max-message='$errorMax'";
+                // $this->_longitud = "data-parsley-max='$maxima'";
+                // $this->_msjLongitud = "data-parsley-max-message='$errorMax'";
                 break;
 
             // Para cualquier otro tipo de dato
             // Tiene longitud maxima y minima
             case isset($minima) && $minima > 0 && isset($maxima) && $maxima > 0:
-                $this->_longitud = "data-parsley-length='[$minima,$maxima]'";
-                $this->_msjLongitud = "data-parsley-length-message='Longitud esta entre ($minima,$maxima)'";
+                // $this->_longitud = "data-parsley-length='[$minima,$maxima]'";
+                // $this->_msjLongitud = "data-parsley-length-message='Longitud esta entre ($minima,$maxima)'";
                 break;
             // Tiene longitud minima
             case isset($minima) && $minima > 0:
-                $this->_longitud = "data-parsley-minlength='$minima'";
-                $this->_msjLongitud = "data-parsley-minlength-message='$errorMin'";
+                // $this->_longitud = "data-parsley-minlength='$minima'";
+                // $this->_msjLongitud = "data-parsley-minlength-message='$errorMin'";
                 break;
             // Tiene longitud maxima
             case isset($maxima) && $maxima > 0:
-                $this->_longitud = "data-parsley-maxlength='$maxima'";
-                $this->_msjLongitud = "data-parsley-maxlength-message='$errorMax'";
+                // $this->_longitud = "data-parsley-maxlength='$maxima'";
+                // $this->_msjLongitud = "data-parsley-maxlength-message='$errorMax'";
                 break;
             // No se validan longitudes
             default:
-                $this->_longitud = '';
-                $this->_msjLongitud = '';
+                // $this->_longitud = '';
+                // $this->_msjLongitud = '';
                 break;
         }
         return $this;
@@ -376,7 +376,7 @@ abstract class Aelemento {
      * @return string
      */
     public function devolverLabel($dimensiones = '') {
-        return "<label class='control-label {$dimensiones}' id='label-{$this->_id}' name='label-{$this->_id}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>";
+        return "<label class='control-label {$dimensiones}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>";
     }
 
     /**
