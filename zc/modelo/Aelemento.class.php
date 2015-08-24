@@ -29,41 +29,11 @@ abstract class Aelemento {
     protected $_etiqueta;
 
     /**
-     * Bandera para definir si es un campo obligatorio
-     * @var string
-     */
-    protected $_obligatorio = '';
-
-    /**
      * Posicion en la que se ubicara el mensaje de ayuda que se muestra al posicionar
      * el puntero sobre el elemento. Valores: right|left|top|bottom
      * @var string
      */
     protected $_posicionTitle = 'top';
-
-    /**
-     * Signo que identifica los campos obligatorios
-     * @var string
-     */
-    protected $_signoObligatorio = '';
-
-    /**
-     * Mensaje mostrado al cliente si el campo es obligatorio y no se ha diligenciado
-     * @var string
-     */
-    protected $_msjObligatorio = '';
-
-    /**
-     * Longitud (minima, maxima) del campo
-     * @var string
-     */
-    protected $_longitud = '';
-
-    /**
-     * Mensaje mostrado al cliente si el campo no cumple con las longitudes esperadas
-     * @var string
-     */
-    protected $_msjLongitud = '';
 
     /**
      * Opcion de autofo sobre el elemento
@@ -190,74 +160,6 @@ abstract class Aelemento {
     }
 
     /**
-     * Determina si el campo es obligatorio, de ser asigna el signo de obligatoriedad y el mensaje de error
-     * @param string $obligatorio Valor true|false o 1|0
-     * @param string $error Mensaje de error definido por el usuario
-     */
-    protected function obligatorio($obligatorio, $error) {
-        if (isset($obligatorio) && $obligatorio == ZC_OBLIGATORIO_SI) {
-            // $this->_signoObligatorio = '<font style="color: red;">*</font>';
-            // $this->_obligatorio = "data-parsley-required='true'";
-            // $this->_msjObligatorio = (isset($error)) ? "data-parsley-required-message='{$error}'" : "data-parsley-required-message='" . ZC_OBLIGATORIO_ERROR_PREDETERMINADO . "'";
-        }
-        return $this;
-    }
-
-    /**
-     * Hace las validaciones de la longitud en el campo
-     * @param string $tipo Tipo de dato del campo, numerico, texto, fecha, etc
-     * @param string $minima Longitud minima del campo
-     * @param string $maxima Longitud maxima del campo
-     * @param string $errorMinima Error de la longitud minima del campo
-     * @param string $errorMaxima Error de la longitud maxima del campo
-     */
-    protected function longitud($tipo, $minima, $maxima, $errorMinima, $errorMaxima) {
-        $errorMin = (isset($errorMinima)) ? $errorMinima : str_replace('&[Longitud]&', $minima, ZC_LONGITUD_MINIMA_ERROR_PREDETERMINADO);
-        $errorMax = (isset($errorMaxima)) ? $errorMaxima : str_replace('&[Longitud]&', $maxima, ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO);
-        switch (true) {
-            // Para datos numericos
-            // Tiene valor maxima y minima
-            case $tipo == ZC_DATO_NUMERICO && isset($minima) && $minima > 0 && isset($maxima) && $maxima > 0:
-                // $this->_longitud = "data-parsley-range='[$minima,$maxima]'";
-                // $this->_msjLongitud = "data-parsley-range-message='Valor entre entre ($minima,$maxima)'";
-                break;
-            // Tiene valor minima
-            case $tipo == ZC_DATO_NUMERICO && isset($minima) && $minima > 0:
-                // $this->_longitud = "data-parsley-min='$minima'";
-                // $this->_msjLongitud = "data-parsley-min-message='$errorMin'";
-                break;
-            // Tiene valor maximo
-            case $tipo == ZC_DATO_NUMERICO && isset($maxima) && $maxima > 0:
-                // $this->_longitud = "data-parsley-max='$maxima'";
-                // $this->_msjLongitud = "data-parsley-max-message='$errorMax'";
-                break;
-
-            // Para cualquier otro tipo de dato
-            // Tiene longitud maxima y minima
-            case isset($minima) && $minima > 0 && isset($maxima) && $maxima > 0:
-                // $this->_longitud = "data-parsley-length='[$minima,$maxima]'";
-                // $this->_msjLongitud = "data-parsley-length-message='Longitud esta entre ($minima,$maxima)'";
-                break;
-            // Tiene longitud minima
-            case isset($minima) && $minima > 0:
-                // $this->_longitud = "data-parsley-minlength='$minima'";
-                // $this->_msjLongitud = "data-parsley-minlength-message='$errorMin'";
-                break;
-            // Tiene longitud maxima
-            case isset($maxima) && $maxima > 0:
-                // $this->_longitud = "data-parsley-maxlength='$maxima'";
-                // $this->_msjLongitud = "data-parsley-maxlength-message='$errorMax'";
-                break;
-            // No se validan longitudes
-            default:
-                // $this->_longitud = '';
-                // $this->_msjLongitud = '';
-                break;
-        }
-        return $this;
-    }
-
-    /**
      * Construye el html para el autofoco del campo, esto permite posicinar el puntero
      * en el primer campo editable del formulario
      * @param string $autofoco Bandera para saber si se debe crear o no: true|false
@@ -376,7 +278,7 @@ abstract class Aelemento {
      * @return string
      */
     public function devolverLabel($dimensiones = '') {
-        return "<label class='control-label {$dimensiones}' for='{$this->_id}'>{$this->_etiqueta}{$this->_signoObligatorio}</label>";
+        return "<label class='control-label {$dimensiones}' for='{$this->_id}'>{$this->_etiqueta}</label>";
     }
 
     /**

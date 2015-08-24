@@ -738,10 +738,27 @@ function init(init, formulario, campo) {
  */
 function initParsley(formulario, rpta){
     // Deshabilitar configuracion anterior
+    var busqueda = ($('#zc-filtros-predefinidos').length > 0) ? true : false;
+
     $('#' + formulario).parsley().destroy();
     for (var campo in rpta.infoEncabezado) {
         for (var cont in rpta.infoEncabezado[campo]) {
-            var valor= rpta.infoEncabezado[campo][cont];
+            if(busqueda && (
+                cont == 'required' || cont == 'required-message'
+                || cont == 'min' || cont == 'min-message'
+                || cont == 'max' || cont == 'max-message'
+                || cont == 'minlength' || cont == 'minlength-message'
+                || cont == 'maxlength' || cont == 'maxlength-message'
+                )
+            ) {
+                // Para los formularios de busquedo no se tienen en cuenta estas restricciones
+                continue;
+            }
+            var valor = rpta.infoEncabezado[campo][cont];
+            if (cont == 'required' && valor != 'false') {
+                // A los campos obligatorios se les agrega el simbolo
+                var label = $("label[for='" + campo + "']").append('<font style="color: red;">*</font>');
+            }
             // Asigna la restriccion al campo
             $('#' + campo).attr('data-parsley-' + cont, valor);
         }

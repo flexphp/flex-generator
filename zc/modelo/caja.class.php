@@ -42,10 +42,6 @@ class caja extends Aelemento {
      */
     function __construct($caracteristicas) {
         parent::__construct($caracteristicas);
-        $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
-        $this->longitud($this->_prop[ZC_DATO], $this->_prop[ZC_LONGITUD_MINIMA], $this->_prop[ZC_LONGITUD_MAXIMA], $this->_prop[ZC_LONGITUD_MINIMA_ERROR], $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]);
-        $this->tipo($this->_prop[ZC_DATO], $this->_prop[ZC_DATO_ERROR]);
-        $this->autofoco($this->_prop[ZC_AUTOFOCO]);
     }
 
     /**
@@ -90,43 +86,6 @@ class caja extends Aelemento {
      * @param string $tipo
      */
     private function tipo($tipo, $msjTipo = '') {
-        // $this->_msjTipo = ('' != $msjTipo) ? $msjTipo : ZC_DATO_ERROR_PREDETERMINADO;
-        switch ($tipo) {
-            case ZC_DATO_NUMERICO:
-                // $this->_tipo = "data-parsley-type='digits'";
-                // $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
-                break;
-            case ZC_DATO_FECHA:
-                $formatoRegExp = "^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$";
-                // $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
-                // // $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFecha}): {$this->_msjTipo}'";
-                // $this->_msjTipo = "data-parsley-pattern-message='{$this->_msjTipo}'";
-                break;
-            case ZC_DATO_FECHA_HORA:
-                $formatoRegExp = "(\d{2}|\d{4})(?:\-)?([0]{1}\d{1}|[1]{1}[0-2]{1})(?:\-)?([0-2]{1}\d{1}|[3]{1}[0-1]{1})(?:\s)?([0-1]{1}\d{1}|[2]{1}[0-3]{1})(?::)?([0-5]{1}\d{1})(?::)?([0-5]{1}\d{1})";
-                // $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
-                // // $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoFechaHora}): {$this->_msjTipo}'";
-                // $this->_msjTipo = "data-parsley-pattern-message='{$this->_msjTipo}'";
-                break;
-            case ZC_DATO_HORA:
-                $formatoRegExp = "^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$";
-                // $this->_tipo = "data-parsley-pattern='{$formatoRegExp}'";
-                // $this->_msjTipo = "data-parsley-pattern-message='({$this->_formatoHora}): {$this->_msjTipo}'";
-                break;
-            case ZC_DATO_EMAIL:
-                // $this->_tipo = "data-parsley-type='email'";
-                // $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
-                break;
-            case ZC_DATO_URL:
-                // $this->_tipo = "data-parsley-type='url'";
-                // $this->_msjTipo = "data-parsley-type-message='{$this->_msjTipo}'";
-                break;
-            case ZC_DATO_TEXTO:
-            default:
-                // $this->_tipo = '';
-                // $this->_msjTipo = '';
-                break;
-        }
     }
 
     /**
@@ -140,15 +99,6 @@ class caja extends Aelemento {
                 // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
-                // Validacion obligatorio
-                " {$this->_obligatorio}" .
-                " {$this->_msjObligatorio}" .
-                // Validacion tipo de dato
-                " {$this->_tipo}" .
-                " {$this->_msjTipo}" .
-                // Validacion longitudes
-                " {$this->_longitud}" .
-                " {$this->_msjLongitud}" .
                 // Autofoco
                 " {$this->_autofoco}" .
                 // Ayuda visual
@@ -169,15 +119,6 @@ class caja extends Aelemento {
                 // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
-                // Validacion obligatorio
-                " {$this->_obligatorio}" .
-                " {$this->_msjObligatorio}" .
-                // Validacion tipo de dato
-                " {$this->_tipo}" .
-                " {$this->_msjTipo}" .
-                // Validacion longitudes
-                " {$this->_longitud}" .
-                " {$this->_msjLongitud}" .
                 // Autofoco
                 " {$this->_autofoco}" .
                 // Ayuda visual
@@ -202,15 +143,6 @@ class caja extends Aelemento {
                 // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
-                // Validacion obligatorio
-                " {$this->_obligatorio}" .
-                " {$this->_msjObligatorio}" .
-                // Validacion tipo de dato
-                " {$this->_tipo}" .
-                " {$this->_msjTipo}" .
-                // Validacion longitudes
-                " {$this->_longitud}" .
-                " {$this->_msjLongitud}" .
                 // Autofoco
                 " {$this->_autofoco}" .
                 // Ayuda visual
@@ -235,15 +167,6 @@ class caja extends Aelemento {
                 // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
-                // Validacion obligatorio
-                " {$this->_obligatorio}" .
-                " {$this->_msjObligatorio}" .
-                // Validacion tipo de dato
-                " {$this->_tipo}" .
-                " {$this->_msjTipo}" .
-                // Validacion longitudes
-                " {$this->_longitud}" .
-                " {$this->_msjLongitud}" .
                 // Autofoco
                 " {$this->_autofoco}" .
                 // Ayuda visual
@@ -267,15 +190,6 @@ class caja extends Aelemento {
                 // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
-                // Validacion obligatorio
-                " {$this->_obligatorio}" .
-                " {$this->_msjObligatorio}" .
-                // Validacion tipo de dato
-                " {$this->_tipo}" .
-                " {$this->_msjTipo}" .
-                // Validacion longitudes
-                " {$this->_longitud}" .
-                " {$this->_msjLongitud}" .
                 // Autofoco
                 " {$this->_autofoco}" .
                 // Ayuda visual
@@ -312,15 +226,6 @@ class caja extends Aelemento {
                 // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
-                // Validacion obligatorio
-                " {$this->_obligatorio}" .
-                " {$this->_msjObligatorio}" .
-                // Validacion tipo de dato
-                " {$this->_tipo}" .
-                " {$this->_msjTipo}" .
-                // Validacion longitudes
-                " {$this->_longitud}" .
-                " {$this->_msjLongitud}" .
                 // Autofoco
                 " {$this->_autofoco}" .
                 // Ayuda visual

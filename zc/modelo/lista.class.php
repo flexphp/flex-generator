@@ -39,9 +39,7 @@ class lista extends Aelemento {
         parent::__construct($caracteristicas);
         // Crear el nombre de controlador en minuscula
         $this->_controlador = strtolower($controlador);
-        $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
         $this->opciones($this->_prop[ZC_ELEMENTO_OPCIONES]);
-        $this->autofoco($this->_prop[ZC_AUTOFOCO]);
     }
 
     /**
@@ -58,9 +56,6 @@ class lista extends Aelemento {
                 // Identificador
                 " id='{$this->_id}'" .
                 " name='{$this->_id}'" .
-                // Validacion obligatorio
-                " {$this->_obligatorio}" .
-                " {$this->_msjObligatorio}" .
                 // Autofoco
                 " {$this->_autofoco}" .
                 // Ayuda visual

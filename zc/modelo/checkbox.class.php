@@ -17,9 +17,7 @@ class checkbox extends Aelemento {
      */
     function __construct($caracteristicas) {
         parent::__construct($caracteristicas);
-        $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
         $this->opciones($this->_prop[ZC_ELEMENTO_OPCIONES]);
-        $this->autofoco($this->_prop[ZC_AUTOFOCO]);
     }
 
     /**
@@ -62,9 +60,8 @@ class checkbox extends Aelemento {
             if (!isset($config)) {
                 // Solo agrega la configuracion a un elemento dentro del grupo
                 $config = // Autofoco
-                        " {$this->_autofoco}" .
-                        " {$this->_obligatorio}" .
-                        " {$this->_msjObligatorio}";
+                        " {$this->_autofoco}"
+                ;
             }
             $idOpcion = $this->_id . '_' . $id;
             $this->_opciones .= tabular('' .

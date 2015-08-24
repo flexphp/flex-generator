@@ -27,10 +27,7 @@ class radio extends Aelemento {
         $this->_controlador = strtolower($controlador);
         // Nombre del contenedor donde se crearan los campos
         $this->_contenedorRadio = 'radio_' . $this->_id;
-        $this->obligatorio($this->_prop[ZC_OBLIGATORIO], $this->_prop[ZC_OBLIGATORIO_ERROR]);
         $this->opciones($this->_prop[ZC_ELEMENTO_OPCIONES]);
-        $this->autofoco($this->_prop[ZC_AUTOFOCO]);
-
     }
 
     /**
@@ -84,9 +81,8 @@ class radio extends Aelemento {
             if (!isset($config)) {
                 // Solo agrega la configuracion a un elemento dentro del grupo
                 $config = // Autofoco
-                        " {$this->_autofoco}" .
-                        " {$this->_obligatorio}" .
-                        " {$this->_msjObligatorio}";
+                        " {$this->_autofoco}"
+                ;
             }
             $idOpcion = $this->_id . '_' . $id;
             $this->_opciones .= tabular('' .
