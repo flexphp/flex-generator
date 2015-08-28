@@ -87,7 +87,7 @@ abstract class Aelemento {
         $this->_prop[ZC_DISTRIBUCION_ELEMENTO] = (isset($this->_prop[ZC_DISTRIBUCION_ELEMENTO]) && '' != $this->_prop[ZC_DISTRIBUCION_ELEMENTO]) ? $this->_prop[ZC_DISTRIBUCION_ELEMENTO] : 'col-sm-9 col-md-9 col-lg-8';
 
         // No todos los elementos necesitan todas las propedades, minimiza uso de memoria
-        if (in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA, ZC_ELEMENTO_CHECKBOX, ZC_ELEMENTO_RADIO, ZC_ELEMENTO_LISTA))) {
+        if (in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA, ZC_ELEMENTO_AREA, ZC_ELEMENTO_CHECKBOX, ZC_ELEMENTO_RADIO, ZC_ELEMENTO_LISTA))) {
             // Tipo de dato
             $this->_prop[ZC_DATO] = (isset($this->_prop[ZC_DATO]) && '' != $this->_prop[ZC_DATO]) ? $this->_prop[ZC_DATO] : null;
             $this->_prop[ZC_DATO_ERROR] = (isset($this->_prop[ZC_DATO_ERROR]) && '' != $this->_prop[ZC_DATO_ERROR]) ? $this->_prop[ZC_DATO_ERROR] : null;
@@ -119,7 +119,7 @@ abstract class Aelemento {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
             }
             // Valida la longitud del campo, es obligatoria para las cajas
-            if (isset($this->_prop[ZC_ELEMENTO]) && $this->_prop[ZC_ELEMENTO] == ZC_ELEMENTO_CAJA && !isset($this->_prop[ZC_LONGITUD_MAXIMA])) {
+            if (isset($this->_prop[ZC_ELEMENTO]) && in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA, ZC_ELEMENTO_AREA)) && !isset($this->_prop[ZC_LONGITUD_MAXIMA])) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
             }
             $this->_prop[ZC_ELEMENTO_OPCIONES] = (isset($this->_prop[ZC_ELEMENTO_OPCIONES])) ? $this->_prop[ZC_ELEMENTO_OPCIONES] : null;
@@ -142,7 +142,6 @@ abstract class Aelemento {
                 $xsd = 'int';
                 break;
             case ($dato == ZC_DATO_TEXTO):
-            case ($dato == ZC_DATO_AREA_TEXTO):
             case ($dato == ZC_DATO_EMAIL):
             case ($dato == ZC_DATO_URL):
             case ($dato == ZC_DATO_NUMERICO):

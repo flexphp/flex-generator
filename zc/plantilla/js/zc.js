@@ -737,30 +737,38 @@ function init(init, formulario, campo) {
  * @param {json} rpta Restricciones de los campos segun el servidor
  */
 function initParsley(formulario, rpta){
-    // Deshabilitar configuracion anterior
+    // Para los formularios de busqueda a los campos se les quitan algunas restricciones
     var busqueda = ($('#zc-filtros-predefinidos').length > 0) ? true : false;
 
+    // Deshabilitar configuracion anterior
     $('#' + formulario).parsley().destroy();
     for (var campo in rpta.infoEncabezado) {
-        for (var cont in rpta.infoEncabezado[campo]) {
+        var tipoCampo = $('input[name='+campo+']').attr('type');
+        for (var restriccion in rpta.infoEncabezado[campo]) {
             if(busqueda && (
-                cont == 'required' || cont == 'required-message'
-                || cont == 'min' || cont == 'min-message'
-                || cont == 'max' || cont == 'max-message'
-                || cont == 'minlength' || cont == 'minlength-message'
-                || cont == 'maxlength' || cont == 'maxlength-message'
+                restriccion == 'required' || restriccion == 'required-message'
+                || restriccion == 'min' || restriccion == 'min-message'
+                || restriccion == 'max' || restriccion == 'max-message'
+                || restriccion == 'minlength' || restriccion == 'minlength-message'
+                || restriccion == 'maxlength' || restriccion == 'maxlength-message'
                 )
             ) {
-                // Para los formularios de busquedo no se tienen en cuenta estas restricciones
+                // Para los formularios de busqueda no se tienen en cuenta estas restricciones
                 continue;
             }
-            var valor = rpta.infoEncabezado[campo][cont];
-            if (cont == 'required' && valor != 'false') {
-                // A los campos obligatorios se les agrega el simbolo
+            var valor = rpta.infoEncabezado[campo][restriccion];
+            if (restriccion == 'required' && valor != 'false') {
+                // A los campos obligatorios se les agrega el simbolo de obligatoriedad
                 var label = $("label[for='" + campo + "']").append('<font style="color: red;">*</font>');
             }
             // Asigna la restriccion al campo
-            $('#' + campo).attr('data-parsley-' + cont, valor);
+            if(tipoCampo === 'checkbox' || tipoCampo === 'radio') {
+                // Para los radios y los checkbox las restricciones se asignan al primer elemento [0]
+                $('input[name='+campo+']:first').attr('data-parsley-' + restriccion, valor);
+            } else {
+                // Para el resto de los elementos
+                $('#' + campo).attr('data-parsley-' + restriccion, valor);
+            }
         }
     }
     // Asignar configuracion

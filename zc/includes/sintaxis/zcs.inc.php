@@ -133,11 +133,11 @@ class zcs {
                 case ZC_DATO_CONTRASENA:
                 case ZC_DATO_URL:
                 case ZC_DATO_TEXTO:
-                case ZC_DATO_AREA_TEXTO:
                     // Agregar tipo de dato
                     $this->_xml .= tabular('<' . ZC_DATO . '>' . $palabra . '</' . ZC_DATO . '>', 12);
                     break;
                 case ZC_ELEMENTO_CAJA:
+                case ZC_ELEMENTO_AREA:
                 case ZC_ELEMENTO_RADIO:
                 case ZC_ELEMENTO_CHECKBOX:
                 case ZC_ELEMENTO_LISTA:

@@ -73,6 +73,9 @@ class elemento {
             case ZC_ELEMENTO_CAJA:
                 $this->agregarElementoCaja($this->_caracteristicas);
                 break;
+            case ZC_ELEMENTO_AREA:
+                $this->agregarElementoArea($this->_caracteristicas);
+                break;
             case ZC_ELEMENTO_RADIO:
                 $this->agregarElementoRadio($this->_caracteristicas);
                 break;
@@ -90,12 +93,23 @@ class elemento {
     }
 
     /**
-     * Agrega las cajas, radios, checkboxs, select dentro del formulario, segun caracteristicas del XML
+     * Agrega las cajas tipo texto, password dentro del formulario, segun caracteristicas del XML
      * @param string $caracteristicas Caracteristicas extraidas del XML
      * @return \elemento
      */
     private function agregarElementoCaja($caracteristicas) {
         $this->_elemento = new caja($caracteristicas);
+        $this->_elemento->crear();
+        return $this;
+    }
+
+    /**
+     * Agrega areas de texto, password dentro del formulario, segun caracteristicas del XML
+     * @param string $caracteristicas Caracteristicas extraidas del XML
+     * @return \elemento
+     */
+    private function agregarElementoArea($caracteristicas) {
+        $this->_elemento = new area($caracteristicas);
         $this->_elemento->crear();
         return $this;
     }

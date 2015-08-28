@@ -56,6 +56,7 @@ define('ZC_AUTOFOCO', 'campo_principal');
 // Tipos de elementos aceptados
 define('ZC_ELEMENTO', 'que_quieres');
 define('ZC_ELEMENTO_CAJA', 'caja');
+define('ZC_ELEMENTO_AREA', 'area');
 define('ZC_ELEMENTO_RADIO', 'radio');
 define('ZC_ELEMENTO_CHECKBOX', 'checkbox');
 define('ZC_ELEMENTO_LISTA', 'lista');
@@ -73,7 +74,6 @@ define('ZC_DATO_HORA', 'hora');
 define('ZC_DATO_CONTRASENA', 'clave');
 define('ZC_DATO_URL', 'url');
 define('ZC_DATO_TEXTO', 'texto');
-define('ZC_DATO_AREA_TEXTO', 'mucho texto');
 define('ZC_DATO_WS', 'dato_ws');
 define('ZC_DATO_ERROR', 'mensaje_de_error_tipo_dato');
 define('ZC_DATO_ERROR_PREDETERMINADO', 'Tipo de dato incorrecto');
@@ -81,10 +81,10 @@ define('ZC_DATO_ERROR_PREDETERMINADO', 'Tipo de dato incorrecto');
 define('ZC_LONGITUD_PREDETERMINADA', 40);
 define('ZC_LONGITUD_MAXIMA', 'longitud_maxima_es');
 define('ZC_LONGITUD_MAXIMA_ERROR', 'mensaje_de_error_longitud_maxima');
-define('ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO', 'Supera la longitud permitida (&[Longitud]&)');
+define('ZC_LONGITUD_MAXIMA_ERROR_PREDETERMINADO', 'Supera la longitud permitida (%s)');
 define('ZC_LONGITUD_MINIMA', 'longitud_minima_es');
 define('ZC_LONGITUD_MINIMA_ERROR', 'mensaje_de_error_longitud_minima');
-define('ZC_LONGITUD_MINIMA_ERROR_PREDETERMINADO', 'Se esperan al menos (&[Longitud]&) caracteres');
+define('ZC_LONGITUD_MINIMA_ERROR_PREDETERMINADO', 'Se esperan minimo (%s) caractere(s)');
 // Restricciones de obligatorieadad
 define('ZC_OBLIGATORIO', 'es_obligatorio');
 define('ZC_OBLIGATORIO_SI', 'si');

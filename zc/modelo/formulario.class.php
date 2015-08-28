@@ -565,6 +565,7 @@ class formulario {
             $caracteristicas[ZC_AUTOFOCO] = $this->aplicarAutofoco();
             switch ($caracteristicas[ZC_ELEMENTO]) {
                 case ZC_ELEMENTO_CAJA:
+                case ZC_ELEMENTO_AREA:
                 case ZC_ELEMENTO_RADIO:
                 case ZC_ELEMENTO_CHECKBOX:
                 case ZC_ELEMENTO_LISTA:

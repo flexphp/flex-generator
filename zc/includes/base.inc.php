@@ -38,7 +38,6 @@ function plantillas() {
     $zcphp->asignarEtiqueta('datoContrasena', ZC_DATO_CONTRASENA);
     $zcphp->asignarEtiqueta('datoUrl', ZC_DATO_URL);
     $zcphp->asignarEtiqueta('datoTexto', ZC_DATO_TEXTO);
-    $zcphp->asignarEtiqueta('datoAreaTexto', ZC_DATO_AREA_TEXTO);
     $zcphp->asignarEtiqueta('funcionValidacionDatos', nombreFuncionValidacionDatos());
     $zcphp->crearPlantilla('../www/application/libraries', 'php', nombreControlador('zc'));
 

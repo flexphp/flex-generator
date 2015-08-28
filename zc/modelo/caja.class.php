@@ -36,7 +36,7 @@ class caja extends Aelemento {
     private $_formatoHora = 'HH:mm:ss';
 
     /**
-     * Contrucutor de la caja de texto, define las caracteristicas que tendra el elemento
+     * Constructor de la caja de texto, define las caracteristicas que tendra el elemento
      * @param array $caracteristicas Valores seleccionados por el cliente
      * @throws Exception
      */
@@ -46,11 +46,6 @@ class caja extends Aelemento {
 
     /**
      * Crear y define el elemento HTML a devolver
-     * El estilo de creacion permite crear dos columnas para la recoleecion de datos
-     * Cada una inicia con una columna en blanco (margen) izquierdo
-     * 5 columnas repartidas con 2 para la etiqueta del elemento y 3 para la forma de ignreso
-     * 5 columnas repartidas con 2 para la etiqueta del elemento y 3 para la forma de ignreso
-     * Cada una inicia con una columna en blanco (margen) derecho
      */
     function crear() {
         switch ($this->_prop[ZC_DATO]) {
@@ -65,9 +60,6 @@ class caja extends Aelemento {
                 break;
             case ZC_DATO_CONTRASENA:
                 $this->crearContrasena();
-                break;
-            case ZC_DATO_AREA_TEXTO:
-                $this->crearAreaDeTexto();
                 break;
             case ZC_DATO_NUMERICO:
             case ZC_DATO_EMAIL:
@@ -216,24 +208,4 @@ class caja extends Aelemento {
         return $this;
     }
 
-    /**
-     * Crea un elemento tipo textarea
-     */
-    private function crearAreaDeTexto() {
-        $this->_html = "<textarea" .
-                " rows='3'" .
-                " class='form-control'" .
-                // Identificador
-                " id='{$this->_id}'" .
-                " name='{$this->_id}'" .
-                // Autofoco
-                " {$this->_autofoco}" .
-                // Ayuda visual
-                $this->ayuda() .
-                $this->placeholder() .
-                "/>" .
-                " </textarea>";
-        return $this;
-    }
-    
 }

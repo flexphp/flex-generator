@@ -131,7 +131,6 @@ class buscar extends accion {
                 case $campo[ZC_DATO] == ZC_DATO_URL:
                 case $campo[ZC_DATO] == ZC_DATO_TEXTO:
                 case $campo[ZC_DATO] == ZC_DATO_EMAIL:
-                case $campo[ZC_DATO] == ZC_DATO_AREA_TEXTO:
                 case $campo[ZC_DATO] == ZC_DATO_CONTRASENA:
                 default :
                     $operador = 'texto';

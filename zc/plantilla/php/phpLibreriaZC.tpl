@@ -52,7 +52,6 @@ class Zc {
     const HORA = '{_datoHora_}';
     const CONTRASENA = '{_datoContrasena_}';
     const TEXTO = '{_datoTexto_}';
-    const AREA_TEXTO = '{_datoAreaTexto_}';
 
     function __construct($params = null) {
         $this->CI =& get_instance();
@@ -291,7 +290,7 @@ class Zc {
             return $this->obtenerError($id);
         }
         if ($valorMaximo > 0 && $valor > $valorMaximo) {
-            $this->setearError($id, str_replace('&[Longitud]&', $valorMaximo, $textoError));
+            $this->setearError($id, sprintf($textoError, $valorMaximo));
         }
         return $this->obtenerError($id);
     }
@@ -309,7 +308,7 @@ class Zc {
             return $this->obtenerError($id);
         }
         if ($valorMinimo > 0 && $valor < $valorMinimo) {
-            $this->setearError($id, str_replace('&[Longitud]&', $valorMinimo, $textoError));
+            $this->setearError($id, sprintf($textoError, $valorMinimo));
         }
         return $this->obtenerError($id);
     }
@@ -327,7 +326,7 @@ class Zc {
             return $this->obtenerError($id);
         }
         if ($longitud > 0 && strlen($valor) > $longitud) {
-            $this->setearError($id, str_replace('&[Longitud]&', $longitud, $textoError));
+            $this->setearError($id, sprintf($textoError, $longitud));
         }
         return $this->obtenerError($id);
     }
@@ -345,7 +344,7 @@ class Zc {
             return $this->obtenerError($id);
         }
         if ($longitud > 0 && strlen($valor) < $longitud) {
-            $this->setearError($id, str_replace('&[Longitud]&', $longitud, $textoError));
+            $this->setearError($id, sprintf($textoError, $longitud));
         }
         return $this->obtenerError($id);
     }
@@ -420,6 +419,11 @@ class Zc {
             foreach ($restricciones[$campo] as $funcion => $descripcion) {
                 //Recorre cada restriccion para el campo
                 if (stripos($funcion, '-message') === false) {
+                    // El mensaje de restriccion para el campo no se valida
+                    if ((stripos($funcion, 'max') !== false || stripos($funcion, 'min') !== false) && !isset($restricciones[$campo]['required']) && ($valor == '' || $valor == 0)) {
+                        // Los campos que no son obligatorios y estan vacios no se les valida la longitud
+                        continue;
+                    }
                     // Mensaje de error para la restriccion especifica
                     $mensajeError = (isset($restricciones[$campo][$funcion . '-message'])) ? $restricciones[$campo][$funcion . '-message'] : null;
                     // Llamado a la restriccion para validar dato

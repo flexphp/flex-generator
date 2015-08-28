@@ -231,8 +231,6 @@ class accion extends Aelemento {
             // permite enviar 'cualquier' tipo de dato
             switch ($campo[ZC_ELEMENTO]) {
                 case ZC_ELEMENTO_CHECKBOX:
-                case ZC_ELEMENTO_RADIO:
-                case ZC_ELEMENTO_LISTA:
                     $this->_inicializarCliente[] = "'{$id}' => ((isset(\$datos['{$id}'])) ? json_encode(\$datos['{$id}']) : '')";
                     break;
                 default:
