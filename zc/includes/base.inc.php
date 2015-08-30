@@ -100,7 +100,10 @@ function plantillas() {
     // Lenguaje datapicker
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/es.js', '../www/publico/js/es.js');
     // JS con funciones javascript utilizadas por el sistema
-    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/zc.js', '../www/publico/js/zc.js');
+    $zcjs = new plantilla();
+    $zcjs->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/js/zc.js');
+    $zcjs->asignarEtiqueta('accionInit', ZC_ACCION_INIT);
+    $zcjs->crearPlantilla('../www/publico/js', 'js', 'zc');
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/index.html', '../www/publico/js/index.html');
     // CSS Homologado
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/css/bootstrap.min.css', '../www/publico/css/bootstrap.css');

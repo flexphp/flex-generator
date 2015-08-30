@@ -34,7 +34,8 @@ class {_nombreModelo_} extends CI_Model {
      */
     public function configuracionCampo($id = null) {
 {_configuracionCampo_}
-        return (isset($id) && isset($campo[$id])) ? $campo[$id] : $campo;
+        // Para la correcta asignacion de valores del lado cliente
+        return (isset($id) && isset($campo[$id])) ? array($id => $campo[$id]) : $campo;
     }
 
     {_funcionesModelo_}

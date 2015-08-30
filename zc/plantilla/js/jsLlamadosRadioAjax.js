@@ -14,7 +14,7 @@ $(document).ready(function () {
         success: function(rpta){
             if(rpta.error === undefined){
                 // Agrega las opciones al select
-                ZCPrecargarRadio("{_nombreContenedor_}", "{_nombreRadio_}", "{_obligatorio_}", "{_mensajeObligatorio_}", rpta);
+                ZCPrecargarRadio("{_nombreContenedor_}", "{_nombreRadio_}", rpta);
             }
         },
         complete: function(){

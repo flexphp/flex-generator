@@ -101,8 +101,12 @@ abstract class Aelemento {
             $this->_prop[ZC_LONGITUD_MINIMA_ERROR] = (isset($this->_prop[ZC_LONGITUD_MINIMA_ERROR]) && '' != $this->_prop[ZC_LONGITUD_MINIMA_ERROR]) ? $this->_prop[ZC_LONGITUD_MINIMA_ERROR] : null;
             // La longitud debe ser numerica
             // Si no se define longitud maxima se asume una por defecto
-            $this->_prop[ZC_LONGITUD_MAXIMA] = (isset($this->_prop[ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[ZC_LONGITUD_MAXIMA])) ? $this->_prop[ZC_LONGITUD_MAXIMA] : ZC_LONGITUD_PREDETERMINADA;
+            $tieneLongitudAsignada = (isset($this->_prop[ZC_LONGITUD_MAXIMA]) && is_int((int) $this->_prop[ZC_LONGITUD_MAXIMA])) ? true : false;
+            $this->_prop[ZC_LONGITUD_MAXIMA] = ($tieneLongitudAsignada) ? $this->_prop[ZC_LONGITUD_MAXIMA] : ZC_LONGITUD_PREDETERMINADA;
             $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] = (isset($this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) && '' != $this->_prop[ZC_LONGITUD_MAXIMA_ERROR]) ? $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] : null;
+            // Los campos tipo numerico no tienen que no tienen longitud definida no se les agrega, esto para evitar validaciones de datos erroneas del lado cliente  y lado servidor
+            $this->_prop[ZC_LONGITUD_MAXIMA] = ($this->_prop[ZC_DATO] == ZC_DATO_NUMERICO && !$tieneLongitudAsignada) ? null : $this->_prop[ZC_LONGITUD_MAXIMA];
+            $this->_prop[ZC_LONGITUD_MAXIMA_ERROR] = ($this->_prop[ZC_DATO] == ZC_DATO_NUMERICO && !$tieneLongitudAsignada) ? null : $this->_prop[ZC_LONGITUD_MAXIMA_ERROR];
             // Valor predeterminado, se utiliza en base de datos
             $this->_prop[ZC_VALOR_PREDETERMINADO] = (isset($this->_prop[ZC_VALOR_PREDETERMINADO])) ? $this->_prop[ZC_VALOR_PREDETERMINADO] : null;
             // Campo donde se posiciona el puntero al cargar el formulario
@@ -119,7 +123,7 @@ abstract class Aelemento {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
             }
             // Valida la longitud del campo, es obligatoria para las cajas
-            if (isset($this->_prop[ZC_ELEMENTO]) && in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA, ZC_ELEMENTO_AREA)) && !isset($this->_prop[ZC_LONGITUD_MAXIMA])) {
+            if (isset($this->_prop[ZC_ELEMENTO]) && in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA, ZC_ELEMENTO_AREA)) && !isset($this->_prop[ZC_LONGITUD_MAXIMA]) && $this->_prop[ZC_DATO] != ZC_DATO_NUMERICO) {
                 mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
             }
             $this->_prop[ZC_ELEMENTO_OPCIONES] = (isset($this->_prop[ZC_ELEMENTO_OPCIONES])) ? $this->_prop[ZC_ELEMENTO_OPCIONES] : null;

@@ -286,7 +286,7 @@ class Zc {
      * @return string
      */
     function _max($id, $valor, $valorMaximo = 0, $textoError = '') {
-        if ('' == $valor) {
+        if (0 == $valor) {
             return $this->obtenerError($id);
         }
         if ($valorMaximo > 0 && $valor > $valorMaximo) {
@@ -304,7 +304,7 @@ class Zc {
      * @return string
      */
     function _min($id, $valor, $valorMinimo = 0, $textoError = '') {
-        if ('' == $valor) {
+        if (0 == $valor) {
             return $this->obtenerError($id);
         }
         if ($valorMinimo > 0 && $valor < $valorMinimo) {
@@ -414,16 +414,11 @@ class Zc {
                 // No existen restricciones para este campo
                 continue;
             }
-
             // Recorre cada campo
             foreach ($restricciones[$campo] as $funcion => $descripcion) {
                 //Recorre cada restriccion para el campo
                 if (stripos($funcion, '-message') === false) {
                     // El mensaje de restriccion para el campo no se valida
-                    if ((stripos($funcion, 'max') !== false || stripos($funcion, 'min') !== false) && !isset($restricciones[$campo]['required']) && ($valor == '' || $valor == 0)) {
-                        // Los campos que no son obligatorios y estan vacios no se les valida la longitud
-                        continue;
-                    }
                     // Mensaje de error para la restriccion especifica
                     $mensajeError = (isset($restricciones[$campo][$funcion . '-message'])) ? $restricciones[$campo][$funcion . '-message'] : null;
                     // Llamado a la restriccion para validar dato
@@ -442,7 +437,7 @@ class Zc {
      */
     function setearError($id, $textoError = '') {
         if (!isset($this->_error[$id])) {
-            // Si no existe error para el campo lo configura
+            // Si no existe error para el campo lo asigna
             $this->_error[$id] = $textoError;
         }
     }

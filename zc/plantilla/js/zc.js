@@ -538,7 +538,7 @@ function ZCPrecargarSeleccion(lista, rpta) {
  * @param {json} rpta Respuesta de los valores devueltos por el ervidor
  * @returns {undefined}
  */
-function ZCPrecargarRadio(contenedor, radio, obligatorio, msjObligatorio, rpta) {
+function ZCPrecargarRadio(contenedor, radio, rpta) {
     // Valor de campo
     var id = '';
     // Descripcon del campo
@@ -556,13 +556,6 @@ function ZCPrecargarRadio(contenedor, radio, obligatorio, msjObligatorio, rpta) 
                 }
             }
         }
-        if(0 == i && '' != obligatorio) {
-            // Solo se anade en el primer elemento
-            htmlExtra = obligatorio + ' ' + msjObligatorio;
-        } else {
-            htmlExtra = '';
-        }
-
         opcion += "<label class='radio-inline' for='" + id + "'>" +
                     "<input" +
                     " type='radio'" +
@@ -573,7 +566,6 @@ function ZCPrecargarRadio(contenedor, radio, obligatorio, msjObligatorio, rpta) 
                     " id='" + radio + "_" + id + "'" +
                     " name='" + radio + "'" +
                     " value='" + valor + "'" +
-                    htmlExtra +
                     "/>" +
                     valor +
                     "</label>";
@@ -583,6 +575,9 @@ function ZCPrecargarRadio(contenedor, radio, obligatorio, msjObligatorio, rpta) 
     }
     // Agrega las opciones al campo
     $('#' + contenedor).append(opcion);
+    // Consulta las restricciones para el campo recien cargado
+    init('{_accionInit_}', radio);
+
 }
 
 /**
@@ -687,9 +682,10 @@ function ZCAsignarErrores(formulario, rpta) {
 
 /**
  * Inicializacion de las restricciones del formulario
+ * @param {string} nombre de la accion a llamar
  * @param {string} campo
  */
-function init(init, formulario, campo) {
+function init(init, campo) {
     // Nonbre del controlador
     var controlador = $('#zc-controlador').val();
     $.ajax({
@@ -712,10 +708,9 @@ function init(init, formulario, campo) {
         success: function(rpta) {
             if (rpta.error !== undefined && '' !== rpta.error) {
                 // Muestra mensaje de error
-                $('#error-' + formulario).text(rpta.error);
-                $('.alert-danger').show();
+                console.log(rpta.error);
             } else {
-                initParsley(formulario, rpta);
+                initParsley(rpta);
             }
         },
         complete: function() {
@@ -725,23 +720,20 @@ function init(init, formulario, campo) {
             $('button span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
         },
         error: function(rpta) {
-            $('#error-' + formulario).text('Error en el servicio');
-            $('.alert-danger').show();
+            console.log('Error en el servicio');
         }
     });
 }
 
 /**
  * Inicializa los campos con las restricciones parsley
- * @param {string} formulario Identificador del formulario con los campos a inicilizar
  * @param {json} rpta Restricciones de los campos segun el servidor
  */
-function initParsley(formulario, rpta){
+function initParsley(rpta){
     // Para los formularios de busqueda a los campos se les quitan algunas restricciones
     var busqueda = ($('#zc-filtros-predefinidos').length > 0) ? true : false;
 
     // Deshabilitar configuracion anterior
-    $('#' + formulario).parsley().destroy();
     for (var campo in rpta.infoEncabezado) {
         var tipoCampo = $('input[name='+campo+']').attr('type');
         for (var restriccion in rpta.infoEncabezado[campo]) {
@@ -772,5 +764,5 @@ function initParsley(formulario, rpta){
         }
     }
     // Asignar configuracion
-    $('#' + formulario).parsley();
+    $('form').parsley();
 }

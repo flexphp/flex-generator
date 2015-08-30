@@ -126,8 +126,6 @@ class radio extends Aelemento {
             $plantilla->asignarEtiqueta('nombreCampos', $this->_joinTablas['campo']);
             $plantilla->asignarEtiqueta('nombreContenedor', $this->_contenedorRadio);
             $plantilla->asignarEtiqueta('nombreRadio', $this->_id);
-            $plantilla->asignarEtiqueta('obligatorio', $this->_obligatorio);
-            $plantilla->asignarEtiqueta('mensajeObligatorio', $this->_msjObligatorio);
             $plantilla->crearPlantilla('../www/publico/js', 'js', 'ajax_' . $this->_joinTablas['tabla']);
             // Agregar archivo creado al javascript al formulario
             $this->_ajax = $plantilla->devolver();
