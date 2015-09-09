@@ -409,7 +409,7 @@ class Zc {
      * @return
      */
     function validarCampo($dato, $restricciones) {
-        foreach ($dato as $campo => $valor) {
+        foreach ($dato as $campo => $valores) {
             if (!isset($restricciones[$campo])) {
                 // No existen restricciones para este campo
                 continue;
@@ -421,8 +421,16 @@ class Zc {
                     // El mensaje de restriccion para el campo no se valida
                     // Mensaje de error para la restriccion especifica
                     $mensajeError = (isset($restricciones[$campo][$funcion . '-message'])) ? $restricciones[$campo][$funcion . '-message'] : null;
-                    // Llamado a la restriccion para validar dato
-                    call_user_func_array(array($this, '_' . $funcion), array($campo, $valor, $descripcion, $mensajeError));
+                    // ob_start();var_dump($valores);$data = ob_get_clean();file_put_contents(getcwd() . '/application/logs/valores_' . date('Ymd') . '.log', date('H:m:i') . '::' . __FUNCTION__ . "\n" . ' $valores: ' . print_r($valores, 1) . "\n ==> $data \n", FILE_APPEND);
+                    if (is_array($valores)) {
+                        // Cada posible valor del campo se valida, esto para valores multiples
+                        foreach ($valores as $valor) {
+                            // Llamado a la restriccion para validar dato
+                            call_user_func_array(array($this, '_' . $funcion), array($campo, $valor, $descripcion, $mensajeError));
+                        }
+                    } else {
+                        call_user_func_array(array($this, '_' . $funcion), array($campo, $valores, $descripcion, $mensajeError));
+                    }
                 }
             }
         }

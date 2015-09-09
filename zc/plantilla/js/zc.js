@@ -663,7 +663,8 @@ function ZCAsignarErrores(formulario, rpta) {
     if (typeof rpta.error === 'object') {
         // Error en un campo
         $.each(rpta.error, function(campo, error) {
-            var label = $("label[for='" + campo + "']").text();
+            // Selecciona la 1ra etiqueta, esto por si hay campos multiples []
+            var label = $("label[for='" + campo + "']:first").text();
             if (label != ''){
                 // Solo si el label existe
                 msjError += label + ': ' + error + '<br />';
