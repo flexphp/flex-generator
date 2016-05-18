@@ -5895,7 +5895,7 @@ class wsdl extends nusoap_base {
 	    	}
 	    	$attrs = $value->attributes;
 	    	$value = $value->value;
-	    	$this->debug("in serializeType: soapval overrides value to $value");
+	    	$this->debug("in serializeType: soapval overrides value to " . print_r($value, 1));
 	    	if ($attrs) {
 	    		if (!is_array($value)) {
 	    			$value['!'] = $value;
@@ -6129,7 +6129,7 @@ class wsdl extends nusoap_base {
 				$rows = sizeof($value);
 				$contents = '';
 				foreach($value as $k => $v) {
-					$this->debug("serializing array element: $k, $v of type: $typeDef[arrayType]");
+					$this->debug("serializing array element: $k, " . print_r($v, 1) . " of type: $typeDef[arrayType]");
 					//if (strpos($typeDef['arrayType'], ':') ) {
 					if (!in_array($typeDef['arrayType'],$this->typemap['http://www.w3.org/2001/XMLSchema'])) {
 					    $contents .= $this->serializeType('item', $typeDef['arrayType'], $v, $use);

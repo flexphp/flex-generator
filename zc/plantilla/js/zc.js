@@ -538,7 +538,7 @@ function ZCPrecargarSeleccion(lista, rpta) {
  * @param {json} rpta Respuesta de los valores devueltos por el ervidor
  * @returns {undefined}
  */
-function ZCPrecargarRadio(contenedor, radio, rpta) {
+function ZCPrecargarRadio(contenedor, radio, obligatorio, msjObligatorio, rpta) {
     // Valor de campo
     var id = '';
     // Descripcon del campo
@@ -556,6 +556,12 @@ function ZCPrecargarRadio(contenedor, radio, rpta) {
                 }
             }
         }
+        if(0 == i && '' != obligatorio) {
+            // Solo se anade en el primer elemento
+            htmlExtra = obligatorio + ' ' + msjObligatorio;
+        } else {
+            htmlExtra = '';
+        }
         opcion += "<label class='radio-inline' for='" + id + "'>" +
                     "<input" +
                     " type='radio'" +
@@ -566,6 +572,7 @@ function ZCPrecargarRadio(contenedor, radio, rpta) {
                     " id='" + radio + "_" + id + "'" +
                     " name='" + radio + "'" +
                     " value='" + valor + "'" +
+                    htmlExtra +
                     "/>" +
                     valor +
                     "</label>";
@@ -672,9 +679,12 @@ function ZCAsignarErrores(formulario, rpta) {
             // Agrega clase error
             $('#' + campo).addClass('parsley-error');
         });
-    } else {
+    } else if (rpta.error) {
         // Error sin asociacion de campo
         msjError = rpta.error;
+    } else {
+        // Solo el mensaje de error
+        msjError = rpta;
     }
     // Establecer error e ir al principio de la pagina
     $('#error-' + formulario).html(msjError);
@@ -686,7 +696,7 @@ function ZCAsignarErrores(formulario, rpta) {
  * @param {string} nombre de la accion a llamar
  * @param {string} campo
  */
-function init(init, campo) {
+function init(init, formulario, campo) {
     // Nonbre del controlador
     var controlador = $('#zc-controlador').val();
     $.ajax({
@@ -709,9 +719,10 @@ function init(init, campo) {
         success: function(rpta) {
             if (rpta.error !== undefined && '' !== rpta.error) {
                 // Muestra mensaje de error
-                console.log(rpta.error);
+                $('#error-' + formulario).text(rpta.error);
+                $('.alert-danger').show();
             } else {
-                initParsley(rpta);
+                initParsley(formulario, rpta);
             }
         },
         complete: function() {
@@ -721,22 +732,25 @@ function init(init, campo) {
             $('button span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
         },
         error: function(rpta) {
-            console.log('Error en el servicio');
+            $('#error-' + formulario).text('Error en el servicio');
+            $('.alert-danger').show();
         }
     });
 }
 
 /**
  * Inicializa los campos con las restricciones parsley
+ * @param {string} formulario Identificador del formulario con los campos a inicilizar
  * @param {json} rpta Restricciones de los campos segun el servidor
  */
-function initParsley(rpta){
+function initParsley(formulario, rpta){
     // Para los formularios de busqueda a los campos se les quitan algunas restricciones
     var busqueda = ($('#zc-filtros-predefinidos').length > 0) ? true : false;
 
     // Deshabilitar configuracion anterior
+    $('#' + formulario).parsley().destroy();
     for (var campo in rpta.infoEncabezado) {
-        var tipoCampo = $('input[name='+campo+']').attr('type');
+        var tipoCampo = $('input[name^='+campo+']:first').attr('type');
         for (var restriccion in rpta.infoEncabezado[campo]) {
             if(busqueda && (
                 restriccion == 'required' || restriccion == 'required-message'
@@ -750,14 +764,35 @@ function initParsley(rpta){
                 continue;
             }
             var valor = rpta.infoEncabezado[campo][restriccion];
-            if (restriccion == 'required' && valor != 'false') {
-                // A los campos obligatorios se les agrega el simbolo de obligatoriedad
-                var label = $("label[for='" + campo + "']").append('<font style="color: red;">*</font>');
+            // if (restriccion == 'required' && valor != 'false') {
+                // // A los campos obligatorios se les agrega el simbolo de obligatoriedad
+                // var label = $("label[for='" + campo + "']").append('<font style="color: red;">*</font>');
+            // }
+
+            if (restriccion == 'tooltip' && valor != '') {
+                // Agrega mensajes de ayuda a los campos
+                $('[name^='+campo+']').attr('rel', 'tooltip');
+                $('[name^='+campo+']').attr('data-html', 'true');
+                $('[name^='+campo+']').attr('data-placement', 'top');
+                $('[name^='+campo+']').attr('data-toggle', 'tooltip');
+                $('[name^='+campo+']').attr('data-original-title', valor);
+                continue;
+            }
+
+            if (restriccion == 'text' && valor != '') {
+                if(!tipoCampo) {
+                    // <span> <div>
+                    $('#' + campo).html(valor);
+                } else {
+                    // input
+                    $('#' + campo).val(valor);
+                }
+                continue;
             }
             // Asigna la restriccion al campo
             if(tipoCampo === 'checkbox' || tipoCampo === 'radio') {
                 // Para los radios y los checkbox las restricciones se asignan al primer elemento [0]
-                $('input[name='+campo+']:first').attr('data-parsley-' + restriccion, valor);
+                $('input[name^='+campo+']:first').attr('data-parsley-' + restriccion, valor);
             } else {
                 // Para el resto de los elementos
                 $('#' + campo).attr('data-parsley-' + restriccion, valor);
@@ -765,5 +800,33 @@ function initParsley(rpta){
         }
     }
     // Asignar configuracion
-    $('form').parsley();
+    $('#' + formulario).parsley();
 }
+
+/**
+ * Tomada de link http://vhspiceros.blogspot.com/2008/12/replace-all-en-javascript.html 
+ */
+function replaceAll(string, busca, reemplaza) {
+    while (string.toString().indexOf(busca) != -1) {
+        string = string.toString().replace(busca, reemplaza);
+    }
+    return string;
+}
+
+/**
+ * Determina el tipo de imagenes autilizar basado en el tamano de la pantalla
+ */
+function formatoImagen() {
+    resolucion = document.documentElement.clientWidth;
+    switch (true){
+        case (resolucion <= 480):
+            formato = '_xs';
+            break;
+        default:
+            formato = '_lg';
+            break;
+    }
+    return formato;
+}
+// Variable de ambito global para verificar el tamaño de las imagenes a utilizar
+var formatoImagen = formatoImagen();

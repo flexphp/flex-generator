@@ -3,9 +3,12 @@
  */
 $(document).ready(function () {
     //Campos que se validan del formulario
-    var formasValidar = $('input, textarea, select').not(':input[type=button], :input[type=submit], :input[type=reset], select[class=zc-filtros-busqueda], #zc-filtros-cantidad-filtros');
+    var formasValidar = $('input, textarea, select').not(':input[type=hidden], :input[type=button], :input[type=submit], :input[type=reset], select[class=zc-filtros-busqueda], #zc-filtros-cantidad-filtros');
     //Agrega descripciones de ayuda a las cajas de texto
-    $('body').tooltip({ selector: '[data-toggle=tooltip]' });
+    $('body').tooltip({
+        selector: '[data-toggle=tooltip]',
+        template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner large"></div></div>'
+    });
     // Oculta ventana con mensajes de error
     $('.alert').hide();
     // Accion del boton limpiar
@@ -15,6 +18,11 @@ $(document).ready(function () {
     // Inicializa los filtros de busqueda
     $('.zc-filtros-busqueda').change(function(e){
         ZCCamposDeBusqueda(e, '{_idFormulario_}', this);
+    });
+    // Se agrega la validacion cuando los elementos pierden el foco
+    $('{_idFormulario_}').find($(formasValidar)).change(function (e) {
+        ZCBarraProgreso('compras', formasValidar);
+        $('#'+this.id).parsley().validate('#'+this.id);
     });
     // Accion boton cancelar
     $('.zc-boton-cancelar').click(function(e){

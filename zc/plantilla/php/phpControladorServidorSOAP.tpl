@@ -2,7 +2,7 @@
 
 // Solo muestra errores fatales
 // Necesario para devolver los datos correctos en la respuesta del servidor
-error_reporting(1);
+error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 
 class {_nombreControlador_} extends CI_Controller{
     function {_nombreControlador_}(){
@@ -20,7 +20,7 @@ class {_nombreControlador_} extends CI_Controller{
         $this->_SRV_WS->wsdl->schemaTargetNamespace = $this->_miURL;
         // Para manejo de caracteres especiales, tildes, &, etc.
         $this->_SRV_WS->soap_defencoding = 'UTF-8';
-        $this->_SRV_WS->decode_utf8 = false;
+        $this->_SRV_WS->decode_utf8 = true;
         $this->_SRV_WS->encode_utf8 = true;
         {_comandoEspecial_}
      }

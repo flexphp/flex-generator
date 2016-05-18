@@ -96,6 +96,20 @@ class Zc {
     }
 
     /**
+     * Empaqueta la respuesta en JSON para enviarlo al cliente
+     * @param array $rpta Respuesta del WS en forma de arreglo
+     */
+    function rptaWS($rpta) {
+        // Existe error, devuelve el error
+        $rptaWS['error'] = (isset($rpta['error'])) ? json_encode($rpta['error']) : '';
+        // Si existe respuesta valida por parte del servidor
+        $rptaWS['infoEncabezado'] = (isset($rpta['resultado'])) ? json_encode($rpta['resultado']) : '';
+        $rptaWS['cta'] = (isset($rpta['cta'])) ? $rpta['cta'] : 0;
+
+        return $rptaWS;
+    }
+
+    /**
      * Procesa la respuesta devuelta por el servidor WS, verifica si existen errores
      * @param array Respuesta del servidor de WS
      * @return array
@@ -247,10 +261,12 @@ class Zc {
         // Verificacion que los parametros estan bien, y si lo estan devolver respuesta.
         if ($_CLI_WS->fault) {
             $return['errorWS'] = $_rpta['faultstring'];
+			log_message('error', __METHOD__ . " " . print_r($_rpta['faultstring'], 1));
         } else {
             $error = $_CLI_WS->getError();
             if ($error) {
                 $return['errorWS'] = $error;
+				log_message('error', __METHOD__ . " " . print_r($error, 1));
             } else {
                 $return['rptaWS'] = $_rpta;
             }
@@ -367,7 +383,7 @@ class Zc {
         // Determina la validacion a hacer con base en el tipo de dato
         switch ($tipo) {
             case self::NUMERICO:
-                if (filter_var($valor,  FILTER_VALIDATE_INT) === false) {
+                if (!is_numeric($valor)) {
                     $error = true;
                 }
                 break;
@@ -416,6 +432,11 @@ class Zc {
             }
             // Recorre cada campo
             foreach ($restricciones[$campo] as $funcion => $descripcion) {
+                if (!method_exists($this, '_' . $funcion)) {
+                    // Algunas funciones no son restricciones por ejemplo tooltip, este tipo no las valida
+                    continue;
+                }
+                    
                 //Recorre cada restriccion para el campo
                 if (stripos($funcion, '-message') === false) {
                     // El mensaje de restriccion para el campo no se valida
@@ -488,6 +509,46 @@ class Zc {
             return $this->_formatos[$tipo];
         }
         return '';
+    }
+
+    /**
+     * Transforma caracteres especiales a utf para que los datos json no fallen al enviarse al navegador
+     * @param $rpta json Datos de respuesta devueltos al cliente
+     * @return json
+     */ 
+    function utf8_converter($rpta) {
+        if(function_exists('mb_detect_encoding') && function_exists('mb_detect_encoding')) {
+            array_walk_recursive($rpta, function(&$item, $key){
+                if(!mb_detect_encoding($item, 'utf-8', true)){
+                    $item = trim(utf8_encode($item));
+                }
+            });
+        } else {
+            foreach($rpta as $llave => $valor) {
+                if(is_array($valor)) {
+                    $rpta[$llave] = $this->utf8_converter($valor);
+                } else {
+                    $rpta[$llave] = trim(utf8_encode($valor));
+                }
+            }
+        }
+        return $rpta;
+    }
+
+    /**
+     * Transforma caracteres especiales a utf para que los datos json no fallen al enviarse al navegador
+     * @param $rpta json Datos de respuesta devueltos al cliente
+     * @return json
+     */ 
+    function htmlentities($rpta) {
+        foreach($rpta as $llave => $valor) {
+            if(is_array($valor)) {
+                $rpta[$llave] = $this->htmlentities($valor);
+            } else {
+                $rpta[$llave] = trim(htmlentities($valor));
+            }
+        }
+        return $rpta;
     }
 
     public function __destruct() {}
