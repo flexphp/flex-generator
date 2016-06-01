@@ -2,7 +2,7 @@
         if(nombreAccion === '{_nombreAccion_}' && $('#{_idFormulario_}').parsley().validate()) {
             $.ajax({
                 // A la accion se le concatena la palabra cliente, asi se llama en la funcion
-                url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}/',
+                url: '{_nombreControlador_}/{_nombreAccion_}/',
                 type: 'POST',
                 dataType: 'JSON',
                 data: $('#{_idFormulario_}').serialize()+'&accion='+nombreAccion,
@@ -23,7 +23,7 @@
                         // Establece el id devuelto durante el proceso de insercion
                         $('#zc-id-{_idFormulario_}').val(rpta.infoEncabezado);
                         // Carga el listado con el registro insertado
-                        window.location.assign($('#URLProyecto').val()+'index.php/{_nombreControlador_}/listar/'+rpta.infoEncabezado);
+                        window.location.assign('{_nombreControlador_}/listar/'+rpta.infoEncabezado);
                     }
                 },
                 complete: function(){

@@ -98,7 +98,7 @@ define('ZC_DISTRIBUCION_ETIQUETA', 'distribucion_etiqueta');
 define('ZC_DISTRIBUCION_ELEMENTO', 'distribucion_elemento');
 define('ZC_PLACEHOLDER', 'placeholder');
 // Configuracion de la base datos
-define('ZC_MOTOR_MYSQL', 'mysql');
+define('ZC_MOTOR_MYSQL', 'mysqli');
 define('ZC_MOTOR_AUTOINCREMENTAL', 'auto');
 // Seperador de los parametros para hacer el join entres las tablas
 define('ZC_MOTOR_JOIN_SEPARADOR', '::');
@@ -135,11 +135,11 @@ define('ZC_CONFIG_INCLUIR_NAVBAR', 'con_navegacion');
 define('ZC_CONFIG_INCLUIR_LOGIN', 'con_login');
 define('ZC_CONFIG_INCLUIR_PROGRESO', 'con_barra_progreso');
 // Prefijos de los archivos
-define('ZC_PREFIJO_VISTA', 'v_');
-define('ZC_PREFIJO_LISTA', 'l_');
+define('ZC_PREFIJO_VISTA', 'V_');
+define('ZC_PREFIJO_LISTA', 'L_');
 define('ZC_PREFIJO_CONTROLADOR', '');
-define('ZC_PREFIJO_MODELO', 'm_');
-define('ZC_PREFIJO_CONTROLADOR_WS', 'ws_');
-define('ZC_PREFIJO_MODELO_WS', 'mws_');
+define('ZC_PREFIJO_MODELO', 'M_');
+define('ZC_PREFIJO_CONTROLADOR_WS', 'Ws_');
+define('ZC_PREFIJO_MODELO_WS', 'Mws_');
 // Nombre funciones utilizados a traves de los archivos
 define('ZC_FUNCION_VALIDACION_DATOS', 'validarDatos');

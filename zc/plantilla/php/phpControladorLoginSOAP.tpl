@@ -41,7 +41,7 @@ class {_nombreControlador_} extends CI_Controller {
     public function enSesion() {
         if ($this->session->userdata('zc_logueado') === true) {
             // Esta logueado en la aplicacion
-            redirect('inicio');
+            redirect('Inicio');
         } 
     }
 
@@ -59,7 +59,7 @@ class {_nombreControlador_} extends CI_Controller {
     public function sesion($rpta = array()) {
         if (count($rpta) == 0) {
             // No es un llamado valido (no es desde un Ajax, sino por la url)
-            redirect('404');
+            show_404();
         }
         // Asigna datos de session
         if (isset($rpta['infoEncabezado'][0]) && isset($rpta['cta']) && $rpta['cta'] > 0) {
@@ -78,7 +78,7 @@ class {_nombreControlador_} extends CI_Controller {
      */
     public function desloguear() {
         $this->session->sess_destroy();
-        redirect('/{_nombreControlador_}', 'location');
+        redirect('{_nombreControlador_}', 'location');
     }
 
 {_accionServidor_}

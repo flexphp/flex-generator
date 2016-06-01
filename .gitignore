@@ -4,11 +4,11 @@ zc/logs/*.log
 
 # Archivos cargados de prueba en los diferentes formatos posibles
 ########################
-zc/archivos/*.ods
-zc/archivos/*.xls
-zc/archivos/*.xlsx
-zc/archivos/*.txt
-zc/archivos/*.zcs
+zc/tmp/*.ods
+zc/tmp/*.xls
+zc/tmp/*.xlsx
+zc/tmp/*.txt
+zc/tmp/*.zcs
 
 # Archivos de configuracion conexion a base de datos
 ########################
@@ -31,6 +31,10 @@ www/publico/*
 # Archivos de configuracion propios de la aplicacion
 ########################
 www/conf/*
+
+# Archivos de session propios de la aplicacion
+########################
+www/sessions/*
 
 # Plantillas personalizadas
 ########################

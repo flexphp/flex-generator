@@ -7,7 +7,7 @@
                 $('.alert-danger').show();
             }else if (confirm('El registro sera eliminado, desea continuar?')) {
                 $.ajax({
-                    url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}/',
+                    url: '{_nombreControlador_}/{_nombreAccion_}/',
                     type: 'POST',
                     dataType: 'JSON',
                     // Envia los campos y el id del registro a actualizar
@@ -29,7 +29,7 @@
                             $('.alert-danger').show();
                         }else{
                             // Carga el listado cmostrando el registro insertado
-                            window.location.assign($('#URLProyecto').val()+'index.php/{_nombreControlador_}/listar/');
+                            window.location.assign('{_nombreControlador_}/listar/');
                         }
                     },
                     complete: function(){

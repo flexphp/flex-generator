@@ -2,7 +2,7 @@
             if(nombreAccion === '{_nombreAccion_}') {
                 $.ajax({
                     // A la accion se le concatena la palabra cliente, asi se llama en la funcion
-                    url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/{_nombreAccion_}/',
+                    url: '{_nombreControlador_}/{_nombreAccion_}/',
                     type: 'POST',
                     dataType: 'JSON',
                     data: $('#{_idFormulario_}').serialize()+'&accion='+nombreAccion,

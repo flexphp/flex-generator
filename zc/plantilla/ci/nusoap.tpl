@@ -1,8 +1,6 @@
 <?php
 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Nusoap {
 
@@ -15,3 +13,5 @@ class Nusoap {
     }
 
 }
+
+class CI_Nusoap extends Nusoap {}

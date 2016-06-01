@@ -344,7 +344,7 @@ function ZCAccionNuevoRegistro(e) {
     // Nombre del controlador
     var controlador = $('#zc-controlador').val();
     // Direcciona a la pagina de agregar
-    window.location.assign($('#URLProyecto').val() + 'index.php/' + controlador + '/nuevo');
+    window.location.assign(controlador + '/nuevo');
 }
 
 /**
@@ -360,7 +360,7 @@ function ZCAccionModificarRegistro(e, enlace) {
     // Nombre del controlador
     var controlador = $('#zc-controlador').val();
     // Direcciona a la pagina de agregar
-    window.location.assign($('#URLProyecto').val()+'index.php/'+controlador+'/editar/'+id);
+    window.location.assign(controlador+'/editar/'+id);
 }
 
 /**
@@ -622,7 +622,7 @@ function ZCAccionPrecargar(formulario, id, precargar, modificar) {
     // Nonbre del controlador
     var controlador = $('#zc-controlador').val();
     $.ajax({
-        url: $('#URLProyecto').val()+'index.php/' + controlador + '/' + precargar + '/',
+        url: '' + controlador + '/' + precargar + '/',
         type: 'POST',
         dataType: 'JSON',
         data: {
@@ -697,10 +697,8 @@ function ZCAsignarErrores(formulario, rpta) {
  * @param {string} campo
  */
 function init(init, formulario, campo) {
-    // Nonbre del controlador
-    var controlador = $('#zc-controlador').val();
     $.ajax({
-        url: $('#URLProyecto').val()+'index.php/' + controlador + '/' + init + '/',
+        url: URLControlador + init,
         type: 'POST',
         dataType: 'JSON',
         data: {
@@ -710,11 +708,7 @@ function init(init, formulario, campo) {
         },
         beforeSend: function() {
             // Desactiva todos los campos
-            $('input, textarea, select, button').addClass('disabled').prop('disabled', true);
-            // Oculta ventana con mensajes
-            $('.alert').hide();
-            // Mostrar cargando
-            $('button span').addClass('glyphicon-refresh glyphicon-refresh-animate');
+            desactivarCampos();
         },
         success: function(rpta) {
             if (rpta.error !== undefined && '' !== rpta.error) {
@@ -727,9 +721,7 @@ function init(init, formulario, campo) {
         },
         complete: function() {
             // Activar los campos para la modificacion
-            $('input, textarea, select, button').removeClass('disabled').prop('disabled', false);
-            // Ocultar cargando
-            $('button span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
+            activarCampos();
         },
         error: function(rpta) {
             $('#error-' + formulario).text('Error en el servicio');
@@ -828,5 +820,38 @@ function formatoImagen() {
     }
     return formato;
 }
-// Variable de ambito global para verificar el tamaño de las imagenes a utilizar
+
+/**
+ * Deshabilita los campos antes de hacer una solicitud ajax dentro del formulario
+ * esto evita que los datos sean cambiados durante la consulta
+ */
+function desactivarCampos() {
+    // Desactiva todos los campos
+    $('input, textarea, select, button').addClass('disabled').prop('disabled', true);
+    // Oculta ventana con mensajes
+    $('.alert').hide();
+    // Mostrar cargando
+    $('button span').addClass('glyphicon-refresh glyphicon-refresh-animate');
+}
+
+/**
+ * Habilita los campos luego de que la solicitud ajax se ha completado
+ */
+function activarCampos() {
+    // Activar los campos para la modificacion
+    $('input, textarea, select, button').removeClass('disabled').prop('disabled', false);
+    // Ocultar cargando en los botones
+    $('button span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
+}
+
+/**
+ *Variable de ambito global para verificar el tamaño de las imagenes a utilizar
+ */
 var formatoImagen = formatoImagen();
+
+/**
+ * Variable de ambito global para determina el controlador que esta utilizandose por la aplicacion
+ * Junto con la URL completa del llamado
+ */
+var ZCControlador = window.location.href.replace(window.location.href.substring(0, window.location.href.indexOf('index.php/') + 10), '');
+var URLControlador = window.location.href.substring(0, window.location.href.indexOf('index.php/') + 10) + ((ZCControlador.indexOf('/') != -1) ? ZCControlador.substring(0, ZCControlador.indexOf('/')) : ZCControlador) + '/';

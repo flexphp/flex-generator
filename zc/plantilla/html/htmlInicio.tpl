@@ -7,6 +7,7 @@
         <title>{_nombreFormulario_}</title>
         <!-- CSS Bootstrap -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/bootstrap-theme.css">
         <!-- CSS Datapicker -->
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>publico/css/datetimepicker.css">
         <!-- CSS Parsley -->
@@ -37,8 +38,6 @@
             <div class="col-md-1"></div>
             <!-- Fin Bienvenida a la aplicacion -->
         </div>
-        <!-- URL del proyecto, se usa en los llamados ajax -->
-        <input type="hidden" id="URLProyecto" name="URLProyecto" value="<?php echo base_url(); ?>"/>
         <!-- JS jQuery -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/jquery.js"></script>
         <!-- JS Datapicker -->

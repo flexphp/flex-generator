@@ -1,8 +1,6 @@
 <?php
 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Zc {
 
@@ -554,3 +552,5 @@ class Zc {
     public function __destruct() {}
 
 }
+
+class CI_Zc extends Zc {}

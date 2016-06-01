@@ -64,7 +64,7 @@ class ajax extends accion {
         $php .= $this->comando('// Omite los registros que se encuentran en estado eliminado', 16);
         $php .= $this->comando('$this->db->where(array(\'zc_eliminado is null\' => null));', 16);
         $php .= $this->comando('// Ordena el resultado por el ultimo de los campos', 16);
-        $php .= $this->comando('$this->db->order_by(end(explode(\',\', $campos)));', 16);
+        $php .= $this->comando('$this->db->order_by(1);', 16);
         $php .= $this->comando('// Resultado consulta', 16);
         $php .= $this->comando('$ressql = $this->db->get();', 16);
         $php .= $this->comando('// Existen resultados', 16);

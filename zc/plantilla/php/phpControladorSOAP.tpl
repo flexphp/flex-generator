@@ -68,7 +68,7 @@ class {_nombreControlador_} extends CI_Controller {
      * @param int $cta Numero de registros devueltos por la consulta
      */
     public function paginar($cta = 0) {
-        $config['base_url'] = base_url() . '/index.php/' . $this->_data['controlador'] . '/buscar/';
+        $config['base_url'] = base_url() . 'index.php/' . $this->_data['controlador'] . '/buscar/';
         $config['total_rows'] = $cta;
         $config['form'] = $this->_data['formulario'];
         $this->pagination->initialize($config);

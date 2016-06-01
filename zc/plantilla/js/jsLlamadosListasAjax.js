@@ -4,7 +4,7 @@
 $(document).ready(function () {
     $.ajax({
         // A la accion se le concatena la palabra cliente, asi se llama en la funcion
-        url: $('#URLProyecto').val()+'index.php/{_nombreControlador_}/ajax',
+        url: URLControlador + 'ajax',
         type: 'POST',
         dataType: 'JSON',
         data: 'accion=ajax&tablas={_nombreTabla_}&campos={_nombreCampos_}',

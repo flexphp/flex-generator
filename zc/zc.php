@@ -14,7 +14,7 @@ $rutaArchivoDefinitiva = '';
 if (isset($_FILES['file'])) {
     // Ruta temporal del archivo
     $rutaArchivoTemporal = $_FILES['file']['tmp_name'];
-    $rutaArchivoDefinitiva = RUTA_GENERADOR_CODIGO . '/archivos/' . $_FILES['file']['name'];
+    $rutaArchivoDefinitiva = RUTA_GENERADOR_CODIGO . '/tmp/' . $_FILES['file']['name'];
     // Mueve el archivo a la ruta definitiva
     if (!move_uploaded_file($rutaArchivoTemporal, $rutaArchivoDefinitiva)) {
         $rpta['error'] = 'Error moviendo archivo: $rutaArchivoDefinitiva';

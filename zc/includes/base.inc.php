@@ -107,6 +107,7 @@ function plantillas() {
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/js/index.html', '../www/publico/js/index.html');
     // CSS Homologado
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/css/bootstrap.min.css', '../www/publico/css/bootstrap.css');
+    copiar(RUTA_GENERADOR_CODIGO . '/plantilla/css/bootstrap-theme.min.css', '../www/publico/css/bootstrap-theme.css');
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/css/datetimepicker.min.css', '../www/publico/css/datetimepicker.css');
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/css/parsley.css', '../www/publico/css/parsley.css');
     copiar(RUTA_GENERADOR_CODIGO . '/plantilla/css/index.html', '../www/publico/css/index.html');

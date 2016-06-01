@@ -3,7 +3,7 @@ public function {_nombreAccion_}() {
         $this->validarSesion();
         if (!$this->input->is_ajax_request()) {
             // No es un llamado valido (no es desde un Ajax, sino por la url)
-            redirect('404');
+            show_404();
         }
 {_asignacionCliente_}
         // Error por defecto

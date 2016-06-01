@@ -492,63 +492,63 @@ function crearCarpeta($ruta) {
 }
 
 /**
- * Define la nomencaltura del nombre de los archivos tipo modelo usado por CodeIgniter
+ * Define la nomenclatura del nombre de los archivos tipo modelo usado por CodeIgniter
  * @param string $nombre Nombre del modelo
  * @return string
  */
 function nombreModelo($nombre) {
-    return strtolower(ZC_PREFIJO_MODELO . $nombre);
+    return (ZC_PREFIJO_MODELO != '') ? ZC_PREFIJO_MODELO . strtolower($nombre) : ucfirst(strtolower($nombre));
 }
 
 /**
- * Define la nomencaltura del nombre de los archivos tipo controlador usado por CodeIgniter
+ * Define la nomenclatura del nombre de los archivos tipo controlador usado por CodeIgniter
  * @param string $nombre Nombre del modelo
  * @return string
  */
 function nombreControlador($nombre) {
-    return strtolower(ZC_PREFIJO_CONTROLADOR . $nombre);
+    return (ZC_PREFIJO_CONTROLADOR != '') ? ZC_PREFIJO_CONTROLADOR . strtolower($nombre) : ucfirst(strtolower($nombre));
 }
 
 /**
- * Define la nomencaltura del nombre de los archivos tipo vista usado por CodeIgniter
+ * Define la nomenclatura del nombre de los archivos tipo vista usado por CodeIgniter
  * @param string $nombre Nombre del modelo
  * @return string
  */
 function nombreVista($nombre) {
-    return strtolower(ZC_PREFIJO_VISTA . $nombre);
+    return (ZC_PREFIJO_VISTA != '') ? ZC_PREFIJO_VISTA . strtolower($nombre) : ucfirst(strtolower($nombre));
 }
 
 /**
- * Define la nomencaltura del nombre de los archivos tipo vista usado por CodeIgniter
+ * Define la nomenclatura del nombre de los archivos tipo vista usado por CodeIgniter
  * @param string $nombre Nombre del modelo
  * @return string
  */
 function nombreLista($nombre) {
-    return strtolower(ZC_PREFIJO_LISTA . $nombre);
+    return (ZC_PREFIJO_LISTA != '') ? ZC_PREFIJO_LISTA . strtolower($nombre) : ucfirst(strtolower($nombre));
 }
 
 /**
- * Define la nomencaltura del nombre de los archivos tipo modelo usado por CodeIgniter
+ * Define la nomenclatura del nombre de los archivos tipo modelo usado por CodeIgniter
  * * del lado servidor
  * @param string $nombre Nombre del modelo
  * @return string
  */
 function nombreModeloServidor($nombre) {
-    return strtolower(ZC_PREFIJO_MODELO_WS . $nombre);
+    return (ZC_PREFIJO_MODELO_WS != '') ? ZC_PREFIJO_MODELO_WS . strtolower($nombre) : ucfirst(strtolower($nombre));
 }
 
 /**
- * Define la nomencaltura del nombre de los archivos tipo controlador usado por CodeIgniter
+ * Define la nomenclatura del nombre de los archivos tipo controlador usado por CodeIgniter
  * del lado servidor
  * @param string $nombre Nombre del modelo
  * @return string
  */
 function nombreControladorServidor($nombre) {
-    return strtolower(ZC_PREFIJO_CONTROLADOR_WS . $nombre);
+    return (ZC_PREFIJO_CONTROLADOR_WS != '') ? ZC_PREFIJO_CONTROLADOR_WS . strtolower($nombre) : ucfirst(strtolower($nombre));
 }
 
 /**
- * Define la nomencaltura del nombre de la funcion de validacion
+ * Define la nomenclatura del nombre de la funcion de validacion
  * @return string
  */
 function nombreFuncionValidacionDatos() {
