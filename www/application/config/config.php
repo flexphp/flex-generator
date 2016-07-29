@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-require 'E:/Logs/miLog.php';
+#require 'E:/Logs/miLog.php';
 /*
 |--------------------------------------------------------------------------
 | Index File
