@@ -47,9 +47,9 @@ class init extends accion {
         $php .= $this->comando('function init($campo = null){', 4);
         $php .= $this->comando('$rpta = array();', 8);
         $php .= $this->comando('// Restricciones para el campo', 8);
-        $php .= $this->comando('$rpta[\'resultado\'] = $this->configuracionCampo($campo);', 8);
-        $php .= $this->comando('$rpta[\'cta\'] = count($rpta[\'resultado\']);', 20);
-        $php .= $this->comando('return $rpta;', 8);
+        $php .= $this->comando('$rpta[\'info\'] = $this->configuracionCampo($campo);', 8);
+        $php .= $this->comando('$rpta[\'cta\'] = count($rpta[\'info\']);', 20);
+        $php .= $this->comando('return ' . ((ZC_BD_ES_UTF) ? '$rpta;' : '$this->zc->utf8_converter($rpta);'), 8);
         $php .= $this->comando('}', 4);
         $this->_funcion = $php;
         return $this;

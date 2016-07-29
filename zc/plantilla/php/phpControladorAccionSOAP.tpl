@@ -1,4 +1,5 @@
 public function {_nombreAccion_}() {
+{_asignacionCache_}
         // Valida que el usuario este logueado
         $this->validarSesion();
         if (!$this->input->is_ajax_request()) {

@@ -401,8 +401,8 @@ function joinTablas($join) {
     $separador = (strpos($join, ZC_MOTOR_JOIN_SEPARADOR) === false) ? null : ZC_MOTOR_JOIN_SEPARADOR;
     if (isset($separador)) {
         $parametros = explode(ZC_MOTOR_JOIN_SEPARADOR, $join);
-        $joinTabla = (isset($parametros[0])) ? reemplazarCaracteresEspeciales($parametros[0]) : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el nombre la tabla a relacionar!?");
-        $joinCampos = (isset($parametros[1])) ? reemplazarCaracteresEspeciales($parametros[1]) : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el los campos de relacion!?");
+        $joinTabla = (isset($parametros[0])) ? tagXML($parametros[0]) : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el nombre la tabla a relacionar!?");
+        $joinCampos = (isset($parametros[1])) ? tagXML($parametros[1]) : mostrarErrorZC(__FILE__, __FUNCTION__, ": Y el los campos de relacion!?");
         $joinTipo = (isset($parametros[2])) ? validarJoinTipo($parametros[2]) : '';
 
         return array('tabla' => $joinTabla, 'campo' => $joinCampos, 'join' => $joinTipo);
@@ -423,18 +423,31 @@ function validarJoinTipo($tipo) {
 }
 
 /**
- * Reemplaza caracteres no validas en cadenas
- * @param string $texto Cadena a convertir
+ * Reemplaza caracteres no validas en cadenas para tags XML
+ * @param string $tag Cadena a validar sintaxis xorrexta para el XML
+ * @return string tag XML valido
+ */
+function tagXML($tag) {
+    // Buscar, EN UTF8 e ISO 8859-1
+    // strtolower no deja en minuscula los caracteres especiales (letras con tildes, enies, etc)
+    $buscar = array(' ', ':', '?', 'á', 'é', 'í', 'ó', 'ú', 'ñ', 'Á', 'É', 'Í', 'Ó', 'Ú', 'Ñ');
+    // Reemplazar
+    $reemplazar = array('_', '', '', 'a', 'e', 'i', 'o', 'u', 'n', 'a', 'e', 'i', 'o', 'u', 'n');
+    // Devuelve la cadena transformada, elimina cualquier caracter no alfanumerico
+    return preg_replace('/\W/', '', str_replace($buscar, $reemplazar, utf8_decode(strtolower($tag))));
+}
+
+/**
+ * Pasa el contenido a caracteres HTML para manejarlo en la aplicacion
+ * Asi se evitan errores con la codificacion de la pagina
+ * @param string $contenido Contenido a pasar a HTML
  * @return string
  */
-function reemplazarCaracteresEspeciales($texto) {
-    // Buscar, EN UTF e ISO 8859-1
-    $buscar = array(' ', ':', '?', 'Ã¡', 'Ã©', 'Ã­', 'Ã³', ' Ãº', 'Ã±', 'Ã‘', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½');
-    // Reemplazar
-    $reemplazar = array('_', '', '', 'a', 'e', 'i', 'o', 'u', 'n', 'N', 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N');
-    // Devuelve la cadena transformada, elimina cualquier caracter no alfanumerico
-    return preg_replace('/\W/', '', str_replace($buscar, $reemplazar, $texto));
+function contenidoXML($contenido)
+{
+    return htmlspecialchars(htmlentities(utf8_decode($contenido)));
 }
+
 
 /**
  * Tabular el contenido de los archivos a crear

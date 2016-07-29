@@ -82,9 +82,10 @@ abstract class Aelemento {
         $this->_prop[ZC_ETIQUETA] = (isset($this->_prop[ZC_ETIQUETA]) && '' != trim($this->_prop[ZC_ETIQUETA])) ? ucfirst(trim($this->_prop[ZC_ETIQUETA])) : ucfirst($this->_prop[ZC_ID]);
         // Tipo Elemento
         $this->_prop[ZC_ELEMENTO] = (isset($this->_prop[ZC_ELEMENTO]) && '' != $this->_prop[ZC_ELEMENTO]) ? strtolower($this->_prop[ZC_ELEMENTO]) : null;
-        // Distribucion en medidas bootstrap de los campos col-xs-X col-sm-X col-md-X col-lg-X
-        $this->_prop[ZC_DISTRIBUCION_ETIQUETA] = (isset($this->_prop[ZC_DISTRIBUCION_ETIQUETA]) && '' != $this->_prop[ZC_DISTRIBUCION_ETIQUETA]) ? $this->_prop[ZC_DISTRIBUCION_ETIQUETA] : 'col-sm-2 col-md-3 col-lg-4';
-        $this->_prop[ZC_DISTRIBUCION_ELEMENTO] = (isset($this->_prop[ZC_DISTRIBUCION_ELEMENTO]) && '' != $this->_prop[ZC_DISTRIBUCION_ELEMENTO]) ? $this->_prop[ZC_DISTRIBUCION_ELEMENTO] : 'col-sm-9 col-md-9 col-lg-8';
+        // Distribucion en medidas bootstrap de las etiquetas (labels) col-xs-X col-sm-X col-md-X col-lg-X
+        $this->_prop[ZC_DISTRIBUCION_ETIQUETA] = (isset($this->_prop[ZC_DISTRIBUCION_ETIQUETA]) && '' != $this->_prop[ZC_DISTRIBUCION_ETIQUETA]) ? $this->_prop[ZC_DISTRIBUCION_ETIQUETA] : 'col-sm-4 col-md-3 col-lg-4';
+        // Distribucion en medidas bootstrap de los elementos (input, select, etc) col-xs-X col-sm-X col-md-X col-lg-X
+        $this->_prop[ZC_DISTRIBUCION_ELEMENTO] = (isset($this->_prop[ZC_DISTRIBUCION_ELEMENTO]) && '' != $this->_prop[ZC_DISTRIBUCION_ELEMENTO]) ? $this->_prop[ZC_DISTRIBUCION_ELEMENTO] : 'col-sm-8 col-md-9 col-lg-8';
 
         // No todos los elementos necesitan todas las propedades, minimiza uso de memoria
         if (in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA, ZC_ELEMENTO_AREA, ZC_ELEMENTO_CHECKBOX, ZC_ELEMENTO_RADIO, ZC_ELEMENTO_LISTA))) {
@@ -128,7 +129,7 @@ abstract class Aelemento {
             }
             $this->_prop[ZC_ELEMENTO_OPCIONES] = (isset($this->_prop[ZC_ELEMENTO_OPCIONES])) ? $this->_prop[ZC_ELEMENTO_OPCIONES] : null;
             // Se puede incluir caracteres HTML y saltos de linea
-            $this->_prop[ZC_MENSAJE_AYUDA] = (isset($this->_prop[ZC_MENSAJE_AYUDA])) ? htmlspecialchars_decode($this->_prop[ZC_MENSAJE_AYUDA]) : null;
+            $this->_prop[ZC_MENSAJE_AYUDA] = (isset($this->_prop[ZC_MENSAJE_AYUDA]) && '' != trim($this->_prop[ZC_MENSAJE_AYUDA])) ? htmlspecialchars_decode($this->_prop[ZC_MENSAJE_AYUDA]) : null;
         }
         return $this;
     }
@@ -164,12 +165,11 @@ abstract class Aelemento {
     }
 
     /**
-     * Construye el html para el autofoco del campo, esto permite posicinar el puntero
-     * en el primer campo editable del formulario
-     * @param string $autofoco Bandera para saber si se debe crear o no: true|false
+     * Agrega una descripcion al interior del elemento
+     * @return string
      */
     protected function placeholder() {
-        return (isset($this->_prop[ZC_PLACEHOLDER])) ? " placeholder='" . $this->_prop[ZC_PLACEHOLDER] . "'" : '';
+        return (isset($this->_prop[ZC_PLACEHOLDER])) ? "placeholder='{$this->_prop[ZC_PLACEHOLDER]}'" : '';
     }
 
     /**
@@ -178,19 +178,22 @@ abstract class Aelemento {
      * @param string $autofoco Bandera para saber si se debe crear o no: true|false
      */
     protected function autofoco($autofoco = false) {
-        $this->_autofoco = ($autofoco) ? ' autofocus=\'autofocus\'' : '';
+        $this->_autofoco = ($autofoco) ? 'autofocus=\'autofocus\'' : '';
         return $this;
     }
 
     /**
      * Construye el mensaje de ayuda mostrado en los campos
-     * @param string $msj Mensaje de ayuda a mostrar, por defecto es la etiqueta del campo
+     * @param string $msj Mensaje de ayuda a mostrar
+     * @return string
      */
     protected function ayuda($msj = '') {
-        return " rel='tooltip' data-html='true'" .
-                " data-placement='{$this->_posicionTitle}'" .
-                " data-toggle='tooltip'" .
-                " data-original-title='" . (($msj == '') ? $this->_prop[ZC_MENSAJE_AYUDA] : $msj) . "'";
+        return (trim($msj) != '') 
+            ? " rel='tooltip' data-html='true'" .
+              " data-placement='{$this->_posicionTitle}'" .
+              " data-toggle='tooltip'" .
+              " data-original-title='{$msj}'"
+            : '';
     }
 
     /**
@@ -200,7 +203,7 @@ abstract class Aelemento {
     protected function plantilla() {
         $html = tabular("<div class='form-group'>", 20);
         $html .= tabular($this->devolverLabel($this->_prop[ZC_DISTRIBUCION_ETIQUETA]), 24);
-        $html .= tabular("<div class='" . $this->_prop[ZC_DISTRIBUCION_ETIQUETA] . "'>", 24);
+        $html .= tabular("<div class='" . $this->_prop[ZC_DISTRIBUCION_ELEMENTO] . "'>", 24);
         $html .= tabular($this->devolverElemento(), 28);
         $html .= tabular("</div>", 24);
         $html .= tabular("</div>", 20);
@@ -303,7 +306,7 @@ abstract class Aelemento {
         $html = '';
         if(isset($this->_prop[ZC_MENSAJE_AYUDA])) {
             // Solo los campos tipo input tienen esta propiedad
-            $html = $this->ayuda();
+            $html = $this->ayuda($this->_prop[ZC_MENSAJE_AYUDA]);
         }
         return $html;
     }

@@ -143,7 +143,7 @@ class conexion {
         if (is_string($var) && trim($var) != '') {
             $varEscapado = mysqli_real_escape_string($this->_link, $var);
             if (!$varEscapado) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, 'Error escapando de: ' . $var);
+                mostrarErrorZC(__FILE__, __FUNCTION__, 'Error escapando: ' . $var);
             } else {
                 $var = $varEscapado;
             }

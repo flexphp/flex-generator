@@ -1,40 +1,32 @@
         // Definicion de la accion {_nombreAccion_}
-        if(nombreAccion === '{_nombreAccion_}' && $('#{_idFormulario_}').parsley().validate()) {
+        if (nombreAccion === '{_nombreAccion_}' && $('#{_idFormulario_}').parsley().validate()) {
             $.ajax({
                 // A la accion se le concatena la palabra cliente, asi se llama en la funcion
-                url: '{_nombreControlador_}/{_nombreAccion_}/',
-                type: 'POST',
+                url: URLControlador + '{_nombreAccion_}/',
+                method: 'POST',
                 dataType: 'JSON',
                 data: $('#{_idFormulario_}').serialize()+'&accion='+nombreAccion,
                 beforeSend: function(){
-                    // Inactivar el boton, solo permite un envio a la vez
-                    $('#'+nombreAccion).addClass('disabled').prop('disabled', true);
-                    // Oculta ventana con mensajes
-                    $('.alert').hide();
-                    // Mostrar cargando
-                    $('#'+nombreAccion+' span').addClass('glyphicon-refresh glyphicon-refresh-animate');
+                    // Inactivar los campos para evitar modificaciones antes del envio
+                    desactivarCampos();
                 },
                 success: function(rpta){
-                    if (rpta.error !== undefined || (typeof rpta.error === 'object' && Object.keys(rpta.error).length > 0)) {
+                    if (ZCRespuestaConError(rpta)) {
                         // Muestra mensaje de error
-                        ZCAsignarErrores('{_idFormulario_}', rpta);
-                        $('.alert-danger').show();
-                    }else{
+                        ZCAsignarErrores(rpta);
+                    } else {
                         // Establece el id devuelto durante el proceso de insercion
-                        $('#zc-id-{_idFormulario_}').val(rpta.infoEncabezado);
+                        $('#zc-id-{_idFormulario_}').val(rpta.info);
                         // Carga el listado con el registro insertado
-                        window.location.assign('{_nombreControlador_}/listar/'+rpta.infoEncabezado);
+                        window.location.assign(URLControlador + 'listar/' + rpta.info);
                     }
                 },
                 complete: function(){
-                    // Activar el boton cuando se completa la accion, con error o sin error
-                    $('#'+nombreAccion).removeClass('disabled').prop('disabled', false);
-                    // Ocultar cargando
-                    $('#'+nombreAccion+' span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
+                    // Activar los campos cuando se completa la solicitud, con error o sin error
+                    activarCampos();
                 },
                 error: function(rpta){
-                    $('#error-{_idFormulario_}').text('Error en el servicio');
-                    $('.alert-danger').show();
+                    ZCAsignarErrores('Error en el servicio');
                 }
             });
         }

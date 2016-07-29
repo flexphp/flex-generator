@@ -530,6 +530,8 @@ class formulario {
         $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorServidorSOAP.tpl');
         $plantilla->asignarEtiqueta('comandoEspecial', $this->_pagina->devolverServidorAutenticacion());
         $plantilla->asignarEtiqueta('nombreControlador', $this->_nombreArchivoControladorServidor);
+        // Determina como se guardaran los datos en la base de datos, depende de la collation
+        $plantilla->asignarEtiqueta('decodificarUTF8', ((ZC_BD_ES_UTF) ? 'false' : 'true'));
         $plantilla->asignarEtiqueta('accionesServidorWS', $this->_accionesServidorWS);
         $plantilla->crearPlantilla($directorioSalida, $extension, $this->_nombreArchivoControladorServidor);
         return $this;
@@ -764,8 +766,13 @@ class formulario {
             }
             // Determina la accion a ejecutar en el controlador
             $comando = tabular($this->_asignacionControlador[$caracteristicas[ZC_ID]], 8);
+            $comandoCache = '';
             $comandoEspecial = '';
             switch ($caracteristicas[ZC_ELEMENTO]) {
+                case ZC_ACCION_INIT:
+                    $comandoCache .= tabular('// Cache en minutos, acelera la carga de la pagina', 8);
+                    $comandoCache .= tabular('$this->output->cache(10);', 8);
+                    break;
                 case ZC_ACCION_BUSCAR:
                     // Construir la paginacion
                     $comandoEspecial .= tabular('// Establece los valores para la paginacion', 12);
@@ -785,6 +792,7 @@ class formulario {
             $plantilla = new plantilla();
             $plantilla->cargarPlantilla(RUTA_GENERADOR_CODIGO . '/plantilla/php/phpControladorAccionSOAP.tpl');
             $plantilla->asignarEtiqueta('nombreAccion', $caracteristicas[ZC_ID]);
+            $plantilla->asignarEtiqueta('asignacionCache', $comandoCache);
             $plantilla->asignarEtiqueta('asignacionCliente', $comando);
             $plantilla->asignarEtiqueta('comandoEspecial', $comandoEspecial);
             // Concatena cada accion del cliente

@@ -39,6 +39,12 @@ class bd extends conexion {
     private $_join = array();
 
     /**
+     * Nombres validos para usar en los join
+     * @var array
+     */
+    private $_tablasValidas = array();
+
+    /**
      * Valida los datos parametrizados por el usuario y crea modelo de base datos
      * @param array $caracteristicas Caracteristicas de los elementos
      * @param string $motor Base de datos usada para alamcenar los datos de la aplicacion
@@ -59,6 +65,7 @@ class bd extends conexion {
                 break;
             case '':
                 mostrarErrorZC(__FILE__, __FUNCTION__, 'Seleccione una opcion de guardado de datos [' . $this->_motor . '].');
+                break;
             default:
                 mostrarErrorZC(__FILE__, __FUNCTION__, 'Motor (' . $this->_motor . ') no soportado por la herramienta, quizas proximamente.');
         }
@@ -80,6 +87,7 @@ class bd extends conexion {
             ZC_ETIQUETA => 'COMMENT',
             ZC_MOTOR_AUTOINCREMENTAL => 'AUTO_INCREMENT',
             'CREACION_BD' => 'CREATE DATABASE',
+            'USAR_BD' => 'USE',
             'CREACION_TABLA' => 'CREATE TABLE',
             'CONDICIONAL_BD' => 'IF NOT EXISTS',
             'CONDICIONAL_TABLA' => 'IF NOT EXISTS',
@@ -232,6 +240,22 @@ class bd extends conexion {
     }
 
     /**
+     * Establece las sentencias para la creacion de la base de datos del sistema
+     */
+    private function usar() {
+        $usar = '';
+        switch ($this->_motor) {
+            case ZC_MOTOR_MYSQL:
+                $usar = $this->_equivalencias[$this->_motor]['USAR_BD'] . ' ' . ZC_BD_ESQUEMA;
+                break;
+            default:
+                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
+        }
+        $this->_sentencias[] = $usar;
+        return $this;
+    }
+
+    /**
      * Nombre de la tabla, sentencia de creacion segun motor
      * @return string
      * @throws Exception
@@ -279,6 +303,8 @@ class bd extends conexion {
             // El formulario tipo autenticacion no crea tablas, usa campos definidos en otros tablas
             return $this;
         }
+        // Agrega el nombre de la tabla para hacer las validaciones con los nombres utilizados en la construccion join
+        array_push($this->_tablasValidas, $this->_prop[0][ZC_ID]);
         $this->verificar();
         $campos = '';
         $tabla = $this->nombreTabla();
@@ -296,7 +322,7 @@ class bd extends conexion {
                         var_dump($caracteristicas);
                         die;
                     }
-                    $this->join($caracteristicas[ZC_ID], $caracteristicas[ZC_ELEMENTO_OPCIONES]);
+                    $this->_join[] = "{$this->_prop[0][ZC_ID]},{$caracteristicas[ZC_ID]},{$caracteristicas[ZC_ELEMENTO_OPCIONES]}";
                     break;
             }
         }
@@ -312,17 +338,20 @@ class bd extends conexion {
 
     /**
      * Crea los join de la tabla, solo si los tiene
+     * @param string $tabla Tabla donde se realiza el join
      * @param string $campo Campo foraneo en la tabla
      * @param string $join Join entregado por el usuario en el XML
      * @return \bd
      */
-    private function join($campo, $join) {
+    private function join($tabla, $campo, $join) {
         $joinTabla = joinTablas($join);
         if (isset($joinTabla)) {
             $joinTabla['tabla'] = strtolower($joinTabla['tabla']);
-            $this->_join[] = "ALTER TABLE {$this->_prop[0][ZC_ID]} ADD CONSTRAINT zc_fk_2_{$campo} FOREIGN KEY ({$campo}) REFERENCES {$joinTabla['tabla']}(id) ON UPDATE CASCADE ON DELETE RESTRICT";
+            if (!in_array($joinTabla['tabla'], $this->_tablasValidas)) {
+                mostrarErrorZC(__FILE__, __FUNCTION__, ": Nombre de tabla no valida para el join: {$joinTabla['tabla']}");
+            }
+            return "ALTER TABLE {$tabla} ADD CONSTRAINT zc_fk_2_{$campo} FOREIGN KEY ({$campo}) REFERENCES {$joinTabla['tabla']}(id) ON UPDATE CASCADE ON DELETE RESTRICT";
         }
-        return $this;
     }
 
     /**
@@ -361,11 +390,6 @@ class bd extends conexion {
     public function ejecutar() {
         foreach ($this->_sentencias as $nro => $sentencia) {
             $this->query($sentencia);
-            if ($nro == 0) {
-                // Despues de crear base de datos (sentencia 0)
-                // Se conecta a la base de datos creada
-                $this->seleccionarBD(ZC_BD_ESQUEMA);
-            }
         }
         return $this;
     }
@@ -392,8 +416,12 @@ class bd extends conexion {
      * @return \bd
      */
     private function fin() {
-        foreach ($this->_join as $join) {
-            array_push($this->_sentencias, $join);
+        foreach ($this->_join as $opciones) {
+            list($tabla, $campo, $opcion) = explode(',', $opciones);
+            $join = $this->join($tabla, $campo, $opcion);
+            if (!empty($join)) {
+                array_push($this->_sentencias, $join);
+            }
         }
         if (ZC_CREAR_LOGIN == ZC_OBLIGATORIO_SI) {
             // Carga los insert por defecto para funcionamiento del login
@@ -427,6 +455,7 @@ class bd extends conexion {
     public function crearModelo($tablas) {
         if (count($tablas) > 0) {
             $this->esquema();
+            $this->usar();
             foreach ($tablas as $nro => $tabla) {
                 $this->tabla($tabla);
             }

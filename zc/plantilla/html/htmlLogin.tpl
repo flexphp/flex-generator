@@ -38,24 +38,24 @@
         <br/>
         <br/>
         <div class="container-fluid">
+        <div class="row">
             <div class="col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-4">
                 <div class="text-center">
                     <img src="<?php echo base_url(); ?>publico/img/login.jpg" class="hidden-xs hidden-sm" style="width: 70%; height: 70%" alt="Login"/>
-                    <h1>{_nombreFormulario_}</h1>
+                    <h2 class="hidden-xs hidden-sm">{_nombreFormulario_}</h2>
                     <!-- Errores devueltos por el servidor -->
                     <div class="alert alert-danger" style="display: none;" role="alert">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only">Error:</span>
-                        <span id="error-{_idFormulario_}"></span>
+                        <span id="error"></span>
                     </div>
                 </div>
                 <form id="{_idFormulario_}" name="{_idFormulario_}" method="{_metodoFormulario_}" class="form-horizontal" role="form">
 {_contenidoFormulario_}
                 </form>
             </div>
-        </div>
-        <!-- Pagina para ejecutar acciones desde JS -->
-        <input type="hidden" id="zc-controlador" name="zc-controlador" value="{_nombreControlador_}"/>
+        </div><!-- Fin row -->
+        </div><!-- Fin container -->
         <!-- JS jQuery -->
         <script type="text/javascript" src="<?php echo base_url(); ?>publico/js/jquery.js"></script>
         <!-- JS BootStrap -->

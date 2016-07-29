@@ -3,7 +3,7 @@
     <{_paginaLogin_}>
         <nombre_formulario>Login</nombre_formulario>
         <tipo_de_servicio>{_tipoServicio_}</tipo_de_servicio>
-        <se_guardara_en>{_tipoMotor_}</se_guardara_en>
+        <motor_bd>{_tipoMotor_}</motor_bd>
         <tipo_formulario>autenticacion</tipo_formulario>
         <login>
             <que_quieres>Caja</que_quieres>

@@ -60,10 +60,10 @@ try {
                                 continue;
                             }
                             switch (true) {
-                                case $numeroFila%2 == 0:
+                                case $numeroFila % 2 == 0:
                                     // Los encabezados son las filas pares (0,2,4,6,...,n)
                                     // Encabezados
-                                    $tag[$numeroColumna] = strtolower(reemplazarCaracteresEspeciales($contenido));
+                                    $tag[$numeroColumna] = tagXML($contenido);
                                     break;
                                 default:
                                     // Valores de los encabezados
@@ -80,6 +80,8 @@ try {
                     define('ZC_BD_USUARIO', (isset($config[ZC_CONFIG_BD_USUARIO]) ? $config[ZC_CONFIG_BD_USUARIO] : null));
                     define('ZC_BD_CLAVE', (isset($config[ZC_CONFIG_BD_CLAVE]) ? $config[ZC_CONFIG_BD_CLAVE] : null));
                     define('ZC_BD_CHARSET', (isset($config[ZC_CONFIG_BD_CHARSET]) ? $config[ZC_CONFIG_BD_CHARSET] : 'utf8'));
+                    // Cuando la codificacion de la base de datos es UFT8 se pueden omitir algunas funciones
+                    define('ZC_BD_ES_UTF', ((strtolower(ZC_BD_CHARSET) == 'utf8') ? true : false));
                     define('ZC_BD_COLLATION', (isset($config[ZC_CONFIG_BD_COLLATION]) ? $config[ZC_CONFIG_BD_COLLATION] : 'utf8_general_ci'));
                     // Numero de registros por pagina, para la funcion buscar
                     define('ZC_REGISTROS_POR_PAGINA', (isset($config[ZC_CONFIG_REGISTROS_POR_PAGINA]) ? $config[ZC_CONFIG_REGISTROS_POR_PAGINA] : 10));
@@ -92,13 +94,14 @@ try {
                     config();
                 } else {
                     // Identificador de la hoja, se usa como nombre del XML generado
-                    $idHoja = strtolower(reemplazarCaracteresEspeciales($nombreHoja));
+                    $idHoja = tagXML($nombreHoja);
                     // Establece la hoja que se va a procesar
                     $hojas->ChangeSheet($numeroHoja);
 
                     // Crear un archivo XML por cada hoja
                     $xml = tabular('<?xml version="1.0" encoding="UTF-8"?>', 0);
                     $xml .= tabular('<crear>', 0);
+                    // Nombre de la hoja que se esta parametrizando
                     $xml .= tabular('<' . $idHoja . '>', 4);
 
                     // Cada fila
@@ -107,7 +110,8 @@ try {
                         if ($numeroFila > 2 && $columnas[0] !== '') {
                             // Comienza a procesar cada uno de los campos que estan configurados 
                             // en la hoja de calculo
-                            $idCampo = strtolower(reemplazarCaracteresEspeciales($columnas[1]));
+                            // Nombre del campo que se esta parametrizando, nombre, email
+                            $idCampo = tagXML($columnas[1]);
                             $xml .= tabular('<' . $idCampo . '>', 8);
                         }
                         foreach ($columnas as $numeroColumna => $contenido) {
@@ -116,24 +120,25 @@ try {
                                 continue;
                             }
                             // Inicia Informacion de seguimiento, se puede eliminar
-                            // $info = $numeroFila . ':' . $numeroColumna . ' = ' . $contenido . "\n";
-                            // miLog($info);
+                            // miLog($numeroFila . ':' . $numeroColumna . ' = ' . $contenido . "\n");
                             // Fin Informacion de seguimiento
                             switch ($numeroFila) {
                                 case 0:
                                     // Encabezados con caracteristicas del formulario
                                 case 2:
-                                    // Descripciones caracteristicas campos del formulario
-                                    $tag[$numeroColumna] = strtolower(reemplazarCaracteresEspeciales($contenido));
+                                    // Caracteristicas del campo
+                                    // <que_quieres>, <como_se_llama>
+                                    $tag[$numeroColumna] = tagXML($contenido);
                                     break;
                                 case 1:
-                                    // Detalles del encabezado
-                                    // Se reemplazan caracteres especiales para no afectar el XML
-                                    $xml .= tabular('<' . $tag[$numeroColumna] . '>' . htmlspecialchars(htmlentities($contenido)) . '</' . $tag[$numeroColumna] . '>', 8);
+                                    // Detalles del formulario en particular
+                                    // <nombre_formulario>, <motor_bd>
+                                    $xml .= tabular('<' . $tag[$numeroColumna] . '>' . contenidoXML($contenido) . '</' . $tag[$numeroColumna] . '>', 8);
                                     break;
                                 default:
-                                    // Detalles de los campos
-                                    $xml .= tabular('<' . $tag[$numeroColumna] . '>' . htmlspecialchars(htmlentities($contenido)) . '</' . $tag[$numeroColumna] . '>', 12);
+                                    // Atributos de los ampos del formulario en especifico
+                                    // <tipo_dato>, <es_obligatorio>
+                                    $xml .= tabular('<' . $tag[$numeroColumna] . '>' . contenidoXML($contenido) . '</' . $tag[$numeroColumna] . '>', 12);
                                     break;
                             }
                         }

@@ -160,13 +160,13 @@ class zcs {
                     switch ($tipo) {
                         case 'tabla':
                             // Agrega la creacion del formulario
-                            $idHoja = strtolower(reemplazarCaracteresEspeciales($palabra));
+                            $idHoja = tagXML($palabra);
                             $this->_xml .= tabular('<' . $idHoja . '>', 4);
                             $this->_xml .= tabular('<' . ZC_FORMULARIO_NOMBRE . '>' . ucwords($palabra) . '</' . ZC_FORMULARIO_NOMBRE . '>', 8);
                             break;
                         case 'campo':
                             // Agrega la creacion del campo
-                            $idCampo = str_replace('\'', '', reemplazarCaracteresEspeciales($palabra));
+                            $idCampo = str_replace('\'', '', tagXML($palabra));
                             $this->_xml .= tabular('<' . $idCampo . '>', 8);
                             $this->_xml .= tabular('<' . ZC_ETIQUETA . '>' . ucfirst(str_replace('\'', '', $palabra)) . '</' . ZC_ETIQUETA . '>', 12);
                             break;

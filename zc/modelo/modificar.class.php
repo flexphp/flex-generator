@@ -97,15 +97,15 @@ class modificar extends accion {
         $php .= $this->comando('$this->db->where(array(\'id\' => $id, \'zc_eliminado is null\' => null));', 16);
         $php .= $this->comando('if (!$this->db->update(\'' . $this->_tabla . '\')) {', 16);
         $php .= $this->comando('// Mensaje/causa de error devuelto', 20);
-        $php .= $this->comando('$rpta[\'error\'] = $this->db->_error_message();', 20);
+        $php .= $this->comando('$rpta[\'error\'] = $this->db->error();', 20);
         $php .= $this->comando('}', 16);
         $php .= $this->comando('// Devuelve el id actualizado', 16);
-        $php .= $this->comando('$rpta[\'resultado\'] = $id;', 16);
+        $php .= $this->comando('$rpta[\'info\'] = $id;', 16);
         $php .= $this->comando('// Siempre devuelve 1, aun el registro no se cambie', 16);
         $php .= $this->comando('$rpta[\'cta\'] = 1;', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('}', 8);
-        $php .= $this->comando('return $rpta;', 8);
+        $php .= $this->comando('return ' . ((ZC_BD_ES_UTF) ? '$rpta;' : '$this->zc->utf8_converter($rpta);'), 8);
         $php .= $this->comando('}', 4);
         $this->_funcion = $php;
         return $this;

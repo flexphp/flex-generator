@@ -23,6 +23,7 @@
     <body>
         <?php echo $navegacion; ?>
         <div class="container-fluid">
+        <div class="row">
             <!-- Seperacion del top -->
             <div class="col-md-12"> </div>
             <!-- Nombre del formulario actual -->
@@ -45,9 +46,12 @@
                 <div class="alert alert-danger" style="display: none;" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
-                    <span id="error-{_idFormulario_}"></span>
+                    <span id="error"></span>
                 </div>
             </div>
+        </div><!-- Fin row -->
+
+        <div class="row">
             <!-- Formulario con resultados de la busqueda -->
             <div class="col-md-12">
                 <div id="cargando-{_idFormulario_}" class="hidden text-center form-control">
@@ -62,7 +66,8 @@
                 </div>
             </div>
             <!-- Fin Formulario con resultados de la busqueda -->
-        </div>
+        </div><!-- Fin row -->
+        </div><!-- Fin container -->
         <!-- Busquedas hechas desde la url, se usa en la accion de crear -->
         <input type="hidden" id="zc-filtros-predefinidos" name="zc-filtros-predefinidos" value="<?php echo $busquedaPredefinida; ?>"/>
         <!-- Pagina para ejecutar acciones desde JS -->

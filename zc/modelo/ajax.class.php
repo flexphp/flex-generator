@@ -72,13 +72,13 @@ class ajax extends accion {
         $php .= $this->comando('$rpta[\'cta\'] = $ressql->num_rows();', 20);
         $php .= $this->comando('$i = 0;', 20);
         $php .= $this->comando('foreach($ressql->result_array() as $row){', 20);
-        $php .= $this->comando('$rpta[\'resultado\'][$i] = $row;', 24);
+        $php .= $this->comando('$rpta[\'info\'][$i] = $row;', 24);
         $php .= $this->comando('++$i;', 24);
         $php .= $this->comando('}', 20);
         $php .= $this->comando('}', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('}', 8);
-        $php .= $this->comando('return $rpta;', 8);
+        $php .= $this->comando('return ' . ((ZC_BD_ES_UTF) ? '$rpta;' : '$this->zc->utf8_converter($rpta);'), 8);
         $php .= $this->comando('}', 4);
         $this->_funcion = $php;
         return $this;

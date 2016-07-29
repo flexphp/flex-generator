@@ -3,7 +3,7 @@
     <usuarios>
         <nombre_formulario>Usuarios</nombre_formulario>
         <tipo_de_servicio>{_tipoServicio_}</tipo_de_servicio>
-        <se_guardara_en>{_tipoMotor_}</se_guardara_en>
+        <motor_bd>{_tipoMotor_}</motor_bd>
         <login>
             <que_quieres>Caja</que_quieres>
             <como_se_llama>Login</como_se_llama>
@@ -50,7 +50,7 @@
         </estado>
         <ultimo_ingreso>
             <que_quieres>Caja</que_quieres>
-            <como_se_llama>Ultimo ingreso</como_se_llama>
+            <como_se_llama>&amp;Uacute;ltimo ingreso</como_se_llama>
             <que_dato_recibira>fecha</que_dato_recibira>
             <es_obligatorio>no</es_obligatorio>
         </ultimo_ingreso>
