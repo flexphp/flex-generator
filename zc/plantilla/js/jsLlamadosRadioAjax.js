@@ -4,15 +4,18 @@
 $(document).ready(function () {
     $.ajax({
         // A la accion se le concatena la palabra cliente, asi se llama en la funcion
-        url: '{_nombreControlador_}/ajax',
-        type: 'POST',
+        url: URLControlador + 'ajax',
+        method: 'POST',
         dataType: 'JSON',
         data: 'accion=ajax&tablas={_nombreTabla_}&campos={_nombreCampos_}',
         beforeSend: function(){
             // Agregar aqui el codigo
         },
         success: function(rpta){
-            if(rpta.error === undefined){
+            if (ZCRespuestaConError(rpta)) {
+                // Muestra mensaje de error
+                ZCAsignarErrores(rpta); 
+            } else {
                 // Agrega las opciones al select
                 ZCPrecargarRadio("{_nombreContenedor_}", "{_nombreRadio_}", rpta);
             }
@@ -21,7 +24,7 @@ $(document).ready(function () {
             // Agregar aqui el codigo
         },
         error: function(){
-            console.log('Error en el servicio');
+            ZCAsignarErrores('Error en el servicio');
         }
     });
 });

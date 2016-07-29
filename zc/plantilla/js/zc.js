@@ -45,8 +45,7 @@ function ZCBarraProgreso(formulario, formasValidar) {
 function ZCAccionReiniciarFormulario(e, formulario) {
     e.preventDefault();
     $('.parsley-errors-list').hide();
-    $('#error-'+formulario).text('');
-    $('.alert').hide();
+    ZCAsignarErrores('');
     $('#'+formulario).trigger('reset');
 }
 
@@ -128,7 +127,7 @@ function ZCCamposDeBusqueda(e, formulario, id) {
 function ZCAccionAgregarFiltro(e, formulario, id) {
     e.preventDefault();
     // Nombre del controlador
-    var controlador = $('#zc-controlador').val()
+    // var controlador = $('#zc-controlador').val()
     // Determina el campo por el ual se desea filtrar
     var filtro = $.trim($('.zc-filtros-busqueda option:selected').val());
     // Determina el tipo de operador a aplicar segun el campo (texto, numerico, lista)
@@ -163,7 +162,7 @@ function ZCAccionAgregarFiltro(e, formulario, id) {
     }
 
     if (!$('#'+formulario).parsley().validate()) {
-        // Valida que sea un valor permitido
+        // Valida que sea un valor valido
         return false;
     }
 
@@ -188,7 +187,8 @@ function ZCAccionAgregarFiltro(e, formulario, id) {
     textoValor + ' ' +
     // Boton para quitar filtro
     "<button title='Quitar filtro de busqueda' onclick=\"javascript:ZCAccionQuitarFiltro(event , '" + identificadorFiltro + "');\" class='btn btn-warning zc-filtros-quitar'><span class='glyphicon glyphicon-minus-sign' aria-hidden='true'></span><span class='hidden-xs'>Quitar</span></button>" +
-    "<input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='"+ controlador + '|?|' + filtro+"|?|"+operador+"|?|"+valor+"'/>" +
+    // "<input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='"+ controlador + '|?|' + filtro+"|?|"+operador+"|?|"+valor+"'/>" +
+    "<input id='filtros-seleccionados-" + identificadorFiltro + "' name='filtros-seleccionados-" + identificadorFiltro + "' class='zc-filtros-seleccionado' type='hidden' value='" + filtro + "|?|" + operador + "|?|" + valor + "'/>" +
     "</div>" +
     "</div>");
     // Deja en blanco nuevamente el campo para el ingreso de datos
@@ -289,8 +289,8 @@ function ZCListarResultados(formulario, rpta) {
     var id = -1;
 
     for(var i = 0; i < rpta.cta; ++i) {
-        for (var key in rpta.infoEncabezado[i]) {
-            if (rpta.infoEncabezado[i].hasOwnProperty(key)) {
+        for (var key in rpta.info[i]) {
+            if (rpta.info[i].hasOwnProperty(key)) {
                 // El campo Id no se muestra
                 if (i === 0 && $.trim(key) !== '' && key !== 'id') {
                     //Crea los encabezados
@@ -298,17 +298,17 @@ function ZCListarResultados(formulario, rpta) {
                 }
                 if (key === 'id'  && id === -1) {
                     // Agrega el id del registro para el caso de modificacion
-                    id = rpta.infoEncabezado[i][key];
+                    id = rpta.info[i][key];
                 } else {
                     // Valida que exista el valor, de lo contrario lo deja vacio
-                    columnas += '<td>' + ((!rpta.infoEncabezado[i][key]) ? '' : rpta.infoEncabezado[i][key]) +  '</td>';
+                    columnas += '<td>' + ((!rpta.info[i][key]) ? '' : rpta.info[i][key]) +  '</td>';
                 }
             }
         }
         if (i === 0) {
             tabla += '<tr>'+encabezados+'</tr>';
         }
-        if (!rpta.infoEncabezado[i]) {
+        if (!rpta.info[i]) {
             // No existen mas registros, termina el ciclo
             break;
         }
@@ -341,10 +341,8 @@ function ZCAccionCondicion(formulario) {
  */
 function ZCAccionNuevoRegistro(e) {
     e.preventDefault;
-    // Nombre del controlador
-    var controlador = $('#zc-controlador').val();
     // Direcciona a la pagina de agregar
-    window.location.assign(controlador + '/nuevo');
+    window.location.assign(URLControlador + '/nuevo');
 }
 
 /**
@@ -357,10 +355,8 @@ function ZCAccionModificarRegistro(e, enlace) {
     e.preventDefault;
     // Id del registro a modificar
     var id = $(enlace).attr('zc-id-registro');
-    // Nombre del controlador
-    var controlador = $('#zc-controlador').val();
     // Direcciona a la pagina de agregar
-    window.location.assign(controlador+'/editar/'+id);
+    window.location.assign(URLControlador + '/editar/'+id);
 }
 
 /**
@@ -397,19 +393,19 @@ function ZCAccionBotones(formulario, agregar, modificar, borrar, precargar) {
  * @returns {undefined}
  */
 function ZCAccionPrecargarResultado(formulario, rpta) {
-    for (var campo in rpta.infoEncabezado) {
+    for (var campo in rpta.info) {
         switch(true) {
         case $('input[name^='+campo+']').attr('type') === 'checkbox':
-            $('#'+formulario + ' #'+campo+'_'+rpta.infoEncabezado[campo]).prop('checked', true);
+            $('#'+formulario + ' #'+campo+'_'+rpta.info[campo]).prop('checked', true);
             break;
         case $('input[name='+campo+']').attr('type') === 'radio':
-            $('#'+formulario + ' #'+campo+'_'+rpta.infoEncabezado[campo]).prop('checked', true);
+            $('#'+formulario + ' #'+campo+'_'+rpta.info[campo]).prop('checked', true);
             break;
         case $('#'+campo).prop('type') === 'select-one':
-            $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);
+            $('#'+formulario + ' #'+campo).val(rpta.info[campo]);
             break;
         case $('#'+campo).prop('type') === 'select-multiple':
-            $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);
+            $('#'+formulario + ' #'+campo).val(rpta.info[campo]);
             break;
         case $('#'+campo).attr('type') === 'password':
             // No se deja obligatorios, si la persona lo diligencia se cambia en el servidor, de lo contrario se
@@ -419,7 +415,7 @@ function ZCAccionPrecargarResultado(formulario, rpta) {
             $('#'+formulario + ' #'+campo + ', #x'+campo).val('');
             break;
         default:
-            $('#'+formulario + ' #'+campo).val(rpta.infoEncabezado[campo]);
+            $('#'+formulario + ' #'+campo).val(rpta.info[campo]);
             break;
         }
     }
@@ -455,7 +451,7 @@ function ZCAccionPaginar(miURL, formulario) {
     $.ajax({
         // Para construir la paginacion se necesita el numero de la pagina en la url
         url: miURL,
-        type: 'POST',
+        method: 'POST',
         dataType: 'JSON',
         data: {
             // Envia filtros de busqueda al servidor
@@ -465,9 +461,7 @@ function ZCAccionPaginar(miURL, formulario) {
         },
         beforeSend: function() {
             // Inactivar el boton, solo permite un envio a la vez
-            $('#'+nombreAccion).addClass('disabled').prop('disabled', true);
-            // Oculta ventana con mensajes
-            $('.alert').hide();
+            desactivarCampos();
             // Limpia resultados anteriores
             $('#listado-'+formulario).html('');
             // Limpia la paginacion
@@ -476,23 +470,20 @@ function ZCAccionPaginar(miURL, formulario) {
             $('#cargando-'+formulario).removeClass('hidden');
         },
         success: function(rpta) {
-            if (rpta.error !== undefined || (typeof rpta.error === 'object' && Object.keys(rpta.error).length > 0)) {
-                // Muestra mensaje de error
-                $('#error-'+formulario).text(rpta.error);
-                $('.alert-danger').show();
+            if (ZCRespuestaConError(rpta)) {
+                ZCAsignarErrores(rpta);
             } else {
                 ZCListarResultados(formulario, rpta);
             }
         },
         complete: function() {
             // Activar el boton cuando se completa la accion, con error o sin error
-            $('#'+nombreAccion).removeClass('disabled').prop('disabled', false);
+            activarCampos();
             // Ocultar cargando
             $('#cargando-'+formulario).addClass('hidden');
         },
         error: function(rpta) {
-            $('#error-'+formulario).text('Error en el servicio');
-            $('.alert-danger').show();
+            ZCAsignarErrores('Error en el servicio');
         }
     });
 }
@@ -510,13 +501,13 @@ function ZCPrecargarSeleccion(lista, rpta) {
     var valor = '';
     var opcion = '';
     for(var i = 0; i < rpta.cta; ++i) {
-        for (var key in rpta.infoEncabezado[i]) {
-            if (rpta.infoEncabezado[i].hasOwnProperty(key)) {
+        for (var key in rpta.info[i]) {
+            if (rpta.info[i].hasOwnProperty(key)) {
                 if (key === 'id') {
-                    id = rpta.infoEncabezado[i][key];
+                    id = rpta.info[i][key];
                     continue;
                 } else {
-                    valor = rpta.infoEncabezado[i][key]
+                    valor = rpta.info[i][key]
                 }
             }
         }
@@ -546,13 +537,13 @@ function ZCPrecargarRadio(contenedor, radio, obligatorio, msjObligatorio, rpta) 
     var opcion = '';
     var htmlExtra = '';
     for(var i = 0; i < rpta.cta; ++i) {
-        for (var key in rpta.infoEncabezado[i]) {
-            if (rpta.infoEncabezado[i].hasOwnProperty(key)) {
+        for (var key in rpta.info[i]) {
+            if (rpta.info[i].hasOwnProperty(key)) {
                 if (key === 'id') {
-                    id = rpta.infoEncabezado[i][key];
+                    id = rpta.info[i][key];
                     continue;
                 } else {
-                    valor = rpta.infoEncabezado[i][key]
+                    valor = rpta.info[i][key]
                 }
             }
         }
@@ -619,11 +610,9 @@ function ZCActivarBotonPrincipal(formulario) {
  * @param {string} modificar
  */
 function ZCAccionPrecargar(formulario, id, precargar, modificar) {
-    // Nonbre del controlador
-    var controlador = $('#zc-controlador').val();
     $.ajax({
-        url: '' + controlador + '/' + precargar + '/',
-        type: 'POST',
+        url: URLControlador + precargar + '/',
+        method: 'POST',
         dataType: 'JSON',
         data: {
             // Envia filtros de busqueda al servidor
@@ -632,47 +621,59 @@ function ZCAccionPrecargar(formulario, id, precargar, modificar) {
         },
         beforeSend: function() {
             // Desactiva todos los campos
-            $('input, textarea, select, button').addClass('disabled').prop('disabled', true);
-            // Oculta ventana con mensajes
-            $('.alert').hide();
-            // Mostrar cargando
-            $('#'+modificar+' span').addClass('glyphicon-refresh glyphicon-refresh-animate');
+            desactivarCampos();
         },
         success: function(rpta) {
-            if (rpta.error !== undefined && '' !== rpta.error) {
+            if (ZCRespuestaConError(rpta)) {
                 // Muestra mensaje de error
-                $('#error-' + formulario).text(rpta.error);
-                $('.alert-danger').show();
+                ZCAsignarErrores(rpta);
             } else {
                 ZCAccionPrecargarResultado(formulario, rpta);
             }
         },
         complete: function() {
             // Activar los campos para la modificacion
-            $('input, textarea, select, button').removeClass('disabled').prop('disabled', false);
-            // Ocultar cargando
-            $('#'+modificar+' span').removeClass('glyphicon-refresh glyphicon-refresh-animate');
+            activarCampos();
         },
         error: function(rpta) {
-            $('#error-' + formulario).text('Error en el servicio');
-            $('.alert-danger').show();
+            ZCAsignarErrores('Error en el servicio');
         }
     });
 }
 
 /**
- * Asigna los errores devueltos por el servidor a cada uno de los campos
- * @param {string} formulario
- * @param {json} rpta
+ * Determina si la respuesta del servidor tiene errores
+ * @param {json|string} rpta Errores devueltos por la aplicacion durante el proceso
+ * @return {boolean} true | false
  */
-function ZCAsignarErrores(formulario, rpta) {
+function ZCRespuestaConError(rpta) {
+    return (rpta.error !== undefined || (typeof rpta.error === 'object' && Object.keys(rpta.error).length > 0))
+        // Respuesta con errores
+        ? true
+        // Respuesta sin errores
+        : false;
+}
+
+/**
+ * Asigna los errores devueltos por el servidor a cada uno de los campos
+ * @param {json|string} rpta Errores devueltos por la aplicacion durante el proceso
+ * @param {string} idCampoError Id del campo donde se muestran los errores, es opcional y por defecto es 'error'
+ */
+function ZCAsignarErrores(rpta, idCampoError) {
     var msjError = '';
-    if (typeof rpta.error === 'object') {
+    idCampoError = (idCampoError != undefined)
+        ? idCampoError
+        : 'error';
+
+    if (rpta.error.message) {
+        // Error de base de datos (CI > 3)
+        msjError = rpta.error.message;
+    } else if (typeof rpta.error === 'object') {
         // Error en un campo
         $.each(rpta.error, function(campo, error) {
             // Selecciona la 1ra etiqueta, esto por si hay campos multiples []
             var label = $("label[for='" + campo + "']:first").text();
-            if (label != ''){
+            if (label != '') {
                 // Solo si el label existe
                 msjError += label + ': ' + error + '<br />';
             }
@@ -682,13 +683,20 @@ function ZCAsignarErrores(formulario, rpta) {
     } else if (rpta.error) {
         // Error sin asociacion de campo
         msjError = rpta.error;
+    } else if (rpta == '') {
+        // No existe error, oculta las alertas
+        $('.alert').hide();
+        return;
     } else {
         // Solo el mensaje de error
         msjError = rpta;
     }
-    // Establecer error e ir al principio de la pagina
-    $('#error-' + formulario).html(msjError);
+    // Establecer error
+    $('#' + idCampoError).html(msjError);
+    // Va al principio del formulario en la pagina, alli es donde se muestran los mensaje de error
     $('html, body').animate({ scrollTop: 0 }, 'slow');
+    // Muestra el mensaje de error
+    $('.alert-danger').show();
 }
 
 /**
@@ -699,7 +707,7 @@ function ZCAsignarErrores(formulario, rpta) {
 function init(init, formulario, campo) {
     $.ajax({
         url: URLControlador + init,
-        type: 'POST',
+        method: 'POST',
         dataType: 'JSON',
         data: {
             // Envia filtros de busqueda al servidor
@@ -711,10 +719,9 @@ function init(init, formulario, campo) {
             desactivarCampos();
         },
         success: function(rpta) {
-            if (rpta.error !== undefined && '' !== rpta.error) {
+            if (ZCRespuestaConError(rpta)) {
                 // Muestra mensaje de error
-                $('#error-' + formulario).text(rpta.error);
-                $('.alert-danger').show();
+                ZCAsignarErrores(rpta);
             } else {
                 initParsley(formulario, rpta);
             }
@@ -724,8 +731,7 @@ function init(init, formulario, campo) {
             activarCampos();
         },
         error: function(rpta) {
-            $('#error-' + formulario).text('Error en el servicio');
-            $('.alert-danger').show();
+            ZCAsignarErrores('Error en el servicio');
         }
     });
 }
@@ -741,9 +747,9 @@ function initParsley(formulario, rpta){
 
     // Deshabilitar configuracion anterior
     $('#' + formulario).parsley().destroy();
-    for (var campo in rpta.infoEncabezado) {
+    for (var campo in rpta.info) {
         var tipoCampo = $('input[name^='+campo+']:first').attr('type');
-        for (var restriccion in rpta.infoEncabezado[campo]) {
+        for (var restriccion in rpta.info[campo]) {
             if(busqueda && (
                 restriccion == 'required' || restriccion == 'required-message'
                 || restriccion == 'min' || restriccion == 'min-message'
@@ -755,7 +761,7 @@ function initParsley(formulario, rpta){
                 // Para los formularios de busqueda no se tienen en cuenta estas restricciones
                 continue;
             }
-            var valor = rpta.infoEncabezado[campo][restriccion];
+            var valor = rpta.info[campo][restriccion];
             // if (restriccion == 'required' && valor != 'false') {
                 // // A los campos obligatorios se les agrega el simbolo de obligatoriedad
                 // var label = $("label[for='" + campo + "']").append('<font style="color: red;">*</font>');
@@ -806,22 +812,6 @@ function replaceAll(string, busca, reemplaza) {
 }
 
 /**
- * Determina el tipo de imagenes autilizar basado en el tamano de la pantalla
- */
-function formatoImagen() {
-    resolucion = document.documentElement.clientWidth;
-    switch (true){
-        case (resolucion <= 480):
-            formato = '_xs';
-            break;
-        default:
-            formato = '_lg';
-            break;
-    }
-    return formato;
-}
-
-/**
  * Deshabilita los campos antes de hacer una solicitud ajax dentro del formulario
  * esto evita que los datos sean cambiados durante la consulta
  */
@@ -845,9 +835,32 @@ function activarCampos() {
 }
 
 /**
- *Variable de ambito global para verificar el tamaño de las imagenes a utilizar
+ *Variable de ambito global para verificar el tamaño de las imagenes a utilizar según 
+ * la resolucion de pantalla del cliente
  */
-var formatoImagen = formatoImagen();
+$(window).on('load resize', function(){
+    resolucion =  document.documentElement.clientWidth;
+    switch (true){
+        case (resolucion < 768):
+            // (xs) Extra small devices (phones, less than 768px)
+            formatoImagen = '_xs';
+            break;
+        case (resolucion >= 768 && resolucion < 992):
+            // (sm) Small devices (tablets, 768px and up)
+            formatoImagen = '_sm';
+            break;
+        case (resolucion >= 992 && resolucion < 1200):
+            // (md) Medium devices (desktops, 992px and up)
+            formatoImagen = '_md';
+            break;
+        case (resolucion >= 1200):
+            // (lg) Large devices (large desktops, 1200px and up)
+        default:
+            formatoImagen = '_lg';
+            break;
+    }
+    console.log(resolucion + 'px -> ' + formatoImagen);
+});
 
 /**
  * Variable de ambito global para determina el controlador que esta utilizandose por la aplicacion

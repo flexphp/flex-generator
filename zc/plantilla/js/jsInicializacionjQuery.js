@@ -21,16 +21,16 @@ $(document).ready(function () {
     });
     // Se agrega la validacion cuando los elementos pierden el foco
     $('{_idFormulario_}').find($(formasValidar)).change(function (e) {
-        ZCBarraProgreso('compras', formasValidar);
+        ZCBarraProgreso('{_idFormulario_}', formasValidar);
         $('#'+this.id).parsley().validate('#'+this.id);
     });
     // Accion boton cancelar
     $('.zc-boton-cancelar').click(function(e){
-        if(ZCAccionCancelar(e, '{_idFormulario_}', formasValidar)){
-            if(confirm('No se guardaran los cambios, desea continuar?')){
+        if (ZCAccionCancelar(e, '{_idFormulario_}', formasValidar)) {
+            if (confirm('No se guardaran los cambios, desea continuar?')) {
                 history.back();
             }
-        }else{
+        } else {
             history.back();
         }
     });

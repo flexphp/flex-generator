@@ -97,14 +97,23 @@ class Zc {
      * Empaqueta la respuesta en JSON para enviarlo al cliente
      * @param array $rpta Respuesta del WS en forma de arreglo
      */
-    function rptaWS($rpta) {
-        // Existe error, devuelve el error
-        $rptaWS['error'] = (isset($rpta['error'])) ? json_encode($rpta['error']) : '';
-        // Si existe respuesta valida por parte del servidor
-        $rptaWS['infoEncabezado'] = (isset($rpta['resultado'])) ? json_encode($rpta['resultado']) : '';
-        $rptaWS['cta'] = (isset($rpta['cta'])) ? $rpta['cta'] : 0;
-
-        return $rptaWS;
+    function rpta($rpta) {
+        if (isset($rpta['error']) && $rpta['error'] != '') {
+            // Existe error, devuelve el error
+            $rpta['error'] = json_decode($rpta['error'], true);
+        } else {
+            // Si existe respuesta valida por parte del servidor
+            // Informacion devuelta
+            $rpta['info'] = (isset($rpta['info']) && $rpta['info'] != '') ? json_decode($rpta['info'], true) : null;
+            // Cantidad de registros devueltos
+            $rpta['cta'] = (isset($rpta['cta']) && $rpta['cta'] > 0 && $rpta['info']) ? $rpta['cta'] : 0;
+            if ($rpta['cta'] == 0) {
+                // No hay registros
+                $rpta['error'] = 'No se encontraron datos.';
+                unset($rpta['info'], $rpta['cta']);
+            }
+        }
+        return $rpta;
     }
 
     /**
@@ -118,24 +127,8 @@ class Zc {
             // Error durante consulta webservice
             $rpta['error'] = $ws['errorWS'];
         } elseif (isset($ws['rptaWS'])) {
-            // Respuesta del WS
-            $rptaWS = $ws['rptaWS'][0];
-            $error = (isset($rptaWS['error']) && $rptaWS['error'] != '') ? json_decode($rptaWS['error'], true) : null;
-            $infoEncabezado = (isset($rptaWS['infoEncabezado']) && $rptaWS['infoEncabezado'] != '') ? json_decode($rptaWS['infoEncabezado'], true) : null;
-            $cta = (isset($rptaWS['cta']) && $rptaWS['cta'] > 0 && $infoEncabezado) ? $rptaWS['cta'] : 0;
-            if ($error) {
-                // Existe error durante el proceso
-                $rpta['error'] = $error;
-            } elseif ($cta > 0) {
-                // Informacion devuelta
-                $rpta['infoEncabezado'] = $infoEncabezado;
-                // Cantidad de registros devueltos
-                $rpta['cta'] = $cta;
-                // Devuelve respuesta procesada
-                return $rpta;
-            } else {
-                $rpta['error'] = 'No se encontraron datos.';
-            }
+            // Respuesta del WS, crea las variables error, info y cta
+            return $this->rpta($ws['rptaWS'][0]);
         } else {
             $rpta['error'] = 'Error en servidor.';
         }
@@ -511,40 +504,16 @@ class Zc {
 
     /**
      * Transforma caracteres especiales a utf para que los datos json no fallen al enviarse al navegador
+     * En bases de datos con latin1 es obligatorio devolver los datos con esta funcion
      * @param $rpta json Datos de respuesta devueltos al cliente
      * @return json
      */ 
-    function utf8_converter($rpta) {
-        if(function_exists('mb_detect_encoding') && function_exists('mb_detect_encoding')) {
-            array_walk_recursive($rpta, function(&$item, $key){
-                if(!mb_detect_encoding($item, 'utf-8', true)){
-                    $item = trim(utf8_encode($item));
-                }
-            });
-        } else {
-            foreach($rpta as $llave => $valor) {
-                if(is_array($valor)) {
-                    $rpta[$llave] = $this->utf8_converter($valor);
-                } else {
-                    $rpta[$llave] = trim(utf8_encode($valor));
-                }
-            }
-        }
-        return $rpta;
-    }
-
-    /**
-     * Transforma caracteres especiales a utf para que los datos json no fallen al enviarse al navegador
-     * @param $rpta json Datos de respuesta devueltos al cliente
-     * @return json
-     */ 
-    function htmlentities($rpta) {
+    function utf8_converter(&$rpta) {
         foreach($rpta as $llave => $valor) {
-            if(is_array($valor)) {
-                $rpta[$llave] = $this->htmlentities($valor);
-            } else {
-                $rpta[$llave] = trim(htmlentities($valor));
-            }
+            $rpta[utf8_encode($llave)] 
+            = (is_array($valor))
+            ? $this->utf8_converter($valor)
+            : utf8_encode($valor);
         }
         return $rpta;
     }

@@ -62,8 +62,8 @@ class {_nombreControlador_} extends CI_Controller {
             show_404();
         }
         // Asigna datos de session
-        if (isset($rpta['infoEncabezado'][0]) && isset($rpta['cta']) && $rpta['cta'] > 0) {
-            $session = $rpta['infoEncabezado'][0];
+        if (isset($rpta['info'][0]) && isset($rpta['cta']) && $rpta['cta'] > 0) {
+            $session = $rpta['info'][0];
             $session['zc_logueado'] = true;
             $this->session->set_userdata($session);
         } else {

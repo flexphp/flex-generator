@@ -23,6 +23,7 @@
     <body>
         <?php echo $navegacion; ?>
         <div class="container-fluid">
+        <div class="row">
             <!-- Seperacion del top -->
             <div class="col-md-12"> </div>
             <!-- Nombre del formulario actual -->
@@ -34,7 +35,7 @@
                 <div class="alert alert-danger" style="display: none;" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only">Error:</span>
-                    <span id="error-{_idFormulario_}"></span>
+                    <span id="error"></span>
                 </div>
                 <!-- Fin Errores devueltos por el servidor -->
             </div>
@@ -49,7 +50,8 @@
             </div>
             <div class="col-md-1"></div>
             <!-- Fin Formulario para el ingreso de datos -->
-        </div>
+        </div><!-- Fin row -->
+        </div><!-- Fin container -->
         <!-- Id del registro actual, si esta vacio, es un registro nuevo, de lo contrario es una actualizacion -->
         <input type="hidden" id="zc-id-{_idFormulario_}" name="zc-id-{_idFormulario_}" value="<?php echo $id; ?>"/>
         <!-- Pagina para ejecutar acciones desde JS -->

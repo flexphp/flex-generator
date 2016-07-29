@@ -11,8 +11,8 @@ function {_nombreAccion_}(){
                     'name' => 'cta',
                     'type' => 'xsd:string'
                 ),
-                'infoEncabezado' => array(
-                    'name' => 'infoEncabezado',
+                'info' => array(
+                    'name' => 'info',
                     'type' => 'xsd:string'
                 ),
                 'error' => array(
@@ -59,15 +59,13 @@ function {_nombreAccion_}(){
 
         function {_nombreFuncion_}({_asignacionFuncion_}){
 {_accionServidor_}
-            // Existe error, devuelve el error
-            $RptaWS['error'] = (isset($rpta['error'])) ? json_encode($rpta['error']) : '';
-            // Si existe respuesta valida por parte del servidor
-            $RptaWS['infoEncabezado'] = (isset($rpta['resultado'])) ? json_encode($rpta['resultado']) : '';
-            $RptaWS['cta'] = (isset($rpta['cta'])) ? $rpta['cta'] : 0;
-            
-            file_put_contents(getcwd() . '/application/logs/ws_{_nombreControlador_}_' . date('Ymd') . '.log', date('H:m:i') . '::' . __FUNCTION__ . "\n" . ' $data: ' . print_r(func_get_args(), 1) . "\n" . ' $RptaWS: ' . print_r($RptaWS, 1) . "\n", FILE_APPEND);
+            array_walk($rpta, function(&$item, $key){
+                $item = ($key == 'cta') ? (int) $item : json_encode($item);
+            });
+
+            file_put_contents(getcwd() . '/application/logs/ws_{_nombreControlador_}_' . date('Ymd') . '.log', date('H:m:i') . '::' . __FUNCTION__ . "\n" . ' $data: ' . print_r(func_get_args(), 1) . "\n" . ' $rpta: ' . print_r($rpta, 1) . "\n", FILE_APPEND);
             // Es obligatorio devolver un array
-            return new soapval('return', 'tns:{_nombreAccion_}RptaArray', array($RptaWS));
+            return new soapval('return', 'tns:{_nombreAccion_}RptaArray', array($rpta));
         }
         $this->_SRV_WS->service(file_get_contents('php://input'));
     }

@@ -5,7 +5,7 @@ $(document).ready(function () {
     $.ajax({
         // A la accion se le concatena la palabra cliente, asi se llama en la funcion
         url: URLControlador + 'ajax',
-        type: 'POST',
+        method: 'POST',
         dataType: 'JSON',
         data: 'accion=ajax&tablas={_nombreTabla_}&campos={_nombreCampos_}',
         beforeSend: function(){
@@ -13,7 +13,10 @@ $(document).ready(function () {
             $('#{_nombreSelect_}').addClass('disabled').prop('disabled', true);
         },
         success: function(rpta){
-            if(rpta.error === undefined){
+            if (ZCRespuestaConError(rpta)) {
+                // Muestra mensaje de error
+                ZCAsignarErrores(rpta);
+            } else {
                 // Agrega las opciones al select
                 ZCPrecargarSeleccion('{_nombreSelect_}', rpta);
             }
@@ -23,7 +26,7 @@ $(document).ready(function () {
             $('#{_nombreSelect_}').removeClass('disabled').prop('disabled', false);
         },
         error: function(){
-            console.log('Error en el servicio');
+            ZCAsignarErrores('Error en el servicio');
         }
     });
 });

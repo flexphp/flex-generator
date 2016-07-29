@@ -35,6 +35,8 @@ class {_nombreControlador_} extends CI_Controller {
     public function inicio() {
         // Valida que el usuario este logueado
         $this->validarSesion();
+        // Cache en minutos, acelera la carga de la pagina
+        $this->output->cache(10);
         $this->load->view($this->_data['vista'], $this->_data);
     }
 

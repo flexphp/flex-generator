@@ -34,7 +34,7 @@ class elemento {
         'lista' => array(
             '=' => '',
             '=' => 'igual a',
-            '!=' => 'deferente de',
+            '!=' => 'diferente de',
         ),
         'numero' => array(
             '=' => '',
@@ -43,7 +43,7 @@ class elemento {
             '>=' => 'mayor o igual a',
             '<' => 'menor a',
             '<=' => 'menor o igual a',
-            '!=' => 'deferente de',
+            '!=' => 'diferente de',
         ),
         'texto' => array(
             'both%' => '',
@@ -51,7 +51,7 @@ class elemento {
             'both%' => 'contiene',
             'after%' => 'inicia con',
             'before%' => 'termina con',
-            '!=' => 'deferente de',
+            '!=' => 'diferente de',
         ),
     );
 

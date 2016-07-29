@@ -1,11 +1,10 @@
 <!-- Barra de navegacion -->
-        <!-- <nav class="navbar navbar-default navbar-fixed-top" role="navigation"> -->
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="{_accionInicio_}">ZC</a>
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-bar">
-                        <span class="sr-only">Toggle navigation</span>
+                        <span class="sr-only">Navegaci&oacute;n</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>

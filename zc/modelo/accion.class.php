@@ -88,8 +88,8 @@ class accion extends Aelemento {
      * @var array
      */
     protected $_asignacionControlador = array(
-        "// Asigna los datos pasado por POST",
-        "\$datos = \$this->input->post(null);",
+        '// Asigna los datos pasado por POST',
+        '$datos = $this->input->post(null);',
     );
 
     /**
@@ -167,7 +167,7 @@ class accion extends Aelemento {
         $accion->ws($this->_urlWS);
         // Establece la accion creada
         $this->_html = (isset($accion)) ? $accion->crear()->devolverElemento() : $this->comando('$resultado = implode(\'+\', func_get_args());$cta = 1;', 12);
-        $this->_funcion = (isset($accion)) ? $accion->funcion()->devolverFuncion() : $this->comando('//$rpta[\'resultado\'] = implode(\'|\', $datos);');
+        $this->_funcion = (isset($accion)) ? $accion->funcion()->devolverFuncion() : $this->comando('//$rpta[\'info\'] = implode(\'|\', $datos);');
         $this->_filtro = (isset($accion)) ? $accion->filtro()->devolverFiltro() : '';
         $this->_inicializarCliente = (isset($accion)) ? $accion->inicializarAccion()->devolverInicializarCliente() : $this->inicializarAccion()->devolverInicializarCliente();
         $this->_inicializarWS = (isset($accion)) ? $accion->inicializarWS()->devolverInicializarWS() : $this->inicializarAccion()->devolverInicializarCliente();

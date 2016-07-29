@@ -61,15 +61,15 @@ class agregar extends accion {
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('case $this->db->insert(\'' . $this->_tabla . '\', $campos) == false:', 12);
         $php .= $this->comando('// Mensaje/causa de error devuelto', 16);
-        $php .= $this->comando('$rpta[\'error\'] = $this->db->_error_message();', 16);
+        $php .= $this->comando('$rpta[\'error\'] = $this->db->error();', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('default:', 12);
         $php .= $this->comando('// Devuelve el id insertado campo y el numero de filas efectadas', 16);
-        $php .= $this->comando('$rpta[\'resultado\'] = $this->db->insert_id();', 16);
+        $php .= $this->comando('$rpta[\'info\'] = $this->db->insert_id();', 16);
         $php .= $this->comando('$rpta[\'cta\'] = $this->db->affected_rows() > 0;', 16);
         $php .= $this->comando('break;', 16);
         $php .= $this->comando('}', 8);
-        $php .= $this->comando('return $rpta;', 8);
+        $php .= $this->comando('return ' . ((ZC_BD_ES_UTF) ? '$rpta;' : '$this->zc->utf8_converter($rpta);'), 8);
         $php .= $this->comando('}', 4);
         $this->_funcion = $php;
         return $this;
