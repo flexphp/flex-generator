@@ -15,7 +15,7 @@ $(document).ready(function () {
         success: function(rpta){
             if (ZCRespuestaConError(rpta)) {
                 // Muestra mensaje de error
-                ZCAsignarErrores(rpta);
+                ZCAsignarErrores(rpta, '{_nombreSelect_}', true);
             } else {
                 // Agrega las opciones al select
                 ZCPrecargarSeleccion('{_nombreSelect_}', rpta);

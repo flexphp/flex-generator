@@ -57,7 +57,7 @@ class radio extends Aelemento {
         $opcion = array();
         if (is_string($opciones)) {
             if (strpos($opciones, ZC_ELEMENTO_OPCIONES_ASIGNADOR) === false && strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de radio [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_ELEMENTO_OPCIONES_SEPARADOR . 'id2' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor2 o tabla' . ZC_MOTOR_JOIN_SEPARADOR . 'campo' . ZC_MOTOR_JOIN_SEPARADOR . 'tipoJoin');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Tipo de radio [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_ELEMENTO_OPCIONES_SEPARADOR . 'id2' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor2 o tabla' . ZC_MOTOR_JOIN_SEPARADOR . 'campo' . ZC_MOTOR_JOIN_SEPARADOR . 'tipoJoin, valor recibido: ' . $opciones);
             }
             // Agrega la opcion vacia a la lista de seleccion, aplica para el ajax como para el proceso no ajax
             $separador = (strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) ? ZC_ELEMENTO_OPCIONES_SEPARADOR : ZC_MOTOR_JOIN_SEPARADOR;
@@ -65,7 +65,7 @@ class radio extends Aelemento {
                 $cada_opcion = explode($separador, $opciones);
                 foreach ($cada_opcion as $value) {
                     if (strpos($value, ZC_ELEMENTO_OPCIONES_ASIGNADOR) === false) {
-                        mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de radio [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_ELEMENTO_OPCIONES_SEPARADOR . 'id2 ' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor2');
+                        mostrarErrorZC(__FILE__, __FUNCTION__, ' Tipo de radio [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_ELEMENTO_OPCIONES_SEPARADOR . 'id2 ' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor2');
                     }
                     list($id, $valor) = explode(ZC_ELEMENTO_OPCIONES_ASIGNADOR, $value);
                     $opcion[trim($id)] = trim($valor);
@@ -91,7 +91,7 @@ class radio extends Aelemento {
                     " type='radio'" .
                     " class='radio'" .
                     // Permite extraer rapidamente la descripcion de la opcion, se usa en el buscador
-                    " zc-texto='" . htmlentities($valor) . "'" .
+                    " zc-texto='" . htmlentities($valor, ENT_COMPAT | ENT_HTML401, ini_get('default_charset')) . "'" .
                     // Identificador campo
                     " id='{$idOpcion}'" .
                     " name='{$this->_id}'" .
@@ -114,7 +114,7 @@ class radio extends Aelemento {
     private function opcionesAjax($join) {
         $this->_joinTablas = joinTablas($join);
         if ('' == $this->_controlador) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, 'No se ha definido el controlador para el llamado ajax');
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' No se ha definido el controlador para el llamado ajax');
         }
         if (isset($this->_joinTablas)) {
             $this->_joinTablas['tabla'] = strtolower($this->_joinTablas['tabla']);

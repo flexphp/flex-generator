@@ -21,7 +21,7 @@ class borrar extends accion {
     public function crear() {
         if ($this->_accion !== ZC_ACCION_BORRAR) {
             // No es la accion esperada, no crea nada
-            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_BORRAR);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Error en la accion, se esperaba: ' . ZC_ACCION_BORRAR);
         }
         $php = '';
         // Agrega la condicion de busqueda
@@ -42,7 +42,7 @@ class borrar extends accion {
     public function funcion() {
         if ($this->_accion !== ZC_ACCION_BORRAR) {
             // No es la accion esperada, no crea nada
-            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_BORRAR);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Error en la accion, se esperaba: ' . ZC_ACCION_BORRAR);
         }
         $php = '';
         $php .= $this->comando('function borrar($id = null){', 4);

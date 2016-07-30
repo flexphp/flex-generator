@@ -177,7 +177,8 @@ class Zc {
             }
             // Limpia los espacios para evitar en las validaciones posteriores
             // Al valor no se le aplica ya que puede tener espacios y estos se deben tener encuenta
-            $tabla = trim($tabla);
+            // El nombre de la tabla se usa en minusculas, compatibilidad con *nix
+            $tabla = trim(strtolower($tabla));
             $campo = trim($campo);
             $operador = trim($operador);
             // Para la validaciones es necesario que se un array, de lo contrario daria error

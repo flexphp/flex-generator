@@ -83,7 +83,7 @@ class lista extends Aelemento {
         $opcion = array();
         if (is_string($opciones)) {
             if (strpos($opciones, ZC_ELEMENTO_OPCIONES_SEPARADOR) === false && strpos($opciones, ZC_MOTOR_JOIN_SEPARADOR) === false) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_MOTOR_JOIN_SEPARADOR . 'id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1 o tabla' . ZC_MOTOR_JOIN_SEPARADOR . 'campo' . ZC_MOTOR_JOIN_SEPARADOR . 'tipoJoin');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Tipo de lista [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_MOTOR_JOIN_SEPARADOR . 'id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1 o tabla' . ZC_MOTOR_JOIN_SEPARADOR . 'campo' . ZC_MOTOR_JOIN_SEPARADOR . 'tipoJoin');
             }
             // Agrega la opcion vacia a la lista de seleccion, aplica para el ajax como para el proceso no ajax
             $this->_opciones .= tabular($this->placeholder(), 32);
@@ -92,7 +92,7 @@ class lista extends Aelemento {
                 $cada_opcion = explode(ZC_ELEMENTO_OPCIONES_SEPARADOR, $opciones);
                 foreach ($cada_opcion as $value) {
                     if (strpos($value, ZC_ELEMENTO_OPCIONES_ASIGNADOR) === false) {
-                        mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de lista [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1');
+                        mostrarErrorZC(__FILE__, __FUNCTION__, ' Tipo de lista [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1');
                     }
                     list($id, $valor) = explode(ZC_ELEMENTO_OPCIONES_ASIGNADOR, $value);
                     $opcion[trim($id)] = trim($valor);
@@ -116,7 +116,7 @@ class lista extends Aelemento {
     private function opcionesAjax($join) {
         $this->_joinTablas = joinTablas($join);
         if ('' == $this->_controlador) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, 'No se ha definido el controlador para el llamado ajax');
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' No se ha definido el controlador para el llamado ajax');
         }
         if (isset($this->_joinTablas)) {
             $this->_joinTablas['tabla'] = strtolower($this->_joinTablas['tabla']);

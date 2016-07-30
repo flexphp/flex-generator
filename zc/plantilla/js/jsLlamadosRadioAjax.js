@@ -14,7 +14,7 @@ $(document).ready(function () {
         success: function(rpta){
             if (ZCRespuestaConError(rpta)) {
                 // Muestra mensaje de error
-                ZCAsignarErrores(rpta); 
+                ZCAsignarErrores(rpta, undefined, true); 
             } else {
                 // Agrega las opciones al select
                 ZCPrecargarRadio("{_nombreContenedor_}", "{_nombreRadio_}", rpta);

@@ -60,7 +60,7 @@ class plantilla {
      */
     public function nuevaPlantilla($nombre = '', $contenido = '') {
         if ($nombre == '') {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ": El nombre de la nueva plantilla!");
+            mostrarErrorZC(__FILE__, __FUNCTION__, " El nombre de la nueva plantilla!");
         } else {
             $this->_nombrePlantilla = $nombre;
             $this->_plantilla = $contenido;
@@ -80,7 +80,7 @@ class plantilla {
      */
     public function cargarPlantilla($plantilla = null) {
         if (!is_file($plantilla)) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ": La plantilla " . $plantilla . " no existe");
+            mostrarErrorZC(__FILE__, __FUNCTION__, " La plantilla " . $plantilla . " no existe");
         } else {
             $this->_nombrePlantilla = $plantilla;
             $this->_plantilla = file_get_contents($plantilla);
@@ -98,7 +98,7 @@ class plantilla {
      */
     private function extraerEtiquetas() {
         if (!$this->_plantilla) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Y la plantilla!?');
         } else {
             $patron = '#\{_([A-z0-9\s\._])*_\}#';
             preg_match_all($patron, $this->_plantilla, $this->_etiquetas);
@@ -120,7 +120,7 @@ class plantilla {
      */
     public function asignarEtiqueta($etiqueta, $valor) {
         if (!$this->_plantilla) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Y la plantilla!?');
         } else {
             if (isset($this->_etiquetasValidas[$etiqueta])) {
                 // No es necesario que la etiqueta este en la plantilla
@@ -140,7 +140,7 @@ class plantilla {
      */
     public function asignarEtiquetaMultiple(array $etiquetas) {
         if (!$this->_plantilla) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Y la plantilla!?');
         } else {
             foreach ($etiquetas as $key => $value) {
                 $this->asignarEtiqueta($key, $value);
@@ -157,7 +157,7 @@ class plantilla {
      */
     public function quitarEtiquetas() {
         if (!$this->_plantilla) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Y la plantilla!?');
         } else {
             $patron = '#\{_([A-z0-9\s\._])*_\}#';
             $reemplazar = '';
@@ -174,7 +174,7 @@ class plantilla {
      */
     private function minimizarPlantilla() {
         if (!$this->_plantilla) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Y la plantilla!?');
         } else if (isset($this->_opciones['minimizar']) && $this->_opciones['minimizar'] === true) {
             $patron = array(
                 // Quitar comentarios html
@@ -207,7 +207,7 @@ class plantilla {
      */
     public function imprimirPlantilla() {
         if (!$this->_plantilla) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Y la plantilla!?');
         } else {
             echo $this->_plantilla;
         }
@@ -220,7 +220,7 @@ class plantilla {
      */
     public function devolverPlantilla() {
         if (!$this->_plantilla) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Y la plantilla!?');
         } else {
             // Elimina etiquetas no reemplazadas
             $this->quitarEtiquetas();
@@ -239,7 +239,7 @@ class plantilla {
      */
     public function crearPlantilla($dirSalida = '', $tipoSalida = 'php', $nombreSalida = '') {
         if (!$this->_plantilla) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ": Y la plantilla!?");
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Y la plantilla!?');
         } else {
             if ($nombreSalida == '') {
                 $info = explode('/', $this->_nombrePlantilla);
@@ -248,7 +248,7 @@ class plantilla {
             } elseif (is_string($nombreSalida) && $nombreSalida != '') {
                 $nombrePlantilla = $nombreSalida;
             } else {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ": Nombre de para la plantilla incorrecto!");
+                mostrarErrorZC(__FILE__, __FUNCTION__, " Nombre de para la plantilla incorrecto!");
             }
             $this->_nombrePlantilla = crearArchivo($dirSalida, $nombrePlantilla, $tipoSalida, $this->devolverPlantilla());
             $this->_rutaPlantilla = $dirSalida . '/';

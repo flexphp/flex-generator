@@ -101,7 +101,7 @@ class hoja extends xml {
      */
     private function xml2form($archivoXML, $elementos) {
         if (!isset($elementos[0])) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ': Estructura XML no valida!: ' . $archivoXML);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Estructura XML no valida!: ' . $archivoXML);
         }
 
         foreach ($elementos as $key => $value) {
@@ -112,7 +112,7 @@ class hoja extends xml {
                 // Otros atributos no definidos, esta funcion se encarga de validar el tipo de elemento a crear
                 $formulario->agregarAtributo($value);
             } else {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': No existe el elemento ' . preprint($value, 1));
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' No existe el elemento ' . preprint($value, 1));
             }
 
             if (!isset($elementos[($key + 1)]) && $key > 0) {

@@ -65,7 +65,7 @@ class conexion {
         if ($this->_link) {
             return true;
         } else {
-            mostrarErrorZC(__FILE__, __FUNCTION__, 'Conexion a bd erronea: ' . mysqli_connect_error());
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Conexion a bd erronea: ' . mysqli_connect_error());
         }
         return false;
     }
@@ -77,7 +77,7 @@ class conexion {
      */
     private function desconectar() {
         if (isset($this->_link) && !mysqli_close($this->_link)) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, 'No se pudo desconectar');
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' No se pudo desconectar');
         }
         return true;
     }
@@ -93,12 +93,12 @@ class conexion {
             if ($this->conectar()) {
                 $ressql = mysqli_query($this->_link, $sql);
                 if (!$ressql) {
-                    mostrarErrorZC(__FILE__, __FUNCTION__, 'Error en sentencia : ' . mysqli_error($this->_link));
+                    mostrarErrorZC(__FILE__, __FUNCTION__, ' Error en sentencia : ' . mysqli_error($this->_link));
                 }
                 return $ressql;
             }
         } else {
-            mostrarErrorZC(__FILE__, __FUNCTION__, 'Sentencia sin definir');
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Sentencia sin definir');
         }
         return false;
     }
@@ -113,7 +113,7 @@ class conexion {
         if ($ressql) {
             return mysqli_num_rows($ressql);
         } else {
-            mostrarErrorZC(__FILE__, __FUNCTION__, 'Sin definir recurso' . __FUNCTION__);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Sin definir recurso' . __FUNCTION__);
         }
         return 0;
     }
@@ -128,7 +128,7 @@ class conexion {
         if ($ressql) {
             return mysqli_fetch_assoc($ressql);
         } else {
-            mostrarErrorZC(__FILE__, __FUNCTION__, 'Sin definir recurso en ' . __FUNCTION__);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Sin definir recurso en ' . __FUNCTION__);
         }
         return false;
     }
@@ -143,7 +143,7 @@ class conexion {
         if (is_string($var) && trim($var) != '') {
             $varEscapado = mysqli_real_escape_string($this->_link, $var);
             if (!$varEscapado) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, 'Error escapando: ' . $var);
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Error escapando: ' . $var);
             } else {
                 $var = $varEscapado;
             }

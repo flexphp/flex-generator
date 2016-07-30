@@ -658,10 +658,11 @@ function ZCRespuestaConError(rpta) {
  * Asigna los errores devueltos por el servidor a cada uno de los campos
  * @param {json|string} rpta Errores devueltos por la aplicacion durante el proceso
  * @param {string} idCampoError Id del campo donde se muestran los errores, es opcional y por defecto es 'error'
+ * @param {bool} enConsola Define si se debe mostrar el error en la consola
  */
-function ZCAsignarErrores(rpta, idCampoError) {
+function ZCAsignarErrores(rpta, idCampoError, enConsola) {
     var msjError = '';
-    idCampoError = (idCampoError != undefined)
+    idCampoError = (idCampoError !== undefined)
         ? idCampoError
         : 'error';
 
@@ -686,10 +687,15 @@ function ZCAsignarErrores(rpta, idCampoError) {
     } else if (rpta == '') {
         // No existe error, oculta las alertas
         $('.alert').hide();
-        return;
+        return true;
     } else {
         // Solo el mensaje de error
         msjError = rpta;
+    }
+    if (enConsola) {
+        // Muestra el mensaje en consola y termina la ejecucion
+        console.log(idCampoError + ': ' + msjError);
+        return true;
     }
     // Establecer error
     $('#' + idCampoError).html(msjError);

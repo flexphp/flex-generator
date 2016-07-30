@@ -21,7 +21,7 @@ class ajax extends accion {
     public function crear() {
         if ($this->_accion !== ZC_ACCION_AJAX) {
             // No es la accion esperada, no crea nada
-            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_AJAX);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Error en la accion, se esperaba: ' . ZC_ACCION_AJAX);
         }
         $php = '';
         $php .= $this->comando('// Se instancia un nuevo controlador, desde la funcion no es posible acceder al $this original', 12);
@@ -41,7 +41,7 @@ class ajax extends accion {
     public function funcion() {
         if ($this->_accion !== ZC_ACCION_AJAX) {
             // No es la accion esperada, no crea nada
-            mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en la accion, se esperaba: ' . ZC_ACCION_AJAX);
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Error en la accion, se esperaba: ' . ZC_ACCION_AJAX);
         }
         $php = '';
         $php .= $this->comando('function ajax($tablas, $campos){', 4);

@@ -73,7 +73,7 @@ abstract class Aelemento {
     protected function verificar() {
         // Id del objeto dentro del formulario
         if (!isset($this->_prop[ZC_ID]) || '' == trim($this->_prop[ZC_ID]) || !is_string($this->_prop[ZC_ID])) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo NO tiene un identificador valido [a-Z_].");
+            mostrarErrorZC(__FILE__, __FUNCTION__, " El campo NO tiene un identificador valido [a-Z_].");
         }
         // Identificadores del elemento
         // Si existe el nombre de campo en la base de datos lo asigna, el id debe conincidir con el nombre de campo para el resto de la funcionalidad
@@ -121,11 +121,11 @@ abstract class Aelemento {
             $this->_prop[ZC_LONGITUD_MAXIMA] = ($this->_prop[ZC_DATO] == ZC_DATO_HORA) ? 8 : $this->_prop[ZC_LONGITUD_MAXIMA];
             // Valida las longitudes
             if (isset($this->_prop[ZC_LONGITUD_MINIMA]) && isset($this->_prop[ZC_LONGITUD_MAXIMA]) && $this->_prop[ZC_LONGITUD_MINIMA] > $this->_prop[ZC_LONGITUD_MAXIMA]) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
+                mostrarErrorZC(__FILE__, __FUNCTION__, " El campo {$this->_prop[ZC_ETIQUETA]} tiene incoherencia en las longitudes.");
             }
             // Valida la longitud del campo, es obligatoria para las cajas
             if (isset($this->_prop[ZC_ELEMENTO]) && in_array($this->_prop[ZC_ELEMENTO], array(ZC_ELEMENTO_CAJA, ZC_ELEMENTO_AREA)) && !isset($this->_prop[ZC_LONGITUD_MAXIMA]) && $this->_prop[ZC_DATO] != ZC_DATO_NUMERICO) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
+                mostrarErrorZC(__FILE__, __FUNCTION__, " El campo {$this->_prop[ZC_ETIQUETA]} no tiene longitud maxima.");
             }
             $this->_prop[ZC_ELEMENTO_OPCIONES] = (isset($this->_prop[ZC_ELEMENTO_OPCIONES])) ? $this->_prop[ZC_ELEMENTO_OPCIONES] : null;
             // Se puede incluir caracteres HTML y saltos de linea

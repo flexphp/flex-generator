@@ -49,7 +49,7 @@ class checkbox extends Aelemento {
             $opciones = array();
             foreach ($cada_opcion as $value) {
                 if (strpos($value, ZC_ELEMENTO_OPCIONES_ASIGNADOR) === false) {
-                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de checkbox [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_ELEMENTO_OPCIONES_SEPARADOR . 'id2 ' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor2');
+                    mostrarErrorZC(__FILE__, __FUNCTION__, ' Tipo de checkbox [' . $this->_id . '] no valido, se espera id1' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor1' . ZC_ELEMENTO_OPCIONES_SEPARADOR . 'id2 ' . ZC_ELEMENTO_OPCIONES_ASIGNADOR . 'valor2');
                 }
                 list($id, $valor) = explode(ZC_ELEMENTO_OPCIONES_ASIGNADOR, $value);
                 $opciones[trim($id)] = trim($valor);
@@ -70,7 +70,7 @@ class checkbox extends Aelemento {
                     " type='checkbox'" .
                     " class='checkbox'" .
                     // Permite extraer rapidamente la descripcion de la opcion, se usa en el buscador
-                    " zc-texto='" . htmlentities($valor) . "'" .
+                    " zc-texto='" . htmlentities($valor, ENT_COMPAT | ENT_HTML401, ini_get('default_charset')) . "'" .
                     // Idenfitificador
                     // El nombre se maneja como arreglo para permitir enviar varios valores
                     " id='{$idOpcion}'" .

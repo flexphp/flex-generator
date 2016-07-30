@@ -307,9 +307,9 @@ class formulario {
      */
     function __construct($caracteristicas) {
         if (!is_array($caracteristicas)) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, 'Y las caracteristicas del formulario?');
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Y las caracteristicas del formulario?');
         } elseif (!isset($caracteristicas[ZC_ID]) || '' == $caracteristicas[ZC_ID]) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, 'Falta el identificador de la tabla!?');
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Falta el identificador de la tabla!?');
         } else {
             // Se toma del nombre de la hoja de calculo (tag en del XML)
             $this->_id = strtolower($caracteristicas[ZC_ID]);
@@ -554,7 +554,7 @@ class formulario {
     private function agregarAtributoFormulario($elementos) {
         foreach ($elementos as $caracteristicas) {
             if (!is_array($caracteristicas)) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Y las caracteristicas del elemento!?');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Y las caracteristicas del elemento!?');
             }
             // Se valida en minuscula para evitar ambiguedades: Boton, boton, BOTON, etc
             // Se debe dejar, en este punto no ha pasado por la funcion elementos::verificar
@@ -588,7 +588,7 @@ class formulario {
                     $this->agregarAccionFormulario($caracteristicas);
                     break;
                 default:
-                    mostrarErrorZC(__FILE__, __FUNCTION__, ": Tipo de atributo no definido: {$caracteristicas[ZC_ELEMENTO]}!");
+                    mostrarErrorZC(__FILE__, __FUNCTION__, " Tipo de atributo no definido: {$caracteristicas[ZC_ELEMENTO]}!");
             }
         }
         return $this;

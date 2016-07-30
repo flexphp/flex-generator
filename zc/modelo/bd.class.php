@@ -64,10 +64,10 @@ class bd extends conexion {
             case ZC_MOTOR_MYSQL:
                 break;
             case '':
-                mostrarErrorZC(__FILE__, __FUNCTION__, 'Seleccione una opcion de guardado de datos [' . $this->_motor . '].');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Seleccione una opcion de guardado de datos [' . $this->_motor . '].');
                 break;
             default:
-                mostrarErrorZC(__FILE__, __FUNCTION__, 'Motor (' . $this->_motor . ') no soportado por la herramienta, quizas proximamente.');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Motor (' . $this->_motor . ') no soportado por la herramienta, quizas proximamente.');
         }
     }
 
@@ -118,7 +118,7 @@ class bd extends conexion {
                 $tipo = $this->_equivalencias[$this->_motor][$dato];
                 break;
             default:
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Tipo de dato (' . $dato . ') sin equivalencia');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Tipo de dato (' . $dato . ') sin equivalencia');
         }
         return $tipo;
     }
@@ -135,7 +135,7 @@ class bd extends conexion {
             case ZC_DATO_EMAIL:
             case ZC_DATO_URL:
                 if (!is_numeric($maxima) || $maxima == 0) {
-                    mostrarErrorZC(__FILE__, __FUNCTION__, ': Error en longitud maxima, por el tipo de campo (' . $dato . ') es obligatorio colocarlo');
+                    mostrarErrorZC(__FILE__, __FUNCTION__, ' Error en longitud maxima, por el tipo de campo (' . $dato . ') es obligatorio colocarlo');
                 }
                 $longitud = "($maxima)";
                 break;
@@ -218,7 +218,7 @@ class bd extends conexion {
                 $charset = $this->_equivalencias[$this->_motor][ZC_BD_CHARSET] . ' ' . ZC_BD_CHARSET;
                 break;
             default:
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Motor (' . $this->_motor . ') no contemplado');
         }
         return $charset;
     }
@@ -233,7 +233,7 @@ class bd extends conexion {
                 $bd = $this->_equivalencias[$this->_motor]['CREACION_BD'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_BD'] . ' ' . ZC_BD_ESQUEMA . ' ' . $this->charset();
                 break;
             default:
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Motor (' . $this->_motor . ') no contemplado');
         }
         $this->_sentencias[] = $bd;
         return $this;
@@ -249,7 +249,7 @@ class bd extends conexion {
                 $usar = $this->_equivalencias[$this->_motor]['USAR_BD'] . ' ' . ZC_BD_ESQUEMA;
                 break;
             default:
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Motor (' . $this->_motor . ') no contemplado');
         }
         $this->_sentencias[] = $usar;
         return $this;
@@ -267,7 +267,7 @@ class bd extends conexion {
                 $nombre = tabular($this->_equivalencias[$this->_motor]['CREACION_TABLA'] . ' ' . $this->_equivalencias[$this->_motor]['CONDICIONAL_TABLA'] . ' ' . $this->_prop[0][ZC_ID] . ' (', 0);
                 break;
             default:
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Motor (' . $this->_motor . ') no contemplado');
         }
         return $nombre;
     }
@@ -284,7 +284,7 @@ class bd extends conexion {
                 $key = tabular($this->_equivalencias[$this->_motor]['LLAVE_PRIMARIA'] . ' (' . $campo . ')' . $coma, 4);
                 break;
             default:
-                mostrarErrorZC(__FILE__, __FUNCTION__, ': Motor (' . $this->_motor . ') no contemplado');
+                mostrarErrorZC(__FILE__, __FUNCTION__, ' Motor (' . $this->_motor . ') no contemplado');
         }
         return $key;
     }
@@ -348,7 +348,7 @@ class bd extends conexion {
         if (isset($joinTabla)) {
             $joinTabla['tabla'] = strtolower($joinTabla['tabla']);
             if (!in_array($joinTabla['tabla'], $this->_tablasValidas)) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ": Nombre de tabla no valida para el join: {$joinTabla['tabla']}");
+                mostrarErrorZC(__FILE__, __FUNCTION__, " Nombre de tabla no valida para el join: {$joinTabla['tabla']}");
             }
             return "ALTER TABLE {$tabla} ADD CONSTRAINT zc_fk_2_{$campo} FOREIGN KEY ({$campo}) REFERENCES {$joinTabla['tabla']}(id) ON UPDATE CASCADE ON DELETE RESTRICT";
         }
@@ -362,7 +362,7 @@ class bd extends conexion {
     private function verificar() {
         foreach ($this->_prop as $nro => $caracteristicas) {
             if (!isset($this->_prop[$nro][ZC_ID]) || '' == trim($this->_prop[$nro][ZC_ID]) || !is_string($this->_prop[$nro][ZC_ID])) {
-                mostrarErrorZC(__FILE__, __FUNCTION__, ": El campo NO tiene un identificador valido [a-Z_].");
+                mostrarErrorZC(__FILE__, __FUNCTION__, " El campo NO tiene un identificador valido [a-Z_].");
             }
             // Nombre del campo
             $this->_prop[$nro][ZC_ID] =(isset($this->_prop[$nro][ZC_CAMPO_BD]) && '' != $this->_prop[$nro][ZC_CAMPO_BD]) ? trim($this->_prop[$nro][ZC_CAMPO_BD]) : trim($this->_prop[$nro][ZC_ID]);

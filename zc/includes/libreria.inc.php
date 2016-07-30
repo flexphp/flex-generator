@@ -445,7 +445,7 @@ function tagXML($tag) {
  */
 function contenidoXML($contenido)
 {
-    return htmlspecialchars(htmlentities(utf8_decode($contenido)));
+    return htmlspecialchars(htmlentities(utf8_decode($contenido), ENT_COMPAT | ENT_HTML401, ini_get('default_charset')));
 }
 
 

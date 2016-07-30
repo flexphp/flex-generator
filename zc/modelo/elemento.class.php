@@ -86,7 +86,7 @@ class elemento {
                 $this->agregarElementoLista($this->_caracteristicas);
                 break;
             default:
-                mostrarErrorZC(__FILE__, __FUNCTION__, ": Tipo de elemento no definido: {$caracteristicas[ZC_ELEMENTO]}!");
+                mostrarErrorZC(__FILE__, __FUNCTION__, " Tipo de elemento no definido: {$caracteristicas[ZC_ELEMENTO]}!");
         }
 
         return $this->_elemento;
@@ -164,7 +164,7 @@ class elemento {
      */
     public function operadores($tipo = '', $oculto = '') {
         if ('' == $tipo) {
-            mostrarErrorZC(__FILE__, __FUNCTION__, 'Tipo de dato para saber los operadores!?');
+            mostrarErrorZC(__FILE__, __FUNCTION__, ' Tipo de dato para saber los operadores!?');
         }
         // Opciones de filtro, se envuelve en un div para manejar la ocultacion de forma mas efectiva
         $operadores = tabular("<div id='operador-{$tipo}' name='operador-{$tipo}' class='zc-operador{$oculto}'>", 24);
