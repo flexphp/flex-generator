@@ -1,41 +1,7 @@
-# Archivos de log
-########################
-zc/logs/*.log
+.env
+.idea
+.vscode
+tests/coverage
+vendor
+infection.*
 
-# Archivos cargados de prueba en los diferentes formatos posibles
-########################
-zc/tmp/*.ods
-zc/tmp/*.xls
-zc/tmp/*.xlsx
-zc/tmp/*.txt
-zc/tmp/*.zcs
-
-# Archivos de configuracion conexion a base de datos
-########################
-www/application/config/database.php
-www/application/config/pagination.php
-
-# Archivos de cache de paginas
-########################
-www/application/cache/*
-
-# Archivos de configuracion
-########################
-zc/xml/*.xml
-zc/sql/*.sql
-
-# Archivos publicos generados por la aplicacion
-########################
-www/publico/*
-
-# Archivos de configuracion propios de la aplicacion
-########################
-www/conf/*
-
-# Archivos de session propios de la aplicacion
-########################
-www/sessions/*
-
-# Plantillas personalizadas
-########################
-zc/plantilla/html/*.tpl
