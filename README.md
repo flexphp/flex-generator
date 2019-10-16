@@ -31,7 +31,7 @@ __Name__ (Required): Field Name, it is used in persistence (database, web servic
 
 __DataType__ (Required): Data Type used in validations.
 
-> See more info [Doctrine Types](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/basic-mapping.html#doctrine-mapping-types "Doctrine Mapping Reference") and [Doctrine Mapping Types](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/basic-mapping.html#doctrine-mapping-types "Doctrine Mapping Reference").
+> See more info [Doctrine Matrix Mapping Types](https://www.doctrine-project.org/projects/doctrine-dbal/en/2.9/reference/types.html#mapping-matrix "Doctrine Mapping Types Reference").
 
 __InputType__ (Optional|Default:text): Input Type used in [HTML forms](https://symfony.com/doc/current/reference/forms/types.html "Input Types for HTML"), [Commands](https://symfony.com/doc/current/console/input.html "Input Types for Command") and API/WS.
 
