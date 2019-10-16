@@ -12,6 +12,7 @@ class GeneratorTest extends WebTestCase
         \ob_start();
         include __DIR__ . '/../../src/index.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
+        // die(var_dump($response->getContent()));
 
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
@@ -29,6 +30,25 @@ class GeneratorTest extends WebTestCase
         \ob_start();
         include __DIR__ . '/../../src/index.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
+        // die(var_dump($response->getContent()));
+
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+    }
+
+    public function testItFileUploadExtensionError()
+    {
+        $name = 'Format.docx';
+        $type = 'application/msword';
+        $path = \getcwd() . '/src/templates/' . $name;
+
+        $_FILES = [
+            'file' => $this->getFileMock($name, $path, $type),
+        ];
+
+        \ob_start();
+        include __DIR__ . '/../../src/index.php';
+        $response = $this->parseHttpResponse(\ob_get_clean());
+        // die(var_dump($response->getContent()));
 
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
@@ -48,6 +68,7 @@ class GeneratorTest extends WebTestCase
         \ob_start();
         include __DIR__ . '/../../src/index.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
+        // die(var_dump($response->getContent()));
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }

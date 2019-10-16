@@ -3,6 +3,7 @@
 namespace FlexPHP\Generator\Tests;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class WebTestCase
@@ -10,37 +11,43 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class WebTestCase extends TestCase
 {
-    protected function getFileMock(string $name, string $path, string $type, $uploadError = UPLOAD_ERR_OK): array
+    // protected function getFileMock(string $name, string $path, string $type, $uploadError = UPLOAD_ERR_OK): array
+    protected function getFileMock(string $name, string $path, string $type, $uploadError = UPLOAD_ERR_OK): UploadedFile
     {
-        return [
-            'name' => $name,
-            'type' => $type,
-            'tmp_name' => $path,
-            'error' => $uploadError,
-            'size' => \strlen(\file_get_contents($path)),
-        ];
+        return new UploadedFile($path, $name, $type, $uploadError, true);
     }
 
     protected function parseHttpResponse(string $httpResponse): Response
     {
+        // die(var_dump($httpResponse));
         $content = '';
         $statusCode = Response::HTTP_OK;
         $headers = [];
 
-        if (\preg_match('/^HTTP/', $httpResponse) > 0) {
-            $lines = \preg_split('/\n/', $httpResponse);
-            $count = \count($lines);
-            
-            $status = explode(' ', $lines[0]);
-            $statusCode = $status[1];
-            $content = $lines[$count - 1];
-            unset($lines[0], $lines[($count - 1)], $lines[$count - 2]);
+        $httpResponse = \substr($httpResponse, \strpos($httpResponse, 'HTTP'));
+        $extraContent = \substr($httpResponse, 0, \strpos($httpResponse, 'HTTP'));
 
-            foreach ($lines as $header) {
-                list($name, $value) = \preg_split('/:/', $header, 2);
-                $headers[$name] = $value;
-            }
+        // die(var_dump($httpResponse));
+        // die(var_dump($extraContent));
+        $lines = \preg_split('/\n/', $httpResponse);
+        $count = \count($lines);
+
+        $status = explode(' ', $lines[0]);
+        $statusCode = (int)$status[1];
+        $content = $lines[$count - 1];
+        
+        if (\strlen($extraContent) > 0) {
+            $content .= "\r\n" .  $extraContent;
         }
+        
+        unset($lines[0], $lines[($count - 1)], $lines[$count - 2]);
+
+        foreach ($lines as $header) {
+            list($name, $value) = \preg_split('/:/', $header, 2);
+            $headers[$name] = $value;
+        }
+
+        // die(var_dump($content, $statusCode, $headers));
 
         return new Response($content, $statusCode, $headers);
     }
