@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class WebTestCase extends TestCase
 {
-    // protected function getFileMock(string $name, string $path, string $type, $uploadError = UPLOAD_ERR_OK): array
     protected function getFileMock(string $name, string $path, string $type, $uploadError = UPLOAD_ERR_OK): UploadedFile
     {
         return new UploadedFile($path, $name, $type, $uploadError, true);
@@ -19,27 +18,23 @@ class WebTestCase extends TestCase
 
     protected function parseHttpResponse(string $httpResponse): Response
     {
-        // die(var_dump($httpResponse));
-        $content = '';
         $statusCode = Response::HTTP_OK;
         $headers = [];
 
         $httpResponse = \substr($httpResponse, \strpos($httpResponse, 'HTTP'));
         $extraContent = \substr($httpResponse, 0, \strpos($httpResponse, 'HTTP'));
 
-        // die(var_dump($httpResponse));
-        // die(var_dump($extraContent));
         $lines = \preg_split('/\n/', $httpResponse);
         $count = \count($lines);
 
         $status = explode(' ', $lines[0]);
         $statusCode = (int)$status[1];
         $content = $lines[$count - 1];
-        
+
         if (\strlen($extraContent) > 0) {
-            $content .= "\r\n" .  $extraContent;
+            $content .= "\r\n" . $extraContent;
         }
-        
+
         unset($lines[0], $lines[($count - 1)], $lines[$count - 2]);
 
         foreach ($lines as $header) {
@@ -48,7 +43,6 @@ class WebTestCase extends TestCase
         }
 
         // die(var_dump($content, $statusCode, $headers));
-
         return new Response($content, $statusCode, $headers);
     }
 }

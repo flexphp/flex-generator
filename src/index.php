@@ -35,12 +35,12 @@ try {
                 $reader->open($file->getRealPath());
 
                 foreach ($reader->getSheetIterator() as $sheet) {
-                    if (!$sheet->isActive()) {
+                    if (!$sheet->isVisible()) {
                         continue;
                     }
 
+                    $sheetName = trim($sheet->getName());
                     $sheetNames[] = $sheet->getName();
-                    $sheetName = strtolower($sheet->getName());
 
                     $headers = [];
                     $colHeaderName = 0;
@@ -57,7 +57,7 @@ try {
                             if ($rowNumber === 0) {
                                 // echo $colNumber . PHP_EOL;
                                 $headers[$colNumber] = $col->getValue();
-                                
+
                                 if (strtolower($col->getValue() === 'name')) {
                                     $colHeaderName = $colNumber;
                                 }
@@ -71,7 +71,7 @@ try {
                         }
                     }
 
-                    file_put_contents(sprintf('%1$s/tmp/%2$s.yaml', __DIR__, $sheetName), Yaml::dump($yaml));
+                    file_put_contents(sprintf('%1$s/tmp/%2$s.yaml', __DIR__, strtolower($sheetName)), Yaml::dump($yaml));
                 }
 
                 $rpta['sheetNames'] = $sheetNames;

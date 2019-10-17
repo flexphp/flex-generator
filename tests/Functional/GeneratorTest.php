@@ -12,7 +12,7 @@ class GeneratorTest extends WebTestCase
         \ob_start();
         include __DIR__ . '/../../src/index.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
-        // die(var_dump($response->getContent()));
+        // dump($response->getContent());
 
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
@@ -30,7 +30,7 @@ class GeneratorTest extends WebTestCase
         \ob_start();
         include __DIR__ . '/../../src/index.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
-        // die(var_dump($response->getContent()));
+        // dump($response->getContent());
 
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
@@ -48,7 +48,7 @@ class GeneratorTest extends WebTestCase
         \ob_start();
         include __DIR__ . '/../../src/index.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
-        // die(var_dump($response->getContent()));
+        // dump($response->getContent());
 
         $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
@@ -56,7 +56,6 @@ class GeneratorTest extends WebTestCase
     public function testItFileFormatXlsx()
     {
         $name = 'Format.xlsx';
-        // $type = 'application/vnd.ms-excel';
         // $type = 'application/vnd.oasis.opendocument.spreadshee';
         $type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         $path = \getcwd() . '/src/templates/' . $name;
@@ -68,7 +67,7 @@ class GeneratorTest extends WebTestCase
         \ob_start();
         include __DIR__ . '/../../src/index.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
-        // die(var_dump($response->getContent()));
+        // dump($response->getContent());
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }

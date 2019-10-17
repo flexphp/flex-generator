@@ -23,8 +23,6 @@ composer require flexphp/generator
 
 First look up this [recommendations](https://symfony.com/doc/current/best_practices.html "Best Practices")
 
-__Context__ (Optional): Tabla Name, it is used in persistence (database), only accept: encoding=utf8, regex=[a-Z09_], maxlength=64.
-
 __Name__ (Required): Field Name, it is used in persistence (database, web services, etc), only accept: encoding=utf8, regex=[a-Z09_], maxlength=64.
 
 > See more info [here](https://dev.mysql.com/doc/refman/8.0/en/identifiers.html "MySQL Reference").
