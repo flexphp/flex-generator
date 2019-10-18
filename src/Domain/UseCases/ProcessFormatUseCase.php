@@ -3,6 +3,7 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
 use FlexPHP\UseCases\UseCase;
@@ -12,19 +13,18 @@ class ProcessFormatUseCase extends UseCase
 {
     /**
      * Process format based in extension
-     * - Syntax
+     * - Syntax Sheet
      *
      * @param ProcessFormatRequest $request
      * @return ProcessFormatResponse
      */
     public function execute($request)
     {
-        $executionTime = \microtime(true);
+        $this->throwExceptionIfRequestNotValid(__METHOD__, ProcessFormatRequest::class, $request);
+
+        $sheetNames = [];
         $path = $request->path;
         $extension = $request->extension;
-
-        $response = [];
-        $sheetNames = [];
 
         switch ($extension) {
             case 'xlsx':
@@ -71,18 +71,12 @@ class ProcessFormatUseCase extends UseCase
                     file_put_contents(sprintf('%1$s/../../tmp/%2$s.yaml', __DIR__, strtolower($sheetName)), Yaml::dump($yaml));
                 }
 
-                $response['sheetNames'] = $sheetNames;
-
                 break;
             default:
-                $response['error'] = true;
-                $response['message'] = 'Format no supported.';
-
+                throw new FormatNotSupportedException();
                 break;
         }
 
-        $response['executionTime'] = \microtime(true) - $executionTime;
-
-        return new ProcessFormatResponse($response);
+        return new ProcessFormatResponse($sheetNames);
     }
 }

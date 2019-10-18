@@ -80,12 +80,12 @@
             "version": "dev-develop",
             "source": {
                 "type": "git",
-                "url": "https://github.com/flexphp/messages.git",
+                "url": "https://github.com/flexphp/flex-messages.git",
                 "reference": "da06b63b103a6cc220e6be294486fe3cbaeb67b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flexphp/messages/zipball/da06b63b103a6cc220e6be294486fe3cbaeb67b0",
+                "url": "https://api.github.com/repos/flexphp/flex-messages/zipball/da06b63b103a6cc220e6be294486fe3cbaeb67b0",
                 "reference": "da06b63b103a6cc220e6be294486fe3cbaeb67b0",
                 "shasum": ""
             },
@@ -163,12 +163,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/flexphp/flex-use-cases.git",
-                "reference": "9071eb3a8ed2f70733727aa4b23708a73a537675"
+                "reference": "b12d63864736a5f281a4e0b9f9f5e43be35e35b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flexphp/flex-use-cases/zipball/9071eb3a8ed2f70733727aa4b23708a73a537675",
-                "reference": "9071eb3a8ed2f70733727aa4b23708a73a537675",
+                "url": "https://api.github.com/repos/flexphp/flex-use-cases/zipball/b12d63864736a5f281a4e0b9f9f5e43be35e35b4",
+                "reference": "b12d63864736a5f281a4e0b9f9f5e43be35e35b4",
                 "shasum": ""
             },
             "require": {
@@ -198,7 +198,7 @@
                 }
             ],
             "description": "Agnostic use-cases PHP, any framework",
-            "time": "2019-10-17T16:30:21+00:00"
+            "time": "2019-10-18T20:04:00+00:00"
         },
         {
             "name": "symfony/http-foundation",
