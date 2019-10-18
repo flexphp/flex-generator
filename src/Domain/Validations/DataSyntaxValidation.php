@@ -3,19 +3,20 @@
 namespace FlexPHP\Generator\Domain\Validations;
 
 use FlexPHP\Generator\Domain\Exceptions\DataSyntaxValidationException;
+use FlexPHP\Generator\Domain\Constants\Header;
 
 class DataSyntaxValidation implements ValidationInterface
 {
     protected $data;
     protected $isValid;
     protected $allowedHeaders = [
-        'Name',
-        'DataType',
+        Header::NAME,
+        Header::DATA_TYPE,
     ];
 
     protected $requiredHeaders = [
-        'Name',
-        'DataType',
+        Header::NAME,
+        Header::DATA_TYPE,
     ];
 
     public function __construct(array $data)

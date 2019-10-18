@@ -2,6 +2,7 @@
 
 namespace FlexPHP\Generator\Tests\Domain\Validations;
 
+use FlexPHP\Generator\Domain\Constants\Header;
 use FlexPHP\Generator\Domain\Exceptions\DataSyntaxValidationException;
 use FlexPHP\Generator\Domain\Validations\DataSyntaxValidation;
 use FlexPHP\Generator\Tests\TestCase;
@@ -14,8 +15,8 @@ class DataSyntaxValidationTest extends TestCase
         $this->expectExceptionMessage('Unknow');
 
         $validation = new DataSyntaxValidation([
-            'Name',
-            'DataType',
+            Header::NAME,
+            Header::DATA_TYPE,
             'UnknowHeader',
         ]);
 
@@ -28,7 +29,7 @@ class DataSyntaxValidationTest extends TestCase
         $this->expectExceptionMessage('Required');
 
         $validation = new DataSyntaxValidation([
-            'Name',
+            Header::NAME,
         ]);
 
         $validation->validate();

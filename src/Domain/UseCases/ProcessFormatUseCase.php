@@ -3,6 +3,7 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use FlexPHP\Generator\Domain\Constants\Header;
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
@@ -51,21 +52,23 @@ class ProcessFormatUseCase extends UseCase
                     foreach ($sheet->getRowIterator() as $rowNumber => $row) {
                         $rowNumber -= 1;
                         $cols = $row->getCells();
-
-                        foreach ($cols as $colNumber => $col) {
-                            if ($rowNumber === 0) {
+                        
+                        if ($rowNumber === 0) {
+                            foreach ($cols as $colNumber => $col) {
                                 $headers[$colNumber] = $col->getValue();
 
-                                if (strtolower($col->getValue() === 'name')) {
+                                if ($col->getValue() === Header::NAME) {
                                     $colHeaderName = $colNumber;
                                 }
-
-                                continue;
                             }
 
                             $syntaxValidation = new DataSyntaxValidation($headers);
                             $syntaxValidation->validate();
 
+                            continue;
+                        }
+
+                        foreach ($cols as $colNumber => $col) {
                             $fieldName = $cols[$colHeaderName]->getValue();
 
                             $yaml[$sheetName][$fieldName][$headers[$colNumber]] = $col->getValue();

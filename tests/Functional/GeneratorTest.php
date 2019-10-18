@@ -9,6 +9,8 @@ class GeneratorTest extends WebTestCase
 {
     public function testItFileError()
     {
+        $_FILES = [];
+
         \ob_start();
         include __DIR__ . '/../../src/index.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
