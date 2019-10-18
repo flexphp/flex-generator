@@ -6,6 +6,7 @@ use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
+use FlexPHP\Generator\Domain\Validations\DataSyntaxValidation;
 use FlexPHP\UseCases\UseCase;
 use Symfony\Component\Yaml\Yaml;
 
@@ -62,13 +63,16 @@ class ProcessFormatUseCase extends UseCase
                                 continue;
                             }
 
+                            $syntaxValidation = new DataSyntaxValidation($headers);
+                            $syntaxValidation->validate();
+
                             $fieldName = $cols[$colHeaderName]->getValue();
 
                             $yaml[$sheetName][$fieldName][$headers[$colNumber]] = $col->getValue();
                         }
                     }
 
-                    file_put_contents(sprintf('%1$s/../../tmp/%2$s.yaml', __DIR__, strtolower($sheetName)), Yaml::dump($yaml));
+                    // file_put_contents(sprintf('%1$s/../../tmp/%2$s.yaml', __DIR__, strtolower($sheetName)), Yaml::dump($yaml));
                 }
 
                 break;
