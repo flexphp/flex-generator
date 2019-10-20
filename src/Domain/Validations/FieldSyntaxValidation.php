@@ -12,6 +12,7 @@ class FieldSyntaxValidation implements ValidationInterface
 
     private $validators = [
         Header::NAME => PropertyNameValidator::class,
+        Header::DATA_TYPE => PropertyNameValidator::class,
     ];
 
     public function __construct(array $data)

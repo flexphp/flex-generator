@@ -7,6 +7,7 @@ use FlexPHP\Generator\Domain\Constants\Header;
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
+use FlexPHP\Generator\Domain\Validations\FieldSyntaxValidation;
 use FlexPHP\Generator\Domain\Validations\HeaderSyntaxValidation;
 use FlexPHP\UseCases\UseCase;
 use Symfony\Component\Yaml\Yaml;
@@ -45,9 +46,6 @@ class ProcessFormatUseCase extends UseCase
                     $sheetNames[] = $sheet->getName();
 
                     $headers = [];
-                    $colHeaderName = 0;
-                    $fields = [];
-                    $fields[$sheetName] = [];
 
                     foreach ($sheet->getRowIterator() as $rowNumber => $row) {
                         $rowNumber -= 1;
@@ -56,10 +54,6 @@ class ProcessFormatUseCase extends UseCase
                         if ($rowNumber === 0) {
                             foreach ($cols as $colNumber => $col) {
                                 $headers[$colNumber] = $col->getValue();
-
-                                if ($col->getValue() === Header::NAME) {
-                                    $colHeaderName = $colNumber;
-                                }
                             }
 
                             $headerValidation = new HeaderSyntaxValidation($headers);
@@ -69,17 +63,13 @@ class ProcessFormatUseCase extends UseCase
                         }
 
                         $field = [];
-                        foreach ($cols as $colNumber => $col) {
-                            $fieldName = $cols[$colHeaderName]->getValue();
-                            $headerName = $headers[$colNumber]
 
-                            $field[$fieldName][$headerName] = $col->getValue();
+                        foreach ($cols as $colNumber => $col) {
+                            $field[$headers[$colNumber]] = $col->getValue();
                         }
                         
                         $fieldValidation = new FieldSyntaxValidation($field);
                         $fieldValidation->validate();
-
-                        $fields[$sheetName][$fieldName][$headerName] = $col->getValue();
                     }
 
                     // file_put_contents(sprintf('%1$s/../../tmp/%2$s.yaml', __DIR__, strtolower($sheetName)), Yaml::dump($fields));
