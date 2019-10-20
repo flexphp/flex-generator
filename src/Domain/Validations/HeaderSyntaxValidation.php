@@ -2,13 +2,13 @@
 
 namespace FlexPHP\Generator\Domain\Validations;
 
-use FlexPHP\Generator\Domain\Exceptions\DataSyntaxValidationException;
+use FlexPHP\Generator\Domain\Exceptions\HeaderSyntaxValidationException;
 use FlexPHP\Generator\Domain\Constants\Header;
 
-class DataSyntaxValidation implements ValidationInterface
+class HeaderSyntaxValidation implements ValidationInterface
 {
     protected $data;
-    protected $isValid;
+
     protected $allowedHeaders = [
         Header::NAME,
         Header::DATA_TYPE,
@@ -36,7 +36,7 @@ class DataSyntaxValidation implements ValidationInterface
         }
 
         if (!empty($notAllowedHeaders)) {
-            throw new DataSyntaxValidationException('Unknow headers: ' . implode(', ', $notAllowedHeaders));
+            throw new HeaderSyntaxValidationException('Unknow headers: ' . implode(', ', $notAllowedHeaders));
         }
 
         foreach ($this->requiredHeaders as $header) {
@@ -46,7 +46,7 @@ class DataSyntaxValidation implements ValidationInterface
         }
 
         if (!empty($requiredHeadersNotPresent)) {
-            throw new DataSyntaxValidationException('Required headers not present: ' . implode(', ', $requiredHeadersNotPresent));
+            throw new HeaderSyntaxValidationException('Required headers not present: ' . implode(', ', $requiredHeadersNotPresent));
         }
     }
 }
