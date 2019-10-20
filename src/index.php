@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\UploadedFile;
 try {
     $request = Request::createFromGlobals();
 
-    /** @var UploadedFile $file */
+    /** @var UploadedFile|null $file */
     $file = $request->files->get('file', null);
 
     if ($file && $file->getError() === UPLOAD_ERR_OK) {
@@ -32,7 +32,11 @@ try {
     $response->messages = ['message' => sprintf('%1$s(%2$d): %3$s', $e->getFile(), $e->getLine(), $e->getMessage())];
     $response->hasError = true;
 } finally {
-    echo new Response(\json_encode($response->messages), (!$response->hasError ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST), [
-        'Content-Type' => 'application/json',
-    ]);
+    echo new Response(
+        \json_encode($response->messages),
+        (!$response->hasError ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST),
+        [
+            'Content-Type' => 'application/json',
+        ]
+    );
 }

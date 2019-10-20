@@ -1,0 +1,4 @@
+parameters:
+	inferPrivatePropertyTypeFromConstructor: true
+	ignoreErrors:
+		- '#Call to method [a-zA-Z0-9\\_]+\(\) on an unknown class Symfony\\Component\\HttpFoundation\\UploadedFile\.#'

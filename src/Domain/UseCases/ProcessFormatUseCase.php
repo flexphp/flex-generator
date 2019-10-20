@@ -72,7 +72,9 @@ class ProcessFormatUseCase extends UseCase
                         $fieldValidation->validate();
                     }
 
-                    // file_put_contents(sprintf('%1$s/../../tmp/%2$s.yaml', __DIR__, strtolower($sheetName)), Yaml::dump($fields));
+                    // file_put_contents(
+                        // sprintf('%1$s/../../tmp/%2$s.yaml', __DIR__, strtolower($sheetName)), Yaml::dump($fields)
+                    // );
                 }
 
                 break;

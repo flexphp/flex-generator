@@ -46,7 +46,9 @@ class HeaderSyntaxValidation implements ValidationInterface
         }
 
         if (!empty($requiredHeadersNotPresent)) {
-            throw new HeaderSyntaxValidationException('Required headers not present: ' . implode(', ', $requiredHeadersNotPresent));
+            throw new HeaderSyntaxValidationException(
+                'Required headers not present: ' . implode(', ', $requiredHeadersNotPresent)
+            );
         }
     }
 }
