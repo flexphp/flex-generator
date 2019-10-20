@@ -7,7 +7,7 @@ use FlexPHP\Generator\Domain\Constants\Header;
 
 class HeaderSyntaxValidation implements ValidationInterface
 {
-    protected $data;
+    protected $headers;
 
     protected $allowedHeaders = [
         Header::NAME,
@@ -19,9 +19,9 @@ class HeaderSyntaxValidation implements ValidationInterface
         Header::DATA_TYPE,
     ];
 
-    public function __construct(array $data)
+    public function __construct(array $headers)
     {
-        $this->data = $data;
+        $this->headers = $headers;
     }
 
     public function validate(): void
@@ -29,7 +29,7 @@ class HeaderSyntaxValidation implements ValidationInterface
         $notAllowedHeaders = [];
         $requiredHeadersNotPresent = [];
 
-        foreach ($this->data as $header) {
+        foreach ($this->headers as $header) {
             if (!\in_array($header, $this->allowedHeaders)) {
                 $notAllowedHeaders[] = $header;
             }
@@ -40,7 +40,7 @@ class HeaderSyntaxValidation implements ValidationInterface
         }
 
         foreach ($this->requiredHeaders as $header) {
-            if (!\in_array($header, $this->data)) {
+            if (!\in_array($header, $this->headers)) {
                 $requiredHeadersNotPresent[] = $header;
             }
         }

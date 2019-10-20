@@ -8,30 +8,36 @@ use FlexPHP\Generator\Domain\Validators\PropertyNameValidator;
 
 class FieldSyntaxValidation implements ValidationInterface
 {
-    protected $data;
+    protected $properties;
 
+    private $allowedProperties = [
+        Header::NAME,
+        Header::DATA_TYPE,
+    ];
+    
     private $validators = [
         Header::NAME => PropertyNameValidator::class,
-        Header::DATA_TYPE => PropertyNameValidator::class,
     ];
 
-    public function __construct(array $data)
+    public function __construct(array $properties)
     {
-        $this->data = $data;
+        $this->properties = $properties;
     }
 
     public function validate(): void
     {
-        foreach ($this->data as $property => $value) {
-            if (!in_array($property, array_keys($this->validators))) {
+        foreach ($this->properties as $property => $value) {
+            if (!in_array($property, $this->allowedProperties)) {
                 throw new FieldSyntaxValidationException('Property unknow: ' . $property);
             }
 
-            $validator = new $this->validators[$property];
-            $violations = $validator->validate($value);
+            if (in_array($property, array_keys($this->validators))) {
+                $validator = new $this->validators[$property];
+                $violations = $validator->validate($value);
 
-            if (0 !== count($violations)) {
-                throw new FieldSyntaxValidationException($property . (string)$violations);
+                if (0 !== count($violations)) {
+                    throw new FieldSyntaxValidationException($property . ': '  .  (string)$violations);
+                }
             }
         }
     }
