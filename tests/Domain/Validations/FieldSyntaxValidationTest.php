@@ -5,6 +5,7 @@ namespace FlexPHP\Generator\Tests\Domain\Validations;
 use FlexPHP\Generator\Domain\Constants\Header;
 use FlexPHP\Generator\Domain\Exceptions\FieldSyntaxValidationException;
 use FlexPHP\Generator\Domain\Validations\FieldSyntaxValidation;
+use FlexPHP\Generator\Domain\Validators\PropertyDataTypeValidator;
 use FlexPHP\Generator\Tests\TestCase;
 
 class FieldSyntaxValidationTest extends TestCase
@@ -22,7 +23,7 @@ class FieldSyntaxValidationTest extends TestCase
     }
 
     /**
-     * @dataProvider propertyNameInvalid
+     * @dataProvider propertyNameNotValid
      */
     public function testItPropertyNameNotValidThrownException($name): void
     {
@@ -49,7 +50,35 @@ class FieldSyntaxValidationTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function propertyNameInvalid(): array
+    /**
+     * @dataProvider propertyDataTypeNotValid
+     */
+    public function testItPropertyDataTyoeNotValidThrownException($dataType): void
+    {
+        $this->expectException(FieldSyntaxValidationException::class);
+
+        $validation = new FieldSyntaxValidation([
+            Header::DATA_TYPE => $dataType,
+        ]);
+
+        $validation->validate();
+    }
+
+    /**
+     * @dataProvider propertyDataTypeValid
+     */
+    public function testItPropertyDataTypeOk($dataType): void
+    {
+        $validation = new FieldSyntaxValidation([
+            Header::DATA_TYPE => $dataType,
+        ]);
+
+        $validation->validate();
+
+        $this->assertTrue(true);
+    }
+
+    public function propertyNameNotValid(): array
     {
         return [
             ['#Name'],
@@ -71,5 +100,26 @@ class FieldSyntaxValidationTest extends TestCase
             [str_repeat('N', 64)],
             ['N'],
         ];
+    }
+
+    public function propertyDataTypeNotValid(): array
+    {
+        return [
+            ['unknow'],
+            ['bool'],
+            ['barchar'],
+            ['interger'],
+            ['int'],
+            [null],
+            [[]],
+            [1],
+        ];
+    }
+
+    public function propertyDataTypeValid(): array
+    {
+        return array_map(function($dataType) {
+            return [$dataType];
+        }, PropertyDataTypeValidator::ALLOWED_DATA_TYPES);
     }
 }

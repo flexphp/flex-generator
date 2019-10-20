@@ -4,6 +4,7 @@ namespace FlexPHP\Generator\Domain\Validations;
 
 use FlexPHP\Generator\Domain\Constants\Header;
 use FlexPHP\Generator\Domain\Exceptions\FieldSyntaxValidationException;
+use FlexPHP\Generator\Domain\Validators\PropertyDataTypeValidator;
 use FlexPHP\Generator\Domain\Validators\PropertyNameValidator;
 
 class FieldSyntaxValidation implements ValidationInterface
@@ -17,6 +18,7 @@ class FieldSyntaxValidation implements ValidationInterface
     
     private $validators = [
         Header::NAME => PropertyNameValidator::class,
+        Header::DATA_TYPE => PropertyDataTypeValidator::class,
     ];
 
     public function __construct(array $properties)
