@@ -4,6 +4,15 @@ namespace FlexPHP\Generator\Domain\Builders;
 
 class RequestMessageBuilder extends AbstractBuilder
 {
+    public function __construct(array $data, array $config = [])
+    {
+        if (!empty($data['action'])) {
+            $data['action'] = $this->camelCase($data['action']);
+        }
+
+        parent::__construct($data, $config);
+    }
+
     public function getFileTemplate(): string
     {
         return 'Request.php.twig';
@@ -12,5 +21,10 @@ class RequestMessageBuilder extends AbstractBuilder
     public function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Message', parent::getPathTemplate());
+    }
+
+    public function camelCase(string $string): string
+    {
+        return str_replace(' ', '', \ucwords(\str_replace('_', ' ', $string)));
     }
 }

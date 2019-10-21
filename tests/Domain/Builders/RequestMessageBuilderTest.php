@@ -13,9 +13,10 @@ class RequestMessageBuilderTest extends TestCase
             'entity' => 'Test',
         ]);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
         $requestMessage = new TestRequest($request->request->all());
-T, (string)$render);
+
+T), (string)$render);
     }
 
     public function testItRenderBuildOk()
@@ -24,8 +25,48 @@ T, (string)$render);
             'entity' => 'Test',
         ]);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
         $requestMessage = new TestRequest($request->request->all());
-T, $render->build());
+
+T), $render->build());
+    }
+
+    public function testItRenderWithActionOk()
+    {
+        $render = new RequestMessageBuilder([
+            'entity' => 'Test',
+            'action' => 'action',
+        ]);
+
+        $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
+        $requestMessage = new ActionTestRequest($request->request->all());
+
+T), $render->build());
+    }
+
+    public function testItRenderWithActionSpaceOk()
+    {
+        $render = new RequestMessageBuilder([
+            'entity' => 'Test',
+            'action' => 'action space',
+        ]);
+
+        $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
+        $requestMessage = new ActionSpaceTestRequest($request->request->all());
+
+T), $render->build());
+    }
+
+    public function testItRenderWithActionSlugOk()
+    {
+        $render = new RequestMessageBuilder([
+            'entity' => 'Test',
+            'action' => 'action_slug',
+        ]);
+
+        $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
+        $requestMessage = new ActionSlugTestRequest($request->request->all());
+
+T), $render->build());
     }
 }
