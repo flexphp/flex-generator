@@ -100,7 +100,7 @@ T), $render->build());
 T), $render->build());
     }
 
-    public function testItRenderUpdatedOk()
+    public function testItRenderUpdateOk()
     {
         $action = 'update';
         $entity = 'Test';
@@ -121,6 +121,36 @@ T), $render->build());
     public function update(Request $request, $id): Response
     {
         $requestMessage = new UpdateTestRequest($request->request->all());
+
+
+
+
+    }
+
+T), $render->build());
+    }
+
+    public function testItRenderDeleteOk()
+    {
+        $action = 'delete';
+        $entity = 'Test';
+
+        $render = new ActionBuilder([
+            'action' => $action,
+            'entity' => $entity,
+            'request_message' => (new RequestMessageBuilder([
+                'action' => $action,
+                'entity' => $entity,
+            ]))->build(),
+        ]);
+
+        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+    /**
+     * @Route("/delete/{id}"}, methods={"DELETE"}, name="test.delete")
+     */
+    public function delete($id): Response
+    {
+        $requestMessage = new DeleteTestRequest(['id' => $id]);
 
 
 

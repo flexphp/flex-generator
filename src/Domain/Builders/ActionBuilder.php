@@ -43,6 +43,9 @@ class ActionBuilder extends AbstractBuilder
             case 'update':
                 $method = Request::METHOD_PUT;
                 break;
+            case 'delete':
+                $method = Request::METHOD_DELETE;
+                break;
         }
 
         return $method;
@@ -60,6 +63,7 @@ class ActionBuilder extends AbstractBuilder
                 $route = '/{id}';
                 break;
             case 'update':
+            case 'delete':
                 $route = \sprintf('/%1$s/{id}', $action);
                 break;
         }
