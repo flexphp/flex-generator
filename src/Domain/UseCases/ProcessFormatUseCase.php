@@ -9,8 +9,8 @@ use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
 use FlexPHP\Generator\Domain\Validations\FieldSyntaxValidation;
 use FlexPHP\Generator\Domain\Validations\HeaderSyntaxValidation;
+use FlexPHP\Generator\Domain\Writers\YamlWriter;
 use FlexPHP\UseCases\UseCase;
-use Symfony\Component\Yaml\Yaml;
 
 class ProcessFormatUseCase extends UseCase
 {
@@ -46,11 +46,12 @@ class ProcessFormatUseCase extends UseCase
                     $sheetNames[] = $sheet->getName();
 
                     $headers = [];
+                    $fields = [];
 
                     foreach ($sheet->getRowIterator() as $rowNumber => $row) {
                         $rowNumber -= 1;
                         $cols = $row->getCells();
-                        
+
                         if ($rowNumber === 0) {
                             foreach ($cols as $colNumber => $col) {
                                 $headers[$colNumber] = $col->getValue();
@@ -67,16 +68,24 @@ class ProcessFormatUseCase extends UseCase
                         foreach ($cols as $colNumber => $col) {
                             $field[$headers[$colNumber]] = $col->getValue();
                         }
-                        
+
                         $fieldValidation = new FieldSyntaxValidation($field);
                         $fieldValidation->validate();
+
+                        $colHeaderName = $headers[array_search(Header::NAME, $headers)];
+                        $fieldName = $field[$colHeaderName];
+                        $fields[$fieldName] = $field;
                     }
 
-                    // file_put_contents(
-                        // sprintf('%1$s/../../tmp/%2$s.yaml', __DIR__, strtolower($sheetName)), Yaml::dump($fields)
-                    // );
-                }
+                    $writer = new YamlWriter([
+                        $sheetName => [
+                            'Entity' => $sheetName,
+                            'Fields' => $fields,
+                        ]
+                    ], \strtolower($sheetName));
 
+                    $writer->save();
+                }
                 break;
             default:
                 throw new FormatNotSupportedException();

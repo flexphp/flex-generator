@@ -72,5 +72,11 @@ class GeneratorTest extends WebTestCase
         // dump($response->getContent());
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+
+        $sheetNames = \json_decode($response->getContent());
+
+        foreach ($sheetNames as $sheetName) {
+            $this->assertFileExists(\sprintf('%1$s/../../src/tmp/%2$s.yaml', __DIR__, \strtolower($sheetName)));
+        }
     }
 }
