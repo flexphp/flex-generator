@@ -2,11 +2,11 @@
 
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
-class RequestMessageBuilder extends ControllerBuilder
+class ResponseMessageBuilder extends ControllerBuilder
 {
     public function getFileTemplate(): string
     {
-        return 'Request.php.twig';
+        return 'Response.php.twig';
     }
 
     public function build(): string
