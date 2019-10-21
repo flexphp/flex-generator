@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Controller;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * Controller used to manage {{ entity }}.
+ *
+ * @Route("/{{ entity|lower }}")
+ *
+ * @author FlexPHP <flexphp@outlook.com>
+ */
+class {{ entity }}Controller extends AbstractController
+{
+{% for action in actions %}
+{{ action|raw }}
+{% endfor %}
+}
