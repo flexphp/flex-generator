@@ -30,4 +30,9 @@ abstract class AbstractBuilder implements BuilderInterface
     {
         return $this->build();
     }
+
+    protected function camelCase(string $string): string
+    {
+        return str_replace(' ', '', \ucwords(\str_replace('_', ' ', $string)));
+    }
 }

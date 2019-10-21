@@ -27,9 +27,4 @@ class RequestMessageBuilder extends AbstractBuilder
     {
         return rtrim(parent::build());
     }
-
-    public function camelCase(string $string): string
-    {
-        return str_replace(' ', '', \ucwords(\str_replace('_', ' ', $string)));
-    }
 }

@@ -15,7 +15,6 @@ class RequestMessageBuilderTest extends TestCase
 
         $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
         $requestMessage = new TestRequest($request->request->all());
-
 T), (string)$render);
     }
 
@@ -27,7 +26,6 @@ T), (string)$render);
 
         $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
         $requestMessage = new TestRequest($request->request->all());
-
 T), $render->build());
     }
 
@@ -40,7 +38,6 @@ T), $render->build());
 
         $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
         $requestMessage = new ActionTestRequest($request->request->all());
-
 T), $render->build());
     }
 
@@ -53,7 +50,6 @@ T), $render->build());
 
         $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
         $requestMessage = new ActionSpaceTestRequest($request->request->all());
-
 T), $render->build());
     }
 
@@ -66,7 +62,6 @@ T), $render->build());
 
         $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
         $requestMessage = new ActionSlugTestRequest($request->request->all());
-
 T), $render->build());
     }
 }
