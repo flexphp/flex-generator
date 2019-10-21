@@ -15,6 +15,7 @@ class ControllerBuilderTest extends TestCase
     {
         $entity = 'Test';
         $indexAction = 'index';
+        $createAction = 'create';
         $actions = [
             $indexAction => (new ActionBuilder([
                 'action' => $indexAction,
@@ -29,6 +30,22 @@ class ControllerBuilderTest extends TestCase
                 ]))->build(),
                 'response_message' => (new ResponseMessageBuilder([
                     'action' => $indexAction,
+                    'entity' => $entity,
+                ]))->build(),
+            ]))->build(),
+            $createAction => (new ActionBuilder([
+                'action' => $createAction,
+                'entity' => $entity,
+                'request_message' => (new RequestMessageBuilder([
+                    'action' => $createAction,
+                    'entity' => $entity,
+                ]))->build(),
+                'use_case' => (new UseCaseBuilder([
+                    'action' => $createAction,
+                    'entity' => $entity,
+                ]))->build(),
+                'response_message' => (new ResponseMessageBuilder([
+                    'action' => $createAction,
                     'entity' => $entity,
                 ]))->build(),
             ]))->build(),
@@ -72,6 +89,18 @@ class TestController extends AbstractController
         return new Response($response);
     }
 
+    /**
+     * @Route("/create"}, methods={"POST"}, name="test.create")
+     */
+    public function create(Request $request): Response
+    {
+        $requestMessage = new CreateTestRequest($request->request->all());
+
+        $useCase = new CreateTestUseCase();
+        $response = $useCase->execute($requestMessage);
+
+        return new Response($response);
+    }
 }
 
 T), $render->build());

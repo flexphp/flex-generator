@@ -17,6 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class {{ entity }}Controller extends AbstractController
 {
 {% for action in actions %}
+{% if not loop.last %}
 {{ action|raw }}
+{% else %}
+{{ action|trim(side='right')|raw }}
+{% endif %}
 {% endfor %}
 }
