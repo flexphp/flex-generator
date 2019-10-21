@@ -13,8 +13,8 @@ class ActionBuilderTest extends TestCase
         $entity = 'Test';
 
         $render = new ActionBuilder([
-            'entity' => $entity,
             'action' => 'index',
+            'entity' => $entity,
             'request_message' => (new RequestMessageBuilder([
                 'entity' => $entity,
             ]))->build(),
@@ -42,8 +42,8 @@ T), $render->build());
         $entity = 'Test';
 
         $render = new ActionBuilder([
-            'entity' => $entity,
             'action' => 'create',
+            'entity' => $entity,
             'request_message' => (new RequestMessageBuilder([
                 'entity' => $entity,
             ]))->build(),
@@ -54,6 +54,34 @@ T), $render->build());
      * @Route("/create"}, methods={"POST"}, name="test.create")
      */
     public function create(Request $request): Response
+    {
+        $requestMessage = new TestRequest($request->request->all());
+
+
+
+
+    }
+
+T), $render->build());
+    }
+
+    public function testItRenderUpdatedOk()
+    {
+        $entity = 'Test';
+
+        $render = new ActionBuilder([
+            'action' => 'update',
+            'entity' => $entity,
+            'request_message' => (new RequestMessageBuilder([
+                'entity' => $entity,
+            ]))->build(),
+        ]);
+
+        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+    /**
+     * @Route("/update"}, methods={"PUT"}, name="test.update")
+     */
+    public function update(Request $request, $id): Response
     {
         $requestMessage = new TestRequest($request->request->all());
 

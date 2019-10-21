@@ -5,7 +5,11 @@
      * @Cache(smaxage="{{ cache|default('10') }}")
 {% endif %}
      */
+{% if methods in ['PUT'] %}
+    public function {{ action }}(Request $request, $id): Response
+{% else %}
     public function {{ action }}(Request $request): Response
+{% endif %}
     {
 {{ request_message|raw }}
 

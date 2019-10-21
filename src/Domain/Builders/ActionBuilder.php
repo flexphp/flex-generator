@@ -40,6 +40,9 @@ class ActionBuilder extends AbstractBuilder
             case 'create':
                 $method = Request::METHOD_POST;
                 break;
+            case 'update':
+                $method = Request::METHOD_PUT;
+                break;
         }
 
         return $method;
