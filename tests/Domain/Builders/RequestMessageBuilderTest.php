@@ -15,7 +15,7 @@ class RequestMessageBuilderTest extends TestCase
 
         $this->assertEquals(<<<'T'
         $requestMessage = new TestRequest($request->request->all());
-T, $render);
+T, (string)$render);
     }
 
     public function testItRenderBuildOk()

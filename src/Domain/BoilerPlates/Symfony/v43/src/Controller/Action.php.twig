@@ -1,0 +1,12 @@
+    /**
+     * @Route("/"}, methods={"{{ methods|upper }}"}, name="{{ entity|lower }}.{{ action|lower }}")
+     * @Cache(smaxage="10")
+     */
+    public function {{ action }}(Request $request): Response
+    {
+{{ request_message|raw }}
+
+{{ use_case|raw }}
+
+{{ response_message|raw }}
+    }
