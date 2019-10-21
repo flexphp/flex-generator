@@ -5,6 +5,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 use FlexPHP\Generator\Domain\Builders\Controller\ActionBuilder;
 use FlexPHP\Generator\Domain\Builders\Controller\ControllerBuilder;
 use FlexPHP\Generator\Domain\Builders\Controller\RequestMessageBuilder;
+use FlexPHP\Generator\Domain\Builders\Controller\UseCaseBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
 class ControllerBuilderTest extends TestCase
@@ -18,6 +19,10 @@ class ControllerBuilderTest extends TestCase
                 'action' => $indexAction,
                 'entity' => $entity,
                 'request_message' => (new RequestMessageBuilder([
+                    'action' => $indexAction,
+                    'entity' => $entity,
+                ]))->build(),
+                'use_case' => (new UseCaseBuilder([
                     'action' => $indexAction,
                     'entity' => $entity,
                 ]))->build(),
@@ -56,7 +61,8 @@ class TestController extends AbstractController
     {
         $requestMessage = new IndexTestRequest($request->request->all());
 
-
+        $useCase = new IndexTestUseCase();
+        $response = $useCase->execute($requestMessage);
 
 
     }
