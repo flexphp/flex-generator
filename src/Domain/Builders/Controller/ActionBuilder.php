@@ -1,7 +1,8 @@
 <?php
 
-namespace FlexPHP\Generator\Domain\Builders;
+namespace FlexPHP\Generator\Domain\Builders\Controller;
 
+use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
 class ActionBuilder extends AbstractBuilder

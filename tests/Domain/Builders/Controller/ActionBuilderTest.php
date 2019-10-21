@@ -1,9 +1,9 @@
 <?php
 
-namespace FlexPHP\Generator\Tests\Domain\Builders;
+namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 
-use FlexPHP\Generator\Domain\Builders\ActionBuilder;
-use FlexPHP\Generator\Domain\Builders\RequestMessageBuilder;
+use FlexPHP\Generator\Domain\Builders\Controller\ActionBuilder;
+use FlexPHP\Generator\Domain\Builders\Controller\RequestMessageBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
 class ActionBuilderTest extends TestCase

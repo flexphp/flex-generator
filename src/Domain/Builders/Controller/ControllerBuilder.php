@@ -1,6 +1,8 @@
 <?php
 
-namespace FlexPHP\Generator\Domain\Builders;
+namespace FlexPHP\Generator\Domain\Builders\Controller;
+
+use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 class ControllerBuilder extends AbstractBuilder
 {

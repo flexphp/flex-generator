@@ -1,18 +1,11 @@
 <?php
 
-namespace FlexPHP\Generator\Domain\Builders;
+namespace FlexPHP\Generator\Domain\Builders\Controller;
+
+use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 class RequestMessageBuilder extends AbstractBuilder
 {
-    public function __construct(array $data, array $config = [])
-    {
-        if (!empty($data['action'])) {
-            $data['action_name'] = $this->camelCase($data['action']);
-        }
-
-        parent::__construct($data, $config);
-    }
-
     public function getFileTemplate(): string
     {
         return 'Request.php.twig';

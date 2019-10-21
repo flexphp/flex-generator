@@ -9,6 +9,10 @@ abstract class AbstractBuilder implements BuilderInterface
 
     public function __construct(array $data, array $config = [])
     {
+        if (!empty($data['action'])) {
+            $data['action_name'] = $this->camelCase($data['action']);
+        }
+
         $this->data = $data;
         $this->config = $config;
     }
