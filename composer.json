@@ -16,7 +16,8 @@
         "flexphp/use-cases": "dev-develop",
         "symfony/http-foundation": "^4.3",
         "box/spout": "^3.0",
-        "symfony/validator": "^4.3"
+        "symfony/validator": "^4.3",
+        "twig/twig": "^2.12"
     },
     "require-dev": {
         "phpstan/phpstan": "~0.9",

@@ -14,4 +14,9 @@ class TestCase extends PHPUnitTestCase
     {
         \chdir(__DIR__ . '/../');
     }
+
+    protected function getPathTemplate()
+    {
+        return \sprintf('%1$s/../src/Domain/BoilerPlates/FlexPHP', __DIR__);
+    }
 }
