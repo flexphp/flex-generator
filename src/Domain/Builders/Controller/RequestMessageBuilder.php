@@ -13,7 +13,7 @@ class RequestMessageBuilder extends AbstractBuilder
 
     public function getPathTemplate(): string
     {
-        return \sprintf('%1$s/FlexPHP/Message', parent::getPathTemplate());
+        return \sprintf('%1$s/Symfony/v43/src/Controller', parent::getPathTemplate());
     }
 
     public function build(): string
