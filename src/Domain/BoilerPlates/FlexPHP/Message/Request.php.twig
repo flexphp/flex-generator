@@ -1,5 +1,5 @@
 {% if action == 'read' %}
-        $requestMessage = new {{ action }}{{ entity }}Request(['id' => 'id']);
+        $requestMessage = new {{ action_name }}{{ entity }}Request(['id' => $id]);
 {% else %}
-        $requestMessage = new {{ action }}{{ entity }}Request($request->request->all());
+        $requestMessage = new {{ action_name }}{{ entity }}Request($request->request->all());
 {% endif %}

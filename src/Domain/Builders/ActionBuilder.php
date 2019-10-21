@@ -56,6 +56,12 @@ class ActionBuilder extends AbstractBuilder
             case 'index':
                 $route = '/';
                 break;
+            case 'read':
+                $route = '/{id}';
+                break;
+            case 'update':
+                $route = \sprintf('/%1$s/{id}', $action);
+                break;
         }
 
         return $route;

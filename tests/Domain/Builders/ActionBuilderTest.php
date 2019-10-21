@@ -10,12 +10,14 @@ class ActionBuilderTest extends TestCase
 {
     public function testItRenderIndexOk()
     {
+        $action = 'index';
         $entity = 'Test';
 
         $render = new ActionBuilder([
-            'action' => 'index',
+            'action' => $action,
             'entity' => $entity,
             'request_message' => (new RequestMessageBuilder([
+                'action' => $action,
                 'entity' => $entity,
             ]))->build(),
         ]);
@@ -27,7 +29,7 @@ class ActionBuilderTest extends TestCase
      */
     public function index(Request $request): Response
     {
-        $requestMessage = new TestRequest($request->request->all());
+        $requestMessage = new IndexTestRequest($request->request->all());
 
 
 
@@ -39,12 +41,14 @@ T), $render->build());
 
     public function testItRenderCreateOk()
     {
+        $action = 'create';
         $entity = 'Test';
 
         $render = new ActionBuilder([
-            'action' => 'create',
+            'action' => $action,
             'entity' => $entity,
             'request_message' => (new RequestMessageBuilder([
+                'action' => $action,
                 'entity' => $entity,
             ]))->build(),
         ]);
@@ -55,7 +59,38 @@ T), $render->build());
      */
     public function create(Request $request): Response
     {
-        $requestMessage = new TestRequest($request->request->all());
+        $requestMessage = new CreateTestRequest($request->request->all());
+
+
+
+
+    }
+
+T), $render->build());
+    }
+
+    public function testItRenderReadOk()
+    {
+        $action = 'read';
+        $entity = 'Test';
+
+        $render = new ActionBuilder([
+            'action' => $action,
+            'entity' => $entity,
+            'request_message' => (new RequestMessageBuilder([
+                'action' => $action,
+                'entity' => $entity,
+            ]))->build(),
+        ]);
+
+        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+    /**
+     * @Route("/{id}"}, methods={"GET"}, name="test.read")
+     * @Cache(smaxage="10")
+     */
+    public function read($id): Response
+    {
+        $requestMessage = new ReadTestRequest(['id' => $id]);
 
 
 
@@ -67,23 +102,25 @@ T), $render->build());
 
     public function testItRenderUpdatedOk()
     {
+        $action = 'update';
         $entity = 'Test';
 
         $render = new ActionBuilder([
-            'action' => 'update',
+            'action' => $action,
             'entity' => $entity,
             'request_message' => (new RequestMessageBuilder([
+                'action' => $action,
                 'entity' => $entity,
             ]))->build(),
         ]);
 
         $this->assertEquals(str_replace("\r\n","\n", <<<'T'
     /**
-     * @Route("/update"}, methods={"PUT"}, name="test.update")
+     * @Route("/update/{id}"}, methods={"PUT"}, name="test.update")
      */
     public function update(Request $request, $id): Response
     {
-        $requestMessage = new TestRequest($request->request->all());
+        $requestMessage = new UpdateTestRequest($request->request->all());
 
 
 

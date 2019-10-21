@@ -7,6 +7,8 @@
      */
 {% if methods in ['PUT'] %}
     public function {{ action }}(Request $request, $id): Response
+{% elseif methods in ['GET'] and action == 'read' %}
+    public function {{ action }}($id): Response
 {% else %}
     public function {{ action }}(Request $request): Response
 {% endif %}
