@@ -1,0 +1,28 @@
+<?php
+
+namespace Domain\{{ entity }}\UseCase;
+
+use Domain\{{ entity }}\Message\{{ action_name }}{{ entity }}Request;
+use Domain\{{ entity }}\Message\{{ action_name }}{{ entity }}Response;
+use FlexPHP\UseCases\UseCase;
+
+/**
+ * UseCase to {{ action }} on {{ entity }}.
+ *
+ * @author FlexPHP <flexphp@outlook.com>
+ */
+class {{ entity }}UseCase extends UseCase
+{
+{% for id, property in properties %}
+    private ${{ id }};
+{% endfor %}
+
+    public function execute($request): ActionTestResponse
+    {
+{% for id, property in properties %}
+        $this->{{ id }} = $request->{{ id }};
+{% endfor %}
+
+        return {{ action_name }}{{ entity }}Response();
+    }
+}
