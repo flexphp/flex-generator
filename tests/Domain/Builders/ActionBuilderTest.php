@@ -15,7 +15,6 @@ class ActionBuilderTest extends TestCase
         $render = new ActionBuilder([
             'entity' => $entity,
             'action' => 'index',
-            'methods' => 'GET',
             'request_message' => (new RequestMessageBuilder([
                 'entity' => $entity,
             ]))->build(),
@@ -27,6 +26,34 @@ class ActionBuilderTest extends TestCase
      * @Cache(smaxage="10")
      */
     public function index(Request $request): Response
+    {
+        $requestMessage = new TestRequest($request->request->all());
+
+
+
+
+    }
+
+T), $render->build());
+    }
+
+    public function testItRenderCreateOk()
+    {
+        $entity = 'Test';
+
+        $render = new ActionBuilder([
+            'entity' => $entity,
+            'action' => 'create',
+            'request_message' => (new RequestMessageBuilder([
+                'entity' => $entity,
+            ]))->build(),
+        ]);
+
+        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+    /**
+     * @Route("/create"}, methods={"POST"}, name="test.create")
+     */
+    public function create(Request $request): Response
     {
         $requestMessage = new TestRequest($request->request->all());
 

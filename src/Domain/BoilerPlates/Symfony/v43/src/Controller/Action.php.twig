@@ -1,6 +1,14 @@
+{% if not methods %}
+{% set methods = action in ['create'] ? 'POST' : 'GET' %}
+{% endif %}
+{% if not route %}
+{% set route = action in ['index'] ? '/' : '/' ~ action %}
+{% endif %}
     /**
-     * @Route("/"}, methods={"{{ methods|upper }}"}, name="{{ entity|lower }}.{{ action|lower }}")
-     * @Cache(smaxage="10")
+     * @Route("{{ route|lower }}"}, methods={"{{ methods|default('GET')|upper }}"}, name="{{ entity|lower }}.{{ action|lower }}")
+{% if methods == 'GET' %}
+     * @Cache(smaxage="{{ cache|default('10') }}")
+{% endif %}
      */
     public function {{ action }}(Request $request): Response
     {
