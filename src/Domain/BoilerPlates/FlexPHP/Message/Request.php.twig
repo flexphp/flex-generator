@@ -1,0 +1,24 @@
+<?php
+
+namespace Domain\{{ entity }}\Message;
+
+use FlexPHP\Messages\RequestInterface;
+
+/**
+ * Request to {{ action }} on {{ entity }}.
+ *
+ * @author FlexPHP <flexphp@outlook.com>
+ */
+class {{ action_name }}{{ entity }}Request implements RequestInterface
+{
+{% for id, property in properties %}
+    public ${{ id }};
+{% endfor %}
+
+    public function __construct(array $data)
+    {
+{% for id, property in properties %}
+        $this->{{ id }} = $data['{{ id }}'] ?? null;
+{% endfor %}
+    }
+}
