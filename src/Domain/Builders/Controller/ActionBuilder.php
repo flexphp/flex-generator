@@ -8,8 +8,9 @@ class ActionBuilder extends ControllerBuilder
 {
     public function __construct(array $data, array $config = [])
     {
-        $data['action'] = $data['action'] ?? 'index';
-        $action = strtolower($data['action']);
+        $action = $data['action'] = !empty($data['action'])
+            ? $this->getSnakeCase($data['action'])
+            : 'index';
 
         if (empty($data['route'])) {
             $data['route'] = $this->getGuessRoute($action);
@@ -29,17 +30,20 @@ class ActionBuilder extends ControllerBuilder
 
     private function getGuessMethod($action)
     {
-        $method = Request::METHOD_GET;
-
         switch ($action) {
-            case 'create':
-                $method = Request::METHOD_POST;
+            case 'index':
+            case 'read':
+                $method = Request::METHOD_GET;
                 break;
             case 'update':
                 $method = Request::METHOD_PUT;
                 break;
             case 'delete':
                 $method = Request::METHOD_DELETE;
+                break;
+            case 'create':
+            default:
+                $method = Request::METHOD_POST;
                 break;
         }
 

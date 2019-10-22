@@ -159,4 +159,49 @@ T), $render->build());
 
 T), $render->build());
     }
+
+    /**
+     * @dataProvider getCustomActions
+     * @param string $action
+     * @return void
+     */
+    public function testItRenderCustomActionOk($action)
+    {
+        $entity = 'FooBar';
+
+        $render = new ActionBuilder([
+            'action' => $action,
+            'entity' => $entity,
+            'request_message' => (new RequestMessageBuilder([
+                'action' => $action,
+                'entity' => $entity,
+            ]))->build(),
+        ]);
+
+        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+    /**
+     * @Route("/custom_action"}, methods={"POST"}, name="foobar.custom_action")
+     */
+    public function customAction(Request $request): Response
+    {
+        $requestMessage = new CustomActionFooBarRequest($request->request->all());
+
+
+
+
+    }
+
+T), $render->build());
+    }
+
+    public function getCustomActions(): array
+    {
+        return [
+            ['custom_action'],
+            ['custom action'],
+            ['Custom Action'],
+            ['cUSTOM aCtion'],
+            ['customAction'],
+        ];
+    }
 }

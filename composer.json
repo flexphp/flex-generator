@@ -17,7 +17,9 @@
         "symfony/http-foundation": "^4.3",
         "box/spout": "^3.0",
         "symfony/validator": "^4.3",
-        "twig/twig": "^2.12"
+        "twig/twig": "^2.12",
+        "jawira/case-converter": "^3.4",
+        "twig/string-extra": "^2.12"
     },
     "require-dev": {
         "phpstan/phpstan": "~0.9",

@@ -11,6 +11,7 @@ use FlexPHP\Generator\Domain\Validations\FieldSyntaxValidation;
 use FlexPHP\Generator\Domain\Validations\HeaderSyntaxValidation;
 use FlexPHP\Generator\Domain\Writers\YamlWriter;
 use FlexPHP\UseCases\UseCase;
+use Jawira\CaseConverter\Convert;
 
 class ProcessFormatUseCase extends UseCase
 {
@@ -42,8 +43,7 @@ class ProcessFormatUseCase extends UseCase
                         continue;
                     }
 
-                    $sheetName = trim($sheet->getName());
-                    $sheetNames[] = $sheet->getName();
+                    $sheetName = (new Convert($sheet->getName()))->toPascal();
 
                     $headers = [];
                     $fields = [];
@@ -72,7 +72,7 @@ class ProcessFormatUseCase extends UseCase
                         $fieldValidation = new FieldSyntaxValidation($field);
                         $fieldValidation->validate();
 
-                        $colHeaderName = $headers[array_search(Header::NAME, $headers)];
+                        $colHeaderName = $headers[\array_search(Header::NAME, $headers)];
                         $fieldName = $field[$colHeaderName];
                         $fields[$fieldName] = $field;
                     }
@@ -85,6 +85,8 @@ class ProcessFormatUseCase extends UseCase
                     ], \strtolower($sheetName));
 
                     $writer->save();
+
+                    $sheetNames[$sheetName] = \count($fields);
                 }
                 break;
             default:

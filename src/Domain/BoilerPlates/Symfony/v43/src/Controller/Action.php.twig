@@ -6,11 +6,11 @@
 {% endif %}
      */
 {% if methods in ['PUT'] %}
-    public function {{ action }}(Request $request, $id): Response
+    public function {{ action|u.camel }}(Request $request, $id): Response
 {% elseif (methods == 'GET' and action == 'read') or methods == 'DELETE' %}
-    public function {{ action }}($id): Response
+    public function {{ action|u.camel }}($id): Response
 {% else %}
-    public function {{ action }}(Request $request): Response
+    public function {{ action|u.camel }}(Request $request): Response
 {% endif %}
     {
 {{ request_message|raw }}

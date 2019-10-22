@@ -38,7 +38,7 @@ class FieldSyntaxValidation implements ValidationInterface
                 $violations = $validator->validate($value);
 
                 if (0 !== count($violations)) {
-                    throw new FieldSyntaxValidationException($property . ': '  .  (string)$violations);
+                    throw new FieldSyntaxValidationException($property . ': ' .  $violations);
                 }
             }
         }

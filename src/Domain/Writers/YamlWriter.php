@@ -10,11 +10,11 @@ class YamlWriter implements WriterInterface
     private $filename;
     private $path;
 
-    public function __construct(array $data, string $filename, string $path = null)
+    public function __construct(array $data, string $filename)
     {
         $this->data = $data;
         $this->filename = $filename;
-        $this->path = $path ?? \sprintf('%1$s/../../tmp', __DIR__);
+        $this->path = \sprintf('%1$s/../../tmp', __DIR__);
     }
 
     public function save(): string
