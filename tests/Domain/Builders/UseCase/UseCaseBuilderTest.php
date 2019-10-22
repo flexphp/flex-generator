@@ -43,7 +43,7 @@ use FlexPHP\UseCases\UseCase;
  *
  * @author FlexPHP <flexphp@outlook.com>
  */
-class TestUseCase extends UseCase
+class ActionTestUseCase extends UseCase
 {
     private $foo;
     private $bar;
