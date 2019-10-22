@@ -31,7 +31,7 @@ class ActionBuilder extends ControllerBuilder
     {
         $method = Request::METHOD_GET;
 
-        switch($action) {
+        switch ($action) {
             case 'create':
                 $method = Request::METHOD_POST;
                 break;
@@ -50,7 +50,7 @@ class ActionBuilder extends ControllerBuilder
     {
         $route = '/' . $action;
 
-        switch($action) {
+        switch ($action) {
             case 'index':
                 $route = '/';
                 break;
