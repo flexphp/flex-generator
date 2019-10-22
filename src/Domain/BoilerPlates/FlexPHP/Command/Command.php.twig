@@ -1,0 +1,44 @@
+<?php
+
+namespace Domain\{{ entity }}\Command;
+
+use Domain\{{ entity }}\Message\{{ action_name }}{{ entity }}Request;
+use Domain\{{ entity }}\UseCase\{{ action_name }}{{ entity }}UseCase;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface; 
+
+/**
+ * Command to {{ action }} on {{ entity }}.
+ *
+ * @author FlexPHP <flexphp@outlook.com>
+ */
+class {{ action_name }}{{ entity }}Command extends Command
+{
+    protected function configure($request): ActionTestResponse
+    {
+        $this
+            ->setName('{{ entity|lower }}:{{ action }}')
+            ->setDescription('Command to {{ action }} on {{ entity }}')
+{% for id, property in properties %}
+{% if not loop.last %}
+            ->addArgument('{{ id }}', InputArgument::REQUIRED)
+{% else %}
+            ->addArgument('{{ id }}', InputArgument::REQUIRED);
+{% endif %}
+{% endfor %}
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+{% for id, property in properties %}
+        ${{ id }} = $input->getArgument('{{ id }}');
+{% endfor %}
+
+        $useCase = new {{ action_name }}{{ entity }}UseCase();
+        $response = $useCase->execute($requestMessage);
+
+        $output->writeln('{{ action_name }} on {{ entity }} done!'); 
+    }
+}
