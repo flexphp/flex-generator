@@ -2,9 +2,10 @@
 
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
+use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
-class ActionBuilder extends ControllerBuilder
+class ActionBuilder extends AbstractBuilder
 {
     public function __construct(array $data, array $config = [])
     {
@@ -26,6 +27,11 @@ class ActionBuilder extends ControllerBuilder
     public function getFileTemplate(): string
     {
         return 'Action.php.twig';
+    }
+
+    public function getPathTemplate(): string
+    {
+        return \sprintf('%1$s/Symfony/v43/src/Controller', parent::getPathTemplate());
     }
 
     private function getGuessMethod($action)

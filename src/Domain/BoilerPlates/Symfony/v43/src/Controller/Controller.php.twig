@@ -2,6 +2,12 @@
 
 namespace App\Controller;
 
+{% for key,action in actions %}
+use Domain\{{ entity }}\Message\{{ key }}{{ entity }}Request;
+{% endfor %}
+{% for key,action in actions %}
+use Domain\{{ entity }}\UseCase\{{ key }}{{ entity }}UseCase;
+{% endfor %}
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -15,7 +15,7 @@ class ControllerBuilderTest extends TestCase
     {
         $entity = 'Test';
         $indexAction = 'index';
-        $createAction = 'create';
+        $customFuzAction = 'custom Fuz';
         $actions = [
             $indexAction => (new ActionBuilder([
                 'action' => $indexAction,
@@ -33,19 +33,19 @@ class ControllerBuilderTest extends TestCase
                     'entity' => $entity,
                 ]))->build(),
             ]))->build(),
-            $createAction => (new ActionBuilder([
-                'action' => $createAction,
+            $customFuzAction => (new ActionBuilder([
+                'action' => $customFuzAction,
                 'entity' => $entity,
                 'request_message' => (new RequestMessageBuilder([
-                    'action' => $createAction,
+                    'action' => $customFuzAction,
                     'entity' => $entity,
                 ]))->build(),
                 'use_case' => (new UseCaseBuilder([
-                    'action' => $createAction,
+                    'action' => $customFuzAction,
                     'entity' => $entity,
                 ]))->build(),
                 'response_message' => (new ResponseMessageBuilder([
-                    'action' => $createAction,
+                    'action' => $customFuzAction,
                     'entity' => $entity,
                 ]))->build(),
             ]))->build(),
@@ -61,6 +61,10 @@ class ControllerBuilderTest extends TestCase
 
 namespace App\Controller;
 
+use Domain\Test\Message\IndexTestRequest;
+use Domain\Test\Message\CustomFuzTestRequest;
+use Domain\Test\UseCase\IndexTestUseCase;
+use Domain\Test\UseCase\CustomFuzTestUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,13 +94,13 @@ class TestController extends AbstractController
     }
 
     /**
-     * @Route("/create"}, methods={"POST"}, name="test.create")
+     * @Route("/custom_fuz"}, methods={"POST"}, name="test.custom_fuz")
      */
-    public function create(Request $request): Response
+    public function customFuz(Request $request): Response
     {
-        $requestMessage = new CreateTestRequest($request->request->all());
+        $requestMessage = new CustomFuzTestRequest($request->request->all());
 
-        $useCase = new CreateTestUseCase();
+        $useCase = new CustomFuzTestUseCase();
         $response = $useCase->execute($requestMessage);
 
         return new Response($response);

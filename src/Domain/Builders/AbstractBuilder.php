@@ -39,7 +39,7 @@ abstract class AbstractBuilder implements BuilderInterface
         return $this->build();
     }
 
-    private function getPascalCase(string $string): string
+    protected function getPascalCase(string $string): string
     {
         return (new Convert($string))->toPascal();
     }

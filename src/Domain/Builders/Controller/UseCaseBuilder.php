@@ -2,11 +2,18 @@
 
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
-class UseCaseBuilder extends ControllerBuilder
+use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+
+class UseCaseBuilder extends AbstractBuilder
 {
     public function getFileTemplate(): string
     {
         return 'UseCase.php.twig';
+    }
+
+    public function getPathTemplate(): string
+    {
+        return \sprintf('%1$s/Symfony/v43/src/Controller', parent::getPathTemplate());
     }
 
     public function build(): string
