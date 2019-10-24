@@ -31,25 +31,30 @@ __DataType__ (Required): Data Type used in validations.
 
 > See more info [Doctrine Matrix Mapping Types](https://www.doctrine-project.org/projects/doctrine-dbal/en/2.9/reference/types.html#mapping-matrix "Doctrine Mapping Types Reference").
 
-__InputType__ (Optional|Default:text): Input Type used in [HTML forms](https://symfony.com/doc/current/reference/forms/types.html "Input Types for HTML"), [Commands](https://symfony.com/doc/current/console/input.html "Input Types for Command") and API/WS.
+__Type__ (Optional|Default:text): Input Type used in [HTML forms](https://symfony.com/doc/current/reference/forms/types.html "Input Types for HTML"), [Commands](https://symfony.com/doc/current/console/input.html "Input Types for Command") and API/WS.
 
 __Label__ (Optional|Default:Name): Label for input, it's used when data is show to "End User".
 
-__Default__ (Optional): Default value for input in _create (C)_ InputContext.
+__Default__ (Optional): Default value for input in _create (C)_ context.
 
-__Constraints__ (Optional): Contraints applied for input in _create (C)_ and _update (U)_ InputContext.
+__Constraints__ (Optional): Contraints applied for input in _create (C)_ and _update (U)_ context.
 
-__InputHeader__ (Optional|Default:Label?Name): Name use in header for input in _index (I)_ InputContext.
+__Header__ (Optional|Default:Label?Name): Name use in header for input in _index (I)_ context.
 
-__InputAlign__ (Optional|Default:text=left,number=right): Input Types used in _index (I)_ InputContext.
+__Align__ (Optional|Default:text=left,number=right): Align for input in _index (I)_ context.
 
-__InputTypeShow__ (Optional|Default:text): Input Types used in _index (I)_ and _read (R)_ InputContext.
+__TypeShow__ (Optional|Default:text): Input Type used in _index (I)_ and _read (R)_ context.
 
-__InputFormat__ (Optional): Determine format to show value's input in InputContext
+__Format__ (Optional): Determine format to show value's input in context
 
-__InputHelp__ (Optional): Help message show to "End User" and _create (C)_, _update (U)_ InputContext
+__Help__ (Optional): Help message show to "End User" and _create (C)_, _update (U)_ context
 
-__InputContext__ (Optional|Default:ICRUD): Define where input is used _index (I)_, _create (C)_, _read (R)_, _update (U)_ and , _delete (D)_.
+__Context__ (Optional|Default:ICRUD): Define where input is used:
+ - _(I)_: Index
+ - _(C)_: Create
+ - _(R)_: Read
+ - _(U)_: Update
+ - _(D)_: Delete
 
 
 ## License

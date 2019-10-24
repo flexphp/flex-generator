@@ -28,7 +28,7 @@ abstract class AbstractBuilder implements BuilderInterface
     {
         $loader = new \Twig\Loader\FilesystemLoader($this->getPathTemplate());
         $twig = new \Twig\Environment($loader);
-        $twig->addExtension(new Twig\Extra\String\StringExtension());
+        $twig->addExtension(new \Twig\Extra\String\StringExtension());
 
         return $twig->render($this->getFileTemplate(), $this->data);
     }

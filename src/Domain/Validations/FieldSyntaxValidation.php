@@ -2,7 +2,7 @@
 
 namespace FlexPHP\Generator\Domain\Validations;
 
-use FlexPHP\Generator\Domain\Constants\Header;
+use FlexPHP\Generator\Domain\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\FieldSyntaxValidationException;
 use FlexPHP\Generator\Domain\Validators\PropertyDataTypeValidator;
 use FlexPHP\Generator\Domain\Validators\PropertyNameValidator;
@@ -12,13 +12,13 @@ class FieldSyntaxValidation implements ValidationInterface
     protected $properties;
 
     private $allowedProperties = [
-        Header::NAME,
-        Header::DATA_TYPE,
+        Keyword::NAME,
+        Keyword::DATA_TYPE,
     ];
     
     private $validators = [
-        Header::NAME => PropertyNameValidator::class,
-        Header::DATA_TYPE => PropertyDataTypeValidator::class,
+        Keyword::NAME => PropertyNameValidator::class,
+        Keyword::DATA_TYPE => PropertyDataTypeValidator::class,
     ];
 
     public function __construct(array $properties)

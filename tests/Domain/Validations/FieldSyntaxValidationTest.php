@@ -2,7 +2,7 @@
 
 namespace FlexPHP\Generator\Tests\Domain\Validations;
 
-use FlexPHP\Generator\Domain\Constants\Header;
+use FlexPHP\Generator\Domain\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\FieldSyntaxValidationException;
 use FlexPHP\Generator\Domain\Validations\FieldSyntaxValidation;
 use FlexPHP\Generator\Domain\Validators\PropertyDataTypeValidator;
@@ -30,7 +30,7 @@ class FieldSyntaxValidationTest extends TestCase
         $this->expectException(FieldSyntaxValidationException::class);
 
         $validation = new FieldSyntaxValidation([
-            Header::NAME => $name,
+            Keyword::NAME => $name,
         ]);
 
         $validation->validate();
@@ -42,7 +42,7 @@ class FieldSyntaxValidationTest extends TestCase
     public function testItPropertyNameOk($name): void
     {
         $validation = new FieldSyntaxValidation([
-            Header::NAME => $name,
+            Keyword::NAME => $name,
         ]);
 
         $validation->validate();
@@ -58,7 +58,7 @@ class FieldSyntaxValidationTest extends TestCase
         $this->expectException(FieldSyntaxValidationException::class);
 
         $validation = new FieldSyntaxValidation([
-            Header::DATA_TYPE => $dataType,
+            Keyword::DATA_TYPE => $dataType,
         ]);
 
         $validation->validate();
@@ -70,7 +70,7 @@ class FieldSyntaxValidationTest extends TestCase
     public function testItPropertyDataTypeOk($dataType): void
     {
         $validation = new FieldSyntaxValidation([
-            Header::DATA_TYPE => $dataType,
+            Keyword::DATA_TYPE => $dataType,
         ]);
 
         $validation->validate();

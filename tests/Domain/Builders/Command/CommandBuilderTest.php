@@ -3,7 +3,7 @@
 namespace FlexPHP\Generator\Tests\Domain\Builders\Command;
 
 use FlexPHP\Generator\Domain\Builders\Command\CommandBuilder;
-use FlexPHP\Generator\Domain\Constants\Header;
+use FlexPHP\Generator\Domain\Constants\Keyword;
 use FlexPHP\Generator\Tests\TestCase;
 
 class CommandBuilderTest extends TestCase
@@ -14,12 +14,12 @@ class CommandBuilderTest extends TestCase
         $entity = 'Test';
         $properties = [
             'foo' => [
-                Header::NAME => 'Foo',
-                Header::DATA_TYPE => 'integer',
+                Keyword::NAME => 'Foo',
+                Keyword::DATA_TYPE => 'integer',
             ],
             'bar' => [
-                Header::NAME => 'Bar',
-                Header::DATA_TYPE => 'varchar',
+                Keyword::NAME => 'Bar',
+                Keyword::DATA_TYPE => 'varchar',
             ],
         ];
 

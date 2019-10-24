@@ -3,7 +3,7 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
-use FlexPHP\Generator\Domain\Constants\Header;
+use FlexPHP\Generator\Domain\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
@@ -72,7 +72,7 @@ class ProcessFormatUseCase extends UseCase
                         $fieldValidation = new FieldSyntaxValidation($field);
                         $fieldValidation->validate();
 
-                        $colHeaderName = $headers[\array_search(Header::NAME, $headers)];
+                        $colHeaderName = $headers[\array_search(Keyword::NAME, $headers)];
                         $fieldName = $field[$colHeaderName];
                         $fields[$fieldName] = $field;
                     }

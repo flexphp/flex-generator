@@ -2,7 +2,7 @@
 
 namespace FlexPHP\Generator\Domain\Constants;
 
-interface Header
+interface Keyword
 {
     const NAME = 'Name';
     const DATA_TYPE = 'DataType';

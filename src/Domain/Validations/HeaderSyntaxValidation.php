@@ -3,20 +3,20 @@
 namespace FlexPHP\Generator\Domain\Validations;
 
 use FlexPHP\Generator\Domain\Exceptions\HeaderSyntaxValidationException;
-use FlexPHP\Generator\Domain\Constants\Header;
+use FlexPHP\Generator\Domain\Constants\Keyword;
 
 class HeaderSyntaxValidation implements ValidationInterface
 {
     protected $headers;
 
     protected $allowedHeaders = [
-        Header::NAME,
-        Header::DATA_TYPE,
+        Keyword::NAME,
+        Keyword::DATA_TYPE,
     ];
 
     protected $requiredHeaders = [
-        Header::NAME,
-        Header::DATA_TYPE,
+        Keyword::NAME,
+        Keyword::DATA_TYPE,
     ];
 
     public function __construct(array $headers)
