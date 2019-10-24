@@ -3,7 +3,6 @@
 namespace FlexPHP\Generator\Domain\Builders;
 
 use Jawira\CaseConverter\Convert;
-use Twig\Extra\String\StringExtension;
 
 abstract class AbstractBuilder implements BuilderInterface
 {
@@ -29,7 +28,7 @@ abstract class AbstractBuilder implements BuilderInterface
     {
         $loader = new \Twig\Loader\FilesystemLoader($this->getPathTemplate());
         $twig = new \Twig\Environment($loader);
-        $twig->addExtension(new StringExtension());
+        $twig->addExtension(new Twig\Extra\String\StringExtension());
 
         return $twig->render($this->getFileTemplate(), $this->data);
     }
