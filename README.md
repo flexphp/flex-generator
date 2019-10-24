@@ -1,11 +1,11 @@
 # Generator
 
-<!-- [![Latest Stable Version](https://poser.pugx.org/flexphp/generator/v/stable)](https://packagist.org/packages/flexphp/generator) -->
-<!-- [![Total Downloads](https://poser.pugx.org/flexphp/generator/downloads)](https://packagist.org/packages/flexphp/generator) -->
-<!-- [![Latest Unstable Version](https://poser.pugx.org/flexphp/generator/v/unstable)](https://packagist.org/packages/flexphp/generator) -->
-<!-- [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/flexphp/flex-generator/badges/quality-score.png)](https://scrutinizer-ci.com/g/flexphp/flex-generator) -->
-<!-- [![License](https://poser.pugx.org/flexphp/generator/license)](https://packagist.org/packages/flexphp/generator) -->
-<!-- [![composer.lock](https://poser.pugx.org/flexphp/generator/composerlock)](https://packagist.org/packages/flexphp/generator) -->
+[![Latest Stable Version](https://poser.pugx.org/flexphp/generator/v/stable)](https://packagist.org/packages/flexphp/generator)
+[![Total Downloads](https://poser.pugx.org/flexphp/generator/downloads)](https://packagist.org/packages/flexphp/generator)
+[![Latest Unstable Version](https://poser.pugx.org/flexphp/generator/v/unstable)](https://packagist.org/packages/flexphp/generator)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/flexphp/flex-generator/badges/quality-score.png)](https://scrutinizer-ci.com/g/flexphp/flex-generator)
+[![License](https://poser.pugx.org/flexphp/generator/license)](https://packagist.org/packages/flexphp/generator)
+[![composer.lock](https://poser.pugx.org/flexphp/generator/composerlock)](https://packagist.org/packages/flexphp/generator)
 
 Flex PHP to Any Framework
 
@@ -38,10 +38,6 @@ __Label__ (Optional|Default:Name): Label for input, it's used when data is show 
 __Default__ (Optional): Default value for input in _create (C)_ InputContext.
 
 __Constraints__ (Optional): Contraints applied for input in _create (C)_ and _update (U)_ InputContext.
-
-__InputName__ (Optional|Default:Name): Name input for input in HTML forms.
-
-__InputAttributes__ (Optional): Attributes added in HTML forms.
 
 __InputHeader__ (Optional|Default:Label?Name): Name use in header for input in _index (I)_ InputContext.
 

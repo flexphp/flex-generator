@@ -8,6 +8,7 @@ class YamlWriter implements WriterInterface
 {
     private $data;
     private $filename;
+    /** @var string */
     private $path;
 
     public function __construct(array $data, string $filename)
