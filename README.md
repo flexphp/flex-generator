@@ -37,7 +37,7 @@ __Label__ (Optional|Default:Name): Label for input, it's used when data is show 
 
 __Default__ (Optional): Default value for input in _create (C)_ context.
 
-__Constraints__ (Optional): Contraints applied for input in _create (C)_ and _update (U)_ context.
+__Constraints__ (Optional): [Contraints](http://parsleyjs.org/doc/index.html#validators "Rules Available") applied for input in _create (C)_ and _update (U)_ context.
 
 __Header__ (Optional|Default:Label?Name): Name use in header for input in _index (I)_ context.
 

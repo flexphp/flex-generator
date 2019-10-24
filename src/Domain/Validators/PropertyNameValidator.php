@@ -2,7 +2,6 @@
 
 namespace FlexPHP\Generator\Domain\Validators;
 
-use FlexPHP\Generator\Domain\Constants\Keyword;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
