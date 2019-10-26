@@ -28,7 +28,6 @@ abstract class AbstractBuilder implements BuilderInterface
     {
         $loader = new \Twig\Loader\FilesystemLoader($this->getPathTemplate());
         $twig = new \Twig\Environment($loader);
-        $twig->addExtension(new \Twig\Extra\String\StringExtension());
 
         return $twig->render($this->getFileTemplate(), $this->data);
     }
@@ -41,6 +40,11 @@ abstract class AbstractBuilder implements BuilderInterface
     protected function getPascalCase(string $string): string
     {
         return (new Convert($string))->toPascal();
+    }
+
+    protected function getCamelCase(string $string): string
+    {
+        return (new Convert($string))->toCamel();
     }
 
     protected function getSnakeCase(string $string): string

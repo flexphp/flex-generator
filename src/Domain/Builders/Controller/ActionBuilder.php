@@ -13,6 +13,8 @@ class ActionBuilder extends AbstractBuilder
             ? $this->getSnakeCase($data['action'])
             : 'index';
 
+        $data['action_camel'] = $this->getCamelCase($data['action']);
+
         if (empty($data['route'])) {
             $data['route'] = $this->getGuessRoute($action);
         }
