@@ -1,0 +1,23 @@
+    public function {{ property }}(array $constraints = [])
+    {
+        return $this->validator->validate(__FUNCTION__, [
+{% for rule, constraint in constraints %}
+{% if rule == 'required' %}
+            new NotBlank(),
+{% elseif rule == 'pattern' %}
+            new Regex([
+                'pattern' => '/^[a-z_]*$/',
+            ]),
+{% elseif rule == 'length' %}
+            new Length([
+                'min' => {{ constraint.min }},
+                'max' => {{ constraint.max }},
+            ]),
+{% elseif rule == 'type' %}
+{% if constraint == 'datetime' %}
+            new DateTime(),
+{% endif %}
+{% endif %}
+{% endfor %}
+        ]);
+    }

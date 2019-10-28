@@ -33,11 +33,11 @@ class PropertyDataTypeValidator
         'object',
     ];
 
-    public function validate($dataTyoe)
+    public function validate($dataType)
     {
         $validator = Validation::createValidator();
 
-        return $validator->validate($dataTyoe, [
+        return $validator->validate($dataType, [
             new NotBlank(),
             new Regex([
                 'pattern' => '/^[a-z_]*$/',
