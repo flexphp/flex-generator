@@ -6,15 +6,15 @@ use FlexPHP\Messages\ResponseInterface;
 
 class MakeControllerResponse implements ResponseInterface
 {
-    public $output;
+    public $file;
 
-    public function __construct(string $output)
+    public function __construct(string $file)
     {
-        $this->output = $output;
+        $this->file = $file;
     }
 
     public function response()
     {
-        return $this->output;
+        return $this->file;
     }
 }
