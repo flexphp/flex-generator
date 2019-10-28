@@ -20,7 +20,7 @@ class MakeControllerUseCaseTest extends TestCase
     /**
      * @dataProvider getEntityFile()
      * @param string $entity
-     * @param string $path
+     * @param array $actions
      * @return void
      */ 
     public function testItSymfony43Ok(string $entity, array $actions): void

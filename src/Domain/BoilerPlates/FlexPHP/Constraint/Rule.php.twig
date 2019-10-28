@@ -1,6 +1,6 @@
     public function {{ property }}(array $constraints = [])
     {
-        return $this->validator->validate(__FUNCTION__, [
+        return $this->getValidator()->validate(__FUNCTION__, array_merge([
 {% for rule, constraint in rules %}
 {% if rule == 'required' %}
             new NotBlank(),
@@ -19,5 +19,5 @@
 {% endif %}
 {% endif %}
 {% endfor %}
-        ]);
+        ], $constraints));
     }

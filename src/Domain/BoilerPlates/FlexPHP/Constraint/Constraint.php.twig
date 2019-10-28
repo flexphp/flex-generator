@@ -2,6 +2,9 @@
 
 namespace Domain\{{ entity }}\Constraint;
 
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 /**
  * Constraints {{ entity }}.
  *
@@ -9,6 +12,11 @@ namespace Domain\{{ entity }}\Constraint;
  */
 class {{ entity }}Constraint
 {
+    private function getValidator(): ValidatorInterface
+    {
+        return Validation::createValidator();
+    }
+
 {% for property in properties %}
 {% if not loop.last %}
 {{ property|raw }}

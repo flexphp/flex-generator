@@ -10,7 +10,6 @@ use FlexPHP\Generator\Domain\Builders\Controller\UseCaseBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\MakeControllerRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\MakeControllerResponse;
 use FlexPHP\UseCases\UseCase;
-use Symfony\Component\Yaml\Yaml;
 
 class MakeControllerUseCase extends UseCase
 {

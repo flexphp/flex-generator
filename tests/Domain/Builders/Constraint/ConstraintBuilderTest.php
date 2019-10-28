@@ -44,6 +44,9 @@ class ConstraintBuilderTest extends TestCase
 
 namespace Domain\Test\Constraint;
 
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 /**
  * Constraints Test.
  *
@@ -51,32 +54,37 @@ namespace Domain\Test\Constraint;
  */
 class TestConstraint
 {
+    private function getValidator(): ValidatorInterface
+    {
+        return Validation::createValidator();
+    }
+
     public function title(array $constraints = [])
     {
-        return $this->validator->validate(__FUNCTION__, [
+        return $this->getValidator()->validate(__FUNCTION__, array_merge([
             new NotBlank(),
             new Regex([
                 'pattern' => '/^[a-z_]*$/',
             ]),
-        ]);
+        ], $constraints));
     }
 
     public function content(array $constraints = [])
     {
-        return $this->validator->validate(__FUNCTION__, [
+        return $this->getValidator()->validate(__FUNCTION__, array_merge([
             new NotBlank(),
             new Length([
                 'min' => 20,
                 'max' => 100,
             ]),
-        ]);
+        ], $constraints));
     }
 
     public function createdAt(array $constraints = [])
     {
-        return $this->validator->validate(__FUNCTION__, [
+        return $this->getValidator()->validate(__FUNCTION__, array_merge([
             new DateTime(),
-        ]);
+        ], $constraints));
     }
 }
 

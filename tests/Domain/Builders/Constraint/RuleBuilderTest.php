@@ -24,7 +24,7 @@ class RuleBuilderTest extends TestCase
         $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
     public function foo(array $constraints = [])
     {
-        return $this->validator->validate(__FUNCTION__, [
+        return $this->getValidator()->validate(__FUNCTION__, array_merge([
             new NotBlank(),
             new Regex([
                 'pattern' => '/^[a-z_]*$/',
@@ -33,7 +33,7 @@ class RuleBuilderTest extends TestCase
                 'min' => 20,
                 'max' => 100,
             ]),
-        ]);
+        ], $constraints));
     }
 T), $render->build());
     }
