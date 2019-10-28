@@ -10,8 +10,7 @@ class RuleBuilderTest extends TestCase
     public function testItOk()
     {
         $render = new RuleBuilder([
-            'property' => 'foo',
-            'constraints' => [
+            'foo' => [
                 'required' => true,
                 'pattern' => '/^[a-z_]*$/',
                 'required' => true,
