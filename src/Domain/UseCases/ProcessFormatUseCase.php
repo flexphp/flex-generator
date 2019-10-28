@@ -73,7 +73,7 @@ class ProcessFormatUseCase extends UseCase
                         $fieldValidation->validate();
 
                         $colHeaderName = $headers[\array_search(Keyword::NAME, $headers)];
-                        $fieldName = (new Convert($field[$colHeaderName]))->toSnake();
+                        $fieldName = (new Convert($field[$colHeaderName]))->toCamel();
                         $fields[$fieldName] = $field;
                     }
 

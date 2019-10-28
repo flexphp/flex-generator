@@ -2,8 +2,12 @@
 
 namespace FlexPHP\Generator\Domain\UseCases;
 
+use FlexPHP\Generator\Domain\Constants\Keyword;
+use FlexPHP\Generator\Domain\Messages\Requests\MakeConstraintRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\MakeControllerRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\MakeConstraintResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\MakeControllerResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
 use FlexPHP\UseCases\UseCase;
 use Symfony\Component\Yaml\Yaml;
@@ -22,22 +26,40 @@ class SheetProcessUseCase extends UseCase
 
         $name = $request->name;
         $path = $request->path;
+        $constraints = [];
 
         $sheet = Yaml::parse((string)\file_get_contents($path));
 
-        $makeController = new MakeControllerUseCase();
-        $responseController = $makeController->execute(
+        foreach ($sheet[$name]['Attributes'] as $attribute => $properties) {
+            $constraints[$attribute] = $properties[Keyword::CONSTRAINTS] ?? null;
+        }
+
+        $controller = $this->makeController($name);
+        $constraint = $this->makeConstraint($name, $constraints);
+
+        return new SheetProcessResponse([
+            'controller' => $controller->file,
+            'constraint' => $constraint->file,
+        ]);
+    }
+
+    private function makeController(string $name): MakeControllerResponse
+    {
+        return (new MakeControllerUseCase())->execute(
             new MakeControllerRequest($name, [
                 'index',
                 'create',
                 'read',
                 'update',
                 'delete',
-            ])
+            ]),
         );
+    }
 
-        return new SheetProcessResponse([
-            'controller' => $responseController->file,
-        ]);
+    private function makeConstraint(string $name, array $properties): MakeConstraintResponse
+    {
+        return (new MakeConstraintUseCase())->execute(
+            new MakeConstraintRequest($name, $properties),
+        );
     }
 }

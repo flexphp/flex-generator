@@ -37,7 +37,7 @@
         }
     },
     "scripts": {
-    "phpcs": "phpcs --standard=PSR2 --ignore=src/dist/* src/",
+    "phpcs": "phpcs --standard=PSR2 --ignore=src/dist/*,src/tmp/* src/",
     "phpfix": "phpcbf --standard=PSR2 --extensions=php src/",
     "phpstan": "phpstan analyse -l 7 src/",
     "phpunit": "phpunit --bootstrap vendor/autoload.php --testdox tests/",

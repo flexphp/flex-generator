@@ -6,4 +6,5 @@ interface Keyword
 {
     const NAME = 'Name';
     const DATA_TYPE = 'DataType';
+    const CONSTRAINTS = 'Constraints';
 }

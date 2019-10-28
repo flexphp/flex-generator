@@ -28,11 +28,13 @@ class SheetProcessUseCaseTest extends TestCase
         $request = new SheetProcessRequest($name, $path);
 
         $useCase = new SheetProcessUseCase();
-        $useCase->execute($request);
+        $response = $useCase->execute($request);
         
-        $controller = \sprintf('%1$s/../../../src/tmp/skeleton/src/Controllers/%2$sController.php', __DIR__, $name);
-        $this->assertFileExists($controller);
-        \unlink($controller);
+        $this->assertFileExists($response->controller);
+        \unlink($response->controller);
+
+        // $this->assertFileExists($response->constraint);
+        // \unlink($response->constraint);
     }
 
     public function getEntityFile(): array

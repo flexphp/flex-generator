@@ -1,18 +1,18 @@
 Comments:
   Entity: Comments
   Attributes:
-    id:
+    Id:
       Name: Id
       DataType: integer
-    comment:
+    Comment:
       Name: Comment
       DataType: text
-    post_id:
+    PostId:
       Name: PostId
       DataType: integer
-    created_at:
+    CreatedAt:
       Name: CreatedAt
       DataType: datetime
-    updated_at:
+    UpdatedAt:
       Name: UpdatedAt
       DataType: datetime

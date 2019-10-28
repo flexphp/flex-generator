@@ -1,21 +1,21 @@
 Posts:
   Entity: Posts
   Attributes:
-    id:
+    Id:
       Name: Id
       DataType: integer
-    title:
+    Title:
       Name: Title
       DataType: string
-    content:
+    Content:
       Name: Content
       DataType: text
-    is_active:
+    IsActive:
       Name: IsActive
       DataType: boolean
-    created_at:
+    CreatedAt:
       Name: CreatedAt
       DataType: datetime
-    updated_at:
+    UpdatedAt:
       Name: UpdatedAt
       DataType: datetime
