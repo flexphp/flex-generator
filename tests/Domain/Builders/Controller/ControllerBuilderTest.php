@@ -14,38 +14,36 @@ class ControllerBuilderTest extends TestCase
     public function testItRenderIndexOk()
     {
         $entity = 'Test';
-        $indexAction = 'index';
-        $customFuzAction = 'custom Fuz';
         $actions = [
-            $indexAction => (new ActionBuilder([
-                'action' => $indexAction,
+            'index' => (new ActionBuilder([
+                'action' => 'index',
                 'entity' => $entity,
                 'request_message' => (new RequestMessageBuilder([
-                    'action' => $indexAction,
+                    'action' => 'index',
                     'entity' => $entity,
                 ]))->build(),
                 'use_case' => (new UseCaseBuilder([
-                    'action' => $indexAction,
+                    'action' => 'index',
                     'entity' => $entity,
                 ]))->build(),
                 'response_message' => (new ResponseMessageBuilder([
-                    'action' => $indexAction,
+                    'action' => 'index',
                     'entity' => $entity,
                 ]))->build(),
             ]))->build(),
-            $customFuzAction => (new ActionBuilder([
-                'action' => $customFuzAction,
+            'custom Fuz' => (new ActionBuilder([
+                'action' => 'custom Fuz',
                 'entity' => $entity,
                 'request_message' => (new RequestMessageBuilder([
-                    'action' => $customFuzAction,
+                    'action' => 'custom Fuz',
                     'entity' => $entity,
                 ]))->build(),
                 'use_case' => (new UseCaseBuilder([
-                    'action' => $customFuzAction,
+                    'action' => 'custom Fuz',
                     'entity' => $entity,
                 ]))->build(),
                 'response_message' => (new ResponseMessageBuilder([
-                    'action' => $customFuzAction,
+                    'action' => 'custom Fuz',
                     'entity' => $entity,
                 ]))->build(),
             ]))->build(),

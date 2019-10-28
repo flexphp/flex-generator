@@ -10,30 +10,33 @@ class ConstraintBuilderTest extends TestCase
 {
     public function testItOk()
     {
+        $entity = 'Test';
+        $properties = [
+            'title' => (new RuleBuilder([
+                'title' => [
+                    'required' => true,
+                    'pattern' => '/^[a-z_]*$/',
+                ]
+            ]))->build(),
+            'content' => (new RuleBuilder([
+                'content' => [
+                    'required' => true,
+                    'length' => [
+                        'min' => 20,
+                        'max' => 100,
+                    ],
+                ],
+            ]))->build(),
+            'createdAt' => (new RuleBuilder([
+                'createdAt' => [
+                    'type' => 'datetime',
+                ],
+            ]))->build(),
+            ];
+
         $render = new ConstraintBuilder([
-            'entity' => 'Test',
-            'properties' => [
-                'title' => (new RuleBuilder([
-                    'title' => [
-                        'required' => true,
-                        'pattern' => '/^[a-z_]*$/',
-                    ]
-                ]))->build(),
-                'content' => (new RuleBuilder([
-                    'content' => [
-                        'required' => true,
-                        'length' => [
-                            'min' => 20,
-                            'max' => 100,
-                        ],
-                    ],
-                ]))->build(),
-                'createdAt' => (new RuleBuilder([
-                    'createdAt' => [
-                        'type' => 'datetime',
-                    ],
-                ]))->build(),
-            ],
+            'entity' => $entity,
+            'properties' => $properties,
         ]);
 
         $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
