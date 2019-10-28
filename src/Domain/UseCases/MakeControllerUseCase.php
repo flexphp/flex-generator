@@ -57,10 +57,10 @@ class MakeControllerUseCase extends UseCase
             mkdir($dir, 0777, true);
         }
 
-        $output = \sprintf('%1$s/%2$sController.php', $dir, $entity);
+        $file = \sprintf('%1$s/%2$sController.php', $dir, $entity);
 
-        \file_put_contents($output, $controller->build());
+        \file_put_contents($file, $controller->build());
 
-        return new MakeControllerResponse($output);
+        return new MakeControllerResponse($file);
     }
 }

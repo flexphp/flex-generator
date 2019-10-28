@@ -30,7 +30,7 @@ class MakeControllerUseCaseTest extends TestCase
         $useCase = new MakeControllerUseCase();
         $response = $useCase->execute($request);
         
-        $file = $response->output;
+        $file = $response->file;
         $this->assertFileExists($file);
         \unlink($file);
     }
