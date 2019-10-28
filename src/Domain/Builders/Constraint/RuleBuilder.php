@@ -26,7 +26,7 @@ class RuleBuilder extends AbstractBuilder
         return \sprintf('%1$s/FlexPHP/Constraint', parent::getPathTemplate());
     }
 
-    public function buildX(): string
+    public function build(): string
     {
         return rtrim(parent::build());
     }

@@ -1,0 +1,20 @@
+<?php
+
+namespace Domain\{{ entity }}\Constraint;
+
+/**
+ * Constraints {{ entity }}.
+ *
+ * @author FlexPHP <flexphp@outlook.com>
+ */
+class {{ entity }}Constraint
+{
+{% for property in properties %}
+{% if not loop.last %}
+{{ property|raw }}
+
+{% else %}
+{{ property|raw }}
+{% endif %}
+{% endfor %}
+}
