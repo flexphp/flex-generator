@@ -9,7 +9,7 @@ class MakeControllerRequest implements RequestInterface
     public $entity;
     public $actions;
 
-    public function __construct(string $entity, string $actions)
+    public function __construct(string $entity, array $actions)
     {
         $this->entity = $entity;
         $this->actions = $actions;

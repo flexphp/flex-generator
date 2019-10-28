@@ -23,9 +23,9 @@ class MakeControllerUseCaseTest extends TestCase
      * @param string $path
      * @return void
      */ 
-    public function testItSymfony43Ok(string $entity, string $path): void
+    public function testItSymfony43Ok(string $entity, array $actions): void
     {
-        $request = new MakeControllerRequest($entity, $path);
+        $request = new MakeControllerRequest($entity, $actions);
 
         $useCase = new MakeControllerUseCase();
         $response = $useCase->execute($request);
@@ -38,8 +38,18 @@ class MakeControllerUseCaseTest extends TestCase
     public function getEntityFile(): array
     {
         return [
-            ['Posts', \sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__)],
-            ['Comments', \sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__)],
+            ['Posts', [
+                'index',
+                'create',
+                'read',
+                'update',
+                'delete',
+            ]],
+            ['Comments', [
+                'create',
+                'read',
+                'update',
+            ]],
         ];
     }
 }

@@ -25,15 +25,9 @@ class MakeControllerUseCase extends UseCase
         $this->throwExceptionIfRequestNotValid(__METHOD__, MakeControllerRequest::class, $request);
 
         $entity = $request->entity;
-        $actions = [];
+        $actions = $request->actions;
         
-        foreach ([
-            'I' => 'index',
-            'C' => 'create',
-            'R' => 'read',
-            'U' => 'update',
-            'D' => 'delete',
-        ] as $action) {
+        foreach ($actions as $action) {
             $actions[$action] = (new ActionBuilder([
                 'action' => $action,
                 'entity' => $entity,
