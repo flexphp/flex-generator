@@ -5,4 +5,4 @@ tests/coverage
 vendor
 infection.*
 src/tmp/*.yaml
-
+src/templates/~*

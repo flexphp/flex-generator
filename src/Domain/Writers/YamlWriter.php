@@ -22,7 +22,7 @@ class YamlWriter implements WriterInterface
     {
         $output = \sprintf('%1$s/%2$s.yaml', $this->path, $this->filename);
 
-        \file_put_contents($output, Yaml::dump($this->data));
+        \file_put_contents($output, Yaml::dump($this->data, 4, 2));
 
         return $output;
     }

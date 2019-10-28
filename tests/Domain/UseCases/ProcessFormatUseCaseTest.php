@@ -62,7 +62,7 @@ class ProcessFormatUseCaseTest extends TestCase
             $yamlContent = \file_get_contents($yaml);
 
             $this->assertContains('Entity', $yamlContent);
-            $this->assertContains('Fields', $yamlContent);
+            $this->assertContains('Attributes', $yamlContent);
 
             \unlink($yaml);
         }

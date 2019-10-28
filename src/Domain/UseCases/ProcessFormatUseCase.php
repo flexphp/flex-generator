@@ -73,14 +73,14 @@ class ProcessFormatUseCase extends UseCase
                         $fieldValidation->validate();
 
                         $colHeaderName = $headers[\array_search(Keyword::NAME, $headers)];
-                        $fieldName = $field[$colHeaderName];
+                        $fieldName = (new Convert($field[$colHeaderName]))->toSnake();
                         $fields[$fieldName] = $field;
                     }
 
                     $writer = new YamlWriter([
                         $sheetName => [
                             'Entity' => $sheetName,
-                            'Fields' => $fields,
+                            'Attributes' => $fields,
                         ]
                     ], \strtolower($sheetName));
 
