@@ -2,10 +2,13 @@
 
 namespace FlexPHP\Generator\Domain\Validations;
 
+use Exception;
 use FlexPHP\Generator\Domain\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\FieldSyntaxValidationException;
+use FlexPHP\Generator\Domain\Validators\PropertyConstraintsValidator;
 use FlexPHP\Generator\Domain\Validators\PropertyDataTypeValidator;
 use FlexPHP\Generator\Domain\Validators\PropertyNameValidator;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 class FieldSyntaxValidation implements ValidationInterface
 {
@@ -14,11 +17,13 @@ class FieldSyntaxValidation implements ValidationInterface
     private $allowedProperties = [
         Keyword::NAME,
         Keyword::DATA_TYPE,
+        Keyword::CONSTRAINTS,
     ];
     
     private $validators = [
         Keyword::NAME => PropertyNameValidator::class,
         Keyword::DATA_TYPE => PropertyDataTypeValidator::class,
+        Keyword::CONSTRAINTS => PropertyConstraintsValidator::class,
     ];
 
     public function __construct(array $properties)
@@ -34,13 +39,24 @@ class FieldSyntaxValidation implements ValidationInterface
             }
 
             if (in_array($property, array_keys($this->validators))) {
-                $validator = new $this->validators[$property];
-                $violations = $validator->validate($value);
+                $violations = $this->validateProperty($property, $value);
 
                 if (0 !== count($violations)) {
-                    throw new FieldSyntaxValidationException($property . ': ' .  $violations);
+                    throw new FieldSyntaxValidationException(sprintf("%1\$s:\n%2\$s", $property, $violations));
                 }
             }
         }
+    }
+
+    private function validateProperty(string $property, $value): ConstraintViolationList
+    {
+        try {
+            $validator = new $this->validators[$property];
+            $violations = $validator->validate($value);
+        } catch (Exception $e) {
+            throw new FieldSyntaxValidationException(sprintf("%1\$s:\n%2\$s", $property, $e->getMessage()));
+        }
+
+        return $violations;
     }
 }

@@ -22,7 +22,7 @@ class MakeConstraintUseCaseTest extends TestCase
      * @param string $entity
      * @param string $properties
      * @return void
-     */ 
+     */
     public function testItSymfony43Ok(string $entity, array $properties): void
     {
         $request = new MakeConstraintRequest($entity, $properties);
@@ -40,17 +40,46 @@ class MakeConstraintUseCaseTest extends TestCase
         return [
             ['Posts', [
                 'title' => [
-                    'required' => true,
+                    'Name' => 'Title',
+                    'DataType' => 'string',
+                    'Type' => 'text',
+                    'Constraints' => [
+                        'required' => true,
+                    ]
+                ],
+                'content' => [
+                    'Name' => 'Content',
+                    'DataType' => 'varchar',
+                    'Type' => 'textarea',
+                    'Constraints' => [
+                        'required',
+                        'length' => [
+                            'min' => 10,
+                            'max' => 100,
+                        ],
+                    ],
                 ],
             ]],
-            // ['Comments', [
-            //     'comment' => [
-            //         'length' => [
-            //             'min' => 5,
-            //             'max' => 50,
-            //         ]
-            //     ],
-            // ]],
+            ['Comments', [
+                'comment' => [
+                    'Name' => 'Comment',
+                    'DataType' => 'varchar',
+                    'Constraints' => [
+                        'length' => [
+                            'min' => 5,
+                            'max' => 50,
+                        ],
+                    ],
+                ],
+                'createdAt' => [
+                    'Name' => 'Created At',
+                    'DataType' => 'datetime',
+                    'Type' => 'text',
+                    'Constraints' => [
+                        'type' => 'date',
+                    ],
+                ],
+            ]],
         ];
     }
 }

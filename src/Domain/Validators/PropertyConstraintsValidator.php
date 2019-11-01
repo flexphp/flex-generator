@@ -5,6 +5,7 @@ namespace FlexPHP\Generator\Domain\Validators;
 use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -29,10 +30,11 @@ class PropertyConstraintsValidator
     public function validate($constraints)
     {
         if (!is_array($constraints)) {
-            throw new InvalidArgumentException('Constraints: Must be a array');
+            throw new InvalidArgumentException('Constraints: Must be a array value');
         }
 
         $validator = Validation::createValidator();
+        $violations = new ConstraintViolationList();
 
         foreach ($constraints as $rule => $options) {
             if (is_string($options) && $options == 'required') {
@@ -72,9 +74,14 @@ class PropertyConstraintsValidator
                         break;
                 }
             }
-            // dump($constraints, $rule,  $options, (string)$errors);
+
+            if (count($errors) !== 0) {
+                foreach ($errors as $error) {
+                    $violations->add($error);
+                }
+            }
         }
 
-        return $errors;
+        return $violations;
     }
 }
