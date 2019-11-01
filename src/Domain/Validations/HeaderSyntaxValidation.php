@@ -12,6 +12,7 @@ class HeaderSyntaxValidation implements ValidationInterface
     protected $allowedHeaders = [
         Keyword::NAME,
         Keyword::DATA_TYPE,
+        Keyword::CONSTRAINTS,
     ];
 
     protected $requiredHeaders = [

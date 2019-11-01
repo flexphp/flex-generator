@@ -161,7 +161,6 @@ class FieldSyntaxValidationTest extends TestCase
             ['_REQUIRED'],
             ['REQUIRED'],
             ['Required'],
-            [null],
             [1],
             [['minlength' => null]],
             [['maxlength' => []]],
@@ -185,16 +184,27 @@ class FieldSyntaxValidationTest extends TestCase
                 'min' => rand(5, 10),
                 'max' => rand(0, 5),
             ]]],
+            [['length' => [
+                'min' => rand(5, 10),
+            ], 'type' => 'text']],
         ];
     }
 
     public function propertyConstraintsValid(): array
     {
         return [
+            [null],
+            [''],
+            [[]],
+            ['required'],
+            ['required|min:8'], // Using |
+            // ["['required']"], // Array syntax
+            ['["required"]'], // JSON simple
+            // ['{"required":true}'], // JSON complex
+            // ['{"required":true,"min":8}'], // JSON complex multiple
             [['required']],
             [['required' => true]],
             [['required' => false]],
-            [[]],
             [['minlength' => 0]],
             [['minlength' => rand(0, 9)]],
             [['maxlength' => rand(1, 9)]],
