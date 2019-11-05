@@ -41,7 +41,7 @@ class PropertyConstraintsValidator
         }
 
         if (!is_array($constraints)) {
-            throw new InvalidArgumentException('Constraints: Must be a array value');
+            throw new InvalidArgumentException('Constraints: Format not supported');
         }
 
         $validator = Validation::createValidator();
@@ -73,15 +73,16 @@ class PropertyConstraintsValidator
 
     private function getConstraintsFromString(string $constraints)
     {
-        $_constraints = \json_decode($constraints);
+        // Json syntax
+        $_constraints = \json_decode($constraints, true);
 
-        // if (\is_null($_constraints)) {
-            // $_constraints = eval($constraints);
-        // }
+        if (\is_null($_constraints) && \strpos($constraints, '[') === 0) {
+            // Array syntax
+            eval(sprintf('$_constraints = %1$s;', $constraints));
+        }
 
-        // dd($_constraints);
-
-        if (!$_constraints) {
+        if (!\is_array($_constraints)) {
+            // String syntax
             $_constraints = \explode('|', $constraints);
 
             if (\count($_constraints) > 0) {
@@ -100,7 +101,6 @@ class PropertyConstraintsValidator
                 }
             }
         }
-        // dd(__LINE__, $_constraints);
 
         return $_constraints;
     }

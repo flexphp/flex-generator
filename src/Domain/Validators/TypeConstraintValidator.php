@@ -13,6 +13,7 @@ class TypeConstraintValidator
 {
     const ALLOWED_TYPES = [
         'text',
+        'textarea',
         'email',
         'number',
         'integer',

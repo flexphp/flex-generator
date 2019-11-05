@@ -17,7 +17,7 @@ class RequiredConstraintValidator
 
         return $validator->validate($bool, [
             new NotNull(),
-            new Choice([true, false]),
+            new Choice([true, false, 'true', 'false']),
         ]);
     }
 }

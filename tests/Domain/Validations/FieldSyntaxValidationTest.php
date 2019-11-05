@@ -198,10 +198,10 @@ class FieldSyntaxValidationTest extends TestCase
             [[]],
             ['required'],
             ['required|min:8'], // Using |
-            // ["['required']"], // Array syntax
+            ["['required']"], // Array syntax
             ['["required"]'], // JSON simple
-            // ['{"required":true}'], // JSON complex
-            // ['{"required":true,"min":8}'], // JSON complex multiple
+            ['{"required":true}'], // JSON complex
+            ['{"required":true,"min":8}'], // JSON complex multiple
             [['required']],
             [['required' => true]],
             [['required' => false]],
