@@ -4,6 +4,7 @@
 [![Total Downloads](https://poser.pugx.org/flexphp/generator/downloads)](https://packagist.org/packages/flexphp/generator)
 [![Latest Unstable Version](https://poser.pugx.org/flexphp/generator/v/unstable)](https://packagist.org/packages/flexphp/generator)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/flexphp/flex-generator/badges/quality-score.png)](https://scrutinizer-ci.com/g/flexphp/flex-generator)
+[![Code Coverage](https://scrutinizer-ci.com/g/flexphp/flex-generator/badges/coverage.png)](https://scrutinizer-ci.com/g/flexphp/flex-generator)
 [![License](https://poser.pugx.org/flexphp/generator/license)](https://packagist.org/packages/flexphp/generator)
 [![composer.lock](https://poser.pugx.org/flexphp/generator/composerlock)](https://packagist.org/packages/flexphp/generator)
 

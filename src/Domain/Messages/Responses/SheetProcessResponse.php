@@ -16,9 +16,4 @@ class SheetProcessResponse implements ResponseInterface
         $this->controller = $response['controller'] ?? null;
         $this->constraint = $response['constraint'] ?? null;
     }
-
-    public function response()
-    {
-        return $this->response;
-    }
 }

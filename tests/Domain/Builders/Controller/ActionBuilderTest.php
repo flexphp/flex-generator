@@ -22,14 +22,14 @@ class ActionBuilderTest extends TestCase
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
     /**
      * @Route("/"}, methods={"GET"}, name="test.index")
      * @Cache(smaxage="10")
      */
-    public function index(Request $request): Response
+    public function index(Request \$request): Response
     {
-        $requestMessage = new IndexTestRequest($request->request->all());
+        \$requestMessage = new IndexTestRequest(\$request->request->all());
 
 
 
@@ -53,13 +53,13 @@ T), $render->build());
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
     /**
      * @Route("/create"}, methods={"POST"}, name="test.create")
      */
-    public function create(Request $request): Response
+    public function create(Request \$request): Response
     {
-        $requestMessage = new CreateTestRequest($request->request->all());
+        \$requestMessage = new CreateTestRequest(\$request->request->all());
 
 
 
@@ -83,14 +83,14 @@ T), $render->build());
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
     /**
      * @Route("/{id}"}, methods={"GET"}, name="test.read")
      * @Cache(smaxage="10")
      */
-    public function read($id): Response
+    public function read(\$id): Response
     {
-        $requestMessage = new ReadTestRequest(['id' => $id]);
+        \$requestMessage = new ReadTestRequest(['id' => \$id]);
 
 
 
@@ -114,13 +114,13 @@ T), $render->build());
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
     /**
      * @Route("/update/{id}"}, methods={"PUT"}, name="test.update")
      */
-    public function update(Request $request, $id): Response
+    public function update(Request \$request, \$id): Response
     {
-        $requestMessage = new UpdateTestRequest($request->request->all());
+        \$requestMessage = new UpdateTestRequest(\$request->request->all());
 
 
 
@@ -144,13 +144,13 @@ T), $render->build());
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
     /**
      * @Route("/delete/{id}"}, methods={"DELETE"}, name="test.delete")
      */
-    public function delete($id): Response
+    public function delete(\$id): Response
     {
-        $requestMessage = new DeleteTestRequest(['id' => $id]);
+        \$requestMessage = new DeleteTestRequest(['id' => \$id]);
 
 
 
@@ -178,13 +178,13 @@ T), $render->build());
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
     /**
      * @Route("/custom_action"}, methods={"POST"}, name="foobar.custom_action")
      */
-    public function customAction(Request $request): Response
+    public function customAction(Request \$request): Response
     {
-        $requestMessage = new CustomActionFooBarRequest($request->request->all());
+        \$requestMessage = new CustomActionFooBarRequest(\$request->request->all());
 
 
 

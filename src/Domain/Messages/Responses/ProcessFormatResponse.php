@@ -14,9 +14,4 @@ class ProcessFormatResponse implements ResponseInterface
         $this->messages = $messages;
         $this->hasError = !empty($messages['error']);
     }
-
-    public function response()
-    {
-        return $this->messages;
-    }
 }

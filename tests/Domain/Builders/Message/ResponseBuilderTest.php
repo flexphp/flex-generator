@@ -29,7 +29,7 @@ class ResponseBuilderTest extends TestCase
             'properties' => $properties,
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
 <?php
 
 namespace Domain\Fuz\Message;
@@ -43,7 +43,7 @@ use FlexPHP\Messages\ResponseInterface;
  */
 class ActionFuzResponse implements ResponseInterface
 {
-    public function __construct(array $data)
+    public function __construct(array \$data)
     {
     }
 }

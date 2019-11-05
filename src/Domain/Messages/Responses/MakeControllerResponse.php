@@ -12,9 +12,4 @@ class MakeControllerResponse implements ResponseInterface
     {
         $this->file = $file;
     }
-
-    public function response()
-    {
-        return $this->file;
-    }
 }

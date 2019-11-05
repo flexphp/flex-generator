@@ -29,7 +29,7 @@ class RequestBuilderTest extends TestCase
             'properties' => $properties,
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
 <?php
 
 namespace Domain\Fuz\Message;
@@ -43,13 +43,13 @@ use FlexPHP\Messages\RequestInterface;
  */
 class ActionFuzRequest implements RequestInterface
 {
-    public $foo;
-    public $bar;
+    public \$foo;
+    public \$bar;
 
-    public function __construct(array $data)
+    public function __construct(array \$data)
     {
-        $this->foo = $data['foo'] ?? null;
-        $this->bar = $data['bar'] ?? null;
+        \$this->foo = \$data['foo'] ?? null;
+        \$this->bar = \$data['bar'] ?? null;
     }
 }
 

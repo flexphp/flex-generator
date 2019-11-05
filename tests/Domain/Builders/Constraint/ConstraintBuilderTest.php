@@ -39,7 +39,7 @@ class ConstraintBuilderTest extends TestCase
             'properties' => $properties,
         ]);
 
-        $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n", "\n", <<<T
 <?php
 
 namespace Domain\Test\Constraint;
@@ -59,32 +59,32 @@ class TestConstraint
         return Validation::createValidator();
     }
 
-    public function title(array $constraints = [])
+    public function title(array \$constraints = [])
     {
-        return $this->getValidator()->validate(__FUNCTION__, array_merge([
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
             new NotBlank(),
             new Regex([
                 'pattern' => '/^[a-z_]*$/',
             ]),
-        ], $constraints));
+        ], \$constraints));
     }
 
-    public function content(array $constraints = [])
+    public function content(array \$constraints = [])
     {
-        return $this->getValidator()->validate(__FUNCTION__, array_merge([
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
             new NotBlank(),
             new Length([
                 'min' => 20,
                 'max' => 100,
             ]),
-        ], $constraints));
+        ], \$constraints));
     }
 
-    public function createdAt(array $constraints = [])
+    public function createdAt(array \$constraints = [])
     {
-        return $this->getValidator()->validate(__FUNCTION__, array_merge([
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
             new DateTime(),
-        ], $constraints));
+        ], \$constraints));
     }
 }
 

@@ -54,7 +54,7 @@ class ControllerBuilderTest extends TestCase
             'actions' => $actions,
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
 <?php
 
 namespace App\Controller;
@@ -81,27 +81,27 @@ class TestController extends AbstractController
      * @Route("/"}, methods={"GET"}, name="test.index")
      * @Cache(smaxage="10")
      */
-    public function index(Request $request): Response
+    public function index(Request \$request): Response
     {
-        $requestMessage = new IndexTestRequest($request->request->all());
+        \$requestMessage = new IndexTestRequest(\$request->request->all());
 
-        $useCase = new IndexTestUseCase();
-        $response = $useCase->execute($requestMessage);
+        \$useCase = new IndexTestUseCase();
+        \$response = \$useCase->execute(\$requestMessage);
 
-        return new Response($response);
+        return new Response(\$response);
     }
 
     /**
      * @Route("/custom_fuz"}, methods={"POST"}, name="test.custom_fuz")
      */
-    public function customFuz(Request $request): Response
+    public function customFuz(Request \$request): Response
     {
-        $requestMessage = new CustomFuzTestRequest($request->request->all());
+        \$requestMessage = new CustomFuzTestRequest(\$request->request->all());
 
-        $useCase = new CustomFuzTestUseCase();
-        $response = $useCase->execute($requestMessage);
+        \$useCase = new CustomFuzTestUseCase();
+        \$response = \$useCase->execute(\$requestMessage);
 
-        return new Response($response);
+        return new Response(\$response);
     }
 }
 

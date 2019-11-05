@@ -29,7 +29,7 @@ class CommandBuilderTest extends TestCase
             'properties' => $properties,
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
 <?php
 
 namespace Domain\Test\Command;
@@ -48,24 +48,24 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ActionTestCommand extends Command
 {
-    protected function configure($request): ActionTestResponse
+    protected function configure(\$request): ActionTestResponse
     {
-        $this
+        \$this
             ->setName('test:action')
             ->setDescription('Command to action on Test')
             ->addArgument('foo', InputArgument::REQUIRED)
             ->addArgument('bar', InputArgument::REQUIRED);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface \$input, OutputInterface \$output)
     {
-        $foo = $input->getArgument('foo');
-        $bar = $input->getArgument('bar');
+        \$foo = \$input->getArgument('foo');
+        \$bar = \$input->getArgument('bar');
 
-        $useCase = new ActionTestUseCase();
-        $response = $useCase->execute($requestMessage);
+        \$useCase = new ActionTestUseCase();
+        \$response = \$useCase->execute(\$requestMessage);
 
-        $output->writeln('Action on Test done!'); 
+        \$output->writeln('Action on Test done!'); 
     }
 }
 

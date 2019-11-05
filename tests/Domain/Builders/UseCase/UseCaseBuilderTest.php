@@ -29,7 +29,7 @@ class UseCaseBuilderTest extends TestCase
             'properties' => $properties,
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<'T'
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
 <?php
 
 namespace Domain\Test\UseCase;
@@ -45,13 +45,13 @@ use FlexPHP\UseCases\UseCase;
  */
 class ActionTestUseCase extends UseCase
 {
-    private $foo;
-    private $bar;
+    private \$foo;
+    private \$bar;
 
-    public function execute($request): ActionTestResponse
+    public function execute(\$request): ActionTestResponse
     {
-        $this->foo = $request->foo;
-        $this->bar = $request->bar;
+        \$this->foo = \$request->foo;
+        \$this->bar = \$request->bar;
 
         return ActionTestResponse();
     }

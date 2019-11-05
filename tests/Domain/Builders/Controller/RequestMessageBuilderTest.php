@@ -14,8 +14,8 @@ class ResponseMessageBuilderTest extends TestCase
             'action' => 'action',
         ]);
 
-        $this->assertEquals(str_replace("\r\n", "\n", <<<'T'
-        return new Response($response);
+        $this->assertEquals(str_replace("\r\n", "\n", <<<T
+        return new Response(\$response);
 T), $render->build());
     }
 }
