@@ -2,7 +2,11 @@
 
 namespace FlexPHP\Generator\Domain\Validators;
 
-use Exception;
+use FlexPHP\Generator\Domain\Validators\Constraints\EqualToConstraintValidator;
+use FlexPHP\Generator\Domain\Validators\Constraints\MaxConstraintValidator;
+use FlexPHP\Generator\Domain\Validators\Constraints\MinConstraintValidator;
+use FlexPHP\Generator\Domain\Validators\Constraints\RangeConstraintValidator;
+use FlexPHP\Generator\Domain\Validators\Constraints\RequiredConstraintValidator;
 use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -127,7 +131,7 @@ class PropertyConstraintsValidator
                 $errors = (new EqualToConstraintValidator())->validate($options);
                 break;
             case 'type':
-                $errors = (new TypeConstraintValidator())->validate($options);
+                $errors = (new PropertyTypeValidator())->validate($options);
                 break;
             case 'length':
             case 'check':

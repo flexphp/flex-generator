@@ -5,8 +5,8 @@ namespace FlexPHP\Generator\Tests\Domain\Validations;
 use FlexPHP\Generator\Domain\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\FieldSyntaxValidationException;
 use FlexPHP\Generator\Domain\Validations\FieldSyntaxValidation;
-use FlexPHP\Generator\Domain\Validators\PropertyConstraintsValidator;
 use FlexPHP\Generator\Domain\Validators\PropertyDataTypeValidator;
+use FlexPHP\Generator\Domain\Validators\PropertyTypeValidator;
 use FlexPHP\Generator\Tests\TestCase;
 
 class FieldSyntaxValidationTest extends TestCase
@@ -74,6 +74,35 @@ class FieldSyntaxValidationTest extends TestCase
     {
         $validation = new FieldSyntaxValidation([
             Keyword::DATA_TYPE => $dataType,
+        ]);
+
+        $validation->validate();
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @dataProvider propertyDataTypeNotValid
+     */
+    public function testItPropertyTypeNotValidThrownException($type): void
+    {
+        $this->expectException(FieldSyntaxValidationException::class);
+        $this->expectExceptionMessage('Type:');
+
+        $validation = new FieldSyntaxValidation([
+            Keyword::TYPE => $type,
+        ]);
+
+        $validation->validate();
+    }
+
+    /**
+     * @dataProvider propertyTypeValid
+     */
+    public function testItPropertyTypeOk($type): void
+    {
+        $validation = new FieldSyntaxValidation([
+            Keyword::TYPE => $type,
         ]);
 
         $validation->validate();
@@ -155,6 +184,26 @@ class FieldSyntaxValidationTest extends TestCase
         }, PropertyDataTypeValidator::ALLOWED_DATA_TYPES);
     }
 
+    public function propertyTypeNotValid(): array
+    {
+        return [
+            ['unknow'],
+            ['textt'],
+            ['text area'],
+            ['int'],
+            [null],
+            [[]],
+            [1],
+        ];
+    }
+
+    public function propertyTypeValid(): array
+    {
+        return array_map(function ($dataType) {
+            return [$dataType];
+        }, PropertyTypeValidator::ALLOWED_TYPES);
+    }
+
     public function propertyConstraintsNotValid(): array
     {
         return [
@@ -199,6 +248,7 @@ class FieldSyntaxValidationTest extends TestCase
             ['required'],
             ['required|min:8'], // Using |
             ["['required']"], // Array syntax
+            ["['required','min'=>8]"], // Array syntax multiple
             ['["required"]'], // JSON simple
             ['{"required":true}'], // JSON complex
             ['{"required":true,"min":8}'], // JSON complex multiple

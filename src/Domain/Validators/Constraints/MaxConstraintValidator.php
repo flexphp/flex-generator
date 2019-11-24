@@ -1,6 +1,6 @@
 <?php
 
-namespace FlexPHP\Generator\Domain\Validators;
+namespace FlexPHP\Generator\Domain\Validators\Constraints;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;

@@ -8,6 +8,7 @@ use FlexPHP\Generator\Domain\Exceptions\FieldSyntaxValidationException;
 use FlexPHP\Generator\Domain\Validators\PropertyConstraintsValidator;
 use FlexPHP\Generator\Domain\Validators\PropertyDataTypeValidator;
 use FlexPHP\Generator\Domain\Validators\PropertyNameValidator;
+use FlexPHP\Generator\Domain\Validators\PropertyTypeValidator;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 class FieldSyntaxValidation implements ValidationInterface
@@ -17,12 +18,14 @@ class FieldSyntaxValidation implements ValidationInterface
     private $allowedProperties = [
         Keyword::NAME,
         Keyword::DATA_TYPE,
+        Keyword::TYPE,
         Keyword::CONSTRAINTS,
     ];
     
     private $validators = [
         Keyword::NAME => PropertyNameValidator::class,
         Keyword::DATA_TYPE => PropertyDataTypeValidator::class,
+        Keyword::TYPE => PropertyTypeValidator::class,
         Keyword::CONSTRAINTS => PropertyConstraintsValidator::class,
     ];
 

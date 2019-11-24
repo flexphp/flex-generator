@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Validation;
 /**
  * @Annotation
  */
-class TypeConstraintValidator
+class PropertyTypeValidator
 {
     const ALLOWED_TYPES = [
         'text',
