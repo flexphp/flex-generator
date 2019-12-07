@@ -3,6 +3,7 @@
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\MakeControllerRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\MakeControllerResponse;
 use FlexPHP\Generator\Domain\UseCases\MakeControllerUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\UseCases\Exception\NotValidRequestException;
@@ -30,6 +31,7 @@ class MakeControllerUseCaseTest extends TestCase
         $useCase = new MakeControllerUseCase();
         $response = $useCase->execute($request);
         
+        $this->assertInstanceOf(MakeControllerResponse::class, $response);
         $file = $response->file;
         $this->assertFileExists($file);
         \unlink($file);

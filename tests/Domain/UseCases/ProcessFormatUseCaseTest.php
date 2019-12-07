@@ -4,6 +4,7 @@ namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
 use FlexPHP\Generator\Domain\UseCases\ProcessFormatUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\UseCases\Exception\NotValidRequestException;
@@ -34,8 +35,9 @@ class ProcessFormatUseCaseTest extends TestCase
 
         $useCase = new ProcessFormatUseCase();
         $response = $useCase->execute($request);
-        $sheetNames = $response->messages;
 
+        $this->assertInstanceOf(ProcessFormatResponse::class, $response);
+        $sheetNames = $response->messages;
         $this->assertEquals(2, count($sheetNames));
 
         foreach ($sheetNames as $sheetName => $numberFields) {

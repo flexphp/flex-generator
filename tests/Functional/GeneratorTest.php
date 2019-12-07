@@ -58,7 +58,6 @@ class GeneratorTest extends WebTestCase
     public function testItFileFormatXlsx()
     {
         $name = 'Format.xlsx';
-        // $type = 'application/vnd.oasis.opendocument.spreadshee';
         $type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         $path = \getcwd() . '/src/templates/' . $name;
 

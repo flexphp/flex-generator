@@ -3,6 +3,7 @@
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\MakeConstraintRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\MakeConstraintResponse;
 use FlexPHP\Generator\Domain\UseCases\MakeConstraintUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\UseCases\Exception\NotValidRequestException;
@@ -30,6 +31,7 @@ class MakeConstraintUseCaseTest extends TestCase
         $useCase = new MakeConstraintUseCase();
         $response = $useCase->execute($request);
 
+        $this->assertInstanceOf(MakeConstraintResponse::class, $response);
         $file = $response->file;
         $this->assertFileExists($file);
         \unlink($file);
