@@ -1,4 +1,9 @@
 <?php
+{% set arguments %}
+{% for id, property in properties %}
+${{ id }}{% if not loop.last %}, {% endif %}
+{% endfor %}
+{% endset %}
 
 namespace Domain\{{ entity }}\Command;
 
@@ -36,8 +41,9 @@ class {{ action_name }}{{ entity }}Command extends Command
         ${{ id }} = $input->getArgument('{{ id }}');
 {% endfor %}
 
+        $request = new {{ action_name }}{{ entity }}Request({{ arguments }});
         $useCase = new {{ action_name }}{{ entity }}UseCase();
-        $response = $useCase->execute($requestMessage);
+        $response = $useCase->execute($request);
 
         $output->writeln('{{ action_name }} on {{ entity }} done!'); 
     }
