@@ -1,21 +1,27 @@
 Posts:
   Entity: Posts
   Attributes:
-    Id:
+    id:
       Name: Id
       DataType: integer
-    Title:
+      Constraints: '[''required'', ''type'' => ''number'']'
+    title:
       Name: Title
       DataType: string
-    Content:
+      Constraints: '[''required'' => true, ''maxlength'' => ''255'']'
+    content:
       Name: Content
       DataType: text
-    IsActive:
+      Constraints: '[''required'' => true, ''type'' => ''textarea'', ''length'' => [''min'' => 10, ''max'' => 512]]'
+    isActive:
       Name: IsActive
       DataType: boolean
-    CreatedAt:
+      Constraints: '[''required'' => false]'
+    createdAt:
       Name: CreatedAt
       DataType: datetime
-    UpdatedAt:
+      Constraints: ''
+    updatedAt:
       Name: UpdatedAt
       DataType: datetime
+      Constraints: ''
