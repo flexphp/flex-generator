@@ -35,25 +35,6 @@ class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertInstanceOf(CreatePrototypeResponse::class, $response);
 
-        $this->deleteFolder(__DIR__ . '/../../../src/tmp/skeleton/', false);
-    }
-
-    private function deleteFolder($dir, $delete = true)
-    {
-        if (is_dir($dir)) {
-            $objects = array_diff(scandir($dir), ['.', '..']);
-
-            foreach ($objects as $object) {
-                if (is_dir($dir . '/' . $object) && !is_link($dir . '/' . $object)) {
-                    $this->deleteFolder($dir . '/' . $object);
-                } else {
-                    unlink($dir . '/' . $object);
-                }
-            }
-
-            if ($delete) {
-                rmdir($dir);
-            }
-        }
+        parent::deleteFolder(__DIR__ . '/../../../src/tmp/skeleton/', false);
     }
 }
