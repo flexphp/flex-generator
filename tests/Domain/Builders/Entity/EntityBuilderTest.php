@@ -3,8 +3,6 @@
 namespace FlexPHP\Generator\Tests\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\Entity\EntityBuilder;
-use FlexPHP\Generator\Domain\Builders\Entity\GetterBuilder;
-use FlexPHP\Generator\Domain\Builders\Entity\SetterBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
 class EntityBuilderTest extends TestCase
@@ -12,46 +10,21 @@ class EntityBuilderTest extends TestCase
     public function testItOk()
     {
         $name = 'Test';
-        $getters = [
-            'title' => (new GetterBuilder([
-                'title' => [
-                    'type' => 'string',
-                ]
-            ]))->build(),
-            'content' => (new GetterBuilder([
-                'content' => [
-                    'type' => 'text',
-                ],
-            ]))->build(),
-            'createdAt' => (new GetterBuilder([
-                'createdAt' => [
-                    'type' => 'datetime',
-                ],
-            ]))->build(),
-            ];
-
-            $setters = [
-                'title' => (new SetterBuilder([
-                    'title' => [
-                        'type' => 'string',
-                    ]
-                ]))->build(),
-                'content' => (new SetterBuilder([
-                    'content' => [
-                        'type' => 'text',
-                    ],
-                ]))->build(),
-                'createdAt' => (new SetterBuilder([
-                    'createdAt' => [
-                        'type' => 'datetime',
-                    ],
-                ]))->build(),
-                ];
+        $properties = [
+            'title' => [
+                'type' => 'string',
+            ],
+            'content' => [
+                'type' => 'text',
+            ],
+            'createdAt' => [
+                'type' => 'datetime',
+            ],
+        ];
 
         $render = new EntityBuilder([
             'name' => $name,
-            'getters' => $getters,
-            'setters' => $setters,
+            'properties' => $properties,
         ]);
 
         $this->assertEquals(str_replace("\r\n", "\n", <<<T
@@ -66,6 +39,10 @@ namespace Domain\Test\Entity;
  */
 class Test
 {
+    private \$title;
+    private \$content;
+    private \$createdAt;
+
     public function getTitle(): string
     {
         return \$this->title;
