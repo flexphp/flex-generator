@@ -2,12 +2,14 @@
 
 namespace Domain\{{ name }}\Entity;
 
+use FlexPHP\Entities\Entity;
+
 /**
  * Entity {{ name }}.
  *
  * @author FlexPHP <flexphp@outlook.com>
  */
-class {{ name }}
+class {{ name }} extends Entity
 {
 {% for _property in _properties %}
     private ${{ _property }};

@@ -32,12 +32,14 @@ class EntityBuilderTest extends TestCase
 
 namespace Domain\Test\Entity;
 
+use FlexPHP\Entities\Entity;
+
 /**
  * Entity Test.
  *
  * @author FlexPHP <flexphp@outlook.com>
  */
-class Test
+class Test extends Entity
 {
     private \$title;
     private \$content;
