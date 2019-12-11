@@ -12,13 +12,13 @@ class EntityBuilderTest extends TestCase
         $name = 'Test';
         $properties = [
             'title' => [
-                'type' => 'string',
+                'DataType' => 'string',
             ],
             'content' => [
-                'type' => 'text',
+                'DataType' => 'text',
             ],
             'createdAt' => [
-                'type' => 'datetime',
+                'DataType' => 'datetime',
             ],
         ];
 

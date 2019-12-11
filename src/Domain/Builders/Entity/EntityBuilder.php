@@ -3,6 +3,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Generator\Domain\Constants\Keyword;
 
 class EntityBuilder extends AbstractBuilder
 {
@@ -35,7 +36,7 @@ class EntityBuilder extends AbstractBuilder
         foreach ($properties as $name => $attributes) {
             $getters[$name] = new GetterBuilder([
                 $name => [
-                    'type' => $attributes['type'],
+                    Keyword::DATA_TYPE => $attributes[Keyword::DATA_TYPE],
                 ]
             ]);
         }
@@ -50,7 +51,7 @@ class EntityBuilder extends AbstractBuilder
         foreach ($properties as $name => $attributes) {
             $setters[$name] = new SetterBuilder([
                 $name => [
-                    'type' => $attributes['type'],
+                    Keyword::DATA_TYPE => $attributes[Keyword::DATA_TYPE],
                 ]
             ]);
         }

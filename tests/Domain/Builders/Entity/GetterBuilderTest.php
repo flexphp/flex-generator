@@ -26,15 +26,15 @@ T
     }
 
     /**
-     * @dataProvider getTypeString
-     * @param string $type
+     * @dataProvider getDataTypeString
+     * @param string $dataType
      * @return void
      */
-    public function testItWithString($type): void
+    public function testItWithString($dataType): void
     {
         $render = new GetterBuilder([
             'foo' => [
-                'type' => $type,
+                'DataType' => $dataType,
             ],
         ]);
 
@@ -51,15 +51,15 @@ T
     }
 
     /**
-     * @dataProvider getTypeInt
-     * @param string $type
+     * @dataProvider getDataTypeInt
+     * @param string $dataType
      * @return void
      */
-    public function testItWithInt($type): void
+    public function testItWithInt($dataType): void
     {
         $render = new GetterBuilder([
             'foo' => [
-                'type' => $type,
+                'DataType' => $dataType,
             ],
         ]);
 
@@ -76,15 +76,15 @@ T
     }
 
     /**
-     * @dataProvider getTypeArray
-     * @param string $type
+     * @dataProvider getDataTypeArray
+     * @param string $dataType
      * @return void
      */
-    public function testItWithArray($type): void
+    public function testItWithArray($dataType): void
     {
         $render = new GetterBuilder([
             'foo' => [
-                'type' => $type,
+                'DataType' => $dataType,
             ],
         ]);
 
@@ -101,15 +101,15 @@ T
     }
 
     /**
-     * @dataProvider getTypeBool
-     * @param string $type
+     * @dataProvider getDataTypeBool
+     * @param string $dataType
      * @return void
      */
-    public function testItWithBool($type): void
+    public function testItWithBool($dataType): void
     {
         $render = new GetterBuilder([
             'foo' => [
-                'type' => $type,
+                'DataType' => $dataType,
             ],
         ]);
 
@@ -129,7 +129,7 @@ T
     {
         $render = new GetterBuilder([
             'foo' => [
-                'type' => 'unknow',
+                'DataType' => 'unknow',
             ],
         ]);
 
@@ -145,7 +145,7 @@ T
         ), $render->build());
     }
 
-    public function getTypeString(): array
+    public function getDataTypeString(): array
     {
         return [
             ['string'],
@@ -161,7 +161,7 @@ T
         ];
     }
 
-    public function getTypeInt(): array
+    public function getDataTypeInt(): array
     {
         return [
             ['smallint'],
@@ -171,21 +171,21 @@ T
         ];
     }
 
-    public function getTypeArray(): array
+    public function getDataTypeArray(): array
     {
         return [
             ['array'],
         ];
     }
 
-    public function getTypeFloat(): array
+    public function getDataTypeFloat(): array
     {
         return [
             ['float'],
         ];
     }
 
-    public function getTypeBool(): array
+    public function getDataTypeBool(): array
     {
         return [
             ['bool'],
