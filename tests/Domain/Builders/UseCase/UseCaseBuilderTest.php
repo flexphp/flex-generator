@@ -57,6 +57,7 @@ class ActionTestUseCase extends UseCase
     }
 }
 
-T), $render->build());
+T
+), $render->build());
     }
 }

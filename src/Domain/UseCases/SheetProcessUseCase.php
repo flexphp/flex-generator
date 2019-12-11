@@ -52,14 +52,14 @@ class SheetProcessUseCase extends UseCase
                 'read',
                 'update',
                 'delete',
-            ]),
+            ])
         );
     }
 
     private function makeConstraint(string $name, array $properties): MakeConstraintResponse
     {
         return (new MakeConstraintUseCase())->execute(
-            new MakeConstraintRequest($name, $properties),
+            new MakeConstraintRequest($name, $properties)
         );
     }
 }

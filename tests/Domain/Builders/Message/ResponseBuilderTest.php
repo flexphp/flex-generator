@@ -48,6 +48,7 @@ class ActionFuzResponse implements ResponseInterface
     }
 }
 
-T), $render->build());
+T
+), $render->build());
     }
 }

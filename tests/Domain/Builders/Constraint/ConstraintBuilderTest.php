@@ -1,6 +1,6 @@
 <?php
 
-namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
+namespace FlexPHP\Generator\Tests\Domain\Builders\Constraint;
 
 use FlexPHP\Generator\Domain\Builders\Constraint\ConstraintBuilder;
 use FlexPHP\Generator\Domain\Builders\Constraint\RuleBuilder;
@@ -88,6 +88,7 @@ class TestConstraint
     }
 }
 
-T), $render->build());
+T
+), $render->build());
     }
 }

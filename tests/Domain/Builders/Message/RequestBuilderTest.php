@@ -53,6 +53,7 @@ class ActionFuzRequest implements RequestInterface
     }
 }
 
-T), $render->build());
+T
+), $render->build());
     }
 }

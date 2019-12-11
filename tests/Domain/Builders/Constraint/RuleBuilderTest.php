@@ -1,6 +1,6 @@
 <?php
 
-namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
+namespace FlexPHP\Generator\Tests\Domain\Builders\Constraint;
 
 use FlexPHP\Generator\Domain\Builders\Constraint\RuleBuilder;
 use FlexPHP\Generator\Tests\TestCase;
@@ -35,6 +35,7 @@ class RuleBuilderTest extends TestCase
             ]),
         ], \$constraints));
     }
-T), $render->build());
+T
+), $render->build());
     }
 }

@@ -69,6 +69,7 @@ class ActionTestCommand extends Command
     }
 }
 
-T), $render->build());
+T
+), $render->build());
     }
 }

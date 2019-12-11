@@ -16,6 +16,7 @@ class ResponseMessageBuilderTest extends TestCase
 
         $this->assertEquals(str_replace("\r\n", "\n", <<<T
         return new Response(\$response);
-T), $render->build());
+T
+), $render->build());
     }
 }

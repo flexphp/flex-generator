@@ -36,7 +36,8 @@ class ActionBuilderTest extends TestCase
 
     }
 
-T), $render->build());
+T
+), $render->build());
     }
 
     public function testItRenderCreateOk()
@@ -66,7 +67,8 @@ T), $render->build());
 
     }
 
-T), $render->build());
+T
+), $render->build());
     }
 
     public function testItRenderReadOk()
@@ -97,7 +99,8 @@ T), $render->build());
 
     }
 
-T), $render->build());
+T
+), $render->build());
     }
 
     public function testItRenderUpdateOk()
@@ -127,7 +130,8 @@ T), $render->build());
 
     }
 
-T), $render->build());
+T
+), $render->build());
     }
 
     public function testItRenderDeleteOk()
@@ -157,7 +161,8 @@ T), $render->build());
 
     }
 
-T), $render->build());
+T
+), $render->build());
     }
 
     /**
@@ -191,7 +196,8 @@ T), $render->build());
 
     }
 
-T), $render->build());
+T
+), $render->build());
     }
 
     public function getCustomActions(): array

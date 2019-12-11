@@ -105,6 +105,7 @@ class TestController extends AbstractController
     }
 }
 
-T), $render->build());
+T
+), $render->build());
     }
 }
