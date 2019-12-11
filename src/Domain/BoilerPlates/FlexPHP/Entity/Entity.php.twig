@@ -1,0 +1,29 @@
+<?php
+
+namespace Domain\{{ name }}\Entity;
+
+/**
+ * Entity {{ name }}.
+ *
+ * @author FlexPHP <flexphp@outlook.com>
+ */
+class {{ name }}
+{
+{% for getter in getters %}
+{% if not loop.last %}
+{{ getter|raw }}
+
+{% else %}
+{{ getter|raw }}
+{% endif %}
+{% endfor %}
+
+{% for setter in setters %}
+{% if not loop.last %}
+{{ setter|raw }}
+
+{% else %}
+{{ setter|raw }}
+{% endif %}
+{% endfor %}
+}
