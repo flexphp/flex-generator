@@ -35,9 +35,7 @@ class EntityBuilder extends AbstractBuilder
 
         foreach ($properties as $name => $attributes) {
             $getters[$name] = new GetterBuilder([
-                $name => [
-                    Keyword::DATA_TYPE => $attributes[Keyword::DATA_TYPE],
-                ]
+                $name => $attributes
             ]);
         }
 
@@ -50,9 +48,7 @@ class EntityBuilder extends AbstractBuilder
 
         foreach ($properties as $name => $attributes) {
             $setters[$name] = new SetterBuilder([
-                $name => [
-                    Keyword::DATA_TYPE => $attributes[Keyword::DATA_TYPE],
-                ]
+                $name => $attributes
             ]);
         }
 
