@@ -4,7 +4,7 @@ namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
-class GetterBuilder extends AbstractBuilder
+class SetterBuilder extends AbstractBuilder
 {
     use TypeHintTrait;
 
@@ -12,16 +12,16 @@ class GetterBuilder extends AbstractBuilder
     {
         $name = array_key_first($data);
         $typehint = $this->guessTypeHint($data[$name]);
-        $getter = $this->getPascalCase($name);
+        $setter = $this->getPascalCase($name);
 
-        $_data = \compact('name', 'typehint', 'getter');
+        $_data = \compact('name', 'typehint', 'setter');
 
         parent::__construct($_data, $config);
     }
 
     public function getFileTemplate(): string
     {
-        return 'Getter.php.twig';
+        return 'Setter.php.twig';
     }
 
     public function getPathTemplate(): string
