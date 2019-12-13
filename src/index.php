@@ -18,7 +18,7 @@ try {
         $useCase = new ProcessFormatUseCase();
 
         $response = $useCase->execute(
-            new ProcessFormatRequest((string)$file->getRealPath(), $file->guessClientExtension())
+            new ProcessFormatRequest($file->getRealPath(), $file->guessClientExtension())
         );
     } else {
         $message = $file ? $file->getErrorMessage() : 'Upload file has error.';

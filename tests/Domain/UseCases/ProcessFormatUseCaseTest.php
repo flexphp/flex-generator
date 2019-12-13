@@ -3,6 +3,7 @@
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
+use FlexPHP\Generator\Domain\Exceptions\FormatPathNotValidException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
 use FlexPHP\Generator\Domain\UseCases\ProcessFormatUseCase;
@@ -11,7 +12,7 @@ use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 class ProcessFormatUseCaseTest extends TestCase
 {
-    public function testItFormatNotValidRequestThrowException()
+    public function testItFormatNotValidRequestThrowException(): void
     {
         $this->expectException(NotValidRequestException::class);
 
@@ -19,7 +20,35 @@ class ProcessFormatUseCaseTest extends TestCase
         $useCase->execute(null);
     }
 
-    public function testItFormatNotSupportedThrowException()
+    /**
+     * @dataProvider getPathNotValid
+     * @param mixed $path
+     * @return void
+     */
+    public function testItFormatPathNotValidThrowException($path): void
+    {
+        $this->expectException(FormatPathNotValidException::class);
+
+        $request = new ProcessFormatRequest($path, 'xlsx');
+
+        $useCase = new ProcessFormatUseCase();
+        $useCase->execute($request);
+    }
+
+    public function getPathNotValid(): array
+    {
+        return [
+            [null],
+            [true],
+            [false],
+            [[]],
+            [new \stdClass()],
+            [''],
+            ['/path/not/exist'],
+        ];
+    }
+
+    public function testItFormatNotSupportedThrowException(): void
     {
         $this->expectException(FormatNotSupportedException::class);
 
@@ -29,7 +58,7 @@ class ProcessFormatUseCaseTest extends TestCase
         $useCase->execute($request);
     }
 
-    public function testItFormatOk()
+    public function testItFormatOk(): void
     {
         $request = new ProcessFormatRequest(\sprintf('%1$s/../../../src/templates/Format.xlsx', __DIR__), 'xlsx');
 
