@@ -8,8 +8,10 @@ class RepositoryBuilder extends AbstractBuilder
 {
     public function __construct(array $data, array $config = [])
     {
-        foreach ($data['actions'] as $index => $action) {
-            $data['actions'][$index] = $this->getCamelCase($action);
+        if (!empty($data['actions']) && is_array($data['actions'])) {
+            foreach ($data['actions'] as $index => $action) {
+                $data['actions'][$index] = $this->getCamelCase($action);
+            }
         }
 
         parent::__construct($data, $config);

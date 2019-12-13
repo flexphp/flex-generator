@@ -22,7 +22,10 @@ class ActionBuilderTest extends TestCase
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<T
+        $this->assertEquals(str_replace(
+            "\r\n",
+            "\n",
+            <<<T
     /**
      * @Route("/"}, methods={"GET"}, name="test.index")
      * @Cache(smaxage="10")
@@ -37,7 +40,7 @@ class ActionBuilderTest extends TestCase
     }
 
 T
-), $render->build());
+        ), $render->build());
     }
 
     public function testItRenderCreateOk()
@@ -54,7 +57,10 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<T
+        $this->assertEquals(str_replace(
+            "\r\n",
+            "\n",
+            <<<T
     /**
      * @Route("/create"}, methods={"POST"}, name="test.create")
      */
@@ -68,7 +74,7 @@ T
     }
 
 T
-), $render->build());
+        ), $render->build());
     }
 
     public function testItRenderReadOk()
@@ -85,7 +91,10 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<T
+        $this->assertEquals(str_replace(
+            "\r\n",
+            "\n",
+            <<<T
     /**
      * @Route("/{id}"}, methods={"GET"}, name="test.read")
      * @Cache(smaxage="10")
@@ -100,7 +109,7 @@ T
     }
 
 T
-), $render->build());
+        ), $render->build());
     }
 
     public function testItRenderUpdateOk()
@@ -117,7 +126,10 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<T
+        $this->assertEquals(str_replace(
+            "\r\n",
+            "\n",
+            <<<T
     /**
      * @Route("/update/{id}"}, methods={"PUT"}, name="test.update")
      */
@@ -131,7 +143,7 @@ T
     }
 
 T
-), $render->build());
+        ), $render->build());
     }
 
     public function testItRenderDeleteOk()
@@ -148,7 +160,10 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<T
+        $this->assertEquals(str_replace(
+            "\r\n",
+            "\n",
+            <<<T
     /**
      * @Route("/delete/{id}"}, methods={"DELETE"}, name="test.delete")
      */
@@ -162,7 +177,7 @@ T
     }
 
 T
-), $render->build());
+        ), $render->build());
     }
 
     /**
@@ -183,7 +198,10 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<T
+        $this->assertEquals(str_replace(
+            "\r\n",
+            "\n",
+            <<<T
     /**
      * @Route("/custom_action"}, methods={"POST"}, name="foobar.custom_action")
      */
@@ -197,7 +215,7 @@ T
     }
 
 T
-), $render->build());
+        ), $render->build());
     }
 
     public function testItRenderToString()
@@ -214,7 +232,10 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<T
+        $this->assertEquals(str_replace(
+            "\r\n",
+            "\n",
+            <<<T
     /**
      * @Route("/"}, methods={"GET"}, name="test.index")
      * @Cache(smaxage="10")
@@ -228,7 +249,8 @@ T
 
     }
 
-T), $render);
+T
+        ), $render);
     }
 
     public function getCustomActions(): array

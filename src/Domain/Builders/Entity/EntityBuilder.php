@@ -3,15 +3,17 @@
 namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
-use FlexPHP\Generator\Domain\Constants\Keyword;
 
 class EntityBuilder extends AbstractBuilder
 {
     public function __construct(array $data, array $config = [])
     {
         $name = $data['name'];
-        $properties = $data['properties'];
-        $_properties = array_keys($data['properties']);
+        $properties = !empty($data['properties']) && \is_array($data['properties'])
+            ? $data['properties']
+            : [];
+
+        $_properties = \array_keys($properties);
 
         $getters = $this->getGetters($properties);
         $setters = $this->getSetters($properties);
@@ -29,7 +31,7 @@ class EntityBuilder extends AbstractBuilder
         return \sprintf('%1$s/FlexPHP/Entity', parent::getPathTemplate());
     }
 
-    private function getGetters($properties): array
+    private function getGetters(array $properties): array
     {
         $getters = [];
 
@@ -42,7 +44,7 @@ class EntityBuilder extends AbstractBuilder
         return $getters;
     }
 
-    private function getSetters($properties): array
+    private function getSetters(array $properties): array
     {
         $setters = [];
 

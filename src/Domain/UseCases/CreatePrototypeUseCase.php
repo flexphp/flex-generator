@@ -32,7 +32,7 @@ class CreatePrototypeUseCase extends UseCase
     private function processSheet(string $name, string $fileConfig): SheetProcessResponse
     {
         return (new SheetProcessUseCase())->execute(
-            new SheetProcessRequest($name, $fileConfig),
+            new SheetProcessRequest($name, $fileConfig)
         );
     }
 

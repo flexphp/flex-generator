@@ -8,9 +8,13 @@ class GetterBuilder extends AbstractBuilder
 {
     use TypeHintTrait;
 
+    /**
+     * @param array[] $data
+     * @param array $config
+     */
     public function __construct(array $data, array $config = [])
     {
-        $name = array_key_first($data);
+        $name = (string)array_key_first($data);
         $typehint = $this->guessTypeHint($data[$name]);
         $getter = $this->getPascalCase($name);
 
