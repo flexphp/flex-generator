@@ -5,6 +5,7 @@ namespace FlexPHP\Generator\Domain\UseCases;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use FlexPHP\Generator\Domain\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
+use FlexPHP\Generator\Domain\Exceptions\FormatPathNotValidException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
 use FlexPHP\Generator\Domain\Validations\FieldSyntaxValidation;
@@ -21,6 +22,8 @@ class ProcessFormatUseCase extends UseCase
      *
      * @param ProcessFormatRequest $request
      * @return ProcessFormatResponse
+     * @throws FormatPathNotValidException
+     * @throws FormatNotSupportedException
      */
     public function execute($request)
     {
@@ -29,6 +32,10 @@ class ProcessFormatUseCase extends UseCase
         $sheetNames = [];
         $path = $request->path;
         $extension = $request->extension;
+
+        if (empty($path) || !is_string($path) || !is_file($path)) {
+            throw new FormatPathNotValidException();
+        }
 
         switch ($extension) {
             case 'xlsx':
@@ -91,7 +98,6 @@ class ProcessFormatUseCase extends UseCase
                 break;
             default:
                 throw new FormatNotSupportedException();
-                break;
         }
 
         return new ProcessFormatResponse($sheetNames);

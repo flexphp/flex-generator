@@ -200,6 +200,37 @@ T
 ), $render->build());
     }
 
+    public function testItRenderToString()
+    {
+        $action = 'index';
+        $entity = 'Test';
+
+        $render = new ActionBuilder([
+            'action' => $action,
+            'entity' => $entity,
+            'request_message' => (new RequestMessageBuilder([
+                'action' => $action,
+                'entity' => $entity,
+            ]))->build(),
+        ]);
+
+        $this->assertEquals(str_replace("\r\n","\n", <<<T
+    /**
+     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Cache(smaxage="10")
+     */
+    public function index(Request \$request): Response
+    {
+        \$requestMessage = new IndexTestRequest(\$request->request->all());
+
+
+
+
+    }
+
+T), $render);
+    }
+
     public function getCustomActions(): array
     {
         return [

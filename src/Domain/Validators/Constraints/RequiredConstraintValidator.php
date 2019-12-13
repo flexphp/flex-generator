@@ -4,6 +4,7 @@ namespace FlexPHP\Generator\Domain\Validators\Constraints;
 
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -11,7 +12,11 @@ use Symfony\Component\Validator\Validation;
  */
 class RequiredConstraintValidator
 {
-    public function validate($bool)
+    /**
+     * @param mixed $bool
+     * @return ConstraintViolationListInterface
+     */
+    public function validate($bool): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
 

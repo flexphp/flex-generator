@@ -48,6 +48,10 @@ class ActionTestUseCase extends UseCase
     private \$foo;
     private \$bar;
 
+    /**
+     * @param ActionTestRequest \$request
+     * @return ActionTestResponse
+     */
     public function execute(\$request): ActionTestResponse
     {
         \$this->foo = \$request->foo;

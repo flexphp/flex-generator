@@ -17,6 +17,10 @@ class {{ action_name }}{{ entity }}UseCase extends UseCase
     private ${{ id }};
 {% endfor %}
 
+    /**
+     * @param {{ action_name }}{{ entity }}Request $request
+     * @return {{ action_name }}{{ entity }}Response
+     */
     public function execute($request): {{ action_name }}{{ entity }}Response
     {
 {% for id, property in properties %}

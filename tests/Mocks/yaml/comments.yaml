@@ -1,18 +1,23 @@
 Comments:
   Entity: Comments
   Attributes:
-    Id:
+    id:
       Name: Id
       DataType: integer
-    Comment:
+      Constraints: required
+    comment:
       Name: Comment
       DataType: text
-    PostId:
+      Constraints: 'required|min:3|max:256'
+    postId:
       Name: PostId
       DataType: integer
-    CreatedAt:
+      Constraints: 'required:true'
+    createdAt:
       Name: CreatedAt
       DataType: datetime
-    UpdatedAt:
+      Constraints: ''
+    updatedAt:
       Name: UpdatedAt
       DataType: datetime
+      Constraints: ''

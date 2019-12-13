@@ -6,12 +6,23 @@ use Jawira\CaseConverter\Convert;
 
 abstract class AbstractBuilder implements BuilderInterface
 {
+    /**
+     * @var array<string|array>
+     */
     private $data;
+
+    /**
+     * @var array[]
+     */
     private $config;
 
+    /**
+     * @param array<string|array> $data
+     * @param array[] $config
+     */
     public function __construct(array $data, array $config = [])
     {
-        if (!empty($data['action'])) {
+        if (!empty($data['action']) && is_string($data['action'])) {
             $data['action_name'] = $this->getPascalCase($data['action']);
         }
 

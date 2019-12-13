@@ -6,7 +6,7 @@ use FlexPHP\Generator\Domain\UseCases\ProcessFormatUseCase;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\UploadedFile;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 try {
     $request = Request::createFromGlobals();

@@ -7,14 +7,23 @@ use FlexPHP\Generator\Domain\Constants\Keyword;
 
 class HeaderSyntaxValidation implements ValidationInterface
 {
+    /**
+     * @var array
+     */
     protected $headers;
 
+    /**
+     * @var array
+     */
     protected $allowedHeaders = [
         Keyword::NAME,
         Keyword::DATA_TYPE,
         Keyword::CONSTRAINTS,
     ];
 
+    /**
+     * @var array
+     */
     protected $requiredHeaders = [
         Keyword::NAME,
         Keyword::DATA_TYPE,

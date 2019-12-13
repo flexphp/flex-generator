@@ -33,8 +33,8 @@ class SheetProcessUseCaseTest extends TestCase
         $this->assertFileExists($response->controller);
         \unlink($response->controller);
 
-        // $this->assertFileExists($response->constraint);
-        // \unlink($response->constraint);
+        $this->assertFileExists($response->constraint);
+        \unlink($response->constraint);
     }
 
     public function getEntityFile(): array

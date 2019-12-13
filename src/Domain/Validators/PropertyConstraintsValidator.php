@@ -11,6 +11,7 @@ use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -32,7 +33,11 @@ class PropertyConstraintsValidator
         'type',
     ];
 
-    public function validate($constraints)
+    /**
+     * @param mixed $constraints
+     * @return ConstraintViolationListInterface
+     */
+    public function validate($constraints): ConstraintViolationListInterface
     {
         $violations = new ConstraintViolationList();
 
@@ -75,7 +80,7 @@ class PropertyConstraintsValidator
         return $violations;
     }
 
-    private function getConstraintsFromString(string $constraints)
+    private function getConstraintsFromString(string $constraints): array
     {
         // Json syntax
         $_constraints = \json_decode($constraints, true);
@@ -109,7 +114,12 @@ class PropertyConstraintsValidator
         return $_constraints;
     }
 
-    private function validateRule(string $rule, $options): ConstraintViolationList
+    /**
+     * @param string $rule
+     * @param mixed $options
+     * @return ConstraintViolationListInterface
+     */
+    private function validateRule(string $rule, $options): ConstraintViolationListInterface
     {
         $errors = new ConstraintViolationList();
 

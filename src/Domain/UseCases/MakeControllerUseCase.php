@@ -25,9 +25,10 @@ class MakeControllerUseCase extends UseCase
 
         $entity = $request->entity;
         $actions = $request->actions;
+        $actionBuilders = [];
         
         foreach ($actions as $action) {
-            $actions[$action] = (new ActionBuilder([
+            $actionBuilders[$action] = (new ActionBuilder([
                 'action' => $action,
                 'entity' => $entity,
                 'request_message' => (new RequestMessageBuilder([
@@ -47,7 +48,7 @@ class MakeControllerUseCase extends UseCase
 
         $controller = new ControllerBuilder([
             'entity' => $entity,
-            'actions' => $actions,
+            'actions' => $actionBuilders,
         ]);
 
         $dir = sprintf('%1$s/../../tmp/skeleton/src/Controllers', __DIR__);

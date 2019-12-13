@@ -62,8 +62,9 @@ class ActionTestCommand extends Command
         \$foo = \$input->getArgument('foo');
         \$bar = \$input->getArgument('bar');
 
+        \$request = new ActionTestRequest(\$foo, \$bar);
         \$useCase = new ActionTestUseCase();
-        \$response = \$useCase->execute(\$requestMessage);
+        \$response = \$useCase->execute(\$request);
 
         \$output->writeln('Action on Test done!'); 
     }

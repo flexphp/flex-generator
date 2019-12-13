@@ -7,13 +7,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ActionBuilder extends AbstractBuilder
 {
+    /**
+     * @param array<string> $data
+     * @param array[] $config
+     */
     public function __construct(array $data, array $config = [])
     {
-        $action = $data['action'] = !empty($data['action'])
+        $action = $data['action'] = !empty($data['action']) && is_string($data['action'])
             ? $this->getSnakeCase($data['action'])
             : 'index';
 
-        $data['action_camel'] = $this->getCamelCase($data['action']);
+        $data['action_camel'] = $this->getCamelCase($action);
 
         if (empty($data['route'])) {
             $data['route'] = $this->getGuessRoute($action);
@@ -36,7 +40,7 @@ class ActionBuilder extends AbstractBuilder
         return \sprintf('%1$s/Symfony/v43/src/Controller', parent::getPathTemplate());
     }
 
-    private function getGuessMethod($action)
+    private function getGuessMethod(string $action): string
     {
         switch ($action) {
             case 'index':
@@ -58,7 +62,7 @@ class ActionBuilder extends AbstractBuilder
         return $method;
     }
 
-    private function getGuessRoute($action)
+    private function getGuessRoute(string $action): string
     {
         $route = '/' . $action;
 

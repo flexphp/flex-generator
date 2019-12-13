@@ -8,9 +8,11 @@ class ControllerBuilder extends AbstractBuilder
 {
     public function __construct(array $data, array $config = [])
     {
-        foreach ($data['actions'] as $action => $builder) {
-            unset($data['actions'][$action]);
-            $data['actions'][$this->getPascalCase($action)] = $builder;
+        if (!empty($data['actions']) && is_array($data['actions'])) {
+            foreach ($data['actions'] as $action => $builder) {
+                unset($data['actions'][$action]);
+                $data['actions'][$this->getPascalCase($action)] = $builder;
+            }
         }
 
         parent::__construct($data, $config);
