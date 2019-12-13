@@ -34,7 +34,11 @@ class PropertyDataTypeValidator
         'object',
     ];
 
-    public function validate(string $dataType): ConstraintViolationListInterface
+    /**
+     * @param mixed $dataType
+     * @return ConstraintViolationListInterface
+     */
+    public function validate($dataType): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
 

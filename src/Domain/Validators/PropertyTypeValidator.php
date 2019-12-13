@@ -25,7 +25,11 @@ class PropertyTypeValidator
         'pattern',
     ];
 
-    public function validate(string $type): ConstraintViolationListInterface
+    /**
+     * @param mixed $type
+     * @return ConstraintViolationListInterface
+     */
+    public function validate($type): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
 

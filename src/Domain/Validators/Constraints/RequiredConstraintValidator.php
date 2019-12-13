@@ -12,7 +12,11 @@ use Symfony\Component\Validator\Validation;
  */
 class RequiredConstraintValidator
 {
-    public function validate(?bool $bool): ConstraintViolationListInterface
+    /**
+     * @param mixed $bool
+     * @return ConstraintViolationListInterface
+     */
+    public function validate($bool): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
 

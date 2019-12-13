@@ -12,7 +12,11 @@ use Symfony\Component\Validator\Validation;
  */
 class MinConstraintValidator
 {
-    public function validate(?int $min): ConstraintViolationListInterface
+    /**
+     * @param mixed $min
+     * @return ConstraintViolationListInterface
+     */
+    public function validate($min): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
 

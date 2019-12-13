@@ -11,7 +11,11 @@ use Symfony\Component\Validator\Validation;
  */
 class EqualToConstraintValidator
 {
-    public function validate(string $string): ConstraintViolationListInterface
+    /**
+     * @param mixed $string
+     * @return ConstraintViolationListInterface
+     */
+    public function validate($string): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
 

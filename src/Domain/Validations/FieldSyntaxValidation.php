@@ -9,7 +9,7 @@ use FlexPHP\Generator\Domain\Validators\PropertyConstraintsValidator;
 use FlexPHP\Generator\Domain\Validators\PropertyDataTypeValidator;
 use FlexPHP\Generator\Domain\Validators\PropertyNameValidator;
 use FlexPHP\Generator\Domain\Validators\PropertyTypeValidator;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class FieldSyntaxValidation implements ValidationInterface
 {
@@ -60,7 +60,12 @@ class FieldSyntaxValidation implements ValidationInterface
         }
     }
 
-    private function validateProperty(string $property, string $value): ConstraintViolationList
+    /**
+     * @param string $property
+     * @param mixed $value
+     * @return ConstraintViolationListInterface
+     */
+    private function validateProperty(string $property, $value): ConstraintViolationListInterface
     {
         try {
             $validator = new $this->validators[$property];

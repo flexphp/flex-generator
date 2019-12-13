@@ -12,7 +12,11 @@ use Symfony\Component\Validator\Validation;
  */
 class MaxConstraintValidator
 {
-    public function validate(?int $max): ConstraintViolationListInterface
+    /**
+     * @param mixed $max
+     * @return ConstraintViolationListInterface
+     */
+    public function validate($max): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
 
