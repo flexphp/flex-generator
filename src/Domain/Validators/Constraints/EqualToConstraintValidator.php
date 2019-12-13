@@ -3,6 +3,7 @@
 namespace FlexPHP\Generator\Domain\Validators\Constraints;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -10,7 +11,7 @@ use Symfony\Component\Validator\Validation;
  */
 class EqualToConstraintValidator
 {
-    public function validate($string)
+    public function validate(string $string): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
 

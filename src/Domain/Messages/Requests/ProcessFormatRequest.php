@@ -6,10 +6,21 @@ use FlexPHP\Messages\RequestInterface;
 
 class ProcessFormatRequest implements RequestInterface
 {
+    /**
+     * @var string|false
+     */
     public $path;
+
+    /**
+     * @var string|null
+     */
     public $extension;
 
-    public function __construct(string $path, string $extension)
+    /**
+     * @param string|false $path
+     * @param string|null $extension
+     */
+    public function __construct($path, ?string $extension)
     {
         $this->path = $path;
         $this->extension = $extension;

@@ -4,6 +4,7 @@ namespace FlexPHP\Generator\Domain\Validators;
 
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -24,7 +25,7 @@ class PropertyTypeValidator
         'pattern',
     ];
 
-    public function validate($type)
+    public function validate(string $type): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
 

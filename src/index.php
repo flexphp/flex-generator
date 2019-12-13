@@ -6,7 +6,7 @@ use FlexPHP\Generator\Domain\UseCases\ProcessFormatUseCase;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\UploadedFile;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 try {
     $request = Request::createFromGlobals();
@@ -18,7 +18,7 @@ try {
         $useCase = new ProcessFormatUseCase();
 
         $response = $useCase->execute(
-            new ProcessFormatRequest($file->getRealPath(), $file->guessClientExtension())
+            new ProcessFormatRequest((string)$file->getRealPath(), $file->guessClientExtension())
         );
     } else {
         $message = $file ? $file->getErrorMessage() : 'Upload file has error.';

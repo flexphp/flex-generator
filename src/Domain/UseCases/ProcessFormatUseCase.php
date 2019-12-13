@@ -91,7 +91,6 @@ class ProcessFormatUseCase extends UseCase
                 break;
             default:
                 throw new FormatNotSupportedException();
-                break;
         }
 
         return new ProcessFormatResponse($sheetNames);

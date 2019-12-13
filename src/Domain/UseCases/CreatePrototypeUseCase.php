@@ -29,14 +29,14 @@ class CreatePrototypeUseCase extends UseCase
         return new CreatePrototypeResponse();
     }
 
-    private function processSheet(string $name, $fileConfig): SheetProcessResponse
+    private function processSheet(string $name, string $fileConfig): SheetProcessResponse
     {
         return (new SheetProcessUseCase())->execute(
             new SheetProcessRequest($name, $fileConfig),
         );
     }
 
-    private function addVendorFiles()
+    private function addVendorFiles(): void
     {
         copy(
             __DIR__ . '/../BoilerPlates/Symfony/v43/composer.json',

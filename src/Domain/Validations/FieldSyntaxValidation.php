@@ -13,15 +13,24 @@ use Symfony\Component\Validator\ConstraintViolationList;
 
 class FieldSyntaxValidation implements ValidationInterface
 {
+    /**
+     * @var array
+     */
     protected $properties;
 
+    /**
+     * @var array
+     */
     private $allowedProperties = [
         Keyword::NAME,
         Keyword::DATA_TYPE,
         Keyword::TYPE,
         Keyword::CONSTRAINTS,
     ];
-    
+
+    /**
+     * @var array
+     */
     private $validators = [
         Keyword::NAME => PropertyNameValidator::class,
         Keyword::DATA_TYPE => PropertyDataTypeValidator::class,
@@ -51,7 +60,7 @@ class FieldSyntaxValidation implements ValidationInterface
         }
     }
 
-    private function validateProperty(string $property, $value): ConstraintViolationList
+    private function validateProperty(string $property, string $value): ConstraintViolationList
     {
         try {
             $validator = new $this->validators[$property];

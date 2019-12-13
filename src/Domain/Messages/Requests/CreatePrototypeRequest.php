@@ -6,6 +6,9 @@ use FlexPHP\Messages\RequestInterface;
 
 class CreatePrototypeRequest implements RequestInterface
 {
+    /**
+     * @var array
+     */
     public $sheets;
 
     public function __construct(array $sheets)

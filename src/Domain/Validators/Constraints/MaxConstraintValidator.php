@@ -4,6 +4,7 @@ namespace FlexPHP\Generator\Domain\Validators\Constraints;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Validation;
  */
 class MaxConstraintValidator
 {
-    public function validate($max)
+    public function validate(?int $max): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
 

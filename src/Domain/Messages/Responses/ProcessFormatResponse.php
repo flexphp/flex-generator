@@ -6,7 +6,14 @@ use FlexPHP\Messages\ResponseInterface;
 
 class ProcessFormatResponse implements ResponseInterface
 {
+    /**
+     * @var array
+     */
     public $messages;
+
+    /**
+     * @var bool
+     */
     public $hasError;
 
     public function __construct(array $messages)
