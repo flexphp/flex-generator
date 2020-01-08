@@ -7,7 +7,7 @@ use FlexPHP\Messages\RequestInterface;
 class ProcessFormatRequest implements RequestInterface
 {
     /**
-     * @var string|false
+     * @var string|bool
      */
     public $path;
 
@@ -17,7 +17,7 @@ class ProcessFormatRequest implements RequestInterface
     public $extension;
 
     /**
-     * @param string|false $path
+     * @param string|bool $path
      * @param string|null $extension
      */
     public function __construct($path, ?string $extension)
