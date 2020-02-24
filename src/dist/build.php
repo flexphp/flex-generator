@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 use FlexPHP\Generator\Domain\UseCases\ProcessFormatUseCase;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
@@ -11,32 +11,35 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 try {
     $request = Request::createFromGlobals();
 
+    $response = new \stdClass();
+    $response->messages = ['message' => 'Unknow error'];
+    $response->hasError = true;
+
     /** @var UploadedFile|null $file */
     $file = $request->files->get('file', null);
 
-    if ($file && $file->getError() === UPLOAD_ERR_OK) {
-        $useCase = new ProcessFormatUseCase();
-
-        $response = $useCase->execute(
+    if (php_sapi_name() !== 'cli' && !$request->isXmlHttpRequest()) {
+        header('Location: index.html');
+        die;
+    } elseif (!$file || $file->getError() !== UPLOAD_ERR_OK) {
+        $error = $file ? $file->getErrorMessage() : 'Upload file has error.';
+        $response->messages = ['message' => $error];
+    } else {
+        $response = (new ProcessFormatUseCase())->execute(
             new ProcessFormatRequest($file->getRealPath(), $file->guessClientExtension())
         );
-    } else {
-        $message = $file ? $file->getErrorMessage() : 'Upload file has error.';
-
-        $response = new \stdClass();
-        $response->messages = ['message' => $message];
-        $response->hasError = true;
     }
 } catch (Exception $e) {
     $response = new \stdClass();
     $response->messages = ['message' => sprintf('%1$s(%2$d): %3$s', $e->getFile(), $e->getLine(), $e->getMessage())];
     $response->hasError = true;
 } finally {
-    echo new Response(
-        \json_encode($response->messages),
-        (!$response->hasError ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST),
-        [
+    $content = \json_encode($response->messages);
+    $status = $response->hasError 
+        ? Response::HTTP_BAD_REQUEST
+        : Response::HTTP_OK;
+
+    echo new Response($content, $status, [
             'Content-Type' => 'application/json',
-        ]
-    );
+    ]);
 }

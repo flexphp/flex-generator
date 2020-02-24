@@ -7,12 +7,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GeneratorTest extends WebTestCase
 {
-    public function testItFileError()
+    public function testItFileEmptyError()
     {
         $_FILES = [];
 
         \ob_start();
-        include __DIR__ . '/../../src/index.php';
+        include __DIR__ . '/../../src/dist/build.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
         // dump($response->getContent());
 
@@ -23,14 +23,14 @@ class GeneratorTest extends WebTestCase
     {
         $name = 'Format.xlsx';
         $type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-        $path = \getcwd() . '/src/templates/' . $name;
+        $path = \getcwd() . '/src/dist/templates/' . $name;
 
         $_FILES = [
             'file' => $this->getFileMock($name, $path, $type, UPLOAD_ERR_FORM_SIZE),
         ];
 
         \ob_start();
-        include __DIR__ . '/../../src/index.php';
+        include __DIR__ . '/../../src/dist/build.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
         // dump($response->getContent());
 
@@ -41,14 +41,14 @@ class GeneratorTest extends WebTestCase
     {
         $name = 'Format.docx';
         $type = 'application/msword';
-        $path = \getcwd() . '/src/templates/' . $name;
+        $path = \getcwd() . '/src/dist/templates/' . $name;
 
         $_FILES = [
             'file' => $this->getFileMock($name, $path, $type),
         ];
 
         \ob_start();
-        include __DIR__ . '/../../src/index.php';
+        include __DIR__ . '/../../src/dist/build.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
         // dump($response->getContent());
 
@@ -59,14 +59,14 @@ class GeneratorTest extends WebTestCase
     {
         $name = 'Format.xlsx';
         $type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-        $path = \getcwd() . '/src/templates/' . $name;
+        $path = \getcwd() . '/src/dist/templates/' . $name;
 
         $_FILES = [
             'file' => $this->getFileMock($name, $path, $type),
         ];
 
         \ob_start();
-        include __DIR__ . '/../../src/index.php';
+        include __DIR__ . '/../../src/dist/build.php';
         $response = $this->parseHttpResponse(\ob_get_clean());
         // dump($response->getContent());
 

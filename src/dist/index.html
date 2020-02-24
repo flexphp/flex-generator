@@ -17,11 +17,10 @@
 
                 <div class="card-body">
                     <ol>
-                        <li>Download template:</li>
+                        <li>Download template</li>
                             <ul>
-                                <li><a download="Format.ods" href="../templates/Format.ods">Open/Libre Office Calc (ods)</a></li>
-                                <li><a download="Format.xlsx" href="../templates/Format.xlsx">Microsoft Office Excel (xlsx)</a></li>
-                                <li><a download="Format.xls" href="../templates/Format.xls">Microsoft Office Excel (xls)</a></li>
+                                <!-- <li><a download="Format.ods" href="templates/Format.ods">Open/Libre Office Calc (.ods)</a></li> -->
+                                <li><a download="Format.xlsx" href="templates/Format.xlsx">Microsoft Office Excel (.xlsx)</a></li>
                             </ul>
                         <li>Setup each interface</li>
                         <li>Drop file into wrap</li>
@@ -29,12 +28,12 @@
                     </ol>
                     
                     <div class="wrap">
-                        <form enctype="multipart/form-data" action="../index.php" id="files" class="dropzone"></form>
+                        <form enctype="multipart/form-data" action="build.php" id="files" class="dropzone"></form>
                     </div>
                 </div>
 
                 <div class="card-footer text-right">
-                    <a href="https://github.com/flexphp/flex-generator" title="Open GitHub">FlexPHP</a> by FreddieGar @ 2019
+                    <a href="https://github.com/flexphp/flex-generator" title="Open GitHub">FlexPHP</a> by Freddie Gar @ <span id="year"></span>
                 </div>
             </div>
         </div>
