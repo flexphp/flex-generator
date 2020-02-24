@@ -5,4 +5,4 @@ tests/coverage
 vendor
 infection.*
 src/tmp/*
-src/templates/~*
+src/dist/templates/~*

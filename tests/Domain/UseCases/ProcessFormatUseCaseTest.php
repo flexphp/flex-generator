@@ -52,7 +52,7 @@ class ProcessFormatUseCaseTest extends TestCase
     {
         $this->expectException(FormatNotSupportedException::class);
 
-        $request = new ProcessFormatRequest(\sprintf('%1$s/../../../src/templates/Format.xlsx', __DIR__), 'doc');
+        $request = new ProcessFormatRequest(\sprintf('%1$s/../../../src/dist/templates/Format.xlsx', __DIR__), 'doc');
 
         $useCase = new ProcessFormatUseCase();
         $useCase->execute($request);
@@ -60,7 +60,7 @@ class ProcessFormatUseCaseTest extends TestCase
 
     public function testItFormatOk(): void
     {
-        $request = new ProcessFormatRequest(\sprintf('%1$s/../../../src/templates/Format.xlsx', __DIR__), 'xlsx');
+        $request = new ProcessFormatRequest(\sprintf('%1$s/../../../src/dist/templates/Format.xlsx', __DIR__), 'xlsx');
 
         $useCase = new ProcessFormatUseCase();
         $response = $useCase->execute($request);
