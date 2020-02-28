@@ -6,12 +6,10 @@ Dropzone.options.files = {
     acceptedFiles: allowedExtensions,
     dictInvalidFileType: 'Allowed extensions file: (' + allowedExtensions + ')',
     success: function (file, response) {
-        var response = JSON.parse(response);
-
-        if (response.error !== undefined && response.error !== '') {
+        if (response.message !== undefined && response.message !== '') {
             alert(response.error);
         } else {
-            alert('Ready! \n Spent Time: ' + response.executionTime + ' in seg');
+            alert('Ready!');
         }
     }
 }
