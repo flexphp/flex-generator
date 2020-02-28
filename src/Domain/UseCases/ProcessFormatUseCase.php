@@ -38,66 +38,67 @@ class ProcessFormatUseCase extends UseCase
         }
 
         switch ($extension) {
-            case 'xlsx':
-                // MS Excel >= 2007
-            case 'ods':
-                // Open Format
-                $reader = ReaderEntityFactory::createReaderFromFile($path);
-                $reader->open($path);
-
-                foreach ($reader->getSheetIterator() as $sheet) {
-                    if (!$sheet->isVisible()) {
-                        continue;
-                    }
-
-                    $sheetName = (new Convert($sheet->getName()))->toPascal();
-
-                    $headers = [];
-                    $fields = [];
-
-                    foreach ($sheet->getRowIterator() as $rowNumber => $row) {
-                        $rowNumber -= 1;
-                        $cols = $row->getCells();
-
-                        if ($rowNumber === 0) {
-                            foreach ($cols as $colNumber => $col) {
-                                $headers[$colNumber] = $col->getValue();
-                            }
-
-                            $headerValidation = new HeaderSyntaxValidation($headers);
-                            $headerValidation->validate();
-
-                            continue;
-                        }
-
-                        $field = [];
-
-                        foreach ($cols as $colNumber => $col) {
-                            $field[$headers[$colNumber]] = $col->getValue();
-                        }
-
-                        $fieldValidation = new FieldSyntaxValidation($field);
-                        $fieldValidation->validate();
-
-                        $colHeaderName = $headers[\array_search(Keyword::NAME, $headers)];
-                        $fieldName = (new Convert($field[$colHeaderName]))->toCamel();
-                        $fields[$fieldName] = $field;
-                    }
-
-                    $writer = new YamlWriter([
-                        $sheetName => [
-                            'Entity' => $sheetName,
-                            'Attributes' => $fields,
-                        ]
-                    ], \strtolower($sheetName));
-
-                    $writer->save();
-
-                    $sheetNames[$sheetName] = \count($fields);
-                }
+            case 'xlsx': // MS Excel >= 2007
+                $reader = ReaderEntityFactory::createXLSXReader();
+                break;
+            case 'ods': // Open Format
+                $reader = ReaderEntityFactory::createODSReader();
                 break;
             default:
                 throw new FormatNotSupportedException();
+        }
+
+        $reader->open($path);
+
+        foreach ($reader->getSheetIterator() as $sheet) {
+            if (!$sheet->isVisible()) {
+                continue;
+            }
+
+            $sheetName = (new Convert($sheet->getName()))->toPascal();
+
+            $headers = [];
+            $fields = [];
+
+            foreach ($sheet->getRowIterator() as $rowNumber => $row) {
+                $rowNumber -= 1;
+                $cols = $row->getCells();
+
+                if ($rowNumber === 0) {
+                    foreach ($cols as $colNumber => $col) {
+                        $headers[$colNumber] = $col->getValue();
+                    }
+
+                    $headerValidation = new HeaderSyntaxValidation($headers);
+                    $headerValidation->validate();
+
+                    continue;
+                }
+
+                $field = [];
+
+                foreach ($cols as $colNumber => $col) {
+                    $field[$headers[$colNumber]] = $col->getValue();
+                }
+
+                $fieldValidation = new FieldSyntaxValidation($field);
+                $fieldValidation->validate();
+
+                $colHeaderName = $headers[\array_search(Keyword::NAME, $headers)];
+                $fieldName = (new Convert($field[$colHeaderName]))->toCamel();
+                $fields[$fieldName] = $field;
+            }
+
+            $writer = new YamlWriter([
+                $sheetName => [
+                    'Entity' => $sheetName,
+                    'Attributes' => $fields,
+                ]
+            ], \strtolower($sheetName));
+
+            $writer->save();
+
+            $sheetNames[$sheetName] = \count($fields);
         }
 
         return new ProcessFormatResponse($sheetNames);

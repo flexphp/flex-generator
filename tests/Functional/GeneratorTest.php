@@ -13,10 +13,9 @@ class GeneratorTest extends WebTestCase
 
         \ob_start();
         include __DIR__ . '/../../src/dist/build.php';
-        $response = $this->parseHttpResponse(\ob_get_clean());
-        // dump($response->getContent());
+        $response = \ob_get_clean();
 
-        $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertContains('Upload file has error.', $response);
     }
 
     public function testItFileUploadError()
@@ -31,10 +30,9 @@ class GeneratorTest extends WebTestCase
 
         \ob_start();
         include __DIR__ . '/../../src/dist/build.php';
-        $response = $this->parseHttpResponse(\ob_get_clean());
-        // dump($response->getContent());
+        $response = \ob_get_clean();
 
-        $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertContains('exceeds the upload limit', $response);
     }
 
     public function testItFileUploadExtensionError()
@@ -49,10 +47,9 @@ class GeneratorTest extends WebTestCase
 
         \ob_start();
         include __DIR__ . '/../../src/dist/build.php';
-        $response = $this->parseHttpResponse(\ob_get_clean());
-        // dump($response->getContent());
+        $response = \ob_get_clean();
 
-        $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertContains('isn\'t supported', $response);
     }
 
     public function testItFileFormatXlsx()
@@ -67,12 +64,9 @@ class GeneratorTest extends WebTestCase
 
         \ob_start();
         include __DIR__ . '/../../src/dist/build.php';
-        $response = $this->parseHttpResponse(\ob_get_clean());
-        // dump($response->getContent());
+        $response = \ob_get_clean();
 
-        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-
-        $sheetNames = \json_decode($response->getContent(), true);
+        $sheetNames = \json_decode($response, true);
 
         foreach (array_keys($sheetNames) as $sheetName) {
             $yaml = \sprintf('%1$s/../../src/tmp/%2$s.yaml', __DIR__, \strtolower($sheetName));

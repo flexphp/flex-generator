@@ -39,7 +39,7 @@ try {
         ? Response::HTTP_BAD_REQUEST
         : Response::HTTP_OK;
 
-    echo new Response($content, $status, [
+    (new Response($content, $status, [
             'Content-Type' => 'application/json',
-    ]);
+    ]))->send();
 }
