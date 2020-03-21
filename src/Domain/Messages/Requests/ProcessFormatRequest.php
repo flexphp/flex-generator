@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
 use FlexPHP\Messages\RequestInterface;
@@ -7,18 +14,17 @@ use FlexPHP\Messages\RequestInterface;
 class ProcessFormatRequest implements RequestInterface
 {
     /**
-     * @var string|bool
+     * @var bool|string
      */
     public $path;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     public $extension;
 
     /**
-     * @param string|bool $path
-     * @param string|null $extension
+     * @param bool|string $path
      */
     public function __construct($path, ?string $extension)
     {

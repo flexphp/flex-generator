@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\Controller\ActionBuilder;
@@ -11,7 +18,7 @@ use FlexPHP\Generator\Tests\TestCase;
 
 class ControllerBuilderTest extends TestCase
 {
-    public function testItRenderIndexOk()
+    public function testItRenderIndexOk(): void
     {
         $entity = 'Test';
         $actions = [
@@ -54,7 +61,7 @@ class ControllerBuilderTest extends TestCase
             'actions' => $actions,
         ]);
 
-        $this->assertEquals(str_replace("\r\n","\n", <<<T
+        $this->assertEquals(\str_replace("\r\n", "\n", <<<T
 <?php
 
 namespace App\Controller;

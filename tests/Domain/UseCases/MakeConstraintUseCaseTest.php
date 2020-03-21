@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\MakeConstraintRequest;
@@ -10,7 +17,7 @@ use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 class MakeConstraintUseCaseTest extends TestCase
 {
-    public function testItNotValidRequestThrowException()
+    public function testItNotValidRequestThrowException(): void
     {
         $this->expectException(NotValidRequestException::class);
 
@@ -20,9 +27,8 @@ class MakeConstraintUseCaseTest extends TestCase
 
     /**
      * @dataProvider getEntityFile()
-     * @param string $entity
+     *
      * @param string $properties
-     * @return void
      */
     public function testItSymfony43Ok(string $entity, array $properties): void
     {
@@ -47,7 +53,7 @@ class MakeConstraintUseCaseTest extends TestCase
                     'Type' => 'text',
                     'Constraints' => [
                         'required' => true,
-                    ]
+                    ],
                 ],
                 'content' => [
                     'Name' => 'Content',

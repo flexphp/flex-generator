@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
@@ -37,7 +44,7 @@ class EntityBuilder extends AbstractBuilder
 
         foreach ($properties as $name => $attributes) {
             $getters[$name] = new GetterBuilder([
-                $name => $attributes
+                $name => $attributes,
             ]);
         }
 
@@ -50,7 +57,7 @@ class EntityBuilder extends AbstractBuilder
 
         foreach ($properties as $name => $attributes) {
             $setters[$name] = new SetterBuilder([
-                $name => $attributes
+                $name => $attributes,
             ]);
         }
 

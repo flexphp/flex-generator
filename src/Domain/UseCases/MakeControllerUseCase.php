@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Builders\Controller\ActionBuilder;
@@ -17,6 +24,7 @@ class MakeControllerUseCase extends UseCase
      * Create controller based in actions
      *
      * @param MakeControllerRequest $request
+     *
      * @return MakeControllerResponse
      */
     public function execute($request)
@@ -26,7 +34,7 @@ class MakeControllerUseCase extends UseCase
         $entity = $request->entity;
         $actions = $request->actions;
         $actionBuilders = [];
-        
+
         foreach ($actions as $action) {
             $actionBuilders[$action] = (new ActionBuilder([
                 'action' => $action,
@@ -51,10 +59,10 @@ class MakeControllerUseCase extends UseCase
             'actions' => $actionBuilders,
         ]);
 
-        $dir = sprintf('%1$s/../../tmp/skeleton/src/Controllers', __DIR__);
+        $dir = \sprintf('%1$s/../../tmp/skeleton/src/Controllers', __DIR__);
 
         if (!\is_dir($dir)) {
-            mkdir($dir, 0777, true);
+            \mkdir($dir, 0777, true);
         }
 
         $file = \sprintf('%1$s/%2$sController.php', $dir, $entity);

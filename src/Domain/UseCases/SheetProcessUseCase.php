@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Constants\Keyword;
@@ -18,6 +25,7 @@ class SheetProcessUseCase extends UseCase
      * Process sheet
      *
      * @param SheetProcessRequest $request
+     *
      * @return SheetProcessResponse
      */
     public function execute($request)

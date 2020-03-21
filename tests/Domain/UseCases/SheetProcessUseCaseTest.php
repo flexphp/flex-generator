@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
@@ -9,7 +16,7 @@ use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 class SheetProcessUseCaseTest extends TestCase
 {
-    public function testItNotValidRequestThrowException()
+    public function testItNotValidRequestThrowException(): void
     {
         $this->expectException(NotValidRequestException::class);
 
@@ -19,17 +26,14 @@ class SheetProcessUseCaseTest extends TestCase
 
     /**
      * @dataProvider getEntityFile()
-     * @param string $name
-     * @param string $path
-     * @return void
-     */ 
+     */
     public function testItSymfony43Ok(string $name, string $path): void
     {
         $request = new SheetProcessRequest($name, $path);
 
         $useCase = new SheetProcessUseCase();
         $response = $useCase->execute($request);
-        
+
         $this->assertFileExists($response->controller);
         \unlink($response->controller);
 

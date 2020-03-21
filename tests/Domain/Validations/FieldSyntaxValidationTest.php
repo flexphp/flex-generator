@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Tests\Domain\Validations;
 
 use FlexPHP\Generator\Domain\Constants\Keyword;
@@ -25,6 +32,8 @@ class FieldSyntaxValidationTest extends TestCase
 
     /**
      * @dataProvider propertyNameNotValid
+     *
+     * @param mixed $name
      */
     public function testItPropertyNameNotValidThrownException($name): void
     {
@@ -40,6 +49,8 @@ class FieldSyntaxValidationTest extends TestCase
 
     /**
      * @dataProvider propertyNameValid
+     *
+     * @param mixed $name
      */
     public function testItPropertyNameOk($name): void
     {
@@ -54,6 +65,8 @@ class FieldSyntaxValidationTest extends TestCase
 
     /**
      * @dataProvider propertyDataTypeNotValid
+     *
+     * @param mixed $dataType
      */
     public function testItPropertyDataTypeNotValidThrownException($dataType): void
     {
@@ -69,6 +82,8 @@ class FieldSyntaxValidationTest extends TestCase
 
     /**
      * @dataProvider propertyDataTypeValid
+     *
+     * @param mixed $dataType
      */
     public function testItPropertyDataTypeOk($dataType): void
     {
@@ -83,6 +98,8 @@ class FieldSyntaxValidationTest extends TestCase
 
     /**
      * @dataProvider propertyDataTypeNotValid
+     *
+     * @param mixed $type
      */
     public function testItPropertyTypeNotValidThrownException($type): void
     {
@@ -98,6 +115,8 @@ class FieldSyntaxValidationTest extends TestCase
 
     /**
      * @dataProvider propertyTypeValid
+     *
+     * @param mixed $type
      */
     public function testItPropertyTypeOk($type): void
     {
@@ -112,6 +131,8 @@ class FieldSyntaxValidationTest extends TestCase
 
     /**
      * @dataProvider propertyConstraintsNotValid
+     *
+     * @param mixed $constraints
      */
     public function testItPropertyConstraintsNotValidThrownException($constraints): void
     {
@@ -127,6 +148,8 @@ class FieldSyntaxValidationTest extends TestCase
 
     /**
      * @dataProvider propertyConstraintsValid
+     *
+     * @param mixed $constraints
      */
     public function testItPropertyConstraintsOk($constraints): void
     {
@@ -145,7 +168,7 @@ class FieldSyntaxValidationTest extends TestCase
             ['#Name'],
             ['1Name'],
             ['Name$'],
-            [str_repeat('N', 65)],
+            [\str_repeat('N', 65)],
             [''],
         ];
     }
@@ -158,7 +181,7 @@ class FieldSyntaxValidationTest extends TestCase
             ['Name_Test'],
             ['name_test'],
             ['_name'],
-            [str_repeat('N', 64)],
+            [\str_repeat('N', 64)],
             ['N'],
         ];
     }
@@ -179,7 +202,7 @@ class FieldSyntaxValidationTest extends TestCase
 
     public function propertyDataTypeValid(): array
     {
-        return array_map(function ($dataType) {
+        return \array_map(function ($dataType) {
             return [$dataType];
         }, PropertyDataTypeValidator::ALLOWED_DATA_TYPES);
     }
@@ -199,7 +222,7 @@ class FieldSyntaxValidationTest extends TestCase
 
     public function propertyTypeValid(): array
     {
-        return array_map(function ($dataType) {
+        return \array_map(function ($dataType) {
             return [$dataType];
         }, PropertyTypeValidator::ALLOWED_TYPES);
     }
@@ -220,21 +243,21 @@ class FieldSyntaxValidationTest extends TestCase
             [['equalto' => null]],
             [['type' => 'unknow']],
             [['check' => [
-                'min' => rand(5, 10),
+                'min' => \rand(5, 10),
             ]]],
             [['check' => [
-                'min' => rand(5, 10),
-                'max' => rand(0, 4),
+                'min' => \rand(5, 10),
+                'max' => \rand(0, 4),
             ]]],
             [['length' => [
-                'max' => rand(0, 5),
+                'max' => \rand(0, 5),
             ]]],
             [['length' => [
-                'min' => rand(5, 10),
-                'max' => rand(0, 5),
+                'min' => \rand(5, 10),
+                'max' => \rand(0, 5),
             ]]],
             [['length' => [
-                'min' => rand(5, 10),
+                'min' => \rand(5, 10),
             ], 'type' => 'text']],
         ];
     }
@@ -256,23 +279,23 @@ class FieldSyntaxValidationTest extends TestCase
             [['required' => true]],
             [['required' => false]],
             [['minlength' => 0]],
-            [['minlength' => rand(0, 9)]],
-            [['maxlength' => rand(1, 9)]],
+            [['minlength' => \rand(0, 9)]],
+            [['maxlength' => \rand(1, 9)]],
             [['mincheck' => 0]],
-            [['mincheck' => rand(1, 9)]],
-            [['maxcheck' => rand(1, 9)]],
+            [['mincheck' => \rand(1, 9)]],
+            [['maxcheck' => \rand(1, 9)]],
             [['min' => 0]],
-            [['min' => rand(1, 9)]],
-            [['max' => rand(1, 9)]],
+            [['min' => \rand(1, 9)]],
+            [['max' => \rand(1, 9)]],
             [['equalto' => 'foo']],
             [['type' => 'text']],
             [['check' => [
-                'min' => rand(0, 4),
-                'max' => rand(5, 10),
+                'min' => \rand(0, 4),
+                'max' => \rand(5, 10),
             ]]],
             [['length' => [
-                'min' => rand(0, 4),
-                'max' => rand(5, 10),
+                'min' => \rand(0, 4),
+                'max' => \rand(5, 10),
             ]]],
         ];
     }

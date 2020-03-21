@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\Controller\ActionBuilder;
@@ -8,7 +15,7 @@ use FlexPHP\Generator\Tests\TestCase;
 
 class ActionBuilderTest extends TestCase
 {
-    public function testItRenderIndexOk()
+    public function testItRenderIndexOk(): void
     {
         $action = 'index';
         $entity = 'Test';
@@ -22,7 +29,7 @@ class ActionBuilderTest extends TestCase
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T
@@ -43,7 +50,7 @@ T
         ), $render->build());
     }
 
-    public function testItRenderCreateOk()
+    public function testItRenderCreateOk(): void
     {
         $action = 'create';
         $entity = 'Test';
@@ -57,7 +64,7 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T
@@ -77,7 +84,7 @@ T
         ), $render->build());
     }
 
-    public function testItRenderReadOk()
+    public function testItRenderReadOk(): void
     {
         $action = 'read';
         $entity = 'Test';
@@ -91,7 +98,7 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T
@@ -112,7 +119,7 @@ T
         ), $render->build());
     }
 
-    public function testItRenderUpdateOk()
+    public function testItRenderUpdateOk(): void
     {
         $action = 'update';
         $entity = 'Test';
@@ -126,7 +133,7 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T
@@ -146,7 +153,7 @@ T
         ), $render->build());
     }
 
-    public function testItRenderDeleteOk()
+    public function testItRenderDeleteOk(): void
     {
         $action = 'delete';
         $entity = 'Test';
@@ -160,7 +167,7 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T
@@ -182,10 +189,10 @@ T
 
     /**
      * @dataProvider getCustomActions
+     *
      * @param string $action
-     * @return void
      */
-    public function testItRenderCustomActionOk($action)
+    public function testItRenderCustomActionOk($action): void
     {
         $entity = 'FooBar';
 
@@ -198,7 +205,7 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T
@@ -218,7 +225,7 @@ T
         ), $render->build());
     }
 
-    public function testItRenderToString()
+    public function testItRenderToString(): void
     {
         $action = 'index';
         $entity = 'Test';
@@ -232,7 +239,7 @@ T
             ]))->build(),
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T

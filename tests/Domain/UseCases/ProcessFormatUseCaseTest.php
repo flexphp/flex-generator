@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
@@ -22,8 +29,8 @@ class ProcessFormatUseCaseTest extends TestCase
 
     /**
      * @dataProvider getPathNotValid
+     *
      * @param mixed $path
-     * @return void
      */
     public function testItFormatPathNotValidThrowException($path): void
     {
@@ -67,20 +74,23 @@ class ProcessFormatUseCaseTest extends TestCase
 
         $this->assertInstanceOf(ProcessFormatResponse::class, $response);
         $sheetNames = $response->messages;
-        $this->assertEquals(2, count($sheetNames));
+        $this->assertEquals(2, \count($sheetNames));
 
         foreach ($sheetNames as $sheetName => $numberFields) {
             $numberExpected = 0;
-            
+
             switch ($sheetName) {
                 case 'Posts':
                     $numberExpected = 6;
+
                     break;
                 case 'Comments':
                     $numberExpected = 5;
+
                     break;
                 default:
                     $this->assertTrue(false, 'SheetName unknown: ' . $sheetName);
+
                     break;
             }
 

@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Tests\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\Entity\EntityBuilder;
@@ -7,7 +14,7 @@ use FlexPHP\Generator\Tests\TestCase;
 
 class EntityBuilderTest extends TestCase
 {
-    public function testItOk()
+    public function testItOk(): void
     {
         $name = 'Test';
         $properties = [
@@ -27,7 +34,7 @@ class EntityBuilderTest extends TestCase
             'properties' => $properties,
         ]);
 
-        $this->assertEquals(str_replace("\r\n", "\n", <<<T
+        $this->assertEquals(\str_replace("\r\n", "\n", <<<T
 <?php
 
 namespace Domain\Test\Entity;

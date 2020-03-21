@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\CreatePrototypeRequest;
@@ -12,6 +19,7 @@ class CreatePrototypeUseCase extends UseCase
 {
     /**
      * @param CreatePrototypeRequest $request
+     *
      * @return CreatePrototypeResponse
      */
     public function execute($request)
@@ -38,7 +46,7 @@ class CreatePrototypeUseCase extends UseCase
 
     private function addVendorFiles(): void
     {
-        copy(
+        \copy(
             __DIR__ . '/../BoilerPlates/Symfony/v43/composer.json',
             __DIR__ . '/../../tmp/skeleton/composer.json'
         );

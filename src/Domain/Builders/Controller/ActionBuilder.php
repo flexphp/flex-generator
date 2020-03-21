@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
@@ -13,7 +20,7 @@ class ActionBuilder extends AbstractBuilder
      */
     public function __construct(array $data, array $config = [])
     {
-        $action = $data['action'] = !empty($data['action']) && is_string($data['action'])
+        $action = $data['action'] = !empty($data['action']) && \is_string($data['action'])
             ? $this->getSnakeCase($data['action'])
             : 'index';
 
@@ -46,16 +53,20 @@ class ActionBuilder extends AbstractBuilder
             case 'index':
             case 'read':
                 $method = Request::METHOD_GET;
+
                 break;
             case 'update':
                 $method = Request::METHOD_PUT;
+
                 break;
             case 'delete':
                 $method = Request::METHOD_DELETE;
+
                 break;
             case 'create':
             default:
                 $method = Request::METHOD_POST;
+
                 break;
         }
 
@@ -69,13 +80,16 @@ class ActionBuilder extends AbstractBuilder
         switch ($action) {
             case 'index':
                 $route = '/';
+
                 break;
             case 'read':
                 $route = '/{id}';
+
                 break;
             case 'update':
             case 'delete':
                 $route = \sprintf('/%1$s/{id}', $action);
+
                 break;
         }
 

@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Tests\Domain\Builders\Constraint;
 
 use FlexPHP\Generator\Domain\Builders\Constraint\ConstraintBuilder;
@@ -8,7 +15,7 @@ use FlexPHP\Generator\Tests\TestCase;
 
 class ConstraintBuilderTest extends TestCase
 {
-    public function testItOk()
+    public function testItOk(): void
     {
         $entity = 'Test';
         $properties = [
@@ -16,7 +23,7 @@ class ConstraintBuilderTest extends TestCase
                 'title' => [
                     'required' => true,
                     'pattern' => '/^[a-z_]*$/',
-                ]
+                ],
             ]))->build(),
             'content' => (new RuleBuilder([
                 'content' => [
@@ -32,14 +39,14 @@ class ConstraintBuilderTest extends TestCase
                     'type' => 'datetime',
                 ],
             ]))->build(),
-            ];
+        ];
 
         $render = new ConstraintBuilder([
             'entity' => $entity,
             'properties' => $properties,
         ]);
 
-        $this->assertEquals(str_replace("\r\n", "\n", <<<T
+        $this->assertEquals(\str_replace("\r\n", "\n", <<<T
 <?php
 
 namespace Domain\Test\Constraint;

@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Constants\Keyword;
@@ -17,18 +24,22 @@ trait TypeHintTrait
             case 'bigint':
             case 'decimal':
                 $typeHint = 'int';
+
                 break;
             case 'float':
                 $typeHint = 'float';
+
                 break;
             case 'bool':
             case 'boolean':
                 $typeHint = 'bool';
+
                 break;
             case 'array':
             case 'simple_array':
             case 'json_array':
                 $typeHint = 'array';
+
                 break;
             // Only 7.2
             // case 'object':

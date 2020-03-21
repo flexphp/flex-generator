@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Domain\Validations;
 
 use Exception;
@@ -46,24 +53,22 @@ class FieldSyntaxValidation implements ValidationInterface
     public function validate(): void
     {
         foreach ($this->properties as $property => $value) {
-            if (!in_array($property, $this->allowedProperties)) {
+            if (!\in_array($property, $this->allowedProperties)) {
                 throw new FieldSyntaxValidationException('Property unknow: ' . $property);
             }
 
-            if (in_array($property, array_keys($this->validators))) {
+            if (\in_array($property, \array_keys($this->validators))) {
                 $violations = $this->validateProperty($property, $value);
 
-                if (0 !== count($violations)) {
-                    throw new FieldSyntaxValidationException(sprintf("%1\$s:\n%2\$s", $property, $violations));
+                if (0 !== \count($violations)) {
+                    throw new FieldSyntaxValidationException(\sprintf("%1\$s:\n%2\$s", $property, $violations));
                 }
             }
         }
     }
 
     /**
-     * @param string $property
      * @param mixed $value
-     * @return ConstraintViolationList
      */
     private function validateProperty(string $property, $value): ConstraintViolationList
     {
@@ -71,7 +76,7 @@ class FieldSyntaxValidation implements ValidationInterface
             $validator = new $this->validators[$property];
             $violations = $validator->validate($value);
         } catch (Exception $e) {
-            throw new FieldSyntaxValidationException(sprintf("%1\$s:\n%2\$s", $property, $e->getMessage()));
+            throw new FieldSyntaxValidationException(\sprintf("%1\$s:\n%2\$s", $property, $e->getMessage()));
         }
 
         return $violations;

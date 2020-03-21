@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Tests\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\Entity\GetterBuilder;
@@ -13,7 +20,7 @@ class GetterBuilderTest extends TestCase
             'foo' => [],
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T
@@ -27,8 +34,8 @@ T
 
     /**
      * @dataProvider getDataTypeString
+     *
      * @param string $dataType
-     * @return void
      */
     public function testItWithString($dataType): void
     {
@@ -38,7 +45,7 @@ T
             ],
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T
@@ -52,8 +59,8 @@ T
 
     /**
      * @dataProvider getDataTypeInt
+     *
      * @param string $dataType
-     * @return void
      */
     public function testItWithInt($dataType): void
     {
@@ -63,7 +70,7 @@ T
             ],
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T
@@ -77,8 +84,8 @@ T
 
     /**
      * @dataProvider getDataTypeArray
+     *
      * @param string $dataType
-     * @return void
      */
     public function testItWithArray($dataType): void
     {
@@ -88,7 +95,7 @@ T
             ],
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T
@@ -102,8 +109,8 @@ T
 
     /**
      * @dataProvider getDataTypeBool
+     *
      * @param string $dataType
-     * @return void
      */
     public function testItWithBool($dataType): void
     {
@@ -113,7 +120,7 @@ T
             ],
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T
@@ -133,7 +140,7 @@ T
             ],
         ]);
 
-        $this->assertEquals(str_replace(
+        $this->assertEquals(\str_replace(
             "\r\n",
             "\n",
             <<<T

@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
@@ -10,11 +17,10 @@ class GetterBuilder extends AbstractBuilder
 
     /**
      * @param array[] $data
-     * @param array $config
      */
     public function __construct(array $data, array $config = [])
     {
-        $name = (string)array_key_first($data);
+        $name = (string)\array_key_first($data);
         $typehint = $this->guessTypeHint($data[$name]);
         $getter = $this->getPascalCase($name);
 
@@ -35,6 +41,6 @@ class GetterBuilder extends AbstractBuilder
 
     public function build(): string
     {
-        return rtrim(parent::build());
+        return \rtrim(parent::build());
     }
 }

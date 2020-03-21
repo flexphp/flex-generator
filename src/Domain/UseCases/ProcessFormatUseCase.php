@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
@@ -21,9 +28,11 @@ class ProcessFormatUseCase extends UseCase
      * - Syntax Sheet
      *
      * @param ProcessFormatRequest $request
-     * @return ProcessFormatResponse
+     *
      * @throws FormatPathNotValidException
      * @throws FormatNotSupportedException
+     *
+     * @return ProcessFormatResponse
      */
     public function execute($request)
     {
@@ -33,16 +42,18 @@ class ProcessFormatUseCase extends UseCase
         $path = $request->path;
         $extension = $request->extension;
 
-        if (empty($path) || !is_string($path) || !is_file($path)) {
+        if (empty($path) || !\is_string($path) || !\is_file($path)) {
             throw new FormatPathNotValidException();
         }
 
         switch ($extension) {
             case 'xlsx': // MS Excel >= 2007
                 $reader = ReaderEntityFactory::createXLSXReader();
+
                 break;
             case 'ods': // Open Format
                 $reader = ReaderEntityFactory::createODSReader();
+
                 break;
             default:
                 throw new FormatNotSupportedException();
@@ -93,7 +104,7 @@ class ProcessFormatUseCase extends UseCase
                 $sheetName => [
                     'Entity' => $sheetName,
                     'Attributes' => $fields,
-                ]
+                ],
             ], \strtolower($sheetName));
 
             $writer->save();

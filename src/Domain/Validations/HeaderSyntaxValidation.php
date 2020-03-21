@@ -1,9 +1,16 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Domain\Validations;
 
-use FlexPHP\Generator\Domain\Exceptions\HeaderSyntaxValidationException;
 use FlexPHP\Generator\Domain\Constants\Keyword;
+use FlexPHP\Generator\Domain\Exceptions\HeaderSyntaxValidationException;
 
 class HeaderSyntaxValidation implements ValidationInterface
 {
@@ -46,7 +53,7 @@ class HeaderSyntaxValidation implements ValidationInterface
         }
 
         if (!empty($notAllowedHeaders)) {
-            throw new HeaderSyntaxValidationException('Unknow headers: ' . implode(', ', $notAllowedHeaders));
+            throw new HeaderSyntaxValidationException('Unknow headers: ' . \implode(', ', $notAllowedHeaders));
         }
 
         foreach ($this->requiredHeaders as $header) {
@@ -57,7 +64,7 @@ class HeaderSyntaxValidation implements ValidationInterface
 
         if (!empty($requiredHeadersNotPresent)) {
             throw new HeaderSyntaxValidationException(
-                'Required headers not present: ' . implode(', ', $requiredHeadersNotPresent)
+                'Required headers not present: ' . \implode(', ', $requiredHeadersNotPresent)
             );
         }
     }

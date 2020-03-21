@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\CreatePrototypeRequest;
@@ -10,7 +17,7 @@ use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 class CreatePrototypeUseCaseTest extends TestCase
 {
-    public function testItNotValidRequestThrowException()
+    public function testItNotValidRequestThrowException(): void
     {
         $this->expectException(NotValidRequestException::class);
 
@@ -18,9 +25,6 @@ class CreatePrototypeUseCaseTest extends TestCase
         $useCase->execute(null);
     }
 
-    /**
-     * @return void
-     */ 
     public function testItWithSymfony(): void
     {
         $sheets = [

@@ -1,5 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\MakeControllerRequest;
@@ -10,7 +17,7 @@ use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 class MakeControllerUseCaseTest extends TestCase
 {
-    public function testItNotValidRequestThrowException()
+    public function testItNotValidRequestThrowException(): void
     {
         $this->expectException(NotValidRequestException::class);
 
@@ -20,17 +27,14 @@ class MakeControllerUseCaseTest extends TestCase
 
     /**
      * @dataProvider getEntityFile()
-     * @param string $entity
-     * @param array $actions
-     * @return void
-     */ 
+     */
     public function testItSymfony43Ok(string $entity, array $actions): void
     {
         $request = new MakeControllerRequest($entity, $actions);
 
         $useCase = new MakeControllerUseCase();
         $response = $useCase->execute($request);
-        
+
         $this->assertInstanceOf(MakeControllerResponse::class, $response);
         $file = $response->file;
         $this->assertFileExists($file);
