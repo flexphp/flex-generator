@@ -10,7 +10,7 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
-use FlexPHP\Generator\Domain\Constants\Keyword;
+use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Exceptions\FormatPathNotValidException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;

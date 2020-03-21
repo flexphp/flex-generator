@@ -9,7 +9,7 @@
  */
 namespace FlexPHP\Generator\Tests\Domain\Validations;
 
-use FlexPHP\Generator\Domain\Constants\Keyword;
+use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\HeaderSyntaxValidationException;
 use FlexPHP\Generator\Domain\Validations\HeaderSyntaxValidation;
 use FlexPHP\Generator\Tests\TestCase;
@@ -23,7 +23,7 @@ class HeaderSyntaxValidationTest extends TestCase
 
         $validation = new HeaderSyntaxValidation([
             Keyword::NAME,
-            Keyword::DATA_TYPE,
+            Keyword::DATATYPE,
             'UnknowHeader',
         ]);
 

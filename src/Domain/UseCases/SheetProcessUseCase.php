@@ -9,7 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
-use FlexPHP\Generator\Domain\Constants\Keyword;
+use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Domain\Messages\Requests\MakeConstraintRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\MakeControllerRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;

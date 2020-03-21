@@ -10,7 +10,7 @@
 namespace FlexPHP\Generator\Tests\Domain\Builders\Message;
 
 use FlexPHP\Generator\Domain\Builders\Message\ResponseBuilder;
-use FlexPHP\Generator\Domain\Constants\Keyword;
+use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Tests\TestCase;
 
 class ResponseBuilderTest extends TestCase
@@ -22,11 +22,11 @@ class ResponseBuilderTest extends TestCase
         $properties = [
             'foo' => [
                 Keyword::NAME => 'Foo',
-                Keyword::DATA_TYPE => 'integer',
+                Keyword::DATATYPE => 'integer',
             ],
             'bar' => [
                 Keyword::NAME => 'Bar',
-                Keyword::DATA_TYPE => 'varchar',
+                Keyword::DATATYPE => 'varchar',
             ],
         ];
 

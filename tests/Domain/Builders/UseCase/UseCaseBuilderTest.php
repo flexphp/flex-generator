@@ -10,7 +10,7 @@
 namespace FlexPHP\Generator\Tests\Domain\Builders\UseCase;
 
 use FlexPHP\Generator\Domain\Builders\UseCase\UseCaseBuilder;
-use FlexPHP\Generator\Domain\Constants\Keyword;
+use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Tests\TestCase;
 
 class UseCaseBuilderTest extends TestCase
@@ -22,11 +22,11 @@ class UseCaseBuilderTest extends TestCase
         $properties = [
             'foo' => [
                 Keyword::NAME => 'Foo',
-                Keyword::DATA_TYPE => 'integer',
+                Keyword::DATATYPE => 'integer',
             ],
             'bar' => [
                 Keyword::NAME => 'Bar',
-                Keyword::DATA_TYPE => 'varchar',
+                Keyword::DATATYPE => 'varchar',
             ],
         ];
 
