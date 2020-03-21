@@ -9,31 +9,31 @@
  */
 namespace FlexPHP\Generator\Domain\Validations;
 
-use FlexPHP\Generator\Domain\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\HeaderSyntaxValidationException;
+use FlexPHP\Schema\Constants\Keyword;
 
-class HeaderSyntaxValidation implements ValidationInterface
+final class HeaderSyntaxValidation implements ValidationInterface
 {
     /**
      * @var array
      */
-    protected $headers;
+    private $headers;
 
     /**
      * @var array
      */
-    protected $allowedHeaders = [
+    private $allowedHeaders = [
         Keyword::NAME,
-        Keyword::DATA_TYPE,
+        Keyword::DATATYPE,
         Keyword::CONSTRAINTS,
     ];
 
     /**
      * @var array
      */
-    protected $requiredHeaders = [
+    private $requiredHeaders = [
         Keyword::NAME,
-        Keyword::DATA_TYPE,
+        Keyword::DATATYPE,
     ];
 
     public function __construct(array $headers)
@@ -43,28 +43,31 @@ class HeaderSyntaxValidation implements ValidationInterface
 
     public function validate(): void
     {
-        $notAllowedHeaders = [];
-        $requiredHeadersNotPresent = [];
+        $this->validateAllowedHeaders();
 
-        foreach ($this->headers as $header) {
-            if (!\in_array($header, $this->allowedHeaders)) {
-                $notAllowedHeaders[] = $header;
-            }
-        }
+        $this->validateRequiredHeaders();
+    }
+
+    private function validateAllowedHeaders(): void
+    {
+        $notAllowedHeaders = \array_filter($this->headers, function ($header) {
+            return !\in_array($header, $this->allowedHeaders);
+        });
 
         if (!empty($notAllowedHeaders)) {
             throw new HeaderSyntaxValidationException('Unknow headers: ' . \implode(', ', $notAllowedHeaders));
         }
+    }
 
-        foreach ($this->requiredHeaders as $header) {
-            if (!\in_array($header, $this->headers)) {
-                $requiredHeadersNotPresent[] = $header;
-            }
-        }
+    private function validateRequiredHeaders(): void
+    {
+        $requiredHeaders = \array_filter($this->requiredHeaders, function ($required) {
+            return !\in_array($required, $this->headers);
+        });
 
-        if (!empty($requiredHeadersNotPresent)) {
+        if (!empty($requiredHeaders)) {
             throw new HeaderSyntaxValidationException(
-                'Required headers not present: ' . \implode(', ', $requiredHeadersNotPresent)
+            'Required headers not present: ' . \implode(', ', $requiredHeaders)
             );
         }
     }

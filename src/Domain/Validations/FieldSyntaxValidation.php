@@ -9,14 +9,8 @@
  */
 namespace FlexPHP\Generator\Domain\Validations;
 
-use Exception;
-use FlexPHP\Generator\Domain\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\FieldSyntaxValidationException;
-use FlexPHP\Generator\Domain\Validators\PropertyConstraintsValidator;
-use FlexPHP\Generator\Domain\Validators\PropertyDataTypeValidator;
-use FlexPHP\Generator\Domain\Validators\PropertyNameValidator;
-use FlexPHP\Generator\Domain\Validators\PropertyTypeValidator;
-use Symfony\Component\Validator\ConstraintViolationList;
+use FlexPHP\Schema\Constants\Keyword;
 
 class FieldSyntaxValidation implements ValidationInterface
 {
@@ -30,19 +24,9 @@ class FieldSyntaxValidation implements ValidationInterface
      */
     private $allowedProperties = [
         Keyword::NAME,
-        Keyword::DATA_TYPE,
-        Keyword::TYPE,
+        Keyword::DATATYPE,
         Keyword::CONSTRAINTS,
-    ];
-
-    /**
-     * @var array
-     */
-    private $validators = [
-        Keyword::NAME => PropertyNameValidator::class,
-        Keyword::DATA_TYPE => PropertyDataTypeValidator::class,
-        Keyword::TYPE => PropertyTypeValidator::class,
-        Keyword::CONSTRAINTS => PropertyConstraintsValidator::class,
+        Keyword::TYPE,
     ];
 
     public function __construct(array $properties)
@@ -52,33 +36,15 @@ class FieldSyntaxValidation implements ValidationInterface
 
     public function validate(): void
     {
-        foreach ($this->properties as $property => $value) {
+        // foreach ($this->properties as $property) {
+        //     if (!\in_array($property, $this->allowedProperties)) {
+        //         throw new FieldSyntaxValidationException('Property unknow: ' . $property);
+        //     }
+        // }
+        \array_map(function ($property): void {
             if (!\in_array($property, $this->allowedProperties)) {
                 throw new FieldSyntaxValidationException('Property unknow: ' . $property);
             }
-
-            if (\in_array($property, \array_keys($this->validators))) {
-                $violations = $this->validateProperty($property, $value);
-
-                if (0 !== \count($violations)) {
-                    throw new FieldSyntaxValidationException(\sprintf("%1\$s:\n%2\$s", $property, $violations));
-                }
-            }
-        }
-    }
-
-    /**
-     * @param mixed $value
-     */
-    private function validateProperty(string $property, $value): ConstraintViolationList
-    {
-        try {
-            $validator = new $this->validators[$property];
-            $violations = $validator->validate($value);
-        } catch (Exception $e) {
-            throw new FieldSyntaxValidationException(\sprintf("%1\$s:\n%2\$s", $property, $e->getMessage()));
-        }
-
-        return $violations;
+        }, \array_keys($this->properties));
     }
 }
