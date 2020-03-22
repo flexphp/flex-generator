@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+// @codeCoverageIgnoreStart
 if (!\function_exists('array_key_first')) {
     function array_key_first(array $arr)
     {
@@ -20,3 +21,4 @@ if (!\function_exists('array_key_first')) {
         return null;
     }
 }
+// @codeCoverageIgnoreEnd

@@ -62,7 +62,7 @@ class MakeControllerUseCase extends UseCase
         $dir = \sprintf('%1$s/../../tmp/skeleton/src/Controllers', __DIR__);
 
         if (!\is_dir($dir)) {
-            \mkdir($dir, 0777, true);
+            \mkdir($dir, 0777, true); // @codeCoverageIgnore
         }
 
         $file = \sprintf('%1$s/%2$sController.php', $dir, $entity);

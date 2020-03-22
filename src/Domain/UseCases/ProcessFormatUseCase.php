@@ -51,10 +51,10 @@ class ProcessFormatUseCase extends UseCase
                 $reader = ReaderEntityFactory::createXLSXReader();
 
                 break;
-            case 'ods': // Open Format
-                $reader = ReaderEntityFactory::createODSReader();
+            // case 'ods': // Open Format
+            //     $reader = ReaderEntityFactory::createODSReader();
 
-                break;
+            //     break;
             default:
                 throw new FormatNotSupportedException();
         }

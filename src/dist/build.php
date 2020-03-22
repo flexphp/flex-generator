@@ -26,10 +26,12 @@ try {
     /** @var null|UploadedFile $file */
     $file = $request->files->get('file', null);
 
+    // @codeCoverageIgnoreStart
     if (\php_sapi_name() !== 'cli' && !$request->isXmlHttpRequest()) {
         \header('Location: index.html');
         die;
     }
+    // @codeCoverageIgnoreEnd
 
     if (!$file || $file->getError() !== \UPLOAD_ERR_OK) {
         $error = $file ? $file->getErrorMessage() : 'Upload file has error.';

@@ -108,6 +108,31 @@ T
     }
 
     /**
+     * @dataProvider getDataTypeFloat
+     *
+     * @param string $dataType
+     */
+    public function testItWithFloat($dataType): void
+    {
+        $render = new GetterBuilder([
+            'foo' => [
+                'DataType' => $dataType,
+            ],
+        ]);
+
+        $this->assertEquals(\str_replace(
+            "\r\n",
+            "\n",
+            <<<T
+    public function getFoo(): float
+    {
+        return \$this->foo;
+    }
+T
+        ), $render->build());
+    }
+
+    /**
      * @dataProvider getDataTypeBool
      *
      * @param string $dataType
@@ -189,6 +214,7 @@ T
     {
         return [
             ['float'],
+            ['double'],
         ];
     }
 

@@ -38,7 +38,7 @@ class CreateEntityUseCase extends UseCase
         $dir = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Entity', __DIR__, $name);
 
         if (!\is_dir($dir)) {
-            \mkdir($dir, 0777, true);
+            \mkdir($dir, 0777, true); // @codeCoverageIgnore
         }
 
         $file = \sprintf('%1$s/%2$s.php', $dir, $name);

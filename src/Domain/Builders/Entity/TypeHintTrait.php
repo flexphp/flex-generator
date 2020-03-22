@@ -27,6 +27,7 @@ trait TypeHintTrait
 
                 break;
             case 'float':
+            case 'double':
                 $typeHint = 'float';
 
                 break;
