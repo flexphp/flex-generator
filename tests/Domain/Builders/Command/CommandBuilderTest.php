@@ -61,10 +61,9 @@ class ActionTestCommand extends Command
 
     protected function execute(InputInterface \$input, OutputInterface \$output)
     {
-        \$foo = \$input->getArgument('foo');
-        \$bar = \$input->getArgument('bar');
+        \$data = \$input->getArguments();
 
-        \$request = new ActionTestRequest(\$foo, \$bar);
+        \$request = new ActionTestRequest(\$data);
         \$useCase = new ActionTestUseCase();
         \$response = \$useCase->execute(\$request);
 

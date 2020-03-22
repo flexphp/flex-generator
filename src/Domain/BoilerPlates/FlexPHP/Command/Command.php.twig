@@ -32,11 +32,9 @@ class {{ action_name }}{{ entity }}Command extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-{% for id, property in properties %}
-        ${{ id }} = $input->getArgument('{{ id }}');
-{% endfor %}
+        $data = $input->getArguments();
 
-        $request = new {{ action_name }}{{ entity }}Request({{ arguments }});
+        $request = new {{ action_name }}{{ entity }}Request($data);
         $useCase = new {{ action_name }}{{ entity }}UseCase();
         $response = $useCase->execute($request);
 
