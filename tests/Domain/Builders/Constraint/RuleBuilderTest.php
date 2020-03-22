@@ -14,16 +14,65 @@ use FlexPHP\Generator\Tests\TestCase;
 
 class RuleBuilderTest extends TestCase
 {
-    public function testItOk(): void
+    public function testItRequiredOk(): void
     {
-        $render = new RuleBuilder([
-            'foo' => [
-                'required' => true,
-                'pattern' => '/^[a-z_]*$/',
-                'length' => [
-                    'min' => 20,
-                    'max' => 100,
-                ],
+        $render = new RuleBuilder('foo', [
+            'required' => true,
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new NotNull(),
+            new NotBlank(),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItMinLengthOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'minlength' => 20,
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new Length([
+                'min' => 20,
+            ]),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItMaxLengthOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'maxlength' => 100,
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new Length([
+                'max' => 100,
+            ]),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItLengthOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'length' => [
+                'min' => 20,
+                'max' => 100,
             ],
         ]);
 
@@ -31,6 +80,179 @@ class RuleBuilderTest extends TestCase
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new Length([
+                'min' => 20,
+                'max' => 100,
+            ]),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItMinCheckLengthOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'mincheck' => 3,
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new Count([
+                'min' => 3,
+            ]),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItMaxCheckLengthOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'maxcheck' => 4,
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new Count([
+                'max' => 4,
+            ]),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItCheckOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'check' => [
+                'min' => 1,
+                'max' => 5,
+            ],
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new Count([
+                'min' => 1,
+                'max' => 5,
+            ]),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItMinOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'min' => 19,
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new LessThanOrEqual([
+                'value' => 19,
+            ]),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItMaxOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'max' => 21,
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new GreaterThanOrEqual([
+                'value' => 21,
+            ]),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItEqualToOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'equalto' => 'EQUAL',
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new EqualTo([
+                'value' => 'EQUAL',
+            ]),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItTypeOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'type' => 'string',
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new Type([
+                'type' => 'string',
+            ]),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItPatternOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'pattern' => '/^[a-z_]*$/',
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new Regex([
+                'pattern' => '/^[a-z_]*$/',
+            ]),
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
+    public function testItSomeOk(): void
+    {
+        $render = new RuleBuilder('foo', [
+            'required' => true,
+            'pattern' => '/^[a-z_]*$/',
+            'length' => [
+                'min' => 20,
+                'max' => 100,
+            ],
+        ]);
+
+        $this->assertEquals(<<<T
+    public function foo(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+            new NotNull(),
             new NotBlank(),
             new Regex([
                 'pattern' => '/^[a-z_]*$/',

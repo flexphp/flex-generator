@@ -3,19 +3,49 @@
         return $this->getValidator()->validate(__FUNCTION__, array_merge([
 {% for rule, constraint in rules %}
 {% if rule == 'required' %}
+            new NotNull(),
             new NotBlank(),
+{% elseif rule in ['length', 'minlength', 'maxlength'] %}
+            new Length([
+{% if constraint.min or rules.minlength %}
+                'min' => {{ constraint.min }}{{ rules.minlength }},
+{% endif %}
+{% if constraint.max or rules.maxlength %}
+                'max' => {{ constraint.max }}{{ rules.maxlength }},
+{% endif %}
+            ]),
+{% elseif rule in ['check', 'mincheck', 'maxcheck'] %}
+            new Count([
+{% if constraint.min or rules.mincheck %}
+                'min' => {{ constraint.min }}{{ rules.mincheck }},
+{% endif %}
+{% if constraint.max or rules.maxcheck %}
+                'max' => {{ constraint.max }}{{ rules.maxcheck }},
+{% endif %}
+            ]),
+{% elseif rule == 'min' %}
+            new LessThanOrEqual([
+                'value' => {{ rules.min }},
+            ]),
+{% elseif rule == 'max' %}
+            new GreaterThanOrEqual([
+                'value' => {{ rules.max }},
+            ]),
+{% elseif rule == 'equalto' %}
+            new EqualTo([
+                'value' => '{{ rules.equalto }}',
+            ]),
 {% elseif rule == 'pattern' %}
             new Regex([
                 'pattern' => '/^[a-z_]*$/',
             ]),
-{% elseif rule == 'length' %}
-            new Length([
-                'min' => {{ constraint.min }},
-                'max' => {{ constraint.max }},
-            ]),
 {% elseif rule == 'type' %}
 {% if constraint == 'datetime' %}
             new DateTime(),
+{% else %}
+            new Type([
+                'type' => '{{ rules.type }}',
+            ]),
 {% endif %}
 {% endif %}
 {% endfor %}

@@ -13,14 +13,9 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 class RuleBuilder extends AbstractBuilder
 {
-    public function __construct(array $data, array $config = [])
+    public function __construct(string $property, array $rules)
     {
-        $property = \array_key_first($data);
-        $rules = $data[$property];
-
-        $_data = \compact('property', 'rules');
-
-        parent::__construct($_data, $config);
+        parent::__construct(\compact('property', 'rules'));
     }
 
     public function getFileTemplate(): string
