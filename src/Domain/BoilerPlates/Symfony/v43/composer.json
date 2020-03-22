@@ -15,8 +15,7 @@
         "symfony/framework-bundle": "*",
         "symfony/yaml": "*"
     },
-    "require-dev": {
-    },
+    "require-dev": {},
     "config": {
         "preferred-install": {
             "*": "dist"
@@ -42,8 +41,7 @@
         "symfony/polyfill-php56": "*"
     },
     "scripts": {
-        "auto-scripts": [
-        ],
+        "auto-scripts": [],
         "post-install-cmd": [
             "@auto-scripts"
         ],

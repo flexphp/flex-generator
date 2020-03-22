@@ -46,7 +46,7 @@ class MakeConstraintUseCase extends UseCase
         $dir = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Constraint', __DIR__, $entity);
 
         if (!\is_dir($dir)) {
-            \mkdir($dir, 0777, true); // @codeCoverageIgnore
+            \mkdir($dir, 0777, true);
         }
 
         $file = \sprintf('%1$s/%2$sConstraint.php', $dir, $entity);
