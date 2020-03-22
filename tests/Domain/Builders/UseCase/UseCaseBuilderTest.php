@@ -45,11 +45,6 @@ use Domain\Test\Message\ActionTestRequest;
 use Domain\Test\Message\ActionTestResponse;
 use FlexPHP\UseCases\UseCase;
 
-/**
- * UseCase to action on Test.
- *
- * @author FlexPHP <flexphp@outlook.com>
- */
 class ActionTestUseCase extends UseCase
 {
     private \$foo;

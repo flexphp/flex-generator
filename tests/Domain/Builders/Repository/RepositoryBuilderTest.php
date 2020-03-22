@@ -41,11 +41,6 @@ namespace Domain\Test\Repository;
 
 use FlexPHP\Repositoty\RepositoryInterface;
 
-/**
- * Repository used for Test.
- *
- * @author FlexPHP <flexphp@outlook.com>
- */
 interface TestRepository extends RepositoryInterface
 {
     public function index(array \$data): array;

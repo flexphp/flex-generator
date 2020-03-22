@@ -42,11 +42,6 @@ namespace Domain\Test\Gateway;
 use Domain\Test\Repository\TestRepository;
 use Doctrine\DBAL\Connection;
 
-/**
- * DB Gateway used for Test.
- *
- * @author FlexPHP <flexphp@outlook.com>
- */
 final class DBTestRepository implements TestRepository
 {
     private \$conn;

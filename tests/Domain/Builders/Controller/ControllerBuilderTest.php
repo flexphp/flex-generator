@@ -76,11 +76,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Controller used to manage Test.
- *
  * @Route("/test")
- *
- * @author FlexPHP <flexphp@outlook.com>
  */
 class TestController extends AbstractController
 {

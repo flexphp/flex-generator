@@ -54,11 +54,6 @@ namespace Domain\Test\Constraint;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * Constraints Test.
- *
- * @author FlexPHP <flexphp@outlook.com>
- */
 class TestConstraint
 {
     private function getValidator(): ValidatorInterface

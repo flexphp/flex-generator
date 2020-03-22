@@ -48,11 +48,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface; 
 
-/**
- * Command to action on Test.
- *
- * @author FlexPHP <flexphp@outlook.com>
- */
 class ActionTestCommand extends Command
 {
     protected function configure(\$request): ActionTestResponse

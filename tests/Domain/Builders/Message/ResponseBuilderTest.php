@@ -43,11 +43,6 @@ namespace Domain\Fuz\Message;
 
 use FlexPHP\Messages\ResponseInterface;
 
-/**
- * Response to action on Fuz.
- *
- * @author FlexPHP <flexphp@outlook.com>
- */
 class ActionFuzResponse implements ResponseInterface
 {
     public function __construct(array \$data)

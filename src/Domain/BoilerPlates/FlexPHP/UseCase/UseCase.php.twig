@@ -6,11 +6,6 @@ use Domain\{{ entity }}\Message\{{ action_name }}{{ entity }}Request;
 use Domain\{{ entity }}\Message\{{ action_name }}{{ entity }}Response;
 use FlexPHP\UseCases\UseCase;
 
-/**
- * UseCase to {{ action }} on {{ entity }}.
- *
- * @author FlexPHP <flexphp@outlook.com>
- */
 class {{ action_name }}{{ entity }}UseCase extends UseCase
 {
 {% for id, property in properties %}

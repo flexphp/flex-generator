@@ -43,11 +43,6 @@ namespace Domain\Fuz\Message;
 
 use FlexPHP\Messages\RequestInterface;
 
-/**
- * Request to action on Fuz.
- *
- * @author FlexPHP <flexphp@outlook.com>
- */
 class ActionFuzRequest implements RequestInterface
 {
     public \$foo;
