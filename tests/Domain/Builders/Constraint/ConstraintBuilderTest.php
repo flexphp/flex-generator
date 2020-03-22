@@ -47,7 +47,7 @@ class ConstraintBuilderTest extends TestCase
         ]);
 
         $this->assertEquals(\str_replace("\r\n", "\n", <<<T
-<?php
+<?php declare(strict_types=1);
 
 namespace Domain\Test\Constraint;
 
