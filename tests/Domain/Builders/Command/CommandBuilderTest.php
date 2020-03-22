@@ -20,21 +20,17 @@ class CommandBuilderTest extends TestCase
         $action = 'action';
         $entity = 'Test';
         $properties = [
-            'foo' => [
-                Keyword::NAME => 'Foo',
+            [
+                Keyword::NAME => 'foo',
                 Keyword::DATATYPE => 'integer',
             ],
-            'bar' => [
+            [
                 Keyword::NAME => 'Bar',
                 Keyword::DATATYPE => 'varchar',
             ],
         ];
 
-        $render = new CommandBuilder([
-            'entity' => $entity,
-            'action' => $action,
-            'properties' => $properties,
-        ]);
+        $render = new CommandBuilder($entity, $action, $properties);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -56,7 +52,7 @@ class ActionTestCommand extends Command
             ->setName('test:action')
             ->setDescription('Command to action on Test')
             ->addArgument('foo', InputArgument::REQUIRED)
-            ->addArgument('bar', InputArgument::REQUIRED);
+            ->addArgument('Bar', InputArgument::REQUIRED);
     }
 
     protected function execute(InputInterface \$input, OutputInterface \$output)

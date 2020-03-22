@@ -10,15 +10,27 @@
 namespace FlexPHP\Generator\Domain\Builders\Command;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\Constants\Keyword;
 
 class CommandBuilder extends AbstractBuilder
 {
-    public function getFileTemplate(): string
+    public function __construct(string $entity, string $action, array $properties)
+    {
+        $properties = \array_reduce($properties, function ($result, $property) {
+            $result[$property[Keyword::NAME]] = $property;
+
+            return $result;
+        }, []);
+
+        parent::__construct(\compact('entity', 'action', 'properties'));
+    }
+
+    protected function getFileTemplate(): string
     {
         return 'Command.php.twig';
     }
 
-    public function getPathTemplate(): string
+    protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Command', parent::getPathTemplate());
     }

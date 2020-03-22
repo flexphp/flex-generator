@@ -19,32 +19,20 @@ abstract class AbstractBuilder implements BuilderInterface
     private $data;
 
     /**
-     * @var array[]
-     */
-    private $config;
-
-    /**
      * @param array<array|string> $data
-     * @param array[] $config
      */
-    public function __construct(array $data, array $config = [])
+    public function __construct(array $data)
     {
         if (!empty($data['action']) && \is_string($data['action'])) {
             $data['action_name'] = $this->getPascalCase($data['action']);
         }
 
         $this->data = $data;
-        $this->config = $config;
     }
 
     public function __toString()
     {
         return $this->build();
-    }
-
-    public function getPathTemplate(): string
-    {
-        return \sprintf('%1$s/../BoilerPlates', __DIR__);
     }
 
     public function build(): string
@@ -54,6 +42,13 @@ abstract class AbstractBuilder implements BuilderInterface
 
         return $twig->render($this->getFileTemplate(), $this->data);
     }
+
+    protected function getPathTemplate(): string
+    {
+        return \sprintf('%1$s/../BoilerPlates', __DIR__);
+    }
+
+    abstract protected function getFileTemplate(): string;
 
     protected function getPascalCase(string $string): string
     {
