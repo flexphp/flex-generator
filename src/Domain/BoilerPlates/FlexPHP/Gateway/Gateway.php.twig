@@ -1,0 +1,92 @@
+<?php
+
+namespace Domain\{{ entity }}\Gateway;
+
+use Domain\{{ entity }}\Repository\{{ entity }}Repository;
+use Doctrine\DBAL\Connection;
+
+/**
+ * DB Gateway used for {{ entity }}.
+ *
+ * @author FlexPHP <flexphp@outlook.com>
+ */
+final class DB{{ entity }}Repository implements TestRepository
+{
+    private $conn;
+    private $query;
+    private $key = 'id';
+    private $lastId = null;
+
+    public function __construct(Connection $conn)
+    {
+        $this->conn = $conn;
+        $this->query = $conn->createQueryBuilder();
+    }
+
+{% for action in actions %}
+{% if action in ['create'] %}
+    public function {{ action }}(array $data): void
+    {
+        $query->insert('test');
+
+        foreach($data as $index => $column) {
+            $query->setValue(\key($column), '?');
+            $query->setParameter($index, $column);
+        }
+
+        $query->execute();
+
+        $this->lastId = $conn->lastInsertId();
+    }
+{% elseif action in ['read'] %}
+    public function {{ action }}(string $id): ?array
+    {
+        $query->select('*');
+        $query->from('test');
+        $query->where([$this->key => $id]);
+
+        return $query->execute()->fetch();
+    }
+{% elseif action in ['update'] %}
+    public function {{ action }}(string $id, array $data): int
+    {
+        $query->update('test');
+
+        foreach($data as $index => $column) {
+            $query->setValue(\key($column), '?');
+            $query->setParameter($index, $column);
+        }
+
+        return $query->execute();
+    }
+{% elseif action in ['delete'] %}
+    public function {{ action }}(string $id): int
+    {
+        $query->delete('test');
+        $query->where([$this->key => $id]);
+
+        return $query->execute();
+    }
+{% else %}
+    public function {{ action }}(array $data): array
+    {
+{% if action in ['index'] %}
+        $query->select('*');
+        $query->from('test');
+
+        foreach($data as $index => $column) {
+            $query->where(\key($column) . ' = ?');
+            $query->setParameter($index, $column);
+        }
+
+        return $query->execute()->fetchAll();
+{% else %}
+        return $data;
+{% endif %}
+    }
+{% endif %}
+{% if not loop.last %}
+
+{% endif %}
+{% endfor %}
+}
