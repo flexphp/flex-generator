@@ -2,7 +2,6 @@
 
 namespace Domain\{{ entity }}\Repository;
 
-use Domain\{{ entity }}\Entity\Test;
 use FlexPHP\Repositoty\RepositoryInterface;
 
 /**
@@ -13,10 +12,14 @@ use FlexPHP\Repositoty\RepositoryInterface;
 interface {{ entity }}Repository extends RepositoryInterface
 {
 {% for action in actions %}
-{% if action in ['create', 'update', 'delete'] %}
-    public function {{ action }}({{ entity }} $entity): array;
-{% elseif action == 'read' %}
-    public function {{ action }}(string $id): ?{{ entity }};
+{% if action in ['create'] %}
+    public function {{ action }}(array $data): void;
+{% elseif action in ['read'] %}
+    public function {{ action }}(string $id): ?array;
+{% elseif action in ['update'] %}
+    public function {{ action }}(string $id, array $data): int;
+{% elseif action in ['delete'] %}
+    public function {{ action }}(string $id): int;
 {% else %}
     public function {{ action }}(array $data): array;
 {% endif %}

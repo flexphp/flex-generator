@@ -39,7 +39,6 @@ class RepositoryBuilderTest extends TestCase
 
 namespace Domain\Test\Repository;
 
-use Domain\Test\Entity\Test;
 use FlexPHP\Repositoty\RepositoryInterface;
 
 /**
@@ -51,13 +50,13 @@ interface TestRepository extends RepositoryInterface
 {
     public function index(array \$data): array;
 
-    public function create(Test \$entity): array;
+    public function create(array \$data): void;
 
-    public function read(string \$id): ?Test;
+    public function read(string \$id): ?array;
 
-    public function update(Test \$entity): array;
+    public function update(string \$id, array \$data): int;
 
-    public function delete(Test \$entity): array;
+    public function delete(string \$id): int;
 
     public function customFuz(array \$data): array;
 }
