@@ -95,7 +95,6 @@ class TestConstraint
     }
 }
 
-T
-), $render->build());
+T), $render->build());
     }
 }

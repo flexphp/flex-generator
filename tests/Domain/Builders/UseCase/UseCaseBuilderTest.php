@@ -10,8 +10,8 @@
 namespace FlexPHP\Generator\Tests\Domain\Builders\UseCase;
 
 use FlexPHP\Generator\Domain\Builders\UseCase\UseCaseBuilder;
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Constants\Keyword;
 
 class UseCaseBuilderTest extends TestCase
 {
@@ -68,7 +68,6 @@ class ActionTestUseCase extends UseCase
     }
 }
 
-T
-), $render->build());
+T), $render->build());
     }
 }

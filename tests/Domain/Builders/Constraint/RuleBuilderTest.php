@@ -20,7 +20,6 @@ class RuleBuilderTest extends TestCase
             'foo' => [
                 'required' => true,
                 'pattern' => '/^[a-z_]*$/',
-                'required' => true,
                 'length' => [
                     'min' => 20,
                     'max' => 100,
@@ -42,7 +41,6 @@ class RuleBuilderTest extends TestCase
             ]),
         ], \$constraints));
     }
-T
-), $render->build());
+T), $render->build());
     }
 }

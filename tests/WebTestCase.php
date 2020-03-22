@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class WebTestCase extends TestCase
 {
-    protected function getFileMock(string $name, string $path, string $type, $uploadError = \UPLOAD_ERR_OK): UploadedFile
+    protected function getFileMock(string $name, string $path, string $type, $error = \UPLOAD_ERR_OK): UploadedFile
     {
-        return new UploadedFile($path, $name, $type, $uploadError, true);
+        return new UploadedFile($path, $name, $type, $error, true);
     }
 }
