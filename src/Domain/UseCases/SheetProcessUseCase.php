@@ -9,15 +9,14 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Domain\Messages\Requests\MakeConstraintRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\MakeControllerRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\MakeConstraintResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\MakeControllerResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
+use FlexPHP\Schema\Schema;
 use FlexPHP\UseCases\UseCase;
-use Symfony\Component\Yaml\Yaml;
 
 class SheetProcessUseCase extends UseCase
 {
@@ -34,13 +33,12 @@ class SheetProcessUseCase extends UseCase
 
         $name = $request->name;
         $path = $request->path;
-        $constraints = [];
 
-        $sheet = Yaml::parse((string)\file_get_contents($path));
+        $constraints = \array_reduce(Schema::fromFile($path)->attributes(), function ($result, $attribute): array {
+            $result[$attribute->name()] = $attribute->properties();
 
-        foreach ($sheet[$name]['Attributes'] as $attribute => $properties) {
-            $constraints[$attribute] = $properties[Keyword::CONSTRAINTS] ?? null;
-        }
+            return $result;
+        }, []);
 
         $controller = $this->makeController($name);
         $constraint = $this->makeConstraint($name, $constraints);
