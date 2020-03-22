@@ -27,8 +27,6 @@ class CreateEntityUseCaseTest extends TestCase
 
     /**
      * @dataProvider getEntityFile()
-     *
-     * @param string $properties
      */
     public function testItSymfony43Ok(string $entity, array $properties): void
     {
