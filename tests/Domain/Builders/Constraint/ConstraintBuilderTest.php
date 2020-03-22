@@ -10,7 +10,6 @@
 namespace FlexPHP\Generator\Tests\Domain\Builders\Constraint;
 
 use FlexPHP\Generator\Domain\Builders\Constraint\ConstraintBuilder;
-use FlexPHP\Generator\Domain\Builders\Constraint\RuleBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
 class ConstraintBuilderTest extends TestCase
@@ -18,33 +17,8 @@ class ConstraintBuilderTest extends TestCase
     public function testItOk(): void
     {
         $entity = 'Test';
-        $properties = [
-            'title' => (new RuleBuilder([
-                'title' => [
-                    'required' => true,
-                    'pattern' => '/^[a-z_]*$/',
-                ],
-            ]))->build(),
-            'content' => (new RuleBuilder([
-                'content' => [
-                    'required' => true,
-                    'length' => [
-                        'min' => 20,
-                        'max' => 100,
-                    ],
-                ],
-            ]))->build(),
-            'createdAt' => (new RuleBuilder([
-                'createdAt' => [
-                    'type' => 'datetime',
-                ],
-            ]))->build(),
-        ];
 
-        $render = new ConstraintBuilder([
-            'entity' => $entity,
-            'properties' => $properties,
-        ]);
+        $render = new ConstraintBuilder($entity, []);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -59,34 +33,6 @@ class TestConstraint
     private function getValidator(): ValidatorInterface
     {
         return Validation::createValidator();
-    }
-
-    public function title(array \$constraints = [])
-    {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new NotBlank(),
-            new Regex([
-                'pattern' => '/^[a-z_]*$/',
-            ]),
-        ], \$constraints));
-    }
-
-    public function content(array \$constraints = [])
-    {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new NotBlank(),
-            new Length([
-                'min' => 20,
-                'max' => 100,
-            ]),
-        ], \$constraints));
-    }
-
-    public function createdAt(array \$constraints = [])
-    {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new DateTime(),
-        ], \$constraints));
     }
 }
 

@@ -11,11 +11,10 @@ class {{ entity }}Constraint
     {
         return Validation::createValidator();
     }
-
 {% for property in properties %}
 {% if not loop.last %}
-{{ property|raw }}
 
+{{ property|raw }}
 {% else %}
 {{ property|raw }}
 {% endif %}

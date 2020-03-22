@@ -33,15 +33,10 @@ class MakeConstraintUseCase extends UseCase
         $_properties = [];
 
         foreach ($properties as $name => $constraint) {
-            $_properties[$name] = (new RuleBuilder([
-                $name => $constraint,
-            ]))->build();
+            $_properties[$name] = (new RuleBuilder($name, $constraint))->build();
         }
 
-        $constraint = new ConstraintBuilder([
-            'entity' => $entity,
-            'properties' => $_properties,
-        ]);
+        $constraint = new ConstraintBuilder($entity, $_properties);
 
         $dir = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Constraint', __DIR__, $entity);
 
