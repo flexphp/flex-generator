@@ -24,11 +24,9 @@ class SetterBuilderTest extends TestCase
             "\r\n",
             "\n",
             <<<T
-    public function setFoo(string \$foo): self
+    public function setFoo(string \$foo): void
     {
         \$this->foo = \$foo;
-
-        return \$this;
     }
 T
         ), $render->build());
@@ -51,11 +49,9 @@ T
             "\r\n",
             "\n",
             <<<T
-    public function setFoo(string \$foo): self
+    public function setFoo(string \$foo): void
     {
         \$this->foo = \$foo;
-
-        return \$this;
     }
 T
         ), $render->build());
@@ -78,11 +74,9 @@ T
             "\r\n",
             "\n",
             <<<T
-    public function setFoo(int \$foo): self
+    public function setFoo(int \$foo): void
     {
         \$this->foo = \$foo;
-
-        return \$this;
     }
 T
         ), $render->build());
@@ -105,11 +99,9 @@ T
             "\r\n",
             "\n",
             <<<T
-    public function setFoo(array \$foo): self
+    public function setFoo(array \$foo): void
     {
         \$this->foo = \$foo;
-
-        return \$this;
     }
 T
         ), $render->build());
@@ -132,11 +124,9 @@ T
             "\r\n",
             "\n",
             <<<T
-    public function setFoo(bool \$foo): self
+    public function setFoo(bool \$foo): void
     {
         \$this->foo = \$foo;
-
-        return \$this;
     }
 T
         ), $render->build());
@@ -154,11 +144,9 @@ T
             "\r\n",
             "\n",
             <<<T
-    public function setFoo(string \$foo): self
+    public function setFoo(string \$foo): void
     {
         \$this->foo = \$foo;
-
-        return \$this;
     }
 T
         ), $render->build());

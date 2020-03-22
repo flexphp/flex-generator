@@ -67,25 +67,19 @@ class Test extends Entity
         return \$this->createdAt;
     }
 
-    public function setTitle(string \$title): self
+    public function setTitle(string \$title): void
     {
         \$this->title = \$title;
-
-        return \$this;
     }
 
-    public function setContent(string \$content): self
+    public function setContent(string \$content): void
     {
         \$this->content = \$content;
-
-        return \$this;
     }
 
-    public function setCreatedAt(string \$createdAt): self
+    public function setCreatedAt(string \$createdAt): void
     {
         \$this->createdAt = \$createdAt;
-
-        return \$this;
     }
 }
 

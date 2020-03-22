@@ -67,7 +67,7 @@ final class HeaderSyntaxValidation implements ValidationInterface
 
         if (!empty($requiredHeaders)) {
             throw new HeaderSyntaxValidationException(
-            'Required headers not present: ' . \implode(', ', $requiredHeaders)
+                'Required headers not present: ' . \implode(', ', $requiredHeaders)
             );
         }
     }
