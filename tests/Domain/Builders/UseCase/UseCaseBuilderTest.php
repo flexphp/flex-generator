@@ -36,7 +36,7 @@ class UseCaseBuilderTest extends TestCase
             'properties' => $properties,
         ]);
 
-        $this->assertEquals(\str_replace("\r\n", "\n", <<<T
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
 namespace Domain\Test\UseCase;
@@ -63,6 +63,6 @@ class ActionTestUseCase extends UseCase
     }
 }
 
-T), $render->build());
+T, $render->build());
     }
 }

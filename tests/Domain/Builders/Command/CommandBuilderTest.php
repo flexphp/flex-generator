@@ -36,7 +36,7 @@ class CommandBuilderTest extends TestCase
             'properties' => $properties,
         ]);
 
-        $this->assertEquals(\str_replace("\r\n", "\n", <<<T
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
 namespace Domain\Test\Command;
@@ -72,6 +72,6 @@ class ActionTestCommand extends Command
     }
 }
 
-T), $render->build());
+T, $render->build());
     }
 }

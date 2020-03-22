@@ -27,7 +27,7 @@ class RuleBuilderTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals(\str_replace("\r\n", "\n", <<<T
+        $this->assertEquals(<<<T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
@@ -41,6 +41,6 @@ class RuleBuilderTest extends TestCase
             ]),
         ], \$constraints));
     }
-T), $render->build());
+T, $render->build());
     }
 }

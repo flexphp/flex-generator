@@ -21,9 +21,9 @@ class UseCaseBuilderTest extends TestCase
             'action' => 'index',
         ]);
 
-        $this->assertEquals(\str_replace("\r\n", "\n", <<<T
+        $this->assertEquals(<<<T
         \$useCase = new IndexTestUseCase();
         \$response = \$useCase->execute(\$requestMessage);
-T), $render->build());
+T, $render->build());
     }
 }

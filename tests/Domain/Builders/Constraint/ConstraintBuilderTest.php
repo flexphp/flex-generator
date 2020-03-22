@@ -46,7 +46,7 @@ class ConstraintBuilderTest extends TestCase
             'properties' => $properties,
         ]);
 
-        $this->assertEquals(\str_replace("\r\n", "\n", <<<T
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
 namespace Domain\Test\Constraint;
@@ -90,6 +90,6 @@ class TestConstraint
     }
 }
 
-T), $render->build());
+T, $render->build());
     }
 }

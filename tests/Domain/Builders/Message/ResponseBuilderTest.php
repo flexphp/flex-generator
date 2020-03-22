@@ -36,7 +36,7 @@ class ResponseBuilderTest extends TestCase
             'properties' => $properties,
         ]);
 
-        $this->assertEquals(\str_replace("\r\n", "\n", <<<T
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
 namespace Domain\Fuz\Message;
@@ -50,6 +50,6 @@ class ActionFuzResponse implements ResponseInterface
     }
 }
 
-T), $render->build());
+T, $render->build());
     }
 }
