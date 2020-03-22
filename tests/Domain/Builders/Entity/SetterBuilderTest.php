@@ -20,16 +20,12 @@ class SetterBuilderTest extends TestCase
             'foo' => [],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function setFoo(string \$foo): void
     {
         \$this->foo = \$foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     /**
@@ -45,16 +41,12 @@ T
             ],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function setFoo(string \$foo): void
     {
         \$this->foo = \$foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     /**
@@ -70,16 +62,12 @@ T
             ],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function setFoo(int \$foo): void
     {
         \$this->foo = \$foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     /**
@@ -95,16 +83,12 @@ T
             ],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function setFoo(array \$foo): void
     {
         \$this->foo = \$foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     /**
@@ -120,16 +104,12 @@ T
             ],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function setFoo(bool \$foo): void
     {
         \$this->foo = \$foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     public function testItWithUnknowType(): void
@@ -140,16 +120,12 @@ T
             ],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function setFoo(string \$foo): void
     {
         \$this->foo = \$foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     public function getDataTypeString(): array

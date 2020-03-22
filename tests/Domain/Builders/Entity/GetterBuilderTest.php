@@ -20,16 +20,12 @@ class GetterBuilderTest extends TestCase
             'foo' => [],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function getFoo(): string
     {
         return \$this->foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     /**
@@ -45,16 +41,12 @@ T
             ],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function getFoo(): string
     {
         return \$this->foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     /**
@@ -70,16 +62,12 @@ T
             ],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function getFoo(): int
     {
         return \$this->foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     /**
@@ -95,16 +83,12 @@ T
             ],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function getFoo(): array
     {
         return \$this->foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     /**
@@ -120,16 +104,12 @@ T
             ],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function getFoo(): float
     {
         return \$this->foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     /**
@@ -145,16 +125,12 @@ T
             ],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function getFoo(): bool
     {
         return \$this->foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     public function testItWithUnknowType(): void
@@ -165,16 +141,12 @@ T
             ],
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     public function getFoo(): string
     {
         return \$this->foo;
     }
-T
-        ), $render->build());
+T, $render->build());
     }
 
     public function getDataTypeString(): array

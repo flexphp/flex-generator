@@ -31,10 +31,7 @@ class GatewayBuilderTest extends TestCase
             'actions' => $actions,
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
 namespace Domain\Test\Gateway;
@@ -117,7 +114,6 @@ final class DBTestRepository implements TestRepository
     }
 }
 
-T
-        ), $render->build());
+T, $render->build());
     }
 }

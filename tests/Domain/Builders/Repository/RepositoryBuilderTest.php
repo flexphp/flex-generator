@@ -31,10 +31,7 @@ class RepositoryBuilderTest extends TestCase
             'actions' => $actions,
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
 namespace Domain\Test\Repository;
@@ -56,7 +53,6 @@ interface TestRepository extends RepositoryInterface
     public function customFuz(array \$data): array;
 }
 
-T
-        ), $render->build());
+T, $render->build());
     }
 }

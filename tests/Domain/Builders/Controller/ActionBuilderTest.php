@@ -10,7 +10,6 @@
 namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\Controller\ActionBuilder;
-use FlexPHP\Generator\Domain\Builders\Controller\RequestMessageBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
 class ActionBuilderTest extends TestCase
@@ -23,31 +22,23 @@ class ActionBuilderTest extends TestCase
         $render = new ActionBuilder([
             'action' => $action,
             'entity' => $entity,
-            'request_message' => (new RequestMessageBuilder([
-                'action' => $action,
-                'entity' => $entity,
-            ]))->build(),
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     /**
      * @Route("/"}, methods={"GET"}, name="test.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
     {
-        \$requestMessage = new IndexTestRequest(\$request->request->all());
+
 
 
 
 
     }
 
-T
-        ), $render->build());
+T, $render->build());
     }
 
     public function testItRenderCreateOk(): void
@@ -58,30 +49,22 @@ T
         $render = new ActionBuilder([
             'action' => $action,
             'entity' => $entity,
-            'request_message' => (new RequestMessageBuilder([
-                'action' => $action,
-                'entity' => $entity,
-            ]))->build(),
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     /**
      * @Route("/create"}, methods={"POST"}, name="test.create")
      */
     public function create(Request \$request): Response
     {
-        \$requestMessage = new CreateTestRequest(\$request->request->all());
+
 
 
 
 
     }
 
-T
-        ), $render->build());
+T, $render->build());
     }
 
     public function testItRenderReadOk(): void
@@ -92,31 +75,23 @@ T
         $render = new ActionBuilder([
             'action' => $action,
             'entity' => $entity,
-            'request_message' => (new RequestMessageBuilder([
-                'action' => $action,
-                'entity' => $entity,
-            ]))->build(),
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     /**
      * @Route("/{id}"}, methods={"GET"}, name="test.read")
      * @Cache(smaxage="10")
      */
     public function read(\$id): Response
     {
-        \$requestMessage = new ReadTestRequest(['id' => \$id]);
+
 
 
 
 
     }
 
-T
-        ), $render->build());
+T, $render->build());
     }
 
     public function testItRenderUpdateOk(): void
@@ -127,30 +102,22 @@ T
         $render = new ActionBuilder([
             'action' => $action,
             'entity' => $entity,
-            'request_message' => (new RequestMessageBuilder([
-                'action' => $action,
-                'entity' => $entity,
-            ]))->build(),
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     /**
      * @Route("/update/{id}"}, methods={"PUT"}, name="test.update")
      */
     public function update(Request \$request, \$id): Response
     {
-        \$requestMessage = new UpdateTestRequest(\$request->request->all());
+
 
 
 
 
     }
 
-T
-        ), $render->build());
+T, $render->build());
     }
 
     public function testItRenderDeleteOk(): void
@@ -161,30 +128,22 @@ T
         $render = new ActionBuilder([
             'action' => $action,
             'entity' => $entity,
-            'request_message' => (new RequestMessageBuilder([
-                'action' => $action,
-                'entity' => $entity,
-            ]))->build(),
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     /**
      * @Route("/delete/{id}"}, methods={"DELETE"}, name="test.delete")
      */
     public function delete(\$id): Response
     {
-        \$requestMessage = new DeleteTestRequest(['id' => \$id]);
+
 
 
 
 
     }
 
-T
-        ), $render->build());
+T, $render->build());
     }
 
     /**
@@ -199,30 +158,22 @@ T
         $render = new ActionBuilder([
             'action' => $action,
             'entity' => $entity,
-            'request_message' => (new RequestMessageBuilder([
-                'action' => $action,
-                'entity' => $entity,
-            ]))->build(),
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     /**
      * @Route("/custom_action"}, methods={"POST"}, name="foobar.custom_action")
      */
     public function customAction(Request \$request): Response
     {
-        \$requestMessage = new CustomActionFooBarRequest(\$request->request->all());
+
 
 
 
 
     }
 
-T
-        ), $render->build());
+T, $render->build());
     }
 
     public function testItRenderToString(): void
@@ -233,31 +184,23 @@ T
         $render = new ActionBuilder([
             'action' => $action,
             'entity' => $entity,
-            'request_message' => (new RequestMessageBuilder([
-                'action' => $action,
-                'entity' => $entity,
-            ]))->build(),
         ]);
 
-        $this->assertEquals(\str_replace(
-            "\r\n",
-            "\n",
-            <<<T
+        $this->assertEquals(<<<T
     /**
      * @Route("/"}, methods={"GET"}, name="test.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
     {
-        \$requestMessage = new IndexTestRequest(\$request->request->all());
+
 
 
 
 
     }
 
-T
-        ), $render);
+T, $render);
     }
 
     public function getCustomActions(): array
