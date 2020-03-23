@@ -13,16 +13,14 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 class ControllerBuilder extends AbstractBuilder
 {
-    public function __construct(array $data, array $config = [])
+    public function __construct(string $entity, array $actions)
     {
-        if (!empty($data['actions']) && \is_array($data['actions'])) {
-            foreach ($data['actions'] as $action => $builder) {
-                unset($data['actions'][$action]);
-                $data['actions'][$this->getPascalCase($action)] = $builder;
-            }
+        foreach ($actions as $action => $builder) {
+            $actions[$this->getPascalCase($action)] = $builder;
+            unset($actions[$action]);
         }
 
-        parent::__construct($data, $config);
+        parent::__construct(\compact('entity', 'actions'));
     }
 
     public function getFileTemplate(): string

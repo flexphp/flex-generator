@@ -18,48 +18,53 @@ use FlexPHP\Generator\Tests\TestCase;
 
 class ControllerBuilderTest extends TestCase
 {
+    public function testItRenderOk(): void
+    {
+        $entity = 'Test';
+
+        $render = new ControllerBuilder($entity, []);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace App\Controller;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/test")
+ */
+class TestController extends AbstractController
+{
+}
+
+T, $render->build());
+    }
+
     public function testItRenderIndexOk(): void
     {
         $entity = 'Test';
         $actions = [
-            'index' => (new ActionBuilder([
-                'action' => 'index',
-                'entity' => $entity,
-                'request_message' => (new RequestMessageBuilder([
-                    'action' => 'index',
-                    'entity' => $entity,
-                ]))->build(),
-                'use_case' => (new UseCaseBuilder([
-                    'action' => 'index',
-                    'entity' => $entity,
-                ]))->build(),
-                'response_message' => (new ResponseMessageBuilder([
-                    'action' => 'index',
-                    'entity' => $entity,
-                ]))->build(),
-            ]))->build(),
-            'custom Fuz' => (new ActionBuilder([
-                'action' => 'custom Fuz',
-                'entity' => $entity,
-                'request_message' => (new RequestMessageBuilder([
-                    'action' => 'custom Fuz',
-                    'entity' => $entity,
-                ]))->build(),
-                'use_case' => (new UseCaseBuilder([
-                    'action' => 'custom Fuz',
-                    'entity' => $entity,
-                ]))->build(),
-                'response_message' => (new ResponseMessageBuilder([
-                    'action' => 'custom Fuz',
-                    'entity' => $entity,
-                ]))->build(),
-            ]))->build(),
+            'index' => (new ActionBuilder(
+                $entity,
+                'index',
+                (new RequestMessageBuilder($entity, 'index'))->build(),
+                (new UseCaseBuilder($entity, 'index'))->build(),
+                (new ResponseMessageBuilder($entity, 'index'))->build(),
+            ))->build(),
+            'custom Fuz' => (new ActionBuilder(
+                $entity,
+                'custom Fuz',
+                (new RequestMessageBuilder($entity, 'custom Fuz'))->build(),
+                (new UseCaseBuilder($entity, 'custom Fuz'))->build(),
+                (new ResponseMessageBuilder($entity, 'custom Fuz'))->build(),
+            ))->build(),
         ];
 
-        $render = new ControllerBuilder([
-            'entity' => $entity,
-            'actions' => $actions,
-        ]);
+        $render = new ControllerBuilder($entity, $actions);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

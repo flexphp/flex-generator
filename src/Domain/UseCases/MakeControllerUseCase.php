@@ -36,28 +36,16 @@ class MakeControllerUseCase extends UseCase
         $actionBuilders = [];
 
         foreach ($actions as $action) {
-            $actionBuilders[$action] = (new ActionBuilder([
-                'action' => $action,
-                'entity' => $entity,
-                'request_message' => (new RequestMessageBuilder([
-                    'action' => $action,
-                    'entity' => $entity,
-                ]))->build(),
-                'use_case' => (new UseCaseBuilder([
-                    'action' => $action,
-                    'entity' => $entity,
-                ]))->build(),
-                'response_message' => (new ResponseMessageBuilder([
-                    'action' => $action,
-                    'entity' => $entity,
-                ]))->build(),
-            ]))->build();
+            $actionBuilders[$action] = (new ActionBuilder(
+                $entity,
+                $action,
+                (new RequestMessageBuilder($entity, $action))->build(),
+                (new UseCaseBuilder($entity, $action))->build(),
+                (new ResponseMessageBuilder($entity, $action))->build(),
+            ))->build();
         }
 
-        $controller = new ControllerBuilder([
-            'entity' => $entity,
-            'actions' => $actionBuilders,
-        ]);
+        $controller = new ControllerBuilder($entity, $actionBuilders);
 
         $dir = \sprintf('%1$s/../../tmp/skeleton/src/Controllers', __DIR__);
 
