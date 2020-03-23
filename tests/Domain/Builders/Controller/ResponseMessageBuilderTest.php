@@ -16,10 +16,7 @@ class ResponseMessageBuilderTest extends TestCase
 {
     public function testItRenderWithActionOk(): void
     {
-        $render = new ResponseMessageBuilder([
-            'entity' => 'Test',
-            'action' => 'action',
-        ]);
+        $render = new ResponseMessageBuilder('Test', 'action');
 
         $this->assertEquals(<<<T
         return new Response(\$response);
