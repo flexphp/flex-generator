@@ -16,13 +16,7 @@ class RequestMessageBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {
-        $action = 'index';
-        $entity = 'Test';
-
-        $render = new RequestMessageBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new RequestMessageBuilder('Test', 'index');
 
         $this->assertEquals(<<<T
         \$requestMessage = new IndexTestRequest(\$request->request->all());
@@ -31,13 +25,7 @@ T, $render->build());
 
     public function testItRenderCreateOk(): void
     {
-        $action = 'create';
-        $entity = 'Test';
-
-        $render = new RequestMessageBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new RequestMessageBuilder('Test', 'create');
 
         $this->assertEquals(<<<T
         \$requestMessage = new CreateTestRequest(\$request->request->all());
@@ -46,13 +34,7 @@ T, $render->build());
 
     public function testItRenderReadOk(): void
     {
-        $action = 'read';
-        $entity = 'Test';
-
-        $render = new RequestMessageBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new RequestMessageBuilder('Test', 'read');
 
         $this->assertEquals(<<<T
         \$requestMessage = new ReadTestRequest(['id' => \$id]);
@@ -61,13 +43,7 @@ T, $render->build());
 
     public function testItRenderUpdateOk(): void
     {
-        $action = 'update';
-        $entity = 'Test';
-
-        $render = new RequestMessageBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new RequestMessageBuilder('Test', 'update');
 
         $this->assertEquals(<<<T
         \$requestMessage = new UpdateTestRequest(\$request->request->all());
@@ -76,13 +52,7 @@ T, $render->build());
 
     public function testItRenderDeleteOk(): void
     {
-        $action = 'delete';
-        $entity = 'Test';
-
-        $render = new RequestMessageBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new RequestMessageBuilder('Test', 'delete');
 
         $this->assertEquals(<<<T
         \$requestMessage = new DeleteTestRequest(['id' => \$id]);
@@ -93,15 +63,13 @@ T, $render->build());
      * @dataProvider getCustomRequestMessages
      *
      * @param string $action
+     * @param mixed $expected
      */
     public function testItRenderCustomRequestMessageOk($action, $expected): void
     {
         $entity = 'FooBar';
 
-        $render = new RequestMessageBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new RequestMessageBuilder($entity, $action);
 
         $this->assertEquals(<<<T
         \$requestMessage = new {$expected}FooBarRequest(\$request->request->all());
@@ -110,13 +78,7 @@ T, $render->build());
 
     public function testItRenderToString(): void
     {
-        $action = 'index';
-        $entity = 'Test';
-
-        $render = new RequestMessageBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new RequestMessageBuilder('Test', 'index');
 
         $this->assertEquals(<<<T
         \$requestMessage = new IndexTestRequest(\$request->request->all());

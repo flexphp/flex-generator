@@ -13,6 +13,11 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 class RequestMessageBuilder extends AbstractBuilder
 {
+    public function __construct(string $entity, string $action)
+    {
+        parent::__construct(\compact('entity', 'action'));
+    }
+
     public function getFileTemplate(): string
     {
         return 'Request.php.twig';
