@@ -14,16 +14,22 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ActionBuilder extends AbstractBuilder
 {
-    /**
-     * @param array<string> $data
-     * @param array[] $config
-     */
-    public function __construct(array $data, array $config = [])
-    {
-        $action = $data['action'] = !empty($data['action']) && \is_string($data['action'])
-            ? $this->getSnakeCase($data['action'])
+    public function __construct(
+        string $entity,
+        string $action,
+        string $requestMessage = '',
+        string $useCase = '',
+        string $responseMessage = ''
+    ) {
+        $action = !empty($action)
+            ? $this->getSnakeCase($action)
             : 'index';
 
+        $data['action'] = $action;
+        $data['entity'] = $entity;
+        $data['request_message'] = $requestMessage;
+        $data['use_case'] = $useCase;
+        $data['response_message'] = $responseMessage;
         $data['action_camel'] = $this->getCamelCase($action);
 
         if (empty($data['route'])) {
@@ -34,7 +40,7 @@ class ActionBuilder extends AbstractBuilder
             $data['methods'] = $this->getGuessMethod($action);
         }
 
-        parent::__construct($data, $config);
+        parent::__construct($data);
     }
 
     public function getFileTemplate(): string

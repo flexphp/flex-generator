@@ -16,13 +16,7 @@ class ActionBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {
-        $action = 'index';
-        $entity = 'Test';
-
-        $render = new ActionBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new ActionBuilder('Test', 'index');
 
         $this->assertEquals(<<<T
     /**
@@ -31,11 +25,6 @@ class ActionBuilderTest extends TestCase
      */
     public function index(Request \$request): Response
     {
-
-
-
-
-
     }
 
 T, $render->build());
@@ -43,13 +32,7 @@ T, $render->build());
 
     public function testItRenderCreateOk(): void
     {
-        $action = 'create';
-        $entity = 'Test';
-
-        $render = new ActionBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new ActionBuilder('Test', 'create');
 
         $this->assertEquals(<<<T
     /**
@@ -57,11 +40,6 @@ T, $render->build());
      */
     public function create(Request \$request): Response
     {
-
-
-
-
-
     }
 
 T, $render->build());
@@ -69,13 +47,7 @@ T, $render->build());
 
     public function testItRenderReadOk(): void
     {
-        $action = 'read';
-        $entity = 'Test';
-
-        $render = new ActionBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new ActionBuilder('Test', 'read');
 
         $this->assertEquals(<<<T
     /**
@@ -84,11 +56,6 @@ T, $render->build());
      */
     public function read(\$id): Response
     {
-
-
-
-
-
     }
 
 T, $render->build());
@@ -96,13 +63,7 @@ T, $render->build());
 
     public function testItRenderUpdateOk(): void
     {
-        $action = 'update';
-        $entity = 'Test';
-
-        $render = new ActionBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new ActionBuilder('Test', 'update');
 
         $this->assertEquals(<<<T
     /**
@@ -110,11 +71,6 @@ T, $render->build());
      */
     public function update(Request \$request, \$id): Response
     {
-
-
-
-
-
     }
 
 T, $render->build());
@@ -122,13 +78,7 @@ T, $render->build());
 
     public function testItRenderDeleteOk(): void
     {
-        $action = 'delete';
-        $entity = 'Test';
-
-        $render = new ActionBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new ActionBuilder('Test', 'delete');
 
         $this->assertEquals(<<<T
     /**
@@ -136,11 +86,6 @@ T, $render->build());
      */
     public function delete(\$id): Response
     {
-
-
-
-
-
     }
 
 T, $render->build());
@@ -153,12 +98,7 @@ T, $render->build());
      */
     public function testItRenderCustomActionOk($action): void
     {
-        $entity = 'FooBar';
-
-        $render = new ActionBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new ActionBuilder('FooBar', $action);
 
         $this->assertEquals(<<<T
     /**
@@ -166,25 +106,16 @@ T, $render->build());
      */
     public function customAction(Request \$request): Response
     {
-
-
-
-
-
     }
 
 T, $render->build());
     }
 
-    public function testItRenderToString(): void
+    public function testItRenderWithRequestMessage(): void
     {
-        $action = 'index';
-        $entity = 'Test';
+        $requestMessage = '// foo';
 
-        $render = new ActionBuilder([
-            'action' => $action,
-            'entity' => $entity,
-        ]);
+        $render = new ActionBuilder('Test', 'index', $requestMessage);
 
         $this->assertEquals(<<<T
     /**
@@ -193,11 +124,86 @@ T, $render->build());
      */
     public function index(Request \$request): Response
     {
+        $requestMessage
+    }
 
+T, $render->build());
+    }
 
+    public function testItRenderWithUseCase(): void
+    {
+        $useCase = '// bar';
 
+        $render = new ActionBuilder('Test', 'index', $useCase);
 
+        $this->assertEquals(<<<T
+    /**
+     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Cache(smaxage="10")
+     */
+    public function index(Request \$request): Response
+    {
+        $useCase
+    }
 
+T, $render->build());
+    }
+
+    public function testItRenderWithResponseMessage(): void
+    {
+        $responseMessage = '// buz';
+
+        $render = new ActionBuilder('Test', 'index', $responseMessage);
+
+        $this->assertEquals(<<<T
+    /**
+     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Cache(smaxage="10")
+     */
+    public function index(Request \$request): Response
+    {
+        $responseMessage
+    }
+
+T, $render->build());
+    }
+
+    public function testItRenderComplete(): void
+    {
+        $requestMessage = '// ' . __LINE__;
+        $useCase = '// ' . __LINE__;
+        $responseMessage = '// ' . __LINE__;
+
+        $render = new ActionBuilder('Test', 'index', $requestMessage, $useCase, $responseMessage);
+
+        $this->assertEquals(<<<T
+    /**
+     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Cache(smaxage="10")
+     */
+    public function index(Request \$request): Response
+    {
+        $requestMessage
+
+        $useCase
+
+        $responseMessage
+    }
+
+T, $render->build());
+    }
+
+    public function testItRenderToString(): void
+    {
+        $render = new ActionBuilder('Test', 'index');
+
+        $this->assertEquals(<<<T
+    /**
+     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Cache(smaxage="10")
+     */
+    public function index(Request \$request): Response
+    {
     }
 
 T, $render);

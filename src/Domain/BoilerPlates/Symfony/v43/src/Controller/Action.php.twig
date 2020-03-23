@@ -13,9 +13,19 @@
     public function {{ action_camel }}(Request $request): Response
 {% endif %}
     {
-{{ request_message|raw }}
+{% if request_message %}
+        {{ request_message|trim(side='left')|raw }}
+{% endif %}
+{% if use_case %}
 
-{{ use_case|raw }}
+{% endif %}
+{% if use_case %}
+        {{ use_case|trim(side='left')|raw }}
+{% endif %}
+{% if response_message %}
 
-{{ response_message|raw }}
+{% endif %}
+{% if response_message %}
+        {{ response_message|trim(side='left')|raw }}
+{% endif %}
     }
