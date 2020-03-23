@@ -53,14 +53,14 @@ T, $render->build());
                 'index',
                 (new RequestMessageBuilder($entity, 'index'))->build(),
                 (new UseCaseBuilder($entity, 'index'))->build(),
-                (new ResponseMessageBuilder($entity, 'index'))->build(),
+                (new ResponseMessageBuilder($entity, 'index'))->build()
             ))->build(),
             'custom Fuz' => (new ActionBuilder(
                 $entity,
                 'custom Fuz',
                 (new RequestMessageBuilder($entity, 'custom Fuz'))->build(),
                 (new UseCaseBuilder($entity, 'custom Fuz'))->build(),
-                (new ResponseMessageBuilder($entity, 'custom Fuz'))->build(),
+                (new ResponseMessageBuilder($entity, 'custom Fuz'))->build()
             ))->build(),
         ];
 

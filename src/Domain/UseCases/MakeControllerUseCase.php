@@ -41,7 +41,7 @@ class MakeControllerUseCase extends UseCase
                 $action,
                 (new RequestMessageBuilder($entity, $action))->build(),
                 (new UseCaseBuilder($entity, $action))->build(),
-                (new ResponseMessageBuilder($entity, $action))->build(),
+                (new ResponseMessageBuilder($entity, $action))->build()
             ))->build();
         }
 
