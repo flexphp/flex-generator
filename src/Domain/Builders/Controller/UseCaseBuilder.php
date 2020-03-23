@@ -13,6 +13,11 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 class UseCaseBuilder extends AbstractBuilder
 {
+    public function __construct(string $entity, string $action)
+    {
+        parent::__construct(\compact('entity', 'action'));
+    }
+
     public function getFileTemplate(): string
     {
         return 'UseCase.php.twig';

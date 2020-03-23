@@ -30,11 +30,7 @@ class UseCaseBuilderTest extends TestCase
             ],
         ];
 
-        $render = new UseCaseBuilder([
-            'entity' => $entity,
-            'action' => $action,
-            'properties' => $properties,
-        ]);
+        $render = new UseCaseBuilder($entity, $action, $properties);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

@@ -16,10 +16,7 @@ class UseCaseBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {
-        $render = new UseCaseBuilder([
-            'entity' => 'Test',
-            'action' => 'index',
-        ]);
+        $render = new UseCaseBuilder('Test', 'index', );
 
         $this->assertEquals(<<<T
         \$useCase = new IndexTestUseCase();
