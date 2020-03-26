@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Writers;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Generator\Tests\TestCase;
 
-class PhpWriterTest extends TestCase
+final class PhpWriterTest extends TestCase
 {
     public function testItSaveOk(): void
     {

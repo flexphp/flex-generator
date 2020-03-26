@@ -29,7 +29,7 @@ final class CreateConstraintFileUseCaseTest extends TestCase
     /**
      * @dataProvider getEntityFile()
      */
-    public function testItSymfony43Ok(string $schemafile): void
+    public function testItSymfony43Ok(string $schemafile, string $expectedFile): void
     {
         $schema = Schema::fromFile($schemafile);
 
@@ -40,6 +40,8 @@ final class CreateConstraintFileUseCaseTest extends TestCase
 
         $this->assertInstanceOf(CreateConstraintFileResponse::class, $response);
         $file = $response->file;
+        $filename = \explode('/', $file);
+        $this->assertEquals($expectedFile, \array_pop($filename));
         $this->assertFileExists($file);
         \unlink($file);
     }
@@ -47,8 +49,8 @@ final class CreateConstraintFileUseCaseTest extends TestCase
     public function getEntityFile(): array
     {
         return [
-            [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__)],
-            [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__)],
+            [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__), 'PostConstraint.php'],
+            [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), 'CommentConstraint.php'],
         ];
     }
 }

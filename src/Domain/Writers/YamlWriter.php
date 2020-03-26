@@ -11,18 +11,11 @@ namespace FlexPHP\Generator\Domain\Writers;
 
 use Symfony\Component\Yaml\Yaml;
 
-class YamlWriter extends AbstractWriter
+final class YamlWriter extends AbstractWriter
 {
     public function __construct(array $data, string $filename)
     {
-        $this->data = $data;
-        $this->filename = $filename;
-        $this->path = \sprintf('%1$s/../../tmp', __DIR__);
-    }
-
-    protected function getContent(): string
-    {
-        return Yaml::dump($this->data, 4, 2);
+        parent::__construct(Yaml::dump($data, 4, 2), $filename, \sprintf('%1$s/../../tmp', __DIR__));
     }
 
     protected function getExtension(): string

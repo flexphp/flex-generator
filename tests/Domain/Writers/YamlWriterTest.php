@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Writers;
 use FlexPHP\Generator\Domain\Writers\YamlWriter;
 use FlexPHP\Generator\Tests\TestCase;
 
-class YamlWriterTest extends TestCase
+final class YamlWriterTest extends TestCase
 {
     public function testItSaveOk(): void
     {

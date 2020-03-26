@@ -16,7 +16,10 @@ use FlexPHP\Generator\Domain\Builders\Controller\ResponseMessageBuilder;
 use FlexPHP\Generator\Domain\Builders\Controller\UseCaseBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
+use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\UseCases\UseCase;
+use Jawira\CaseConverter\Convert;
+use Symfony\Component\Inflector\Inflector;
 
 final class CreateControllerFileUseCase extends UseCase
 {
@@ -46,17 +49,11 @@ final class CreateControllerFileUseCase extends UseCase
         }
 
         $controller = new ControllerBuilder($entity, $actionBuilders);
+        $filename = (new Convert(Inflector::singularize($entity)))->toPascal() . 'Controller';
+        $path = \sprintf('%1$s/../../tmp/skeleton/src/Controllers', __DIR__);
 
-        $dir = \sprintf('%1$s/../../tmp/skeleton/src/Controllers', __DIR__);
+        $writer = new PhpWriter($controller->build(), $filename, $path);
 
-        if (!\is_dir($dir)) {
-            \mkdir($dir, 0777, true); // @codeCoverageIgnore
-        }
-
-        $file = \sprintf('%1$s/%2$sController.php', $dir, $entity);
-
-        \file_put_contents($file, $controller->build());
-
-        return new CreateControllerFileResponse($file);
+        return new CreateControllerFileResponse($writer->save());
     }
 }

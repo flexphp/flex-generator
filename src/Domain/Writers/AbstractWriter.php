@@ -26,7 +26,13 @@ abstract class AbstractWriter implements WriterInterface
 
     public function save(): string
     {
-        $output = \sprintf('%1$s/%2$s.%3$s', $this->getPath(), $this->getFilename(), $this->getExtension());
+        $path = $this->getPath();
+
+        if (!\is_dir($path)) {
+            \mkdir($path, 0777, true); // @codeCoverageIgnore
+        }
+
+        $output = \sprintf('%1$s/%2$s.%3$s', $path, $this->getFilename(), $this->getExtension());
 
         \file_put_contents($output, $this->getContent());
 

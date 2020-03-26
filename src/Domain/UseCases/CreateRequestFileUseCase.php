@@ -12,6 +12,7 @@ namespace FlexPHP\Generator\Domain\UseCases;
 use FlexPHP\Generator\Domain\Builders\Message\RequestBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateRequestFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateRequestFileResponse;
+use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
 use Jawira\CaseConverter\Convert;
@@ -44,20 +45,14 @@ final class CreateRequestFileUseCase extends UseCase
             []
         );
 
-        $dir = \sprintf('%1$s/../../tmp/skeleton/src/Requests', __DIR__);
-
-        if (!\is_dir($dir)) {
-            \mkdir($dir, 0777, true); // @codeCoverageIgnore
-        }
+        $path = \sprintf('%1$s/../../tmp/skeleton/src/Requests', __DIR__);
 
         foreach ($actions as $action) {
             $request = new RequestBuilder($entity, $action, $properties);
+            $filename = (new Convert($action))->toPascal() . $entity . 'Request';
 
-            $file = \sprintf('%1$s/%2$s%3$sRequest.php', $dir, (new Convert($action))->toPascal(), $entity);
-
-            \file_put_contents($file, $request->build());
-
-            $files[] = $file;
+            $writer = new PhpWriter($request->build(), $filename, $path);
+            $files[] = $writer->save();
         }
 
         return new CreateRequestFileResponse($files);

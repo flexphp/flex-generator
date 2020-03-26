@@ -12,8 +12,11 @@ namespace FlexPHP\Generator\Domain\UseCases;
 use FlexPHP\Generator\Domain\Builders\Entity\EntityBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
+use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
+use Jawira\CaseConverter\Convert;
+use Symfony\Component\Inflector\Inflector;
 
 final class CreateEntityFileUseCase extends UseCase
 {
@@ -40,17 +43,11 @@ final class CreateEntityFileUseCase extends UseCase
         );
 
         $entity = new EntityBuilder($name, $properties);
+        $filename = (new Convert(Inflector::singularize($name)))->toPascal();
+        $path = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Entity', __DIR__, $name);
 
-        $dir = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Entity', __DIR__, $name);
+        $writer = new PhpWriter($entity->build(), $filename, $path);
 
-        if (!\is_dir($dir)) {
-            \mkdir($dir, 0777, true); // @codeCoverageIgnore
-        }
-
-        $file = \sprintf('%1$s/%2$s.php', $dir, $name);
-
-        \file_put_contents($file, $entity->build());
-
-        return new CreateEntityFileResponse($file);
+        return new CreateEntityFileResponse($writer->save());
     }
 }

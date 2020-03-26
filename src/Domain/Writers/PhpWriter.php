@@ -9,7 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Writers;
 
-class PhpWriter extends AbstractWriter
+final class PhpWriter extends AbstractWriter
 {
     protected function getExtension(): string
     {
