@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 trait TypeHintTrait
 {
-    protected function guessTypeHint(string $dataType): string
+    private function guessTypeHint(string $dataType): string
     {
         $typeHintByDataType = [
             'smallint' => 'int',

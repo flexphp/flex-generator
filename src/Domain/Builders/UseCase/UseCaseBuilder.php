@@ -30,7 +30,7 @@ final class UseCaseBuilder extends AbstractBuilder
         return 'UseCase.php.twig';
     }
 
-    public function getPathTemplate(): string
+    protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/UseCase', parent::getPathTemplate());
     }

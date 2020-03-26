@@ -23,7 +23,7 @@ final class ConstraintBuilder extends AbstractBuilder
         return 'Constraint.php.twig';
     }
 
-    public function getPathTemplate(): string
+    protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Constraint', parent::getPathTemplate());
     }

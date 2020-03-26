@@ -29,7 +29,7 @@ final class RepositoryBuilder extends AbstractBuilder
         return 'Repository.php.twig';
     }
 
-    public function getPathTemplate(): string
+    protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Repository', parent::getPathTemplate());
     }

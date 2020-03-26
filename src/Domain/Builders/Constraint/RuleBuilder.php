@@ -23,7 +23,7 @@ final class RuleBuilder extends AbstractBuilder
         return 'Rule.php.twig';
     }
 
-    public function getPathTemplate(): string
+    protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Constraint', parent::getPathTemplate());
     }

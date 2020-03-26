@@ -37,7 +37,7 @@ final class ActionBuilder extends AbstractBuilder
         parent::__construct($data);
     }
 
-    public function getPathTemplate(): string
+    protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/Symfony/v43/src/Controller', parent::getPathTemplate());
     }

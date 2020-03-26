@@ -30,7 +30,7 @@ final class RequestBuilder extends AbstractBuilder
         return 'Request.php.twig';
     }
 
-    public function getPathTemplate(): string
+    protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Message', parent::getPathTemplate());
     }

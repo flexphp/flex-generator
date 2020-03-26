@@ -23,7 +23,7 @@ final class ResponseMessageBuilder extends AbstractBuilder
         return 'Response.php.twig';
     }
 
-    public function getPathTemplate(): string
+    protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/Symfony/v43/src/Controller', parent::getPathTemplate());
     }

@@ -29,7 +29,7 @@ final class EntityBuilder extends AbstractBuilder
         return 'Entity.php.twig';
     }
 
-    public function getPathTemplate(): string
+    protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Entity', parent::getPathTemplate());
     }

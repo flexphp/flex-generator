@@ -29,7 +29,7 @@ final class GatewayBuilder extends AbstractBuilder
         return 'Gateway.php.twig';
     }
 
-    public function getPathTemplate(): string
+    protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Gateway', parent::getPathTemplate());
     }
