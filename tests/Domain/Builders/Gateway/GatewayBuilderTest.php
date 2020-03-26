@@ -26,10 +26,7 @@ class GatewayBuilderTest extends TestCase
             'custom Fuz',
         ];
 
-        $render = new GatewayBuilder([
-            'entity' => $entity,
-            'actions' => $actions,
-        ]);
+        $render = new GatewayBuilder($entity, $actions);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
