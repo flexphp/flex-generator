@@ -11,17 +11,17 @@ namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\MakeControllerRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\MakeControllerResponse;
-use FlexPHP\Generator\Domain\UseCases\MakeControllerUseCase;
+use FlexPHP\Generator\Domain\UseCases\CreateControllerFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\UseCases\Exception\NotValidRequestException;
 
-class MakeControllerUseCaseTest extends TestCase
+class CreateControllerFileUseCaseTest extends TestCase
 {
     public function testItNotValidRequestThrowException(): void
     {
         $this->expectException(NotValidRequestException::class);
 
-        $useCase = new MakeControllerUseCase();
+        $useCase = new CreateControllerFileUseCase();
         $useCase->execute(null);
     }
 
@@ -32,7 +32,7 @@ class MakeControllerUseCaseTest extends TestCase
     {
         $request = new MakeControllerRequest($entity, $actions);
 
-        $useCase = new MakeControllerUseCase();
+        $useCase = new CreateControllerFileUseCase();
         $response = $useCase->execute($request);
 
         $this->assertInstanceOf(MakeControllerResponse::class, $response);

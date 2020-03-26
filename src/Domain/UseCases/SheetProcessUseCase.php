@@ -51,7 +51,7 @@ class SheetProcessUseCase extends UseCase
 
     private function makeController(string $name): MakeControllerResponse
     {
-        return (new MakeControllerUseCase())->execute(
+        return (new CreateControllerFileUseCase())->execute(
             new MakeControllerRequest($name, [
                 'index',
                 'create',
@@ -64,7 +64,7 @@ class SheetProcessUseCase extends UseCase
 
     private function makeConstraint(string $name, array $properties): MakeConstraintResponse
     {
-        return (new MakeConstraintUseCase())->execute(
+        return (new CreateConstraintFileUseCase())->execute(
             new MakeConstraintRequest($name, $properties)
         );
     }

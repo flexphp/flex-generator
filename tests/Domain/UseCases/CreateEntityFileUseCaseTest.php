@@ -9,19 +9,19 @@
  */
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
-use FlexPHP\Generator\Domain\Messages\Requests\MakeConstraintRequest;
-use FlexPHP\Generator\Domain\Messages\Responses\MakeConstraintResponse;
-use FlexPHP\Generator\Domain\UseCases\MakeConstraintUseCase;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityResponse;
+use FlexPHP\Generator\Domain\UseCases\CreateEntityFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\UseCases\Exception\NotValidRequestException;
 
-class MakeConstraintUseCaseTest extends TestCase
+class CreateEntityFileUseCaseTest extends TestCase
 {
     public function testItNotValidRequestThrowException(): void
     {
         $this->expectException(NotValidRequestException::class);
 
-        $useCase = new MakeConstraintUseCase();
+        $useCase = new CreateEntityFileUseCase();
         $useCase->execute(null);
     }
 
@@ -30,12 +30,12 @@ class MakeConstraintUseCaseTest extends TestCase
      */
     public function testItSymfony43Ok(string $entity, array $properties): void
     {
-        $request = new MakeConstraintRequest($entity, $properties);
+        $request = new CreateEntityRequest($entity, $properties);
 
-        $useCase = new MakeConstraintUseCase();
+        $useCase = new CreateEntityFileUseCase();
         $response = $useCase->execute($request);
 
-        $this->assertInstanceOf(MakeConstraintResponse::class, $response);
+        $this->assertInstanceOf(CreateEntityResponse::class, $response);
         $file = $response->file;
         $this->assertFileExists($file);
         \unlink($file);

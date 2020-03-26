@@ -14,7 +14,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityResponse;
 use FlexPHP\UseCases\UseCase;
 
-class CreateEntityUseCase extends UseCase
+class CreateEntityFileUseCase extends UseCase
 {
     /**
      * Create entity
