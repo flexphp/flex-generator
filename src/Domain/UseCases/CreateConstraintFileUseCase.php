@@ -13,6 +13,7 @@ use FlexPHP\Generator\Domain\Builders\Constraint\ConstraintBuilder;
 use FlexPHP\Generator\Domain\Builders\Constraint\RuleBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\MakeConstraintRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\MakeConstraintResponse;
+use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
 
 class CreateConstraintFileUseCase extends UseCase
@@ -30,11 +31,13 @@ class CreateConstraintFileUseCase extends UseCase
 
         $entity = $request->entity;
         $properties = $request->properties;
-        $_properties = [];
 
-        foreach ($properties as $name => $constraint) {
-            $_properties[$name] = (new RuleBuilder($name, $constraint))->build();
-        }
+        $_properties = \array_reduce($properties, function (array $result, SchemaAttributeInterface $schemaAttribute) {
+            $name = $schemaAttribute->name();
+            $result[$name] = (new RuleBuilder($name, $schemaAttribute->constraints()))->build();
+
+            return $result;
+        }, []);
 
         $constraint = new ConstraintBuilder($entity, $_properties);
 
