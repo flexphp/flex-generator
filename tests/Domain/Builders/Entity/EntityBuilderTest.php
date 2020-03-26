@@ -29,10 +29,7 @@ class EntityBuilderTest extends TestCase
             ],
         ];
 
-        $render = new EntityBuilder([
-            'name' => $name,
-            'properties' => $properties,
-        ]);
+        $render = new EntityBuilder($name, $properties);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

@@ -28,12 +28,8 @@ class CreateEntityUseCase extends UseCase
         $this->throwExceptionIfRequestNotValid(__METHOD__, CreateEntityRequest::class, $request);
 
         $name = $request->name;
-        $properties = $request->properties;
 
-        $entity = new EntityBuilder([
-            'name' => $name,
-            'properties' => $properties,
-        ]);
+        $entity = new EntityBuilder($name, $request->properties);
 
         $dir = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Entity', __DIR__, $name);
 

@@ -10,22 +10,18 @@
 namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\Constants\Keyword;
 
 class EntityBuilder extends AbstractBuilder
 {
-    public function __construct(array $data, array $config = [])
+    public function __construct(string $name, array $properties)
     {
-        $name = $data['name'];
-        $properties = !empty($data['properties']) && \is_array($data['properties'])
-            ? $data['properties']
-            : [];
-
         $_properties = \array_keys($properties);
 
         $getters = $this->getGetters($properties);
         $setters = $this->getSetters($properties);
 
-        parent::__construct(\compact('name', '_properties', 'getters', 'setters'), $config);
+        parent::__construct(\compact('name', '_properties', 'getters', 'setters'));
     }
 
     public function getFileTemplate(): string
@@ -43,9 +39,7 @@ class EntityBuilder extends AbstractBuilder
         $getters = [];
 
         foreach ($properties as $name => $attributes) {
-            $getters[$name] = new GetterBuilder([
-                $name => $attributes,
-            ]);
+            $getters[$name] = new GetterBuilder($name, $attributes[Keyword::DATATYPE]);
         }
 
         return $getters;
@@ -56,9 +50,7 @@ class EntityBuilder extends AbstractBuilder
         $setters = [];
 
         foreach ($properties as $name => $attributes) {
-            $setters[$name] = new SetterBuilder([
-                $name => $attributes,
-            ]);
+            $setters[$name] = new SetterBuilder($name, $attributes[Keyword::DATATYPE]);
         }
 
         return $setters;
