@@ -17,14 +17,15 @@ use FlexPHP\Generator\Domain\Builders\Controller\UseCaseBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
+use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\UseCases\UseCase;
-use Jawira\CaseConverter\Convert;
-use Symfony\Component\Inflector\Inflector;
 
 final class CreateControllerFileUseCase extends UseCase
 {
+    use InflectorTrait;
+
     /**
-     * Create controller based in actions
+     * Create controller file based in actions
      *
      * @param CreateControllerFileRequest $request
      *
@@ -49,7 +50,7 @@ final class CreateControllerFileUseCase extends UseCase
         }
 
         $controller = new ControllerBuilder($entity, $actionBuilders);
-        $filename = (new Convert(Inflector::singularize($entity)))->toPascal() . 'Controller';
+        $filename = $this->getSingularize($entity) . 'Controller';
         $path = \sprintf('%1$s/../../tmp/skeleton/src/Controllers', __DIR__);
 
         $writer = new PhpWriter($controller->build(), $filename, $path);

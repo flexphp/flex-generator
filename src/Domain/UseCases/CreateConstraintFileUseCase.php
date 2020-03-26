@@ -13,16 +13,17 @@ use FlexPHP\Generator\Domain\Builders\Constraint\ConstraintBuilder;
 use FlexPHP\Generator\Domain\Builders\Constraint\RuleBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateConstraintFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
+use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
-use Jawira\CaseConverter\Convert;
-use Symfony\Component\Inflector\Inflector;
 
 final class CreateConstraintFileUseCase extends UseCase
 {
+    use InflectorTrait;
+
     /**
-     * Create constraint attribute for entity
+     * Create constraint attribute file for entity
      *
      * @param CreateConstraintFileRequest $request
      *
@@ -45,7 +46,7 @@ final class CreateConstraintFileUseCase extends UseCase
         );
 
         $constraint = new ConstraintBuilder($entity, $properties);
-        $filename = (new Convert(Inflector::singularize($entity)))->toPascal() . 'Constraint';
+        $filename = $this->getSingularize($entity) . 'Constraint';
         $path = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Constraint', __DIR__, $entity);
 
         $writer = new PhpWriter($constraint->build(), $filename, $path);

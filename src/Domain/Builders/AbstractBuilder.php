@@ -9,10 +9,12 @@
  */
 namespace FlexPHP\Generator\Domain\Builders;
 
-use Jawira\CaseConverter\Convert;
+use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 
 abstract class AbstractBuilder implements BuilderInterface
 {
+    use InflectorTrait;
+
     /**
      * @var array<array|string>
      */
@@ -49,19 +51,4 @@ abstract class AbstractBuilder implements BuilderInterface
     }
 
     abstract protected function getFileTemplate(): string;
-
-    protected function getPascalCase(string $string): string
-    {
-        return (new Convert($string))->toPascal();
-    }
-
-    protected function getCamelCase(string $string): string
-    {
-        return (new Convert($string))->toCamel();
-    }
-
-    protected function getSnakeCase(string $string): string
-    {
-        return (new Convert($string))->toSnake();
-    }
 }

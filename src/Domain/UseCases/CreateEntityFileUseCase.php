@@ -13,15 +13,16 @@ use FlexPHP\Generator\Domain\Builders\Entity\EntityBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
+use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
-use Jawira\CaseConverter\Convert;
-use Symfony\Component\Inflector\Inflector;
 
 final class CreateEntityFileUseCase extends UseCase
 {
+    use InflectorTrait;
+
     /**
-     * Create entity
+     * Create entity file
      *
      * @param CreateEntityFileRequest $request
      *
@@ -43,7 +44,7 @@ final class CreateEntityFileUseCase extends UseCase
         );
 
         $entity = new EntityBuilder($name, $properties);
-        $filename = (new Convert(Inflector::singularize($name)))->toPascal();
+        $filename = $this->getSingularize($name);
         $path = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Entity', __DIR__, $name);
 
         $writer = new PhpWriter($entity->build(), $filename, $path);

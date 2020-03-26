@@ -12,16 +12,17 @@ namespace FlexPHP\Generator\Domain\UseCases;
 use FlexPHP\Generator\Domain\Builders\Message\RequestBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateRequestFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateRequestFileResponse;
+use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
-use Jawira\CaseConverter\Convert;
-use Symfony\Component\Inflector\Inflector;
 
 final class CreateRequestFileUseCase extends UseCase
 {
+    use InflectorTrait;
+
     /**
-     * Create request message file based in properties
+     * Create request message file based in attributes entity
      *
      * @param CreateRequestFileRequest $request
      *
@@ -32,7 +33,7 @@ final class CreateRequestFileUseCase extends UseCase
         $this->throwExceptionIfRequestNotValid(__METHOD__, CreateRequestFileRequest::class, $request);
 
         $files = [];
-        $entity = Inflector::singularize($request->entity);
+        $entity = $this->getSingularize($request->entity);
         $actions = $request->actions;
         $properties = \array_reduce(
             $request->properties,
@@ -49,7 +50,7 @@ final class CreateRequestFileUseCase extends UseCase
 
         foreach ($actions as $action) {
             $request = new RequestBuilder($entity, $action, $properties);
-            $filename = (new Convert($action))->toPascal() . $entity . 'Request';
+            $filename = $this->getPascalCase($action) . $entity . 'Request';
 
             $writer = new PhpWriter($request->build(), $filename, $path);
             $files[] = $writer->save();
