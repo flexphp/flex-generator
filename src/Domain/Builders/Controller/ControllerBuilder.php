@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
-class ControllerBuilder extends AbstractBuilder
+final class ControllerBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, array $actions)
     {
@@ -23,7 +23,7 @@ class ControllerBuilder extends AbstractBuilder
         parent::__construct(\compact('entity', 'actions'));
     }
 
-    public function getFileTemplate(): string
+    protected function getFileTemplate(): string
     {
         return 'Controller.php.twig';
     }

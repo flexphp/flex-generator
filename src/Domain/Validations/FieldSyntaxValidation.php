@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Domain\Validations;
 use FlexPHP\Generator\Domain\Exceptions\FieldSyntaxValidationException;
 use FlexPHP\Schema\Constants\Keyword;
 
-class FieldSyntaxValidation implements ValidationInterface
+final class FieldSyntaxValidation implements ValidationInterface
 {
     /**
      * @var array

@@ -13,7 +13,7 @@ use FlexPHP\Generator\Domain\Builders\UseCase\UseCaseBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Constants\Keyword;
 
-class UseCaseBuilderTest extends TestCase
+final class UseCaseBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {

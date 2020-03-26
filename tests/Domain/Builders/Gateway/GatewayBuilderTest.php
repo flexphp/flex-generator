@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Gateway;
 use FlexPHP\Generator\Domain\Builders\Gateway\GatewayBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
-class GatewayBuilderTest extends TestCase
+final class GatewayBuilderTest extends TestCase
 {
     public function testItDbOk(): void
     {

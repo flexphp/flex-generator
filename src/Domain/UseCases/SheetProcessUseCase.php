@@ -18,7 +18,7 @@ use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
 use FlexPHP\Schema\Schema;
 use FlexPHP\UseCases\UseCase;
 
-class SheetProcessUseCase extends UseCase
+final class SheetProcessUseCase extends UseCase
 {
     /**
      * Process sheet

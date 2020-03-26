@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Constraint;
 use FlexPHP\Generator\Domain\Builders\Constraint\ConstraintBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
-class ConstraintBuilderTest extends TestCase
+final class ConstraintBuilderTest extends TestCase
 {
     public function testItOk(): void
     {

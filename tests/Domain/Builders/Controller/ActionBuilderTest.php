@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 use FlexPHP\Generator\Domain\Builders\Controller\ActionBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
-class ActionBuilderTest extends TestCase
+final class ActionBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {

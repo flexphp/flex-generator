@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Messages\Responses;
 
 use FlexPHP\Messages\ResponseInterface;
 
-class ProcessFormatResponse implements ResponseInterface
+final class ProcessFormatResponse implements ResponseInterface
 {
     /**
      * @var array

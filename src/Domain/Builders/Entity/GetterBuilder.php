@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
-class GetterBuilder extends AbstractBuilder
+final class GetterBuilder extends AbstractBuilder
 {
     use TypeHintTrait;
 
@@ -23,7 +23,7 @@ class GetterBuilder extends AbstractBuilder
         parent::__construct(\compact('name', 'typehint', 'getter'));
     }
 
-    public function getFileTemplate(): string
+    protected function getFileTemplate(): string
     {
         return 'Getter.php.twig';
     }

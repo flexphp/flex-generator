@@ -11,14 +11,14 @@ namespace FlexPHP\Generator\Domain\Builders\Constraint;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
-class ConstraintBuilder extends AbstractBuilder
+final class ConstraintBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, array $properties)
     {
         parent::__construct(\compact('entity', 'properties'));
     }
 
-    public function getFileTemplate(): string
+    protected function getFileTemplate(): string
     {
         return 'Constraint.php.twig';
     }

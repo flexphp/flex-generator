@@ -14,7 +14,7 @@ use FlexPHP\Generator\Domain\UseCases\SheetProcessUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\UseCases\Exception\NotValidRequestException;
 
-class SheetProcessUseCaseTest extends TestCase
+final class SheetProcessUseCaseTest extends TestCase
 {
     public function testItNotValidRequestThrowException(): void
     {

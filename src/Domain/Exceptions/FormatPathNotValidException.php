@@ -9,7 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Exceptions;
 
-class FormatPathNotValidException extends DomainException
+final class FormatPathNotValidException extends DomainException
 {
     /**
      * @var string

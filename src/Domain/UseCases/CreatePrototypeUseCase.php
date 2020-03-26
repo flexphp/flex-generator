@@ -28,8 +28,8 @@ final class CreatePrototypeUseCase extends UseCase
 
         $sheets = $request->sheets;
 
-        foreach ($sheets as $name => $fileConfig) {
-            $this->processSheet($name, $fileConfig);
+        foreach ($sheets as $name => $schemafile) {
+            $this->processSheet($name, $schemafile);
         }
 
         $this->addVendorFiles();
@@ -37,10 +37,10 @@ final class CreatePrototypeUseCase extends UseCase
         return new CreatePrototypeResponse();
     }
 
-    private function processSheet(string $name, string $fileConfig): SheetProcessResponse
+    private function processSheet(string $name, string $schemafile): SheetProcessResponse
     {
         return (new SheetProcessUseCase())->execute(
-            new SheetProcessRequest($name, $fileConfig)
+            new SheetProcessRequest($name, $schemafile)
         );
     }
 

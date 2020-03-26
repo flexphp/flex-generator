@@ -13,7 +13,7 @@ use FlexPHP\Generator\Domain\Exceptions\FieldSyntaxValidationException;
 use FlexPHP\Generator\Domain\Validations\FieldSyntaxValidation;
 use FlexPHP\Generator\Tests\TestCase;
 
-class FieldSyntaxValidationTest extends TestCase
+final class FieldSyntaxValidationTest extends TestCase
 {
     public function testItPropertyUnknowThrownException(): void
     {

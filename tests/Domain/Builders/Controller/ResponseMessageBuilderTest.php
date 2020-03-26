@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 use FlexPHP\Generator\Domain\Builders\Controller\ResponseMessageBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
-class ResponseMessageBuilderTest extends TestCase
+final class ResponseMessageBuilderTest extends TestCase
 {
     public function testItRenderWithActionOk(): void
     {

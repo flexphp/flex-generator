@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Domain\Builders\UseCase;
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Schema\Constants\Keyword;
 
-class UseCaseBuilder extends AbstractBuilder
+final class UseCaseBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, string $action, array $properties)
     {
@@ -25,7 +25,7 @@ class UseCaseBuilder extends AbstractBuilder
         parent::__construct(\compact('entity', 'action', 'properties'));
     }
 
-    public function getFileTemplate(): string
+    protected function getFileTemplate(): string
     {
         return 'UseCase.php.twig';
     }

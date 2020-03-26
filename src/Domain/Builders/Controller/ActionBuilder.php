@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Domain\Builders\Controller;
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
-class ActionBuilder extends AbstractBuilder
+final class ActionBuilder extends AbstractBuilder
 {
     public function __construct(
         string $entity,
@@ -43,7 +43,7 @@ class ActionBuilder extends AbstractBuilder
         parent::__construct($data);
     }
 
-    public function getFileTemplate(): string
+    protected function getFileTemplate(): string
     {
         return 'Action.php.twig';
     }

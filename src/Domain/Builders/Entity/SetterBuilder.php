@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
-class SetterBuilder extends AbstractBuilder
+final class SetterBuilder extends AbstractBuilder
 {
     use TypeHintTrait;
 
@@ -23,7 +23,7 @@ class SetterBuilder extends AbstractBuilder
         parent::__construct(\compact('name', 'typehint', 'setter'));
     }
 
-    public function getFileTemplate(): string
+    protected function getFileTemplate(): string
     {
         return 'Setter.php.twig';
     }

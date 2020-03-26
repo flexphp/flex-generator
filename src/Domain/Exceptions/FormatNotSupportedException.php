@@ -9,7 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Exceptions;
 
-class FormatNotSupportedException extends DomainException
+final class FormatNotSupportedException extends DomainException
 {
     /**
      * @var string

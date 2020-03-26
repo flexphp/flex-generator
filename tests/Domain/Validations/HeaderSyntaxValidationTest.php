@@ -14,7 +14,7 @@ use FlexPHP\Generator\Domain\Exceptions\HeaderSyntaxValidationException;
 use FlexPHP\Generator\Domain\Validations\HeaderSyntaxValidation;
 use FlexPHP\Generator\Tests\TestCase;
 
-class HeaderSyntaxValidationTest extends TestCase
+final class HeaderSyntaxValidationTest extends TestCase
 {
     public function testItHeadersUnknowThrowException(): void
     {

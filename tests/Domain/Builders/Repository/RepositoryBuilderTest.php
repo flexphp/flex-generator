@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Repository;
 use FlexPHP\Generator\Domain\Builders\Repository\RepositoryBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
-class RepositoryBuilderTest extends TestCase
+final class RepositoryBuilderTest extends TestCase
 {
     public function testItOk(): void
     {

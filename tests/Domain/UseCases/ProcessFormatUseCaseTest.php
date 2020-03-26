@@ -17,7 +17,7 @@ use FlexPHP\Generator\Domain\UseCases\ProcessFormatUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\UseCases\Exception\NotValidRequestException;
 
-class ProcessFormatUseCaseTest extends TestCase
+final class ProcessFormatUseCaseTest extends TestCase
 {
     public function testItFormatNotValidRequestThrowException(): void
     {

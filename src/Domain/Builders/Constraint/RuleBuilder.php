@@ -11,14 +11,14 @@ namespace FlexPHP\Generator\Domain\Builders\Constraint;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
-class RuleBuilder extends AbstractBuilder
+final class RuleBuilder extends AbstractBuilder
 {
     public function __construct(string $property, array $rules)
     {
         parent::__construct(\compact('property', 'rules'));
     }
 
-    public function getFileTemplate(): string
+    protected function getFileTemplate(): string
     {
         return 'Rule.php.twig';
     }

@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Domain\Builders\Message;
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Schema\Constants\Keyword;
 
-class ResponseBuilder extends AbstractBuilder
+final class ResponseBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, string $action, array $properties)
     {
@@ -25,7 +25,7 @@ class ResponseBuilder extends AbstractBuilder
         parent::__construct(\compact('entity', 'action', 'properties'));
     }
 
-    public function getFileTemplate(): string
+    protected function getFileTemplate(): string
     {
         return 'Response.php.twig';
     }

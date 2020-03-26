@@ -16,7 +16,7 @@ use FlexPHP\Generator\Domain\Builders\Controller\ResponseMessageBuilder;
 use FlexPHP\Generator\Domain\Builders\Controller\UseCaseBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
-class ControllerBuilderTest extends TestCase
+final class ControllerBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {

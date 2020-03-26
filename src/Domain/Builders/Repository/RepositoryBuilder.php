@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Builders\Repository;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
-class RepositoryBuilder extends AbstractBuilder
+final class RepositoryBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, array $actions)
     {
@@ -24,7 +24,7 @@ class RepositoryBuilder extends AbstractBuilder
         parent::__construct(\compact('entity', 'actions'));
     }
 
-    public function getFileTemplate(): string
+    protected function getFileTemplate(): string
     {
         return 'Repository.php.twig';
     }

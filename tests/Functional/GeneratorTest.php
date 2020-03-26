@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Tests\Functional;
 
 use FlexPHP\Generator\Tests\WebTestCase;
 
-class GeneratorTest extends WebTestCase
+final class GeneratorTest extends WebTestCase
 {
     public function testItFileEmptyError(): void
     {

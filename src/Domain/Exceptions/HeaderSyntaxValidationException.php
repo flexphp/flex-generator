@@ -9,6 +9,6 @@
  */
 namespace FlexPHP\Generator\Domain\Exceptions;
 
-class HeaderSyntaxValidationException extends DomainException
+final class HeaderSyntaxValidationException extends DomainException
 {
 }

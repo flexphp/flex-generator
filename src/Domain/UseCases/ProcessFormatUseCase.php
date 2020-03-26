@@ -21,7 +21,7 @@ use FlexPHP\Generator\Domain\Writers\YamlWriter;
 use FlexPHP\UseCases\UseCase;
 use Jawira\CaseConverter\Convert;
 
-class ProcessFormatUseCase extends UseCase
+final class ProcessFormatUseCase extends UseCase
 {
     /**
      * Process format based in extension

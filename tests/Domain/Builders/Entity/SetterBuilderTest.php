@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Entity;
 use FlexPHP\Generator\Domain\Builders\Entity\SetterBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 
-class SetterBuilderTest extends TestCase
+final class SetterBuilderTest extends TestCase
 {
     public function testItWithDefaultType(): void
     {

@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Domain\Builders\Entity;
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Schema\Constants\Keyword;
 
-class EntityBuilder extends AbstractBuilder
+final class EntityBuilder extends AbstractBuilder
 {
     public function __construct(string $name, array $properties)
     {
@@ -24,7 +24,7 @@ class EntityBuilder extends AbstractBuilder
         parent::__construct(\compact('name', '_properties', 'getters', 'setters'));
     }
 
-    public function getFileTemplate(): string
+    protected function getFileTemplate(): string
     {
         return 'Entity.php.twig';
     }

@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Domain\Builders\Command;
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Schema\Constants\Keyword;
 
-class CommandBuilder extends AbstractBuilder
+final class CommandBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, string $action, array $properties)
     {

@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Builders\Gateway;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
-class GatewayBuilder extends AbstractBuilder
+final class GatewayBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, array $actions)
     {
@@ -24,7 +24,7 @@ class GatewayBuilder extends AbstractBuilder
         parent::__construct(\compact('entity', 'actions'));
     }
 
-    public function getFileTemplate(): string
+    protected function getFileTemplate(): string
     {
         return 'Gateway.php.twig';
     }
