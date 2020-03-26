@@ -26,10 +26,7 @@ class RepositoryBuilderTest extends TestCase
             'custom Fuz',
         ];
 
-        $render = new RepositoryBuilder([
-            'entity' => $entity,
-            'actions' => $actions,
-        ]);
+        $render = new RepositoryBuilder($entity, $actions);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

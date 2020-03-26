@@ -13,15 +13,15 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 class RepositoryBuilder extends AbstractBuilder
 {
-    public function __construct(array $data, array $config = [])
+    public function __construct(string $entity, array $actions)
     {
-        if (!empty($data['actions']) && \is_array($data['actions'])) {
-            foreach ($data['actions'] as $index => $action) {
-                $data['actions'][$index] = $this->getCamelCase($action);
-            }
-        }
+        $actions = \array_reduce($actions, function (array $result, string $action) {
+            $result[] = $this->getCamelCase($action);
 
-        parent::__construct($data, $config);
+            return $result;
+        }, []);
+
+        parent::__construct(\compact('entity', 'actions'));
     }
 
     public function getFileTemplate(): string
