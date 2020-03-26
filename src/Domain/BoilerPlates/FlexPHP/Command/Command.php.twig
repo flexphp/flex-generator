@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface; 
 
-class {{ action_name }}{{ entity }}Command extends Command
+final class {{ action_name }}{{ entity }}Command extends Command
 {
     protected function configure($request): ActionTestResponse
     {

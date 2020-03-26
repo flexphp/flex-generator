@@ -4,7 +4,7 @@ namespace Domain\{{ entity }}\Message;
 
 use FlexPHP\Messages\RequestInterface;
 
-class {{ action_name }}{{ entity }}Request implements RequestInterface
+final class {{ action_name }}{{ entity }}Request implements RequestInterface
 {
 {% for id, property in properties %}
     public ${{ id }};

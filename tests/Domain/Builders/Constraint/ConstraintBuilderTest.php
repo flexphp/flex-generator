@@ -28,7 +28,7 @@ namespace Domain\Test\Constraint;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class TestConstraint
+final class TestConstraint
 {
     private function getValidator(): ValidatorInterface
     {

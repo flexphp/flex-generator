@@ -6,7 +6,7 @@ use Domain\{{ entity }}\Message\{{ action_name }}{{ entity }}Request;
 use Domain\{{ entity }}\Message\{{ action_name }}{{ entity }}Response;
 use FlexPHP\UseCases\UseCase;
 
-class {{ action_name }}{{ entity }}UseCase extends UseCase
+final class {{ action_name }}{{ entity }}UseCase extends UseCase
 {
 {% for id, property in properties %}
     private ${{ id }};

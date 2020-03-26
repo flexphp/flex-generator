@@ -44,7 +44,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface; 
 
-class ActionTestCommand extends Command
+final class ActionTestCommand extends Command
 {
     protected function configure(\$request): ActionTestResponse
     {

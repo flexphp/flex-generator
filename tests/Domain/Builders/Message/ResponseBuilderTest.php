@@ -39,7 +39,7 @@ namespace Domain\Fuz\Message;
 
 use FlexPHP\Messages\ResponseInterface;
 
-class ActionFuzResponse implements ResponseInterface
+final class ActionFuzResponse implements ResponseInterface
 {
     public function __construct(array \$data)
     {

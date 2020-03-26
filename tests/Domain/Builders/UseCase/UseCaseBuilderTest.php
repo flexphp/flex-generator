@@ -41,7 +41,7 @@ use Domain\Test\Message\ActionTestRequest;
 use Domain\Test\Message\ActionTestResponse;
 use FlexPHP\UseCases\UseCase;
 
-class ActionTestUseCase extends UseCase
+final class ActionTestUseCase extends UseCase
 {
     private \$foo;
     private \$bar;

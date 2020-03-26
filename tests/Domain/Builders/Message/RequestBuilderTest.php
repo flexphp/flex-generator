@@ -39,7 +39,7 @@ namespace Domain\Fuz\Message;
 
 use FlexPHP\Messages\RequestInterface;
 
-class ActionFuzRequest implements RequestInterface
+final class ActionFuzRequest implements RequestInterface
 {
     public \$foo;
     public \$bar;

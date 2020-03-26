@@ -37,7 +37,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/test")
  */
-class TestController extends AbstractController
+final class TestController extends AbstractController
 {
 }
 
@@ -83,7 +83,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/test")
  */
-class TestController extends AbstractController
+final class TestController extends AbstractController
 {
     /**
      * @Route("/"}, methods={"GET"}, name="test.index")

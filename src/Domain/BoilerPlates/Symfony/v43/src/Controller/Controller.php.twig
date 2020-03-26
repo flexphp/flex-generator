@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/{{ entity|lower }}")
  */
-class {{ entity }}Controller extends AbstractController
+final class {{ entity }}Controller extends AbstractController
 {
 {% for action in actions %}
 {% if not loop.last %}

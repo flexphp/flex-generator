@@ -4,7 +4,7 @@ namespace Domain\{{ name }}\Entity;
 
 use FlexPHP\Entities\Entity;
 
-class {{ name }} extends Entity
+final class {{ name }} extends Entity
 {
 {% for _property in _properties %}
     private ${{ _property }};

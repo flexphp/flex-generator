@@ -38,7 +38,7 @@ namespace Domain\Test\Entity;
 
 use FlexPHP\Entities\Entity;
 
-class Test extends Entity
+final class Test extends Entity
 {
     private \$title;
     private \$content;
