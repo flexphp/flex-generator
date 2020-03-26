@@ -9,27 +9,22 @@
  */
 namespace FlexPHP\Generator\Tests\Domain\Writers;
 
-use FlexPHP\Generator\Domain\Writers\YamlWriter;
+use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Generator\Tests\TestCase;
 
-class YamlWriterTest extends TestCase
+class PhpWriterTest extends TestCase
 {
     public function testItSaveOk(): void
     {
-        $filename = 'Test';
+        $filename = 'file';
+        $content = 'Hello world!';
+        $path = __DIR__;
 
-        $data = [
-            'SheetName' => [
-                'Name' => 'foo',
-                'DataType' => 'bar',
-            ],
-        ];
-
-        $writer = new YamlWriter($data, $filename);
+        $writer = new PhpWriter($content, $filename, $path);
         $output = $writer->save();
 
         $_filename = \explode('/', $output);
-        $this->assertEquals(\array_pop($_filename), $filename . '.yaml');
+        $this->assertEquals(\array_pop($_filename), $filename . '.php');
         $this->assertFileExists($output);
         \unlink($output);
     }
