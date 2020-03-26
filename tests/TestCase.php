@@ -11,9 +11,6 @@ namespace FlexPHP\Generator\Tests;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
-/**
- * Class TestCase
- */
 class TestCase extends PHPUnitTestCase
 {
     public static function tearDownAfterClass(): void
