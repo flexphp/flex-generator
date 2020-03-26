@@ -14,8 +14,8 @@ use FlexPHP\Generator\Domain\Builders\Controller\ControllerBuilder;
 use FlexPHP\Generator\Domain\Builders\Controller\RequestMessageBuilder;
 use FlexPHP\Generator\Domain\Builders\Controller\ResponseMessageBuilder;
 use FlexPHP\Generator\Domain\Builders\Controller\UseCaseBuilder;
-use FlexPHP\Generator\Domain\Messages\Requests\MakeControllerRequest;
-use FlexPHP\Generator\Domain\Messages\Responses\MakeControllerResponse;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\UseCases\UseCase;
 
 class CreateControllerFileUseCase extends UseCase
@@ -23,13 +23,13 @@ class CreateControllerFileUseCase extends UseCase
     /**
      * Create controller based in actions
      *
-     * @param MakeControllerRequest $request
+     * @param CreateControllerFileRequest $request
      *
-     * @return MakeControllerResponse
+     * @return CreateControllerFileResponse
      */
     public function execute($request)
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, MakeControllerRequest::class, $request);
+        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateControllerFileRequest::class, $request);
 
         $entity = $request->entity;
         $actions = $request->actions;
@@ -57,6 +57,6 @@ class CreateControllerFileUseCase extends UseCase
 
         \file_put_contents($file, $controller->build());
 
-        return new MakeControllerResponse($file);
+        return new CreateControllerFileResponse($file);
     }
 }

@@ -9,8 +9,8 @@
  */
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
-use FlexPHP\Generator\Domain\Messages\Requests\MakeControllerRequest;
-use FlexPHP\Generator\Domain\Messages\Responses\MakeControllerResponse;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\UseCases\CreateControllerFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
@@ -33,7 +33,7 @@ class CreateControllerFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new MakeControllerRequest($schema->name(), [
+        $request = new CreateControllerFileRequest($schema->name(), [
             'index',
             'create',
             'update',
@@ -44,7 +44,7 @@ class CreateControllerFileUseCaseTest extends TestCase
         $useCase = new CreateControllerFileUseCase();
         $response = $useCase->execute($request);
 
-        $this->assertInstanceOf(MakeControllerResponse::class, $response);
+        $this->assertInstanceOf(CreateControllerFileResponse::class, $response);
         $file = $response->file;
         $this->assertFileExists($file);
         \unlink($file);

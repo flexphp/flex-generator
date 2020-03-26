@@ -11,8 +11,8 @@ namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Builders\Constraint\ConstraintBuilder;
 use FlexPHP\Generator\Domain\Builders\Constraint\RuleBuilder;
-use FlexPHP\Generator\Domain\Messages\Requests\MakeConstraintRequest;
-use FlexPHP\Generator\Domain\Messages\Responses\MakeConstraintResponse;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateConstraintFileRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
 
@@ -21,13 +21,13 @@ class CreateConstraintFileUseCase extends UseCase
     /**
      * Create constraint attribute for entity
      *
-     * @param MakeConstraintRequest $request
+     * @param CreateConstraintFileRequest $request
      *
-     * @return MakeConstraintResponse
+     * @return CreateConstraintFileResponse
      */
     public function execute($request)
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, MakeConstraintRequest::class, $request);
+        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateConstraintFileRequest::class, $request);
 
         $entity = $request->entity;
         $properties = \array_reduce(
@@ -53,6 +53,6 @@ class CreateConstraintFileUseCase extends UseCase
 
         \file_put_contents($file, $constraint->build());
 
-        return new MakeConstraintResponse($file);
+        return new CreateConstraintFileResponse($file);
     }
 }

@@ -10,8 +10,8 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Builders\Entity\EntityBuilder;
-use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityRequest;
-use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityResponse;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
 
@@ -20,13 +20,13 @@ class CreateEntityFileUseCase extends UseCase
     /**
      * Create entity
      *
-     * @param CreateEntityRequest $request
+     * @param CreateEntityFileRequest $request
      *
-     * @return CreateEntityResponse
+     * @return CreateEntityFileResponse
      */
     public function execute($request)
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateEntityRequest::class, $request);
+        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateEntityFileRequest::class, $request);
 
         $name = $request->name;
         $properties = \array_reduce(
@@ -51,6 +51,6 @@ class CreateEntityFileUseCase extends UseCase
 
         \file_put_contents($file, $entity->build());
 
-        return new CreateEntityResponse($file);
+        return new CreateEntityFileResponse($file);
     }
 }

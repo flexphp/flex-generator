@@ -9,8 +9,8 @@
  */
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
-use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityRequest;
-use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityResponse;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Generator\Domain\UseCases\CreateEntityFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
@@ -33,12 +33,12 @@ class CreateEntityFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateEntityRequest($schema->name(), $schema->attributes());
+        $request = new CreateEntityFileRequest($schema->name(), $schema->attributes());
 
         $useCase = new CreateEntityFileUseCase();
         $response = $useCase->execute($request);
 
-        $this->assertInstanceOf(CreateEntityResponse::class, $response);
+        $this->assertInstanceOf(CreateEntityFileResponse::class, $response);
         $file = $response->file;
         $this->assertFileExists($file);
         \unlink($file);

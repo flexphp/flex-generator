@@ -9,11 +9,11 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
-use FlexPHP\Generator\Domain\Messages\Requests\MakeConstraintRequest;
-use FlexPHP\Generator\Domain\Messages\Requests\MakeControllerRequest;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateConstraintFileRequest;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
-use FlexPHP\Generator\Domain\Messages\Responses\MakeConstraintResponse;
-use FlexPHP\Generator\Domain\Messages\Responses\MakeControllerResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
 use FlexPHP\Schema\Schema;
 use FlexPHP\UseCases\UseCase;
@@ -43,10 +43,10 @@ class SheetProcessUseCase extends UseCase
         ]);
     }
 
-    private function makeController(string $name): MakeControllerResponse
+    private function makeController(string $name): CreateControllerFileResponse
     {
         return (new CreateControllerFileUseCase())->execute(
-            new MakeControllerRequest($name, [
+            new CreateControllerFileRequest($name, [
                 'index',
                 'create',
                 'read',
@@ -56,10 +56,10 @@ class SheetProcessUseCase extends UseCase
         );
     }
 
-    private function makeConstraint(string $name, array $properties): MakeConstraintResponse
+    private function makeConstraint(string $name, array $properties): CreateConstraintFileResponse
     {
         return (new CreateConstraintFileUseCase())->execute(
-            new MakeConstraintRequest($name, $properties)
+            new CreateConstraintFileRequest($name, $properties)
         );
     }
 }

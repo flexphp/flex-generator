@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Messages\Requests;
 
 use FlexPHP\Messages\RequestInterface;
 
-class MakeConstraintRequest implements RequestInterface
+class CreateControllerFileRequest implements RequestInterface
 {
     /**
      * @var string
@@ -21,11 +21,11 @@ class MakeConstraintRequest implements RequestInterface
     /**
      * @var array
      */
-    public $properties;
+    public $actions;
 
-    public function __construct(string $entity, array $properties)
+    public function __construct(string $entity, array $actions)
     {
         $this->entity = $entity;
-        $this->properties = $properties;
+        $this->actions = $actions;
     }
 }

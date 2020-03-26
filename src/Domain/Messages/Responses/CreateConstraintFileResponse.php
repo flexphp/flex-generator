@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Messages\Responses;
 
 use FlexPHP\Messages\ResponseInterface;
 
-class MakeConstraintResponse implements ResponseInterface
+class CreateConstraintFileResponse implements ResponseInterface
 {
     /**
      * @var string

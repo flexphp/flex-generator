@@ -9,8 +9,8 @@
  */
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
-use FlexPHP\Generator\Domain\Messages\Requests\MakeConstraintRequest;
-use FlexPHP\Generator\Domain\Messages\Responses\MakeConstraintResponse;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateConstraintFileRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
 use FlexPHP\Generator\Domain\UseCases\CreateConstraintFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
@@ -33,12 +33,12 @@ class CreateConstraintFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new MakeConstraintRequest($schema->name(), $schema->attributes());
+        $request = new CreateConstraintFileRequest($schema->name(), $schema->attributes());
 
         $useCase = new CreateConstraintFileUseCase();
         $response = $useCase->execute($request);
 
-        $this->assertInstanceOf(MakeConstraintResponse::class, $response);
+        $this->assertInstanceOf(CreateConstraintFileResponse::class, $response);
         $file = $response->file;
         $this->assertFileExists($file);
         \unlink($file);
