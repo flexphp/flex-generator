@@ -18,7 +18,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\UseCases\UseCase;
 
-class CreateControllerFileUseCase extends UseCase
+final class CreateControllerFileUseCase extends UseCase
 {
     /**
      * Create controller based in actions

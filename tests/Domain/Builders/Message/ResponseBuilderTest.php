@@ -20,21 +20,17 @@ class ResponseBuilderTest extends TestCase
         $action = 'action';
         $entity = 'Fuz';
         $properties = [
-            'foo' => [
-                Keyword::NAME => 'Foo',
+            [
+                Keyword::NAME => 'foo',
                 Keyword::DATATYPE => 'integer',
             ],
-            'bar' => [
-                Keyword::NAME => 'Bar',
+            [
+                Keyword::NAME => 'bar',
                 Keyword::DATATYPE => 'varchar',
             ],
         ];
 
-        $render = new ResponseBuilder([
-            'entity' => $entity,
-            'action' => $action,
-            'properties' => $properties,
-        ]);
+        $render = new ResponseBuilder($entity, $action, $properties);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

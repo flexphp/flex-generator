@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Messages\Requests;
 
 use FlexPHP\Messages\RequestInterface;
 
-class CreateControllerFileRequest implements RequestInterface
+final class CreateControllerFileRequest implements RequestInterface
 {
     /**
      * @var string

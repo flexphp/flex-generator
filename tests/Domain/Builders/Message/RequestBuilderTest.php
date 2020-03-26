@@ -10,8 +10,8 @@
 namespace FlexPHP\Generator\Tests\Domain\Builders\Message;
 
 use FlexPHP\Generator\Domain\Builders\Message\RequestBuilder;
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Constants\Keyword;
 
 class RequestBuilderTest extends TestCase
 {
@@ -20,21 +20,17 @@ class RequestBuilderTest extends TestCase
         $action = 'action';
         $entity = 'Fuz';
         $properties = [
-            'foo' => [
-                Keyword::NAME => 'Foo',
+            [
+                Keyword::NAME => 'foo',
                 Keyword::DATATYPE => 'integer',
             ],
-            'bar' => [
-                Keyword::NAME => 'Bar',
+            [
+                Keyword::NAME => 'bar',
                 Keyword::DATATYPE => 'varchar',
             ],
         ];
 
-        $render = new RequestBuilder([
-            'entity' => $entity,
-            'action' => $action,
-            'properties' => $properties,
-        ]);
+        $render = new RequestBuilder($entity, $action, $properties);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

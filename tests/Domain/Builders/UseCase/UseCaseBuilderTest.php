@@ -20,12 +20,12 @@ class UseCaseBuilderTest extends TestCase
         $action = 'action';
         $entity = 'Test';
         $properties = [
-            'foo' => [
-                Keyword::NAME => 'Foo',
+            [
+                Keyword::NAME => 'foo',
                 Keyword::DATATYPE => 'integer',
             ],
-            'bar' => [
-                Keyword::NAME => 'Bar',
+            [
+                Keyword::NAME => 'bar',
                 Keyword::DATATYPE => 'varchar',
             ],
         ];

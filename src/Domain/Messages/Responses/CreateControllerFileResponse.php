@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Messages\Responses;
 
 use FlexPHP\Messages\ResponseInterface;
 
-class CreateControllerFileResponse implements ResponseInterface
+final class CreateControllerFileResponse implements ResponseInterface
 {
     /**
      * @var string

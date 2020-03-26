@@ -15,7 +15,7 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreatePrototypeResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
 use FlexPHP\UseCases\UseCase;
 
-class CreatePrototypeUseCase extends UseCase
+final class CreatePrototypeUseCase extends UseCase
 {
     /**
      * @param CreatePrototypeRequest $request

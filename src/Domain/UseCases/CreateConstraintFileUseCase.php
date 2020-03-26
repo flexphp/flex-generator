@@ -16,7 +16,7 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
 
-class CreateConstraintFileUseCase extends UseCase
+final class CreateConstraintFileUseCase extends UseCase
 {
     /**
      * Create constraint attribute for entity

@@ -16,7 +16,7 @@ use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
 use FlexPHP\UseCases\Exception\NotValidRequestException;
 
-class CreateConstraintFileUseCaseTest extends TestCase
+final class CreateConstraintFileUseCaseTest extends TestCase
 {
     public function testItNotValidRequestThrowException(): void
     {

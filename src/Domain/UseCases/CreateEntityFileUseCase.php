@@ -15,7 +15,7 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
 
-class CreateEntityFileUseCase extends UseCase
+final class CreateEntityFileUseCase extends UseCase
 {
     /**
      * Create entity

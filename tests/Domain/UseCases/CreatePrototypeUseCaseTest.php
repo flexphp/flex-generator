@@ -15,7 +15,7 @@ use FlexPHP\Generator\Domain\UseCases\CreatePrototypeUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\UseCases\Exception\NotValidRequestException;
 
-class CreatePrototypeUseCaseTest extends TestCase
+final class CreatePrototypeUseCaseTest extends TestCase
 {
     public function testItNotValidRequestThrowException(): void
     {
