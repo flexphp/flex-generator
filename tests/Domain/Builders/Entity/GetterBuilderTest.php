@@ -16,9 +16,7 @@ class GetterBuilderTest extends TestCase
 {
     public function testItWithDefaultType(): void
     {
-        $render = new GetterBuilder([
-            'foo' => [],
-        ]);
+        $render = new GetterBuilder('foo', '');
 
         $this->assertEquals(<<<T
     public function getFoo(): string
@@ -35,11 +33,7 @@ T, $render->build());
      */
     public function testItWithString($dataType): void
     {
-        $render = new GetterBuilder([
-            'foo' => [
-                'DataType' => $dataType,
-            ],
-        ]);
+        $render = new GetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
     public function getFoo(): string
@@ -56,11 +50,7 @@ T, $render->build());
      */
     public function testItWithInt($dataType): void
     {
-        $render = new GetterBuilder([
-            'foo' => [
-                'DataType' => $dataType,
-            ],
-        ]);
+        $render = new GetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
     public function getFoo(): int
@@ -77,11 +67,7 @@ T, $render->build());
      */
     public function testItWithArray($dataType): void
     {
-        $render = new GetterBuilder([
-            'foo' => [
-                'DataType' => $dataType,
-            ],
-        ]);
+        $render = new GetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
     public function getFoo(): array
@@ -98,11 +84,7 @@ T, $render->build());
      */
     public function testItWithFloat($dataType): void
     {
-        $render = new GetterBuilder([
-            'foo' => [
-                'DataType' => $dataType,
-            ],
-        ]);
+        $render = new GetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
     public function getFoo(): float
@@ -119,11 +101,7 @@ T, $render->build());
      */
     public function testItWithBool($dataType): void
     {
-        $render = new GetterBuilder([
-            'foo' => [
-                'DataType' => $dataType,
-            ],
-        ]);
+        $render = new GetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
     public function getFoo(): bool
@@ -135,11 +113,7 @@ T, $render->build());
 
     public function testItWithUnknowType(): void
     {
-        $render = new GetterBuilder([
-            'foo' => [
-                'DataType' => 'unknow',
-            ],
-        ]);
+        $render = new GetterBuilder('foo', 'unknow');
 
         $this->assertEquals(<<<T
     public function getFoo(): string

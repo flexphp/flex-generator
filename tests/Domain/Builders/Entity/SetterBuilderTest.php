@@ -16,9 +16,7 @@ class SetterBuilderTest extends TestCase
 {
     public function testItWithDefaultType(): void
     {
-        $render = new SetterBuilder([
-            'foo' => [],
-        ]);
+        $render = new SetterBuilder('foo', '');
 
         $this->assertEquals(<<<T
     public function setFoo(string \$foo): void
@@ -35,11 +33,7 @@ T, $render->build());
      */
     public function testItWithString($dataType): void
     {
-        $render = new SetterBuilder([
-            'foo' => [
-                'DataType' => $dataType,
-            ],
-        ]);
+        $render = new SetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
     public function setFoo(string \$foo): void
@@ -56,11 +50,7 @@ T, $render->build());
      */
     public function testItWithInt($dataType): void
     {
-        $render = new SetterBuilder([
-            'foo' => [
-                'DataType' => $dataType,
-            ],
-        ]);
+        $render = new SetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
     public function setFoo(int \$foo): void
@@ -77,11 +67,7 @@ T, $render->build());
      */
     public function testItWithArray($dataType): void
     {
-        $render = new SetterBuilder([
-            'foo' => [
-                'DataType' => $dataType,
-            ],
-        ]);
+        $render = new SetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
     public function setFoo(array \$foo): void
@@ -98,11 +84,7 @@ T, $render->build());
      */
     public function testItWithBool($dataType): void
     {
-        $render = new SetterBuilder([
-            'foo' => [
-                'DataType' => $dataType,
-            ],
-        ]);
+        $render = new SetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
     public function setFoo(bool \$foo): void
@@ -114,11 +96,7 @@ T, $render->build());
 
     public function testItWithUnknowType(): void
     {
-        $render = new SetterBuilder([
-            'foo' => [
-                'DataType' => 'unknow',
-            ],
-        ]);
+        $render = new SetterBuilder('foo', 'unknow');
 
         $this->assertEquals(<<<T
     public function setFoo(string \$foo): void

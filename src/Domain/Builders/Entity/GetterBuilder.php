@@ -15,18 +15,12 @@ class GetterBuilder extends AbstractBuilder
 {
     use TypeHintTrait;
 
-    /**
-     * @param array[] $data
-     */
-    public function __construct(array $data, array $config = [])
+    public function __construct(string $name, string $dataType)
     {
-        $name = (string)\array_key_first($data);
-        $typehint = $this->guessTypeHint($data[$name]);
         $getter = $this->getPascalCase($name);
+        $typehint = $this->guessTypeHint($dataType);
 
-        $_data = \compact('name', 'typehint', 'getter');
-
-        parent::__construct($_data, $config);
+        parent::__construct(\compact('name', 'typehint', 'getter'));
     }
 
     public function getFileTemplate(): string

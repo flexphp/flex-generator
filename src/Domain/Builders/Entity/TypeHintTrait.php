@@ -9,14 +9,11 @@
  */
 namespace FlexPHP\Generator\Domain\Builders\Entity;
 
-use FlexPHP\Schema\Constants\Keyword;
-
 trait TypeHintTrait
 {
-    protected function guessTypeHint(array $properties): string
+    protected function guessTypeHint(string $dataType): string
     {
         $typeHint = 'string';
-        $dataType = $properties[Keyword::DATATYPE] ?? 'string';
 
         switch ($dataType) {
             case 'smallint':
