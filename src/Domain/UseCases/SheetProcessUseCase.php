@@ -34,14 +34,8 @@ class SheetProcessUseCase extends UseCase
         $name = $request->name;
         $path = $request->path;
 
-        $constraints = \array_reduce(Schema::fromFile($path)->attributes(), function ($result, $attribute): array {
-            $result[$attribute->name()] = $attribute->properties();
-
-            return $result;
-        }, []);
-
         $controller = $this->makeController($name);
-        $constraint = $this->makeConstraint($name, $constraints);
+        $constraint = $this->makeConstraint($name, Schema::fromFile($path)->attributes());
 
         return new SheetProcessResponse([
             'controller' => $controller->file,

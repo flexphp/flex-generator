@@ -30,16 +30,18 @@ class CreateConstraintFileUseCase extends UseCase
         $this->throwExceptionIfRequestNotValid(__METHOD__, MakeConstraintRequest::class, $request);
 
         $entity = $request->entity;
-        $properties = $request->properties;
+        $properties = \array_reduce(
+            $request->properties,
+            function (array $result, SchemaAttributeInterface $schemaAttribute) {
+                $name = $schemaAttribute->name();
+                $result[$name] = (new RuleBuilder($name, $schemaAttribute->constraints()))->build();
 
-        $_properties = \array_reduce($properties, function (array $result, SchemaAttributeInterface $schemaAttribute) {
-            $name = $schemaAttribute->name();
-            $result[$name] = (new RuleBuilder($name, $schemaAttribute->constraints()))->build();
+                return $result;
+            },
+            []
+        );
 
-            return $result;
-        }, []);
-
-        $constraint = new ConstraintBuilder($entity, $_properties);
+        $constraint = new ConstraintBuilder($entity, $properties);
 
         $dir = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Constraint', __DIR__, $entity);
 

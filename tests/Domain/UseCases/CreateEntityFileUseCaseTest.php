@@ -13,6 +13,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityResponse;
 use FlexPHP\Generator\Domain\UseCases\CreateEntityFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
 use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 class CreateEntityFileUseCaseTest extends TestCase
@@ -28,9 +29,11 @@ class CreateEntityFileUseCaseTest extends TestCase
     /**
      * @dataProvider getEntityFile()
      */
-    public function testItSymfony43Ok(string $entity, array $properties): void
+    public function testItSymfony43Ok(string $schemafile): void
     {
-        $request = new CreateEntityRequest($entity, $properties);
+        $schema = Schema::fromFile($schemafile);
+
+        $request = new CreateEntityRequest($schema->name(), $schema->attributes());
 
         $useCase = new CreateEntityFileUseCase();
         $response = $useCase->execute($request);
@@ -44,48 +47,8 @@ class CreateEntityFileUseCaseTest extends TestCase
     public function getEntityFile(): array
     {
         return [
-            ['Posts', [
-                'title' => [
-                    'Name' => 'Title',
-                    'DataType' => 'string',
-                    'Type' => 'text',
-                    'Constraints' => [
-                        'required' => true,
-                    ],
-                ],
-                'content' => [
-                    'Name' => 'Content',
-                    'DataType' => 'varchar',
-                    'Type' => 'textarea',
-                    'Constraints' => [
-                        'required',
-                        'length' => [
-                            'min' => 10,
-                            'max' => 100,
-                        ],
-                    ],
-                ],
-            ]],
-            ['Comments', [
-                'comment' => [
-                    'Name' => 'Comment',
-                    'DataType' => 'varchar',
-                    'Constraints' => [
-                        'length' => [
-                            'min' => 5,
-                            'max' => 50,
-                        ],
-                    ],
-                ],
-                'createdAt' => [
-                    'Name' => 'Created At',
-                    'DataType' => 'datetime',
-                    'Type' => 'text',
-                    'Constraints' => [
-                        'type' => 'date',
-                    ],
-                ],
-            ]],
+            [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__)],
+            [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__)],
         ];
     }
 }

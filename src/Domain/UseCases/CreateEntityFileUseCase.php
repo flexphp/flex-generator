@@ -12,6 +12,7 @@ namespace FlexPHP\Generator\Domain\UseCases;
 use FlexPHP\Generator\Domain\Builders\Entity\EntityBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityResponse;
+use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
 
 class CreateEntityFileUseCase extends UseCase
@@ -28,8 +29,17 @@ class CreateEntityFileUseCase extends UseCase
         $this->throwExceptionIfRequestNotValid(__METHOD__, CreateEntityRequest::class, $request);
 
         $name = $request->name;
+        $properties = \array_reduce(
+            $request->properties,
+            function (array $result, SchemaAttributeInterface $schemaAttribute) {
+                $result[$schemaAttribute->name()] = $schemaAttribute->properties();
 
-        $entity = new EntityBuilder($name, $request->properties);
+                return $result;
+            },
+            []
+        );
+
+        $entity = new EntityBuilder($name, $properties);
 
         $dir = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Entity', __DIR__, $name);
 

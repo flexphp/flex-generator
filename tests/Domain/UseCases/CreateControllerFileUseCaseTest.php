@@ -13,6 +13,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\MakeControllerRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\MakeControllerResponse;
 use FlexPHP\Generator\Domain\UseCases\CreateControllerFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
 use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 class CreateControllerFileUseCaseTest extends TestCase
@@ -28,9 +29,17 @@ class CreateControllerFileUseCaseTest extends TestCase
     /**
      * @dataProvider getEntityFile()
      */
-    public function testItSymfony43Ok(string $entity, array $actions): void
+    public function testItSymfony43Ok(string $schemafile): void
     {
-        $request = new MakeControllerRequest($entity, $actions);
+        $schema = Schema::fromFile($schemafile);
+
+        $request = new MakeControllerRequest($schema->name(), [
+            'index',
+            'create',
+            'update',
+            'read',
+            'delete',
+        ]);
 
         $useCase = new CreateControllerFileUseCase();
         $response = $useCase->execute($request);
@@ -44,18 +53,8 @@ class CreateControllerFileUseCaseTest extends TestCase
     public function getEntityFile(): array
     {
         return [
-            ['Posts', [
-                'index',
-                'create',
-                'read',
-                'update',
-                'delete',
-            ]],
-            ['Comments', [
-                'create',
-                'read',
-                'update',
-            ]],
+            [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__)],
+            [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__)],
         ];
     }
 }
