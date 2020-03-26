@@ -10,7 +10,6 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Exceptions\FormatPathNotValidException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
@@ -18,6 +17,7 @@ use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
 use FlexPHP\Generator\Domain\Validations\FieldSyntaxValidation;
 use FlexPHP\Generator\Domain\Validations\HeaderSyntaxValidation;
 use FlexPHP\Generator\Domain\Writers\YamlWriter;
+use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\UseCases\UseCase;
 use Jawira\CaseConverter\Convert;
 
@@ -42,7 +42,7 @@ final class ProcessFormatUseCase extends UseCase
         $path = $request->path;
         $extension = $request->extension;
 
-        if (empty($path) || !\is_string($path) || !\is_file($path)) {
+        if (!\is_file($path)) {
             throw new FormatPathNotValidException();
         }
 

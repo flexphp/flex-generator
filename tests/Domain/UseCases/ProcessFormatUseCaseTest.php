@@ -45,11 +45,6 @@ final class ProcessFormatUseCaseTest extends TestCase
     public function getPathNotValid(): array
     {
         return [
-            [null],
-            [true],
-            [false],
-            [[]],
-            [new \stdClass()],
             [''],
             ['/path/not/exist'],
         ];

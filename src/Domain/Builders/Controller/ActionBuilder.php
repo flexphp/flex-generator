@@ -31,21 +31,10 @@ final class ActionBuilder extends AbstractBuilder
         $data['use_case'] = $useCase;
         $data['response_message'] = $responseMessage;
         $data['action_camel'] = $this->getCamelCase($action);
-
-        if (empty($data['route'])) {
-            $data['route'] = $this->getGuessRoute($action);
-        }
-
-        if (empty($data['methods'])) {
-            $data['methods'] = $this->getGuessMethod($action);
-        }
+        $data['route'] = $this->getGuessRoute($action);
+        $data['methods'] = $this->getGuessMethod($action);
 
         parent::__construct($data);
-    }
-
-    protected function getFileTemplate(): string
-    {
-        return 'Action.php.twig';
     }
 
     public function getPathTemplate(): string
@@ -53,52 +42,41 @@ final class ActionBuilder extends AbstractBuilder
         return \sprintf('%1$s/Symfony/v43/src/Controller', parent::getPathTemplate());
     }
 
+    protected function getFileTemplate(): string
+    {
+        return 'Action.php.twig';
+    }
+
     private function getGuessMethod(string $action): string
     {
-        switch ($action) {
-            case 'index':
-            case 'read':
-                $method = Request::METHOD_GET;
+        $methodByAction = [
+            'index' => Request::METHOD_GET,
+            'read' => Request::METHOD_GET,
+            'update' => Request::METHOD_PUT,
+            'delete' => Request::METHOD_DELETE,
+            'create' => Request::METHOD_POST,
+        ];
 
-                break;
-            case 'update':
-                $method = Request::METHOD_PUT;
-
-                break;
-            case 'delete':
-                $method = Request::METHOD_DELETE;
-
-                break;
-            case 'create':
-            default:
-                $method = Request::METHOD_POST;
-
-                break;
+        if (isset($methodByAction[$action])) {
+            return $methodByAction[$action];
         }
 
-        return $method;
+        return Request::METHOD_POST;
     }
 
     private function getGuessRoute(string $action): string
     {
-        $route = '/' . $action;
+        $routeByMethod = [
+            'index' => '/',
+            'read' => '/{id}',
+            'update' => \sprintf('/%1$s/{id}', $action),
+            'delete' => \sprintf('/%1$s/{id}', $action),
+        ];
 
-        switch ($action) {
-            case 'index':
-                $route = '/';
-
-                break;
-            case 'read':
-                $route = '/{id}';
-
-                break;
-            case 'update':
-            case 'delete':
-                $route = \sprintf('/%1$s/{id}', $action);
-
-                break;
+        if (isset($routeByMethod[$action])) {
+            return $routeByMethod[$action];
         }
 
-        return $route;
+        return '/' . $action;
     }
 }

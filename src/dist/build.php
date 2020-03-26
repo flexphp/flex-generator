@@ -38,7 +38,7 @@ try {
         $response->messages = ['message' => $error];
     } else {
         $response = (new ProcessFormatUseCase())->execute(
-            new ProcessFormatRequest($file->getRealPath(), $file->guessClientExtension())
+            new ProcessFormatRequest((string)$file->getRealPath(), $file->guessClientExtension())
         );
     }
 } catch (Exception $e) {
