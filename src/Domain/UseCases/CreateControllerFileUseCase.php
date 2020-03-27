@@ -16,8 +16,8 @@ use FlexPHP\Generator\Domain\Builders\Controller\ResponseMessageBuilder;
 use FlexPHP\Generator\Domain\Builders\Controller\UseCaseBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
-use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
+use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\UseCases\UseCase;
 
 final class CreateControllerFileUseCase extends UseCase
@@ -51,7 +51,7 @@ final class CreateControllerFileUseCase extends UseCase
 
         $controller = new ControllerBuilder($entity, $actionBuilders);
         $filename = $this->getSingularize($entity) . 'Controller';
-        $path = \sprintf('%1$s/../../tmp/skeleton/src/Controllers', __DIR__);
+        $path = \sprintf('%1$s/src/Controllers', $request->outputFolder);
 
         $writer = new PhpWriter($controller->build(), $filename, $path);
 

@@ -29,7 +29,7 @@ final class SheetProcessUseCaseTest extends TestCase
      */
     public function testItSymfony43Ok(string $name, string $path): void
     {
-        $request = new SheetProcessRequest($name, $path);
+        $request = new SheetProcessRequest($name, $path, $this->getOutputFolder());
 
         $useCase = new SheetProcessUseCase();
         $response = $useCase->execute($request);

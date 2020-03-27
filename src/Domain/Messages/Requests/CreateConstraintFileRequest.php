@@ -23,9 +23,15 @@ final class CreateConstraintFileRequest implements RequestInterface
      */
     public $properties;
 
-    public function __construct(string $entity, array $properties)
+    /**
+     * @var string
+     */
+    public $outputFolder;
+
+    public function __construct(string $entity, array $properties, string $outputFolder)
     {
         $this->entity = $entity;
         $this->properties = $properties;
+        $this->outputFolder = $outputFolder;
     }
 }

@@ -13,4 +13,13 @@ use FlexPHP\Messages\ResponseInterface;
 
 final class CreatePrototypeResponse implements ResponseInterface
 {
+    /**
+     * @var string
+     */
+    public $outputFolder;
+
+    public function __construct(string $outputFolder)
+    {
+        $this->outputFolder = $outputFolder;
+    }
 }

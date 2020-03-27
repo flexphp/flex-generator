@@ -33,7 +33,7 @@ final class CreateConstraintFileUseCase extends UseCase
     {
         $this->throwExceptionIfRequestNotValid(__METHOD__, CreateConstraintFileRequest::class, $request);
 
-        $entity = $request->entity;
+        $entity = $this->getSingularize($request->entity);
         $properties = \array_reduce(
             $request->properties,
             function (array $result, SchemaAttributeInterface $schemaAttribute) {
@@ -46,8 +46,8 @@ final class CreateConstraintFileUseCase extends UseCase
         );
 
         $constraint = new ConstraintBuilder($entity, $properties);
-        $filename = $this->getSingularize($entity) . 'Constraint';
-        $path = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Constraint', __DIR__, $entity);
+        $filename = $entity . 'Constraint';
+        $path = \sprintf('%1$s/Domain/%2$s/Constraint', $request->outputFolder, $entity);
 
         $writer = new PhpWriter($constraint->build(), $filename, $path);
 

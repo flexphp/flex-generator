@@ -32,13 +32,17 @@ final class CreatePrototypeUseCaseTest extends TestCase
             'Comments' => \sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__),
         ];
 
-        $request = new CreatePrototypeRequest($sheets);
+        $request = new CreatePrototypeRequest($sheets, $this->getOutputFolder());
 
         $useCase = new CreatePrototypeUseCase();
         $response = $useCase->execute($request);
 
         $this->assertInstanceOf(CreatePrototypeResponse::class, $response);
+        $this->assertFileExists($response->outputFolder . '/composer.json');
+        $this->assertDirectoryExists($response->outputFolder . '/src');
+        $this->assertDirectoryExists($response->outputFolder . '/Domain');
+        $this->assertDirectoryExists($response->outputFolder . '/src/Controllers');
 
-        parent::deleteFolder(__DIR__ . '/../../../src/tmp/skeleton/', false);
+        parent::deleteFolder(\dirname($response->outputFolder), false);
     }
 }

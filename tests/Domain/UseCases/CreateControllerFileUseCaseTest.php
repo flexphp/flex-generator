@@ -32,14 +32,15 @@ final class CreateControllerFileUseCaseTest extends TestCase
     public function testItSymfony43Ok(string $schemafile, string $expectedFile): void
     {
         $schema = Schema::fromFile($schemafile);
-
-        $request = new CreateControllerFileRequest($schema->name(), [
+        $actions = [
             'index',
             'create',
             'update',
             'read',
             'delete',
-        ]);
+        ];
+
+        $request = new CreateControllerFileRequest($schema->name(), $actions, $this->getOutputFolder());
 
         $useCase = new CreateControllerFileUseCase();
         $response = $useCase->execute($request);
@@ -49,6 +50,12 @@ final class CreateControllerFileUseCaseTest extends TestCase
         $filename = \explode('/', $file);
         $this->assertEquals($expectedFile, \array_pop($filename));
         $this->assertFileExists($file);
+        $content = \file_get_contents($file);
+
+        foreach ($actions as $action) {
+            $this->assertStringContainsString($action, $content);
+        }
+
         \unlink($file);
     }
 

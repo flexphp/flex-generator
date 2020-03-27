@@ -27,28 +27,33 @@ final class CreatePrototypeUseCase extends UseCase
         $this->throwExceptionIfRequestNotValid(__METHOD__, CreatePrototypeRequest::class, $request);
 
         $sheets = $request->sheets;
+        $outputFolder = $request->outputFolder;
 
-        foreach ($sheets as $name => $schemafile) {
-            $this->processSheet($name, $schemafile);
+        if (!\is_dir($outputFolder)) {
+            \mkdir($outputFolder, 0777, true); // @codeCoverageIgnore
         }
 
-        $this->addVendorFiles();
+        foreach ($sheets as $name => $schemafile) {
+            $this->processSheet($name, $schemafile, $outputFolder);
+        }
 
-        return new CreatePrototypeResponse();
+        $this->addVendorFiles($outputFolder);
+
+        return new CreatePrototypeResponse($outputFolder);
     }
 
-    private function processSheet(string $name, string $schemafile): SheetProcessResponse
+    private function processSheet(string $name, string $schemafile, string $outputFolder): SheetProcessResponse
     {
         return (new SheetProcessUseCase())->execute(
-            new SheetProcessRequest($name, $schemafile)
+            new SheetProcessRequest($name, $schemafile, $outputFolder)
         );
     }
 
-    private function addVendorFiles(): void
+    private function addVendorFiles(string $outputFolder): void
     {
         \copy(
             __DIR__ . '/../BoilerPlates/Symfony/v43/composer.json',
-            __DIR__ . '/../../tmp/skeleton/composer.json'
+            $outputFolder . '/composer.json'
         );
     }
 }

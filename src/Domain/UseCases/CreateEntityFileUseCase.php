@@ -12,8 +12,8 @@ namespace FlexPHP\Generator\Domain\UseCases;
 use FlexPHP\Generator\Domain\Builders\Entity\EntityBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
-use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
+use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
 
@@ -32,7 +32,7 @@ final class CreateEntityFileUseCase extends UseCase
     {
         $this->throwExceptionIfRequestNotValid(__METHOD__, CreateEntityFileRequest::class, $request);
 
-        $name = $request->name;
+        $name = $this->getSingularize($request->name);
         $properties = \array_reduce(
             $request->properties,
             function (array $result, SchemaAttributeInterface $schemaAttribute) {
@@ -44,10 +44,9 @@ final class CreateEntityFileUseCase extends UseCase
         );
 
         $entity = new EntityBuilder($name, $properties);
-        $filename = $this->getSingularize($name);
-        $path = \sprintf('%1$s/../../tmp/skeleton/src/Domain/%2$s/Entity', __DIR__, $name);
+        $path = \sprintf('%1$s/Domain/%2$s', $request->outputFolder, $name);
 
-        $writer = new PhpWriter($entity->build(), $filename, $path);
+        $writer = new PhpWriter($entity->build(), $name, $path);
 
         return new CreateEntityFileResponse($writer->save());
     }

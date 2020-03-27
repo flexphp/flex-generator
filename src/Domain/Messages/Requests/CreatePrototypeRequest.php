@@ -18,8 +18,14 @@ final class CreatePrototypeRequest implements RequestInterface
      */
     public $sheets;
 
-    public function __construct(array $sheets)
+    /**
+     * @var string
+     */
+    public $outputFolder;
+
+    public function __construct(array $sheets, string $outputFolder)
     {
         $this->sheets = $sheets;
+        $this->outputFolder = $outputFolder;
     }
 }

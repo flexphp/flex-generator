@@ -15,12 +15,17 @@ class TestCase extends PHPUnitTestCase
 {
     public static function tearDownAfterClass(): void
     {
-        self::deleteFolder(__DIR__ . '/../../../src/tmp/skeleton/', false);
+        self::deleteFolder(self::getOutputFolder(), false);
     }
 
     public function setUp(): void
     {
         \chdir(__DIR__ . '/../');
+    }
+
+    protected static function getOutputFolder(): string
+    {
+        return __DIR__ . '/../src/tmp/skeleton';
     }
 
     protected static function deleteFolder($dir, $delete = true): void

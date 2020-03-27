@@ -32,21 +32,34 @@ final class CreateRequestFileUseCaseTest extends TestCase
     public function testItSymfony43Ok(string $schemafile, array $expectedFiles): void
     {
         $schema = Schema::fromFile($schemafile);
-
-        $request = new CreateRequestFileRequest($schema->name(), $schema->attributes(), [
+        $actions = [
             'C' => 'create',
             'U' => 'update',
-        ]);
+        ];
+
+        $request = new CreateRequestFileRequest(
+            $schema->name(),
+            $schema->attributes(),
+            $actions,
+            $this->getOutputFolder()
+        );
 
         $useCase = new CreateRequestFileUseCase();
         $response = $useCase->execute($request);
 
         $this->assertInstanceOf(CreateRequestFileResponse::class, $response);
+        $this->assertEquals(\count($actions), \count($response->files));
 
         foreach ($response->files as $index => $file) {
             $filename = \explode('/', $file);
             $this->assertEquals($expectedFiles[$index], \array_pop($filename));
             $this->assertFileExists($file);
+            $content = \file_get_contents($file);
+
+            foreach ($schema->attributes() as $attribute) {
+                $this->assertStringContainsString($attribute->name(), $content);
+            }
+
             \unlink($file);
         }
     }

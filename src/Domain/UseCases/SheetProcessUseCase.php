@@ -32,10 +32,10 @@ final class SheetProcessUseCase extends UseCase
         $this->throwExceptionIfRequestNotValid(__METHOD__, SheetProcessRequest::class, $request);
 
         $name = $request->name;
-        $path = $request->path;
+        $outputFolder = $request->outputFolder;
 
-        $controller = $this->makeController($name);
-        $constraint = $this->makeConstraint($name, Schema::fromFile($path)->attributes());
+        $controller = $this->makeController($name, $outputFolder);
+        $constraint = $this->makeConstraint($name, Schema::fromFile($request->path)->attributes(), $outputFolder);
 
         return new SheetProcessResponse([
             'controller' => $controller->file,
@@ -43,7 +43,7 @@ final class SheetProcessUseCase extends UseCase
         ]);
     }
 
-    private function makeController(string $name): CreateControllerFileResponse
+    private function makeController(string $name, string $outputFolder): CreateControllerFileResponse
     {
         return (new CreateControllerFileUseCase())->execute(
             new CreateControllerFileRequest($name, [
@@ -52,14 +52,14 @@ final class SheetProcessUseCase extends UseCase
                 'read',
                 'update',
                 'delete',
-            ])
+            ], $outputFolder)
         );
     }
 
-    private function makeConstraint(string $name, array $properties): CreateConstraintFileResponse
+    private function makeConstraint(string $name, array $properties, string $outputFolder): CreateConstraintFileResponse
     {
         return (new CreateConstraintFileUseCase())->execute(
-            new CreateConstraintFileRequest($name, $properties)
+            new CreateConstraintFileRequest($name, $properties, $outputFolder)
         );
     }
 }
