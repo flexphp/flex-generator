@@ -29,7 +29,7 @@ trait InflectorTrait
         return (new Convert($string))->toSnake();
     }
 
-    protected function getSingularize(string $string): string
+    private function getSingularize(string $string): string
     {
         $singularize = Inflector::singularize($string);
 

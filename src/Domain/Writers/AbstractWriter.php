@@ -41,17 +41,17 @@ abstract class AbstractWriter implements WriterInterface
 
     abstract protected function getExtension(): string;
 
-    protected function getContent(): string
+    private function getContent(): string
     {
         return $this->content;
     }
 
-    protected function getFilename(): string
+    private function getFilename(): string
     {
         return $this->filename;
     }
 
-    protected function getPath(): string
+    private function getPath(): string
     {
         return $this->path;
     }

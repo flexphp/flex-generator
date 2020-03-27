@@ -10,19 +10,12 @@
 namespace FlexPHP\Generator\Domain\Builders\Message;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
-use FlexPHP\Schema\Constants\Keyword;
 
 final class ResponseBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, string $action, array $properties)
+    public function __construct(string $entity, string $action)
     {
-        $properties = \array_reduce($properties, function ($result, $property) {
-            $result[$property[Keyword::NAME]] = $property;
-
-            return $result;
-        }, []);
-
-        parent::__construct(\compact('entity', 'action', 'properties'));
+        parent::__construct(\compact('entity', 'action'));
     }
 
     protected function getFileTemplate(): string

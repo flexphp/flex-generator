@@ -15,7 +15,7 @@ final class YamlWriter extends AbstractWriter
 {
     public function __construct(array $data, string $filename)
     {
-        parent::__construct(Yaml::dump($data, 4, 2), $filename, \sprintf('%1$s/../../tmp', __DIR__));
+        parent::__construct(Yaml::dump($data), $filename, \sprintf('%1$s/../../tmp', __DIR__));
     }
 
     protected function getExtension(): string
