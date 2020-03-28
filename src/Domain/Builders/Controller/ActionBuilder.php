@@ -31,8 +31,8 @@ final class ActionBuilder extends AbstractBuilder
         $data['use_case'] = $useCase;
         $data['response_message'] = $responseMessage;
         $data['action_camel'] = $this->getCamelCase($action);
-        $data['route'] = $this->getGuessRoute($action);
-        $data['route_name'] = $this->getPluralize($this->getDashCase($entity));
+        $data['route'] = $this->getGuessRoute($this->getDashCase($action));
+        $data['route_name'] = $this->getPluralize($this->getDashCase($entity)) . '.' . $this->getDashCase($action);
         $data['methods'] = $this->getGuessMethod($action);
 
         parent::__construct($data);

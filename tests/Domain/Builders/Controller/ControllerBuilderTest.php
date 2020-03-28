@@ -35,7 +35,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/test")
+ * @Route("/tests")
  */
 final class TestController extends AbstractController
 {
@@ -108,12 +108,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/test")
+ * @Route("/tests")
  */
 final class TestController extends AbstractController
 {
     /**
-     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Route("/"}, methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -127,7 +127,7 @@ final class TestController extends AbstractController
     }
 
     /**
-     * @Route("/custom_fuz"}, methods={"POST"}, name="test.custom_fuz")
+     * @Route("/custom-fuz"}, methods={"POST"}, name="tests.custom-fuz")
      */
     public function customFuz(Request \$request): Response
     {

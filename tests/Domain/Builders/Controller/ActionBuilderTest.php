@@ -122,7 +122,7 @@ T, $render->build());
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/custom_action"}, methods={"POST"}, name="foo-bars.custom_action")
+     * @Route("/custom-action"}, methods={"POST"}, name="foo-bars.custom-action")
      */
     public function customAction(Request \$request): Response
     {
@@ -237,6 +237,8 @@ T, $render);
             ['Custom Action'],
             ['cUSTOM aCtion'],
             ['customAction'],
+            ['CustomAction'],
+            ['custom-action'],
         ];
     }
 
