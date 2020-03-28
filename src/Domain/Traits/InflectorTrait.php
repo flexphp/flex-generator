@@ -29,6 +29,11 @@ trait InflectorTrait
         return (new Convert($string))->toSnake();
     }
 
+    protected function getDashCase(string $string): string
+    {
+        return (new Convert($string))->toKebab();
+    }
+
     protected function getSingularize(string $string): string
     {
         $singularize = Inflector::singularize($string);
@@ -40,7 +45,7 @@ trait InflectorTrait
 
     protected function getPluralize(string $string): string
     {
-        $pluralize = Inflector::pluralize($string);
+        $pluralize = Inflector::pluralize($this->getSingularize($string));
 
         return \is_array($pluralize)
             ? $pluralize[0]

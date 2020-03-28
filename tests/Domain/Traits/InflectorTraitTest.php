@@ -36,6 +36,11 @@ final class InflectorTraitTest extends TestCase
                 return $this->getSnakeCase($string);
             }
 
+            public function dashCase(string $string): string
+            {
+                return $this->getDashCase($string);
+            }
+
             public function singularize(string $string): string
             {
                 return $this->getSingularize($string);
@@ -47,20 +52,13 @@ final class InflectorTraitTest extends TestCase
             }
         };
 
-        $camelCase = $inflector->camelCase($string);
-        $pascalCase = $inflector->pascalCase($string);
-        $snakeCase = $inflector->snakeCase($string);
-        $singularizeString = $inflector->singularize('worlds');
-        $singularizeArray = $inflector->singularize('indices');
-        $pluralizeString = $inflector->pluralize('world');
-        $pluralizeArray = $inflector->pluralize('index');
-
-        $this->assertEquals('helloWorld', $camelCase);
-        $this->assertEquals('HelloWorld', $pascalCase);
-        $this->assertEquals('hello_world', $snakeCase);
-        $this->assertEquals('world', $singularizeString);
-        $this->assertEquals('index', $singularizeArray);
-        $this->assertEquals('worlds', $pluralizeString);
-        $this->assertEquals('indicies', $pluralizeArray);
+        $this->assertEquals('helloWorld', $inflector->camelCase($string));
+        $this->assertEquals('HelloWorld', $inflector->pascalCase($string));
+        $this->assertEquals('hello_world', $inflector->snakeCase($string));
+        $this->assertEquals('hello-world', $inflector->dashCase($string));
+        $this->assertEquals('world', $inflector->singularize('worlds'));
+        $this->assertEquals('index', $inflector->singularize('indices'));
+        $this->assertEquals('worlds', $inflector->pluralize('world'));
+        $this->assertEquals('indicies', $inflector->pluralize('index'));
     }
 }
