@@ -14,13 +14,39 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class UseCaseBuilderTest extends TestCase
 {
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItRenderOk(string $entity, string $expected): void
+    {
+        $render = new UseCaseBuilder($entity, 'index');
+
+        $this->assertEquals(<<<T
+        \$useCase = new Index{$expected}UseCase();
+        \$response = \$useCase->execute(\$request);
+T, $render->build());
+    }
+
     public function testItRenderIndexOk(): void
     {
         $render = new UseCaseBuilder('Test', 'index');
 
         $this->assertEquals(<<<T
         \$useCase = new IndexTestUseCase();
-        \$response = \$useCase->execute(\$requestMessage);
+        \$response = \$useCase->execute(\$request);
 T, $render->build());
+    }
+
+    public function getEntityName(): array
+    {
+        return [
+            ['userpassword', 'Userpassword'],
+            ['USERPASSWORD', 'Userpassword'],
+            ['UserPassword', 'UserPassword'],
+            ['userPassword', 'UserPassword'],
+            ['user_password', 'UserPassword'],
+            ['user-password', 'UserPassword'],
+            ['Posts', 'Post'],
+        ];
     }
 }

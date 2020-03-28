@@ -15,7 +15,14 @@ final class UseCaseBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, string $action)
     {
+        $entity = $this->getPascalCase($this->getSingularize($entity));
+
         parent::__construct(\compact('entity', 'action'));
+    }
+
+    public function build(): string
+    {
+        return \rtrim(parent::build());
     }
 
     protected function getFileTemplate(): string
@@ -26,10 +33,5 @@ final class UseCaseBuilder extends AbstractBuilder
     protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/Symfony/v43/src/Controller', parent::getPathTemplate());
-    }
-
-    public function build(): string
-    {
-        return \rtrim(parent::build());
     }
 }

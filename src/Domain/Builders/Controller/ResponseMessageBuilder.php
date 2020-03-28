@@ -20,7 +20,7 @@ final class ResponseMessageBuilder extends AbstractBuilder
 
     protected function getFileTemplate(): string
     {
-        return 'Response.php.twig';
+        return 'ResponseMessage.php.twig';
     }
 
     protected function getPathTemplate(): string

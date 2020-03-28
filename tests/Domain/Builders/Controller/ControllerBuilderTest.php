@@ -118,10 +118,10 @@ final class TestController extends AbstractController
      */
     public function index(Request \$request): Response
     {
-        \$requestMessage = new IndexTestRequest(\$request->request->all());
+        \$request = new IndexTestRequest(\$request->request->all());
 
         \$useCase = new IndexTestUseCase();
-        \$response = \$useCase->execute(\$requestMessage);
+        \$response = \$useCase->execute(\$request);
 
         return new Response(\$response);
     }
@@ -131,10 +131,10 @@ final class TestController extends AbstractController
      */
     public function customFuz(Request \$request): Response
     {
-        \$requestMessage = new CustomFuzTestRequest(\$request->request->all());
+        \$request = new CustomFuzTestRequest(\$request->request->all());
 
         \$useCase = new CustomFuzTestUseCase();
-        \$response = \$useCase->execute(\$requestMessage);
+        \$response = \$useCase->execute(\$request);
 
         return new Response(\$response);
     }
