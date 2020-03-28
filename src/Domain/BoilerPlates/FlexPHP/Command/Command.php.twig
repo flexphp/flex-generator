@@ -1,9 +1,4 @@
 <?php declare(strict_types=1);
-{% set arguments %}
-{% for id, property in properties %}
-${{ id }}{% if not loop.last %}, {% endif %}
-{% endfor %}
-{% endset %}
 
 namespace Domain\{{ entity }}\Command;
 
