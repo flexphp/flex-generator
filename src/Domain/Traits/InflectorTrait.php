@@ -37,4 +37,13 @@ trait InflectorTrait
             ? $singularize[0]
             : $singularize;
     }
+
+    protected function getPluralize(string $string): string
+    {
+        $pluralize = Inflector::pluralize($string);
+
+        return \is_array($pluralize)
+            ? $pluralize[0]
+            : $pluralize;
+    }
 }

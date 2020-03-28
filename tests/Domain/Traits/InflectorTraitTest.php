@@ -40,6 +40,11 @@ final class InflectorTraitTest extends TestCase
             {
                 return $this->getSingularize($string);
             }
+
+            public function pluralize(string $string): string
+            {
+                return $this->getPluralize($string);
+            }
         };
 
         $camelCase = $inflector->camelCase($string);
@@ -47,11 +52,15 @@ final class InflectorTraitTest extends TestCase
         $snakeCase = $inflector->snakeCase($string);
         $singularizeString = $inflector->singularize('worlds');
         $singularizeArray = $inflector->singularize('indices');
+        $pluralizeString = $inflector->pluralize('world');
+        $pluralizeArray = $inflector->pluralize('index');
 
         $this->assertEquals('helloWorld', $camelCase);
         $this->assertEquals('HelloWorld', $pascalCase);
         $this->assertEquals('hello_world', $snakeCase);
         $this->assertEquals('world', $singularizeString);
         $this->assertEquals('index', $singularizeArray);
+        $this->assertEquals('worlds', $pluralizeString);
+        $this->assertEquals('indicies', $pluralizeArray);
     }
 }
