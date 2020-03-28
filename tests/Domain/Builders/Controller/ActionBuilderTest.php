@@ -14,13 +14,33 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class ActionBuilderTest extends TestCase
 {
+    /**
+     * @dataProvider getEntityAndRouteName
+     */
+    public function testItRenderOk(string $entity, string $route): void
+    {
+        unset($unused);
+        $render = new ActionBuilder($entity, '');
+
+        $this->assertEquals(<<<T
+    /**
+     * @Route("/"}, methods={"GET"}, name="{$route}.index")
+     * @Cache(smaxage="10")
+     */
+    public function index(Request \$request): Response
+    {
+    }
+
+T, $render->build());
+    }
+
     public function testItRenderIndexOk(): void
     {
         $render = new ActionBuilder('Test', 'index');
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Route("/"}, methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -36,7 +56,7 @@ T, $render->build());
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/create"}, methods={"POST"}, name="test.create")
+     * @Route("/create"}, methods={"POST"}, name="tests.create")
      */
     public function create(Request \$request): Response
     {
@@ -51,7 +71,7 @@ T, $render->build());
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/{id}"}, methods={"GET"}, name="test.read")
+     * @Route("/{id}"}, methods={"GET"}, name="tests.read")
      * @Cache(smaxage="10")
      */
     public function read(\$id): Response
@@ -67,7 +87,7 @@ T, $render->build());
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/update/{id}"}, methods={"PUT"}, name="test.update")
+     * @Route("/update/{id}"}, methods={"PUT"}, name="tests.update")
      */
     public function update(Request \$request, \$id): Response
     {
@@ -82,7 +102,7 @@ T, $render->build());
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/delete/{id}"}, methods={"DELETE"}, name="test.delete")
+     * @Route("/delete/{id}"}, methods={"DELETE"}, name="tests.delete")
      */
     public function delete(\$id): Response
     {
@@ -102,7 +122,7 @@ T, $render->build());
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/custom_action"}, methods={"POST"}, name="foobar.custom_action")
+     * @Route("/custom_action"}, methods={"POST"}, name="foo-bars.custom_action")
      */
     public function customAction(Request \$request): Response
     {
@@ -119,7 +139,7 @@ T, $render->build());
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Route("/"}, methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -138,7 +158,7 @@ T, $render->build());
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Route("/"}, methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -157,7 +177,7 @@ T, $render->build());
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Route("/"}, methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -178,7 +198,7 @@ T, $render->build());
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Route("/"}, methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -199,7 +219,7 @@ T, $render->build());
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="test.index")
+     * @Route("/"}, methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -217,6 +237,20 @@ T, $render);
             ['Custom Action'],
             ['cUSTOM aCtion'],
             ['customAction'],
+        ];
+    }
+
+    public function getEntityAndRouteName(): array
+    {
+        return [
+            // entity, route
+            ['userpassword', 'userpasswords'],
+            ['USERPASSWORD', 'userpasswords'],
+            ['UserPassword', 'user-passwords'],
+            ['userPassword', 'user-passwords'],
+            ['user_password', 'user-passwords'],
+            ['user-password', 'user-passwords'],
+            ['Posts', 'posts'],
         ];
     }
 }
