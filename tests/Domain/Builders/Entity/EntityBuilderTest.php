@@ -75,6 +75,7 @@ final class Test extends Entity
     }
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 }

@@ -36,7 +36,8 @@ final class TestConstraint
     }
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -62,7 +63,8 @@ final class {$expected}Constraint
     }
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItOkWithDiffNameProperties(): void
@@ -129,7 +131,8 @@ final class TestConstraint
     }
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function getEntityName(): array

@@ -67,7 +67,8 @@ final class ActionTestCommand extends Command
     }
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -110,7 +111,8 @@ final class Action{$expectedCamel}Command extends Command
     }
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -153,7 +155,8 @@ final class CustomActionTestCommand extends Command
     }
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function getEntityName(): array

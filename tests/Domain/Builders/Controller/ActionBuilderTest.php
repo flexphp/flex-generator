@@ -30,7 +30,8 @@ final class ActionBuilderTest extends TestCase
     {
     }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderIndexOk(): void
@@ -46,7 +47,8 @@ T, $render->build());
     {
     }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderCreateOk(): void
@@ -61,7 +63,8 @@ T, $render->build());
     {
     }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderReadOk(): void
@@ -77,7 +80,8 @@ T, $render->build());
     {
     }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderUpdateOk(): void
@@ -92,7 +96,8 @@ T, $render->build());
     {
     }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderDeleteOk(): void
@@ -107,7 +112,8 @@ T, $render->build());
     {
     }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -127,7 +133,8 @@ T, $render->build());
     {
     }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderWithRequestMessage(): void
@@ -146,7 +153,8 @@ T, $render->build());
         $requestMessage
     }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderWithUseCase(): void
@@ -165,7 +173,8 @@ T, $render->build());
         $useCase
     }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderWithResponseMessage(): void
@@ -184,7 +193,8 @@ T, $render->build());
         $responseMessage
     }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderComplete(): void
@@ -209,7 +219,8 @@ T, $render->build());
         $responseMessage
     }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderToString(): void

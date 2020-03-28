@@ -20,6 +20,7 @@ final class ResponseMessageBuilderTest extends TestCase
 
         $this->assertEquals(<<<T
         return new Response(\$response);
-T, $render->build());
+T
+, $render->build());
     }
 }

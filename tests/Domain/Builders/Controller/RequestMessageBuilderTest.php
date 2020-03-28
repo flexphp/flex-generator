@@ -23,7 +23,8 @@ final class RequestMessageBuilderTest extends TestCase
 
         $this->assertEquals(<<<T
         \$request = new Index{$expected}Request(\$request->request->all());
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderIndexOk(): void
@@ -32,7 +33,8 @@ T, $render->build());
 
         $this->assertEquals(<<<T
         \$request = new IndexTestRequest(\$request->request->all());
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderCreateOk(): void
@@ -41,7 +43,8 @@ T, $render->build());
 
         $this->assertEquals(<<<T
         \$request = new CreateTestRequest(\$request->request->all());
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderReadOk(): void
@@ -50,7 +53,8 @@ T, $render->build());
 
         $this->assertEquals(<<<T
         \$request = new ReadTestRequest(['id' => \$id]);
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderUpdateOk(): void
@@ -59,7 +63,8 @@ T, $render->build());
 
         $this->assertEquals(<<<T
         \$request = new UpdateTestRequest(\$request->request->all());
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderDeleteOk(): void
@@ -68,7 +73,8 @@ T, $render->build());
 
         $this->assertEquals(<<<T
         \$request = new DeleteTestRequest(['id' => \$id]);
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -85,7 +91,8 @@ T, $render->build());
 
         $this->assertEquals(<<<T
         \$request = new {$expected}FooBarRequest(\$request->request->all());
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderToString(): void

@@ -50,6 +50,7 @@ interface TestRepository extends RepositoryInterface
     public function customFuz(array \$data): array;
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 }

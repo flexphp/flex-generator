@@ -27,7 +27,8 @@ final class RuleBuilderTest extends TestCase
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRequiredOk(): void
@@ -44,7 +45,8 @@ T, $render->build());
             new NotBlank(),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItMinLengthOk(): void
@@ -62,7 +64,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItMaxLengthOk(): void
@@ -80,7 +83,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItLengthOk(): void
@@ -102,7 +106,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItMinCheckLengthOk(): void
@@ -120,7 +125,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItMaxCheckLengthOk(): void
@@ -138,7 +144,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItCheckOk(): void
@@ -160,7 +167,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItMinOk(): void
@@ -178,7 +186,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItMaxOk(): void
@@ -196,7 +205,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItEqualToOk(): void
@@ -214,7 +224,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItTypeOk(): void
@@ -232,7 +243,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItPatternOk(): void
@@ -250,7 +262,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItSomeOk(): void
@@ -279,7 +292,8 @@ T, $render->build());
             ]),
         ], \$constraints));
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function getPropertyName(): array

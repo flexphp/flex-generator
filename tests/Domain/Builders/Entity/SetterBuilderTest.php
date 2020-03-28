@@ -23,7 +23,8 @@ final class SetterBuilderTest extends TestCase
     {
         \$this->foo = \$foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -40,7 +41,8 @@ T, $render->build());
     {
         \$this->foo = \$foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -57,7 +59,8 @@ T, $render->build());
     {
         \$this->foo = \$foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -74,7 +77,8 @@ T, $render->build());
     {
         \$this->foo = \$foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -91,7 +95,8 @@ T, $render->build());
     {
         \$this->foo = \$foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItWithUnknowType(): void
@@ -103,7 +108,8 @@ T, $render->build());
     {
         \$this->foo = \$foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function getDataTypeString(): array

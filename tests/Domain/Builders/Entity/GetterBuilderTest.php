@@ -23,7 +23,8 @@ final class GetterBuilderTest extends TestCase
     {
         return \$this->foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -40,7 +41,8 @@ T, $render->build());
     {
         return \$this->foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -57,7 +59,8 @@ T, $render->build());
     {
         return \$this->foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -74,7 +77,8 @@ T, $render->build());
     {
         return \$this->foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -91,7 +95,8 @@ T, $render->build());
     {
         return \$this->foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -108,7 +113,8 @@ T, $render->build());
     {
         return \$this->foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItWithUnknowType(): void
@@ -120,7 +126,8 @@ T, $render->build());
     {
         return \$this->foo;
     }
-T, $render->build());
+T
+, $render->build());
     }
 
     public function getDataTypeString(): array

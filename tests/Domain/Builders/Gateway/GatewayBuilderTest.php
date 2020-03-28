@@ -111,6 +111,7 @@ final class DBTestRepository implements TestRepository
     }
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 }

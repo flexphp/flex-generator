@@ -24,7 +24,8 @@ final class UseCaseBuilderTest extends TestCase
         $this->assertEquals(<<<T
         \$useCase = new Index{$expected}UseCase();
         \$response = \$useCase->execute(\$request);
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderIndexOk(): void
@@ -34,7 +35,8 @@ T, $render->build());
         $this->assertEquals(<<<T
         \$useCase = new IndexTestUseCase();
         \$response = \$useCase->execute(\$request);
-T, $render->build());
+T
+, $render->build());
     }
 
     public function getEntityName(): array

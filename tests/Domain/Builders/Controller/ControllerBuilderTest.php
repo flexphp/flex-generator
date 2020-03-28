@@ -41,7 +41,8 @@ final class TestController extends AbstractController
 {
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     /**
@@ -68,7 +69,8 @@ final class {$expectedName}Controller extends AbstractController
 {
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function testItRenderMixedOk(): void
@@ -140,7 +142,8 @@ final class TestController extends AbstractController
     }
 }
 
-T, $render->build());
+T
+, $render->build());
     }
 
     public function getEntityAndRouteName(): array
