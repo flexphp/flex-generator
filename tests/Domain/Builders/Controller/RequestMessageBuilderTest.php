@@ -14,12 +14,24 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class RequestMessageBuilderTest extends TestCase
 {
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItRenderOk(string $entity, string $expected): void
+    {
+        $render = new RequestMessageBuilder($entity, 'index');
+
+        $this->assertEquals(<<<T
+        \$request = new Index{$expected}Request(\$request->request->all());
+T, $render->build());
+    }
+
     public function testItRenderIndexOk(): void
     {
         $render = new RequestMessageBuilder('Test', 'index');
 
         $this->assertEquals(<<<T
-        \$requestMessage = new IndexTestRequest(\$request->request->all());
+        \$request = new IndexTestRequest(\$request->request->all());
 T, $render->build());
     }
 
@@ -28,7 +40,7 @@ T, $render->build());
         $render = new RequestMessageBuilder('Test', 'create');
 
         $this->assertEquals(<<<T
-        \$requestMessage = new CreateTestRequest(\$request->request->all());
+        \$request = new CreateTestRequest(\$request->request->all());
 T, $render->build());
     }
 
@@ -37,7 +49,7 @@ T, $render->build());
         $render = new RequestMessageBuilder('Test', 'read');
 
         $this->assertEquals(<<<T
-        \$requestMessage = new ReadTestRequest(['id' => \$id]);
+        \$request = new ReadTestRequest(['id' => \$id]);
 T, $render->build());
     }
 
@@ -46,7 +58,7 @@ T, $render->build());
         $render = new RequestMessageBuilder('Test', 'update');
 
         $this->assertEquals(<<<T
-        \$requestMessage = new UpdateTestRequest(\$request->request->all());
+        \$request = new UpdateTestRequest(\$request->request->all());
 T, $render->build());
     }
 
@@ -55,7 +67,7 @@ T, $render->build());
         $render = new RequestMessageBuilder('Test', 'delete');
 
         $this->assertEquals(<<<T
-        \$requestMessage = new DeleteTestRequest(['id' => \$id]);
+        \$request = new DeleteTestRequest(['id' => \$id]);
 T, $render->build());
     }
 
@@ -72,7 +84,7 @@ T, $render->build());
         $render = new RequestMessageBuilder($entity, $action);
 
         $this->assertEquals(<<<T
-        \$requestMessage = new {$expected}FooBarRequest(\$request->request->all());
+        \$request = new {$expected}FooBarRequest(\$request->request->all());
 T, $render->build());
     }
 
@@ -81,7 +93,7 @@ T, $render->build());
         $render = new RequestMessageBuilder('Test', 'index');
 
         $this->assertEquals(<<<T
-        \$requestMessage = new IndexTestRequest(\$request->request->all());
+        \$request = new IndexTestRequest(\$request->request->all());
 T, $render);
     }
 
@@ -93,6 +105,19 @@ T, $render);
             ['Custom RequestMessage', 'CustomRequestmessage'],
             ['cUSTOM aCtion', 'CustomAction'],
             ['customRequestMessage', 'CustomRequestMessage'],
+        ];
+    }
+
+    public function getEntityName(): array
+    {
+        return [
+            ['userpassword', 'Userpassword'],
+            ['USERPASSWORD', 'Userpassword'],
+            ['UserPassword', 'UserPassword'],
+            ['userPassword', 'UserPassword'],
+            ['user_password', 'UserPassword'],
+            ['user-password', 'UserPassword'],
+            ['Posts', 'Post'],
         ];
     }
 }

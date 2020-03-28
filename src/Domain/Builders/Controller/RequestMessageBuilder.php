@@ -15,12 +15,14 @@ final class RequestMessageBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, string $action)
     {
+        $entity = $this->getPascalCase($this->getSingularize($entity));
+
         parent::__construct(\compact('entity', 'action'));
     }
 
     protected function getFileTemplate(): string
     {
-        return 'Request.php.twig';
+        return 'RequestMessage.php.twig';
     }
 
     protected function getPathTemplate(): string

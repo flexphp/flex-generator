@@ -1,5 +1,0 @@
-{% if action in ['read', 'delete'] %}
-        $requestMessage = new {{ action_name }}{{ entity }}Request(['id' => $id]);
-{% else %}
-        $requestMessage = new {{ action_name }}{{ entity }}Request($request->request->all());
-{% endif %}
