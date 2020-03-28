@@ -19,7 +19,6 @@ final class ActionBuilderTest extends TestCase
      */
     public function testItRenderOk(string $entity, string $route): void
     {
-        unset($unused);
         $render = new ActionBuilder($entity, '');
 
         $this->assertEquals(<<<T

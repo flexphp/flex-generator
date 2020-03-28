@@ -87,7 +87,7 @@ class TestCase extends PHPUnitTestCase
                 return $result;
             },
             []
-     );
+        );
     }
 
     protected static function getOutputFolder(): string
