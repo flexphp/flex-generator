@@ -16,6 +16,7 @@ final class RuleBuilder extends AbstractBuilder
     public function __construct(string $property, array $constraints)
     {
         $property = $this->getCamelCase($property);
+
         parent::__construct(\compact('property', 'constraints'));
     }
 

@@ -13,9 +13,11 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 final class ConstraintBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $properties)
+    public function __construct(string $entity, array $rules)
     {
-        parent::__construct(\compact('entity', 'properties'));
+        $entity = $this->getSingularize($this->getPascalCase($entity));
+
+        parent::__construct(\compact('entity', 'rules'));
     }
 
     protected function getFileTemplate(): string

@@ -270,12 +270,12 @@ T, $render->build());
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
             new NotNull(),
             new NotBlank(),
-            new Regex([
-                'pattern' => '/^[a-z_]*$/',
-            ]),
             new Length([
                 'min' => 20,
                 'max' => 100,
+            ]),
+            new Regex([
+                'pattern' => '/^[a-z_]*$/',
             ]),
         ], \$constraints));
     }

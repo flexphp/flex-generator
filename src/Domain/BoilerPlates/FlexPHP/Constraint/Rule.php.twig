@@ -1,46 +1,52 @@
     public function {{ property }}(array $constraints = [])
     {
         return $this->getValidator()->validate(__FUNCTION__, array_merge([
-{% for constraint, param in constraints %}
-{% if constraint == 'required' %}
+{% if constraints.required %}
             new NotNull(),
             new NotBlank(),
-{% elseif constraint in ['length', 'minlength', 'maxlength'] %}
+{% endif %}
+{% if constraints.length or constraints.minlength or constraints.maxlength %}
             new Length([
-{% if param.min or constraints.minlength %}
-                'min' => {{ param.min }}{{ constraints.minlength }},
+{% if constraints.length.min or constraints.minlength %}
+                'min' => {{ constraints.length.min }}{{ constraints.minlength }},
 {% endif %}
-{% if param.max or constraints.maxlength %}
-                'max' => {{ param.max }}{{ constraints.maxlength }},
+{% if constraints.length.max or constraints.maxlength %}
+                'max' => {{ constraints.length.max }}{{ constraints.maxlength }},
 {% endif %}
             ]),
-{% elseif constraint in ['check', 'mincheck', 'maxcheck'] %}
+{% endif %}
+{% if constraints.check or constraints.mincheck or constraints.maxcheck %}
             new Count([
-{% if param.min or constraints.mincheck %}
-                'min' => {{ param.min }}{{ constraints.mincheck }},
+{% if constraints.check.min or constraints.mincheck %}
+                'min' => {{ constraints.check.min }}{{ constraints.mincheck }},
 {% endif %}
-{% if param.max or constraints.maxcheck %}
-                'max' => {{ param.max }}{{ constraints.maxcheck }},
+{% if constraints.check.max or constraints.maxcheck %}
+                'max' => {{ constraints.check.max }}{{ constraints.maxcheck }},
 {% endif %}
             ]),
-{% elseif constraint == 'min' %}
+{% endif %}
+{% if constraints.min %}
             new LessThanOrEqual([
                 'value' => {{ constraints.min }},
             ]),
-{% elseif constraint == 'max' %}
+{% endif %}
+{% if constraints.max %}
             new GreaterThanOrEqual([
                 'value' => {{ constraints.max }},
             ]),
-{% elseif constraint == 'equalto' %}
+{% endif %}
+{% if constraints.equalto %}
             new EqualTo([
                 'value' => '{{ constraints.equalto }}',
             ]),
-{% elseif constraint == 'pattern' %}
+{% endif %}
+{% if constraints.pattern %}
             new Regex([
                 'pattern' => '/^[a-z_]*$/',
             ]),
-{% elseif constraint == 'type' %}
-{% if constraint == 'datetime' %}
+{% endif %}
+{% if constraints.type %}
+{% if constraints.type.datetime %}
             new DateTime(),
 {% else %}
             new Type([
@@ -48,6 +54,5 @@
             ]),
 {% endif %}
 {% endif %}
-{% endfor %}
         ], $constraints));
     }

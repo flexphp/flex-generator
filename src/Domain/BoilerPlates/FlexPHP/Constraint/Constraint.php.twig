@@ -11,12 +11,8 @@ final class {{ entity }}Constraint
     {
         return Validation::createValidator();
     }
-{% for property in properties %}
-{% if not loop.last %}
+{% for rule in rules %}
 
-{{ property|raw }}
-{% else %}
-{{ property|raw }}
-{% endif %}
+{{ rule|raw }}
 {% endfor %}
 }
