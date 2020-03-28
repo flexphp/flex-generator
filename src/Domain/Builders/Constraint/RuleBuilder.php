@@ -13,9 +13,15 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 final class RuleBuilder extends AbstractBuilder
 {
-    public function __construct(string $property, array $rules)
+    public function __construct(string $property, array $constraints)
     {
-        parent::__construct(\compact('property', 'rules'));
+        $property = $this->getCamelCase($property);
+        parent::__construct(\compact('property', 'constraints'));
+    }
+
+    public function build(): string
+    {
+        return \rtrim(parent::build());
     }
 
     protected function getFileTemplate(): string
@@ -26,10 +32,5 @@ final class RuleBuilder extends AbstractBuilder
     protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Constraint', parent::getPathTemplate());
-    }
-
-    public function build(): string
-    {
-        return \rtrim(parent::build());
     }
 }

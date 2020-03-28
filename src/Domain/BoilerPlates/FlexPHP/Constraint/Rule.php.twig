@@ -1,50 +1,50 @@
     public function {{ property }}(array $constraints = [])
     {
         return $this->getValidator()->validate(__FUNCTION__, array_merge([
-{% for rule, constraint in rules %}
-{% if rule == 'required' %}
+{% for constraint, param in constraints %}
+{% if constraint == 'required' %}
             new NotNull(),
             new NotBlank(),
-{% elseif rule in ['length', 'minlength', 'maxlength'] %}
+{% elseif constraint in ['length', 'minlength', 'maxlength'] %}
             new Length([
-{% if constraint.min or rules.minlength %}
-                'min' => {{ constraint.min }}{{ rules.minlength }},
+{% if param.min or constraints.minlength %}
+                'min' => {{ param.min }}{{ constraints.minlength }},
 {% endif %}
-{% if constraint.max or rules.maxlength %}
-                'max' => {{ constraint.max }}{{ rules.maxlength }},
+{% if param.max or constraints.maxlength %}
+                'max' => {{ param.max }}{{ constraints.maxlength }},
 {% endif %}
             ]),
-{% elseif rule in ['check', 'mincheck', 'maxcheck'] %}
+{% elseif constraint in ['check', 'mincheck', 'maxcheck'] %}
             new Count([
-{% if constraint.min or rules.mincheck %}
-                'min' => {{ constraint.min }}{{ rules.mincheck }},
+{% if param.min or constraints.mincheck %}
+                'min' => {{ param.min }}{{ constraints.mincheck }},
 {% endif %}
-{% if constraint.max or rules.maxcheck %}
-                'max' => {{ constraint.max }}{{ rules.maxcheck }},
+{% if param.max or constraints.maxcheck %}
+                'max' => {{ param.max }}{{ constraints.maxcheck }},
 {% endif %}
             ]),
-{% elseif rule == 'min' %}
+{% elseif constraint == 'min' %}
             new LessThanOrEqual([
-                'value' => {{ rules.min }},
+                'value' => {{ constraints.min }},
             ]),
-{% elseif rule == 'max' %}
+{% elseif constraint == 'max' %}
             new GreaterThanOrEqual([
-                'value' => {{ rules.max }},
+                'value' => {{ constraints.max }},
             ]),
-{% elseif rule == 'equalto' %}
+{% elseif constraint == 'equalto' %}
             new EqualTo([
-                'value' => '{{ rules.equalto }}',
+                'value' => '{{ constraints.equalto }}',
             ]),
-{% elseif rule == 'pattern' %}
+{% elseif constraint == 'pattern' %}
             new Regex([
                 'pattern' => '/^[a-z_]*$/',
             ]),
-{% elseif rule == 'type' %}
+{% elseif constraint == 'type' %}
 {% if constraint == 'datetime' %}
             new DateTime(),
 {% else %}
             new Type([
-                'type' => '{{ rules.type }}',
+                'type' => '{{ constraints.type }}',
             ]),
 {% endif %}
 {% endif %}

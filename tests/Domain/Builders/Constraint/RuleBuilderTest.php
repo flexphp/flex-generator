@@ -14,6 +14,22 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class RuleBuilderTest extends TestCase
 {
+    /**
+     * @dataProvider getPropertyName
+     */
+    public function testItOk(string $name, string $expected): void
+    {
+        $render = new RuleBuilder($name, []);
+
+        $this->assertEquals(<<<T
+    public function {$expected}(array \$constraints = [])
+    {
+        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        ], \$constraints));
+    }
+T, $render->build());
+    }
+
     public function testItRequiredOk(): void
     {
         $render = new RuleBuilder('foo', [
@@ -264,5 +280,17 @@ T, $render->build());
         ], \$constraints));
     }
 T, $render->build());
+    }
+
+    public function getPropertyName(): array
+    {
+        return [
+            ['fooname', 'fooname'],
+            ['FOONAME', 'fooname'],
+            ['FooName', 'fooName'],
+            ['fooName', 'fooName'],
+            ['foo_name', 'fooName'],
+            ['foo-name', 'fooName'],
+        ];
     }
 }
