@@ -101,7 +101,8 @@ T
 
         $this->assertEquals(<<<T
         \$request = new IndexTestRequest(\$request->request->all());
-T, $render);
+T
+, $render);
     }
 
     public function getCustomRequestMessages(): array

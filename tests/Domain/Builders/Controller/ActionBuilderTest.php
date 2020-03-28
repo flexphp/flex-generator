@@ -236,7 +236,8 @@ T
     {
     }
 
-T, $render);
+T
+, $render);
     }
 
     public function getCustomActions(): array
