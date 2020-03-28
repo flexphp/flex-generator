@@ -44,7 +44,34 @@ final class TestController extends AbstractController
 T, $render->build());
     }
 
-    public function testItRenderIndexOk(): void
+    /**
+     * @dataProvider getEntityAndRouteName
+     */
+    public function testItOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedRoute): void
+    {
+        $render = new ControllerBuilder($entity, []);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace App\Controller;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/{$expectedRoute}")
+ */
+final class {$expectedName}Controller extends AbstractController
+{
+}
+
+T, $render->build());
+    }
+
+    public function testItRenderMixedOk(): void
     {
         $entity = 'Test';
         $actions = [
@@ -114,5 +141,19 @@ final class TestController extends AbstractController
 }
 
 T, $render->build());
+    }
+
+    public function getEntityAndRouteName(): array
+    {
+        return [
+            // entity, controller, route
+            ['userpassword', 'Userpassword', 'userpasswords'],
+            ['USERPASSWORD', 'Userpassword', 'userpasswords'],
+            ['UserPassword', 'UserPassword', 'user-passwords'],
+            ['userPassword', 'UserPassword', 'user-passwords'],
+            ['user_password', 'UserPassword', 'user-passwords'],
+            ['user-password', 'UserPassword', 'user-passwords'],
+            ['Posts', 'Post', 'posts'],
+        ];
     }
 }

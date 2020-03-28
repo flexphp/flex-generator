@@ -41,8 +41,6 @@ T, $render->build());
 
     /**
      * @dataProvider getEntityName
-     *
-     * @param [type] $name
      */
     public function testItOkWithDiffNameEntity(string $name, string $expected): void
     {

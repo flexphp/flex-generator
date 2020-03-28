@@ -15,12 +15,15 @@ final class ControllerBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, array $actions)
     {
+        $entity = $this->getPascalCase($this->getSingularize($entity));
+        $route = $this->getDashCase($this->getPluralize($entity));
+
         foreach ($actions as $action => $builder) {
             $actions[$this->getPascalCase($action)] = $builder;
             unset($actions[$action]);
         }
 
-        parent::__construct(\compact('entity', 'actions'));
+        parent::__construct(\compact('entity', 'actions', 'route'));
     }
 
     protected function getFileTemplate(): string
