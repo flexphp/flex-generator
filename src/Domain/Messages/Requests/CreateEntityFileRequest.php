@@ -23,15 +23,9 @@ final class CreateEntityFileRequest implements RequestInterface
      */
     public $properties;
 
-    /**
-     * @var string
-     */
-    public $outputFolder;
-
-    public function __construct(string $name, array $properties, string $outputFolder)
+    public function __construct(string $name, array $properties)
     {
         $this->name = $name;
         $this->properties = $properties;
-        $this->outputFolder = $outputFolder;
     }
 }

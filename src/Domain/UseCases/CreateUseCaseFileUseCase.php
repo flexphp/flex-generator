@@ -46,7 +46,7 @@ final class CreateUseCaseFileUseCase extends UseCase
             []
         );
 
-        $path = \sprintf('%1$s/Domain/%2$s/UseCase', $request->outputFolder, $entity);
+        $path = \sprintf('%1$s/../../tmp/skeleton/Domain/%2$s/UseCase', __DIR__, $entity);
 
         foreach ($actions as $action) {
             $request = new UseCaseBuilder($entity, $action, $properties);

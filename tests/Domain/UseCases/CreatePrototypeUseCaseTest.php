@@ -47,7 +47,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputFolder . '/Domain');
         $this->assertDirectoryExists($response->outputFolder . '/Domain/Post');
         $this->assertDirectoryExists($response->outputFolder . '/Domain/Post/Request');
-        // $this->assertDirectoryExists($response->outputFolder . '/Domain/Post/Response');
+        $this->assertDirectoryExists($response->outputFolder . '/Domain/Post/Response');
         $this->assertDirectoryExists($response->outputFolder . '/Domain/Post/UseCase');
 
         $this->assertFileExists($response->outputFolder . '/Domain/Post/Post.php');

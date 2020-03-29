@@ -44,7 +44,7 @@ final class CreateEntityFileUseCase extends UseCase
         );
 
         $entity = new EntityBuilder($name, $properties);
-        $path = \sprintf('%1$s/Domain/%2$s', $request->outputFolder, $name);
+        $path = \sprintf('%1$s/../../tmp/skeleton/Domain/%2$s', __DIR__, $name);
 
         $writer = new PhpWriter($entity->build(), $name, $path);
 

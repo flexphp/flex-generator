@@ -28,16 +28,10 @@ final class CreateUseCaseFileRequest implements RequestInterface
      */
     public $attributes;
 
-    /**
-     * @var string
-     */
-    public $outputFolder;
-
-    public function __construct(string $entity, array $actions, array $attributes, string $outputFolder)
+    public function __construct(string $entity, array $actions, array $attributes)
     {
         $this->entity = $entity;
         $this->actions = $actions;
         $this->attributes = $attributes;
-        $this->outputFolder = $outputFolder;
     }
 }

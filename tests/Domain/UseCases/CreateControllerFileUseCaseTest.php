@@ -40,7 +40,7 @@ final class CreateControllerFileUseCaseTest extends TestCase
             'delete',
         ];
 
-        $request = new CreateControllerFileRequest($schema->name(), $actions, $this->getOutputFolder());
+        $request = new CreateControllerFileRequest($schema->name(), $actions);
 
         $useCase = new CreateControllerFileUseCase();
         $response = $useCase->execute($request);

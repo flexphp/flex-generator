@@ -21,23 +21,11 @@ final class CreateResponseFileRequest implements RequestInterface
     /**
      * @var array
      */
-    public $properties;
-
-    /**
-     * @var array
-     */
     public $actions;
 
-    /**
-     * @var string
-     */
-    public $outputFolder;
-
-    public function __construct(string $entity, array $properties, array $actions, string $outputFolder)
+    public function __construct(string $entity, array $actions)
     {
         $this->entity = $entity;
-        $this->properties = $properties;
         $this->actions = $actions;
-        $this->outputFolder = $outputFolder;
     }
 }

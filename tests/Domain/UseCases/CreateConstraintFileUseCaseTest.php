@@ -33,7 +33,7 @@ final class CreateConstraintFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateConstraintFileRequest($schema->name(), $schema->attributes(), $this->getOutputFolder());
+        $request = new CreateConstraintFileRequest($schema->name(), $schema->attributes());
 
         $useCase = new CreateConstraintFileUseCase();
         $response = $useCase->execute($request);

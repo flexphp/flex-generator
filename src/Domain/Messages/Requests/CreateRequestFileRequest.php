@@ -28,16 +28,10 @@ final class CreateRequestFileRequest implements RequestInterface
      */
     public $actions;
 
-    /**
-     * @var string
-     */
-    public $outputFolder;
-
-    public function __construct(string $entity, array $properties, array $actions, string $outputFolder)
+    public function __construct(string $entity, array $properties, array $actions)
     {
         $this->entity = $entity;
         $this->properties = $properties;
         $this->actions = $actions;
-        $this->outputFolder = $outputFolder;
     }
 }

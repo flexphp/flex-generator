@@ -41,7 +41,6 @@ final class SheetProcessUseCase extends UseCase
 
         $name = $request->name;
         $attributes = Schema::fromFile($request->path)->attributes();
-        $outputFolder = $request->outputFolder;
         $actions = [
             'index',
             'create',
@@ -50,12 +49,12 @@ final class SheetProcessUseCase extends UseCase
             'delete',
         ];
 
-        $controller = $this->createController($name, $actions, $outputFolder);
-        $entity = $this->createEntity($name, $attributes, $outputFolder);
-        $constraint = $this->createConstraint($name, $attributes, $outputFolder);
-        $requests = $this->createRequests($name, $actions, $attributes, $outputFolder);
-        $responses = $this->createResponses($name, $actions, $attributes, $outputFolder);
-        $useCases = $this->createUseCases($name, $actions, $attributes, $outputFolder);
+        $controller = $this->createController($name, $actions);
+        $entity = $this->createEntity($name, $attributes);
+        $constraint = $this->createConstraint($name, $attributes);
+        $requests = $this->createRequests($name, $actions, $attributes);
+        $responses = $this->createResponses($name, $actions);
+        $useCases = $this->createUseCases($name, $actions, $attributes);
 
         return new SheetProcessResponse([
             'controller' => $controller->file,
@@ -67,45 +66,45 @@ final class SheetProcessUseCase extends UseCase
         ]);
     }
 
-    private function createController(string $name, array $actions, string $outputFolder): CreateControllerFileResponse
+    private function createController(string $name, array $actions): CreateControllerFileResponse
     {
         return (new CreateControllerFileUseCase())->execute(
-            new CreateControllerFileRequest($name, $actions, $outputFolder)
+            new CreateControllerFileRequest($name, $actions)
         );
     }
 
-    private function createConstraint(string $name, array $attributes, string $outputFolder): CreateConstraintFileResponse
+    private function createConstraint(string $name, array $attributes): CreateConstraintFileResponse
     {
         return (new CreateConstraintFileUseCase())->execute(
-            new CreateConstraintFileRequest($name, $attributes, $outputFolder)
+            new CreateConstraintFileRequest($name, $attributes)
         );
     }
 
-    private function createEntity(string $name, array $attributes, string $outputFolder): CreateEntityFileResponse
+    private function createEntity(string $name, array $attributes): CreateEntityFileResponse
     {
         return (new CreateEntityFileUseCase())->execute(
-            new CreateEntityFileRequest($name, $attributes, $outputFolder)
+            new CreateEntityFileRequest($name, $attributes)
         );
     }
 
-    private function createUseCases(string $name, array $actions, array $attributes, string $outputFolder): CreateUseCaseFileResponse
+    private function createUseCases(string $name, array $actions, array $attributes): CreateUseCaseFileResponse
     {
         return (new CreateUseCaseFileUseCase())->execute(
-            new CreateUseCaseFileRequest($name, $actions, $attributes, $outputFolder)
+            new CreateUseCaseFileRequest($name, $actions, $attributes)
         );
     }
 
-    private function createRequests(string $name, array $actions, array $attributes, string $outputFolder): CreateRequestFileResponse
+    private function createRequests(string $name, array $actions, array $attributes): CreateRequestFileResponse
     {
         return (new CreateRequestFileUseCase())->execute(
-            new CreateRequestFileRequest($name, $attributes, $actions, $outputFolder)
+            new CreateRequestFileRequest($name, $attributes, $actions)
         );
     }
 
-    private function createResponses(string $name, array $actions, array $attributes, string $outputFolder): CreateResponseFileResponse
+    private function createResponses(string $name, array $actions): CreateResponseFileResponse
     {
         return (new CreateResponseFileUseCase())->execute(
-            new CreateResponseFileRequest($name, $attributes, $actions, $outputFolder)
+            new CreateResponseFileRequest($name, $actions)
         );
     }
 }

@@ -35,21 +35,11 @@ final class CreateResponseFileUseCase extends UseCase
         $files = [];
         $entity = $this->getSingularize($request->entity);
         $actions = $request->actions;
-        $properties = \array_reduce(
-            $request->properties,
-            function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $name = $schemaAttribute->name();
-                $result[$name] = $schemaAttribute->properties();
 
-                return $result;
-            },
-            []
-        );
-
-        $path = \sprintf('%1$s/Domain/%2$s/Response', $request->outputFolder, $entity);
+        $path = \sprintf('%1$s/../../tmp/skeleton/Domain/%2$s/Response', __DIR__, $entity);
 
         foreach ($actions as $action) {
-            $request = new ResponseBuilder($entity, $action, $properties);
+            $request = new ResponseBuilder($entity, $action);
             $filename = $this->getPascalCase($action) . $entity . 'Response';
 
             $writer = new PhpWriter($request->build(), $filename, $path);

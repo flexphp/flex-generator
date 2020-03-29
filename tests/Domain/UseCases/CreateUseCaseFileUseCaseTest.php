@@ -37,12 +37,7 @@ final class CreateUseCaseFileUseCaseTest extends TestCase
             'D' => 'delete',
         ];
 
-        $request = new CreateUseCaseFileRequest(
-            $schema->name(),
-            $actions,
-            $schema->attributes(),
-            $this->getOutputFolder()
-        );
+        $request = new CreateUseCaseFileRequest($schema->name(), $actions, $schema->attributes());
 
         $useCase = new CreateUseCaseFileUseCase();
         $response = $useCase->execute($request);

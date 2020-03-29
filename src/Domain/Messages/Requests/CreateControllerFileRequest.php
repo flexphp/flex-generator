@@ -23,15 +23,9 @@ final class CreateControllerFileRequest implements RequestInterface
      */
     public $actions;
 
-    /**
-     * @var string
-     */
-    public $outputFolder;
-
-    public function __construct(string $entity, array $actions, string $outputFolder)
+    public function __construct(string $entity, array $actions)
     {
         $this->entity = $entity;
         $this->actions = $actions;
-        $this->outputFolder = $outputFolder;
     }
 }

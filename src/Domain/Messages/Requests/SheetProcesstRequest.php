@@ -23,15 +23,9 @@ final class SheetProcessRequest implements RequestInterface
      */
     public $path;
 
-    /**
-     * @var string
-     */
-    public $outputFolder;
-
-    public function __construct(string $name, string $path, string $outputFolder)
+    public function __construct(string $name, string $path)
     {
         $this->name = $name;
         $this->path = $path;
-        $this->outputFolder = $outputFolder;
     }
 }

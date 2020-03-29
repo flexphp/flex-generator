@@ -37,12 +37,7 @@ final class CreateRequestFileUseCaseTest extends TestCase
             'U' => 'update',
         ];
 
-        $request = new CreateRequestFileRequest(
-            $schema->name(),
-            $schema->attributes(),
-            $actions,
-            $this->getOutputFolder()
-        );
+        $request = new CreateRequestFileRequest($schema->name(), $schema->attributes(), $actions);
 
         $useCase = new CreateRequestFileUseCase();
         $response = $useCase->execute($request);
