@@ -46,7 +46,7 @@ final class CreateRequestFileUseCase extends UseCase
             []
         );
 
-        $path = \sprintf('%1$s/src/Requests', $request->outputFolder);
+        $path = \sprintf('%1$s/Domain/%2$s/Request', $request->outputFolder, $entity);
 
         foreach ($actions as $action) {
             $request = new RequestBuilder($entity, $action, $properties);

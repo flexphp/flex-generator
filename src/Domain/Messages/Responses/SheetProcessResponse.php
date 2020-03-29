@@ -14,11 +14,6 @@ use FlexPHP\Messages\ResponseInterface;
 final class SheetProcessResponse implements ResponseInterface
 {
     /**
-     * @var array
-     */
-    public $response;
-
-    /**
      * @var null|string
      */
     public $controller;
@@ -26,12 +21,17 @@ final class SheetProcessResponse implements ResponseInterface
     /**
      * @var null|string
      */
-    public $constraint;
+    public $entity;
 
     /**
      * @var null|string
      */
-    public $entity;
+    public $constraint;
+
+    /**
+     * @var array<int, string>
+     */
+    public $requests;
 
     /**
      * @var array<int, string>
@@ -40,10 +40,10 @@ final class SheetProcessResponse implements ResponseInterface
 
     public function __construct(array $response)
     {
-        $this->response = $response;
         $this->controller = $response['controller'] ?? null;
-        $this->constraint = $response['constraint'] ?? null;
         $this->entity = $response['entity'] ?? null;
+        $this->constraint = $response['constraint'] ?? null;
+        $this->requests = $response['requests'] ?? [];
         $this->useCases = $response['useCases'] ?? [];
     }
 }

@@ -37,11 +37,16 @@ final class SheetProcessUseCaseTest extends TestCase
         $this->assertFileExists($response->controller);
         \unlink($response->controller);
 
+        $this->assertFileExists($response->entity);
+        \unlink($response->entity);
+
         $this->assertFileExists($response->constraint);
         \unlink($response->constraint);
 
-        $this->assertFileExists($response->entity);
-        \unlink($response->entity);
+        foreach ($response->requests as $request) {
+            $this->assertFileExists($request);
+            \unlink($request);
+        }
 
         foreach ($response->useCases as $useCase) {
             $this->assertFileExists($useCase);
