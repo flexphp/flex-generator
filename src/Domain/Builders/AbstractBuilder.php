@@ -25,10 +25,6 @@ abstract class AbstractBuilder implements BuilderInterface
      */
     public function __construct(array $data)
     {
-        if (!empty($data['action']) && \is_string($data['action'])) {
-            $data['action_name'] = $this->getPascalCase($data['action']);
-        }
-
         $this->data = $data;
     }
 

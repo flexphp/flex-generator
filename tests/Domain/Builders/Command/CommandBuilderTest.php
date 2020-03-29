@@ -63,7 +63,7 @@ final class ActionTestCommand extends Command
         \$useCase = new ActionTestUseCase();
         \$response = \$useCase->execute(\$request);
 
-        \$output->writeln('Action on Test done!'); 
+        \$output->writeln('Action on Test done!');
     }
 }
 
@@ -107,7 +107,7 @@ final class Action{$expectedCamel}Command extends Command
         \$useCase = new Action{$expectedCamel}UseCase();
         \$response = \$useCase->execute(\$request);
 
-        \$output->writeln('Action on {$expectedCamel} done!'); 
+        \$output->writeln('Action on {$expectedCamel} done!');
     }
 }
 
@@ -151,7 +151,7 @@ final class CustomActionTestCommand extends Command
         \$useCase = new CustomActionTestUseCase();
         \$response = \$useCase->execute(\$request);
 
-        \$output->writeln('CustomAction on Test done!'); 
+        \$output->writeln('CustomAction on Test done!');
     }
 }
 

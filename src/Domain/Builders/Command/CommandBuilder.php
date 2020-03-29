@@ -17,9 +17,8 @@ final class CommandBuilder extends AbstractBuilder
     public function __construct(string $entity, string $action, array $properties)
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
-        $entity_plural = $this->getDashCase($this->getPluralize($entity));
-        $action_camel = $this->getPascalCase($action);
-        $action = $this->getDashCase($action);
+        $action = $this->getPascalCase($action);
+        $command = $this->getDashCase($this->getPluralize($entity)) . ':' . $this->getDashCase($action);
 
         $properties = \array_reduce($properties, function ($result, $property) {
             $result[$property[Keyword::NAME]] = $property;
@@ -27,7 +26,7 @@ final class CommandBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'entity_plural', 'action', 'action_camel', 'properties'));
+        parent::__construct(\compact('entity', 'action', 'properties', 'command'));
     }
 
     protected function getFileTemplate(): string

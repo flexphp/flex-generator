@@ -14,18 +14,18 @@
 {% endif %}
     {
 {% if request_message %}
-        {{ request_message|trim(side='left')|raw }}
+        {{ request_message|trim|raw }}
 {% endif %}
-{% if use_case %}
+{% if request_message and use_case %}
 
 {% endif %}
 {% if use_case %}
-        {{ use_case|trim(side='left')|raw }}
+        {{ use_case|trim|raw }}
 {% endif %}
-{% if response_message %}
+{% if use_case and response_message %}
 
 {% endif %}
 {% if response_message %}
-        {{ response_message|trim(side='left')|raw }}
+        {{ response_message|trim|raw }}
 {% endif %}
     }

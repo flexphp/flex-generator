@@ -15,6 +15,8 @@ final class ResponseBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, string $action)
     {
+        $action = $this->getPascalCase($action);
+
         parent::__construct(\compact('entity', 'action'));
     }
 

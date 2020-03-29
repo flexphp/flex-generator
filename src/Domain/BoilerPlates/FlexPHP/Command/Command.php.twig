@@ -2,23 +2,23 @@
 
 namespace Domain\{{ entity }}\Command;
 
-use Domain\{{ entity }}\Message\{{ action_camel }}{{ entity }}Request;
-use Domain\{{ entity }}\UseCase\{{ action_camel }}{{ entity }}UseCase;
+use Domain\{{ entity }}\Message\{{ action }}{{ entity }}Request;
+use Domain\{{ entity }}\UseCase\{{ action }}{{ entity }}UseCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface; 
 
-final class {{ action_name }}{{ entity }}Command extends Command
+final class {{ action }}{{ entity }}Command extends Command
 {
     protected function configure($request)
     {
         $this
-            ->setName('{{ entity_plural }}:{{ action }}')
+            ->setName('{{ command }}')
 {% if properties %}
-            ->setDescription('Command to {{ action_name }} on {{ entity }}')
+            ->setDescription('Command to {{ action }} on {{ entity }}')
 {% else %}
-            ->setDescription('Command to {{ action_name }} on {{ entity }}');
+            ->setDescription('Command to {{ action }} on {{ entity }}');
 {% endif %}
 {% for id, property in properties %}
 {% if not loop.last %}
@@ -33,10 +33,10 @@ final class {{ action_name }}{{ entity }}Command extends Command
     {
         $data = $input->getArguments();
 
-        $request = new {{ action_name }}{{ entity }}Request($data);
-        $useCase = new {{ action_name }}{{ entity }}UseCase();
+        $request = new {{ action }}{{ entity }}Request($data);
+        $useCase = new {{ action }}{{ entity }}UseCase();
         $response = $useCase->execute($request);
 
-        $output->writeln('{{ action_name }} on {{ entity }} done!'); 
+        $output->writeln('{{ action }} on {{ entity }} done!');
     }
 }

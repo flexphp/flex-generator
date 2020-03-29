@@ -16,13 +16,9 @@ final class UseCaseBuilder extends AbstractBuilder
     public function __construct(string $entity, string $action)
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
+        $action = $this->getPascalCase($action);
 
         parent::__construct(\compact('entity', 'action'));
-    }
-
-    public function build(): string
-    {
-        return \rtrim(parent::build());
     }
 
     protected function getFileTemplate(): string

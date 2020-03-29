@@ -32,9 +32,4 @@ final class GetterBuilder extends AbstractBuilder
     {
         return \sprintf('%1$s/FlexPHP/Entity', parent::getPathTemplate());
     }
-
-    public function build(): string
-    {
-        return \rtrim(parent::build());
-    }
 }
