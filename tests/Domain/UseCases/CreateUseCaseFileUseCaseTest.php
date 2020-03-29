@@ -56,9 +56,9 @@ final class CreateUseCaseFileUseCaseTest extends TestCase
     {
         return [
             [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__), 'index', 'IndexPostUseCase.php'],
-            // [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__), 'create', 'CreatePostUseCase.php'],
-            // [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), 'update', 'UpdateCommentUseCase.php'],
-            // [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), 'delete', 'DeleteCommentUseCase.php'],
+            [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__), 'create', 'CreatePostUseCase.php'],
+            [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), 'update', 'UpdateCommentUseCase.php'],
+            [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), 'delete', 'DeleteCommentUseCase.php'],
         ];
     }
 }
