@@ -48,9 +48,10 @@ final class ActionTestUseCase extends UseCase
 
     /**
      * @param ActionTestRequest \$request
+     *
      * @return ActionTestResponse
      */
-    public function execute(\$request): ActionTestResponse
+    public function execute(\$request)
     {
         \$this->foo = \$request->foo;
         \$this->bar = \$request->bar;
@@ -61,5 +62,158 @@ final class ActionTestUseCase extends UseCase
 
 T
 , $render->build());
+    }
+
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItOkWithDiffEntityName(string $entity, string $expected): void
+    {
+        $action = 'action';
+
+        $render = new UseCaseBuilder($entity, $action, []);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\\{$expected}\\UseCase;
+
+use Domain\\{$expected}\Message\Action{$expected}Request;
+use Domain\\{$expected}\Message\Action{$expected}Response;
+use FlexPHP\UseCases\UseCase;
+
+final class Action{$expected}UseCase extends UseCase
+{
+    /**
+     * @param Action{$expected}Request \$request
+     *
+     * @return Action{$expected}Response
+     */
+    public function execute(\$request)
+    {
+        return Action{$expected}Response();
+    }
+}
+
+T
+, $render->build());
+    }
+
+    /**
+     * @dataProvider getActionName
+     */
+    public function testItOkWithDiffActionName(string $action, string $expected): void
+    {
+        $entity = 'Test';
+
+        $render = new UseCaseBuilder($entity, $action, []);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\UseCase;
+
+use Domain\Test\Message\\{$expected}TestRequest;
+use Domain\Test\Message\\{$expected}TestResponse;
+use FlexPHP\UseCases\UseCase;
+
+final class {$expected}TestUseCase extends UseCase
+{
+    /**
+     * @param {$expected}TestRequest \$request
+     *
+     * @return {$expected}TestResponse
+     */
+    public function execute(\$request)
+    {
+        return {$expected}TestResponse();
+    }
+}
+
+T
+, $render->build());
+    }
+
+    /**
+     * @dataProvider getPropertyName
+     */
+    public function testItOkWithDiffPropertyName(string $name, string $expected): void
+    {
+        $action = 'action';
+        $entity = 'Test';
+
+        $render = new UseCaseBuilder($entity, $action, [
+            [
+                Keyword::NAME => $name,
+                Keyword::DATATYPE => 'integer',
+            ],
+        ]);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\UseCase;
+
+use Domain\Test\Message\ActionTestRequest;
+use Domain\Test\Message\ActionTestResponse;
+use FlexPHP\UseCases\UseCase;
+
+final class ActionTestUseCase extends UseCase
+{
+    private \${$expected};
+
+    /**
+     * @param ActionTestRequest \$request
+     *
+     * @return ActionTestResponse
+     */
+    public function execute(\$request)
+    {
+        \$this->{$expected} = \$request->{$expected};
+
+        return ActionTestResponse();
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function getEntityName(): array
+    {
+        return [
+            ['userpassword', 'Userpassword'],
+            ['USERPASSWORD', 'Userpassword'],
+            ['UserPassword', 'UserPassword'],
+            ['userPassword', 'UserPassword'],
+            ['user_password', 'UserPassword'],
+            ['user-password', 'UserPassword'],
+            ['Posts', 'Post'],
+        ];
+    }
+
+    public function getActionName(): array
+    {
+        return [
+            ['custom_action', 'CustomAction'],
+            ['custom action', 'CustomAction'],
+            ['Custom Action', 'CustomAction'],
+            ['cUSTOM aCtion', 'CustomAction'],
+            ['customAction', 'CustomAction'],
+            ['CustomAction', 'CustomAction'],
+            ['custom-action', 'CustomAction'],
+        ];
+    }
+
+    public function getPropertyName(): array
+    {
+        return [
+            ['fooname', 'fooname'],
+            ['FOONAME', 'fooname'],
+            ['FooName', 'fooName'],
+            ['fooName', 'fooName'],
+            ['foo_name', 'fooName'],
+            ['foo-name', 'fooName'],
+        ];
     }
 }
