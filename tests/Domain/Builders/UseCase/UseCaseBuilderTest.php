@@ -56,7 +56,7 @@ final class ActionTestUseCase extends UseCase
         \$this->foo = \$request->foo;
         \$this->bar = \$request->bar;
 
-        return ActionTestResponse();
+        return new ActionTestResponse();
     }
 }
 
@@ -91,7 +91,7 @@ final class Action{$expected}UseCase extends UseCase
      */
     public function execute(\$request)
     {
-        return Action{$expected}Response();
+        return new Action{$expected}Response();
     }
 }
 
@@ -126,7 +126,7 @@ final class {$expected}TestUseCase extends UseCase
      */
     public function execute(\$request)
     {
-        return {$expected}TestResponse();
+        return new {$expected}TestResponse();
     }
 }
 
@@ -171,7 +171,7 @@ final class ActionTestUseCase extends UseCase
     {
         \$this->{$expected} = \$request->{$expected};
 
-        return ActionTestResponse();
+        return new ActionTestResponse();
     }
 }
 

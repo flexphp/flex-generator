@@ -2,11 +2,11 @@
 
 namespace Domain\{{ entity }}\UseCase;
 
-use Domain\{{ entity }}\Message\{{ action_name }}{{ entity }}Request;
-use Domain\{{ entity }}\Message\{{ action_name }}{{ entity }}Response;
+use Domain\{{ entity }}\Message\{{ action }}{{ entity }}Request;
+use Domain\{{ entity }}\Message\{{ action }}{{ entity }}Response;
 use FlexPHP\UseCases\UseCase;
 
-final class {{ action_name }}{{ entity }}UseCase extends UseCase
+final class {{ action }}{{ entity }}UseCase extends UseCase
 {
 {% for name, property in properties %}
     private ${{ name }};
@@ -15,9 +15,9 @@ final class {{ action_name }}{{ entity }}UseCase extends UseCase
 {% endif %}
 {% endfor %}
     /**
-     * @param {{ action_name }}{{ entity }}Request $request
+     * @param {{ action }}{{ entity }}Request $request
      *
-     * @return {{ action_name }}{{ entity }}Response
+     * @return {{ action }}{{ entity }}Response
      */
     public function execute($request)
     {
@@ -27,6 +27,6 @@ final class {{ action_name }}{{ entity }}UseCase extends UseCase
 
 {% endif %}
 {% endfor %}
-        return {{ action_name }}{{ entity }}Response();
+        return new {{ action }}{{ entity }}Response();
     }
 }
