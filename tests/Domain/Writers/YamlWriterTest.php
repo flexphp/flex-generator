@@ -20,8 +20,17 @@ final class YamlWriterTest extends TestCase
 
         $data = [
             'SheetName' => [
-                'Name' => 'foo',
-                'DataType' => 'bar',
+                'Title' => 'My Title',
+                'Attributes' => [
+                    'foo' => [
+                        'Name' => 'foo',
+                        'DataType' => 'bar',
+                    ],
+                    'bar' => [
+                        'Name' => 'bar',
+                        'DataType' => 'buz',
+                    ],
+                ],
             ],
         ];
 
@@ -31,6 +40,19 @@ final class YamlWriterTest extends TestCase
         $_filename = \explode('/', $output);
         $this->assertEquals(\array_pop($_filename), $filename . '.yaml');
         $this->assertFileExists($output);
+        $this->assertEquals(<<<T
+SheetName:
+  Title: 'My Title'
+  Attributes:
+    foo:
+      Name: foo
+      DataType: bar
+    bar:
+      Name: bar
+      DataType: buz
+T
+, \rtrim(\file_get_contents($output)));
+
         \unlink($output);
     }
 }
