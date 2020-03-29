@@ -29,36 +29,52 @@ final class CreateUseCaseFileUseCaseTest extends TestCase
     /**
      * @dataProvider getEntityFile()
      */
-    public function testItSymfony43Ok(string $schemafile, string $action, string $expectedFile): void
+    public function testItSymfony43Ok(string $schemafile, array $expectedFiles): void
     {
         $schema = Schema::fromFile($schemafile);
+        $actions = [
+            'R' => 'read',
+            'D' => 'delete',
+        ];
 
-        $request = new CreateUseCaseFileRequest($schema->name(), $action, $schema->attributes(), $this->getOutputFolder());
+        $request = new CreateUseCaseFileRequest(
+            $schema->name(),
+            $actions,
+            $schema->attributes(),
+            $this->getOutputFolder()
+        );
 
         $useCase = new CreateUseCaseFileUseCase();
         $response = $useCase->execute($request);
 
         $this->assertInstanceOf(CreateUseCaseFileResponse::class, $response);
-        $file = $response->file;
-        $filename = \explode('/', $file);
-        $this->assertEquals($expectedFile, \array_pop($filename));
-        $this->assertFileExists($file);
-        $content = \file_get_contents($file);
+        $this->assertEquals(\count($actions), \count($response->files));
 
-        foreach ($schema->attributes() as $attribute) {
-            $this->assertStringContainsStringIgnoringCase($attribute->name(), $content);
+        foreach ($response->files as $index => $file) {
+            $filename = \explode('/', $file);
+            $this->assertEquals($expectedFiles[$index], \array_pop($filename));
+            $this->assertFileExists($file);
+            $content = \file_get_contents($file);
+
+            foreach ($schema->attributes() as $attribute) {
+                $this->assertStringContainsStringIgnoringCase($attribute->name(), $content);
+            }
+
+            \unlink($file);
         }
-
-        \unlink($file);
     }
 
     public function getEntityFile(): array
     {
         return [
-            [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__), 'index', 'IndexPostUseCase.php'],
-            [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__), 'create', 'CreatePostUseCase.php'],
-            [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), 'update', 'UpdateCommentUseCase.php'],
-            [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), 'delete', 'DeleteCommentUseCase.php'],
+            [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__), [
+                'ReadPostUseCase.php',
+                'DeletePostUseCase.php',
+            ]],
+            [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), [
+                'ReadCommentUseCase.php',
+                'DeleteCommentUseCase.php',
+            ]],
         ];
     }
 }

@@ -14,12 +14,12 @@ use FlexPHP\Messages\ResponseInterface;
 final class CreateUseCaseFileResponse implements ResponseInterface
 {
     /**
-     * @var string
+     * @var array
      */
-    public $file;
+    public $files;
 
-    public function __construct(string $file)
+    public function __construct(array $files)
     {
-        $this->file = $file;
+        $this->files = $files;
     }
 }

@@ -19,9 +19,9 @@ final class CreateUseCaseFileRequest implements RequestInterface
     public $entity;
 
     /**
-     * @var string
+     * @var array
      */
-    public $action;
+    public $actions;
 
     /**
      * @var array
@@ -33,10 +33,10 @@ final class CreateUseCaseFileRequest implements RequestInterface
      */
     public $outputFolder;
 
-    public function __construct(string $entity, string $action, array $attributes, string $outputFolder)
+    public function __construct(string $entity, array $actions, array $attributes, string $outputFolder)
     {
         $this->entity = $entity;
-        $this->action = $action;
+        $this->actions = $actions;
         $this->attributes = $attributes;
         $this->outputFolder = $outputFolder;
     }

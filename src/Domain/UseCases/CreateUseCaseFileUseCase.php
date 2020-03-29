@@ -32,8 +32,10 @@ final class CreateUseCaseFileUseCase extends UseCase
     {
         $this->throwExceptionIfRequestNotValid(__METHOD__, CreateUseCaseFileRequest::class, $request);
 
+        $files = [];
         $entity = $this->getSingularize($request->entity);
-        $action = $request->action;
+        $actions = $request->actions;
+
         $properties = \array_reduce(
             $request->attributes,
             function (array $result, SchemaAttributeInterface $schemaAttribute) {
@@ -44,12 +46,16 @@ final class CreateUseCaseFileUseCase extends UseCase
             []
         );
 
-        $useCase = new UseCaseBuilder($entity, $action, $properties);
-        $filename = $this->getPascalCase($action) . $entity . 'UseCase';
         $path = \sprintf('%1$s/Domain/%2$s/UseCase', $request->outputFolder, $entity);
 
-        $writer = new PhpWriter($useCase->build(), $filename, $path);
+        foreach ($actions as $action) {
+            $request = new UseCaseBuilder($entity, $action, $properties);
+            $filename = $this->getPascalCase($action) . $entity . 'UseCase';
 
-        return new CreateUseCaseFileResponse($writer->save());
+            $writer = new PhpWriter($request->build(), $filename, $path);
+            $files[] = $writer->save();
+        }
+
+        return new CreateUseCaseFileResponse($files);
     }
 }

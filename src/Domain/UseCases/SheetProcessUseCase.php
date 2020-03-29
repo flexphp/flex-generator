@@ -21,6 +21,7 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateRequestFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateResponseFileResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateUseCaseFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
 use FlexPHP\Schema\Schema;
 use FlexPHP\UseCases\UseCase;
@@ -62,7 +63,7 @@ final class SheetProcessUseCase extends UseCase
             'constraint' => $constraint->file,
             'requests' => $requests->files,
             'responses' => $responses->files,
-            'useCases' => $useCases,
+            'useCases' => $useCases->files,
         ]);
     }
 
@@ -87,20 +88,10 @@ final class SheetProcessUseCase extends UseCase
         );
     }
 
-    private function createUseCases(string $name, array $actions, array $attributes, string $outputFolder): array
+    private function createUseCases(string $name, array $actions, array $attributes, string $outputFolder): CreateUseCaseFileResponse
     {
-        return \array_reduce(
-            $actions,
-            function (array $result, string $action) use ($name, $attributes, $outputFolder): array {
-                $response = (new CreateUseCaseFileUseCase())->execute(
-                    new CreateUseCaseFileRequest($name, $action, $attributes, $outputFolder)
-                );
-
-                $result[] = $response->file;
-
-                return $result;
-            },
-            []
+        return (new CreateUseCaseFileUseCase())->execute(
+            new CreateUseCaseFileRequest($name, $actions, $attributes, $outputFolder)
         );
     }
 
