@@ -36,6 +36,11 @@ final class SheetProcessResponse implements ResponseInterface
     /**
      * @var array<int, string>
      */
+    public $responses;
+
+    /**
+     * @var array<int, string>
+     */
     public $useCases;
 
     public function __construct(array $response)
@@ -44,6 +49,7 @@ final class SheetProcessResponse implements ResponseInterface
         $this->entity = $response['entity'] ?? null;
         $this->constraint = $response['constraint'] ?? null;
         $this->requests = $response['requests'] ?? [];
+        $this->responses = $response['responses'] ?? [];
         $this->useCases = $response['useCases'] ?? [];
     }
 }

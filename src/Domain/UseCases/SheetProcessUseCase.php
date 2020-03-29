@@ -13,12 +13,14 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateConstraintFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateRequestFileRequest;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateResponseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateUseCaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateRequestFileResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateResponseFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
 use FlexPHP\Schema\Schema;
 use FlexPHP\UseCases\UseCase;
@@ -50,7 +52,8 @@ final class SheetProcessUseCase extends UseCase
         $controller = $this->createController($name, $actions, $outputFolder);
         $entity = $this->createEntity($name, $attributes, $outputFolder);
         $constraint = $this->createConstraint($name, $attributes, $outputFolder);
-        $requests = $this->createRequest($name, $actions, $attributes, $outputFolder);
+        $requests = $this->createRequests($name, $actions, $attributes, $outputFolder);
+        $responses = $this->createResponses($name, $actions, $attributes, $outputFolder);
         $useCases = $this->createUseCases($name, $actions, $attributes, $outputFolder);
 
         return new SheetProcessResponse([
@@ -58,6 +61,7 @@ final class SheetProcessUseCase extends UseCase
             'entity' => $entity->file,
             'constraint' => $constraint->file,
             'requests' => $requests->files,
+            'responses' => $responses->files,
             'useCases' => $useCases,
         ]);
     }
@@ -100,10 +104,17 @@ final class SheetProcessUseCase extends UseCase
         );
     }
 
-    private function createRequest(string $name, array $actions, array $attributes, string $outputFolder): CreateRequestFileResponse
+    private function createRequests(string $name, array $actions, array $attributes, string $outputFolder): CreateRequestFileResponse
     {
         return (new CreateRequestFileUseCase())->execute(
             new CreateRequestFileRequest($name, $attributes, $actions, $outputFolder)
+        );
+    }
+
+    private function createResponses(string $name, array $actions, array $attributes, string $outputFolder): CreateResponseFileResponse
+    {
+        return (new CreateResponseFileUseCase())->execute(
+            new CreateResponseFileRequest($name, $attributes, $actions, $outputFolder)
         );
     }
 }

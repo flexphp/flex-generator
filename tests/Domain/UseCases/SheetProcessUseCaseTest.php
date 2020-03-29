@@ -43,15 +43,23 @@ final class SheetProcessUseCaseTest extends TestCase
         $this->assertFileExists($response->constraint);
         \unlink($response->constraint);
 
-        foreach ($response->requests as $request) {
+        $this->assertEquals(5, \count($response->requests));
+        \array_map(function (string $request): void {
             $this->assertFileExists($request);
             \unlink($request);
-        }
+        }, $response->requests);
 
-        foreach ($response->useCases as $useCase) {
+        $this->assertEquals(5, \count($response->responses));
+        \array_map(function (string $response): void {
+            $this->assertFileExists($response);
+            \unlink($response);
+        }, $response->responses);
+
+        $this->assertEquals(5, \count($response->useCases));
+        \array_map(function (string $useCase): void {
             $this->assertFileExists($useCase);
             \unlink($useCase);
-        }
+        }, $response->useCases);
     }
 
     public function getEntityFile(): array

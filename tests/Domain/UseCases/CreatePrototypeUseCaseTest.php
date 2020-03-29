@@ -59,11 +59,11 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputFolder . '/Domain/Post/Request/UpdatePostRequest.php');
         $this->assertFileExists($response->outputFolder . '/Domain/Post/Request/DeletePostRequest.php');
 
-        // $this->assertFileExists($response->outputFolder . '/Domain/Post/Response/IndexPostResponse.php');
-        // $this->assertFileExists($response->outputFolder . '/Domain/Post/Response/CreatePostResponse.php');
-        // $this->assertFileExists($response->outputFolder . '/Domain/Post/Response/ReadPostResponse.php');
-        // $this->assertFileExists($response->outputFolder . '/Domain/Post/Response/UpdatePostResponse.php');
-        // $this->assertFileExists($response->outputFolder . '/Domain/Post/Response/DeletePostResponse.php');
+        $this->assertFileExists($response->outputFolder . '/Domain/Post/Response/IndexPostResponse.php');
+        $this->assertFileExists($response->outputFolder . '/Domain/Post/Response/CreatePostResponse.php');
+        $this->assertFileExists($response->outputFolder . '/Domain/Post/Response/ReadPostResponse.php');
+        $this->assertFileExists($response->outputFolder . '/Domain/Post/Response/UpdatePostResponse.php');
+        $this->assertFileExists($response->outputFolder . '/Domain/Post/Response/DeletePostResponse.php');
 
         $this->assertFileExists($response->outputFolder . '/Domain/Post/UseCase/IndexPostUseCase.php');
         $this->assertFileExists($response->outputFolder . '/Domain/Post/UseCase/CreatePostUseCase.php');
