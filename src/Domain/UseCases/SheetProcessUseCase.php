@@ -11,11 +11,17 @@ namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\CreateConstraintFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateUseCaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
+use FlexPHP\Generator\Domain\UseCases\CreateConstraintFileUseCase;
+use FlexPHP\Generator\Domain\UseCases\CreateControllerFileUseCase;
+use FlexPHP\Generator\Domain\UseCases\CreateEntityFileUseCase;
+use FlexPHP\Generator\Domain\UseCases\CreateUseCaseFileUseCase;
 use FlexPHP\Schema\Schema;
 use FlexPHP\UseCases\UseCase;
 
@@ -45,11 +51,13 @@ final class SheetProcessUseCase extends UseCase
 
         $controller = $this->createController($name, $actions, $outputFolder);
         $constraint = $this->createConstraint($name, $attributes, $outputFolder);
+        $entity = $this->createEntity($name, $attributes, $outputFolder);
         $useCases = $this->createUseCases($name, $actions, $attributes, $outputFolder);
 
         return new SheetProcessResponse([
             'controller' => $controller->file,
             'constraint' => $constraint->file,
+            'entity' => $entity->file,
             'useCases' => $useCases,
         ]);
     }
@@ -65,6 +73,13 @@ final class SheetProcessUseCase extends UseCase
     {
         return (new CreateConstraintFileUseCase())->execute(
             new CreateConstraintFileRequest($name, $attributes, $outputFolder)
+        );
+    }
+
+    private function createEntity(string $name, array $attributes, string $outputFolder): CreateEntityFileResponse
+    {
+        return (new CreateEntityFileUseCase())->execute(
+            new CreateEntityFileRequest($name, $attributes, $outputFolder)
         );
     }
 
