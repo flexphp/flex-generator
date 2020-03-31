@@ -44,9 +44,7 @@ T
      */
     public function testItRenderOkWithDiffEntityName(string $entity, string $expected): void
     {
-        $action = 'action';
-
-        $render = new ResponseBuilder($entity, $action, []);
+        $render = new ResponseBuilder($entity, 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -71,9 +69,7 @@ T
      */
     public function testItRenderOkWithDiffActionName(string $action, string $expected): void
     {
-        $entity = 'Fuz';
-
-        $render = new ResponseBuilder($entity, $action, []);
+        $render = new ResponseBuilder('Fuz', $action);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
