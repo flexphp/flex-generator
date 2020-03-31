@@ -9,6 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
+use FlexPHP\Generator\Domain\Messages\Requests\CreateCommandFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateConstraintFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
@@ -16,6 +17,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateRequestFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateResponseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateUseCaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateCommandFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
@@ -55,6 +57,7 @@ final class SheetProcessUseCase extends UseCase
         $requests = $this->createRequests($name, $actions, $attributes);
         $responses = $this->createResponses($name, $actions);
         $useCases = $this->createUseCases($name, $actions, $attributes);
+        $commands = $this->createCommands($name, $actions, $attributes);
 
         return new SheetProcessResponse([
             'controller' => $controller->file,
@@ -63,6 +66,7 @@ final class SheetProcessUseCase extends UseCase
             'requests' => $requests->files,
             'responses' => $responses->files,
             'useCases' => $useCases->files,
+            'commands' => $commands->files,
         ]);
     }
 
@@ -105,6 +109,13 @@ final class SheetProcessUseCase extends UseCase
     {
         return (new CreateResponseFileUseCase())->execute(
             new CreateResponseFileRequest($name, $actions)
+        );
+    }
+
+    private function createCommands(string $name, array $actions, array $attributes): CreateCommandFileResponse
+    {
+        return (new CreateCommandFileUseCase())->execute(
+            new CreateCommandFileRequest($name, $actions, $attributes)
         );
     }
 }
