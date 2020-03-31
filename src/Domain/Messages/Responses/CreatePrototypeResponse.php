@@ -16,10 +16,10 @@ final class CreatePrototypeResponse implements ResponseInterface
     /**
      * @var string
      */
-    public $outputFolder;
+    public $outputDir;
 
-    public function __construct(string $outputFolder)
+    public function __construct(string $outputDir)
     {
-        $this->outputFolder = $outputFolder;
+        $this->outputDir = $outputDir;
     }
 }

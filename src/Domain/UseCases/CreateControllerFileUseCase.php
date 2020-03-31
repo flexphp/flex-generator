@@ -51,7 +51,7 @@ final class CreateControllerFileUseCase extends UseCase
 
         $controller = new ControllerBuilder($entity, $actionBuilders);
         $filename = $this->getSingularize($entity) . 'Controller';
-        $path = \sprintf('%1$s/../../tmp/skeleton/src/Controllers', __DIR__);
+        $path = \sprintf('%1$s/../../tmp/skeleton/src/Controller', __DIR__);
 
         $writer = new PhpWriter($controller->build(), $filename, $path);
 

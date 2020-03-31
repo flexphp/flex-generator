@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+<h1 class="text-danger"><i class="fa fa-unlock-alt" aria-hidden="true"></i>
+    {{ 'http_error.name'|trans({ '%status_code%': 404 }) }}</h1>
+
+<p class="lead">
+    {{ 'http_error_404.description'|trans }}
+</p>
+<p>
+    {{ 'http_error_404.suggestion'|trans }}
+</p>
+{% endblock %}

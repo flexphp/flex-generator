@@ -28,6 +28,7 @@ final class CreatePrototypeUseCase extends UseCase
 
         $sheets = $request->sheets;
         $outputFolder = $request->outputFolder;
+        $sourceFolder = __DIR__ . '/../BoilerPlates/Symfony/v43/base';
 
         if (!\is_dir($outputFolder)) {
             \mkdir($outputFolder, 0777, true); // @codeCoverageIgnore
@@ -37,7 +38,8 @@ final class CreatePrototypeUseCase extends UseCase
             $this->processSheet($name, $schemafile);
         }
 
-        $this->addVendorFiles($outputFolder);
+        $this->addFrameworkDirectories($sourceFolder, $outputFolder);
+        $this->addFrameworkFiles($sourceFolder, $outputFolder);
 
         return new CreatePrototypeResponse($outputFolder);
     }
@@ -49,11 +51,61 @@ final class CreatePrototypeUseCase extends UseCase
         );
     }
 
-    private function addVendorFiles(string $outputFolder): void
+    private function addFrameworkDirectories(string $source, string $dest): void
     {
-        \copy(
-            __DIR__ . '/../BoilerPlates/Symfony/v43/composer.json',
-            $outputFolder . '/composer.json'
-        );
+        $dirs = [
+            $source . '/bin', $dest . '/bin',
+            $source . '/config', $dest . '/config',
+            $source . '/public', $dest . '/public',
+            $source . '/src/Command', $dest . '/src/Command',
+            $source . '/src/Controller', $dest . '/src/Controller',
+            $source . '/src/Migrations', $dest . '/src/Migrations',
+            $source . '/templates', $dest . '/templates',
+            $source . '/templates/default', $dest . '/templates/default',
+            $source . '/templates/form', $dest . '/templates/form',
+            $source . '/templates/security', $dest . '/templates/security',
+            $source . '/templates/errors', $dest . '/templates/errors',
+            $source . '/var', $dest . '/var',
+            $source . '/var/cache', $dest . '/var/cache',
+            $source . '/var/log', $dest . '/var/log',
+            $source . '/var/sessions', $dest . '/var/sessions',
+            $source . '/tests', $dest . '/tests',
+        ];
+
+        foreach ($dirs as $dir) {
+            if (!\is_dir($dir)) {
+                \mkdir($dir, 0770, true);
+            }
+        }
+    }
+
+    private function addFrameworkFiles(string $source, string $dest): void
+    {
+        $files = [
+            $source . '/composer.json' => $dest . '/composer.json',
+            $source . '/.env.example' => $dest . '/.env.example',
+            $source . '/bin/console' => $dest . '/bin/console',
+            $source . '/config/bootstrap.tphp' => $dest . '/config/bootstrap.php',
+            $source . '/config/bundles.tphp' => $dest . '/config/bundles.php',
+            $source . '/config/services.yaml' => $dest . '/config/services.yaml',
+            $source . '/public/index.tphp' => $dest . '/public/index.php',
+            $source . '/public/robots.txt' => $dest . '/public/robots.txt',
+            $source . '/public/.htaccess' => $dest . '/public/.htaccess',
+            $source . '/public/favicon.ico' => $dest . '/public/favicon.ico',
+            $source . '/src/Kernel.tphp' => $dest . '/src/Kernel.php',
+            $source . '/templates/base.html.twig' => $dest . '/templates/base.html.twig',
+            $source . '/templates/default/_flash.html.twig' => $dest . '/templates/default/_flash.html.twig',
+            $source . '/templates/default/homepage.html.twig' => $dest . '/templates/default/homepage.html.twig',
+            $source . '/templates/form/layout.html.twig' => $dest . '/templates/form/layout.html.twig',
+            $source . '/templates/security/login.html.twig' => $dest . '/templates/security/login.html.twig',
+            $source . '/templates/errors/error.html.twig' => $dest . '/templates/errors/error.html.twig',
+            $source . '/templates/errors/error403.html.twig' => $dest . '/templates/errors/error403.html.twig',
+            $source . '/templates/errors/error404.html.twig' => $dest . '/templates/errors/error404.html.twig',
+            $source . '/templates/errors/error500.html.twig' => $dest . '/templates/errors/error500.html.twig',
+        ];
+
+        foreach ($files as $source => $dest) {
+            \copy($source, $dest);
+        }
     }
 }

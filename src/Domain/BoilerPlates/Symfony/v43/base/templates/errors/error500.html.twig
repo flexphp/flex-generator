@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="/build/css/app.4aa95248.css">
+{% endblock %}
+
+{% block body_id 'error' %}
+
+{% block main %}
+<h1 class="text-danger">{{ 'http_error.name'|trans({ '%status_code%': 500 }) }}</h1>
+
+<p class="lead">
+    {{ 'http_error_500.description'|trans }}
+</p>
+<p>
+    {{ 'http_error_500.suggestion'|trans({ '%url%': path('blog_index') })|raw }}
+</p>
+{% endblock %}
