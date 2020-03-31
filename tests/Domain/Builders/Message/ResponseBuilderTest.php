@@ -24,7 +24,7 @@ final class ResponseBuilderTest extends TestCase
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Fuz\Message;
+namespace Domain\Fuz\Response;
 
 use FlexPHP\Messages\ResponseInterface;
 
@@ -37,5 +37,85 @@ final class ActionFuzResponse implements ResponseInterface
 
 T
 , $render->build());
+    }
+
+        /**
+     * @dataProvider getEntityName
+     */
+    public function testItRenderOkWithDiffEntityName(string $entity, string $expected): void
+    {
+        $action = 'action';
+
+        $render = new ResponseBuilder($entity, $action, []);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\\{$expected}\Response;
+
+use FlexPHP\Messages\ResponseInterface;
+
+final class Action{$expected}Response implements ResponseInterface
+{
+    public function __construct(array \$data)
+    {
+    }
+}
+
+T
+, $render->build());
+    }
+
+    /**
+     * @dataProvider getActionName
+     */
+    public function testItRenderOkWithDiffActionName(string $action, string $expected): void
+    {
+        $entity = 'Fuz';
+
+        $render = new ResponseBuilder($entity, $action, []);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Response;
+
+use FlexPHP\Messages\ResponseInterface;
+
+final class {$expected}FuzResponse implements ResponseInterface
+{
+    public function __construct(array \$data)
+    {
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function getEntityName(): array
+    {
+        return [
+            ['userpassword', 'Userpassword'],
+            ['USERPASSWORD', 'Userpassword'],
+            ['UserPassword', 'UserPassword'],
+            ['userPassword', 'UserPassword'],
+            ['user_password', 'UserPassword'],
+            ['user-password', 'UserPassword'],
+            ['Posts', 'Post'],
+        ];
+    }
+
+    public function getActionName(): array
+    {
+        return [
+            ['custom_action', 'CustomAction'],
+            ['custom action', 'CustomAction'],
+            ['Custom Action', 'CustomAction'],
+            ['cUSTOM aCtion', 'CustomAction'],
+            ['customAction', 'CustomAction'],
+            ['CustomAction', 'CustomAction'],
+            ['custom-action', 'CustomAction'],
+        ];
     }
 }
