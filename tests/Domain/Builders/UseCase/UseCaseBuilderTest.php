@@ -37,8 +37,8 @@ final class UseCaseBuilderTest extends TestCase
 
 namespace Domain\Test\UseCase;
 
-use Domain\Test\Message\ActionTestRequest;
-use Domain\Test\Message\ActionTestResponse;
+use Domain\Test\Request\ActionTestRequest;
+use Domain\Test\Response\ActionTestResponse;
 use FlexPHP\UseCases\UseCase;
 
 final class ActionTestUseCase extends UseCase
@@ -78,8 +78,8 @@ T
 
 namespace Domain\\{$expected}\\UseCase;
 
-use Domain\\{$expected}\Message\Action{$expected}Request;
-use Domain\\{$expected}\Message\Action{$expected}Response;
+use Domain\\{$expected}\Request\Action{$expected}Request;
+use Domain\\{$expected}\Response\Action{$expected}Response;
 use FlexPHP\UseCases\UseCase;
 
 final class Action{$expected}UseCase extends UseCase
@@ -113,8 +113,8 @@ T
 
 namespace Domain\Test\UseCase;
 
-use Domain\Test\Message\\{$expected}TestRequest;
-use Domain\Test\Message\\{$expected}TestResponse;
+use Domain\Test\Request\\{$expected}TestRequest;
+use Domain\Test\Response\\{$expected}TestResponse;
 use FlexPHP\UseCases\UseCase;
 
 final class {$expected}TestUseCase extends UseCase
@@ -154,8 +154,8 @@ T
 
 namespace Domain\Test\UseCase;
 
-use Domain\Test\Message\ActionTestRequest;
-use Domain\Test\Message\ActionTestResponse;
+use Domain\Test\Request\ActionTestRequest;
+use Domain\Test\Response\ActionTestResponse;
 use FlexPHP\UseCases\UseCase;
 
 final class ActionTestUseCase extends UseCase

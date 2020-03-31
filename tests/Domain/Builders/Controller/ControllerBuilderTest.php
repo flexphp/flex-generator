@@ -100,8 +100,8 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\Message\IndexTestRequest;
-use Domain\Test\Message\CustomFuzTestRequest;
+use Domain\Test\Request\IndexTestRequest;
+use Domain\Test\Request\CustomFuzTestRequest;
 use Domain\Test\UseCase\IndexTestUseCase;
 use Domain\Test\UseCase\CustomFuzTestUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;

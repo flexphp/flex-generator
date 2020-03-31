@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 {% for key,action in actions %}
-use Domain\{{ entity }}\Message\{{ key }}{{ entity }}Request;
+use Domain\{{ entity }}\Request\{{ key }}{{ entity }}Request;
 {% endfor %}
 {% for key,action in actions %}
 use Domain\{{ entity }}\UseCase\{{ key }}{{ entity }}UseCase;

@@ -37,7 +37,7 @@ final class CommandBuilderTest extends TestCase
 
 namespace Domain\Test\Command;
 
-use Domain\Test\Message\ActionTestRequest;
+use Domain\Test\Request\ActionTestRequest;
 use Domain\Test\UseCase\ActionTestUseCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -83,7 +83,7 @@ T
 
 namespace Domain\\{$expectedCamel}\\Command;
 
-use Domain\\{$expectedCamel}\\Message\Action{$expectedCamel}Request;
+use Domain\\{$expectedCamel}\\Request\Action{$expectedCamel}Request;
 use Domain\\{$expectedCamel}\\UseCase\Action{$expectedCamel}UseCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -127,7 +127,7 @@ T
 
 namespace Domain\Test\Command;
 
-use Domain\Test\Message\CustomActionTestRequest;
+use Domain\Test\Request\CustomActionTestRequest;
 use Domain\Test\UseCase\CustomActionTestUseCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

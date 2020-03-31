@@ -10,7 +10,6 @@
 namespace FlexPHP\Generator\Tests\Domain\Builders\Message;
 
 use FlexPHP\Generator\Domain\Builders\Message\ResponseBuilder;
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Tests\TestCase;
 
 final class ResponseBuilderTest extends TestCase
