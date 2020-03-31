@@ -16,9 +16,10 @@ final class RequestBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, string $action, array $properties)
     {
+        $entity = $this->getPascalCase($this->getSingularize($entity));
         $action = $this->getPascalCase($action);
         $properties = \array_reduce($properties, function ($result, $property) {
-            $result[$property[Keyword::NAME]] = $property;
+            $result[$this->getCamelCase($property[Keyword::NAME])] = $property;
 
             return $result;
         }, []);

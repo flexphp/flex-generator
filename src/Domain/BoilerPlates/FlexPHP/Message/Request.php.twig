@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Domain\{{ entity }}\Message;
+namespace Domain\{{ entity }}\Request;
 
 use FlexPHP\Messages\RequestInterface;
 
@@ -9,7 +9,9 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% for id, property in properties %}
     public ${{ id }};
 {% endfor %}
+{% if properties %}
 
+{% endif %}
     public function __construct(array $data)
     {
 {% for id, property in properties %}

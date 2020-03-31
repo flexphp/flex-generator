@@ -35,7 +35,7 @@ final class RequestBuilderTest extends TestCase
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Fuz\Message;
+namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
 
@@ -53,5 +53,132 @@ final class ActionFuzRequest implements RequestInterface
 
 T
 , $render->build());
+    }
+
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItRenderOkWithDiffEntityName(string $entity, string $expected): void
+    {
+        $action = 'action';
+
+        $render = new RequestBuilder($entity, $action, []);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\\{$expected}\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class Action{$expected}Request implements RequestInterface
+{
+    public function __construct(array \$data)
+    {
+    }
+}
+
+T
+, $render->build());
+    }
+
+    /**
+     * @dataProvider getActionName
+     */
+    public function testItRenderOkWithDiffActionName(string $action, string $expected): void
+    {
+        $entity = 'Fuz';
+
+        $render = new RequestBuilder($entity, $action, []);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class {$expected}FuzRequest implements RequestInterface
+{
+    public function __construct(array \$data)
+    {
+    }
+}
+
+T
+, $render->build());
+    }
+
+    /**
+     * @dataProvider getPropertyName
+     */
+    public function testItRenderOkWithDiffPropertyName(string $name, string $expected): void
+    {
+        $properties = [
+            [
+                Keyword::NAME => $name,
+                Keyword::DATATYPE => 'integer',
+            ],
+        ];
+
+        $render = new RequestBuilder('Fuz', 'action', $properties);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class ActionFuzRequest implements RequestInterface
+{
+    public \${$expected};
+
+    public function __construct(array \$data)
+    {
+        \$this->{$expected} = \$data['{$expected}'] ?? null;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function getEntityName(): array
+    {
+        return [
+            ['userpassword', 'Userpassword'],
+            ['USERPASSWORD', 'Userpassword'],
+            ['UserPassword', 'UserPassword'],
+            ['userPassword', 'UserPassword'],
+            ['user_password', 'UserPassword'],
+            ['user-password', 'UserPassword'],
+            ['Posts', 'Post'],
+        ];
+    }
+
+    public function getActionName(): array
+    {
+        return [
+            ['custom_action', 'CustomAction'],
+            ['custom action', 'CustomAction'],
+            ['Custom Action', 'CustomAction'],
+            ['cUSTOM aCtion', 'CustomAction'],
+            ['customAction', 'CustomAction'],
+            ['CustomAction', 'CustomAction'],
+            ['custom-action', 'CustomAction'],
+        ];
+    }
+
+    public function getPropertyName(): array
+    {
+        return [
+            ['fooname', 'fooname'],
+            ['FOONAME', 'fooname'],
+            ['FooName', 'fooName'],
+            ['fooName', 'fooName'],
+            ['foo_name', 'fooName'],
+            ['foo-name', 'fooName'],
+        ];
     }
 }
