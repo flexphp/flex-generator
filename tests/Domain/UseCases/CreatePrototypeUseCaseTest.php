@@ -50,11 +50,11 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/src/Controller');
         $this->assertFileExists($response->outputDir . '/src/Controller/PostController.php');
 
-        // $this->assertDirectoryExists($response->outputDir . '/src/Command');
-        // $this->assertFileExists($response->outputDir . '/src/Command/CreatePostCommand.php');
-        // $this->assertFileExists($response->outputDir . '/src/Command/ReadPostCommand.php');
-        // $this->assertFileExists($response->outputDir . '/src/Command/UpdatePostCommand.php');
-        // $this->assertFileExists($response->outputDir . '/src/Command/DeletePostCommand.php');
+        $this->assertDirectoryExists($response->outputDir . '/src/Command');
+        $this->assertFileExists($response->outputDir . '/src/Command/CreatePostCommand.php');
+        $this->assertFileExists($response->outputDir . '/src/Command/ReadPostCommand.php');
+        $this->assertFileExists($response->outputDir . '/src/Command/UpdatePostCommand.php');
+        $this->assertFileExists($response->outputDir . '/src/Command/DeletePostCommand.php');
 
         $this->assertDirectoryExists($response->outputDir . '/bin');
         $this->assertFileExists($response->outputDir . '/bin/console');
