@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Domain\{{ entity }}\Command;
+namespace App\Command\{{ entity }};
 
 use Domain\{{ entity }}\Request\{{ action }}{{ entity }}Request;
 use Domain\{{ entity }}\UseCase\{{ action }}{{ entity }}UseCase;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class {{ action }}{{ entity }}Command extends Command
 {
-    protected function configure($request)
+    protected function configure()
     {
         $this
             ->setName('{{ command }}')

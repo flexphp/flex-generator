@@ -35,7 +35,7 @@ final class CommandBuilderTest extends TestCase
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Test\Command;
+namespace App\Command\Test;
 
 use Domain\Test\Request\ActionTestRequest;
 use Domain\Test\UseCase\ActionTestUseCase;
@@ -46,7 +46,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class ActionTestCommand extends Command
 {
-    protected function configure(\$request)
+    protected function configure()
     {
         \$this
             ->setName('tests:action')
@@ -81,7 +81,7 @@ T
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\\{$expectedCamel}\\Command;
+namespace App\Command\\{$expectedCamel};
 
 use Domain\\{$expectedCamel}\\Request\Action{$expectedCamel}Request;
 use Domain\\{$expectedCamel}\\UseCase\Action{$expectedCamel}UseCase;
@@ -92,7 +92,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class Action{$expectedCamel}Command extends Command
 {
-    protected function configure(\$request)
+    protected function configure()
     {
         \$this
             ->setName('{$expectedDash}:action')
@@ -125,7 +125,7 @@ T
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Test\Command;
+namespace App\Command\Test;
 
 use Domain\Test\Request\CustomActionTestRequest;
 use Domain\Test\UseCase\CustomActionTestUseCase;
@@ -136,7 +136,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class CustomActionTestCommand extends Command
 {
-    protected function configure(\$request)
+    protected function configure()
     {
         \$this
             ->setName('tests:custom-action')
