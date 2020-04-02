@@ -36,7 +36,7 @@ final class CreateResponseFileUseCase extends UseCase
         $entity = $this->getSingularize($request->entity);
         $actions = $request->actions;
 
-        $path = \sprintf('%1$s/../../tmp/skeleton/Domain/%2$s/Response', __DIR__, $entity);
+        $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/Response', __DIR__, $entity);
 
         foreach ($actions as $action) {
             $request = new ResponseBuilder($entity, $action);

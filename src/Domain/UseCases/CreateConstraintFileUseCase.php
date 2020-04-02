@@ -47,7 +47,7 @@ final class CreateConstraintFileUseCase extends UseCase
 
         $constraint = new ConstraintBuilder($entity, $properties);
         $filename = $entity . 'Constraint';
-        $path = \sprintf('%1$s/../../tmp/skeleton/Domain/%2$s', __DIR__, $entity);
+        $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
 
         $writer = new PhpWriter($constraint->build(), $filename, $path);
 

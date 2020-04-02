@@ -94,7 +94,7 @@ final class TestConstraint
     public function lower(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Assert/Length([
+            new Assert\Length([
                 'min' => 100,
             ]),
         ], \$constraints));
@@ -103,7 +103,7 @@ final class TestConstraint
     public function upper(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Assert/LessThanOrEqual([
+            new Assert\LessThanOrEqual([
                 'value' => 10,
             ]),
         ], \$constraints));
@@ -112,8 +112,8 @@ final class TestConstraint
     public function pascalCase(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Assert/NotNull(),
-            new Assert/NotBlank(),
+            new Assert\NotNull(),
+            new Assert\NotBlank(),
         ], \$constraints));
     }
 
@@ -126,7 +126,7 @@ final class TestConstraint
     public function snakeCase(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Assert/Length([
+            new Assert\Length([
                 'min' => 100,
                 'max' => 200,
             ]),

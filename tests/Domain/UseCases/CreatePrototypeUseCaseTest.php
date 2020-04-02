@@ -97,34 +97,34 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/tests');
 
-        $this->assertDirectoryExists($response->outputDir . '/Domain');
-        $this->assertDirectoryExists($response->outputDir . '/Domain/Post');
-        $this->assertDirectoryExists($response->outputDir . '/Domain/Post/Request');
-        $this->assertDirectoryExists($response->outputDir . '/Domain/Post/Response');
-        $this->assertDirectoryExists($response->outputDir . '/Domain/Post/UseCase');
+        $this->assertDirectoryExists($response->outputDir . '/domain');
+        $this->assertDirectoryExists($response->outputDir . '/domain/Post');
+        $this->assertDirectoryExists($response->outputDir . '/domain/Post/Request');
+        $this->assertDirectoryExists($response->outputDir . '/domain/Post/Response');
+        $this->assertDirectoryExists($response->outputDir . '/domain/Post/UseCase');
 
-        $this->assertFileExists($response->outputDir . '/Domain/Post/Post.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/PostConstraint.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/Post.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/PostConstraint.php');
 
-        $this->assertFileExists($response->outputDir . '/Domain/Post/Request/IndexPostRequest.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/Request/CreatePostRequest.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/Request/ReadPostRequest.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/Request/UpdatePostRequest.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/Request/DeletePostRequest.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/Request/IndexPostRequest.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/Request/CreatePostRequest.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/Request/ReadPostRequest.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/Request/UpdatePostRequest.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/Request/DeletePostRequest.php');
 
-        $this->assertFileExists($response->outputDir . '/Domain/Post/Response/IndexPostResponse.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/Response/CreatePostResponse.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/Response/ReadPostResponse.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/Response/UpdatePostResponse.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/Response/DeletePostResponse.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/Response/IndexPostResponse.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/Response/CreatePostResponse.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/Response/ReadPostResponse.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/Response/UpdatePostResponse.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/Response/DeletePostResponse.php');
 
-        $this->assertFileExists($response->outputDir . '/Domain/Post/UseCase/IndexPostUseCase.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/UseCase/CreatePostUseCase.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/UseCase/ReadPostUseCase.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/UseCase/UpdatePostUseCase.php');
-        $this->assertFileExists($response->outputDir . '/Domain/Post/UseCase/DeletePostUseCase.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/UseCase/IndexPostUseCase.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/UseCase/CreatePostUseCase.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/UseCase/ReadPostUseCase.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/UseCase/UpdatePostUseCase.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/UseCase/DeletePostUseCase.php');
 
-        $this->assertDirectoryExists($response->outputDir . '/Domain/Comment');
+        $this->assertDirectoryExists($response->outputDir . '/domain/Comment');
 
         parent::deleteFolder(\dirname($response->outputDir), false);
     }

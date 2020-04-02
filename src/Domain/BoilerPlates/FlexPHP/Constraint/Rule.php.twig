@@ -2,11 +2,11 @@
     {
         return $this->getValidator()->validate(__FUNCTION__, array_merge([
 {% if constraints.required %}
-            new Assert/NotNull(),
-            new Assert/NotBlank(),
+            new Assert\NotNull(),
+            new Assert\NotBlank(),
 {% endif %}
 {% if constraints.length or constraints.minlength or constraints.maxlength %}
-            new Assert/Length([
+            new Assert\Length([
 {% if constraints.length.min or constraints.minlength %}
                 'min' => {{ constraints.length.min }}{{ constraints.minlength }},
 {% endif %}
@@ -16,7 +16,7 @@
             ]),
 {% endif %}
 {% if constraints.check or constraints.mincheck or constraints.maxcheck %}
-            new Assert/Count([
+            new Assert\Count([
 {% if constraints.check.min or constraints.mincheck %}
                 'min' => {{ constraints.check.min }}{{ constraints.mincheck }},
 {% endif %}
@@ -26,30 +26,30 @@
             ]),
 {% endif %}
 {% if constraints.min %}
-            new Assert/LessThanOrEqual([
+            new Assert\LessThanOrEqual([
                 'value' => {{ constraints.min }},
             ]),
 {% endif %}
 {% if constraints.max %}
-            new Assert/GreaterThanOrEqual([
+            new Assert\GreaterThanOrEqual([
                 'value' => {{ constraints.max }},
             ]),
 {% endif %}
 {% if constraints.equalto %}
-            new Assert/EqualTo([
+            new Assert\EqualTo([
                 'value' => '{{ constraints.equalto }}',
             ]),
 {% endif %}
 {% if constraints.pattern %}
-            new Assert/Regex([
+            new Assert\Regex([
                 'pattern' => '/^[a-z_]*$/',
             ]),
 {% endif %}
 {% if constraints.type %}
 {% if constraints.type.datetime %}
-            new Assert/DateTime(),
+            new Assert\DateTime(),
 {% else %}
-            new Assert/Type([
+            new Assert\Type([
                 'type' => '{{ constraints.type }}',
             ]),
 {% endif %}
