@@ -36,7 +36,7 @@ final class CreateEntityFileUseCase extends UseCase
         $properties = \array_reduce(
             $request->properties,
             function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $result[$schemaAttribute->name()] = $schemaAttribute->properties();
+                $result[] = $schemaAttribute->properties();
 
                 return $result;
             },

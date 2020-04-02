@@ -18,13 +18,16 @@ final class EntityBuilderTest extends TestCase
     {
         $name = 'Test';
         $properties = [
-            'title' => [
+            [
+                'Name' => 'title',
                 'DataType' => 'string',
             ],
-            'content' => [
+            [
+                'Name' => 'content',
                 'DataType' => 'text',
             ],
-            'createdAt' => [
+            [
+                'Name' => 'createdAt',
                 'DataType' => 'datetime',
             ],
         ];
@@ -77,5 +80,90 @@ final class Test extends Entity
 
 T
 , $render->build());
+    }
+
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItOkWithDiffEntityName(string $name, string $expected): void
+    {
+        $render = new EntityBuilder($name, []);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\\{$expected}\Entity;
+
+use FlexPHP\Entities\Entity;
+
+final class {$expected} extends Entity
+{
+}
+
+T
+, $render->build());
+    }
+
+    /**
+     * @dataProvider getPropertyName
+     */
+    public function testItOkWithDiffPropertyName(string $name, string $expected, string $setter, string $getter): void
+    {
+        $render = new EntityBuilder('fuz', [
+            [
+                'Name' => $name,
+                'DataType' => 'string',
+            ],
+        ]);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Entity;
+
+use FlexPHP\Entities\Entity;
+
+final class Fuz extends Entity
+{
+    private \${$expected};
+
+    public function {$getter}(): string
+    {
+        return \$this->{$expected};
+    }
+
+    public function {$setter}(string \${$expected}): void
+    {
+        \$this->{$expected} = \${$expected};
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function getEntityName(): array
+    {
+        return [
+            ['userpassword', 'Userpassword'],
+            ['USERPASSWORD', 'Userpassword'],
+            ['UserPassword', 'UserPassword'],
+            ['userPassword', 'UserPassword'],
+            ['user_password', 'UserPassword'],
+            ['user-password', 'UserPassword'],
+            ['Posts', 'Post'],
+        ];
+    }
+
+    public function getPropertyName(): array
+    {
+        return [
+            ['fooname', 'fooname', 'setFooname', 'getFooname'],
+            ['FOONAME', 'fooname', 'setFooname', 'getFooname'],
+            ['FooName', 'fooName', 'setFooName', 'getFooName'],
+            ['fooName', 'fooName', 'setFooName', 'getFooName'],
+            ['foo_name', 'fooName', 'setFooName', 'getFooName'],
+            ['foo-name', 'fooName', 'setFooName', 'getFooName'],
+        ];
     }
 }

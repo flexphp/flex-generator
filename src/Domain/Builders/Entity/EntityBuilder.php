@@ -16,12 +16,12 @@ final class EntityBuilder extends AbstractBuilder
 {
     public function __construct(string $name, array $properties)
     {
-        $_properties = \array_keys($properties);
-
+        $name = $this->getPascalCase($this->getSingularize($name));
         $getters = $this->getGetters($properties);
         $setters = $this->getSetters($properties);
+        $_properties = $this->getProperties($properties);
 
-        parent::__construct(\compact('name', '_properties', 'getters', 'setters'));
+        parent::__construct(\compact('name', 'getters', 'setters', '_properties'));
     }
 
     protected function getFileTemplate(): string
@@ -34,25 +34,30 @@ final class EntityBuilder extends AbstractBuilder
         return \sprintf('%1$s/FlexPHP/Entity', parent::getPathTemplate());
     }
 
+    private function getProperties(array $properties): array
+    {
+        return \array_values(\array_reduce($properties, function (array $result, array $attributes): array {
+            $result[] = $this->getCamelCase($attributes[Keyword::NAME]);
+
+            return $result;
+        }, []));
+    }
+
     private function getGetters(array $properties): array
     {
-        $getters = [];
+        return \array_reduce($properties, function (array $result, array $attributes): array {
+            $result[] = new GetterBuilder($attributes[Keyword::NAME], $attributes[Keyword::DATATYPE]);
 
-        foreach ($properties as $name => $attributes) {
-            $getters[$name] = new GetterBuilder($name, $attributes[Keyword::DATATYPE]);
-        }
-
-        return $getters;
+            return $result;
+        }, []);
     }
 
     private function getSetters(array $properties): array
     {
-        $setters = [];
+        return \array_reduce($properties, function (array $result, array $attributes): array {
+            $result[] = new SetterBuilder($attributes[Keyword::NAME], $attributes[Keyword::DATATYPE]);
 
-        foreach ($properties as $name => $attributes) {
-            $setters[$name] = new SetterBuilder($name, $attributes[Keyword::DATATYPE]);
-        }
-
-        return $setters;
+            return $result;
+        }, []);
     }
 }
