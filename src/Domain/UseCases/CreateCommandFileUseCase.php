@@ -46,7 +46,7 @@ final class CreateCommandFileUseCase extends UseCase
             []
         );
 
-        $path = \sprintf('%1$s/../../tmp/skeleton/src/Command', __DIR__);
+        $path = \sprintf('%1$s/../../tmp/skeleton/src/Command/%2$s', __DIR__, $entity);
 
         foreach ($actions as $action) {
             $request = new CommandBuilder($entity, $action, $properties);
