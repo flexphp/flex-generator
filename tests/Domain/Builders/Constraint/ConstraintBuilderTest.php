@@ -25,6 +25,7 @@ final class ConstraintBuilderTest extends TestCase
 
 namespace Domain\Test\Constraint;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -52,6 +53,7 @@ T
 
 namespace Domain\\{$expected}\\Constraint;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -78,6 +80,7 @@ T
 
 namespace Domain\Test\Constraint;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -91,7 +94,7 @@ final class TestConstraint
     public function lower(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Length([
+            new Assert/Length([
                 'min' => 100,
             ]),
         ], \$constraints));
@@ -100,7 +103,7 @@ final class TestConstraint
     public function upper(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new LessThanOrEqual([
+            new Assert/LessThanOrEqual([
                 'value' => 10,
             ]),
         ], \$constraints));
@@ -109,8 +112,8 @@ final class TestConstraint
     public function pascalCase(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new NotNull(),
-            new NotBlank(),
+            new Assert/NotNull(),
+            new Assert/NotBlank(),
         ], \$constraints));
     }
 
@@ -123,7 +126,7 @@ final class TestConstraint
     public function snakeCase(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Length([
+            new Assert/Length([
                 'min' => 100,
                 'max' => 200,
             ]),

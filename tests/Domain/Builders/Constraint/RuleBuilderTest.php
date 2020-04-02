@@ -41,8 +41,8 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new NotNull(),
-            new NotBlank(),
+            new Assert/NotNull(),
+            new Assert/NotBlank(),
         ], \$constraints));
     }
 T
@@ -59,7 +59,7 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Length([
+            new Assert/Length([
                 'min' => 20,
             ]),
         ], \$constraints));
@@ -78,7 +78,7 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Length([
+            new Assert/Length([
                 'max' => 100,
             ]),
         ], \$constraints));
@@ -100,7 +100,7 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Length([
+            new Assert/Length([
                 'min' => 20,
                 'max' => 100,
             ]),
@@ -120,7 +120,7 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Count([
+            new Assert/Count([
                 'min' => 3,
             ]),
         ], \$constraints));
@@ -139,7 +139,7 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Count([
+            new Assert/Count([
                 'max' => 4,
             ]),
         ], \$constraints));
@@ -161,7 +161,7 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Count([
+            new Assert/Count([
                 'min' => 1,
                 'max' => 5,
             ]),
@@ -181,7 +181,7 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new LessThanOrEqual([
+            new Assert/LessThanOrEqual([
                 'value' => 19,
             ]),
         ], \$constraints));
@@ -200,7 +200,7 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new GreaterThanOrEqual([
+            new Assert/GreaterThanOrEqual([
                 'value' => 21,
             ]),
         ], \$constraints));
@@ -219,7 +219,7 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new EqualTo([
+            new Assert/EqualTo([
                 'value' => 'EQUAL',
             ]),
         ], \$constraints));
@@ -238,7 +238,7 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Type([
+            new Assert/Type([
                 'type' => 'string',
             ]),
         ], \$constraints));
@@ -257,7 +257,7 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new Regex([
+            new Assert/Regex([
                 'pattern' => '/^[a-z_]*$/',
             ]),
         ], \$constraints));
@@ -281,13 +281,13 @@ T
     public function foo(array \$constraints = [])
     {
         return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-            new NotNull(),
-            new NotBlank(),
-            new Length([
+            new Assert/NotNull(),
+            new Assert/NotBlank(),
+            new Assert/Length([
                 'min' => 20,
                 'max' => 100,
             ]),
-            new Regex([
+            new Assert/Regex([
                 'pattern' => '/^[a-z_]*$/',
             ]),
         ], \$constraints));
