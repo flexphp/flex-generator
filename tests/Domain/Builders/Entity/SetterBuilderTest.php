@@ -112,6 +112,22 @@ T
 , $render->build());
     }
 
+    /**
+     * @dataProvider getPropertyNameAndSetter
+     */
+    public function testItWithDiffPropertyName(string $name, string $expected, string $setter): void
+    {
+        $render = new SetterBuilder($name, 'string');
+
+        $this->assertEquals(<<<T
+    public function {$setter}(string \${$expected}): void
+    {
+        \$this->{$expected} = \${$expected};
+    }
+T
+, $render->build());
+    }
+
     public function getDataTypeString(): array
     {
         return [
@@ -157,6 +173,18 @@ T
         return [
             ['bool'],
             ['boolean'],
+        ];
+    }
+
+    public function getPropertyNameAndSetter(): array
+    {
+        return [
+            ['fooname', 'fooname', 'setFooname'],
+            ['FOONAME', 'fooname', 'setFooname'],
+            ['FooName', 'fooName', 'setFooName'],
+            ['fooName', 'fooName', 'setFooName'],
+            ['foo_name', 'fooName', 'setFooName'],
+            ['foo-name', 'fooName', 'setFooName'],
         ];
     }
 }

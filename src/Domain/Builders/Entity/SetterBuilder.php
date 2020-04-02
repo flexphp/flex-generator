@@ -17,8 +17,9 @@ final class SetterBuilder extends AbstractBuilder
 
     public function __construct(string $name, string $dataType)
     {
-        $typehint = $this->guessTypeHint($dataType);
+        $name = $this->getCamelCase($name);
         $setter = $this->getPascalCase($name);
+        $typehint = $this->guessTypeHint($dataType);
 
         parent::__construct(\compact('name', 'typehint', 'setter'));
     }
