@@ -130,6 +130,22 @@ T
 , $render->build());
     }
 
+    /**
+     * @dataProvider getPropertyNameAndGetter
+     */
+    public function testItWithDiffPropertyName(string $name, string $expected, string $getter): void
+    {
+        $render = new GetterBuilder($name, 'string');
+
+        $this->assertEquals(<<<T
+    public function {$getter}(): string
+    {
+        return \$this->{$expected};
+    }
+T
+, $render->build());
+    }
+
     public function getDataTypeString(): array
     {
         return [
@@ -176,6 +192,18 @@ T
         return [
             ['bool'],
             ['boolean'],
+        ];
+    }
+
+    public function getPropertyNameAndGetter(): array
+    {
+        return [
+            ['fooname', 'fooname', 'getFooname'],
+            ['FOONAME', 'fooname', 'getFooname'],
+            ['FooName', 'fooName', 'getFooName'],
+            ['fooName', 'fooName', 'getFooName'],
+            ['foo_name', 'fooName', 'getFooName'],
+            ['foo-name', 'fooName', 'getFooName'],
         ];
     }
 }

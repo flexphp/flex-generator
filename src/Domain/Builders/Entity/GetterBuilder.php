@@ -17,6 +17,7 @@ final class GetterBuilder extends AbstractBuilder
 
     public function __construct(string $name, string $dataType)
     {
+        $name = $this->getCamelCase($name);
         $getter = $this->getPascalCase($name);
         $typehint = $this->guessTypeHint($dataType);
 
