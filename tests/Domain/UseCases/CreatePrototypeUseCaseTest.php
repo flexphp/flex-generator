@@ -41,6 +41,10 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertFileExists($response->outputDir . '/composer.json');
         $this->assertFileExists($response->outputDir . '/.env.example');
+        $this->assertFileExists($response->outputDir . '/.gitignore');
+        $this->assertFileExists($response->outputDir . '/LICENSE.md');
+        $this->assertFileExists($response->outputDir . '/README.md');
+        $this->assertFileExists($response->outputDir . '/phpunit.xml');
 
         $this->assertDirectoryExists($response->outputDir . '/src');
         $this->assertFileExists($response->outputDir . '/src/Kernel.php');

@@ -84,6 +84,10 @@ final class CreatePrototypeUseCase extends UseCase
         $files = [
             $source . '/composer.json' => $dest . '/composer.json',
             $source . '/.env.example' => $dest . '/.env.example',
+            $source . '/.gitignore' => $dest . '/.gitignore',
+            $source . '/README.md' => $dest . '/README.md',
+            $source . '/LICENSE.md' => $dest . '/LICENSE.md',
+            $source . '/phpunit.xml' => $dest . '/phpunit.xml',
             $source . '/bin/console' => $dest . '/bin/console',
             $source . '/config/bootstrap.tphp' => $dest . '/config/bootstrap.php',
             $source . '/config/bundles.tphp' => $dest . '/config/bundles.php',
