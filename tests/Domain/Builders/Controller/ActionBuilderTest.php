@@ -23,7 +23,7 @@ final class ActionBuilderTest extends TestCase
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="{$route}.index")
+     * @Route("/", methods={"GET"}, name="{$route}.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -40,7 +40,7 @@ T
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="tests.index")
+     * @Route("/", methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -57,7 +57,7 @@ T
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/create"}, methods={"POST"}, name="tests.create")
+     * @Route("/create", methods={"POST"}, name="tests.create")
      */
     public function create(Request \$request): Response
     {
@@ -73,7 +73,7 @@ T
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/{id}"}, methods={"GET"}, name="tests.read")
+     * @Route("/{id}", methods={"GET"}, name="tests.read")
      * @Cache(smaxage="10")
      */
     public function read(\$id): Response
@@ -90,7 +90,7 @@ T
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/update/{id}"}, methods={"PUT"}, name="tests.update")
+     * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      */
     public function update(Request \$request, \$id): Response
     {
@@ -106,7 +106,7 @@ T
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/delete/{id}"}, methods={"DELETE"}, name="tests.delete")
+     * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
      */
     public function delete(\$id): Response
     {
@@ -127,7 +127,7 @@ T
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/custom-action"}, methods={"POST"}, name="foo-bars.custom-action")
+     * @Route("/custom-action", methods={"POST"}, name="foo-bars.custom-action")
      */
     public function customAction(Request \$request): Response
     {
@@ -145,7 +145,7 @@ T
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="tests.index")
+     * @Route("/", methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -165,7 +165,7 @@ T
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="tests.index")
+     * @Route("/", methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -185,7 +185,7 @@ T
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="tests.index")
+     * @Route("/", methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -207,7 +207,7 @@ T
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="tests.index")
+     * @Route("/", methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -229,7 +229,7 @@ T
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/"}, methods={"GET"}, name="tests.index")
+     * @Route("/", methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response

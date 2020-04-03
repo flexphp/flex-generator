@@ -30,6 +30,7 @@ final class ControllerBuilderTest extends TestCase
 namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -58,6 +59,7 @@ T
 namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -105,6 +107,7 @@ use Domain\Test\Request\CustomFuzTestRequest;
 use Domain\Test\UseCase\IndexTestUseCase;
 use Domain\Test\UseCase\CustomFuzTestUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -115,7 +118,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class TestController extends AbstractController
 {
     /**
-     * @Route("/"}, methods={"GET"}, name="tests.index")
+     * @Route("/", methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
     public function index(Request \$request): Response
@@ -129,7 +132,7 @@ final class TestController extends AbstractController
     }
 
     /**
-     * @Route("/custom-fuz"}, methods={"POST"}, name="tests.custom-fuz")
+     * @Route("/custom-fuz", methods={"POST"}, name="tests.custom-fuz")
      */
     public function customFuz(Request \$request): Response
     {

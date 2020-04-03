@@ -1,6 +1,6 @@
 {% set methods = methods|default('GET')|upper %}
     /**
-     * @Route("{{ route }}"}, methods={"{{ methods }}"}, name="{{ route_name }}")
+     * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
 {% if methods == 'GET' %}
      * @Cache(smaxage="{{ cache|default('10') }}")
 {% endif %}
