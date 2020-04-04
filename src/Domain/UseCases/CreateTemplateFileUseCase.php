@@ -33,7 +33,7 @@ final class CreateTemplateFileUseCase extends UseCase
         $this->throwExceptionIfRequestNotValid(__METHOD__, CreateTemplateFileRequest::class, $request);
 
         $files = [];
-        $entity = $this->getPluralize($request->entity);
+        $entity = $this->getDashCase($this->getSingularize($request->entity));
         $actions = [
             'index' => 'index.html',
             'create' => 'new.html',
@@ -52,7 +52,7 @@ final class CreateTemplateFileUseCase extends UseCase
             []
         );
 
-        $path = \sprintf('%1$s/../../tmp/skeleton/src/templates/%2$s', __DIR__, $entity);
+        $path = \sprintf('%1$s/../../tmp/skeleton/templates/%2$s', __DIR__, $entity);
 
         foreach ($actions as $action => $filename) {
             $request = new TemplateBuilder($entity, $action, $properties);
