@@ -9,22 +9,23 @@
  */
 namespace FlexPHP\Generator\Tests\Domain\Writers;
 
-use FlexPHP\Generator\Domain\Writers\PhpWriter;
+use FlexPHP\Generator\Domain\Writers\SqlWriter;
 use FlexPHP\Generator\Tests\TestCase;
 
-final class PhpWriterTest extends TestCase
+final class SqlWriterTest extends TestCase
 {
     public function testItSaveOk(): void
     {
-        $filename = 'file';
-        $content = 'Hello world!';
+        $filename = 'script';
+        $content = '-- my databse content go here';
         $path = __DIR__;
+        
 
-        $writer = new PhpWriter($content, $filename, $path);
+        $writer = new SqlWriter($content, $filename, $path);
         $output = $writer->save();
 
         $_filename = \explode('/', $output);
-        $this->assertEquals(\array_pop($_filename), $filename . '.php');
+        $this->assertEquals(\array_pop($_filename), $filename . '.sql');
         $this->assertFileExists($output);
         $this->assertEquals(<<<T
 $content
