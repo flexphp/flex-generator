@@ -92,35 +92,43 @@ final class CreatePrototypeUseCase extends UseCase
 
     private function addFrameworkFiles(string $source, string $dest): void
     {
-        $files = [
-            $source . '/composer.json' => $dest . '/composer.json',
-            $source . '/.env.example' => $dest . '/.env.example',
-            $source . '/.gitignore' => $dest . '/.gitignore',
-            $source . '/README.md' => $dest . '/README.md',
-            $source . '/LICENSE.md' => $dest . '/LICENSE.md',
-            $source . '/phpunit.xml' => $dest . '/phpunit.xml',
-            $source . '/bin/console' => $dest . '/bin/console',
+        $templates = [
             $source . '/config/bootstrap.tphp' => $dest . '/config/bootstrap.php',
             $source . '/config/bundles.tphp' => $dest . '/config/bundles.php',
-            $source . '/config/services.yaml' => $dest . '/config/services.yaml',
             $source . '/public/index.tphp' => $dest . '/public/index.php',
-            $source . '/public/robots.txt' => $dest . '/public/robots.txt',
-            $source . '/public/.htaccess' => $dest . '/public/.htaccess',
-            $source . '/public/favicon.ico' => $dest . '/public/favicon.ico',
             $source . '/src/Kernel.tphp' => $dest . '/src/Kernel.php',
-            $source . '/templates/base.html.twig' => $dest . '/templates/base.html.twig',
-            $source . '/templates/default/_flash.html.twig' => $dest . '/templates/default/_flash.html.twig',
-            $source . '/templates/default/homepage.html.twig' => $dest . '/templates/default/homepage.html.twig',
-            $source . '/templates/form/layout.html.twig' => $dest . '/templates/form/layout.html.twig',
-            $source . '/templates/security/login.html.twig' => $dest . '/templates/security/login.html.twig',
-            $source . '/templates/errors/error.html.twig' => $dest . '/templates/errors/error.html.twig',
-            $source . '/templates/errors/error403.html.twig' => $dest . '/templates/errors/error403.html.twig',
-            $source . '/templates/errors/error404.html.twig' => $dest . '/templates/errors/error404.html.twig',
-            $source . '/templates/errors/error500.html.twig' => $dest . '/templates/errors/error500.html.twig',
         ];
 
-        foreach ($files as $source => $dest) {
-            \copy($source, $dest);
+        foreach ($templates as $from => $to) {
+            \copy($from, $to);
+        }
+
+        $files = [
+            '/composer.json',
+            '/.env.example',
+            '/.gitignore',
+            '/README.md',
+            '/LICENSE.md',
+            '/phpunit.xml',
+            '/bin/console',
+            '/config/services.yaml',
+            '/public/robots.txt',
+            '/public/.htaccess',
+            '/public/favicon.ico',
+            '/templates/base.html.twig',
+            '/templates/default/_flash.html.twig',
+            '/templates/default/homepage.html.twig',
+            '/templates/form/layout.html.twig',
+            '/templates/form/_delete_confirmation.html.twig',
+            '/templates/security/login.html.twig',
+            '/templates/errors/error.html.twig',
+            '/templates/errors/error403.html.twig',
+            '/templates/errors/error404.html.twig',
+            '/templates/errors/error500.html.twig',
+        ];
+
+        foreach ($files as $file) {
+            \copy($source . $file, $dest . $file);
         }
     }
 }

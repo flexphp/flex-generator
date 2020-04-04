@@ -93,6 +93,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/templates/form');
         $this->assertFileExists($response->outputDir . '/templates/form/layout.html.twig');
+        $this->assertFileExists($response->outputDir . '/templates/form/_delete_confirmation.html.twig');
 
         $this->assertDirectoryExists($response->outputDir . '/templates/security');
         $this->assertFileExists($response->outputDir . '/templates/security/login.html.twig');
