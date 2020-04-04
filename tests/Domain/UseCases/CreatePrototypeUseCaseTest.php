@@ -27,12 +27,13 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
     public function testItWithSymfony(): void
     {
+        $name = 'project';
         $sheets = [
             'Posts' => \sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__),
             'Comments' => \sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__),
         ];
 
-        $request = new CreatePrototypeRequest($sheets, $this->getOutputFolder());
+        $request = new CreatePrototypeRequest($name, $sheets, $this->getOutputFolder());
 
         $useCase = new CreatePrototypeUseCase();
         $response = $useCase->execute($request);
@@ -102,6 +103,9 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/tests');
 
         $this->assertDirectoryExists($response->outputDir . '/domain');
+        $this->assertDirectoryExists($response->outputDir . '/domain/Database');
+        $this->assertFileExists($response->outputDir . '/domain/Database/create.sql');
+
         $this->assertDirectoryExists($response->outputDir . '/domain/Post');
         $this->assertDirectoryExists($response->outputDir . '/domain/Post/Request');
         $this->assertDirectoryExists($response->outputDir . '/domain/Post/Response');

@@ -14,6 +14,11 @@ use FlexPHP\Messages\RequestInterface;
 final class CreatePrototypeRequest implements RequestInterface
 {
     /**
+     * @var string
+     */
+    public $name;
+
+    /**
      * @var array
      */
     public $sheets;
@@ -21,11 +26,18 @@ final class CreatePrototypeRequest implements RequestInterface
     /**
      * @var string
      */
-    public $outputFolder;
+    public $outputDir;
 
-    public function __construct(array $sheets, string $outputFolder)
+    /**
+     * @var string
+     */
+    public $platform;
+
+    public function __construct(string $name, array $sheets, string $outputDir, string $platform = 'MySQL')
     {
+        $this->name = $name;
         $this->sheets = $sheets;
-        $this->outputFolder = $outputFolder;
+        $this->outputDir = $outputDir;
+        $this->platform = $platform;
     }
 }

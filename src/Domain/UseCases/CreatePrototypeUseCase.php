@@ -9,6 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
+use FlexPHP\Generator\Domain\Messages\Requests\CreateDatabaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreatePrototypeRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreatePrototypeResponse;
@@ -27,21 +28,22 @@ final class CreatePrototypeUseCase extends UseCase
         $this->throwExceptionIfRequestNotValid(__METHOD__, CreatePrototypeRequest::class, $request);
 
         $sheets = $request->sheets;
-        $outputFolder = $request->outputFolder;
-        $sourceFolder = __DIR__ . '/../BoilerPlates/Symfony/v43/base';
+        $outputDir = $request->outputDir;
+        $sourceDir = __DIR__ . '/../BoilerPlates/Symfony/v43/base';
 
-        if (!\is_dir($outputFolder)) {
-            \mkdir($outputFolder, 0777, true); // @codeCoverageIgnore
+        if (!\is_dir($outputDir)) {
+            \mkdir($outputDir, 0777, true); // @codeCoverageIgnore
         }
 
         foreach ($sheets as $name => $schemafile) {
             $this->processSheet($name, $schemafile);
         }
 
-        $this->addFrameworkDirectories($sourceFolder, $outputFolder);
-        $this->addFrameworkFiles($sourceFolder, $outputFolder);
+        $this->addDatabaseFile($outputDir, $request->name, $request->platform, $sheets);
+        $this->addFrameworkDirectories($sourceDir, $outputDir);
+        $this->addFrameworkFiles($sourceDir, $outputDir);
 
-        return new CreatePrototypeResponse($outputFolder);
+        return new CreatePrototypeResponse($outputDir);
     }
 
     private function processSheet(string $name, string $schemafile): SheetProcessResponse
@@ -49,6 +51,15 @@ final class CreatePrototypeUseCase extends UseCase
         return (new SheetProcessUseCase())->execute(
             new SheetProcessRequest($name, $schemafile)
         );
+    }
+
+    private function addDatabaseFile(string $dest, string $name, string $platform, array $schemafiles): void
+    {
+        $database = (new CreateDatabaseFileUseCase())->execute(
+            new CreateDatabaseFileRequest($platform, $name, $name, \uniqid((string)\time()), $schemafiles)
+        );
+
+        \rename($database->file, $dest . '/domain/Database/create.sql');
     }
 
     private function addFrameworkDirectories(string $source, string $dest): void

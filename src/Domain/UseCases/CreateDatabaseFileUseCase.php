@@ -37,7 +37,7 @@ final class CreateDatabaseFileUseCase extends UseCase
             $builder->createTable(Schema::fromFile($schemafile));
         }, $request->yamls);
 
-        $path = \sprintf('%1$s/../../tmp/skeleton/domain/database/', __DIR__);
+        $path = \sprintf('%1$s/../../tmp/skeleton/domain/Database/', __DIR__);
 
         $writer = new SqlWriter($builder->toSql(), 'database', $path);
 
