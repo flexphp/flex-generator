@@ -29,7 +29,7 @@ final class CreateRequestFileUseCaseTest extends TestCase
     /**
      * @dataProvider getEntityFile()
      */
-    public function testItSymfony43Ok(string $schemafile, array $expectedFiles): void
+    public function testItOk(string $schemafile, array $expectedFiles): void
     {
         $schema = Schema::fromFile($schemafile);
         $actions = [

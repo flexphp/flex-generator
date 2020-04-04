@@ -29,7 +29,7 @@ final class CreateConstraintFileUseCaseTest extends TestCase
     /**
      * @dataProvider getEntityFile()
      */
-    public function testItSymfony43Ok(string $schemafile, string $expectedFile): void
+    public function testItOk(string $schemafile, string $expectedFile): void
     {
         $schema = Schema::fromFile($schemafile);
 

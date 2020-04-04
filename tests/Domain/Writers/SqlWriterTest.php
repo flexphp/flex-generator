@@ -19,7 +19,6 @@ final class SqlWriterTest extends TestCase
         $filename = 'script';
         $content = '-- my databse content go here';
         $path = __DIR__;
-        
 
         $writer = new SqlWriter($content, $filename, $path);
         $output = $writer->save();
