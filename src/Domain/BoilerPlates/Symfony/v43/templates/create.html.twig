@@ -4,7 +4,7 @@
 
 {{ '{%' }} block main {{ '%}' }}
     <h1>New {{ name }}</h1>
-    <form name="form" method="post">
+    <form name="form" method="post" action="{{ '{{' }} path('{{ route }}.create') {{ '}}' }}">
 {% for input in inputs %}
         {{ input|raw }}
 {% endfor %}
@@ -13,7 +13,7 @@
             <i class="fa fa-save" aria-hidden="true"></i> Save
         </button>
 
-        <a href="{{ '{{' }} path('posts.index') {{ '}}' }}" class="btn btn-link">
+        <a href="{{ '{{' }} path('{{ route }}.index') {{ '}}' }}" class="btn btn-link">
             <i class="fa fa-list-alt" aria-hidden="true"></i> Show list
         </a>
     </form>

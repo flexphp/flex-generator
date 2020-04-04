@@ -1,0 +1,27 @@
+{{ '{%' }} extends 'form/layout.html.twig' {{ '%}' }}
+
+{{ '{%' }} block title '{{ entity }} Detail' {{ '%}' }}
+
+{{ '{%' }} block main {{ '%}' }}
+    <h1>{{ entity }}</h1>
+
+    <p class="metadata">
+{% for id, property in properties %}
+        <span class="metadata">{{ '{{' }} register.{{ id }} {{ '}}' }}</span>
+{% endfor %}
+    </p>
+{{ '{%' }} endblock {{ '%}' }}
+
+{{ '{%' }} block sidebar {{ '%}' }}
+    <div class="section">
+        <a href="{{ '{{' }} path('{{ route }}.edit', {id: register.id}) {{ '}}' }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-edit" aria-hidden="true"></i> Edit
+        </a>
+    </div>
+
+    <div class="section">
+        {{ '{{' }} include('{{ item }}/_delete_form.html.twig', {{ '{' }}{{ item }}: register{{ '}' }}, with_context = false) {{ '}}' }}
+    </div>
+
+    {{ '{{' }} parent() {{ '}}' }}
+{{ '{%' }} endblock {{ '%}' }}

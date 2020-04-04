@@ -87,7 +87,7 @@ T
 
 {% block main %}
     <h1>New Post</h1>
-    <form name="form" method="post">
+    <form name="form" method="post" action="{{ path('posts.create') }}">
         <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" /></div>
         <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" /></div>
         <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" /></div>
@@ -106,8 +106,41 @@ T
 , $render->build());
     }
 
-    public function _testItRenderReadOk(): void
+    public function testItRenderReadOk(): void
     {
+        $render = new TemplateBuilder('Posts', 'read', $this->getProperties());
+
+        $this->assertEquals(<<<T
+{% extends 'form/layout.html.twig' %}
+
+{% block title 'Posts Detail' %}
+
+{% block main %}
+    <h1>Posts</h1>
+
+    <p class="metadata">
+        <span class="metadata">{{ register.title }}</span>
+        <span class="metadata">{{ register.content }}</span>
+        <span class="metadata">{{ register.createdAt }}</span>
+    </p>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="section">
+        <a href="{{ path('posts.edit', {id: register.id}) }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-edit" aria-hidden="true"></i> Edit
+        </a>
+    </div>
+
+    <div class="section">
+        {{ include('post/_delete_form.html.twig', {post: register}, with_context = false) }}
+    </div>
+
+    {{ parent() }}
+{% endblock %}
+
+T
+, $render->build());
     }
 
     public function _testItRenderUpdateOk(): void

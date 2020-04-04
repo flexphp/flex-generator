@@ -25,6 +25,7 @@ final class TemplateBuilder extends AbstractBuilder
         $name = $this->getPascalCase($this->getSingularize($entity));
         $entity = $this->getPascalCase($this->getPluralize($entity));
         $route = $this->getDashCase($entity);
+        $item = $this->getCamelCase($this->getSingularize($entity));
         $headers = \array_reduce($properties, function (array $result, array $property) {
             $result[] = (new Convert($property[Keyword::NAME]))->toTitle();
 
@@ -49,7 +50,7 @@ final class TemplateBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('name', 'entity', 'route', 'headers', 'properties', 'inputs'));
+        parent::__construct(\compact('name', 'entity', 'route', 'item', 'headers', 'properties', 'inputs'));
     }
 
     protected function getFileTemplate(): string
