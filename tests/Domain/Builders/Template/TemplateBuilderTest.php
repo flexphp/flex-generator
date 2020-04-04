@@ -88,7 +88,7 @@ T
 {% block main %}
     <h1>New Post</h1>
 
-    <form name="form" method="post" action="{{ path('posts.create') }}">
+    <form id="new-form" name="new-form" method="post" action="{{ path('posts.create') }}">
         <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" /></div>
         <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" /></div>
         <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" /></div>
@@ -156,7 +156,7 @@ T
 {% block main %}
     <h1>Post {{ post.id }}</h1>
 
-    <form name="form" method="post" action="{{ path('posts.update', {id: post.id}) }}">
+    <form id="edit-form" name="edit-form" method="post" action="{{ path('posts.update', {id: post.id}) }}">
         <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" /></div>
         <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" /></div>
         <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" /></div>
@@ -189,8 +189,21 @@ T
 , $render->build());
     }
 
-    public function _testItRenderDeleteOk(): void
+    public function testItRenderDeleteOk(): void
     {
+        $render = new TemplateBuilder('Posts', 'delete', $this->getProperties());
+
+        $this->assertEquals(<<<T
+{{ include('form/_delete_confirmation.html.twig') }}
+<form id="delete-form" name="delete-form" method="post" action="{{ url('posts.delete', {id: post.id}) }}" data-confirmation="true">
+    <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+    <button type="submit" class="btn btn-lg btn-block btn-danger">
+        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+    </button>
+</form>
+
+T
+, $render->build());
     }
 
     private function getProperties(): array

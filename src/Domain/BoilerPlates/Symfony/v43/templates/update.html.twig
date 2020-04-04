@@ -5,7 +5,7 @@
 {{ '{%' }} block main {{ '%}' }}
     <h1>{{ name }} {{ '{{' }} {{ item }}.id {{ '}}' }}</h1>
 
-    <form name="form" method="post" action="{{ '{{' }} path('{{ route }}.update', {id: {{ item }}.id}) {{ '}}' }}">
+    <form id="edit-form" name="edit-form" method="post" action="{{ '{{' }} path('{{ route }}.update', {id: {{ item }}.id}) {{ '}}' }}">
 {% for input in inputs %}
         {{ input|raw }}
 {% endfor %}

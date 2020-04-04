@@ -5,7 +5,7 @@
 {{ '{%' }} block main {{ '%}' }}
     <h1>New {{ name }}</h1>
 
-    <form name="form" method="post" action="{{ '{{' }} path('{{ route }}.create') {{ '}}' }}">
+    <form id="new-form" name="new-form" method="post" action="{{ '{{' }} path('{{ route }}.create') {{ '}}' }}">
 {% for input in inputs %}
         {{ input|raw }}
 {% endfor %}
