@@ -66,6 +66,12 @@ final class SheetProcessUseCaseTest extends TestCase
             $this->assertFileExists($command);
             \unlink($command);
         }, $response->commands);
+
+        $this->assertEquals(5, \count($response->templates));
+        \array_map(function (string $template): void {
+            $this->assertFileExists($template);
+            \unlink($template);
+        }, $response->templates);
     }
 
     public function getEntityFile(): array

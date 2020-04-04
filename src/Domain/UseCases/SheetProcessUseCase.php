@@ -15,6 +15,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateRequestFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateResponseFileRequest;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateTemplateFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateUseCaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateCommandFileResponse;
@@ -23,6 +24,7 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateRequestFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateResponseFileResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateTemplateFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateUseCaseFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
 use FlexPHP\Schema\Schema;
@@ -58,6 +60,7 @@ final class SheetProcessUseCase extends UseCase
         $responses = $this->createResponses($name, $actions);
         $useCases = $this->createUseCases($name, $actions, $attributes);
         $commands = $this->createCommands($name, $actions, $attributes);
+        $templates = $this->createTemplates($name, $attributes);
 
         return new SheetProcessResponse([
             'controller' => $controller->file,
@@ -67,6 +70,7 @@ final class SheetProcessUseCase extends UseCase
             'responses' => $responses->files,
             'useCases' => $useCases->files,
             'commands' => $commands->files,
+            'templates' => $templates->files,
         ]);
     }
 
@@ -116,6 +120,13 @@ final class SheetProcessUseCase extends UseCase
     {
         return (new CreateCommandFileUseCase())->execute(
             new CreateCommandFileRequest($name, $actions, $attributes)
+        );
+    }
+
+    private function createTemplates(string $name, array $attributes): CreateTemplateFileResponse
+    {
+        return (new CreateTemplateFileUseCase())->execute(
+            new CreateTemplateFileRequest($name, $attributes)
         );
     }
 }
