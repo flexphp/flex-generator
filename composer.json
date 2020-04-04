@@ -42,7 +42,10 @@
         }
     },
     "scripts": {
-        "phpcs": "phpcs --standard=PSR2 src/ tests/ --ignore=src/dist/*,src/tmp/*,tests/coverage/*",
+        "phpcs": [
+            "phpcs --standard=PSR2 src/ --ignore=src/dist/*,src/tmp/*",
+            "phpcs --standard=PSR2 tests/ --ignore=tests/coverage/*,tests/Domain/Builders/Template/TemplateBuilderTest.php"
+        ],
         "phpmd": [
             "phpmd src/ ansi naming,unusedcode",
             "phpmd tests/ ansi naming,unusedcode"
