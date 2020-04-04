@@ -16,25 +16,10 @@ final class TemplateBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {
-        $properties = [
-            [
-                'Name' => 'title',
-                'DataType' => 'string',
-            ],
-            [
-                'Name' => 'content',
-                'DataType' => 'text',
-            ],
-            [
-                'Name' => 'createdAt',
-                'DataType' => 'datetime',
-            ],
-        ];
-
-        $render = new TemplateBuilder('Posts', 'index', $properties);
+        $render = new TemplateBuilder('Posts', 'index', $this->getProperties());
 
         $this->assertEquals(<<<T
-{% extends 'admin/layout.html.twig' %}
+{% extends 'form/layout.html.twig' %}
 
 {% block title 'Posts' %}
 
@@ -91,8 +76,34 @@ T
 , $render->build());
     }
 
-    public function _testItRenderCreateOk(): void
+    public function testItRenderCreateOk(): void
     {
+        $render = new TemplateBuilder('Posts', 'create', $this->getProperties());
+
+        $this->assertEquals(<<<T
+{% extends 'form/layout.html.twig' %}
+
+{% block title 'Posts - New' %}
+
+{% block main %}
+    <h1>New Post</h1>
+    <form name="form" method="post">
+        <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" /></div>
+        <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" /></div>
+        <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" /></div>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-save" aria-hidden="true"></i> Save
+        </button>
+
+        <a href="{{ path('posts.index') }}" class="btn btn-link">
+            <i class="fa fa-list-alt" aria-hidden="true"></i> Show list
+        </a>
+    </form>
+{% endblock %}
+
+T
+, $render->build());
     }
 
     public function _testItRenderReadOk(): void
@@ -105,5 +116,23 @@ T
 
     public function _testItRenderDeleteOk(): void
     {
+    }
+
+    private function getProperties(): array
+    {
+        return [
+            [
+                'Name' => 'title',
+                'DataType' => 'string',
+            ],
+            [
+                'Name' => 'content',
+                'DataType' => 'text',
+            ],
+            [
+                'Name' => 'createdAt',
+                'DataType' => 'datetime',
+            ],
+        ];
     }
 }

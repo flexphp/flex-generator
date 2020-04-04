@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Template;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Inputs\Builder\InputBuilder;
 use FlexPHP\Schema\Constants\Keyword;
 use Jawira\CaseConverter\Convert;
 
@@ -21,21 +22,34 @@ final class TemplateBuilder extends AbstractBuilder
     {
         $this->action = $action;
 
+        $name = $this->getPascalCase($this->getSingularize($entity));
         $entity = $this->getPascalCase($this->getPluralize($entity));
         $route = $this->getDashCase($entity);
-        $headers = \array_reduce($properties, function ($result, $property) {
+        $headers = \array_reduce($properties, function (array $result, array $property) {
             $result[] = (new Convert($property[Keyword::NAME]))->toTitle();
 
             return $result;
         }, []);
 
-        $properties = \array_reduce($properties, function ($result, $property) {
+        $properties = \array_reduce($properties, function (array $result, array $property) {
             $result[$property[Keyword::NAME]] = $property;
 
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'route', 'headers', 'properties'));
+        $inputs = \array_reduce($properties, function (array $result, array $property) {
+            $options = \array_filter([
+                'label' => (new Convert($property[Keyword::NAME]))->toSentence(),
+                'required' => $property[Keyword::CONSTRAINTS]['required'] ?? null,
+                'type' => $property[Keyword::CONSTRAINTS]['type'] ?? null,
+            ]);
+
+            $result[] = (new InputBuilder($property[Keyword::NAME], $options))->render();
+
+            return $result;
+        }, []);
+
+        parent::__construct(\compact('name', 'entity', 'route', 'headers', 'properties', 'inputs'));
     }
 
     protected function getFileTemplate(): string
