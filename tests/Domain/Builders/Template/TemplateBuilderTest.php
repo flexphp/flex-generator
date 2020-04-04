@@ -87,6 +87,7 @@ T
 
 {% block main %}
     <h1>New Post</h1>
+
     <form name="form" method="post" action="{{ path('posts.create') }}">
         <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" /></div>
         <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" /></div>
@@ -143,8 +144,49 @@ T
 , $render->build());
     }
 
-    public function _testItRenderUpdateOk(): void
+    public function testItRenderUpdateOk(): void
     {
+        $render = new TemplateBuilder('Posts', 'update', $this->getProperties());
+
+        $this->assertEquals(<<<T
+{% extends 'form/layout.html.twig' %}
+
+{% block title 'Posts - Edit' %}
+
+{% block main %}
+    <h1>Post {{ post.id }}</h1>
+
+    <form name="form" method="post" action="{{ path('posts.update', {id: post.id}) }}">
+        <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" /></div>
+        <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" /></div>
+        <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" /></div>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-save" aria-hidden="true"></i> Update
+        </button>
+
+        <a href="{{ path('posts.index') }}" class="btn btn-link">
+            <i class="fa fa-list-alt" aria-hidden="true"></i> Show list
+        </a>
+    </form>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="section">
+        <a href="{{ path('posts.read', {id: post.id}) }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-eye" aria-hidden="true"></i> Show
+        </a>
+    </div>
+
+    <div class="section actions">
+        {{ include('post/_delete_form.html.twig', {post: post}, with_context = false) }}
+    </div>
+
+    {{ parent() }}
+{% endblock %}
+
+T
+, $render->build());
     }
 
     public function _testItRenderDeleteOk(): void
