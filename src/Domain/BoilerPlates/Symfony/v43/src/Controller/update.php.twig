@@ -1,17 +1,7 @@
-{% set methods = methods|default('GET')|upper %}
     /**
      * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
-{% if methods == 'GET' %}
-     * @Cache(smaxage="{{ cache|default('10') }}")
-{% endif %}
      */
-{% if methods in ['PUT'] %}
     public function {{ action_camel }}(Request $request, $id): Response
-{% elseif (methods == 'GET' and action == 'read') or methods == 'DELETE' %}
-    public function {{ action_camel }}($id): Response
-{% else %}
-    public function {{ action_camel }}(Request $request): Response
-{% endif %}
     {
 {% if request_message %}
         {{ request_message|trim|raw }}

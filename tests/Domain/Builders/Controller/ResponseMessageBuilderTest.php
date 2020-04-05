@@ -14,6 +14,18 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class ResponseMessageBuilderTest extends TestCase
 {
+    public function testItRenderIndexOk(): void
+    {
+        $render = new ResponseMessageBuilder('Test', 'index');
+
+        $this->assertEquals(<<<T
+        return \$this->render('test/index.html.twig', [
+            'registers' => [],
+        ]);
+T
+, $render->build());
+    }
+
     public function testItRenderWithActionOk(): void
     {
         $render = new ResponseMessageBuilder('Test', 'action');

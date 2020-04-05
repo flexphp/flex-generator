@@ -1,1 +1,7 @@
+{% if action == 'index' %}
+        return $this->render('{{ name }}/index.html.twig', [
+            'registers' => [],
+        ]);
+{% else %}
         return new Response($response);
+{% endif %}

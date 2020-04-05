@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class ActionBuilder extends AbstractBuilder
 {
+    private $action;
+
     public function __construct(
         string $entity,
         string $action,
@@ -25,8 +27,11 @@ final class ActionBuilder extends AbstractBuilder
             ? $this->getSnakeCase($action)
             : 'index';
 
+        $this->action = $action;
+
         $data['action'] = $action;
-        $data['entity'] = $entity;
+        $data['entity'] = $this->getDashCase($this->getPluralize($entity));
+        $data['name'] = $this->getDashCase($this->getSingularize($entity));
         $data['request_message'] = $requestMessage;
         $data['use_case'] = $useCase;
         $data['response_message'] = $responseMessage;
@@ -45,7 +50,11 @@ final class ActionBuilder extends AbstractBuilder
 
     protected function getFileTemplate(): string
     {
-        return 'Action.php.twig';
+        if (in_array($this->action, ['index', 'create', 'read', 'update', 'delete'])) {
+            return $this->action . '.php.twig';
+        }
+
+        return 'default.php.twig';
     }
 
     private function getGuessMethod(string $action): string

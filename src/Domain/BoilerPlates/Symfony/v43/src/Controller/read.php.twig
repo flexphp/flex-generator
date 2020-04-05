@@ -1,0 +1,22 @@
+    /**
+     * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
+     * @Cache(smaxage="{{ cache|default('10') }}")
+     */
+    public function {{ action_camel }}($id): Response
+    {
+{% if request_message %}
+        {{ request_message|trim|raw }}
+{% endif %}
+{% if request_message and use_case %}
+
+{% endif %}
+{% if use_case %}
+        {{ use_case|trim|raw }}
+{% endif %}
+{% if use_case and response_message %}
+
+{% endif %}
+{% if response_message %}
+        {{ response_message|trim|raw }}
+{% endif %}
+    }

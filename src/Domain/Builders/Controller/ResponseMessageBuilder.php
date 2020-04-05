@@ -15,7 +15,15 @@ final class ResponseMessageBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, string $action)
     {
-        parent::__construct(\compact('entity', 'action'));
+        $action = $this->getCamelCase($action);
+        $name = $this->getDashCase($this->getSingularize($entity));
+
+        parent::__construct(\compact('entity', 'action', 'name'));
+    }
+
+    public function build(): string
+    {
+        return \rtrim(parent::build());
     }
 
     protected function getFileTemplate(): string

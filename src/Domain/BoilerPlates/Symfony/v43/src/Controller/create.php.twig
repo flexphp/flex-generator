@@ -1,0 +1,30 @@
+    /**
+     * @Route("/new", methods={"GET"}, name="{{ entity }}.new")
+     * @Cache(smaxage="{{ cache|default('10') }}")
+     */
+    public function new(): Response
+    {
+        return $this->render('{{ name }}/new.html.twig');
+    }
+
+    /**
+     * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
+     */
+    public function {{ action_camel }}(Request $request): Response
+    {
+{% if request_message %}
+        {{ request_message|trim|raw }}
+{% endif %}
+{% if request_message and use_case %}
+
+{% endif %}
+{% if use_case %}
+        {{ use_case|trim|raw }}
+{% endif %}
+{% if use_case and response_message %}
+
+{% endif %}
+{% if response_message %}
+        {{ response_message|trim|raw }}
+{% endif %}
+    }

@@ -57,6 +57,15 @@ T
 
         $this->assertEquals(<<<T
     /**
+     * @Route("/new", methods={"GET"}, name="tests.new")
+     * @Cache(smaxage="10")
+     */
+    public function new(): Response
+    {
+        return \$this->render('test/new.html.twig');
+    }
+
+    /**
      * @Route("/create", methods={"POST"}, name="tests.create")
      */
     public function create(Request \$request): Response

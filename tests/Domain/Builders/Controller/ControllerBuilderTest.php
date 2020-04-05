@@ -128,7 +128,9 @@ final class TestController extends AbstractController
         \$useCase = new IndexTestUseCase();
         \$response = \$useCase->execute(\$request);
 
-        return new Response(\$response);
+        return \$this->render('test/index.html.twig', [
+            'registers' => [],
+        ]);
     }
 
     /**

@@ -1,0 +1,31 @@
+{% set methods = methods|default('GET')|upper %}
+    /**
+     * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
+{% if methods == 'GET' %}
+     * @Cache(smaxage="{{ cache|default('10') }}")
+{% endif %}
+     */
+{% if methods in ['PUT'] %}
+    public function {{ action_camel }}(Request $request, $id): Response
+{% elseif methods == 'DELETE' %}
+    public function {{ action_camel }}($id): Response
+{% else %}
+    public function {{ action_camel }}(Request $request): Response
+{% endif %}
+    {
+{% if request_message %}
+        {{ request_message|trim|raw }}
+{% endif %}
+{% if request_message and use_case %}
+
+{% endif %}
+{% if use_case %}
+        {{ use_case|trim|raw }}
+{% endif %}
+{% if use_case and response_message %}
+
+{% endif %}
+{% if response_message %}
+        {{ response_message|trim|raw }}
+{% endif %}
+    }
