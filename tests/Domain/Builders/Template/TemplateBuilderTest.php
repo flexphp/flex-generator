@@ -24,52 +24,52 @@ final class TemplateBuilderTest extends TestCase
 {% block title 'Posts' %}
 
 {% block main %}
-    <h1>Posts List</h1>
+    <div class="card">
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">Posts</h3>
+            <div class="toolbar ml-auto">
+                <a href="{{ path('posts.new') }}" class="btn btn-success">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Create
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Content</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for register in registers %}
+                    <tr>
+                        <td>{{ register.title }}</td>
+                        <td>{{ register.content }}</td>
+                        <td>{{ register.createdAt }}</td>
+                        <td class="text-right">
+                            <div class="item-actions">
+                                <a href="{{ path('posts.read', {id: register.id}) }}" class="btn btn-sm btn-default">
+                                    <i class="fa fa-eye" aria-hidden="true"></i> Show
+                                </a>
 
-    <table class="table table-striped table-middle-aligned">
-        <thead>
-            <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Content</th>
-                <th scope="col">Created At</th>
-                <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for register in registers %}
-            <tr>
-                <td>{{ register.title }}</td>
-                <td>{{ register.content }}</td>
-                <td>{{ register.createdAt }}</td>
-                <td class="text-right">
-                    <div class="item-actions">
-                        <a href="{{ path('posts.read', {id: register.id}) }}" class="btn btn-sm btn-default">
-                            <i class="fa fa-eye" aria-hidden="true"></i> Show
-                        </a>
-
-                        <a href="{{ path('posts.edit', {id: register.id}) }}" class="btn btn-sm btn-primary">
-                            <i class="fa fa-edit" aria-hidden="true"></i> Edit
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4" align="center">Nothing here</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-{% endblock %}
-
-{% block sidebar %}
-    <div class="section actions">
-        <a href="{{ path('posts.new') }}" class="btn btn-lg btn-block btn-success">
-            <i class="fa fa-plus" aria-hidden="true"></i> Create
-        </a>
+                                <a href="{{ path('posts.edit', {id: register.id}) }}" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" align="center">Nothing here</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    {{ parent() }}
 {% endblock %}
 
 T
