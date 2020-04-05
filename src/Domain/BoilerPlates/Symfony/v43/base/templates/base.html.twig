@@ -4,9 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}Demo{% endblock %}</title>
-    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+    <title>{% block title %}App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 </head>
@@ -172,10 +173,10 @@
         </div>
     </div>
 
-    <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-    <script src="assets/libs/js/main-js.js"></script>
+    <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/jquery/jquery.slimscroll.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
     {% block javascripts %}{% endblock %}
 </body>
 

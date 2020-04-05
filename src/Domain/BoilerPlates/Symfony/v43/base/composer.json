@@ -10,6 +10,7 @@
         "flexphp/messages": "dev-develop",
         "flexphp/use-cases": "dev-develop",
         "sensio/framework-extra-bundle": "^5.5",
+        "symfony/asset": "4.4.*",
         "symfony/console": "*",
         "symfony/dotenv": "*",
         "symfony/flex": "^1.3.1",

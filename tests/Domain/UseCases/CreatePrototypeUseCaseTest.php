@@ -84,6 +84,26 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/public/.htaccess');
         $this->assertFileExists($response->outputDir . '/public/favicon.ico');
 
+        $this->assertDirectoryExists($response->outputDir . '/public/css');
+        $this->assertFileExists($response->outputDir . '/public/css/main.css');
+
+        $this->assertDirectoryExists($response->outputDir . '/public/css/bootstrap');
+        $this->assertFileExists($response->outputDir . '/public/css/bootstrap/bootstrap.min.css');
+        $this->assertDirectoryExists($response->outputDir . '/public/css/fontawesome');
+        $this->assertFileExists($response->outputDir . '/public/css/fontawesome/all.min.css');
+
+        $this->assertDirectoryExists($response->outputDir . '/public/css/webfonts/');
+        $this->assertFileExists($response->outputDir . '/public/css/webfonts/fa-solid-900.woff2');
+
+        $this->assertDirectoryExists($response->outputDir . '/public/js');
+        $this->assertFileExists($response->outputDir . '/public/js/main.js');
+
+        $this->assertDirectoryExists($response->outputDir . '/public/js/jquery');
+        $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.min.js');
+        $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.slimscroll.min.js');
+        $this->assertDirectoryExists($response->outputDir . '/public/js/bootstrap');
+        $this->assertFileExists($response->outputDir . '/public/js/bootstrap/bootstrap.min.js');
+
         $this->assertDirectoryExists($response->outputDir . '/templates');
         $this->assertFileExists($response->outputDir . '/templates/base.html.twig');
 

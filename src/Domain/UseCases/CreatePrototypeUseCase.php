@@ -40,7 +40,8 @@ final class CreatePrototypeUseCase extends UseCase
         }
 
         $this->addDatabaseFile($outputDir, $request->name, $request->platform, $sheets);
-        $this->addFrameworkDirectories($sourceDir, $outputDir);
+        $this->addFrameworkDirectories($outputDir);
+        $this->addAssetFiles($outputDir);
         $this->addFrameworkFiles($sourceDir, $outputDir);
 
         return new CreatePrototypeResponse($outputDir);
@@ -62,30 +63,37 @@ final class CreatePrototypeUseCase extends UseCase
         \rename($database->file, $dest . '/domain/Database/create.sql');
     }
 
-    private function addFrameworkDirectories(string $source, string $dest): void
+    private function addFrameworkDirectories(string $dest): void
     {
         $dirs = [
-            $source . '/bin', $dest . '/bin',
-            $source . '/config', $dest . '/config',
-            $source . '/public', $dest . '/public',
-            $source . '/src/Command', $dest . '/src/Command',
-            $source . '/src/Controller', $dest . '/src/Controller',
-            $source . '/src/Migrations', $dest . '/src/Migrations',
-            $source . '/templates', $dest . '/templates',
-            $source . '/templates/default', $dest . '/templates/default',
-            $source . '/templates/form', $dest . '/templates/form',
-            $source . '/templates/security', $dest . '/templates/security',
-            $source . '/templates/errors', $dest . '/templates/errors',
-            $source . '/var', $dest . '/var',
-            $source . '/var/cache', $dest . '/var/cache',
-            $source . '/var/log', $dest . '/var/log',
-            $source . '/var/sessions', $dest . '/var/sessions',
-            $source . '/tests', $dest . '/tests',
+            '/bin',
+            '/config',
+            '/public',
+            '/public/js',
+            '/public/js/bootstrap',
+            '/public/js/jquery',
+            '/public/css',
+            '/public/css/bootstrap',
+            '/public/css/fontawesome',
+            '/public/css/webfonts',
+            '/src/Command',
+            '/src/Controller',
+            '/src/Migrations',
+            '/templates',
+            '/templates/default',
+            '/templates/form',
+            '/templates/security',
+            '/templates/errors',
+            '/var',
+            '/var/cache',
+            '/var/log',
+            '/var/sessions',
+            '/tests',
         ];
 
         foreach ($dirs as $dir) {
-            if (!\is_dir($dir)) {
-                \mkdir($dir, 0770, true);
+            if (!\is_dir($dest . $dir)) {
+                \mkdir($dest . $dir, 0770, true);
             }
         }
     }
@@ -129,6 +137,26 @@ final class CreatePrototypeUseCase extends UseCase
 
         foreach ($files as $file) {
             \copy($source . $file, $dest . $file);
+        }
+    }
+
+    private function addAssetFiles(string $dest): void
+    {
+        $src = __DIR__ . '/../BoilerPlates';
+
+        $assets = [
+            $src . '/Bootstrap/css/bootstrap.min.css' => $dest . '/public/css/bootstrap/bootstrap.min.css',
+            $src . '/Bootstrap/main.css' => $dest . '/public/css/main.css',
+            $src . '/FontAwesome/css/all.min.css' => $dest . '/public/css/fontawesome/all.min.css',
+            $src . '/FontAwesome/webfonts/fa-solid-900.woff2' => $dest . '/public/css/webfonts/fa-solid-900.woff2',
+            $src . '/Bootstrap/js/bootstrap.min.js' => $dest . '/public/js/bootstrap/bootstrap.min.js',
+            $src . '/jQuery/js/jquery.min.js' => $dest . '/public/js/jquery/jquery.min.js',
+            $src . '/jQuery/plugins/jquery.slimscroll.min.js' => $dest . '/public/js/jquery/jquery.slimscroll.min.js',
+            $src . '/jQuery/main.js' => $dest . '/public/js/main.js',
+        ];
+
+        foreach ($assets as $from => $to) {
+            \copy($from, $to);
         }
     }
 }
