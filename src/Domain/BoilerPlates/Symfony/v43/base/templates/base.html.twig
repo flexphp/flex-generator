@@ -7,6 +7,7 @@
     <title>{% block title %}App{% endblock %}</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/webfonts/fonts.css') }}">
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -17,7 +18,7 @@
         {% block header %}
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="index.html">Concept</a>
+                <a class="navbar-brand" href="index.html">Project Name</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -40,10 +41,6 @@
                                         <div class="list-group">
                                             <a href="#" class="list-group-item list-group-item-action active">
                                                 <div class="notification-info">
-                                                    <div class="notification-list-user-img">
-                                                        <img src="assets/images/avatar-2.jpg"
-                                                            class="user-avatar-md rounded-circle">
-                                                    </div>
                                                     <div class="notification-list-user-block">
                                                         <span class="notification-list-user-name">
                                                             Jeremy Rakestraw
@@ -67,14 +64,13 @@
                         <li class="nav-item dropdown nav-user">
                             <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="assets/images/avatar-1.jpg" alt="" class="user-avatar-md rounded-circle">
+                                <i class="fas fa-user"></i>
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
                                 aria-labelledby="navbarDropdownMenuLink2">
                                 <div class="nav-user-info">
                                     <h5 class="mb-0 text-white nav-user-name">John Abraham </h5>
-                                    <span class="status"></span><span class="ml-2">Available</span>
                                 </div>
                                 <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
@@ -85,7 +81,9 @@
                 </div>
             </nav>
         </div>
+        {% endblock %}
 
+        {% block sidebar %}
         <div class="nav-left-sidebar sidebar-dark">
             <div class="menu-list">
                 <nav class="navbar navbar-expand-lg navbar-light">
@@ -100,8 +98,7 @@
                             <li class="nav-item ">
                                 <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false"
                                     data-target="#submenu-1" aria-controls="submenu-1">
-                                    <i class="fa fa-fw fa-user-circle"></i>Dashboard
-                                    <span class="badge badge-success">6</span>
+                                    <i class="fas fa-user-circle"></i>Dashboard
                                 </a>
                                 <div id="submenu-1" class="collapse submenu">
                                     <ul class="nav flex-column">
@@ -145,9 +142,13 @@
             <div class="container-fluid dashboard-content">
                 {% block body %}
                 <div class="row">
-                    <div id="main" class="col-sm-12">
+                    <div class="col-12">
                         {{ include('default/_flash.html.twig') }}
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col-12">
                         {% block main %}{% endblock %}
                     </div>
                 </div>
@@ -155,15 +156,12 @@
             </div>
 
             {% block footer %}
-            <div class="footer">
+            <div class="footer fixed-bottom">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            Copyright © <a href="https://www.ataringenieria.com">ATAR Ingenier&iacute;a</a>.
-                        </div>
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <div class="text-md-right footer-links d-none d-sm-block">
-                                <a href="javascript: void(0);">About us</a>
+                        <div class="col-12">
+                            <div class="text-right">
+                                Copyright © <a href="https://www.ataringenieria.com">ATAR Ingenier&iacute;a</a>.
                             </div>
                         </div>
                     </div>

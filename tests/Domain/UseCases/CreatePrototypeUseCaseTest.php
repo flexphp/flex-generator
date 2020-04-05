@@ -93,7 +93,10 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/public/css/fontawesome/all.min.css');
 
         $this->assertDirectoryExists($response->outputDir . '/public/css/webfonts/');
+        $this->assertFileExists($response->outputDir . '/public/css/webfonts/fonts.css');
         $this->assertFileExists($response->outputDir . '/public/css/webfonts/fa-solid-900.woff2');
+        $this->assertFileExists($response->outputDir . '/public/css/webfonts/CircularStd-Book.woff');
+        $this->assertFileExists($response->outputDir . '/public/css/webfonts/CircularStd-Medium.woff');
 
         $this->assertDirectoryExists($response->outputDir . '/public/js');
         $this->assertFileExists($response->outputDir . '/public/js/main.js');

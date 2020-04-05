@@ -145,14 +145,17 @@ final class CreatePrototypeUseCase extends UseCase
         $src = __DIR__ . '/../BoilerPlates';
 
         $assets = [
-            $src . '/Bootstrap/css/bootstrap.min.css' => $dest . '/public/css/bootstrap/bootstrap.min.css',
-            $src . '/Bootstrap/main.css' => $dest . '/public/css/main.css',
-            $src . '/FontAwesome/css/all.min.css' => $dest . '/public/css/fontawesome/all.min.css',
-            $src . '/FontAwesome/webfonts/fa-solid-900.woff2' => $dest . '/public/css/webfonts/fa-solid-900.woff2',
-            $src . '/Bootstrap/js/bootstrap.min.js' => $dest . '/public/js/bootstrap/bootstrap.min.js',
-            $src . '/jQuery/js/jquery.min.js' => $dest . '/public/js/jquery/jquery.min.js',
-            $src . '/jQuery/plugins/jquery.slimscroll.min.js' => $dest . '/public/js/jquery/jquery.slimscroll.min.js',
-            $src . '/jQuery/main.js' => $dest . '/public/js/main.js',
+            "$src/Bootstrap/css/bootstrap.min.css" => "$dest/public/css/bootstrap/bootstrap.min.css",
+            "$src/Bootstrap/main.css" => "$dest/public/css/main.css",
+            "$src/FontAwesome/css/all.min.css" => "$dest/public/css/fontawesome/all.min.css",
+            "$src/FontAwesome/webfonts/fonts.css" => "$dest/public/css/webfonts/fonts.css",
+            "$src/FontAwesome/webfonts/fa-solid-900.woff2" => "$dest/public/css/webfonts/fa-solid-900.woff2",
+            "$src/FontAwesome/webfonts/CircularStd-Book.woff" => "$dest/public/css/webfonts/CircularStd-Book.woff",
+            "$src/FontAwesome/webfonts/CircularStd-Medium.woff" => "$dest/public/css/webfonts/CircularStd-Medium.woff",
+            "$src/Bootstrap/js/bootstrap.min.js" => "$dest/public/js/bootstrap/bootstrap.min.js",
+            "$src/jQuery/js/jquery.min.js" => "$dest/public/js/jquery/jquery.min.js",
+            "$src/jQuery/plugins/jquery.slimscroll.min.js" => "$dest/public/js/jquery/jquery.slimscroll.min.js",
+            "$src/jQuery/main.js" => "$dest/public/js/main.js",
         ];
 
         foreach ($assets as $from => $to) {

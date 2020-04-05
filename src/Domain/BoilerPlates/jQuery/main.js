@@ -2,12 +2,12 @@ jQuery(document).ready(function ($) {
     'use strict';
     if ($(".notification-list").length) {
         $('.notification-list').slimScroll({
-            height: '250px'
+            height: '100%'
         });
     }
     if ($(".menu-list").length) {
         $('.menu-list').slimScroll({
-
+            height: '100%'
         });
     }
     if ($(".sidebar-nav-fixed a").length) {
@@ -48,12 +48,5 @@ jQuery(document).ready(function ($) {
 
     if ($('[data-toggle="popover"]').length) {
         $('[data-toggle="popover"]').popover()
-    }
-
-    if ($('.chat-list').length) {
-        $('.chat-list').slimScroll({
-            color: 'false',
-            width: '100%'
-        });
     }
 });
