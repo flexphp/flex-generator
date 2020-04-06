@@ -64,6 +64,51 @@ T
 , $render->build());
     }
 
+    public function testItCreateOk(): void
+    {
+        $properties = [
+            [
+                Keyword::NAME => 'foo',
+                Keyword::DATATYPE => 'integer',
+            ],
+            [
+                Keyword::NAME => 'bar',
+                Keyword::DATATYPE => 'varchar',
+            ],
+        ];
+
+        $render = new UseCaseBuilder('Test', 'create', $properties);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\UseCase;
+
+use Domain\Test\Request\CreateTestRequest;
+use Domain\Test\Response\CreateTestResponse;
+use FlexPHP\UseCases\UseCase;
+
+final class CreateTestUseCase extends UseCase
+{
+    /**
+     * @param CreateTestRequest \$request
+     *
+     * @return CreateTestResponse
+     */
+    public function execute(\$request)
+    {
+        \$this->getRepository()->add(\$request);
+
+        return new CreateTestResponse([
+            'message' => 'Test was created!';
+        ]);
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

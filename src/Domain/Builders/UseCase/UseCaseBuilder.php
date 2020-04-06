@@ -14,8 +14,12 @@ use FlexPHP\Schema\Constants\Keyword;
 
 final class UseCaseBuilder extends AbstractBuilder
 {
+    private $action;
+
     public function __construct(string $entity, string $action, array $properties)
     {
+        $this->action = $this->getCamelCase($action);
+
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $action = $this->getPascalCase($action);
 
@@ -30,7 +34,11 @@ final class UseCaseBuilder extends AbstractBuilder
 
     protected function getFileTemplate(): string
     {
-        return 'UseCase.php.twig';
+        if (in_array($this->action, ['index', 'create', 'read', 'update', 'delete'])) {
+            return $this->action . '.php.twig';
+        }
+
+        return 'default.php.twig';
     }
 
     protected function getPathTemplate(): string
