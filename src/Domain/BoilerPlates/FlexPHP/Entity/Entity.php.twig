@@ -1,10 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Domain\{{ name }}\Entity;
+namespace Domain\{{ name }};
 
-use FlexPHP\Entities\Entity;
-
-final class {{ name }} extends Entity
+final class {{ name }}
 {
 {% for _property in _properties %}
     private ${{ _property }};

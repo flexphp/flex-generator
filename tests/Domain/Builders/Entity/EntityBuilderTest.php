@@ -37,27 +37,25 @@ final class EntityBuilderTest extends TestCase
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Test\Entity;
+namespace Domain\Test;
 
-use FlexPHP\Entities\Entity;
-
-final class Test extends Entity
+final class Test
 {
     private \$title;
     private \$content;
     private \$createdAt;
 
-    public function getTitle(): string
+    public function title(): string
     {
         return \$this->title;
     }
 
-    public function getContent(): string
+    public function content(): string
     {
         return \$this->content;
     }
 
-    public function getCreatedAt(): string
+    public function createdAt(): string
     {
         return \$this->createdAt;
     }
@@ -92,11 +90,9 @@ T
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\\{$expected}\Entity;
+namespace Domain\\{$expected};
 
-use FlexPHP\Entities\Entity;
-
-final class {$expected} extends Entity
+final class {$expected}
 {
 }
 
@@ -119,11 +115,9 @@ T
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Fuz\Entity;
+namespace Domain\Fuz;
 
-use FlexPHP\Entities\Entity;
-
-final class Fuz extends Entity
+final class Fuz
 {
     private \${$expected};
 
@@ -158,12 +152,12 @@ T
     public function getPropertyName(): array
     {
         return [
-            ['fooname', 'fooname', 'setFooname', 'getFooname'],
-            ['FOONAME', 'fooname', 'setFooname', 'getFooname'],
-            ['FooName', 'fooName', 'setFooName', 'getFooName'],
-            ['fooName', 'fooName', 'setFooName', 'getFooName'],
-            ['foo_name', 'fooName', 'setFooName', 'getFooName'],
-            ['foo-name', 'fooName', 'setFooName', 'getFooName'],
+            ['fooname', 'fooname', 'setFooname', 'fooname'],
+            ['FOONAME', 'fooname', 'setFooname', 'fooname'],
+            ['FooName', 'fooName', 'setFooName', 'fooName'],
+            ['fooName', 'fooName', 'setFooName', 'fooName'],
+            ['foo_name', 'fooName', 'setFooName', 'fooName'],
+            ['foo-name', 'fooName', 'setFooName', 'fooName'],
         ];
     }
 }
