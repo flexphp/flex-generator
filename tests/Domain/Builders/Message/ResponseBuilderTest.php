@@ -30,7 +30,7 @@ use FlexPHP\Messages\ResponseInterface;
 
 final class ActionFuzResponse implements ResponseInterface
 {
-    public function __construct(array \$data)
+    public function __construct(array \$data = [])
     {
     }
 }
@@ -55,7 +55,7 @@ use FlexPHP\Messages\ResponseInterface;
 
 final class Action{$expected}Response implements ResponseInterface
 {
-    public function __construct(array \$data)
+    public function __construct(array \$data = [])
     {
     }
 }
@@ -80,7 +80,7 @@ use FlexPHP\Messages\ResponseInterface;
 
 final class {$expected}FuzResponse implements ResponseInterface
 {
-    public function __construct(array \$data)
+    public function __construct(array \$data = [])
     {
     }
 }
