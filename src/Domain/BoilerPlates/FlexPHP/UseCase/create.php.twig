@@ -17,8 +17,6 @@ final class {{ action }}{{ entity }}UseCase extends UseCase
     {
         $this->getRepository()->add($request);
 
-        return new {{ action }}{{ entity }}Response([
-            'message' => '{{ entity }} was created!',
-        ]);
+        return new {{ action }}{{ entity }}Response(201, 'success', '{{ entity }} was created!');
     }
 }
