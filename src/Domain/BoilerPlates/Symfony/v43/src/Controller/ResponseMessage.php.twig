@@ -2,6 +2,10 @@
         return $this->render('{{ name }}/index.html.twig', [
             'registers' => [],
         ]);
+{% elseif action == 'create' %}
+        $this->addFlash($response->status, $response->message);
+
+        return $this->redirectToRoute('{{ entity }}.index');
 {% else %}
         return new Response($response);
 {% endif %}

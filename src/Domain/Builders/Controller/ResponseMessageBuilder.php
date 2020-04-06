@@ -17,6 +17,7 @@ final class ResponseMessageBuilder extends AbstractBuilder
     {
         $action = $this->getCamelCase($action);
         $name = $this->getDashCase($this->getSingularize($entity));
+        $entity = $this->getDashCase($this->getPluralize($entity));
 
         parent::__construct(\compact('entity', 'action', 'name'));
     }

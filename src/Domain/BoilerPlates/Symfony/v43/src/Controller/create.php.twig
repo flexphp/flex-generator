@@ -10,7 +10,7 @@
     /**
      * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
      */
-    public function {{ action_camel }}(Request $request): Response
+    public function {{ action_camel }}(Request $request, Connection $conn): Response
     {
 {% if request_message %}
         {{ request_message|trim|raw }}

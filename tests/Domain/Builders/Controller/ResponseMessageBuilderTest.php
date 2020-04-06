@@ -26,6 +26,18 @@ T
 , $render->build());
     }
 
+    public function testItRenderCreateOk(): void
+    {
+        $render = new ResponseMessageBuilder('Test', 'create');
+
+        $this->assertEquals(<<<T
+        \$this->addFlash(\$response->status, \$response->message);
+
+        return \$this->redirectToRoute('tests.index');
+T
+, $render->build());
+    }
+
     public function testItRenderWithActionOk(): void
     {
         $render = new ResponseMessageBuilder('Test', 'action');

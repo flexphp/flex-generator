@@ -1,2 +1,7 @@
+{% if action == 'Create' %}
+        $useCase = new {{ action }}{{ entity }}UseCase(new {{ entity }}Repository(new MySQL{{ entity }}Gateway($conn)));
+
+{% else %}
         $useCase = new {{ action }}{{ entity }}UseCase();
+{% endif %}
         $response = $useCase->execute($request);

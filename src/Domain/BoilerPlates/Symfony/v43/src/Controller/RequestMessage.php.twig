@@ -1,5 +1,7 @@
-{% if action|lower in ['read', 'delete'] %}
+{% if action in ['Read', 'Delete'] %}
         $request = new {{ action }}{{ entity }}Request(['id' => $id]);
+{% elseif action in ['Create'] %}
+        $request = new {{ action }}{{ entity }}Request($request->request->get('form'));
 {% else %}
         $request = new {{ action }}{{ entity }}Request($request->request->all());
 {% endif %}

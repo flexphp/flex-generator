@@ -75,6 +75,72 @@ T
 , $render->build());
     }
 
+    public function testItCreateOk(): void
+    {
+        $entity = 'Test';
+        $actions = [
+            'create' => (new ActionBuilder(
+                $entity,
+                'create',
+                (new RequestMessageBuilder($entity, 'create'))->build(),
+                (new UseCaseBuilder($entity, 'create'))->build(),
+                (new ResponseMessageBuilder($entity, 'create'))->build()
+            ))->build(),
+        ];
+
+        $render = new ControllerBuilder($entity, $actions);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace App\Controller;
+
+use Domain\Test\TestRepository;
+use Domain\Test\Gateway\MySQLTestGateway;
+use Domain\Test\Request\CreateTestRequest;
+use Domain\Test\UseCase\CreateTestUseCase;
+use Doctrine\DBAL\Connection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/tests")
+ */
+final class TestController extends AbstractController
+{
+    /**
+     * @Route("/new", methods={"GET"}, name="tests.new")
+     * @Cache(smaxage="10")
+     */
+    public function new(): Response
+    {
+        return \$this->render('test/new.html.twig');
+    }
+
+    /**
+     * @Route("/create", methods={"POST"}, name="tests.create")
+     */
+    public function create(Request \$request, Connection \$conn): Response
+    {
+        \$request = new CreateTestRequest(\$request->request->get('form'));
+
+        \$useCase = new CreateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        \$this->addFlash(\$response->status, \$response->message);
+
+        return \$this->redirectToRoute('tests.index');
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderMixedOk(): void
     {
         $entity = 'Test';
@@ -102,10 +168,13 @@ T
 
 namespace App\Controller;
 
+use Domain\Test\TestRepository;
+use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\IndexTestRequest;
 use Domain\Test\Request\CustomFuzTestRequest;
 use Domain\Test\UseCase\IndexTestUseCase;
 use Domain\Test\UseCase\CustomFuzTestUseCase;
+use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

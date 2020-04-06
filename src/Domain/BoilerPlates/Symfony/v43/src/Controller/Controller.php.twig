@@ -2,12 +2,19 @@
 
 namespace App\Controller;
 
+{% if actions.Index or actions.Create %}
+use Domain\{{ entity }}\{{ entity }}Repository;
+use Domain\{{ entity }}\Gateway\MySQL{{ entity }}Gateway;
+{% endif %}
 {% for key,action in actions %}
 use Domain\{{ entity }}\Request\{{ key }}{{ entity }}Request;
 {% endfor %}
 {% for key,action in actions %}
 use Domain\{{ entity }}\UseCase\{{ key }}{{ entity }}UseCase;
 {% endfor %}
+{% if actions.Index or actions.Create %}
+use Doctrine\DBAL\Connection;
+{% endif %}
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -68,7 +68,7 @@ T
     /**
      * @Route("/create", methods={"POST"}, name="tests.create")
      */
-    public function create(Request \$request): Response
+    public function create(Request \$request, Connection \$conn): Response
     {
     }
 
