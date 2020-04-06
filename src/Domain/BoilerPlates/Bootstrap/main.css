@@ -658,10 +658,10 @@ html body .display-7 {
     background-color: #ffc750 !important;
 }
 
-.bg-secondary {
+/*.bg-secondary {
     background-color: #ff407b !important;
     color: #fff !important;
-}
+}*/
 
 .bg-success {
     background-color: #2ec551 !important;
@@ -697,10 +697,10 @@ html body .display-7 {
     color: #fff;
 }
 
-.bg-secondary-light {
+/*.bg-secondary-light {
     background-color: #ffdbe6 !important;
 }
-
+*/
 .bg-danger-light {
     background-color: #fbd3d5 !important;
 }
@@ -749,9 +749,9 @@ html body .display-7 {
     color: #ffc750 !important;
 }
 
-.text-secondary {
+/*.text-secondary {
     color: #ff407b !important;
-}
+}*/
 
 .text-success {
     color: #2ec551 !important;
@@ -797,9 +797,9 @@ html body .display-7 {
     border-width: 3px !important;
 }
 
-.border-secondary {
+/*.border-secondary {
     border-color: #ff407b !important;
-}
+}*/
 
 .border-brand {
     border-color: #ffc750 !important;
@@ -1644,7 +1644,7 @@ html body .display-7 {
     border-color: #4656e9;
 }
 
-.btn-secondary {
+/*.btn-secondary {
     color: #fff;
     background-color: #ff407b;
     border-color: #ff407b;
@@ -1671,7 +1671,7 @@ html body .display-7 {
     background-color: #f0346e;
     border-color: #f0346e;
 }
-
+*/
 .btn-success {
     color: #fff;
     background-color: #2ec551;
@@ -1864,7 +1864,7 @@ html body .display-7 {
     box-shadow: 0 0 0 1px rgb(65, 77, 167);
 }
 
-.btn-outline-secondary {
+/*.btn-outline-secondary {
     color: #ff407b;
     background-color: transparent;
     border-color: #ff407b;
@@ -1891,7 +1891,7 @@ html body .display-7 {
     background-color: #ff407b;
     border-color: #ff407b;
 }
-
+*/
 .btn-outline-success {
     color: #2ec551;
     background-color: transparent;
@@ -2082,9 +2082,9 @@ html body .display-7 {
     color: #ffc750 !important;
 }
 
-.btn-secondary-link {
+/*.btn-secondary-link {
     color: #ff407b !important;
-}
+}*/
 
 .card {
     margin-bottom: 30px;
@@ -2812,7 +2812,7 @@ html body .display-7 {
     text-decoration: none;
 }
 
-.badge-secondary {
+/*.badge-secondary {
     background-color: #ff407b;
 }
 
@@ -2822,7 +2822,7 @@ html body .display-7 {
     background-color: #ff407b;
     text-decoration: none;
 }
-
+*/
 .badge-success {
     background-color: #21ae41;
 }
@@ -3011,11 +3011,11 @@ html body .display-7 {
     border-left-color: #5969ff;
 }
 
-.spinner-secondary {
+/*.spinner-secondary {
     border-top-color: #6c757d;
     border-left-color: #6c757d;
 }
-
+*/
 .spinner-success {
     border-top-color: #2ec551;
     border-left-color: #2ec551;

@@ -86,21 +86,34 @@ T
 {% block title 'Posts - New' %}
 
 {% block main %}
-    <h1>New Post</h1>
+    <div class="card">
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">New Post</h3>
+            <div class="toolbar ml-auto">
+                <a href="{{ path('posts.index') }}" class="btn btn-outline-secondary">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> Show list
+                </a>
+            </div>
+        </div>
 
-    <form id="new-form" name="new-form" method="post" action="{{ path('posts.create') }}">
-        <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" /></div>
-        <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" /></div>
-        <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" /></div>
+        <form id="new-form" name="new-form" method="post" action="{{ path('posts.create') }}">
+            <div class="card-body">
+                <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" /></div>
+                <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" /></div>
+                <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" /></div>
+            </div>
 
-        <button type="submit" class="btn btn-primary">
-            <i class="fa fa-save" aria-hidden="true"></i> Save
-        </button>
+            <div class="card-footer">
+                <a class="btn btn-outline-default" onclick="history.back()" href="javascript:;">
+                    <i class="fa fa-back" aria-hidden="true"></i> Back
+                </a>
 
-        <a href="{{ path('posts.index') }}" class="btn btn-link">
-            <i class="fa fa-list-alt" aria-hidden="true"></i> Show list
-        </a>
-    </form>
+                <button type="submit" class="btn btn-primary float-right">
+                    <i class="fa fa-save" aria-hidden="true"></i> Save
+                </button>
+            </div>
+        </form>
+    </div>
 {% endblock %}
 
 T

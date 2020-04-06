@@ -3,19 +3,32 @@
 {{ '{%' }} block title '{{ entity }} - New' {{ '%}' }}
 
 {{ '{%' }} block main {{ '%}' }}
-    <h1>New {{ name }}</h1>
+    <div class="card">
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">New {{ name }}</h3>
+            <div class="toolbar ml-auto">
+                <a href="{{ '{{' }} path('{{ route }}.index') {{ '}}' }}" class="btn btn-outline-secondary">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> Show list
+                </a>
+            </div>
+        </div>
 
-    <form id="new-form" name="new-form" method="post" action="{{ '{{' }} path('{{ route }}.create') {{ '}}' }}">
+        <form id="new-form" name="new-form" method="post" action="{{ '{{' }} path('{{ route }}.create') {{ '}}' }}">
+            <div class="card-body">
 {% for input in inputs %}
-        {{ input|raw }}
+                {{ input|raw }}
 {% endfor %}
+            </div>
 
-        <button type="submit" class="btn btn-primary">
-            <i class="fa fa-save" aria-hidden="true"></i> Save
-        </button>
+            <div class="card-footer">
+                <a class="btn btn-outline-default" onclick="history.back()" href="javascript:;">
+                    <i class="fa fa-back" aria-hidden="true"></i> Back
+                </a>
 
-        <a href="{{ '{{' }} path('{{ route }}.index') {{ '}}' }}" class="btn btn-link">
-            <i class="fa fa-list-alt" aria-hidden="true"></i> Show list
-        </a>
-    </form>
+                <button type="submit" class="btn btn-primary float-right">
+                    <i class="fa fa-save" aria-hidden="true"></i> Save
+                </button>
+            </div>
+        </form>
+    </div>
 {{ '{%' }} endblock {{ '%}' }}
