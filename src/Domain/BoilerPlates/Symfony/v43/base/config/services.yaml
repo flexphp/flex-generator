@@ -14,7 +14,6 @@ services:
         bind:               # defines the scalar arguments once and apply them to any service defined/created in this file
             $locales: '%app_locales%'
             $defaultLocale: '%locale%'
-            $emailSender: '%app.notifications.email_sender%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -27,3 +26,11 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    Doctrine\DBAL\Configuration:
+    Doctrine\DBAL\Connection:
+        factory: 'Doctrine\DBAL\DriverManager::getConnection'
+        arguments:
+            -
+                url : '%env(DATABASE_URL)%'
+            - '@Doctrine\DBAL\Configuration'
