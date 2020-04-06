@@ -18,10 +18,9 @@ final class GetterBuilder extends AbstractBuilder
     public function __construct(string $name, string $dataType)
     {
         $name = $this->getCamelCase($name);
-        $getter = $this->getPascalCase($name);
         $typehint = $this->guessTypeHint($dataType);
 
-        parent::__construct(\compact('name', 'typehint', 'getter'));
+        parent::__construct(\compact('name', 'typehint'));
     }
 
     protected function getFileTemplate(): string

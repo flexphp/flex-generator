@@ -19,7 +19,7 @@ final class GetterBuilderTest extends TestCase
         $render = new GetterBuilder('foo', '');
 
         $this->assertEquals(<<<T
-    public function getFoo(): string
+    public function foo(): string
     {
         return \$this->foo;
     }
@@ -37,7 +37,7 @@ T
         $render = new GetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
-    public function getFoo(): string
+    public function foo(): string
     {
         return \$this->foo;
     }
@@ -55,7 +55,7 @@ T
         $render = new GetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
-    public function getFoo(): int
+    public function foo(): int
     {
         return \$this->foo;
     }
@@ -73,7 +73,7 @@ T
         $render = new GetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
-    public function getFoo(): array
+    public function foo(): array
     {
         return \$this->foo;
     }
@@ -91,7 +91,7 @@ T
         $render = new GetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
-    public function getFoo(): float
+    public function foo(): float
     {
         return \$this->foo;
     }
@@ -109,7 +109,7 @@ T
         $render = new GetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
-    public function getFoo(): bool
+    public function foo(): bool
     {
         return \$this->foo;
     }
@@ -122,7 +122,7 @@ T
         $render = new GetterBuilder('foo', 'unknow');
 
         $this->assertEquals(<<<T
-    public function getFoo(): string
+    public function foo(): string
     {
         return \$this->foo;
     }
@@ -198,12 +198,12 @@ T
     public function getPropertyNameAndGetter(): array
     {
         return [
-            ['fooname', 'fooname', 'getFooname'],
-            ['FOONAME', 'fooname', 'getFooname'],
-            ['FooName', 'fooName', 'getFooName'],
-            ['fooName', 'fooName', 'getFooName'],
-            ['foo_name', 'fooName', 'getFooName'],
-            ['foo-name', 'fooName', 'getFooName'],
+            ['fooname', 'fooname', 'fooname'],
+            ['FOONAME', 'fooname', 'fooname'],
+            ['FooName', 'fooName', 'fooName'],
+            ['fooName', 'fooName', 'fooName'],
+            ['foo_name', 'fooName', 'fooName'],
+            ['foo-name', 'fooName', 'fooName'],
         ];
     }
 }
