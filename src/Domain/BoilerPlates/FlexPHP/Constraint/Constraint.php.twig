@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Domain\{{ entity }}\Constraint;
+namespace Domain\{{ entity }};
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
@@ -8,12 +8,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class {{ entity }}Constraint
 {
+    public function __construct(array $data)
+    {
+        $errors = [];
+
+        foreach ($data as $key => $value) {
+            $violations = $this->getValidator()->validate($value, $this->{$key}());
+
+            if (count($violations)) {
+                $errors[] = (string)$violations;
+            }
+        }
+
+        return $errors;
+    }
+
     private function getValidator(): ValidatorInterface
     {
         return Validation::createValidator();
     }
 {% for rule in rules %}
+{% if rule %}
 
-{{ rule|raw }}
+{{ rule|trim(side='right')|raw }}
+{% endif %}
 {% endfor %}
 }

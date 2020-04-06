@@ -23,7 +23,7 @@ final class ConstraintBuilderTest extends TestCase
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Test\Constraint;
+namespace Domain\Test;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
@@ -31,6 +31,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class TestConstraint
 {
+    public function __construct(array \$data)
+    {
+        \$errors = [];
+
+        foreach (\$data as \$key => \$value) {
+            \$violations = \$this->getValidator()->validate(\$value, \$this->{\$key}());
+
+            if (count(\$violations)) {
+                \$errors[] = (string)\$violations;
+            }
+        }
+
+        return \$errors;
+    }
+
     private function getValidator(): ValidatorInterface
     {
         return Validation::createValidator();
@@ -51,7 +66,7 @@ T
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\\{$expected}\\Constraint;
+namespace Domain\\{$expected};
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
@@ -59,6 +74,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class {$expected}Constraint
 {
+    public function __construct(array \$data)
+    {
+        \$errors = [];
+
+        foreach (\$data as \$key => \$value) {
+            \$violations = \$this->getValidator()->validate(\$value, \$this->{\$key}());
+
+            if (count(\$violations)) {
+                \$errors[] = (string)\$violations;
+            }
+        }
+
+        return \$errors;
+    }
+
     private function getValidator(): ValidatorInterface
     {
         return Validation::createValidator();
@@ -78,7 +108,7 @@ T
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Test\Constraint;
+namespace Domain\Test;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
@@ -86,51 +116,60 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class TestConstraint
 {
+    public function __construct(array \$data)
+    {
+        \$errors = [];
+
+        foreach (\$data as \$key => \$value) {
+            \$violations = \$this->getValidator()->validate(\$value, \$this->{\$key}());
+
+            if (count(\$violations)) {
+                \$errors[] = (string)\$violations;
+            }
+        }
+
+        return \$errors;
+    }
+
     private function getValidator(): ValidatorInterface
     {
         return Validation::createValidator();
     }
 
-    public function lower(array \$constraints = [])
+    private function lower(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\Length([
                 'min' => 100,
             ]),
-        ], \$constraints));
+        ];
     }
 
-    public function upper(array \$constraints = [])
+    private function upper(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\LessThanOrEqual([
                 'value' => 10,
             ]),
-        ], \$constraints));
+        ];
     }
 
-    public function pascalCase(array \$constraints = [])
+    private function pascalCase(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\NotNull(),
             new Assert\NotBlank(),
-        ], \$constraints));
+        ];
     }
 
-    public function camelCase(array \$constraints = [])
+    private function snakeCase(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-        ], \$constraints));
-    }
-
-    public function snakeCase(array \$constraints = [])
-    {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\Length([
                 'min' => 100,
                 'max' => 200,
             ]),
-        ], \$constraints));
+        ];
     }
 }
 

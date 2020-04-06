@@ -1,6 +1,7 @@
-    public function {{ property }}(array $constraints = [])
+{% if constraints|length > 0 %}
+    private function {{ property }}(): array
     {
-        return $this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
 {% if constraints.required %}
             new Assert\NotNull(),
             new Assert\NotBlank(),
@@ -54,5 +55,6 @@
             ]),
 {% endif %}
 {% endif %}
-        ], $constraints));
+        ];
     }
+{% endif %}
