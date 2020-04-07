@@ -14,104 +14,55 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class GatewayBuilderTest extends TestCase
 {
-    public function testItDbOk(): void
+    public function testItCreateOk(): void
     {
-        $entity = 'Test';
-        $actions = [
-            'index',
-            'create',
-            'read',
-            'update',
-            'delete',
-            'custom Fuz',
-        ];
-
-        $render = new GatewayBuilder($entity, $actions);
+        $render = new GatewayBuilder('Test', ['create']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Test\Gateway;
+namespace Domain\Test;
 
-use Domain\Test\Repository\TestRepository;
-use Doctrine\DBAL\Connection;
-
-final class DBTestRepository implements TestRepository
+interface TestGateway
 {
-    private \$conn;
-    private \$query;
-    private \$key = 'id';
-    private \$lastId = null;
-
-    public function __construct(Connection \$conn)
-    {
-        \$this->conn = \$conn;
-        \$this->query = \$conn->createQueryBuilder();
-    }
-
-    public function index(array \$data): array
-    {
-        \$query->select('*');
-        \$query->from('test');
-
-        foreach(\$data as \$index => \$column) {
-            \$query->where(\key(\$column) . ' = ?');
-            \$query->setParameter(\$index, \$column);
-        }
-
-        return \$query->execute()->fetchAll();
-    }
-
-    public function create(array \$data): void
-    {
-        \$query->insert('test');
-
-        foreach(\$data as \$index => \$column) {
-            \$query->setValue(\key(\$column), '?');
-            \$query->setParameter(\$index, \$column);
-        }
-
-        \$query->execute();
-
-        \$this->lastId = \$conn->lastInsertId();
-    }
-
-    public function read(string \$id): ?array
-    {
-        \$query->select('*');
-        \$query->from('test');
-        \$query->where([\$this->key => \$id]);
-
-        return \$query->execute()->fetch();
-    }
-
-    public function update(string \$id, array \$data): int
-    {
-        \$query->update('test');
-
-        foreach(\$data as \$index => \$column) {
-            \$query->setValue(\key(\$column), '?');
-            \$query->setParameter(\$index, \$column);
-        }
-
-        return \$query->execute();
-    }
-
-    public function delete(string \$id): int
-    {
-        \$query->delete('test');
-        \$query->where([\$this->key => \$id]);
-
-        return \$query->execute();
-    }
-
-    public function customFuz(array \$data): array
-    {
-        return \$data;
-    }
+    public function persist(Test \$test): void;
 }
 
 T
 , $render->build());
+    }
+
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedSingular): void
+    {
+        $render = new GatewayBuilder($entity, ['create']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\\{$expectedName};
+
+interface {$expectedName}Gateway
+{
+    public function persist({$expectedName} \${$expectedSingular}): void;
+}
+
+T
+, $render->build());
+    }
+
+    public function getEntityName(): array
+    {
+        return [
+            ['userpassword', 'Userpassword', 'userpassword'],
+            ['USERPASSWORD', 'Userpassword', 'userpassword'],
+            ['UserPassword', 'UserPassword', 'userPassword'],
+            ['userPassword', 'UserPassword', 'userPassword'],
+            ['user_password', 'UserPassword', 'userPassword'],
+            ['user-password', 'UserPassword', 'userPassword'],
+            ['Posts', 'Post', 'post'],
+        ];
     }
 }

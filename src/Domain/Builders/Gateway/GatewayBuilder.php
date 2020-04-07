@@ -15,13 +15,15 @@ final class GatewayBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, array $actions)
     {
+        $entity = $this->getPascalCase($this->getSingularize($entity));
+        $item = $this->getCamelCase($entity);
         $actions = \array_reduce($actions, function (array $result, string $action) {
             $result[] = $this->getCamelCase($action);
 
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'actions'));
+        parent::__construct(\compact('entity', 'actions', 'item'));
     }
 
     protected function getFileTemplate(): string
