@@ -20,6 +20,11 @@ final class RuleBuilder extends AbstractBuilder
         parent::__construct(\compact('property', 'constraints'));
     }
 
+    public function build(): string
+    {
+        return \rtrim(parent::build());
+    }
+
     protected function getFileTemplate(): string
     {
         return 'Rule.php.twig';

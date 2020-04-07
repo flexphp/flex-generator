@@ -46,7 +46,9 @@ final class CreateConstraintFileUseCaseTest extends TestCase
         $content = \file_get_contents($file);
 
         foreach ($schema->attributes() as $attribute) {
-            $this->assertStringContainsStringIgnoringCase($attribute->name(), $content);
+            if ($attribute->constraints()) {
+                $this->assertStringContainsStringIgnoringCase($attribute->name(), $content);
+            }
         }
 
         \unlink($file);

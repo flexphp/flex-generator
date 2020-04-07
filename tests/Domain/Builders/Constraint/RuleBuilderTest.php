@@ -17,18 +17,11 @@ final class RuleBuilderTest extends TestCase
     /**
      * @dataProvider getPropertyName
      */
-    public function testItOk(string $name, string $expected): void
+    public function testItNoConstraintsOk(string $name): void
     {
         $render = new RuleBuilder($name, []);
 
-        $this->assertEquals(<<<T
-    public function {$expected}(array \$constraints = [])
-    {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
-        ], \$constraints));
-    }
-T
-, $render->build());
+        $this->assertEquals('', $render->build());
     }
 
     public function testItRequiredOk(): void
@@ -38,12 +31,12 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\NotNull(),
             new Assert\NotBlank(),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -56,13 +49,13 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\Length([
                 'min' => 20,
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -75,13 +68,13 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\Length([
                 'max' => 100,
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -97,14 +90,14 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\Length([
                 'min' => 20,
                 'max' => 100,
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -117,13 +110,13 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\Count([
                 'min' => 3,
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -136,13 +129,13 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\Count([
                 'max' => 4,
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -158,14 +151,14 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\Count([
                 'min' => 1,
                 'max' => 5,
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -178,13 +171,13 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\LessThanOrEqual([
                 'value' => 19,
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -197,13 +190,13 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\GreaterThanOrEqual([
                 'value' => 21,
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -216,13 +209,13 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\EqualTo([
                 'value' => 'EQUAL',
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -235,13 +228,13 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\Type([
                 'type' => 'string',
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -254,13 +247,13 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\Regex([
                 'pattern' => '/^[a-z_]*$/',
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
@@ -278,9 +271,9 @@ T
         ]);
 
         $this->assertEquals(<<<T
-    public function foo(array \$constraints = [])
+    private function foo(): array
     {
-        return \$this->getValidator()->validate(__FUNCTION__, array_merge([
+        return [
             new Assert\NotNull(),
             new Assert\NotBlank(),
             new Assert\Length([
@@ -290,7 +283,7 @@ T
             new Assert\Regex([
                 'pattern' => '/^[a-z_]*$/',
             ]),
-        ], \$constraints));
+        ];
     }
 T
 , $render->build());
