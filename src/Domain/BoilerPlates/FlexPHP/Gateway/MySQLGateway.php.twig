@@ -1,0 +1,33 @@
+<?php declare(strict_types=1);
+
+namespace Domain\{{ entity }}\Gateway;
+
+use Domain\{{ entity }}\{{ entity }};
+use Domain\{{ entity }}\{{ entity }}Gateway;
+use Doctrine\DBAL\Connection;
+
+final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
+{
+    private $query;
+    private $table = '{{ name }}';
+
+    public function __construct(Connection $conn)
+    {
+        $this->query = $conn->createQueryBuilder();
+    }
+{% for action in actions %}
+{% if action in ['create'] %}
+
+    public function persist({{ entity }} ${{ item }}): void
+    {
+        $this->query->insert($this->table);
+{% for id, property in properties %}
+        $this->query->setValue('{{ id }}', '?');
+        $this->query->setParameter({{ (loop.index - 1) }}, ${{ item }}->{{ id }}());
+{% endfor %}
+
+        $this->query->execute();
+    }
+{% endif %}
+{% endfor %}
+}
