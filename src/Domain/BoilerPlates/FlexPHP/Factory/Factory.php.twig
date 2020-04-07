@@ -1,0 +1,18 @@
+<?php declare(strict_types=1);
+
+namespace Domain\{{ entity }};
+
+final class {{ entity }}Factory
+{
+    public function make($data)
+    {
+        ${{ item }} = new {{ entity }}();
+
+        foreach ((array)$data as $property => $value) {
+            $setter = 'set' . $property;
+            ${{ item }}->{$setter}($value);
+        }
+
+        return ${{ item }};
+    }
+}
