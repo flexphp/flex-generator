@@ -14,40 +14,28 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class RepositoryBuilderTest extends TestCase
 {
-    public function testItOk(): void
-    {
-        $entity = 'Test';
-        $actions = [
-            'index',
+    public function testItRenderCreateOk(): void
+    {        
+        $render = new RepositoryBuilder('Test', [
             'create',
-            'read',
-            'update',
-            'delete',
-            'custom Fuz',
-        ];
-
-        $render = new RepositoryBuilder($entity, $actions);
+        ]);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Test\Repository;
+namespace Domain\Test;
 
-use FlexPHP\Repositoty\RepositoryInterface;
+use Domain\Test\Request\CreateTestRequest;
+use FlexPHP\Repositories\Repository;
 
-interface TestRepository extends RepositoryInterface
+final class TestRepository extends Repository
 {
-    public function index(array \$data): array;
+    public function add(CreateTestRequest \$request): void
+    {
+        \$test = (new TestFactory())->make(\$request);
 
-    public function create(array \$data): void;
-
-    public function read(string \$id): ?array;
-
-    public function update(string \$id, array \$data): int;
-
-    public function delete(string \$id): int;
-
-    public function customFuz(array \$data): array;
+        \$this->getGateway()->persist(\$test);
+    }
 }
 
 T

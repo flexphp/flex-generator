@@ -1,22 +1,22 @@
 <?php declare(strict_types=1);
 
-namespace Domain\{{ entity }}\Repository;
+namespace Domain\{{ entity }};
 
-use FlexPHP\Repositoty\RepositoryInterface;
+{% if 'create' in actions %}
+use Domain\{{ entity }}\Request\Create{{ entity }}Request;
+{% endif %}
+use FlexPHP\Repositories\Repository;
 
-interface {{ entity }}Repository extends RepositoryInterface
+final class {{ entity }}Repository extends Repository
 {
 {% for action in actions %}
 {% if action in ['create'] %}
-    public function {{ action }}(array $data): void;
-{% elseif action in ['read'] %}
-    public function {{ action }}(string $id): ?array;
-{% elseif action in ['update'] %}
-    public function {{ action }}(string $id, array $data): int;
-{% elseif action in ['delete'] %}
-    public function {{ action }}(string $id): int;
-{% else %}
-    public function {{ action }}(array $data): array;
+    public function add(Create{{ entity }}Request $request): void
+    {
+        ${{ item }} = (new {{ entity }}Factory())->make($request);
+
+        $this->getGateway()->persist(${{ item }});
+    }
 {% endif %}
 {% if not loop.last %}
 
