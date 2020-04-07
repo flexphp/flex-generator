@@ -45,7 +45,7 @@ final class TemplateBuilder extends AbstractBuilder
                 'type' => $property[Keyword::CONSTRAINTS]['type'] ?? null,
             ]);
 
-            $result[] = (new InputBuilder($property[Keyword::NAME], $options))->render();
+            $result[] = (new InputBuilder($this->getCamelCase($property[Keyword::NAME]), $options))->render();
 
             return $result;
         }, []);
