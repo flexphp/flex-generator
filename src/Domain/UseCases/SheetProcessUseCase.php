@@ -13,6 +13,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateCommandFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateConstraintFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateGatewayFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateRequestFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateResponseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateTemplateFileRequest;
@@ -22,6 +23,7 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateCommandFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateGatewayFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateRequestFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateResponseFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateTemplateFileResponse;
@@ -55,6 +57,7 @@ final class SheetProcessUseCase extends UseCase
 
         $controller = $this->createController($name, $actions);
         $entity = $this->createEntity($name, $attributes);
+        $gateway = $this->createGateway($name, $actions);
         $constraint = $this->createConstraint($name, $attributes);
         $requests = $this->createRequests($name, $actions, $attributes);
         $responses = $this->createResponses($name, $actions);
@@ -65,6 +68,7 @@ final class SheetProcessUseCase extends UseCase
         return new SheetProcessResponse([
             'controller' => $controller->file,
             'entity' => $entity->file,
+            'gateway' => $gateway->file,
             'constraint' => $constraint->file,
             'requests' => $requests->files,
             'responses' => $responses->files,
@@ -92,6 +96,13 @@ final class SheetProcessUseCase extends UseCase
     {
         return (new CreateEntityFileUseCase())->execute(
             new CreateEntityFileRequest($name, $attributes)
+        );
+    }
+
+    private function createGateway(string $name, array $actions): CreateGatewayFileResponse
+    {
+        return (new CreateGatewayFileUseCase())->execute(
+            new CreateGatewayFileRequest($name, $actions)
         );
     }
 
