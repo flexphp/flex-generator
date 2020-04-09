@@ -35,6 +35,27 @@ T
     /**
      * @dataProvider getEntityName
      */
+    public function testItOkManyActions(): void
+    {
+        $render = new GatewayBuilder('Test', ['create', 'other']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+interface TestGateway
+{
+    public function persist(Test \$test): void;
+}
+
+T
+, $render->build());
+    }
+
+    /**
+     * @dataProvider getEntityName
+     */
     public function testItOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedSingular): void
     {
         $render = new GatewayBuilder($entity, ['create']);
