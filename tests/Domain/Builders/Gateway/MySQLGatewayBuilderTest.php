@@ -40,16 +40,18 @@ final class MySQLTestGateway implements TestGateway
     public function persist(Test \$test): void
     {
         \$this->query->insert(\$this->table);
-        \$this->query->setValue('lower', '?');
-        \$this->query->setParameter(0, \$test->lower());
-        \$this->query->setValue('upper', '?');
-        \$this->query->setParameter(1, \$test->upper());
-        \$this->query->setValue('pascalCase', '?');
-        \$this->query->setParameter(2, \$test->pascalCase());
-        \$this->query->setValue('camelCase', '?');
-        \$this->query->setParameter(3, \$test->camelCase());
-        \$this->query->setValue('snakeCase', '?');
-        \$this->query->setParameter(4, \$test->snakeCase());
+
+        \$this->query->setValue('lower', ':lower');
+        \$this->query->setValue('upper', ':upper');
+        \$this->query->setValue('pascalCase', ':pascalCase');
+        \$this->query->setValue('camelCase', ':camelCase');
+        \$this->query->setValue('snakeCase', ':snakeCase');
+
+        \$this->query->setParameter(':lower', \$test->lower());
+        \$this->query->setParameter(':upper', \$test->upper());
+        \$this->query->setParameter(':pascalCase', \$test->pascalCase()->format('Y-m-d H:i:s'));
+        \$this->query->setParameter(':camelCase', \$test->camelCase());
+        \$this->query->setParameter(':snakeCase', \$test->snakeCase());
 
         \$this->query->execute();
     }

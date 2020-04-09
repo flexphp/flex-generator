@@ -21,9 +21,17 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     public function persist({{ entity }} ${{ item }}): void
     {
         $this->query->insert($this->table);
+
 {% for id, property in properties %}
-        $this->query->setValue('{{ id }}', '?');
-        $this->query->setParameter({{ (loop.index - 1) }}, ${{ item }}->{{ id }}());
+        $this->query->setValue('{{ id }}', ':{{ id }}');
+{% endfor %}
+
+{% for id, property in properties %}
+{% if property.DataType|lower == 'datetime' %}
+        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}()->format('Y-m-d H:i:s'));
+{% else %}
+        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}());
+{% endif %}
 {% endfor %}
 
         $this->query->execute();
