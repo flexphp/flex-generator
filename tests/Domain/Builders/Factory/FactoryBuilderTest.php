@@ -11,12 +11,13 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Factory;
 
 use FlexPHP\Generator\Domain\Builders\Factory\FactoryBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Constants\Keyword;
 
 final class FactoryBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {        
-        $render = new FactoryBuilder('Test');
+        $render = new FactoryBuilder('Test', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -29,9 +30,20 @@ final class TestFactory
     {
         \$test = new Test();
 
-        foreach ((array)\$data as \$property => \$value) {
-            \$setter = 'set' . \$property;
-            \$test->{\$setter}(\$value);
+        if (\$data->lower) {
+            \$test->setLower((string)\$data->lower);
+        }
+        if (\$data->upper) {
+            \$test->setUpper((int)\$data->upper);
+        }
+        if (\$data->pascalCase) {
+            \$test->setPascalCase(new \DateTime(\$data->pascalCase));
+        }
+        if (\$data->camelCase) {
+            \$test->setCamelCase((bool)\$data->camelCase);
+        }
+        if (\$data->snakeCase) {
+            \$test->setSnakeCase((string)\$data->snakeCase);
         }
 
         return \$test;
@@ -47,7 +59,7 @@ T
      */
     public function testItOkWithDiffNameEntity(string $entity, string $expected, string $item): void
     {
-        $render = new FactoryBuilder($entity);
+        $render = new FactoryBuilder($entity, []);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -59,11 +71,6 @@ final class {$expected}Factory
     public function make(\$data)
     {
         \${$item} = new {$expected}();
-
-        foreach ((array)\$data as \$property => \$value) {
-            \$setter = 'set' . \$property;
-            \${$item}->{\$setter}(\$value);
-        }
 
         return \${$item};
     }

@@ -7,11 +7,18 @@ final class {{ entity }}Factory
     public function make($data)
     {
         ${{ item }} = new {{ entity }}();
+{% if setters %}
 
-        foreach ((array)$data as $property => $value) {
-            $setter = 'set' . $property;
-            ${{ item }}->{$setter}($value);
+{% for setter in setters %}
+        if ($data->{{ setter.camel }}) {
+{% if setter.typehint starts with '\\' %}
+            ${{ item }}->set{{ setter.pascal }}(new {{ setter.typehint }}($data->{{ setter.camel }}));
+{% else %}
+            ${{ item }}->set{{ setter.pascal }}(({{ setter.typehint }})$data->{{ setter.camel }});
+{% endif %}
         }
+{% endfor %}
+{% endif %}
 
         return ${{ item }};
     }
