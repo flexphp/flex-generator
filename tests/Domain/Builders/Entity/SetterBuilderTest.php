@@ -46,6 +46,42 @@ T
     }
 
     /**
+     * @dataProvider getDataTypeDate
+     *
+     * @param string $dataType
+     */
+    public function testItWithDate($dataType): void
+    {
+        $render = new SetterBuilder('foo', $dataType);
+
+        $this->assertEquals(<<<T
+    public function setFoo(\DateTime \$foo): void
+    {
+        \$this->foo = \$foo;
+    }
+T
+, $render->build());
+    }
+
+    /**
+     * @dataProvider getDataTypeDateImmutable
+     *
+     * @param string $dataType
+     */
+    public function testItWithDateImmutable($dataType): void
+    {
+        $render = new SetterBuilder('foo', $dataType);
+
+        $this->assertEquals(<<<T
+    public function setFoo(\DateTimeImmutable \$foo): void
+    {
+        \$this->foo = \$foo;
+    }
+T
+, $render->build());
+    }
+
+    /**
      * @dataProvider getDataTypeInt
      *
      * @param string $dataType
@@ -131,16 +167,34 @@ T
     public function getDataTypeString(): array
     {
         return [
+            ['bigint'],
+            ['decimal'],
             ['string'],
             ['text'],
             ['text'],
             ['guid'],
             ['binary'],
             ['blob'],
+        ];
+    }
+
+    public function getDataTypeDate(): array
+    {
+        return [
             ['date'],
             ['datetime'],
             ['datetimetz'],
             ['time'],
+        ];
+    }
+
+    public function getDataTypeDateImmutable(): array
+    {
+        return [
+            ['date_immutable'],
+            ['datetime_immutable'],
+            ['datetimetz_immutable'],
+            ['time_immutable'],
         ];
     }
 
@@ -149,8 +203,6 @@ T
         return [
             ['smallint'],
             ['integer'],
-            ['bigint'],
-            ['decimal'],
         ];
     }
 
