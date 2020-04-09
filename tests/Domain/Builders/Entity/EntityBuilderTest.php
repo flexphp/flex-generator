@@ -16,23 +16,7 @@ final class EntityBuilderTest extends TestCase
 {
     public function testItOk(): void
     {
-        $name = 'Test';
-        $properties = [
-            [
-                'Name' => 'title',
-                'DataType' => 'string',
-            ],
-            [
-                'Name' => 'content',
-                'DataType' => 'text',
-            ],
-            [
-                'Name' => 'createdAt',
-                'DataType' => 'datetime',
-            ],
-        ];
-
-        $render = new EntityBuilder($name, $properties);
+        $render = new EntityBuilder('Test', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -41,38 +25,60 @@ namespace Domain\Test;
 
 final class Test
 {
-    private \$title;
-    private \$content;
-    private \$createdAt;
+    private \$lower;
+    private \$upper;
+    private \$pascalCase;
+    private \$camelCase;
+    private \$snakeCase;
 
-    public function title(): string
+    public function lower(): string
     {
-        return \$this->title;
+        return \$this->lower;
     }
 
-    public function content(): string
+    public function upper(): int
     {
-        return \$this->content;
+        return \$this->upper;
     }
 
-    public function createdAt(): string
+    public function pascalCase(): \DateTime
     {
-        return \$this->createdAt;
+        return \$this->pascalCase;
     }
 
-    public function setTitle(string \$title): void
+    public function camelCase(): bool
     {
-        \$this->title = \$title;
+        return \$this->camelCase;
     }
 
-    public function setContent(string \$content): void
+    public function snakeCase(): string
     {
-        \$this->content = \$content;
+        return \$this->snakeCase;
     }
 
-    public function setCreatedAt(string \$createdAt): void
+    public function setLower(string \$lower): void
     {
-        \$this->createdAt = \$createdAt;
+        \$this->lower = \$lower;
+    }
+
+    public function setUpper(int \$upper): void
+    {
+        \$this->upper = \$upper;
+    }
+
+    public function setPascalCase(\DateTime \$pascalCase): void
+    {
+        \$this->pascalCase = \$pascalCase;
+    }
+
+    public function setCamelCase(bool \$camelCase): void
+    {
+        \$this->camelCase = \$camelCase;
+    }
+
+    public function setSnakeCase(string \$snakeCase): void
+    {
+        \$this->snakeCase = \$snakeCase;
     }
 }
 
