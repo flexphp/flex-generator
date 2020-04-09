@@ -15,7 +15,7 @@ use FlexPHP\Generator\Tests\TestCase;
 final class RepositoryBuilderTest extends TestCase
 {
     public function testItRenderCreateOk(): void
-    {        
+    {
         $render = new RepositoryBuilder('Test', [
             'create',
         ]);

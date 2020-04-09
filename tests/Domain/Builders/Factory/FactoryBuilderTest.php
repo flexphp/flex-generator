@@ -11,12 +11,11 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Factory;
 
 use FlexPHP\Generator\Domain\Builders\Factory\FactoryBuilder;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\Schema\Constants\Keyword;
 
 final class FactoryBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
-    {        
+    {
         $render = new FactoryBuilder('Test', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T

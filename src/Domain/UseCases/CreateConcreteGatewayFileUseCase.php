@@ -22,6 +22,9 @@ final class CreateConcreteGatewayFileUseCase extends UseCase
 {
     use InflectorTrait;
 
+    /**
+     * @var array<string, string>
+     */
     private $concretes = [
         'MySQL' => 'MySQLGatewayBuilder',
     ];

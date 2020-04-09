@@ -64,7 +64,7 @@ T
     /**
      * @dataProvider getEntityName
      */
-    public function _testItOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedPlural): void
+    public function testItOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedPlural): void
     {
         $render = new MySQLGatewayBuilder($entity, [], []);
 

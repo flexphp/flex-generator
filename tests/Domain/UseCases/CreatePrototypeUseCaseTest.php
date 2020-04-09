@@ -142,6 +142,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/domain/Post/Request');
         $this->assertDirectoryExists($response->outputDir . '/domain/Post/Response');
         $this->assertDirectoryExists($response->outputDir . '/domain/Post/UseCase');
+        $this->assertDirectoryExists($response->outputDir . '/domain/Post/Gateway');
 
         $this->assertFileExists($response->outputDir . '/domain/Post/Post.php');
         $this->assertFileExists($response->outputDir . '/domain/Post/PostFactory.php');
@@ -165,6 +166,8 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/domain/Post/UseCase/ReadPostUseCase.php');
         $this->assertFileExists($response->outputDir . '/domain/Post/UseCase/UpdatePostUseCase.php');
         $this->assertFileExists($response->outputDir . '/domain/Post/UseCase/DeletePostUseCase.php');
+
+        $this->assertFileExists($response->outputDir . '/domain/Post/Gateway/MySQLPostGateway.php');
 
         $this->assertDirectoryExists($response->outputDir . '/domain/Comment');
 

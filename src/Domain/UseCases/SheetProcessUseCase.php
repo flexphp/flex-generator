@@ -22,7 +22,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateTemplateFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateUseCaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateCommandFileResponse;
-use FlexPHP\Generator\Domain\Messages\Responses\CreateConcreteGatewayFileResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateConcreteGatewayFileResponse as ConcreteGatewayFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
@@ -114,7 +114,7 @@ final class SheetProcessUseCase extends UseCase
         );
     }
 
-    private function createConcreteGateway(string $name, array $actions, array $properties): CreateConcreteGatewayFileResponse
+    private function createConcreteGateway(string $name, array $actions, array $properties): ConcreteGatewayFileResponse
     {
         return (new CreateConcreteGatewayFileUseCase())->execute(
             new CreateConcreteGatewayFileRequest($name, 'MySQL', $actions, $properties)

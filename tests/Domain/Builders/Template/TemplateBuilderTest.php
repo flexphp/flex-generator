@@ -11,6 +11,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Template;
 
 use FlexPHP\Generator\Domain\Builders\Template\TemplateBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Constants\Keyword;
 
 final class TemplateBuilderTest extends TestCase
 {
@@ -223,16 +224,16 @@ T
     {
         return [
             [
-                'Name' => 'title',
-                'DataType' => 'string',
+                Keyword::NAME => 'title',
+                Keyword::DATATYPE => 'string',
             ],
             [
-                'Name' => 'content',
-                'DataType' => 'text',
+                Keyword::NAME => 'content',
+                Keyword::DATATYPE => 'text',
             ],
             [
-                'Name' => 'createdAt',
-                'DataType' => 'datetime',
+                Keyword::NAME => 'createdAt',
+                Keyword::DATATYPE => 'datetime',
             ],
         ];
     }

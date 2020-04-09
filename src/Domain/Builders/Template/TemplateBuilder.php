@@ -41,8 +41,11 @@ final class TemplateBuilder extends AbstractBuilder
         $inputs = \array_reduce($properties, function (array $result, array $property) {
             $options = \array_filter([
                 'label' => (new Convert($property[Keyword::NAME]))->toSentence(),
-                'required' => $property[Keyword::CONSTRAINTS]['required'] ?? null,
-                'type' => $property[Keyword::CONSTRAINTS]['type'] ?? null,
+                // 'help' => $property[Keyword::HELP],
+                // 'help_html' => strip_tags($property[Keyword::HELP]) !== $property[Keyword::HELP],
+                // 'default' => $property[Keyword::DEFAULT],
+                'type' => $property[Keyword::TYPE] ?? null,
+                'constraints' => $property[Keyword::CONSTRAINTS] ?? [],
             ]);
 
             $result[] = (new InputBuilder($this->getCamelCase($property[Keyword::NAME]), $options))->render();
