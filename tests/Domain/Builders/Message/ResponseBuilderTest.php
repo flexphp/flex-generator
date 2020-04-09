@@ -16,10 +16,7 @@ final class ResponseBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $action = 'action';
-        $entity = 'Fuz';
-
-        $render = new ResponseBuilder($entity, $action);
+        $render = new ResponseBuilder('Fuz', 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -32,6 +29,35 @@ final class ActionFuzResponse implements ResponseInterface
 {
     public function __construct(array \$data = [])
     {
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderCreateOk(): void
+    {
+        $render = new ResponseBuilder('Fuz', 'create');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Response;
+
+use FlexPHP\Messages\ResponseInterface;
+
+final class CreateFuzResponse implements ResponseInterface
+{
+    public \$code;
+    public \$status;
+    public \$message;
+
+    public function __construct(int \$code, string \$status, string \$message)
+    {
+        \$this->code = \$code;
+        \$this->status = \$status;
+        \$this->message = \$message;
     }
 }
 

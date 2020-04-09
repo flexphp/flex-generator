@@ -6,7 +6,20 @@ use FlexPHP\Messages\ResponseInterface;
 
 final class {{ action }}{{ entity }}Response implements ResponseInterface
 {
+{% if action|lower == 'create' %}
+    public $code;
+    public $status;
+    public $message;
+
+    public function __construct(int $code, string $status, string $message)
+    {
+        $this->code = $code;
+        $this->status = $status;
+        $this->message = $message;
+    }
+{% else %}
     public function __construct(array $data = [])
     {
     }
+{% endif %}
 }
