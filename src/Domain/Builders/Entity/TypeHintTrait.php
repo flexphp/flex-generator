@@ -9,6 +9,9 @@
  */
 namespace FlexPHP\Generator\Domain\Builders\Entity;
 
+/**
+ * @see https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/reference/types.html
+ */
 trait TypeHintTrait
 {
     private function guessTypeHint(string $dataType): string
@@ -16,16 +19,19 @@ trait TypeHintTrait
         $typeHintByDataType = [
             'smallint' => 'int',
             'integer' => 'int',
-            'bigint' => 'int',
-            'decimal' => 'int',
             'float' => 'float',
             'double' => 'float',
             'bool' => 'bool',
             'boolean' => 'bool',
+            'date' => '\DateTime',
+            'date_inmutable' => '\DateTimeImmutable',
+            'datetime' => '\DateTime',
+            'datetime_inmutable' => '\DateTimeImmutable',
+            'time' => '\DateTime',
+            'time_inmutable' => '\DateTimeImmutable',
             'array' => 'array',
             'simple_array' => 'array',
             'json_array' => 'array',
-            // 'object' => 'object',
         ];
 
         if (isset($typeHintByDataType[$dataType])) {
