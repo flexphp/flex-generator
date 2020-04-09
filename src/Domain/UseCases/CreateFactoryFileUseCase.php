@@ -14,6 +14,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateFactoryFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateFactoryFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
+use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\UseCases\UseCase;
 
 final class CreateFactoryFileUseCase extends UseCase
@@ -32,8 +33,17 @@ final class CreateFactoryFileUseCase extends UseCase
         $this->throwExceptionIfRequestNotValid(__METHOD__, CreateFactoryFileRequest::class, $request);
 
         $entity = $this->getPascalCase($this->getSingularize($request->entity));
+        $properties = \array_reduce(
+            $request->properties,
+            function (array $result, SchemaAttributeInterface $schemaAttribute) {
+                $result[] = $schemaAttribute->properties();
 
-        $gateway = new FactoryBuilder($entity);
+                return $result;
+            },
+            []
+        );
+
+        $gateway = new FactoryBuilder($entity, $properties);
         $filename = $entity . 'Factory';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
         $writer = new PhpWriter($gateway->build(), $filename, $path);

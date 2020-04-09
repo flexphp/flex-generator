@@ -33,7 +33,7 @@ final class CreateFactoryFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateFactoryFileRequest($schema->name());
+        $request = new CreateFactoryFileRequest($schema->name(), $schema->attributes());
 
         $useCase = new CreateFactoryFileUseCase();
         $response = $useCase->execute($request);

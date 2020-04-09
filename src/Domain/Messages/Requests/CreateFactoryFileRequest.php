@@ -18,8 +18,14 @@ final class CreateFactoryFileRequest implements RequestInterface
      */
     public $entity;
 
-    public function __construct(string $entity)
+    /**
+     * @var array
+     */
+    public $properties;
+
+    public function __construct(string $entity, array $properties)
     {
         $this->entity = $entity;
+        $this->properties = $properties;
     }
 }
