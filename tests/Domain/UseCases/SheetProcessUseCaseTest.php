@@ -46,6 +46,9 @@ final class SheetProcessUseCaseTest extends TestCase
         $this->assertFileExists($response->gateway);
         \unlink($response->gateway);
 
+        $this->assertFileExists($response->concreteGateway);
+        \unlink($response->concreteGateway);
+
         $this->assertFileExists($response->factory);
         \unlink($response->factory);
 

@@ -31,6 +31,11 @@ final class SheetProcessResponse implements ResponseInterface
     /**
      * @var null|string
      */
+    public $concreteGateway;
+
+    /**
+     * @var null|string
+     */
     public $factory;
 
     /**
@@ -68,6 +73,7 @@ final class SheetProcessResponse implements ResponseInterface
         $this->controller = $response['controller'] ?? null;
         $this->entity = $response['entity'] ?? null;
         $this->gateway = $response['gateway'] ?? null;
+        $this->concreteGateway = $response['concreteGateway'] ?? null;
         $this->factory = $response['factory'] ?? null;
         $this->constraint = $response['constraint'] ?? null;
         $this->requests = $response['requests'] ?? [];

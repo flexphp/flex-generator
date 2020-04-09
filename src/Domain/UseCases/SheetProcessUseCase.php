@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\CreateCommandFileRequest;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateConcreteGatewayFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateConstraintFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
@@ -21,6 +22,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateTemplateFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateUseCaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateCommandFileResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateConcreteGatewayFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
@@ -60,7 +62,8 @@ final class SheetProcessUseCase extends UseCase
         $controller = $this->createController($name, $actions);
         $entity = $this->createEntity($name, $attributes);
         $gateway = $this->createGateway($name, $actions);
-        $factory = $this->createFactory($name);
+        $concreteGateway = $this->createConcreteGateway($name, $actions, $attributes);
+        $factory = $this->createFactory($name, $attributes);
         $constraint = $this->createConstraint($name, $attributes);
         $requests = $this->createRequests($name, $actions, $attributes);
         $responses = $this->createResponses($name, $actions);
@@ -72,6 +75,7 @@ final class SheetProcessUseCase extends UseCase
             'controller' => $controller->file,
             'entity' => $entity->file,
             'gateway' => $gateway->file,
+            'concreteGateway' => $concreteGateway->file,
             'factory' => $factory->file,
             'constraint' => $constraint->file,
             'requests' => $requests->files,
@@ -110,10 +114,17 @@ final class SheetProcessUseCase extends UseCase
         );
     }
 
-    private function createFactory(string $name): CreateFactoryFileResponse
+    private function createConcreteGateway(string $name, array $actions, array $properties): CreateConcreteGatewayFileResponse
+    {
+        return (new CreateConcreteGatewayFileUseCase())->execute(
+            new CreateConcreteGatewayFileRequest($name, 'MySQL', $actions, $properties)
+        );
+    }
+
+    private function createFactory(string $name, array $attributes): CreateFactoryFileResponse
     {
         return (new CreateFactoryFileUseCase())->execute(
-            new CreateFactoryFileRequest($name)
+            new CreateFactoryFileRequest($name, $attributes)
         );
     }
 
