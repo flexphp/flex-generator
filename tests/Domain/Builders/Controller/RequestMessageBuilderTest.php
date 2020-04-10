@@ -52,7 +52,7 @@ T
         $render = new RequestMessageBuilder('Test', 'read');
 
         $this->assertEquals(<<<T
-        \$request = new ReadTestRequest(['id' => \$id]);
+        \$request = new ReadTestRequest(\$id);
 T
 , $render->build());
     }
@@ -72,7 +72,7 @@ T
         $render = new RequestMessageBuilder('Test', 'delete');
 
         $this->assertEquals(<<<T
-        \$request = new DeleteTestRequest(['id' => \$id]);
+        \$request = new DeleteTestRequest(\$id);
 T
 , $render->build());
     }

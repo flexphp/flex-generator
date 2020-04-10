@@ -17,20 +17,7 @@ final class RequestBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $action = 'action';
-        $entity = 'Fuz';
-        $properties = [
-            [
-                Keyword::NAME => 'foo',
-                Keyword::DATATYPE => 'integer',
-            ],
-            [
-                Keyword::NAME => 'bar',
-                Keyword::DATATYPE => 'varchar',
-            ],
-        ];
-
-        $render = new RequestBuilder($entity, $action, $properties);
+        $render = new RequestBuilder('Fuz', 'action', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -41,13 +28,44 @@ use FlexPHP\Messages\RequestInterface;
 
 final class ActionFuzRequest implements RequestInterface
 {
-    public \$foo;
-    public \$bar;
+    public \$lower;
+    public \$upper;
+    public \$pascalCase;
+    public \$camelCase;
+    public \$snakeCase;
 
     public function __construct(array \$data)
     {
-        \$this->foo = \$data['foo'] ?? null;
-        \$this->bar = \$data['bar'] ?? null;
+        \$this->lower = \$data['lower'] ?? null;
+        \$this->upper = \$data['upper'] ?? null;
+        \$this->pascalCase = \$data['pascalCase'] ?? null;
+        \$this->camelCase = \$data['camelCase'] ?? null;
+        \$this->snakeCase = \$data['snakeCase'] ?? null;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderReadOk(): void
+    {
+        $render = new RequestBuilder('Fuz', 'read', $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class ReadFuzRequest implements RequestInterface
+{
+    public \$fuz;
+
+    public function __construct(array \$fuz)
+    {
+        \$this->fuz = \$fuz;
     }
 }
 

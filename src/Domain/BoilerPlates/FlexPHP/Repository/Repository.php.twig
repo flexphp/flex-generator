@@ -2,13 +2,8 @@
 
 namespace Domain\{{ entity }};
 
-{% for action in actions %}
-{% if action == 'index' %}
-use Domain\{{ entity }}\Request\Index{{ entity }}Request;
-{% endif %}
-{% if action == 'create' %}
-use Domain\{{ entity }}\Request\Create{{ entity }}Request;
-{% endif %}
+{% for request in requests %}
+use Domain\{{ entity }}\Request\{{ request }}{{ entity }}Request;
 {% endfor %}
 use FlexPHP\Repositories\Repository;
 
@@ -26,6 +21,11 @@ final class {{ entity }}Repository extends Repository
         ${{ item }} = (new {{ entity }}Factory())->make($request);
 
         $this->getGateway()->persist(${{ item }});
+    }
+{% elseif action in ['read'] %}
+    public function getById(Read{{ entity }}Request $request): array
+    {
+        return $this->getGateway()->get($request->id);
     }
 {% endif %}
 {% if not loop.last %}

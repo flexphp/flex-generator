@@ -17,6 +17,7 @@ final class RequestBuilder extends AbstractBuilder
     public function __construct(string $entity, string $action, array $properties)
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
+        $name = $this->getCamelCase($this->getSingularize($entity));
         $action = $this->getPascalCase($action);
         $properties = \array_reduce($properties, function ($result, $property) {
             $result[$this->getCamelCase($property[Keyword::NAME])] = $property;
@@ -24,7 +25,7 @@ final class RequestBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'action', 'properties'));
+        parent::__construct(\compact('entity', 'name', 'action', 'properties'));
     }
 
     protected function getFileTemplate(): string

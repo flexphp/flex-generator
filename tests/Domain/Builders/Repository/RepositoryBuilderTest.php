@@ -67,4 +67,30 @@ final class TestRepository extends Repository
 T
 , $render->build());
     }
+
+    public function testItRenderReadOk(): void
+    {
+        $render = new RepositoryBuilder('Test', [
+            'read',
+        ]);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+use Domain\Test\Request\ReadTestRequest;
+use FlexPHP\Repositories\Repository;
+
+final class TestRepository extends Repository
+{
+    public function getById(ReadTestRequest \$request): array
+    {
+        return \$this->getGateway()->get(\$request->id);
+    }
+}
+
+T
+, $render->build());
+    }
 }

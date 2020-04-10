@@ -21,6 +21,7 @@ final class UseCaseBuilder extends AbstractBuilder
         $this->action = $this->getCamelCase($action);
 
         $entity = $this->getPascalCase($this->getSingularize($entity));
+        $name = $this->getCamelCase($this->getSingularize($entity));
         $item = $this->getCamelCase($this->getPluralize($entity));
         $action = $this->getPascalCase($action);
 
@@ -30,12 +31,12 @@ final class UseCaseBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'item', 'action', 'properties'));
+        parent::__construct(\compact('entity', 'name', 'item', 'action', 'properties'));
     }
 
     protected function getFileTemplate(): string
     {
-        if (in_array($this->action, ['index', 'create'])) {
+        if (in_array($this->action, ['index', 'create', 'read'])) {
             return $this->action . '.php.twig';
         }
 

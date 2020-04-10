@@ -6,6 +6,10 @@
         $this->addFlash($response->status, $response->message);
 
         return $this->redirectToRoute('{{ entity }}.index');
+{% elseif action == 'read' %}
+        return $this->render('{{ name }}/show.html.twig', [
+            'register' => $response->{{ name }},
+        ]);
 {% else %}
         return new Response($response);
 {% endif %}

@@ -108,6 +108,44 @@ T
 , $render->build());
     }
 
+    public function testItReadOk(): void
+    {
+        $render = new MySQLGatewayBuilder('Test', ['read'], $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\Gateway;
+
+use Domain\Test\Test;
+use Domain\Test\TestGateway;
+use Doctrine\DBAL\Connection;
+
+final class MySQLTestGateway implements TestGateway
+{
+    private \$query;
+    private \$table = 'tests';
+
+    public function __construct(Connection \$conn)
+    {
+        \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function get(string \$id): array
+    {
+        \$this->query->select('*');
+        \$this->query->from(\$this->table);
+        \$this->query->where('Id = :id');
+        \$this->query->setParameter('id', \$id);
+
+        return \$this->query->execute()->fetch();
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

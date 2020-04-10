@@ -36,6 +36,31 @@ T
 , $render->build());
     }
 
+    public function testItRenderIndexOk(): void
+    {
+        $render = new ResponseBuilder('Fuz', 'index');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Response;
+
+use FlexPHP\Messages\ResponseInterface;
+
+final class IndexFuzResponse implements ResponseInterface
+{
+    public \$fuzes;
+
+    public function __construct(array \$fuzes)
+    {
+        \$this->fuzes = \$fuzes;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderCreateOk(): void
     {
         $render = new ResponseBuilder('Fuz', 'create');
@@ -64,9 +89,10 @@ final class CreateFuzResponse implements ResponseInterface
 T
 , $render->build());
     }
-    public function testItRenderIndexOk(): void
+
+    public function testItRenderReadOk(): void
     {
-        $render = new ResponseBuilder('Fuz', 'index');
+        $render = new ResponseBuilder('Fuz', 'read');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -75,13 +101,13 @@ namespace Domain\Fuz\Response;
 
 use FlexPHP\Messages\ResponseInterface;
 
-final class IndexFuzResponse implements ResponseInterface
+final class ReadFuzResponse implements ResponseInterface
 {
-    public \$fuzes;
+    public \$id;
 
-    public function __construct(array \$fuzes)
+    public function __construct(string \$id)
     {
-        \$this->fuzes = \$fuzes;
+        \$this->id = \$id;
     }
 }
 
@@ -89,7 +115,7 @@ T
 , $render->build());
     }
 
-        /**
+    /**
      * @dataProvider getEntityName
      */
     public function testItRenderOkWithDiffEntityName(string $entity, string $expected): void

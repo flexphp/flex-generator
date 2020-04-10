@@ -49,6 +49,23 @@ interface TestGateway
 T
 , $render->build());
     }
+    public function testItReadOk(): void
+    {
+        $render = new GatewayBuilder('Test', ['read']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+interface TestGateway
+{
+    public function get(string \$id): array;
+}
+
+T
+, $render->build());
+    }
 
     /**
      * @dataProvider getEntityName

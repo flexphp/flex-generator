@@ -85,7 +85,7 @@ T
      * @Route("/{id}", methods={"GET"}, name="tests.read")
      * @Cache(smaxage="10")
      */
-    public function read(\$id): Response
+    public function read(Connection \$conn, \$id): Response
     {
     }
 

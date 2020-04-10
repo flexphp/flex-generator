@@ -38,6 +38,18 @@ T
 , $render->build());
     }
 
+    public function testItRenderReadOk(): void
+    {
+        $render = new ResponseMessageBuilder('Test', 'read');
+
+        $this->assertEquals(<<<T
+        return \$this->render('test/show.html.twig', [
+            'register' => \$response->test,
+        ]);
+T
+, $render->build());
+    }
+
     public function testItRenderWithActionOk(): void
     {
         $render = new ResponseMessageBuilder('Test', 'action');

@@ -6,6 +6,14 @@ use FlexPHP\Messages\RequestInterface;
 
 final class {{ action }}{{ entity }}Request implements RequestInterface
 {
+{% if action|lower == 'read' %}
+    public ${{ name }};
+
+    public function __construct(array ${{ name }})
+    {
+        $this->{{ name }} = ${{ name }};
+    }
+{% else %}
 {% for id, property in properties %}
     public ${{ id }};
 {% endfor %}
@@ -18,4 +26,5 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
         $this->{{ id }} = $data['{{ id }}'] ?? null;
 {% endfor %}
     }
+{% endif %}
 }

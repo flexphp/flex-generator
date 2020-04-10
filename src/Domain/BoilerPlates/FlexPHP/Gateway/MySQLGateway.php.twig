@@ -56,6 +56,17 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
         $this->query->execute();
     }
+{% elseif action in ['read'] %}
+
+    public function get(string $id): array
+    {
+        $this->query->select('*');
+        $this->query->from($this->table);
+        $this->query->where('Id = :id');
+        $this->query->setParameter('id', $id);
+
+        return $this->query->execute()->fetch();
+    }
 {% endif %}
 {% endfor %}
 }

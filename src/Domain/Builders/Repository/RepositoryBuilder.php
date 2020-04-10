@@ -21,8 +21,13 @@ final class RepositoryBuilder extends AbstractBuilder
 
             return $result;
         }, []);
+        $requests = \array_reduce($actions, function (array $result, string $action) {
+            $result[] = $this->getPascalCase($action);
 
-        parent::__construct(\compact('entity', 'item', 'actions'));
+            return $result;
+        }, []);
+
+        parent::__construct(\compact('entity', 'item', 'actions', 'requests'));
     }
 
     protected function getFileTemplate(): string

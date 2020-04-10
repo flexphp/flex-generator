@@ -49,11 +49,6 @@ final class CreateUseCaseFileUseCaseTest extends TestCase
             $filename = \explode('/', $file);
             $this->assertEquals($expectedFiles[$index], \array_pop($filename));
             $this->assertFileExists($file);
-            $content = \file_get_contents($file);
-
-            foreach ($schema->attributes() as $attribute) {
-                $this->assertStringContainsStringIgnoringCase($attribute->name(), $content);
-            }
 
             \unlink($file);
         }

@@ -1,7 +1,7 @@
 {{ '{{' }} include('form/_delete_confirmation.html.twig') {{ '}}' }}
 <form id="delete-form" name="delete-form" method="post" action="{{ '{{' }} url('{{ route }}.delete', {id: {{ item }}.id}) {{ '}}' }}" data-confirmation="true">
     <input type="hidden" name="token" value="{{ '{{' }} csrf_token('delete') {{ '}}' }}" />
-    <button type="submit" class="btn btn-lg btn-block btn-danger">
+    <button type="submit" class="btn btn-outline-danger">
         <i class="fa fa-trash" aria-hidden="true"></i> Delete
     </button>
 </form>

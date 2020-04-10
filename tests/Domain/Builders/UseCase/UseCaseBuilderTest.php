@@ -121,6 +121,38 @@ T
 , $render->build());
     }
 
+    public function testItReadOk(): void
+    {
+        $render = new UseCaseBuilder('Test', 'read', $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\UseCase;
+
+use Domain\Test\Request\ReadTestRequest;
+use Domain\Test\Response\ReadTestResponse;
+use FlexPHP\UseCases\UseCase;
+
+final class ReadTestUseCase extends UseCase
+{
+    /**
+     * @param ReadTestRequest \$request
+     *
+     * @return ReadTestResponse
+     */
+    public function execute(\$request)
+    {
+        \$test = \$this->getRepository()->getById(\$request);
+
+        return new ReadTestResponse(\$test);
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

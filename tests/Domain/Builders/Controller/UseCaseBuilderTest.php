@@ -52,6 +52,18 @@ T
 , $render->build());
     }
 
+    public function testItRenderReadOk(): void
+    {
+        $render = new UseCaseBuilder('Test', 'read');
+
+        $this->assertEquals(<<<T
+        \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+T
+, $render->build());
+    }
+
     public function getEntityName(): array
     {
         return [

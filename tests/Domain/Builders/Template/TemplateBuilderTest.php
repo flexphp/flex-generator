@@ -92,7 +92,7 @@ T
             <h3 class="card-header-title">New Post</h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('posts.index') }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> Show list
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> List
                 </a>
             </div>
         </div>
@@ -127,27 +127,29 @@ T
 {% block title 'Posts Detail' %}
 
 {% block main %}
-    <h1>Posts</h1>
+    <div class="card">
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">Post</h3>
+            <div class="toolbar ml-auto">
+                <a href="{{ path('posts.index') }}" class="btn btn-outline-secondary">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> List
+                </a>
+                <a href="{{ path('posts.edit', {id: register.id}) }}" class="btn btn-outline-primary">
+                    <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                </a>
+            </div>
+        </div>
 
-    <p class="metadata">
-        <span class="metadata">{{ register.title }}</span>
-        <span class="metadata">{{ register.content }}</span>
-        <span class="metadata">{{ register.createdAt }}</span>
-    </p>
-{% endblock %}
+        <div class="card-body">
+            <div class="form-group"><label>Title</label><div class="form-control-plaintext">{{ register.title }}</div></div>
+            <div class="form-group"><label>Content</label><div class="form-control-plaintext">{{ register.content }}</div></div>
+            <div class="form-group"><label>Created At</label><div class="form-control-plaintext">{{ register.createdAt }}</div></div>
+        </div>
 
-{% block sidebar %}
-    <div class="section">
-        <a href="{{ path('posts.edit', {id: register.id}) }}" class="btn btn-lg btn-block btn-success">
-            <i class="fa fa-edit" aria-hidden="true"></i> Edit
-        </a>
+        <div class="card-footer text-right">
+            {{ include('post/_delete_form.html.twig', {post: register}, with_context = false) }}
+        </div>
     </div>
-
-    <div class="section">
-        {{ include('post/_delete_form.html.twig', {post: register}, with_context = false) }}
-    </div>
-
-    {{ parent() }}
 {% endblock %}
 
 T
@@ -207,7 +209,7 @@ T
 {{ include('form/_delete_confirmation.html.twig') }}
 <form id="delete-form" name="delete-form" method="post" action="{{ url('posts.delete', {id: post.id}) }}" data-confirmation="true">
     <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
-    <button type="submit" class="btn btn-lg btn-block btn-danger">
+    <button type="submit" class="btn btn-outline-danger">
         <i class="fa fa-trash" aria-hidden="true"></i> Delete
     </button>
 </form>

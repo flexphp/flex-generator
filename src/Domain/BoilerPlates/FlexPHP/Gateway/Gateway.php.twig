@@ -9,6 +9,8 @@ interface {{ entity }}Gateway
     public function find(array $wheres, array $orders, int $limit): array;
 {% elseif action in ['create'] %}
     public function persist({{ entity }} ${{ item }}): void;
+{% elseif action in ['read'] %}
+    public function get(string $id): array;
 {% else %}
 {% endif %}
 {% endfor %}
