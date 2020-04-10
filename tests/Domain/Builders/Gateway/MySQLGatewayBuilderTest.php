@@ -14,6 +14,53 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class MySQLGatewayBuilderTest extends TestCase
 {
+    public function testItIndexOk(): void
+    {
+        $render = new MySQLGatewayBuilder('Test', ['index'], $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\Gateway;
+
+use Domain\Test\Test;
+use Domain\Test\TestGateway;
+use Doctrine\DBAL\Connection;
+
+final class MySQLTestGateway implements TestGateway
+{
+    private \$query;
+    private \$table = 'tests';
+
+    public function __construct(Connection \$conn)
+    {
+        \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function find(array \$wheres, array \$orders, int \$limit): array
+    {
+        \$this->query->select('*');
+        \$this->query->from(\$this->table);
+
+        foreach(\$wheres as \$column => \$value) {
+            if (!\$value) {
+                continue;
+            }
+
+            \$this->query->where(\$column . ' = :' . \$column);
+            \$this->query->setParameter(\$column, \$value);
+        }
+
+        \$this->query->setMaxResults(\$limit);
+
+        return \$this->query->execute()->fetchAll();
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItCreateOk(): void
     {
         $render = new MySQLGatewayBuilder('Test', ['create'], $this->getSchemaProperties());
