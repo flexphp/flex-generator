@@ -28,14 +28,14 @@
 {% for id, property in properties %}
                         <td>{{ '{{' }} register.{{ id }} {{ '}}' }}</td>
 {% endfor %}
-                        <td class="text-right">
-                            <div class="item-actions">
-                                <a href="{{ '{{' }} path('{{ route }}.read', {id: register.id}) {{ '}}' }}" class="btn btn-sm btn-default">
-                                    <i class="fa fa-eye" aria-hidden="true"></i> {{ 'Show' }}
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a href="{{ '{{' }} path('{{ route }}.read', {id: register.id}) {{ '}}' }}" class="btn btn-sm btn-outline-light">
+                                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="{{ '{{' }} path('{{ route }}.edit', {id: register.id}) {{ '}}' }}" class="btn btn-sm btn-primary">
-                                    <i class="fa fa-edit" aria-hidden="true"></i> {{ 'Edit' }}
+                                <a href="{{ '{{' }} path('{{ route }}.edit', {id: register.id}) {{ '}}' }}" class="btn btn-sm btn-outline-light">
+                                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
                                 </a>
                             </div>
                         </td>

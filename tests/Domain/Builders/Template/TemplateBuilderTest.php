@@ -50,14 +50,14 @@ final class TemplateBuilderTest extends TestCase
                         <td>{{ register.title }}</td>
                         <td>{{ register.content }}</td>
                         <td>{{ register.createdAt }}</td>
-                        <td class="text-right">
-                            <div class="item-actions">
-                                <a href="{{ path('posts.read', {id: register.id}) }}" class="btn btn-sm btn-default">
-                                    <i class="fa fa-eye" aria-hidden="true"></i> Show
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a href="{{ path('posts.read', {id: register.id}) }}" class="btn btn-sm btn-outline-light">
+                                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="{{ path('posts.edit', {id: register.id}) }}" class="btn btn-sm btn-primary">
-                                    <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                                <a href="{{ path('posts.edit', {id: register.id}) }}" class="btn btn-sm btn-outline-light">
+                                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
                                 </a>
                             </div>
                         </td>
@@ -104,12 +104,8 @@ T
                 <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" /></div>
             </div>
 
-            <div class="card-footer">
-                <a class="btn btn-outline-default" onclick="history.back()" href="javascript:;">
-                    <i class="fa fa-back" aria-hidden="true"></i> Back
-                </a>
-
-                <button type="submit" class="btn btn-primary float-right">
+            <div class="card-footer text-right">
+                <button type="submit" class="btn btn-primary">
                     <i class="fa fa-save" aria-hidden="true"></i> Save
                 </button>
             </div>
