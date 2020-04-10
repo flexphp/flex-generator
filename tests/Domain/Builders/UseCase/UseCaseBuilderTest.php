@@ -17,20 +17,7 @@ final class UseCaseBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $action = 'action';
-        $entity = 'Test';
-        $properties = [
-            [
-                Keyword::NAME => 'foo',
-                Keyword::DATATYPE => 'integer',
-            ],
-            [
-                Keyword::NAME => 'bar',
-                Keyword::DATATYPE => 'varchar',
-            ],
-        ];
-
-        $render = new UseCaseBuilder($entity, $action, $properties);
+        $render = new UseCaseBuilder('Test', 'action', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -43,8 +30,11 @@ use FlexPHP\UseCases\UseCase;
 
 final class ActionTestUseCase extends UseCase
 {
-    private \$foo;
-    private \$bar;
+    private \$lower;
+    private \$upper;
+    private \$pascalCase;
+    private \$camelCase;
+    private \$snakeCase;
 
     /**
      * @param ActionTestRequest \$request
@@ -53,8 +43,11 @@ final class ActionTestUseCase extends UseCase
      */
     public function execute(\$request)
     {
-        \$this->foo = \$request->foo;
-        \$this->bar = \$request->bar;
+        \$this->lower = \$request->lower;
+        \$this->upper = \$request->upper;
+        \$this->pascalCase = \$request->pascalCase;
+        \$this->camelCase = \$request->camelCase;
+        \$this->snakeCase = \$request->snakeCase;
 
         return new ActionTestResponse();
     }
@@ -64,20 +57,41 @@ T
 , $render->build());
     }
 
+    public function testItIndexOk(): void
+    {
+        $render = new UseCaseBuilder('Test', 'index', $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\UseCase;
+
+use Domain\Test\Request\IndexTestRequest;
+use Domain\Test\Response\IndexTestResponse;
+use FlexPHP\UseCases\UseCase;
+
+final class IndexTestUseCase extends UseCase
+{
+    /**
+     * @param IndexTestRequest \$request
+     *
+     * @return IndexTestResponse
+     */
+    public function execute(\$request)
+    {
+        \$tests = \$this->getRepository()->findBy(\$request);
+
+        return new IndexTestResponse(\$tests);
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItCreateOk(): void
     {
-        $properties = [
-            [
-                Keyword::NAME => 'foo',
-                Keyword::DATATYPE => 'integer',
-            ],
-            [
-                Keyword::NAME => 'bar',
-                Keyword::DATATYPE => 'varchar',
-            ],
-        ];
-
-        $render = new UseCaseBuilder('Test', 'create', $properties);
+        $render = new UseCaseBuilder('Test', 'create', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -112,9 +126,7 @@ T
      */
     public function testItOkWithDiffEntityName(string $entity, string $expected): void
     {
-        $action = 'action';
-
-        $render = new UseCaseBuilder($entity, $action, []);
+        $render = new UseCaseBuilder($entity, 'action', []);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -147,9 +159,7 @@ T
      */
     public function testItOkWithDiffActionName(string $action, string $expected): void
     {
-        $entity = 'Test';
-
-        $render = new UseCaseBuilder($entity, $action, []);
+        $render = new UseCaseBuilder('test', $action, []);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -182,10 +192,7 @@ T
      */
     public function testItOkWithDiffPropertyName(string $name, string $expected): void
     {
-        $action = 'action';
-        $entity = 'Test';
-
-        $render = new UseCaseBuilder($entity, $action, [
+        $render = new UseCaseBuilder('Test', 'action', [
             [
                 Keyword::NAME => $name,
                 Keyword::DATATYPE => 'integer',

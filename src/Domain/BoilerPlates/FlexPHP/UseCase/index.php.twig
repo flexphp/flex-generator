@@ -1,0 +1,22 @@
+<?php declare(strict_types=1);
+
+namespace Domain\{{ entity }}\UseCase;
+
+use Domain\{{ entity }}\Request\{{ action }}{{ entity }}Request;
+use Domain\{{ entity }}\Response\{{ action }}{{ entity }}Response;
+use FlexPHP\UseCases\UseCase;
+
+final class {{ action }}{{ entity }}UseCase extends UseCase
+{
+    /**
+     * @param {{ action }}{{ entity }}Request $request
+     *
+     * @return {{ action }}{{ entity }}Response
+     */
+    public function execute($request)
+    {
+        ${{ item }} = $this->getRepository()->findBy($request);
+
+        return new {{ action }}{{ entity }}Response(${{ item }});
+    }
+}
