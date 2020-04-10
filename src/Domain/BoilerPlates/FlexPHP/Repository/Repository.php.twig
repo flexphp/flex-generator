@@ -2,15 +2,25 @@
 
 namespace Domain\{{ entity }};
 
-{% if 'create' in actions %}
+{% for action in actions %}
+{% if action == 'index' %}
+use Domain\{{ entity }}\Request\Index{{ entity }}Request;
+{% endif %}
+{% if action == 'create' %}
 use Domain\{{ entity }}\Request\Create{{ entity }}Request;
 {% endif %}
+{% endfor %}
 use FlexPHP\Repositories\Repository;
 
 final class {{ entity }}Repository extends Repository
 {
 {% for action in actions %}
-{% if action in ['create'] %}
+{% if action in ['index'] %}
+    public function findBy(IndexPostRequest $request): array
+    {
+        return $this->getGateway()->find((array)$request, [], 10);
+    }
+{% elseif action in ['create'] %}
     public function add(Create{{ entity }}Request $request): void
     {
         ${{ item }} = (new {{ entity }}Factory())->make($request);

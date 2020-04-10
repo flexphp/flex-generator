@@ -14,6 +14,32 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class RepositoryBuilderTest extends TestCase
 {
+    public function testItRenderIndexOk(): void
+    {
+        $render = new RepositoryBuilder('Test', [
+            'index',
+        ]);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+use Domain\Test\Request\IndexTestRequest;
+use FlexPHP\Repositories\Repository;
+
+final class TestRepository extends Repository
+{
+    public function findBy(IndexPostRequest \$request): array
+    {
+        return \$this->getGateway()->find((array)\$request, [], 10);
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderCreateOk(): void
     {
         $render = new RepositoryBuilder('Test', [
