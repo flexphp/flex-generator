@@ -14,6 +14,24 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class GatewayBuilderTest extends TestCase
 {
+    public function testItIndexOk(): void
+    {
+        $render = new GatewayBuilder('Test', ['index']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+interface TestGateway
+{
+    public function find(array \$wheres, array \$orders, int \$limit): array;
+}
+
+T
+, $render->build());
+    }
+
     public function testItCreateOk(): void
     {
         $render = new GatewayBuilder('Test', ['create']);
