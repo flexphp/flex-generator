@@ -64,6 +64,30 @@ final class CreateFuzResponse implements ResponseInterface
 T
 , $render->build());
     }
+    public function testItRenderIndexOk(): void
+    {
+        $render = new ResponseBuilder('Fuz', 'index');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Response;
+
+use FlexPHP\Messages\ResponseInterface;
+
+final class IndexFuzResponse implements ResponseInterface
+{
+    public \$fuzes;
+
+    public function __construct(array \$fuzes)
+    {
+        \$this->fuzes = \$fuzes;
+    }
+}
+
+T
+, $render->build());
+    }
 
         /**
      * @dataProvider getEntityName
