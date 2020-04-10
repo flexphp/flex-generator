@@ -19,10 +19,10 @@ final class UseCaseBuilderTest extends TestCase
      */
     public function testItRenderOk(string $entity, string $expected): void
     {
-        $render = new UseCaseBuilder($entity, 'index');
+        $render = new UseCaseBuilder($entity, 'action');
 
         $this->assertEquals(<<<T
-        \$useCase = new Index{$expected}UseCase();
+        \$useCase = new Action{$expected}UseCase();
         \$response = \$useCase->execute(\$request);
 T
 , $render->build());
@@ -33,7 +33,8 @@ T
         $render = new UseCaseBuilder('Test', 'index');
 
         $this->assertEquals(<<<T
-        \$useCase = new IndexTestUseCase();
+        \$useCase = new IndexTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
         \$response = \$useCase->execute(\$request);
 T
 , $render->build());

@@ -20,9 +20,7 @@ final class ControllerBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $entity = 'Test';
-
-        $render = new ControllerBuilder($entity, []);
+        $render = new ControllerBuilder('Test', []);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -75,16 +73,76 @@ T
 , $render->build());
     }
 
+    public function testItIndexOk(): void
+    {
+        $entity = 'Test';
+        $action = 'index';
+        $actions = [
+            $action => (new ActionBuilder(
+                $entity,
+                $action,
+                (new RequestMessageBuilder($entity, $action))->build(),
+                (new UseCaseBuilder($entity, $action))->build(),
+                (new ResponseMessageBuilder($entity, $action))->build()
+            ))->build(),
+        ];
+
+        $render = new ControllerBuilder($entity, $actions);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace App\Controller;
+
+use Domain\Test\TestRepository;
+use Domain\Test\Gateway\MySQLTestGateway;
+use Domain\Test\Request\IndexTestRequest;
+use Domain\Test\UseCase\IndexTestUseCase;
+use Doctrine\DBAL\Connection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/tests")
+ */
+final class TestController extends AbstractController
+{
+    /**
+     * @Route("/", methods={"GET"}, name="tests.index")
+     * @Cache(smaxage="10")
+     */
+    public function index(Request \$request, Connection \$conn): Response
+    {
+        \$request = new IndexTestRequest(\$request->request->all());
+
+        \$useCase = new IndexTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        return \$this->render('test/index.html.twig', [
+            'registers' => \$response->tests,
+        ]);
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItCreateOk(): void
     {
         $entity = 'Test';
+        $action = 'create';
         $actions = [
-            'create' => (new ActionBuilder(
+            $action => (new ActionBuilder(
                 $entity,
-                'create',
-                (new RequestMessageBuilder($entity, 'create'))->build(),
-                (new UseCaseBuilder($entity, 'create'))->build(),
-                (new ResponseMessageBuilder($entity, 'create'))->build()
+                $action,
+                (new RequestMessageBuilder($entity, $action))->build(),
+                (new UseCaseBuilder($entity, $action))->build(),
+                (new ResponseMessageBuilder($entity, $action))->build()
             ))->build(),
         ];
 
@@ -145,12 +203,12 @@ T
     {
         $entity = 'Test';
         $actions = [
-            'index' => (new ActionBuilder(
+            'action' => (new ActionBuilder(
                 $entity,
-                'index',
-                (new RequestMessageBuilder($entity, 'index'))->build(),
-                (new UseCaseBuilder($entity, 'index'))->build(),
-                (new ResponseMessageBuilder($entity, 'index'))->build()
+                'action',
+                (new RequestMessageBuilder($entity, 'action'))->build(),
+                (new UseCaseBuilder($entity, 'action'))->build(),
+                (new ResponseMessageBuilder($entity, 'action'))->build()
             ))->build(),
             'custom Fuz' => (new ActionBuilder(
                 $entity,
@@ -168,13 +226,10 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\TestRepository;
-use Domain\Test\Gateway\MySQLTestGateway;
-use Domain\Test\Request\IndexTestRequest;
+use Domain\Test\Request\ActionTestRequest;
 use Domain\Test\Request\CustomFuzTestRequest;
-use Domain\Test\UseCase\IndexTestUseCase;
+use Domain\Test\UseCase\ActionTestUseCase;
 use Domain\Test\UseCase\CustomFuzTestUseCase;
-use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -187,19 +242,16 @@ use Symfony\Component\Routing\Annotation\Route;
 final class TestController extends AbstractController
 {
     /**
-     * @Route("/", methods={"GET"}, name="tests.index")
-     * @Cache(smaxage="10")
+     * @Route("/action", methods={"POST"}, name="tests.action")
      */
-    public function index(Request \$request): Response
+    public function action(Request \$request): Response
     {
-        \$request = new IndexTestRequest(\$request->request->all());
+        \$request = new ActionTestRequest(\$request->request->all());
 
-        \$useCase = new IndexTestUseCase();
+        \$useCase = new ActionTestUseCase();
         \$response = \$useCase->execute(\$request);
 
-        return \$this->render('test/index.html.twig', [
-            'registers' => [],
-        ]);
+        return new Response(\$response);
     }
 
     /**

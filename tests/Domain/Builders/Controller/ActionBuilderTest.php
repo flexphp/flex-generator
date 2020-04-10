@@ -26,7 +26,7 @@ final class ActionBuilderTest extends TestCase
      * @Route("/", methods={"GET"}, name="{$route}.index")
      * @Cache(smaxage="10")
      */
-    public function index(Request \$request): Response
+    public function index(Request \$request, Connection \$conn): Response
     {
     }
 
@@ -43,7 +43,7 @@ T
      * @Route("/", methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
      */
-    public function index(Request \$request): Response
+    public function index(Request \$request, Connection \$conn): Response
     {
     }
 
@@ -150,14 +150,13 @@ T
     {
         $requestMessage = '// foo';
 
-        $render = new ActionBuilder('Test', 'index', $requestMessage);
+        $render = new ActionBuilder('Test', 'action', $requestMessage);
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/", methods={"GET"}, name="tests.index")
-     * @Cache(smaxage="10")
+     * @Route("/action", methods={"POST"}, name="tests.action")
      */
-    public function index(Request \$request): Response
+    public function action(Request \$request): Response
     {
         $requestMessage
     }
@@ -170,14 +169,13 @@ T
     {
         $useCase = '// bar';
 
-        $render = new ActionBuilder('Test', 'index', $useCase);
+        $render = new ActionBuilder('Test', 'action', $useCase);
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/", methods={"GET"}, name="tests.index")
-     * @Cache(smaxage="10")
+     * @Route("/action", methods={"POST"}, name="tests.action")
      */
-    public function index(Request \$request): Response
+    public function action(Request \$request): Response
     {
         $useCase
     }
@@ -190,14 +188,13 @@ T
     {
         $responseMessage = '// buz';
 
-        $render = new ActionBuilder('Test', 'index', $responseMessage);
+        $render = new ActionBuilder('Test', 'action', $responseMessage);
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/", methods={"GET"}, name="tests.index")
-     * @Cache(smaxage="10")
+     * @Route("/action", methods={"POST"}, name="tests.action")
      */
-    public function index(Request \$request): Response
+    public function action(Request \$request): Response
     {
         $responseMessage
     }
@@ -212,14 +209,13 @@ T
         $useCase = '// ' . __LINE__;
         $responseMessage = '// ' . __LINE__;
 
-        $render = new ActionBuilder('Test', 'index', $requestMessage, $useCase, $responseMessage);
+        $render = new ActionBuilder('Test', 'action', $requestMessage, $useCase, $responseMessage);
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/", methods={"GET"}, name="tests.index")
-     * @Cache(smaxage="10")
+     * @Route("/action", methods={"POST"}, name="tests.action")
      */
-    public function index(Request \$request): Response
+    public function action(Request \$request): Response
     {
         $requestMessage
 
@@ -234,14 +230,13 @@ T
 
     public function testItRenderToString(): void
     {
-        $render = new ActionBuilder('Test', 'index');
+        $render = new ActionBuilder('Test', 'action');
 
         $this->assertEquals(<<<T
     /**
-     * @Route("/", methods={"GET"}, name="tests.index")
-     * @Cache(smaxage="10")
+     * @Route("/action", methods={"POST"}, name="tests.action")
      */
-    public function index(Request \$request): Response
+    public function action(Request \$request): Response
     {
     }
 

@@ -1,6 +1,6 @@
 {% if action == 'index' %}
         return $this->render('{{ name }}/index.html.twig', [
-            'registers' => [],
+            'registers' => $response->{{ item }},
         ]);
 {% elseif action == 'create' %}
         $this->addFlash($response->status, $response->message);
