@@ -94,11 +94,11 @@ use FlexPHP\Messages\RequestInterface;
 
 final class ReadFuzRequest implements RequestInterface
 {
-    public \$fuz;
+    public \$id;
 
-    public function __construct(array \$fuz)
+    public function __construct(string \$id)
     {
-        \$this->fuz = \$fuz;
+        \$this->id = \$id;
     }
 }
 

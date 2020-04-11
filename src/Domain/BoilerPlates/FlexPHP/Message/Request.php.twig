@@ -6,14 +6,7 @@ use FlexPHP\Messages\RequestInterface;
 
 final class {{ action }}{{ entity }}Request implements RequestInterface
 {
-{% if action|lower == 'read' %}
-    public ${{ name }};
-
-    public function __construct(array ${{ name }})
-    {
-        $this->{{ name }} = ${{ name }};
-    }
-{% elseif action|lower == 'delete' %}
+{% if action|lower in ['read', 'delete'] %}
     public ${{ key }};
 
     public function __construct(string ${{ key }})
