@@ -29,19 +29,19 @@ final class TestFactory
     {
         \$test = new Test();
 
-        if (\$data->lower) {
+        if (isset(\$data->lower)) {
             \$test->setLower((string)\$data->lower);
         }
-        if (\$data->upper) {
+        if (isset(\$data->upper)) {
             \$test->setUpper((int)\$data->upper);
         }
-        if (\$data->pascalCase) {
+        if (isset(\$data->pascalCase)) {
             \$test->setPascalCase(new \DateTime(\$data->pascalCase));
         }
-        if (\$data->camelCase) {
+        if (isset(\$data->camelCase)) {
             \$test->setCamelCase((bool)\$data->camelCase);
         }
-        if (\$data->snakeCase) {
+        if (isset(\$data->snakeCase)) {
             \$test->setSnakeCase((string)\$data->snakeCase);
         }
 
