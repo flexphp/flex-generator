@@ -94,7 +94,9 @@ T
 
 namespace App\Controller;
 
+use Domain\Test\TestFactory;
 use Domain\Test\TestRepository;
+use Domain\Test\TestType;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\IndexTestRequest;
 use Domain\Test\UseCase\IndexTestUseCase;
@@ -153,7 +155,9 @@ T
 
 namespace App\Controller;
 
+use Domain\Test\TestFactory;
 use Domain\Test\TestRepository;
+use Domain\Test\TestType;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\CreateTestRequest;
 use Domain\Test\UseCase\CreateTestUseCase;
@@ -175,7 +179,11 @@ final class TestController extends AbstractController
      */
     public function new(): Response
     {
-        return \$this->render('test/new.html.twig');
+        \$form = \$this->createForm(TestType::class);
+
+        return \$this->render('test/new.html.twig', [
+            'form' => \$form->createView(),
+        ]);
     }
 
     /**
@@ -183,7 +191,10 @@ final class TestController extends AbstractController
      */
     public function create(Request \$request, Connection \$conn): Response
     {
-        \$request = new CreateTestRequest(\$request->request->get('form'));
+        \$form = \$this->createForm(TestType::class);
+        \$form->handleRequest(\$request);
+
+        \$request = new CreateTestRequest(\$form->getData());
 
         \$useCase = new CreateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
 
@@ -220,7 +231,9 @@ T
 
 namespace App\Controller;
 
+use Domain\Test\TestFactory;
 use Domain\Test\TestRepository;
+use Domain\Test\TestType;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\ReadTestRequest;
 use Domain\Test\UseCase\ReadTestUseCase;
@@ -279,7 +292,9 @@ T
 
 namespace App\Controller;
 
+use Domain\Test\TestFactory;
 use Domain\Test\TestRepository;
+use Domain\Test\TestType;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\UpdateTestRequest;
 use Domain\Test\UseCase\UpdateTestUseCase;
@@ -307,8 +322,11 @@ final class TestController extends AbstractController
 
         \$response = \$useCase->execute(\$request);
 
+        \$form = \$this->createForm(TestType::class, \$response->test);
+
         return \$this->render('test/edit.html.twig', [
-            'register' => \$response->test;
+            'register' => \$response->test,
+            'form' => \$form->createView(),
         ]);
     }
 
@@ -317,9 +335,73 @@ final class TestController extends AbstractController
      */
     public function update(Request \$request, Connection \$conn): Response
     {
-        \$request = new UpdateTestRequest(\$request->request->get('form'));
+        \$form = \$this->createForm(TestType::class);
+        \$form->submit(\$request->request->get(\$form->getName()));
+        \$form->handleRequest(\$request);
+
+        \$request = new UpdateTestRequest(\$form->getData());
 
         \$useCase = new UpdateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        \$this->addFlash(\$response->status, \$response->message);
+
+        return \$this->redirectToRoute('tests.index');
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItDeleteOk(): void
+    {
+        $entity = 'Test';
+        $action = 'delete';
+        $actions = [
+            $action => (new ActionBuilder(
+                $entity,
+                $action,
+                (new RequestMessageBuilder($entity, $action))->build(),
+                (new UseCaseBuilder($entity, $action))->build(),
+                (new ResponseMessageBuilder($entity, $action))->build()
+            ))->build(),
+        ];
+
+        $render = new ControllerBuilder($entity, $actions);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace App\Controller;
+
+use Domain\Test\TestFactory;
+use Domain\Test\TestRepository;
+use Domain\Test\TestType;
+use Domain\Test\Gateway\MySQLTestGateway;
+use Domain\Test\Request\DeleteTestRequest;
+use Domain\Test\UseCase\DeleteTestUseCase;
+use Doctrine\DBAL\Connection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/tests")
+ */
+final class TestController extends AbstractController
+{
+    /**
+     * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
+     */
+    public function delete(Connection \$conn, \$id): Response
+    {
+        \$request = new DeleteTestRequest(\$id);
+
+        \$useCase = new DeleteTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
 
         \$response = \$useCase->execute(\$request);
 

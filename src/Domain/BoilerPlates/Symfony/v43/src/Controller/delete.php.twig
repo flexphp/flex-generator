@@ -1,7 +1,7 @@
     /**
      * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
      */
-    public function {{ action_camel }}($id): Response
+    public function {{ action_camel }}(Connection $conn, $id): Response
     {
 {% if request_message %}
         {{ request_message|trim|raw }}

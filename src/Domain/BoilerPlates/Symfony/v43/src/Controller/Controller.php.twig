@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 {% if actions.Index or actions.Create or actions.Read or actions.Update or actions.Delete %}
+use Domain\{{ entity }}\{{ entity }}Factory;
 use Domain\{{ entity }}\{{ entity }}Repository;
+use Domain\{{ entity }}\{{ entity }}Type;
 use Domain\{{ entity }}\Gateway\MySQL{{ entity }}Gateway;
 {% endif %}
 {% for key,action in actions %}

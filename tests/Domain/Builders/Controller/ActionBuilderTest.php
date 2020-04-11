@@ -62,7 +62,11 @@ T
      */
     public function new(): Response
     {
-        return \$this->render('test/new.html.twig');
+        \$form = \$this->createForm(TestType::class);
+
+        return \$this->render('test/new.html.twig', [
+            'form' => \$form->createView(),
+        ]);
     }
 
     /**
@@ -110,8 +114,11 @@ T
 
         \$response = \$useCase->execute(\$request);
 
+        \$form = \$this->createForm(TestType::class, \$response->test);
+
         return \$this->render('test/edit.html.twig', [
-            'register' => \$response->test;
+            'register' => \$response->test,
+            'form' => \$form->createView(),
         ]);
     }
 
@@ -134,7 +141,7 @@ T
     /**
      * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
      */
-    public function delete(\$id): Response
+    public function delete(Connection \$conn, \$id): Response
     {
     }
 

@@ -1,17 +1,20 @@
     /**
-     * @Route("/edit/{id}", methods={"GET"}, name="{{ entity }}.edit")
+     * @Route("/edit/{id}", methods={"GET"}, name="{{ entity_dash }}.edit")
      * @Cache(smaxage="10")
      */
     public function edit(Connection $conn, $id): Response
     {
-        $request = new ReadTestRequest($id);
+        $request = new Read{{ entity }}Request($id);
 
-        $useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway($conn)));
+        $useCase = new Read{{ entity }}UseCase(new {{ entity }}Repository(new MySQL{{ entity }}Gateway($conn)));
 
         $response = $useCase->execute($request);
 
+        $form = $this->createForm({{ entity }}Type::class, $response->{{ name }});
+
         return $this->render('{{ name }}/edit.html.twig', [
-            'register' => $response->{{ name }};
+            'register' => $response->{{ name }},
+            'form' => $form->createView(),
         ]);
     }
 

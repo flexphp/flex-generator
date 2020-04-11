@@ -42,7 +42,10 @@ T
         $render = new RequestMessageBuilder('Test', 'create');
 
         $this->assertEquals(<<<T
-        \$request = new CreateTestRequest(\$request->request->get('form'));
+        \$form = \$this->createForm(TestType::class);
+        \$form->handleRequest(\$request);
+
+        \$request = new CreateTestRequest(\$form->getData());
 T
 , $render->build());
     }
@@ -62,7 +65,11 @@ T
         $render = new RequestMessageBuilder('Test', 'update');
 
         $this->assertEquals(<<<T
-        \$request = new UpdateTestRequest(\$request->request->get('form'));
+        \$form = \$this->createForm(TestType::class);
+        \$form->submit(\$request->request->get(\$form->getName()));
+        \$form->handleRequest(\$request);
+
+        \$request = new UpdateTestRequest(\$form->getData());
 T
 , $render->build());
     }
