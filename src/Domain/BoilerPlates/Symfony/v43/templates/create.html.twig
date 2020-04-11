@@ -13,11 +13,9 @@
             </div>
         </div>
 
-        <form id="new-form" name="new-form" method="post" action="{{ '{{' }} path('{{ route }}.create') {{ '}}' }}">
+        {{ '{{' }} form_start(form, {'action': path('{{ route }}.create')}) {{ '}}' }}
             <div class="card-body">
-{% for input in inputs %}
-                {{ input|raw }}
-{% endfor %}
+                {{ '{{' }} form_widget(form) {{ '}}' }}
             </div>
 
             <div class="card-footer text-right">
@@ -25,6 +23,6 @@
                     <i class="fa fa-save" aria-hidden="true"></i> Create
                 </button>
             </div>
-        </form>
+        {{ '{{' }} form_end(form) {{ '}}' }}
     </div>
 {{ '{%' }} endblock {{ '%}' }}

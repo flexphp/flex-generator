@@ -2,7 +2,7 @@
 <form id="delete-form" name="delete-form" method="post" action="{{ '{{' }} url('{{ route }}.delete', {id: {{ item }}.id}) {{ '}}' }}" data-confirmation="true">
     <input type="hidden" name="token" value="{{ '{{' }} csrf_token('delete') {{ '}}' }}" />
     <input type="hidden" name="_method" value="delete" />
-    <button type="submit" class="btn btn-outline-danger">
+    <button type="submit" class="btn btn-outline-danger" tabindex="-1">
         <i class="fa fa-trash" aria-hidden="true"></i> Delete
     </button>
 </form>

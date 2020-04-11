@@ -97,11 +97,9 @@ T
             </div>
         </div>
 
-        <form id="new-form" name="new-form" method="post" action="{{ path('tests.create') }}">
+        {{ form_start(form, {'action': path('tests.create')}) }}
             <div class="card-body">
-                <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" value="{{ register.title }}" /></div>
-                <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" value="{{ register.content }}" /></div>
-                <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" value="{{ register.createdAt }}" /></div>
+                {{ form_widget(form) }}
             </div>
 
             <div class="card-footer text-right">
@@ -109,7 +107,7 @@ T
                     <i class="fa fa-save" aria-hidden="true"></i> Create
                 </button>
             </div>
-        </form>
+        {{ form_end(form) }}
     </div>
 {% endblock %}
 
@@ -183,14 +181,11 @@ T
             </div>
         </div>
 
-        <form id="edit-form" name="edit-form" method="post" action="{{ path('tests.update', {id: test.id}) }}">
-            <input type="hidden" name="_method" value="put" />
+        {{ form_start(form, {'action': path('tests.update', {id: register.id}), 'method': 'PUT', 'attr': {'id': 'test'}}) }}
             <div class="card-body">
-                <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" value="{{ register.title }}" /></div>
-                <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" value="{{ register.content }}" /></div>
-                <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" value="{{ register.createdAt }}" /></div>
+                {{ form_widget(form) }}
             </div>
-        </form>
+        {{ form_end(form) }}
 
         <div class="card-footer">
             <div class="row">
@@ -199,7 +194,7 @@ T
                 </div>
 
                 <div class="col text-right">
-                    <button type="submit" form="edit-form" class="btn btn-primary">
+                    <button type="submit" form="test" class="btn btn-primary">
                         <i class="fa fa-save" aria-hidden="true"></i> Update
                     </button>
                 </div>
@@ -221,7 +216,7 @@ T
 <form id="delete-form" name="delete-form" method="post" action="{{ url('tests.delete', {id: test.id}) }}" data-confirmation="true">
     <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
     <input type="hidden" name="_method" value="delete" />
-    <button type="submit" class="btn btn-outline-danger">
+    <button type="submit" class="btn btn-outline-danger" tabindex="-1">
         <i class="fa fa-trash" aria-hidden="true"></i> Delete
     </button>
 </form>

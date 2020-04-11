@@ -38,22 +38,7 @@ final class TemplateBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        $inputs = \array_reduce($properties, function (array $result, array $property) {
-            $options = \array_filter([
-                'label' => (new Convert($property[Keyword::NAME]))->toSentence(),
-                // 'help' => $property[Keyword::HELP],
-                // 'help_html' => strip_tags($property[Keyword::HELP]) !== $property[Keyword::HELP],
-                'default' => '{{ register.' . $this->getCamelCase($property[Keyword::NAME]) . ' }}',
-                'type' => $property[Keyword::TYPE] ?? null,
-                'constraints' => $property[Keyword::CONSTRAINTS] ?? [],
-            ]);
-
-            $result[] = (new InputBuilder($this->getCamelCase($property[Keyword::NAME]), $options))->render();
-
-            return $result;
-        }, []);
-
-        parent::__construct(\compact('name', 'entity', 'route', 'item', 'headers', 'properties', 'inputs'));
+        parent::__construct(\compact('name', 'entity', 'route', 'item', 'headers', 'properties'));
     }
 
     protected function getFileTemplate(): string
