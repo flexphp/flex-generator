@@ -48,6 +48,39 @@ T
 , $render->build());
     }
 
+    public function testItRenderCreateOk(): void
+    {
+        $render = new RequestBuilder('Fuz', 'create', $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class CreateFuzRequest implements RequestInterface
+{
+    public \$lower;
+    public \$upper;
+    public \$pascalCase;
+    public \$camelCase;
+    public \$snakeCase;
+
+    public function __construct(array \$data)
+    {
+        \$this->lower = \$data['lower'] ?? null;
+        \$this->upper = \$data['upper'] ?? null;
+        \$this->pascalCase = \$data['pascalCase'] ?? null;
+        \$this->camelCase = \$data['camelCase'] ?? null;
+        \$this->snakeCase = \$data['snakeCase'] ?? null;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderReadOk(): void
     {
         $render = new RequestBuilder('Fuz', 'read', $this->getSchemaProperties());
@@ -66,6 +99,64 @@ final class ReadFuzRequest implements RequestInterface
     public function __construct(array \$fuz)
     {
         \$this->fuz = \$fuz;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderUpdateOk(): void
+    {
+        $render = new RequestBuilder('Fuz', 'update', $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class UpdateFuzRequest implements RequestInterface
+{
+    public \$lower;
+    public \$upper;
+    public \$pascalCase;
+    public \$camelCase;
+    public \$snakeCase;
+
+    public function __construct(array \$data)
+    {
+        \$this->lower = \$data['lower'] ?? null;
+        \$this->upper = \$data['upper'] ?? null;
+        \$this->pascalCase = \$data['pascalCase'] ?? null;
+        \$this->camelCase = \$data['camelCase'] ?? null;
+        \$this->snakeCase = \$data['snakeCase'] ?? null;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderDeleteOk(): void
+    {
+        $render = new RequestBuilder('Fuz', 'delete', $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class DeleteFuzRequest implements RequestInterface
+{
+    public \$id;
+
+    public function __construct(string \$id)
+    {
+        \$this->id = \$id;
     }
 }
 

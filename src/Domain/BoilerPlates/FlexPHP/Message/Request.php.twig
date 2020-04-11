@@ -13,6 +13,13 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
     {
         $this->{{ name }} = ${{ name }};
     }
+{% elseif action|lower == 'delete' %}
+    public ${{ key }};
+
+    public function __construct(string ${{ key }})
+    {
+        $this->{{ key }} = ${{ key }};
+    }
 {% else %}
 {% for id, property in properties %}
     public ${{ id }};
