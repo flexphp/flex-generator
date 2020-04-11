@@ -80,7 +80,9 @@ final class TestRepository extends Repository
 {
     public function getById(ReadTestRequest \$request): array
     {
-        return \$this->getGateway()->get(\$request->id);
+        \$test = (new TestFactory())->make(\$request);
+
+        return \$this->getGateway()->get(\$test);
     }
 }
 
@@ -107,6 +109,32 @@ final class TestRepository extends Repository
         \$test = (new TestFactory())->make(\$request);
 
         \$this->getGateway()->merge(\$test);
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderDeleteOk(): void
+    {
+        $render = new RepositoryBuilder('Test', ['delete']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+use Domain\Test\Request\DeleteTestRequest;
+use FlexPHP\Repositories\Repository;
+
+final class TestRepository extends Repository
+{
+    public function pop(DeleteTestRequest \$request): void
+    {
+        \$test = (new TestFactory())->make(\$request);
+
+        \$this->getGateway()->drop(\$test);
     }
 }
 

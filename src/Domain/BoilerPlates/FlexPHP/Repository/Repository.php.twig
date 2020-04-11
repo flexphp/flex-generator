@@ -25,7 +25,9 @@ final class {{ entity }}Repository extends Repository
 {% elseif action in ['read'] %}
     public function getById(Read{{ entity }}Request $request): array
     {
-        return $this->getGateway()->get($request->id);
+        ${{ item }} = (new {{ entity }}Factory())->make($request);
+
+        return $this->getGateway()->get(${{ item }});
     }
 {% elseif action in ['update'] %}
     public function shift(Update{{ entity }}Request $request): void
@@ -33,6 +35,13 @@ final class {{ entity }}Repository extends Repository
         ${{ item }} = (new {{ entity }}Factory())->make($request);
 
         $this->getGateway()->merge(${{ item }});
+    }
+{% elseif action in ['delete'] %}
+    public function pop(Delete{{ entity }}Request $request): void
+    {
+        ${{ item }} = (new {{ entity }}Factory())->make($request);
+
+        $this->getGateway()->drop(${{ item }});
     }
 {% endif %}
 {% if not loop.last %}
