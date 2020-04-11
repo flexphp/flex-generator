@@ -10,9 +10,11 @@ interface {{ entity }}Gateway
 {% elseif action in ['create'] %}
     public function push({{ entity }} ${{ item }}): void;
 {% elseif action in ['read'] %}
-    public function get(string $id): array;
+    public function get({{ entity }} ${{ item }}): array;
 {% elseif action in ['update'] %}
     public function shift({{ entity }} ${{ item }}): void;
+{% elseif action in ['delete'] %}
+    public function drop({{ entity }} ${{ item }}): void;
 {% else %}
 {% endif %}
 {% endfor %}

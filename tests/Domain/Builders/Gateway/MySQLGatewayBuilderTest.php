@@ -131,12 +131,18 @@ final class MySQLTestGateway implements TestGateway
         \$this->query = \$conn->createQueryBuilder();
     }
 
-    public function get(string \$id): array
+    public function get(Test \$test): array
     {
-        \$this->query->select('*');
+        \$this->query->select([
+            'lower' => 'lower',
+            'UPPER' => 'upper',
+            'PascalCase' => 'pascalCase',
+            'camelCase' => 'camelCase',
+            'snake_case' => 'snakeCase',
+        ]);
         \$this->query->from(\$this->table);
         \$this->query->where('Id = :id');
-        \$this->query->setParameter('id', \$id);
+        \$this->query->setParameter('id', \$test->id());
 
         return \$this->query->execute()->fetch();
     }
@@ -184,6 +190,47 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setParameter(':pascalCase', \$test->pascalCase()->format('Y-m-d H:i:s'));
         \$this->query->setParameter(':camelCase', \$test->camelCase());
         \$this->query->setParameter(':snakeCase', \$test->snakeCase());
+
+        \$this->query->where('Id = :id');
+        \$this->query->setParameter('id', \$test->id());
+
+        \$this->query->execute();
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItDeleteOk(): void
+    {
+        $render = new MySQLGatewayBuilder('Test', ['delete'], $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\Gateway;
+
+use Domain\Test\Test;
+use Domain\Test\TestGateway;
+use Doctrine\DBAL\Connection;
+
+final class MySQLTestGateway implements TestGateway
+{
+    private \$query;
+    private \$table = 'tests';
+
+    public function __construct(Connection \$conn)
+    {
+        \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function drop(Test \$test): void
+    {
+        \$this->query->delete(\$this->table);
+
+        \$this->query->where('Id = :id');
+        \$this->query->setParameter('id', \$test->id());
 
         \$this->query->execute();
     }

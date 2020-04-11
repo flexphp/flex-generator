@@ -61,7 +61,7 @@ namespace Domain\Test;
 
 interface TestGateway
 {
-    public function get(string \$id): array;
+    public function get(Test \$test): array;
 }
 
 T
@@ -80,6 +80,24 @@ namespace Domain\Test;
 interface TestGateway
 {
     public function shift(Test \$test): void;
+}
+
+T
+, $render->build());
+    }
+
+    public function testItDeleteOk(): void
+    {
+        $render = new GatewayBuilder('Test', ['delete']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+interface TestGateway
+{
+    public function drop(Test \$test): void;
 }
 
 T

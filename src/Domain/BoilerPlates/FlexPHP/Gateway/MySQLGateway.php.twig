@@ -58,12 +58,16 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     }
 {% elseif action in ['read'] %}
 
-    public function get(string $id): array
+    public function get({{ entity }} ${{ item }}): array
     {
-        $this->query->select('*');
+        $this->query->select([
+{% for id, property in properties %}
+            '{{ property.Name }}' => '{{ id }}',
+{% endfor %}
+        ]);
         $this->query->from($this->table);
         $this->query->where('Id = :id');
-        $this->query->setParameter('id', $id);
+        $this->query->setParameter('id', ${{ item }}->id());
 
         return $this->query->execute()->fetch();
     }
@@ -84,6 +88,20 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}());
 {% endif %}
 {% endfor %}
+
+        $this->query->where('Id = :id');
+        $this->query->setParameter('id', ${{ item }}->id());
+
+        $this->query->execute();
+    }
+{% elseif action in ['delete'] %}
+
+    public function drop({{ entity }} ${{ item }}): void
+    {
+        $this->query->delete($this->table);
+
+        $this->query->where('Id = :id');
+        $this->query->setParameter('id', ${{ item }}->id());
 
         $this->query->execute();
     }
