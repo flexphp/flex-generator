@@ -76,6 +76,18 @@ T
 , $render->build());
     }
 
+    public function testItRenderDeleteOk(): void
+    {
+        $render = new UseCaseBuilder('Test', 'delete');
+
+        $this->assertEquals(<<<T
+        \$useCase = new DeleteTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+T
+, $render->build());
+    }
+
     public function getEntityName(): array
     {
         return [

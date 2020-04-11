@@ -185,6 +185,38 @@ T
 , $render->build());
     }
 
+    public function testItDeleteOk(): void
+    {
+        $render = new UseCaseBuilder('Test', 'delete', $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\UseCase;
+
+use Domain\Test\Request\DeleteTestRequest;
+use Domain\Test\Response\DeleteTestResponse;
+use FlexPHP\UseCases\UseCase;
+
+final class DeleteTestUseCase extends UseCase
+{
+    /**
+     * @param DeleteTestRequest \$request
+     *
+     * @return DeleteTestResponse
+     */
+    public function execute(\$request)
+    {
+        \$this->getRepository()->pop(\$request);
+
+        return new DeleteTestResponse(200, 'success', 'Test was deleted!');
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

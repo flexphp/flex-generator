@@ -1,4 +1,4 @@
-{% if action in ['Index', 'Create', 'Read', 'Update'] %}
+{% if action in ['Index', 'Create', 'Read', 'Update', 'Delete'] %}
         $useCase = new {{ action }}{{ entity }}UseCase(new {{ entity }}Repository(new MySQL{{ entity }}Gateway($conn)));
 
 {% else %}
