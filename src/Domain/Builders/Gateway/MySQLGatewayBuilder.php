@@ -31,7 +31,13 @@ final class MySQLGatewayBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'item', 'name', 'actions', 'properties'));
+        $dbtypes = \array_reduce($properties, function ($result, $property) {
+            $result[$this->getCamelCase($property[Keyword::NAME])] = $this->getDbType($property[Keyword::DATATYPE]);
+
+            return $result;
+        }, []);
+
+        parent::__construct(\compact('entity', 'item', 'name', 'actions', 'properties', 'dbtypes'));
     }
 
     protected function getFileTemplate(): string
@@ -42,5 +48,23 @@ final class MySQLGatewayBuilder extends AbstractBuilder
     protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Gateway', parent::getPathTemplate());
+    }
+
+    private function getDbType(string $dataType): string
+    {
+        $dbTypes = [
+            'smallint' => 'INTEGER',
+            'integer' => 'INTEGER',
+            'float' => 'INTEGER',
+            'double' => 'INTEGER',
+            'bool' => 'BOOLEAN',
+            'boolean' => 'BOOLEAN',
+        ];
+
+        if (!empty($dbTypes[$dataType])) {
+            return $dbTypes[$dataType];
+        }
+
+        return 'STRING';
     }
 }
