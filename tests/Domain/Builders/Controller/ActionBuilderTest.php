@@ -99,9 +99,26 @@ T
 
         $this->assertEquals(<<<T
     /**
+     * @Route("/edit/{id}", methods={"GET"}, name="tests.edit")
+     * @Cache(smaxage="10")
+     */
+    public function edit(Connection \$conn, \$id): Response
+    {
+        \$request = new ReadTestRequest(\$id);
+
+        \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        return \$this->render('test/edit.html.twig', [
+            'register' => \$response->test;
+        ]);
+    }
+
+    /**
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      */
-    public function update(Request \$request, \$id): Response
+    public function update(Request \$request, Connection \$conn): Response
     {
     }
 

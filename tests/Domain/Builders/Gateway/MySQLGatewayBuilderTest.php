@@ -84,7 +84,7 @@ final class MySQLTestGateway implements TestGateway
         \$this->query = \$conn->createQueryBuilder();
     }
 
-    public function persist(Test \$test): void
+    public function push(Test \$test): void
     {
         \$this->query->insert(\$this->table);
 
@@ -139,6 +139,53 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setParameter('id', \$id);
 
         return \$this->query->execute()->fetch();
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItUpdateOk(): void
+    {
+        $render = new MySQLGatewayBuilder('Test', ['update'], $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\Gateway;
+
+use Domain\Test\Test;
+use Domain\Test\TestGateway;
+use Doctrine\DBAL\Connection;
+
+final class MySQLTestGateway implements TestGateway
+{
+    private \$query;
+    private \$table = 'tests';
+
+    public function __construct(Connection \$conn)
+    {
+        \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function shift(Test \$test): void
+    {
+        \$this->query->update(\$this->table);
+
+        \$this->query->set('lower', ':lower');
+        \$this->query->set('upper', ':upper');
+        \$this->query->set('pascalCase', ':pascalCase');
+        \$this->query->set('camelCase', ':camelCase');
+        \$this->query->set('snakeCase', ':snakeCase');
+
+        \$this->query->setParameter(':lower', \$test->lower());
+        \$this->query->setParameter(':upper', \$test->upper());
+        \$this->query->setParameter(':pascalCase', \$test->pascalCase()->format('Y-m-d H:i:s'));
+        \$this->query->setParameter(':camelCase', \$test->camelCase());
+        \$this->query->setParameter(':snakeCase', \$test->snakeCase());
+
+        \$this->query->execute();
     }
 }
 

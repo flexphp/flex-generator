@@ -1,7 +1,24 @@
     /**
+     * @Route("/edit/{id}", methods={"GET"}, name="{{ entity }}.edit")
+     * @Cache(smaxage="10")
+     */
+    public function edit(Connection $conn, $id): Response
+    {
+        $request = new ReadTestRequest($id);
+
+        $useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway($conn)));
+
+        $response = $useCase->execute($request);
+
+        return $this->render('{{ name }}/edit.html.twig', [
+            'register' => $response->{{ name }};
+        ]);
+    }
+
+    /**
      * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
      */
-    public function {{ action_camel }}(Request $request, $id): Response
+    public function {{ action_camel }}(Request $request, Connection $conn): Response
     {
 {% if request_message %}
         {{ request_message|trim|raw }}

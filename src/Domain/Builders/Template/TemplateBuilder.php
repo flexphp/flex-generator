@@ -43,7 +43,7 @@ final class TemplateBuilder extends AbstractBuilder
                 'label' => (new Convert($property[Keyword::NAME]))->toSentence(),
                 // 'help' => $property[Keyword::HELP],
                 // 'help_html' => strip_tags($property[Keyword::HELP]) !== $property[Keyword::HELP],
-                // 'default' => $property[Keyword::DEFAULT],
+                'default' => '{{ register.' . $this->getCamelCase($property[Keyword::NAME]) . ' }}',
                 'type' => $property[Keyword::TYPE] ?? null,
                 'constraints' => $property[Keyword::CONSTRAINTS] ?? [],
             ]);

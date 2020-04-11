@@ -2,7 +2,7 @@
         return $this->render('{{ name }}/index.html.twig', [
             'registers' => $response->{{ item }},
         ]);
-{% elseif action == 'create' %}
+{% elseif action in ['create', 'update'] %}
         $this->addFlash($response->status, $response->message);
 
         return $this->redirectToRoute('{{ entity }}.index');

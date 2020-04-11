@@ -17,20 +17,20 @@ final class TemplateBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {
-        $render = new TemplateBuilder('Posts', 'index', $this->getProperties());
+        $render = new TemplateBuilder('Tests', 'index', $this->getProperties());
 
         $this->assertEquals(<<<T
 {% extends 'form/layout.html.twig' %}
 
-{% block title 'Posts' %}
+{% block title 'Tests' %}
 
 {% block main %}
     <div class="card">
         <div class="card-header d-flex">
-            <h3 class="card-header-title">Posts</h3>
+            <h3 class="card-header-title">Tests</h3>
             <div class="toolbar ml-auto">
-                <a href="{{ path('posts.new') }}" class="btn btn-success">
-                    <i class="fa fa-plus" aria-hidden="true"></i> Create
+                <a href="{{ path('tests.new') }}" class="btn btn-success">
+                    <i class="fa fa-plus" aria-hidden="true"></i> New
                 </a>
             </div>
         </div>
@@ -52,11 +52,11 @@ final class TemplateBuilderTest extends TestCase
                         <td>{{ register.createdAt }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ path('posts.read', {id: register.id}) }}" class="btn btn-sm btn-outline-light">
+                                <a href="{{ path('tests.read', {id: register.id}) }}" class="btn btn-sm btn-outline-light">
                                     <i class="fa fa-eye text-dark" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="{{ path('posts.edit', {id: register.id}) }}" class="btn btn-sm btn-outline-light">
+                                <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-sm btn-outline-light">
                                     <i class="fa fa-edit text-primary" aria-hidden="true"></i>
                                 </a>
                             </div>
@@ -79,34 +79,34 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new TemplateBuilder('Posts', 'create', $this->getProperties());
+        $render = new TemplateBuilder('Tests', 'create', $this->getProperties());
 
         $this->assertEquals(<<<T
 {% extends 'form/layout.html.twig' %}
 
-{% block title 'Posts - New' %}
+{% block title 'Tests - New' %}
 
 {% block main %}
     <div class="card">
         <div class="card-header d-flex">
-            <h3 class="card-header-title">New Post</h3>
+            <h3 class="card-header-title">New Test</h3>
             <div class="toolbar ml-auto">
-                <a href="{{ path('posts.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
                     <i class="fa fa-list-alt" aria-hidden="true"></i> List
                 </a>
             </div>
         </div>
 
-        <form id="new-form" name="new-form" method="post" action="{{ path('posts.create') }}">
+        <form id="new-form" name="new-form" method="post" action="{{ path('tests.create') }}">
             <div class="card-body">
-                <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" /></div>
-                <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" /></div>
-                <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" /></div>
+                <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" value="{{ register.title }}" /></div>
+                <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" value="{{ register.content }}" /></div>
+                <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" value="{{ register.createdAt }}" /></div>
             </div>
 
             <div class="card-footer text-right">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-save" aria-hidden="true"></i> Save
+                    <i class="fa fa-save" aria-hidden="true"></i> Create
                 </button>
             </div>
         </form>
@@ -119,23 +119,20 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new TemplateBuilder('Posts', 'read', $this->getProperties());
+        $render = new TemplateBuilder('Tests', 'read', $this->getProperties());
 
         $this->assertEquals(<<<T
 {% extends 'form/layout.html.twig' %}
 
-{% block title 'Posts Detail' %}
+{% block title 'Tests Detail' %}
 
 {% block main %}
     <div class="card">
         <div class="card-header d-flex">
-            <h3 class="card-header-title">Post</h3>
+            <h3 class="card-header-title">Test</h3>
             <div class="toolbar ml-auto">
-                <a href="{{ path('posts.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
                     <i class="fa fa-list-alt" aria-hidden="true"></i> List
-                </a>
-                <a href="{{ path('posts.edit', {id: register.id}) }}" class="btn btn-outline-primary">
-                    <i class="fa fa-edit" aria-hidden="true"></i> Edit
                 </a>
             </div>
         </div>
@@ -146,8 +143,18 @@ T
             <div class="form-group"><label>Created At</label><div class="form-control-plaintext">{{ register.createdAt }}</div></div>
         </div>
 
-        <div class="card-footer text-right">
-            {{ include('post/_delete_form.html.twig', {post: register}, with_context = false) }}
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    {{ include('test/_delete_form.html.twig', {test: register}, with_context = false) }}
+                </div>
+
+                <div class="col text-right">
+                    <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-outline-primary">
+                        <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
@@ -158,43 +165,47 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new TemplateBuilder('Posts', 'update', $this->getProperties());
+        $render = new TemplateBuilder('Tests', 'update', $this->getProperties());
 
         $this->assertEquals(<<<T
 {% extends 'form/layout.html.twig' %}
 
-{% block title 'Posts - Edit' %}
+{% block title 'Tests - Edit' %}
 
 {% block main %}
-    <h1>Post {{ post.id }}</h1>
+    <div class="card">
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">Edit Test</h3>
+            <div class="toolbar ml-auto">
+                <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> List
+                </a>
+            </div>
+        </div>
 
-    <form id="edit-form" name="edit-form" method="post" action="{{ path('posts.update', {id: post.id}) }}">
-        <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" /></div>
-        <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" /></div>
-        <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" /></div>
+        <form id="edit-form" name="edit-form" method="post" action="{{ path('tests.update', {id: test.id}) }}">
+            <input type="hidden" name="_method" value="put" />
+            <div class="card-body">
+                <div class="form-group"><label for="form_title">Title</label><input type="text" id="form_title" name="form[title]" class="form-control" value="{{ register.title }}" /></div>
+                <div class="form-group"><label for="form_content">Content</label><input type="text" id="form_content" name="form[content]" class="form-control" value="{{ register.content }}" /></div>
+                <div class="form-group"><label for="form_createdAt">Created at</label><input type="text" id="form_createdAt" name="form[createdAt]" class="form-control" value="{{ register.createdAt }}" /></div>
+            </div>
+        </form>
 
-        <button type="submit" class="btn btn-primary">
-            <i class="fa fa-save" aria-hidden="true"></i> Update
-        </button>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    {{ include('test/_delete_form.html.twig', {test: register}, with_context = false) }}
+                </div>
 
-        <a href="{{ path('posts.index') }}" class="btn btn-link">
-            <i class="fa fa-list-alt" aria-hidden="true"></i> Show list
-        </a>
-    </form>
-{% endblock %}
-
-{% block sidebar %}
-    <div class="section">
-        <a href="{{ path('posts.read', {id: post.id}) }}" class="btn btn-lg btn-block btn-success">
-            <i class="fa fa-eye" aria-hidden="true"></i> Show
-        </a>
+                <div class="col text-right">
+                    <button type="submit" form="edit-form" class="btn btn-primary">
+                        <i class="fa fa-save" aria-hidden="true"></i> Update
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="section actions">
-        {{ include('post/_delete_form.html.twig', {post: post}, with_context = false) }}
-    </div>
-
-    {{ parent() }}
 {% endblock %}
 
 T
@@ -203,12 +214,13 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new TemplateBuilder('Posts', 'delete', $this->getProperties());
+        $render = new TemplateBuilder('Tests', 'delete', $this->getProperties());
 
         $this->assertEquals(<<<T
 {{ include('form/_delete_confirmation.html.twig') }}
-<form id="delete-form" name="delete-form" method="post" action="{{ url('posts.delete', {id: post.id}) }}" data-confirmation="true">
+<form id="delete-form" name="delete-form" method="post" action="{{ url('tests.delete', {id: test.id}) }}" data-confirmation="true">
     <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+    <input type="hidden" name="_method" value="delete" />
     <button type="submit" class="btn btn-outline-danger">
         <i class="fa fa-trash" aria-hidden="true"></i> Delete
     </button>

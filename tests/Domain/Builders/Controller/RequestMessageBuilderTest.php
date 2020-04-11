@@ -62,7 +62,7 @@ T
         $render = new RequestMessageBuilder('Test', 'update');
 
         $this->assertEquals(<<<T
-        \$request = new UpdateTestRequest(\$request->request->all());
+        \$request = new UpdateTestRequest(\$request->request->get('form'));
 T
 , $render->build());
     }

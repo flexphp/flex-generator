@@ -74,6 +74,11 @@ label {
     color: #71748d;
 }
 
+label.required:after {
+    content: "*";
+    color: red;
+}
+
 .form-control {
     display: block;
     width: 100%;

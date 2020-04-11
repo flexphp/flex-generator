@@ -115,6 +115,35 @@ T
 , $render->build());
     }
 
+    public function testItRenderUpdateOk(): void
+    {
+        $render = new ResponseBuilder('Fuz', 'update');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Response;
+
+use FlexPHP\Messages\ResponseInterface;
+
+final class UpdateFuzResponse implements ResponseInterface
+{
+    public \$code;
+    public \$status;
+    public \$message;
+
+    public function __construct(int \$code, string \$status, string \$message)
+    {
+        \$this->code = \$code;
+        \$this->status = \$status;
+        \$this->message = \$message;
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

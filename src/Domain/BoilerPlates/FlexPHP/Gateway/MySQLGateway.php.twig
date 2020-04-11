@@ -38,7 +38,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     }
 {% elseif action in ['create'] %}
 
-    public function persist({{ entity }} ${{ item }}): void
+    public function push({{ entity }} ${{ item }}): void
     {
         $this->query->insert($this->table);
 
@@ -66,6 +66,26 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->setParameter('id', $id);
 
         return $this->query->execute()->fetch();
+    }
+{% elseif action in ['update'] %}
+
+    public function shift({{ entity }} ${{ item }}): void
+    {
+        $this->query->update($this->table);
+
+{% for id, property in properties %}
+        $this->query->set('{{ id }}', ':{{ id }}');
+{% endfor %}
+
+{% for id, property in properties %}
+{% if property.DataType|lower == 'datetime' %}
+        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}()->format('Y-m-d H:i:s'));
+{% else %}
+        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}());
+{% endif %}
+{% endfor %}
+
+        $this->query->execute();
     }
 {% endif %}
 {% endfor %}

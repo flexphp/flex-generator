@@ -258,6 +258,81 @@ T
 , $render->build());
     }
 
+    public function testItUpdateOk(): void
+    {
+        $entity = 'Test';
+        $action = 'update';
+        $actions = [
+            $action => (new ActionBuilder(
+                $entity,
+                $action,
+                (new RequestMessageBuilder($entity, $action))->build(),
+                (new UseCaseBuilder($entity, $action))->build(),
+                (new ResponseMessageBuilder($entity, $action))->build()
+            ))->build(),
+        ];
+
+        $render = new ControllerBuilder($entity, $actions);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace App\Controller;
+
+use Domain\Test\TestRepository;
+use Domain\Test\Gateway\MySQLTestGateway;
+use Domain\Test\Request\UpdateTestRequest;
+use Domain\Test\UseCase\UpdateTestUseCase;
+use Doctrine\DBAL\Connection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/tests")
+ */
+final class TestController extends AbstractController
+{
+    /**
+     * @Route("/edit/{id}", methods={"GET"}, name="tests.edit")
+     * @Cache(smaxage="10")
+     */
+    public function edit(Connection \$conn, \$id): Response
+    {
+        \$request = new ReadTestRequest(\$id);
+
+        \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        return \$this->render('test/edit.html.twig', [
+            'register' => \$response->test;
+        ]);
+    }
+
+    /**
+     * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
+     */
+    public function update(Request \$request, Connection \$conn): Response
+    {
+        \$request = new UpdateTestRequest(\$request->request->get('form'));
+
+        \$useCase = new UpdateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        \$this->addFlash(\$response->status, \$response->message);
+
+        return \$this->redirectToRoute('tests.index');
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderMixedOk(): void
     {
         $entity = 'Test';

@@ -16,6 +16,7 @@ final class RepositoryBuilder extends AbstractBuilder
     public function __construct(string $entity, array $actions)
     {
         $item = $this->getCamelCase($this->getSingularize($entity));
+        $entity = $this->getPascalCase($this->getSingularize($entity));
         $actions = \array_reduce($actions, function (array $result, string $action) {
             $result[] = $this->getCamelCase($action);
 

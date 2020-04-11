@@ -5,13 +5,10 @@
 {{ '{%' }} block main {{ '%}' }}
     <div class="card">
         <div class="card-header d-flex">
-            <h3 class="card-header-title">Post</h3>
+            <h3 class="card-header-title">{{ name }}</h3>
             <div class="toolbar ml-auto">
                 <a href="{{ '{{' }} path('{{ route }}.index') {{ '}}' }}" class="btn btn-outline-secondary">
                     <i class="fa fa-list-alt" aria-hidden="true"></i> List
-                </a>
-                <a href="{{ '{{' }} path('{{ route }}.edit', {id: register.id}) {{ '}}' }}" class="btn btn-outline-primary">
-                    <i class="fa fa-edit" aria-hidden="true"></i> Edit
                 </a>
             </div>
         </div>
@@ -22,8 +19,18 @@
 {% endfor %}
         </div>
 
-        <div class="card-footer text-right">
-            {{ '{{' }} include('{{ item }}/_delete_form.html.twig', {{ '{' }}{{ item }}: register{{ '}' }}, with_context = false) {{ '}}' }}
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    {{ '{{' }} include('{{ item }}/_delete_form.html.twig', {{ '{' }}{{ item }}: register{{ '}' }}, with_context = false) {{ '}}' }}
+                </div>
+
+                <div class="col text-right">
+                    <a href="{{ '{{' }} path('{{ route }}.edit', {id: register.id}) {{ '}}' }}" class="btn btn-outline-primary">
+                        <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 {{ '{%' }} endblock {{ '%}' }}

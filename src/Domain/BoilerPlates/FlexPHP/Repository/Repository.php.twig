@@ -20,12 +20,19 @@ final class {{ entity }}Repository extends Repository
     {
         ${{ item }} = (new {{ entity }}Factory())->make($request);
 
-        $this->getGateway()->persist(${{ item }});
+        $this->getGateway()->save(${{ item }});
     }
 {% elseif action in ['read'] %}
     public function getById(Read{{ entity }}Request $request): array
     {
         return $this->getGateway()->get($request->id);
+    }
+{% elseif action in ['update'] %}
+    public function shift(Update{{ entity }}Request $request): void
+    {
+        ${{ item }} = (new {{ entity }}Factory())->make($request);
+
+        $this->getGateway()->merge(${{ item }});
     }
 {% endif %}
 {% if not loop.last %}

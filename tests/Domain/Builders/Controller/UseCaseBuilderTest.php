@@ -64,6 +64,18 @@ T
 , $render->build());
     }
 
+    public function testItRenderUpdateOk(): void
+    {
+        $render = new UseCaseBuilder('Test', 'update');
+
+        $this->assertEquals(<<<T
+        \$useCase = new UpdateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+T
+, $render->build());
+    }
+
     public function getEntityName(): array
     {
         return [

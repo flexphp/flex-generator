@@ -13,7 +13,7 @@ final class {{ action }}{{ entity }}Response implements ResponseInterface
     {
         $this->{{ item }} = ${{ item }};
     }
-{% elseif action|lower == 'create' %}
+{% elseif action|lower in ['create', 'update'] %}
     public $code;
     public $status;
     public $message;

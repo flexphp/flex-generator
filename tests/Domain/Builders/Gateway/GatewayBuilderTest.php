@@ -43,12 +43,13 @@ namespace Domain\Test;
 
 interface TestGateway
 {
-    public function persist(Test \$test): void;
+    public function push(Test \$test): void;
 }
 
 T
 , $render->build());
     }
+
     public function testItReadOk(): void
     {
         $render = new GatewayBuilder('Test', ['read']);
@@ -61,6 +62,24 @@ namespace Domain\Test;
 interface TestGateway
 {
     public function get(string \$id): array;
+}
+
+T
+, $render->build());
+    }
+
+    public function testItUpdateOk(): void
+    {
+        $render = new GatewayBuilder('Test', ['update']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+interface TestGateway
+{
+    public function shift(Test \$test): void;
 }
 
 T
@@ -81,7 +100,7 @@ namespace Domain\Test;
 
 interface TestGateway
 {
-    public function persist(Test \$test): void;
+    public function push(Test \$test): void;
 }
 
 T
@@ -102,7 +121,7 @@ namespace Domain\\{$expectedName};
 
 interface {$expectedName}Gateway
 {
-    public function persist({$expectedName} \${$expectedSingular}): void;
+    public function push({$expectedName} \${$expectedSingular}): void;
 }
 
 T

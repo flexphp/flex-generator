@@ -153,6 +153,38 @@ T
 , $render->build());
     }
 
+    public function testItUpdateOk(): void
+    {
+        $render = new UseCaseBuilder('Test', 'update', $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\UseCase;
+
+use Domain\Test\Request\UpdateTestRequest;
+use Domain\Test\Response\UpdateTestResponse;
+use FlexPHP\UseCases\UseCase;
+
+final class UpdateTestUseCase extends UseCase
+{
+    /**
+     * @param UpdateTestRequest \$request
+     *
+     * @return UpdateTestResponse
+     */
+    public function execute(\$request)
+    {
+        \$this->getRepository()->shift(\$request);
+
+        return new UpdateTestResponse(200, 'success', 'Test was updated!');
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

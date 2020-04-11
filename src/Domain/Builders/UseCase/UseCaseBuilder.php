@@ -36,7 +36,7 @@ final class UseCaseBuilder extends AbstractBuilder
 
     protected function getFileTemplate(): string
     {
-        if (in_array($this->action, ['index', 'create', 'read'])) {
+        if (in_array($this->action, ['index', 'create', 'read', 'update'])) {
             return $this->action . '.php.twig';
         }
 
