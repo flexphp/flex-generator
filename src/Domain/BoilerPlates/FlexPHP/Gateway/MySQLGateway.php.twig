@@ -48,7 +48,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->insert($this->table);
 
 {% for id, property in properties %}
-        $this->query->setValue('{{ id }}', ':{{ id }}');
+        $this->query->setValue('{{ property.Name }}', ':{{ id }}');
 {% endfor %}
 
 {% for id, property in properties %}
@@ -83,7 +83,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->update($this->table);
 
 {% for id, property in properties %}
-        $this->query->set('{{ id }}', ':{{ id }}');
+        $this->query->set('{{ property.Name }}', ':{{ id }}');
 {% endfor %}
 
 {% for id, property in properties %}

@@ -97,10 +97,10 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->insert(\$this->table);
 
         \$this->query->setValue('lower', ':lower');
-        \$this->query->setValue('upper', ':upper');
-        \$this->query->setValue('pascalCase', ':pascalCase');
+        \$this->query->setValue('UPPER', ':upper');
+        \$this->query->setValue('PascalCase', ':pascalCase');
         \$this->query->setValue('camelCase', ':camelCase');
-        \$this->query->setValue('snakeCase', ':snakeCase');
+        \$this->query->setValue('snake_case', ':snakeCase');
 
         \$this->query->setParameter(':lower', \$test->lower(), DBType::STRING);
         \$this->query->setParameter(':upper', \$test->upper(), DBType::INTEGER);
@@ -190,10 +190,10 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->update(\$this->table);
 
         \$this->query->set('lower', ':lower');
-        \$this->query->set('upper', ':upper');
-        \$this->query->set('pascalCase', ':pascalCase');
+        \$this->query->set('UPPER', ':upper');
+        \$this->query->set('PascalCase', ':pascalCase');
         \$this->query->set('camelCase', ':camelCase');
-        \$this->query->set('snakeCase', ':snakeCase');
+        \$this->query->set('snake_case', ':snakeCase');
 
         \$this->query->setParameter(':lower', \$test->lower(), DBType::STRING);
         \$this->query->setParameter(':upper', \$test->upper(), DBType::INTEGER);
