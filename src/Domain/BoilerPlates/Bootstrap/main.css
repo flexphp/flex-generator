@@ -3016,11 +3016,11 @@ html body .display-7 {
     border-left-color: #5969ff;
 }
 
-/*.spinner-secondary {
+.spinner-secondary {
     border-top-color: #6c757d;
     border-left-color: #6c757d;
 }
-*/
+
 .spinner-success {
     border-top-color: #2ec551;
     border-left-color: #2ec551;

@@ -49,4 +49,31 @@ jQuery(document).ready(function ($) {
     if ($('[data-toggle="popover"]').length) {
         $('[data-toggle="popover"]').popover()
     }
+
+    $(document).on('submit', 'form[data-confirmation]', function (event) {
+        var $form = $(this),
+            $confirm = $('#confirmationModal');
+
+        if ($confirm.data('result') !== 'yes') {
+            //cancel submit event
+            event.preventDefault();
+
+            $confirm
+                .off('click', '#btnYes')
+                .on('click', '#btnYes', function () {
+                    $confirm.data('result', 'yes');
+                    $form.find('input[type="submit"]').attr('disabled', 'disabled');
+                    $form.submit();
+                })
+                .modal('show');
+        }
+    });
+
+    $(document).on('submit', 'form:not([data-confirmation])', function (event) {
+        $('.overlay').show();
+    });
+
+    $(document).on('click', '.show-overlay', function (event) {
+        $('.overlay').show();
+    });
 });
