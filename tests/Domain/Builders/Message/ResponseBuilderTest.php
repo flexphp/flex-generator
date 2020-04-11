@@ -103,11 +103,11 @@ use FlexPHP\Messages\ResponseInterface;
 
 final class ReadFuzResponse implements ResponseInterface
 {
-    public \$id;
+    public \$fuz;
 
-    public function __construct(string \$id)
+    public function __construct(array \$fuz)
     {
-        \$this->id = \$id;
+        \$this->fuz = \$fuz;
     }
 }
 

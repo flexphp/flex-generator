@@ -11,13 +11,12 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Template;
 
 use FlexPHP\Generator\Domain\Builders\Template\TemplateBuilder;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\Schema\Constants\Keyword;
 
 final class TemplateBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {
-        $render = new TemplateBuilder('Tests', 'index', $this->getProperties());
+        $render = new TemplateBuilder('Tests', 'index', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
 {% extends 'form/layout.html.twig' %}
@@ -38,18 +37,22 @@ final class TemplateBuilderTest extends TestCase
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Content</th>
-                        <th scope="col">Created At</th>
+                        <th scope="col">Lower</th>
+                        <th scope="col">Upper</th>
+                        <th scope="col">Pascal Case</th>
+                        <th scope="col">Camel Case</th>
+                        <th scope="col">Snake Case</th>
                         <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for register in registers %}
                     <tr>
-                        <td>{{ register.title }}</td>
-                        <td>{{ register.content }}</td>
-                        <td>{{ register.createdAt }}</td>
+                        <td>{{ register.lower }}</td>
+                        <td>{{ register.upper }}</td>
+                        <td>{{ register.pascalCase }}</td>
+                        <td>{{ register.camelCase }}</td>
+                        <td>{{ register.snakeCase }}</td>
                         <td class="text-center">
                             <div class="btn-group">
                                 <a href="{{ path('tests.read', {id: register.id}) }}" class="btn btn-sm btn-outline-light">
@@ -64,7 +67,7 @@ final class TemplateBuilderTest extends TestCase
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="4" align="center">Nothing here</td>
+                        <td colspan="6" align="center">Nothing here</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -79,7 +82,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new TemplateBuilder('Tests', 'create', $this->getProperties());
+        $render = new TemplateBuilder('Tests', 'create', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
 {% extends 'form/layout.html.twig' %}
@@ -117,7 +120,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new TemplateBuilder('Tests', 'read', $this->getProperties());
+        $render = new TemplateBuilder('Tests', 'read', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
 {% extends 'form/layout.html.twig' %}
@@ -136,9 +139,11 @@ T
         </div>
 
         <div class="card-body">
-            <div class="form-group"><label>Title</label><div class="form-control-plaintext">{{ register.title }}</div></div>
-            <div class="form-group"><label>Content</label><div class="form-control-plaintext">{{ register.content }}</div></div>
-            <div class="form-group"><label>Created At</label><div class="form-control-plaintext">{{ register.createdAt }}</div></div>
+            <div class="form-group"><label>Lower</label><div class="form-control-plaintext">{{ register.lower }}</div></div>
+            <div class="form-group"><label>Upper</label><div class="form-control-plaintext">{{ register.upper }}</div></div>
+            <div class="form-group"><label>Pascal Case</label><div class="form-control-plaintext">{{ register.pascalCase }}</div></div>
+            <div class="form-group"><label>Camel Case</label><div class="form-control-plaintext">{{ register.camelCase }}</div></div>
+            <div class="form-group"><label>Snake Case</label><div class="form-control-plaintext">{{ register.snakeCase }}</div></div>
         </div>
 
         <div class="card-footer">
@@ -163,7 +168,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new TemplateBuilder('Tests', 'update', $this->getProperties());
+        $render = new TemplateBuilder('Tests', 'update', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
 {% extends 'form/layout.html.twig' %}
@@ -209,7 +214,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new TemplateBuilder('Tests', 'delete', $this->getProperties());
+        $render = new TemplateBuilder('Tests', 'delete', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
 {{ include('form/_delete_confirmation.html.twig') }}
@@ -223,23 +228,5 @@ T
 
 T
 , $render->build());
-    }
-
-    private function getProperties(): array
-    {
-        return [
-            [
-                Keyword::NAME => 'title',
-                Keyword::DATATYPE => 'string',
-            ],
-            [
-                Keyword::NAME => 'content',
-                Keyword::DATATYPE => 'text',
-            ],
-            [
-                Keyword::NAME => 'createdAt',
-                Keyword::DATATYPE => 'datetime',
-            ],
-        ];
     }
 }

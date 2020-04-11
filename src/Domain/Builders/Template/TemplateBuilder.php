@@ -33,7 +33,7 @@ final class TemplateBuilder extends AbstractBuilder
         }, []);
 
         $properties = \array_reduce($properties, function (array $result, array $property) {
-            $result[$property[Keyword::NAME]] = $property;
+            $result[$this->getCamelCase($property[Keyword::NAME])] = $property;
 
             return $result;
         }, []);

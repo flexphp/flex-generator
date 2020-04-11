@@ -6,7 +6,7 @@ interface {{ entity }}Gateway
 {
 {% for action in actions %}
 {% if action in ['index'] %}
-    public function find(array $wheres, array $orders, int $limit): array;
+    public function search(array $wheres, array $orders, int $limit): array;
 {% elseif action in ['create'] %}
     public function push({{ entity }} ${{ item }}): void;
 {% elseif action in ['read'] %}
@@ -14,7 +14,7 @@ interface {{ entity }}Gateway
 {% elseif action in ['update'] %}
     public function shift({{ entity }} ${{ item }}): void;
 {% elseif action in ['delete'] %}
-    public function drop({{ entity }} ${{ item }}): void;
+    public function pop({{ entity }} ${{ item }}): void;
 {% else %}
 {% endif %}
 {% endfor %}

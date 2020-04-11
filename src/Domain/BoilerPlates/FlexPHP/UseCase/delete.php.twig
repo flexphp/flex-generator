@@ -15,7 +15,7 @@ final class {{ action }}{{ entity }}UseCase extends UseCase
      */
     public function execute($request)
     {
-        $this->getRepository()->pop($request);
+        $this->getRepository()->remove($request);
 
         return new {{ action }}{{ entity }}Response(200, 'success', '{{ entity }} was deleted!');
     }

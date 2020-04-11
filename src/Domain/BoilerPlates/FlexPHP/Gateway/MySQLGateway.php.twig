@@ -18,9 +18,13 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% for action in actions %}
 {% if action in ['index'] %}
 
-    public function find(array $wheres, array $orders, int $limit): array
+    public function search(array $wheres, array $orders, int $limit): array
     {
-        $this->query->select('*');
+        $this->query->select([
+{% for id, property in properties %}
+            '{{ property.Name }}' => '{{ id }}',
+{% endfor %}
+        ]);
         $this->query->from($this->table);
 
         foreach($wheres as $column => $value) {
@@ -96,7 +100,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     }
 {% elseif action in ['delete'] %}
 
-    public function drop({{ entity }} ${{ item }}): void
+    public function pop({{ entity }} ${{ item }}): void
     {
         $this->query->delete($this->table);
 

@@ -16,11 +16,12 @@ final class ResponseBuilder extends AbstractBuilder
     public function __construct(string $entity, string $action)
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
+        $name = $this->getCamelCase($this->getSingularize($entity));
         $item = $this->getCamelCase($this->getPluralize($entity));
         $action = $this->getPascalCase($action);
         $key = 'id';
 
-        parent::__construct(\compact('entity', 'item', 'action', 'key'));
+        parent::__construct(\compact('entity', 'name', 'item', 'action', 'key'));
     }
 
     protected function getFileTemplate(): string

@@ -25,11 +25,11 @@ final class {{ action }}{{ entity }}Response implements ResponseInterface
         $this->message = $message;
     }
 {% elseif action|lower == 'read' %}
-    public ${{ key }};
+    public ${{ name }};
 
-    public function __construct(string ${{ key }})
+    public function __construct(array ${{ name }})
     {
-        $this->{{ key }} = ${{ key }};
+        $this->{{ name }} = ${{ name }};
     }
 {% else %}
     public function __construct(array $data = [])

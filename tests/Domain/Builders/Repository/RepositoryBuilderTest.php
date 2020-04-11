@@ -30,7 +30,7 @@ final class TestRepository extends Repository
 {
     public function findBy(IndexPostRequest \$request): array
     {
-        return \$this->getGateway()->find((array)\$request, [], 10);
+        return \$this->getGateway()->search((array)\$request, [], 10);
     }
 }
 
@@ -56,7 +56,7 @@ final class TestRepository extends Repository
     {
         \$test = (new TestFactory())->make(\$request);
 
-        \$this->getGateway()->save(\$test);
+        \$this->getGateway()->push(\$test);
     }
 }
 
@@ -104,11 +104,11 @@ use FlexPHP\Repositories\Repository;
 
 final class TestRepository extends Repository
 {
-    public function shift(UpdateTestRequest \$request): void
+    public function change(UpdateTestRequest \$request): void
     {
         \$test = (new TestFactory())->make(\$request);
 
-        \$this->getGateway()->merge(\$test);
+        \$this->getGateway()->shift(\$test);
     }
 }
 
@@ -130,11 +130,11 @@ use FlexPHP\Repositories\Repository;
 
 final class TestRepository extends Repository
 {
-    public function pop(DeleteTestRequest \$request): void
+    public function remove(DeleteTestRequest \$request): void
     {
         \$test = (new TestFactory())->make(\$request);
 
-        \$this->getGateway()->drop(\$test);
+        \$this->getGateway()->pop(\$test);
     }
 }
 

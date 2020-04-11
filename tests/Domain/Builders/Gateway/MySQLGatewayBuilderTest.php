@@ -37,9 +37,15 @@ final class MySQLTestGateway implements TestGateway
         \$this->query = \$conn->createQueryBuilder();
     }
 
-    public function find(array \$wheres, array \$orders, int \$limit): array
+    public function search(array \$wheres, array \$orders, int \$limit): array
     {
-        \$this->query->select('*');
+        \$this->query->select([
+            'lower' => 'lower',
+            'UPPER' => 'upper',
+            'PascalCase' => 'pascalCase',
+            'camelCase' => 'camelCase',
+            'snake_case' => 'snakeCase',
+        ]);
         \$this->query->from(\$this->table);
 
         foreach(\$wheres as \$column => \$value) {
@@ -225,7 +231,7 @@ final class MySQLTestGateway implements TestGateway
         \$this->query = \$conn->createQueryBuilder();
     }
 
-    public function drop(Test \$test): void
+    public function pop(Test \$test): void
     {
         \$this->query->delete(\$this->table);
 
