@@ -23,11 +23,12 @@ final class {{ entity }}Repository extends Repository
         $this->getGateway()->push(${{ item }});
     }
 {% elseif action in ['read'] %}
-    public function getById(Read{{ entity }}Request $request): array
+    public function getById(Read{{ entity }}Request $request): {{ entity }}
     {
-        ${{ item }} = (new {{ entity }}Factory())->make($request);
+        $factory = new {{ entity }}Factory();
+        $data = $this->getGateway()->get($factory->make($request));
 
-        return $this->getGateway()->get(${{ item }});
+        return $factory->make($data);
     }
 {% elseif action in ['update'] %}
     public function change(Update{{ entity }}Request $request): void

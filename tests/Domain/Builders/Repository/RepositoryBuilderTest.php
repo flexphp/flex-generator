@@ -78,11 +78,12 @@ use FlexPHP\Repositories\Repository;
 
 final class TestRepository extends Repository
 {
-    public function getById(ReadTestRequest \$request): array
+    public function getById(ReadTestRequest \$request): Test
     {
-        \$test = (new TestFactory())->make(\$request);
+        \$factory = new TestFactory();
+        \$data = \$this->getGateway()->get(\$factory->make(\$request));
 
-        return \$this->getGateway()->get(\$test);
+        return \$factory->make(\$data);
     }
 }
 
