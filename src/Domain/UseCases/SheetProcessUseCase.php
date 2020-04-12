@@ -15,6 +15,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateConstraintFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateFactoryFileRequest;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateFormTypeFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateGatewayFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateRequestFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateResponseFileRequest;
@@ -27,12 +28,14 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateFactoryFileResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateFormTypeFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateGatewayFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateRequestFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateResponseFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateTemplateFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateUseCaseFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
+use FlexPHP\Generator\Domain\UseCases\CreateFormTypeFileUseCase;
 use FlexPHP\Schema\Schema;
 
 final class SheetProcessUseCase
@@ -55,6 +58,7 @@ final class SheetProcessUseCase
         $concreteGateway = $this->createConcreteGateway($name, $actions, $attributes);
         $factory = $this->createFactory($name, $attributes);
         $constraint = $this->createConstraint($name, $attributes);
+        $formType = $this->createFormType($name, $attributes);
         $requests = $this->createRequests($name, $actions, $attributes);
         $responses = $this->createResponses($name, $actions);
         $useCases = $this->createUseCases($name, $actions, $attributes);
@@ -68,6 +72,7 @@ final class SheetProcessUseCase
             'concreteGateway' => $concreteGateway->file,
             'factory' => $factory->file,
             'constraint' => $constraint->file,
+            'formType' => $formType->file,
             'requests' => $requests->files,
             'responses' => $responses->files,
             'useCases' => $useCases->files,
@@ -87,6 +92,13 @@ final class SheetProcessUseCase
     {
         return (new CreateConstraintFileUseCase())->execute(
             new CreateConstraintFileRequest($name, $attributes)
+        );
+    }
+
+    private function createFormType(string $name, array $attributes): CreateFormTypeFileResponse
+    {
+        return (new CreateFormTypeFileUseCase())->execute(
+            new CreateFormTypeFileRequest($name, $attributes)
         );
     }
 

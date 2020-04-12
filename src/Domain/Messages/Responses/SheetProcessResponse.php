@@ -42,6 +42,11 @@ final class SheetProcessResponse
     public $constraint;
 
     /**
+     * @var null|string
+     */
+    public $formType;
+
+    /**
      * @var array<int, string>
      */
     public $requests;
@@ -74,6 +79,7 @@ final class SheetProcessResponse
         $this->concreteGateway = $response['concreteGateway'] ?? null;
         $this->factory = $response['factory'] ?? null;
         $this->constraint = $response['constraint'] ?? null;
+        $this->formType = $response['formType'] ?? null;
         $this->requests = $response['requests'] ?? [];
         $this->responses = $response['responses'] ?? [];
         $this->useCases = $response['useCases'] ?? [];
