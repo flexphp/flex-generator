@@ -7,12 +7,16 @@ final class {{ entity }}Factory
     public function make($data)
     {
         ${{ item }} = new {{ entity }}();
+
+        if (is_array($data)) {
+            $data = (object)$data;
+        }
 {% if setters %}
 
 {% for setter in setters %}
         if (isset($data->{{ setter.camel }})) {
 {% if setter.typehint starts with '\\' %}
-            ${{ item }}->set{{ setter.pascal }}(new {{ setter.typehint }}($data->{{ setter.camel }}));
+            ${{ item }}->set{{ setter.pascal }}(is_string($data->{{ setter.camel }}) ? new {{ setter.typehint }}($data->{{ setter.camel }}) : $data->{{ setter.camel }});
 {% else %}
             ${{ item }}->set{{ setter.pascal }}(({{ setter.typehint }})$data->{{ setter.camel }});
 {% endif %}

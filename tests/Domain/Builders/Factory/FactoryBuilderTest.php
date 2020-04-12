@@ -29,6 +29,10 @@ final class TestFactory
     {
         \$test = new Test();
 
+        if (is_array(\$data)) {
+            \$data = (object)\$data;
+        }
+
         if (isset(\$data->lower)) {
             \$test->setLower((string)\$data->lower);
         }
@@ -36,7 +40,7 @@ final class TestFactory
             \$test->setUpper((int)\$data->upper);
         }
         if (isset(\$data->pascalCase)) {
-            \$test->setPascalCase(new \DateTime(\$data->pascalCase));
+            \$test->setPascalCase(is_string(\$data->pascalCase) ? new \DateTime(\$data->pascalCase) : \$data->pascalCase);
         }
         if (isset(\$data->camelCase)) {
             \$test->setCamelCase((bool)\$data->camelCase);
@@ -70,6 +74,10 @@ final class {$expected}Factory
     public function make(\$data)
     {
         \${$item} = new {$expected}();
+
+        if (is_array(\$data)) {
+            \$data = (object)\$data;
+        }
 
         return \${$item};
     }
