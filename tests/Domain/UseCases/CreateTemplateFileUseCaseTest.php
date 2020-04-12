@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace FlexPHP\Generator\Tests\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\CreateTemplateFileRequest;
@@ -15,18 +14,9 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateTemplateFileResponse;
 use FlexPHP\Generator\Domain\UseCases\CreateTemplateFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
-use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 final class CreateTemplateFileUseCaseTest extends TestCase
 {
-    public function testItNotValidRequestThrowException(): void
-    {
-        $this->expectException(NotValidRequestException::class);
-
-        $useCase = new CreateTemplateFileUseCase();
-        $useCase->execute(null);
-    }
-
     /**
      * @dataProvider getEntityFile()
      */

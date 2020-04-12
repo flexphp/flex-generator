@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
-use FlexPHP\Messages\RequestInterface;
-
-final class CreateConstraintFileRequest implements RequestInterface
+final class CreateConstraintFileRequest
 {
     /**
      * @var string

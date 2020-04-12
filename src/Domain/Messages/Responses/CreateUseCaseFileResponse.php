@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Responses;
 
-use FlexPHP\Messages\ResponseInterface;
-
-final class CreateUseCaseFileResponse implements ResponseInterface
+final class CreateUseCaseFileResponse
 {
     /**
      * @var array

@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
-use FlexPHP\Messages\RequestInterface;
-
-final class CreatePrototypeRequest implements RequestInterface
+final class CreatePrototypeRequest
 {
     /**
      * @var string

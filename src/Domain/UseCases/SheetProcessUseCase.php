@@ -34,21 +34,11 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateTemplateFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateUseCaseFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
 use FlexPHP\Schema\Schema;
-use FlexPHP\UseCases\UseCase;
 
-final class SheetProcessUseCase extends UseCase
+final class SheetProcessUseCase
 {
-    /**
-     * Process sheet
-     *
-     * @param SheetProcessRequest $request
-     *
-     * @return SheetProcessResponse
-     */
-    public function execute($request)
+    public function execute(SheetProcessRequest $request): SheetProcessResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, SheetProcessRequest::class, $request);
-
         $name = $request->name;
         $attributes = Schema::fromFile($request->path)->attributes();
         $actions = [

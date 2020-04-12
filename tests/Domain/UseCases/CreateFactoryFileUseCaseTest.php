@@ -14,18 +14,9 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateFactoryFileResponse;
 use FlexPHP\Generator\Domain\UseCases\CreateFactoryFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
-use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 final class CreateFactoryFileUseCaseTest extends TestCase
 {
-    public function testItNotValidRequestThrowException(): void
-    {
-        $this->expectException(NotValidRequestException::class);
-
-        $useCase = new CreateFactoryFileUseCase();
-        $useCase->execute(null);
-    }
-
     /**
      * @dataProvider getEntityFile()
      */

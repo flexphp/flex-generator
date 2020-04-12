@@ -18,23 +18,13 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateControllerFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateControllerFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
-use FlexPHP\UseCases\UseCase;
 
-final class CreateControllerFileUseCase extends UseCase
+final class CreateControllerFileUseCase
 {
     use InflectorTrait;
 
-    /**
-     * Create controller file based in actions
-     *
-     * @param CreateControllerFileRequest $request
-     *
-     * @return CreateControllerFileResponse
-     */
-    public function execute($request)
+    public function execute(CreateControllerFileRequest $request): CreateControllerFileResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateControllerFileRequest::class, $request);
-
         $entity = $request->entity;
         $actions = $request->actions;
         $actionBuilders = [];

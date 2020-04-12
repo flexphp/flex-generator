@@ -12,18 +12,9 @@ namespace FlexPHP\Generator\Tests\Domain\UseCases;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\UseCases\SheetProcessUseCase;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 final class SheetProcessUseCaseTest extends TestCase
 {
-    public function testItNotValidRequestThrowException(): void
-    {
-        $this->expectException(NotValidRequestException::class);
-
-        $useCase = new SheetProcessUseCase();
-        $useCase->execute(null);
-    }
-
     /**
      * @dataProvider getEntityFile()
      */

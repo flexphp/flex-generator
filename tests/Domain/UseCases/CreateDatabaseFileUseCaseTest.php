@@ -13,18 +13,9 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateDatabaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateDatabaseFileResponse;
 use FlexPHP\Generator\Domain\UseCases\CreateDatabaseFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 final class CreateDatabaseFileUseCaseTest extends TestCase
 {
-    public function testItNotValidRequestThrowException(): void
-    {
-        $this->expectException(NotValidRequestException::class);
-
-        $useCase = new CreateDatabaseFileUseCase();
-        $useCase->execute(null);
-    }
-
     public function testItOk(): void
     {
         $platform = 'MySQL';

@@ -14,21 +14,11 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateDatabaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateDatabaseFileResponse;
 use FlexPHP\Generator\Domain\Writers\SqlWriter;
 use FlexPHP\Schema\Schema;
-use FlexPHP\UseCases\UseCase;
 
-final class CreateDatabaseFileUseCase extends UseCase
+final class CreateDatabaseFileUseCase
 {
-    /**
-     * Create database file
-     *
-     * @param CreateDatabaseFileRequest $request
-     *
-     * @return CreateDatabaseFileResponse
-     */
-    public function execute($request)
+    public function execute(CreateDatabaseFileRequest  $request): CreateDatabaseFileResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateDatabaseFileRequest::class, $request);
-
         $builder = new Builder($request->platform);
         $builder->createDatabase($request->dbname);
         $builder->createUser($request->username, $request->password);

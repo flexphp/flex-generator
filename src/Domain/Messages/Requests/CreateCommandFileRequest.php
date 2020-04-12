@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
-use FlexPHP\Messages\RequestInterface;
-
-final class CreateCommandFileRequest implements RequestInterface
+final class CreateCommandFileRequest
 {
     /**
      * @var string

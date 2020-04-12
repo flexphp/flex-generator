@@ -15,23 +15,13 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateFactoryFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
-use FlexPHP\UseCases\UseCase;
 
-final class CreateFactoryFileUseCase extends UseCase
+final class CreateFactoryFileUseCase
 {
     use InflectorTrait;
 
-    /**
-     * Create entity file
-     *
-     * @param CreateFactoryFileRequest $request
-     *
-     * @return CreateFactoryFileResponse
-     */
-    public function execute($request)
+    public function execute(CreateFactoryFileRequest $request): CreateFactoryFileResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateFactoryFileRequest::class, $request);
-
         $entity = $this->getPascalCase($this->getSingularize($request->entity));
         $properties = \array_reduce(
             $request->properties,

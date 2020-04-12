@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
-use FlexPHP\Messages\RequestInterface;
-
-final class ProcessFormatRequest implements RequestInterface
+final class ProcessFormatRequest
 {
     /**
      * @var string

@@ -14,18 +14,9 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateGatewayFileResponse;
 use FlexPHP\Generator\Domain\UseCases\CreateGatewayFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
-use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 final class CreateGatewayFileUseCaseTest extends TestCase
 {
-    public function testItNotValidRequestThrowException(): void
-    {
-        $this->expectException(NotValidRequestException::class);
-
-        $useCase = new CreateGatewayFileUseCase();
-        $useCase->execute(null);
-    }
-
     /**
      * @dataProvider getEntityFile()
      */

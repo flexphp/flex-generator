@@ -15,23 +15,13 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateCommandFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
-use FlexPHP\UseCases\UseCase;
 
-final class CreateCommandFileUseCase extends UseCase
+final class CreateCommandFileUseCase
 {
     use InflectorTrait;
 
-    /**
-     * Create command files for action based in entity
-     *
-     * @param CreateCommandFileRequest $request
-     *
-     * @return CreateCommandFileResponse
-     */
-    public function execute($request)
+    public function execute(CreateCommandFileRequest $request): CreateCommandFileResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateCommandFileRequest::class, $request);
-
         $files = [];
         $entity = $this->getSingularize($request->entity);
         $actions = $request->actions;

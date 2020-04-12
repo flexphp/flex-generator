@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6df8ea151ca3d0dbefad0a2dc60f0ef0",
+    "content-hash": "8429354a1fdcba2e3afabc8e7e8df3e5",
     "packages": [
         {
             "name": "box/spout",
@@ -362,90 +362,6 @@
             "time": "2020-03-28T22:49:01+00:00"
         },
         {
-            "name": "flexphp/messages",
-            "version": "dev-develop",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/flexphp/flex-messages.git",
-                "reference": "ef614ea00deb37fc345c17ae30de44622fe620ae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/flexphp/flex-messages/zipball/ef614ea00deb37fc345c17ae30de44622fe620ae",
-                "reference": "ef614ea00deb37fc345c17ae30de44622fe620ae",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.3"
-            },
-            "require-dev": {
-                "phpmd/phpmd": "^2.8",
-                "phpstan/phpstan": "~0.9",
-                "phpunit/phpunit": "^7.0",
-                "squizlabs/php_codesniffer": "~3.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "FlexPHP\\Messages\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freddie Gar",
-                    "email": "freddie.gar@outlook.com"
-                }
-            ],
-            "description": "Agnostic messages PHP, any framework",
-            "time": "2020-03-28T21:55:42+00:00"
-        },
-        {
-            "name": "flexphp/repositories",
-            "version": "dev-develop",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/flexphp/flex-repositories.git",
-                "reference": "abf96bf07d3075f417e499c7ba897fdcd048d8aa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/flexphp/flex-repositories/zipball/abf96bf07d3075f417e499c7ba897fdcd048d8aa",
-                "reference": "abf96bf07d3075f417e499c7ba897fdcd048d8aa",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.3"
-            },
-            "require-dev": {
-                "phpmd/phpmd": "^2.8",
-                "phpstan/phpstan": "~0.9",
-                "phpunit/phpunit": "^7.0",
-                "squizlabs/php_codesniffer": "~3.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "FlexPHP\\Repositories\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freddie Gar",
-                    "email": "freddie.gar@outlook.com"
-                }
-            ],
-            "description": "Agnostic repositories PHP, any framework",
-            "time": "2020-03-28T21:54:45+00:00"
-        },
-        {
             "name": "flexphp/schema",
             "version": "dev-develop",
             "source": {
@@ -489,50 +405,6 @@
             ],
             "description": "One schema, any framework",
             "time": "2020-03-28T17:00:18+00:00"
-        },
-        {
-            "name": "flexphp/use-cases",
-            "version": "dev-develop",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/flexphp/flex-use-cases.git",
-                "reference": "2837dfc15b00b5e112000c6aa3dc42a00696a062"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/flexphp/flex-use-cases/zipball/2837dfc15b00b5e112000c6aa3dc42a00696a062",
-                "reference": "2837dfc15b00b5e112000c6aa3dc42a00696a062",
-                "shasum": ""
-            },
-            "require": {
-                "flexphp/messages": "dev-develop",
-                "flexphp/repositories": "dev-develop",
-                "php": ">=7.1.3"
-            },
-            "require-dev": {
-                "phpmd/phpmd": "^2.8",
-                "phpstan/phpstan": "~0.9",
-                "phpunit/phpunit": "^7.0",
-                "squizlabs/php_codesniffer": "~3.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "FlexPHP\\UseCases\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freddie Gar",
-                    "email": "freddie.gar@outlook.com"
-                }
-            ],
-            "description": "Agnostic use-cases PHP, any framework",
-            "time": "2020-03-28T21:58:54+00:00"
         },
         {
             "name": "jawira/case-converter",
@@ -3360,8 +3232,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "flexphp/database": 20,
-        "flexphp/schema": 20,
-        "flexphp/use-cases": 20
+        "flexphp/schema": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

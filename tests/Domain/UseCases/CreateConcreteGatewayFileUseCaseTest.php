@@ -14,19 +14,10 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateConcreteGatewayFileRespons
 use FlexPHP\Generator\Domain\UseCases\CreateConcreteGatewayFileUseCase;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
-use FlexPHP\UseCases\Exception\NotValidRequestException;
 use InvalidArgumentException;
 
 final class CreateConcreteGatewayFileUseCaseTest extends TestCase
 {
-    public function testItNotValidRequestThrowException(): void
-    {
-        $this->expectException(NotValidRequestException::class);
-
-        $useCase = new CreateConcreteGatewayFileUseCase();
-        $useCase->execute(null);
-    }
-
     /**
      * @dataProvider getEntityFile()
      */

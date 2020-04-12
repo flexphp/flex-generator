@@ -15,23 +15,13 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
-use FlexPHP\UseCases\UseCase;
 
-final class CreateEntityFileUseCase extends UseCase
+final class CreateEntityFileUseCase
 {
     use InflectorTrait;
 
-    /**
-     * Create entity file
-     *
-     * @param CreateEntityFileRequest $request
-     *
-     * @return CreateEntityFileResponse
-     */
-    public function execute($request)
+    public function execute(CreateEntityFileRequest $request): CreateEntityFileResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateEntityFileRequest::class, $request);
-
         $name = $this->getSingularize($request->name);
         $properties = \array_reduce(
             $request->properties,

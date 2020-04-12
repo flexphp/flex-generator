@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Responses;
 
-use FlexPHP\Messages\ResponseInterface;
-
-final class CreateConstraintFileResponse implements ResponseInterface
+final class CreateConstraintFileResponse
 {
     /**
      * @var string

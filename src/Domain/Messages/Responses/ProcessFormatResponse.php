@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Responses;
 
-use FlexPHP\Messages\ResponseInterface;
-
-final class ProcessFormatResponse implements ResponseInterface
+final class ProcessFormatResponse
 {
     /**
      * @var array

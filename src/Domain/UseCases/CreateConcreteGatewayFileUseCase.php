@@ -15,10 +15,9 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateConcreteGatewayFileRespons
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
-use FlexPHP\UseCases\UseCase;
 use InvalidArgumentException;
 
-final class CreateConcreteGatewayFileUseCase extends UseCase
+final class CreateConcreteGatewayFileUseCase
 {
     use InflectorTrait;
 
@@ -29,17 +28,8 @@ final class CreateConcreteGatewayFileUseCase extends UseCase
         'MySQL' => 'MySQLGatewayBuilder',
     ];
 
-    /**
-     * Create entity file
-     *
-     * @param CreateConcreteGatewayFileRequest $request
-     *
-     * @return CreateConcreteGatewayFileResponse
-     */
-    public function execute($request)
+    public function execute(CreateConcreteGatewayFileRequest $request): CreateConcreteGatewayFileResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateConcreteGatewayFileRequest::class, $request);
-
         $entity = $this->getPascalCase($this->getSingularize($request->entity));
         $concrete = $request->concrete;
         $concretesAvailable = \array_keys($this->concretes);

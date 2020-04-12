@@ -14,19 +14,11 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreatePrototypeRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreatePrototypeResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
-use FlexPHP\UseCases\UseCase;
 
-final class CreatePrototypeUseCase extends UseCase
+final class CreatePrototypeUseCase
 {
-    /**
-     * @param CreatePrototypeRequest $request
-     *
-     * @return CreatePrototypeResponse
-     */
-    public function execute($request)
+    public function execute(CreatePrototypeRequest $request): CreatePrototypeResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreatePrototypeRequest::class, $request);
-
         $sheets = $request->sheets;
         $outputDir = $request->outputDir;
         $sourceDir = __DIR__ . '/../BoilerPlates/Symfony/v43/base';

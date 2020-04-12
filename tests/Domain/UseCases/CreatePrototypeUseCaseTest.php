@@ -13,18 +13,9 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreatePrototypeRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreatePrototypeResponse;
 use FlexPHP\Generator\Domain\UseCases\CreatePrototypeUseCase;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 final class CreatePrototypeUseCaseTest extends TestCase
 {
-    public function testItNotValidRequestThrowException(): void
-    {
-        $this->expectException(NotValidRequestException::class);
-
-        $useCase = new CreatePrototypeUseCase();
-        $useCase->execute(null);
-    }
-
     public function testItWithSymfony(): void
     {
         $name = 'project';

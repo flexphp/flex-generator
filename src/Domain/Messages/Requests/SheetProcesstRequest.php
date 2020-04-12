@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
-use FlexPHP\Messages\RequestInterface;
-
-final class SheetProcessRequest implements RequestInterface
+final class SheetProcessRequest
 {
     /**
      * @var string

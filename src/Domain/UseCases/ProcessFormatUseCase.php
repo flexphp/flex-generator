@@ -14,30 +14,22 @@ use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Exceptions\FormatPathNotValidException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
+use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Validations\FieldSyntaxValidation;
 use FlexPHP\Generator\Domain\Validations\HeaderSyntaxValidation;
 use FlexPHP\Generator\Domain\Writers\YamlWriter;
 use FlexPHP\Schema\Constants\Keyword;
-use FlexPHP\UseCases\UseCase;
-use Jawira\CaseConverter\Convert;
 
-final class ProcessFormatUseCase extends UseCase
+final class ProcessFormatUseCase
 {
+    use InflectorTrait;
+
     /**
-     * Process format based in extension
-     * - Syntax Sheet
-     *
-     * @param ProcessFormatRequest $request
-     *
      * @throws FormatPathNotValidException
      * @throws FormatNotSupportedException
-     *
-     * @return ProcessFormatResponse
      */
-    public function execute($request)
+    public function execute(ProcessFormatRequest $request): ProcessFormatResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, ProcessFormatRequest::class, $request);
-
         $sheetNames = [];
         $path = $request->path;
         $extension = $request->extension;
@@ -66,7 +58,7 @@ final class ProcessFormatUseCase extends UseCase
                 continue;
             }
 
-            $sheetName = (new Convert($sheet->getName()))->toPascal();
+            $sheetName = $this->getPascalCase($sheet->getName());
 
             $headers = [];
             $fields = [];
@@ -96,7 +88,7 @@ final class ProcessFormatUseCase extends UseCase
                 $fieldValidation->validate();
 
                 $colHeaderName = $headers[\array_search(Keyword::NAME, $headers)];
-                $fieldName = (new Convert($field[$colHeaderName]))->toCamel();
+                $fieldName = $this->getCamelCase($field[$colHeaderName]);
                 $fields[$fieldName] = $field;
             }
 

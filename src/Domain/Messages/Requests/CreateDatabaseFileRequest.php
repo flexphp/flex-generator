@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
-use FlexPHP\Messages\RequestInterface;
-
-final class CreateDatabaseFileRequest implements RequestInterface
+final class CreateDatabaseFileRequest
 {
     /**
      * @var string

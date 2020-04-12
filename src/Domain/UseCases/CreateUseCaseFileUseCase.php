@@ -15,23 +15,13 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateUseCaseFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
-use FlexPHP\UseCases\UseCase;
 
-final class CreateUseCaseFileUseCase extends UseCase
+final class CreateUseCaseFileUseCase
 {
     use InflectorTrait;
 
-    /**
-     * Create use case file for action based in entity
-     *
-     * @param CreateUseCaseFileRequest $request
-     *
-     * @return CreateUseCaseFileResponse
-     */
-    public function execute($request)
+    public function execute(CreateUseCaseFileRequest $request): CreateUseCaseFileResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateUseCaseFileRequest::class, $request);
-
         $files = [];
         $entity = $this->getSingularize($request->entity);
         $actions = $request->actions;

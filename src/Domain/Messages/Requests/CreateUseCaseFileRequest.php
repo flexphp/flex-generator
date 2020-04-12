@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
-use FlexPHP\Messages\RequestInterface;
-
-final class CreateUseCaseFileRequest implements RequestInterface
+final class CreateUseCaseFileRequest
 {
     /**
      * @var string

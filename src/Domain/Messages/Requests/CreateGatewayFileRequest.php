@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
-use FlexPHP\Messages\RequestInterface;
-
-final class CreateGatewayFileRequest implements RequestInterface
+final class CreateGatewayFileRequest
 {
     /**
      * @var string

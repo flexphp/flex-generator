@@ -14,24 +14,20 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateResponseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateResponseFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
-use FlexPHP\Schema\SchemaAttributeInterface;
-use FlexPHP\UseCases\UseCase;
 
-final class CreateResponseFileUseCase extends UseCase
+final class CreateResponseFileUseCase
 {
     use InflectorTrait;
 
     /**
      * Create request message file based in attributes entity
      *
-     * @param CreateResponseFileRequest $request
+     * @param  $request
      *
-     * @return CreateResponseFileResponse
+     * @return
      */
-    public function execute($request)
+    public function execute(CreateResponseFileRequest $request): CreateResponseFileResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateResponseFileRequest::class, $request);
-
         $files = [];
         $entity = $this->getSingularize($request->entity);
         $actions = $request->actions;

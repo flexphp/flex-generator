@@ -14,23 +14,13 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateGatewayFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateGatewayFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
-use FlexPHP\UseCases\UseCase;
 
-final class CreateGatewayFileUseCase extends UseCase
+final class CreateGatewayFileUseCase
 {
     use InflectorTrait;
 
-    /**
-     * Create entity file
-     *
-     * @param CreateGatewayFileRequest $request
-     *
-     * @return CreateGatewayFileResponse
-     */
-    public function execute($request)
+    public function execute(CreateGatewayFileRequest $request): CreateGatewayFileResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateGatewayFileRequest::class, $request);
-
         $entity = $this->getPascalCase($this->getSingularize($request->entity));
 
         $gateway = new GatewayBuilder($entity, $request->actions);

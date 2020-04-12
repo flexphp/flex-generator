@@ -14,7 +14,6 @@
         "box/spout": "^3.0",
         "flexphp/database": "dev-develop",
         "flexphp/schema": "dev-develop",
-        "flexphp/use-cases": "dev-develop",
         "jawira/case-converter": "^3.4",
         "symfony/http-foundation": "^4.3",
         "symfony/inflector": "^4.4",

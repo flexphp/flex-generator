@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Responses;
 
-use FlexPHP\Messages\ResponseInterface;
-
-final class CreateFactoryFileResponse implements ResponseInterface
+final class CreateFactoryFileResponse
 {
     /**
      * @var string

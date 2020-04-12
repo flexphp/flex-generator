@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
-use FlexPHP\Messages\RequestInterface;
-
-final class CreateEntityFileRequest implements RequestInterface
+final class CreateEntityFileRequest
 {
     /**
      * @var string

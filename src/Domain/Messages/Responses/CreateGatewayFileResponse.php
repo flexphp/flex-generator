@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Responses;
 
-use FlexPHP\Messages\ResponseInterface;
-
-final class CreateGatewayFileResponse implements ResponseInterface
+final class CreateGatewayFileResponse
 {
     /**
      * @var string

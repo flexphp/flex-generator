@@ -9,9 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Responses;
 
-use FlexPHP\Messages\ResponseInterface;
-
-final class SheetProcessResponse implements ResponseInterface
+final class SheetProcessResponse
 {
     /**
      * @var null|string

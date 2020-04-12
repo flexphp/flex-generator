@@ -16,23 +16,13 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
-use FlexPHP\UseCases\UseCase;
 
-final class CreateConstraintFileUseCase extends UseCase
+final class CreateConstraintFileUseCase
 {
     use InflectorTrait;
 
-    /**
-     * Create constraint attribute file for entity
-     *
-     * @param CreateConstraintFileRequest $request
-     *
-     * @return CreateConstraintFileResponse
-     */
-    public function execute($request)
+    public function execute(CreateConstraintFileRequest $request): CreateConstraintFileResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateConstraintFileRequest::class, $request);
-
         $entity = $this->getSingularize($request->entity);
         $properties = \array_reduce(
             $request->properties,

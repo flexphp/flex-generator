@@ -15,23 +15,13 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateTemplateFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\TemplateWriter;
 use FlexPHP\Schema\SchemaAttributeInterface;
-use FlexPHP\UseCases\UseCase;
 
-final class CreateTemplateFileUseCase extends UseCase
+final class CreateTemplateFileUseCase
 {
     use InflectorTrait;
 
-    /**
-     * Create Template files for action based in entity
-     *
-     * @param CreateTemplateFileRequest $request
-     *
-     * @return CreateTemplateFileResponse
-     */
-    public function execute($request)
+    public function execute(CreateTemplateFileRequest $request): CreateTemplateFileResponse
     {
-        $this->throwExceptionIfRequestNotValid(__METHOD__, CreateTemplateFileRequest::class, $request);
-
         $files = [];
         $entity = $this->getDashCase($this->getSingularize($request->entity));
         $actions = [

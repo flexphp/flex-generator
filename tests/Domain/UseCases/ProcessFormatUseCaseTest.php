@@ -15,18 +15,9 @@ use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
 use FlexPHP\Generator\Domain\UseCases\ProcessFormatUseCase;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\UseCases\Exception\NotValidRequestException;
 
 final class ProcessFormatUseCaseTest extends TestCase
 {
-    public function testItFormatNotValidRequestThrowException(): void
-    {
-        $this->expectException(NotValidRequestException::class);
-
-        $useCase = new ProcessFormatUseCase();
-        $useCase->execute(null);
-    }
-
     /**
      * @dataProvider getPathNotValid
      *
