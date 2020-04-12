@@ -83,7 +83,7 @@ final class TestFormType extends AbstractType
             'label' => 'Camel Case',
             'required' => false,
         ]);
-        \$builder->add('snakeCase', InputType\TextAreaType::class, [
+        \$builder->add('snakeCase', InputType\TextareaType::class, [
             'label' => 'Snake Case',
             'required' => false,
             'attr' => [

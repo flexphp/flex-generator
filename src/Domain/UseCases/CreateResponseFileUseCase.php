@@ -19,13 +19,6 @@ final class CreateResponseFileUseCase
 {
     use InflectorTrait;
 
-    /**
-     * Create request message file based in attributes entity
-     *
-     * @param  $request
-     *
-     * @return
-     */
     public function execute(CreateResponseFileRequest $request): CreateResponseFileResponse
     {
         $files = [];

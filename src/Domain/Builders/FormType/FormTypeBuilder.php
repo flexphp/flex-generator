@@ -52,7 +52,7 @@ final class FormTypeBuilder extends AbstractBuilder
     private function getInputType(string $dataType): string
     {
         $inputTypes = [
-            'text' => 'TextArea',
+            'text' => 'Textarea',
             'smallint' => 'Integer',
             'integer' => 'Integer',
             'float' => 'Number',
