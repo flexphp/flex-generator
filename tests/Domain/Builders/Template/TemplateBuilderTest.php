@@ -50,8 +50,8 @@ final class TemplateBuilderTest extends TestCase
                     <tr>
                         <td>{{ register.lower }}</td>
                         <td>{{ register.upper }}</td>
-                        <td>{{ register.pascalCase }}</td>
-                        <td>{{ register.camelCase }}</td>
+                        <td>{{ register.pascalCase ? register.pascalCase|date('Y-m-d H:i:s') : '-' }}</td>
+                        <td>{{ register.camelCase ? 'Yes' : 'No' }}</td>
                         <td>{{ register.snakeCase }}</td>
                         <td class="text-center">
                             <div class="btn-group">
@@ -141,9 +141,9 @@ T
         <div class="card-body">
             <div class="form-group"><label>Lower</label><div class="form-control-plaintext">{{ register.lower }}</div></div>
             <div class="form-group"><label>Upper</label><div class="form-control-plaintext">{{ register.upper }}</div></div>
-            <div class="form-group"><label>Pascal Case</label><div class="form-control-plaintext">{{ register.pascalCase }}</div></div>
-            <div class="form-group"><label>Camel Case</label><div class="form-control-plaintext">{{ register.camelCase }}</div></div>
-            <div class="form-group"><label>Snake Case</label><div class="form-control-plaintext">{{ register.snakeCase }}</div></div>
+            <div class="form-group"><label>Pascal Case</label><div class="form-control-plaintext">{{ register.pascalCase ? register.pascalCase|date('Y-m-d H:i:s') : '-' }}</div></div>
+            <div class="form-group"><label>Camel Case</label><div class="form-control-plaintext">{{ register.camelCase ? 'Yes' : 'No' }}</div></div>
+            <div class="form-group"><label>Snake Case</label><div class="form-control-plaintext">{{ register.snakeCase|nl2br }}</div></div>
         </div>
 
         <div class="card-footer">

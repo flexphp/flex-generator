@@ -15,7 +15,17 @@
 
         <div class="card-body">
 {% for id, property in properties %}
+{% if property.DataType starts with 'date' %}
+            <div class="form-group"><label>{{ headers[loop.index - 1] }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</div></div>
+{% elseif property.DataType starts with 'time' %}
+            <div class="form-group"><label>{{ headers[loop.index - 1] }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</div></div>
+{% elseif property.DataType starts with 'bool' %}
+            <div class="form-group"><label>{{ headers[loop.index - 1] }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? 'Yes' : 'No' {{ '}}' }}</div></div>
+{% elseif property.DataType == 'text' %}
+            <div class="form-group"><label>{{ headers[loop.index - 1] }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }}|nl2br {{ '}}' }}</div></div>
+{% else %}
             <div class="form-group"><label>{{ headers[loop.index - 1] }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} {{ '}}' }}</div></div>
+{% endif %}
 {% endfor %}
         </div>
 

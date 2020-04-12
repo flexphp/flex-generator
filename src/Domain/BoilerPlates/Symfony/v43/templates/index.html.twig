@@ -26,7 +26,15 @@
                 {{ '{%' }} for register in registers {{ '%}' }}
                     <tr>
 {% for id, property in properties %}
+{% if property.DataType starts with 'date' %}
+                        <td>{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</td>
+{% elseif property.DataType starts with 'time' %}
+                        <td>{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</td>
+{% elseif property.DataType starts with 'bool' %}
+                        <td>{{ '{{' }} register.{{ id }} ? 'Yes' : 'No' {{ '}}' }}</td>
+{% else %}
                         <td>{{ '{{' }} register.{{ id }} {{ '}}' }}</td>
+{% endif %}
 {% endfor %}
                         <td class="text-center">
                             <div class="btn-group">
