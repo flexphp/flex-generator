@@ -27,7 +27,7 @@ final class {{ action }}{{ entity }}Response implements ResponseInterface
 {% elseif action|lower == 'read' %}
     public ${{ name }};
 
-    public function __construct(array ${{ name }})
+    public function __construct({{ entity }} ${{ name }})
     {
         $this->{{ name }} = ${{ name }};
     }

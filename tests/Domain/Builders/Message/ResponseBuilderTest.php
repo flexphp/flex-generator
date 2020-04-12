@@ -105,7 +105,7 @@ final class ReadFuzResponse implements ResponseInterface
 {
     public \$fuz;
 
-    public function __construct(array \$fuz)
+    public function __construct(Fuz \$fuz)
     {
         \$this->fuz = \$fuz;
     }
