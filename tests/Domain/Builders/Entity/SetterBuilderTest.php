@@ -29,10 +29,8 @@ T
 
     /**
      * @dataProvider getDataTypeString
-     *
-     * @param string $dataType
      */
-    public function testItWithString($dataType): void
+    public function testItWithString(string $dataType): void
     {
         $render = new SetterBuilder('foo', $dataType);
 
@@ -47,10 +45,8 @@ T
 
     /**
      * @dataProvider getDataTypeDate
-     *
-     * @param string $dataType
      */
-    public function testItWithDate($dataType): void
+    public function testItWithDate(string $dataType): void
     {
         $render = new SetterBuilder('foo', $dataType);
 
@@ -65,10 +61,8 @@ T
 
     /**
      * @dataProvider getDataTypeDateImmutable
-     *
-     * @param string $dataType
      */
-    public function testItWithDateImmutable($dataType): void
+    public function testItWithDateImmutable(string $dataType): void
     {
         $render = new SetterBuilder('foo', $dataType);
 
@@ -83,10 +77,8 @@ T
 
     /**
      * @dataProvider getDataTypeInt
-     *
-     * @param string $dataType
      */
-    public function testItWithInt($dataType): void
+    public function testItWithInt(string $dataType): void
     {
         $render = new SetterBuilder('foo', $dataType);
 
@@ -101,10 +93,8 @@ T
 
     /**
      * @dataProvider getDataTypeArray
-     *
-     * @param string $dataType
      */
-    public function testItWithArray($dataType): void
+    public function testItWithArray(string $dataType): void
     {
         $render = new SetterBuilder('foo', $dataType);
 
@@ -119,15 +109,39 @@ T
 
     /**
      * @dataProvider getDataTypeBool
-     *
-     * @param string $dataType
      */
-    public function testItWithBool($dataType): void
+    public function testItWithBool(string $dataType): void
     {
         $render = new SetterBuilder('foo', $dataType);
 
         $this->assertEquals(<<<T
     public function setFoo(bool \$foo): void
+    {
+        \$this->foo = \$foo;
+    }
+T
+, $render->build());
+    }
+
+    public function testItRequired(): void
+    {
+        $render = new SetterBuilder('foo', 'string', true);
+
+        $this->assertEquals(<<<T
+    public function setFoo(string \$foo): void
+    {
+        \$this->foo = \$foo;
+    }
+T
+, $render->build());
+    }
+
+    public function testItNotRequired(): void
+    {
+        $render = new SetterBuilder('foo', 'string', false);
+
+        $this->assertEquals(<<<T
+    public function setFoo(?string \$foo): void
     {
         \$this->foo = \$foo;
     }

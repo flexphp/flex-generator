@@ -1,4 +1,4 @@
-    public function set{{ setter }}({{ typehint }} ${{ name }}): void
+    public function set{{ setter }}({{ required ? '' : '?' }}{{ typehint }} ${{ name }}): void
     {
         $this->{{ name }} = ${{ name }};
     }

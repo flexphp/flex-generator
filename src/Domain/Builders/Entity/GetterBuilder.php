@@ -15,12 +15,12 @@ final class GetterBuilder extends AbstractBuilder
 {
     use TypeHintTrait;
 
-    public function __construct(string $name, string $dataType)
+    public function __construct(string $name, string $dataType, bool $required = true)
     {
         $name = $this->getCamelCase($name);
         $typehint = $this->guessTypeHint($dataType);
 
-        parent::__construct(\compact('name', 'typehint'));
+        parent::__construct(\compact('name', 'typehint', 'required'));
     }
 
     protected function getFileTemplate(): string

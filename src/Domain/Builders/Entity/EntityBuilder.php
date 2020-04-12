@@ -46,7 +46,11 @@ final class EntityBuilder extends AbstractBuilder
     private function getGetters(array $properties): array
     {
         return \array_reduce($properties, function (array $result, array $attributes): array {
-            $result[] = new GetterBuilder($attributes[Keyword::NAME], $attributes[Keyword::DATATYPE]);
+            $result[] = new GetterBuilder(
+                $attributes[Keyword::NAME],
+                $attributes[Keyword::DATATYPE],
+                $attributes[Keyword::CONSTRAINTS]['required'] ?? false
+            );
 
             return $result;
         }, []);

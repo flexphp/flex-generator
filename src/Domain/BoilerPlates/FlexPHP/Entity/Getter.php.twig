@@ -1,4 +1,4 @@
-    public function {{ name }}(): {{ typehint }}
+    public function {{ name }}(): {{ required ? '' : '?' }}{{ typehint }}
     {
         return $this->{{ name }};
     }

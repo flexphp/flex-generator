@@ -31,12 +31,12 @@ final class Test
     private \$camelCase;
     private \$snakeCase;
 
-    public function lower(): string
+    public function lower(): ?string
     {
         return \$this->lower;
     }
 
-    public function upper(): int
+    public function upper(): ?int
     {
         return \$this->upper;
     }
@@ -46,12 +46,12 @@ final class Test
         return \$this->pascalCase;
     }
 
-    public function camelCase(): bool
+    public function camelCase(): ?bool
     {
         return \$this->camelCase;
     }
 
-    public function snakeCase(): string
+    public function snakeCase(): ?string
     {
         return \$this->snakeCase;
     }
@@ -127,7 +127,7 @@ final class Fuz
 {
     private \${$expected};
 
-    public function {$getter}(): string
+    public function {$getter}(): ?string
     {
         return \$this->{$expected};
     }

@@ -15,13 +15,13 @@ final class SetterBuilder extends AbstractBuilder
 {
     use TypeHintTrait;
 
-    public function __construct(string $name, string $dataType)
+    public function __construct(string $name, string $dataType, bool $required = true)
     {
         $name = $this->getCamelCase($name);
         $setter = $this->getPascalCase($name);
         $typehint = $this->guessTypeHint($dataType);
 
-        parent::__construct(\compact('name', 'typehint', 'setter'));
+        parent::__construct(\compact('name', 'typehint', 'setter', 'required'));
     }
 
     protected function getFileTemplate(): string
