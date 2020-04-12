@@ -10,7 +10,7 @@
 
         $response = $useCase->execute($request);
 
-        $form = $this->createForm({{ entity }}Type::class, $response->{{ name }});
+        $form = $this->createForm({{ entity }}FormType::class, $response->{{ name }});
 
         return $this->render('{{ name }}/edit.html.twig', [
             'register' => $response->{{ name }},

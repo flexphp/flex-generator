@@ -4,7 +4,7 @@
      */
     public function new(): Response
     {
-        $form = $this->createForm({{ entity }}Type::class);
+        $form = $this->createForm({{ entity }}FormType::class);
 
         return $this->render('{{ name }}/new.html.twig', [
             'form' => $form->createView(),

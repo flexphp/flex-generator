@@ -1,12 +1,12 @@
 {% if action in ['Read', 'Delete'] %}
         $request = new {{ action }}{{ entity }}Request($id);
 {% elseif action in ['Create'] %}
-        $form = $this->createForm({{ entity }}Type::class);
+        $form = $this->createForm({{ entity }}FormType::class);
         $form->handleRequest($request);
 
         $request = new {{ action }}{{ entity }}Request($form->getData());
 {% elseif action in ['Update'] %}
-        $form = $this->createForm({{ entity }}Type::class);
+        $form = $this->createForm({{ entity }}FormType::class);
         $form->submit($request->request->get($form->getName()));
         $form->handleRequest($request);
 

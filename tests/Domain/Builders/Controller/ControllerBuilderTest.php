@@ -95,8 +95,8 @@ T
 namespace App\Controller;
 
 use Domain\Test\TestFactory;
+use Domain\Test\TestFormType;
 use Domain\Test\TestRepository;
-use Domain\Test\TestType;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\IndexTestRequest;
 use Domain\Test\UseCase\IndexTestUseCase;
@@ -156,8 +156,8 @@ T
 namespace App\Controller;
 
 use Domain\Test\TestFactory;
+use Domain\Test\TestFormType;
 use Domain\Test\TestRepository;
-use Domain\Test\TestType;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\CreateTestRequest;
 use Domain\Test\UseCase\CreateTestUseCase;
@@ -179,7 +179,7 @@ final class TestController extends AbstractController
      */
     public function new(): Response
     {
-        \$form = \$this->createForm(TestType::class);
+        \$form = \$this->createForm(TestFormType::class);
 
         return \$this->render('test/new.html.twig', [
             'form' => \$form->createView(),
@@ -191,7 +191,7 @@ final class TestController extends AbstractController
      */
     public function create(Request \$request, Connection \$conn): Response
     {
-        \$form = \$this->createForm(TestType::class);
+        \$form = \$this->createForm(TestFormType::class);
         \$form->handleRequest(\$request);
 
         \$request = new CreateTestRequest(\$form->getData());
@@ -232,8 +232,8 @@ T
 namespace App\Controller;
 
 use Domain\Test\TestFactory;
+use Domain\Test\TestFormType;
 use Domain\Test\TestRepository;
-use Domain\Test\TestType;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\ReadTestRequest;
 use Domain\Test\UseCase\ReadTestUseCase;
@@ -293,8 +293,8 @@ T
 namespace App\Controller;
 
 use Domain\Test\TestFactory;
+use Domain\Test\TestFormType;
 use Domain\Test\TestRepository;
-use Domain\Test\TestType;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\UpdateTestRequest;
 use Domain\Test\UseCase\UpdateTestUseCase;
@@ -322,7 +322,7 @@ final class TestController extends AbstractController
 
         \$response = \$useCase->execute(\$request);
 
-        \$form = \$this->createForm(TestType::class, \$response->test);
+        \$form = \$this->createForm(TestFormType::class, \$response->test);
 
         return \$this->render('test/edit.html.twig', [
             'register' => \$response->test,
@@ -335,7 +335,7 @@ final class TestController extends AbstractController
      */
     public function update(Request \$request, Connection \$conn): Response
     {
-        \$form = \$this->createForm(TestType::class);
+        \$form = \$this->createForm(TestFormType::class);
         \$form->submit(\$request->request->get(\$form->getName()));
         \$form->handleRequest(\$request);
 
@@ -377,8 +377,8 @@ T
 namespace App\Controller;
 
 use Domain\Test\TestFactory;
+use Domain\Test\TestFormType;
 use Domain\Test\TestRepository;
-use Domain\Test\TestType;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\DeleteTestRequest;
 use Domain\Test\UseCase\DeleteTestUseCase;

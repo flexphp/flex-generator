@@ -27,7 +27,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class TestType extends AbstractType
+final class TestFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {
@@ -51,7 +51,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class TestType extends AbstractType
+final class TestFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {
@@ -114,7 +114,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class {$expected}Type extends AbstractType
+final class {$expected}FormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {

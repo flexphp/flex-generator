@@ -62,7 +62,7 @@ T
      */
     public function new(): Response
     {
-        \$form = \$this->createForm(TestType::class);
+        \$form = \$this->createForm(TestFormType::class);
 
         return \$this->render('test/new.html.twig', [
             'form' => \$form->createView(),
@@ -114,7 +114,7 @@ T
 
         \$response = \$useCase->execute(\$request);
 
-        \$form = \$this->createForm(TestType::class, \$response->test);
+        \$form = \$this->createForm(TestFormType::class, \$response->test);
 
         return \$this->render('test/edit.html.twig', [
             'register' => \$response->test,
