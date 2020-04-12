@@ -5,7 +5,7 @@ namespace Domain\{{ entity }}\Gateway;
 use Domain\{{ entity }}\{{ entity }};
 use Domain\{{ entity }}\{{ entity }}Gateway;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType as DBType;
+use Doctrine\DBAL\Types\Types as DB;
 
 final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {
@@ -52,11 +52,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endfor %}
 
 {% for id, property in properties %}
-{% if property.DataType|lower == 'datetime' %}
-        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}()->format('Y-m-d H:i:s'), DBType::{{ dbtypes[id] }});
-{% else %}
-        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DBType::{{ dbtypes[id] }});
-{% endif %}
+        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbtypes[id] }});
 {% endfor %}
 
         $this->query->execute();
@@ -87,11 +83,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endfor %}
 
 {% for id, property in properties %}
-{% if property.DataType|lower == 'datetime' %}
-        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}()->format('Y-m-d H:i:s'), DBType::{{ dbtypes[id] }});
-{% else %}
-        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DBType::{{ dbtypes[id] }});
-{% endif %}
+        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbtypes[id] }});
 {% endfor %}
 
         $this->query->where('Id = :id');

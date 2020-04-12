@@ -26,7 +26,7 @@ namespace Domain\Test\Gateway;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType as DBType;
+use Doctrine\DBAL\Types\Types as DB;
 
 final class MySQLTestGateway implements TestGateway
 {
@@ -80,7 +80,7 @@ namespace Domain\Test\Gateway;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType as DBType;
+use Doctrine\DBAL\Types\Types as DB;
 
 final class MySQLTestGateway implements TestGateway
 {
@@ -102,11 +102,11 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setValue('camelCase', ':camelCase');
         \$this->query->setValue('snake_case', ':snakeCase');
 
-        \$this->query->setParameter(':lower', \$test->lower(), DBType::STRING);
-        \$this->query->setParameter(':upper', \$test->upper(), DBType::INTEGER);
-        \$this->query->setParameter(':pascalCase', \$test->pascalCase()->format('Y-m-d H:i:s'), DBType::STRING);
-        \$this->query->setParameter(':camelCase', \$test->camelCase(), DBType::BOOLEAN);
-        \$this->query->setParameter(':snakeCase', \$test->snakeCase(), DBType::STRING);
+        \$this->query->setParameter(':lower', \$test->lower(), DB::STRING);
+        \$this->query->setParameter(':upper', \$test->upper(), DB::INTEGER);
+        \$this->query->setParameter(':pascalCase', \$test->pascalCase(), DB::DATETIME_MUTABLE);
+        \$this->query->setParameter(':camelCase', \$test->camelCase(), DB::BOOLEAN);
+        \$this->query->setParameter(':snakeCase', \$test->snakeCase(), DB::TEXT);
 
         \$this->query->execute();
     }
@@ -128,7 +128,7 @@ namespace Domain\Test\Gateway;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType as DBType;
+use Doctrine\DBAL\Types\Types as DB;
 
 final class MySQLTestGateway implements TestGateway
 {
@@ -173,7 +173,7 @@ namespace Domain\Test\Gateway;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType as DBType;
+use Doctrine\DBAL\Types\Types as DB;
 
 final class MySQLTestGateway implements TestGateway
 {
@@ -195,11 +195,11 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->set('camelCase', ':camelCase');
         \$this->query->set('snake_case', ':snakeCase');
 
-        \$this->query->setParameter(':lower', \$test->lower(), DBType::STRING);
-        \$this->query->setParameter(':upper', \$test->upper(), DBType::INTEGER);
-        \$this->query->setParameter(':pascalCase', \$test->pascalCase()->format('Y-m-d H:i:s'), DBType::STRING);
-        \$this->query->setParameter(':camelCase', \$test->camelCase(), DBType::BOOLEAN);
-        \$this->query->setParameter(':snakeCase', \$test->snakeCase(), DBType::STRING);
+        \$this->query->setParameter(':lower', \$test->lower(), DB::STRING);
+        \$this->query->setParameter(':upper', \$test->upper(), DB::INTEGER);
+        \$this->query->setParameter(':pascalCase', \$test->pascalCase(), DB::DATETIME_MUTABLE);
+        \$this->query->setParameter(':camelCase', \$test->camelCase(), DB::BOOLEAN);
+        \$this->query->setParameter(':snakeCase', \$test->snakeCase(), DB::TEXT);
 
         \$this->query->where('Id = :id');
         \$this->query->setParameter('id', \$test->id());
@@ -224,7 +224,7 @@ namespace Domain\Test\Gateway;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType as DBType;
+use Doctrine\DBAL\Types\Types as DB;
 
 final class MySQLTestGateway implements TestGateway
 {
@@ -266,7 +266,7 @@ namespace Domain\\{$expectedName}\Gateway;
 use Domain\\{$expectedName}\\{$expectedName};
 use Domain\\{$expectedName}\\{$expectedName}Gateway;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType as DBType;
+use Doctrine\DBAL\Types\Types as DB;
 
 final class MySQL{$expectedName}Gateway implements {$expectedName}Gateway
 {

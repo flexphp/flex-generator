@@ -53,12 +53,29 @@ final class MySQLGatewayBuilder extends AbstractBuilder
     private function getDbType(string $dataType): string
     {
         $dbTypes = [
-            'smallint' => 'INTEGER',
-            'integer' => 'INTEGER',
-            'float' => 'INTEGER',
-            'double' => 'INTEGER',
-            'bool' => 'BOOLEAN',
+            'array' => 'ARRAY',
+            'bigint' => 'BIGINT',
+            'binary' => 'BINARY',
+            'blob' => 'BLOB',
             'boolean' => 'BOOLEAN',
+            'date' => 'DATE_MUTABLE',
+            'date_immutable' => 'DATE_IMMUTABLE',
+            'dateinterval' => 'DATEINTERVAL',
+            'datetime' => 'DATETIME_MUTABLE',
+            'datetime_immutable' => 'DATETIME_IMMUTABLE',
+            'datetimetz' => 'DATETIMETZ_MUTABLE',
+            'datetimetz_immutable' => 'DATETIMETZ_IMMUTABLE',
+            'decimal' => 'DECIMAL',
+            'float' => 'FLOAT',
+            'guid' => 'GUID',
+            'integer' => 'INTEGER',
+            'json' => 'JSON',
+            'object' => 'OBJECT',
+            'simple_array' => 'SIMPLE_ARRAY',
+            'smallint' => 'SMALLINT',
+            'text' => 'TEXT',
+            'time' => 'TIME_MUTABLE',
+            'time_immutable' => 'TIME_IMMUTABLE',
         ];
 
         if (!empty($dbTypes[$dataType])) {
