@@ -1,0 +1,46 @@
+<?php declare(strict_types=1);
+
+namespace Domain\{{ entity }};
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type as InputType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+final class {{ entity }}Type extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+{% for id, property in properties %}
+        $builder->add('{{ id }}', InputType\{{ inputs[loop.index - 1] }}Type::class, [
+            'label' => '{{ labels[loop.index - 1] }}',
+{% if property.constraints.required|default(false) %}
+            'required' => true,
+{% else %}
+            'required' => false,
+{% endif %}
+{% if property.constraints|filter(v => v != 'required')|length > 0 %}
+            'attr' => [
+{% if property.constraints.minlength %}
+                'minlength' => {{ property.constraints.minlength }},
+{% endif %}
+{% if property.constraints.maxlength %}
+                'maxlength' => {{ property.constraints.maxlength }},
+{% endif %}
+{% if property.constraints.min %}
+                'min' => {{ property.constraints.min }},
+{% endif %}
+{% if property.constraints.max %}
+                'max' => {{ property.constraints.max }},
+{% endif %}
+            ],
+{% endif %}
+{% if inputs[loop.index - 1] in ['Date', 'Time', 'DateTime'] %}
+            'input' => 'string',
+            'date_widget' => 'single_text',
+            'time_widget' => 'single_text',
+            'format' => 'Y-m-d H:i:s',
+{% endif %}
+        ]);
+{% endfor %}
+    }
+}

@@ -140,7 +140,8 @@ final class TestConstraint
     {
         return [
             new Assert\Length([
-                'min' => 100,
+                'min' => 20,
+                'max' => 100,
             ]),
         ];
     }
@@ -149,6 +150,9 @@ final class TestConstraint
     {
         return [
             new Assert\LessThanOrEqual([
+                'value' => 2,
+            ]),
+            new Assert\GreaterThanOrEqual([
                 'value' => 10,
             ]),
         ];

@@ -36,12 +36,12 @@ class TestCase extends PHPUnitTestCase
                 [
                     Keyword::NAME => 'lower',
                     Keyword::DATATYPE => 'string',
-                    Keyword::CONSTRAINTS => 'minlength:20|minlength:100',
+                    Keyword::CONSTRAINTS => 'minlength:20|maxlength:100',
                 ],
                 [
                     Keyword::NAME => 'UPPER',
                     Keyword::DATATYPE => 'integer',
-                    Keyword::CONSTRAINTS => 'min:2|min:10',
+                    Keyword::CONSTRAINTS => 'min:2|max:10',
                 ],
                 [
                     Keyword::NAME => 'PascalCase',
