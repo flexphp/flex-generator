@@ -74,7 +74,6 @@ final class TestFormType extends AbstractType
         \$builder->add('pascalCase', InputType\DateTimeType::class, [
             'label' => 'Pascal Case',
             'required' => true,
-            'input' => 'string',
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
             'format' => 'Y-m-d H:i:s',

@@ -35,7 +35,6 @@ final class {{ entity }}FormType extends AbstractType
             ],
 {% endif %}
 {% if inputs[loop.index - 1] in ['Date', 'Time', 'DateTime'] %}
-            'input' => 'string',
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
             'format' => 'Y-m-d H:i:s',
