@@ -13,24 +13,24 @@ final class {{ entity }}Type extends AbstractType
 {% for id, property in properties %}
         $builder->add('{{ id }}', InputType\{{ inputs[loop.index - 1] }}Type::class, [
             'label' => '{{ labels[loop.index - 1] }}',
-{% if property.constraints.required|default(false) %}
+{% if property.Constraints.required|default(false) %}
             'required' => true,
 {% else %}
             'required' => false,
 {% endif %}
-{% if property.constraints|filter(v => v != 'required')|length > 0 %}
+{% if property.Constraints|filter(v => v != 'required')|length > 0 %}
             'attr' => [
-{% if property.constraints.minlength %}
-                'minlength' => {{ property.constraints.minlength }},
+{% if property.Constraints.minlength %}
+                'minlength' => {{ property.Constraints.minlength }},
 {% endif %}
-{% if property.constraints.maxlength %}
-                'maxlength' => {{ property.constraints.maxlength }},
+{% if property.Constraints.maxlength %}
+                'maxlength' => {{ property.Constraints.maxlength }},
 {% endif %}
-{% if property.constraints.min %}
-                'min' => {{ property.constraints.min }},
+{% if property.Constraints.min %}
+                'min' => {{ property.Constraints.min }},
 {% endif %}
-{% if property.constraints.max %}
-                'max' => {{ property.constraints.max }},
+{% if property.Constraints.max %}
+                'max' => {{ property.Constraints.max }},
 {% endif %}
             ],
 {% endif %}

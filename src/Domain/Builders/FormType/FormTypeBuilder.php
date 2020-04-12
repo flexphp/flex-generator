@@ -10,28 +10,28 @@
 namespace FlexPHP\Generator\Domain\Builders\FormType;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
-use FlexPHP\Schema\SchemaAttributeInterface;
+use FlexPHP\Schema\Constants\Keyword;
 use Jawira\CaseConverter\Convert;
 
 final class FormTypeBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $attributes)
+    public function __construct(string $entity, array $properties)
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
-        $properties = \array_reduce($attributes, function (array $result, SchemaAttributeInterface $schemaAttribute) {
-            $result[$this->getCamelCase($schemaAttribute->name())] = $schemaAttribute;
+        $properties = \array_reduce($properties, function (array $result, array $property) {
+            $result[$this->getCamelCase($property[Keyword::NAME])] = $property;
 
             return $result;
         }, []);
 
-        $labels = \array_reduce($attributes, function (array $result, SchemaAttributeInterface $schemaAttribute) {
-            $result[] = (new Convert($schemaAttribute->name()))->toTitle();
+        $labels = \array_reduce($properties, function (array $result, array $property) {
+            $result[] = (new Convert($property[Keyword::NAME]))->toTitle();
 
             return $result;
         }, []);
 
-        $inputs = \array_reduce($attributes, function (array $result, SchemaAttributeInterface $schemaAttribute) {
-            $result[] = $this->getInputType($schemaAttribute->dataType());
+        $inputs = \array_reduce($properties, function (array $result, array $property) {
+            $result[] = $this->getInputType($property[Keyword::DATATYPE]);
 
             return $result;
         }, []);

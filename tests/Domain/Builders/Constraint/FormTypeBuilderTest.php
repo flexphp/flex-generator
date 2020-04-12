@@ -40,7 +40,7 @@ T
 
     public function testItOkWithDiffNameProperties(): void
     {
-        $render = new FormTypeBuilder('Test', $this->getSchemaAttributes());
+        $render = new FormTypeBuilder('Test', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
