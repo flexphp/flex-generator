@@ -2,6 +2,9 @@
 
 namespace Domain\{{ entity }}\Response;
 
+{% if action|lower == 'read' %}
+use Domain\{{ entity }}\{{ entity }};
+{% endif %}
 use FlexPHP\Messages\ResponseInterface;
 
 final class {{ action }}{{ entity }}Response implements ResponseInterface

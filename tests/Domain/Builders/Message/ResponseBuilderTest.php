@@ -99,6 +99,7 @@ T
 
 namespace Domain\Fuz\Response;
 
+use Domain\Fuz\Fuz;
 use FlexPHP\Messages\ResponseInterface;
 
 final class ReadFuzResponse implements ResponseInterface
