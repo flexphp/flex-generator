@@ -1,0 +1,35 @@
+Users:
+  Title: Users
+  Attributes:
+    id:
+      Name: Id
+      DataType: integer
+      Constraints: 'required|type:number'
+    email:
+      Name: Email
+      DataType: string
+      Constraints: 'required|maxlength:255|type:email'
+    password:
+      Name: Password
+      DataType: string
+      Constraints: 'required|maxlength:255'
+    name:
+      Name: Name
+      DataType: string
+      Constraints: 'required|maxlength:255'
+    status:
+      Name: status
+      DataType: string
+      Constraints: 'required|maxlength:1'
+    lastLoginAt:
+      Name: LastLoginAt
+      DataType: datetime
+      Constraints: ''
+    createdAt:
+      Name: CreatedAt
+      DataType: datetime
+      Constraints: ''
+    updatedAt:
+      Name: UpdatedAt
+      DataType: datetime
+      Constraints: ''

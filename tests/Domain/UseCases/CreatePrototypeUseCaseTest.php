@@ -22,6 +22,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $sheets = [
             'Posts' => \sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__),
             'Comments' => \sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__),
+            'Users' => \sprintf('%1$s/../../Mocks/yaml/users.yaml', __DIR__),
         ];
 
         $request = new CreatePrototypeRequest($name, $sheets, $this->getOutputFolder());
@@ -138,6 +139,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/domain/Post/Post.php');
         $this->assertFileExists($response->outputDir . '/domain/Post/PostFactory.php');
         $this->assertFileExists($response->outputDir . '/domain/Post/PostGateway.php');
+        $this->assertFileExists($response->outputDir . '/domain/Post/PostRepository.php');
         $this->assertFileExists($response->outputDir . '/domain/Post/PostConstraint.php');
         $this->assertFileExists($response->outputDir . '/domain/Post/PostFormType.php');
 
