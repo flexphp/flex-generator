@@ -24,7 +24,9 @@
         "symfony/yaml": "*",
         "tgalopin/html-sanitizer-bundle": "^1.2"
     },
-    "require-dev": {},
+    "require-dev": {
+        "symfony/profiler-pack": "^1.0"
+    },
     "config": {
         "preferred-install": {
             "*": "dist"

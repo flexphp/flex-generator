@@ -1534,7 +1534,7 @@ html body .display-7 {
 
 .splash-container {
     width: 100%;
-    max-width: 375px;
+    max-width: 40%;
     padding: 15px;
     margin: auto;
 }
@@ -3580,8 +3580,21 @@ html body .display-7 {
 @media only screen and (max-width:1200px) {}
 
 @media only screen and (max-width:992px) {
+    .dashboard-main-wrapper {
+        padding-top: 20px;
+    }
     .dashboard-content {
-        padding: 15px 15px 40px 15px;
+        padding: 15px;
+    }
+    .dashboard-wrapper {
+        margin-left: 0px;
+        min-height: 50vh;
+    }
+    .dashboard-footer {
+        margin-left: 0px;
+    }
+    .splash-container {
+        max-width: 375px;
     }
     .nav-left-sidebar .navbar a {
         color: #fff;
@@ -3595,13 +3608,6 @@ html body .display-7 {
         position: relative;
         top: 0px;
         right: 0px;
-    }
-    .dashboard-wrapper {
-        margin-left: 0px;
-        min-height: 50vh;
-    }
-    .dashboard-footer {
-        margin-left: 0px;
     }
     .nav-left-sidebar .navbar-toggler {
         background-color: #fff;
@@ -3625,7 +3631,13 @@ html body .display-7 {
 
 @media only screen and (max-width:480px) {
     .dashboard-content {
-        padding: 10px 10px 40px 10px;
+        padding: 10px 10px 20px 10px;
+    }
+    .dashboard-wrapper {
+        margin-left: 0px;
+    }
+    .dashboard-footer {
+        margin-left: 0px;
     }
     .nav-left-sidebar .navbar a {
         color: #fff;
@@ -3645,12 +3657,6 @@ html body .display-7 {
         position: relative;
         top: 0px;
         right: 0px;
-    }
-    .dashboard-wrapper {
-        margin-left: 0px;
-    }
-    .dashboard-footer {
-        margin-left: 0px;
     }
     .aside-nav.collapse {
         display: none;
