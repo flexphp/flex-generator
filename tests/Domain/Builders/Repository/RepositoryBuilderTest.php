@@ -28,7 +28,7 @@ use FlexPHP\Repositories\Repository;
 
 final class TestRepository extends Repository
 {
-    public function findBy(IndexPostRequest \$request): array
+    public function findBy(IndexTestRequest \$request): array
     {
         return \$this->getGateway()->search((array)\$request, [], 10);
     }

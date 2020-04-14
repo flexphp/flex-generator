@@ -11,7 +11,7 @@ final class {{ entity }}Repository extends Repository
 {
 {% for action in actions %}
 {% if action in ['index'] %}
-    public function findBy(IndexPostRequest $request): array
+    public function findBy(Index{{ entity }}Request $request): array
     {
         return $this->getGateway()->search((array)$request, [], 10);
     }
