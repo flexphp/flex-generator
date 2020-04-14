@@ -34,11 +34,11 @@ final class CreateFormTypeFileUseCase
             []
         );
 
-        $constraint = new FormTypeBuilder($entity, $properties);
+        $formType = new FormTypeBuilder($entity, $properties);
         $filename = $entity . 'FormType';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
 
-        $writer = new PhpWriter($constraint->build(), $filename, $path);
+        $writer = new PhpWriter($formType->build(), $filename, $path);
 
         return new CreateFormTypeFileResponse($writer->save());
     }

@@ -28,10 +28,10 @@ final class CreateResponseFileUseCase
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/Response', __DIR__, $entity);
 
         foreach ($actions as $action) {
-            $request = new ResponseBuilder($entity, $action);
+            $response = new ResponseBuilder($entity, $action);
             $filename = $this->getPascalCase($action) . $entity . 'Response';
 
-            $writer = new PhpWriter($request->build(), $filename, $path);
+            $writer = new PhpWriter($response->build(), $filename, $path);
             $files[] = $writer->save();
         }
 

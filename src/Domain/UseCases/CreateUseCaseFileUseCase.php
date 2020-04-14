@@ -39,10 +39,10 @@ final class CreateUseCaseFileUseCase
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/UseCase', __DIR__, $entity);
 
         foreach ($actions as $action) {
-            $request = new UseCaseBuilder($entity, $action, $properties);
+            $useCase = new UseCaseBuilder($entity, $action, $properties);
             $filename = $this->getPascalCase($action) . $entity . 'UseCase';
 
-            $writer = new PhpWriter($request->build(), $filename, $path);
+            $writer = new PhpWriter($useCase->build(), $filename, $path);
             $files[] = $writer->save();
         }
 

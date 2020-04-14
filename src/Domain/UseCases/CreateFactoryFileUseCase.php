@@ -33,10 +33,10 @@ final class CreateFactoryFileUseCase
             []
         );
 
-        $gateway = new FactoryBuilder($entity, $properties);
+        $factory = new FactoryBuilder($entity, $properties);
         $filename = $entity . 'Factory';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
-        $writer = new PhpWriter($gateway->build(), $filename, $path);
+        $writer = new PhpWriter($factory->build(), $filename, $path);
 
         return new CreateFactoryFileResponse($writer->save());
     }
