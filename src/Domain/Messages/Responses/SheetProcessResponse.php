@@ -39,6 +39,11 @@ final class SheetProcessResponse
     /**
      * @var null|string
      */
+    public $repository;
+
+    /**
+     * @var null|string
+     */
     public $constraint;
 
     /**
@@ -78,6 +83,7 @@ final class SheetProcessResponse
         $this->gateway = $response['gateway'] ?? null;
         $this->concreteGateway = $response['concreteGateway'] ?? null;
         $this->factory = $response['factory'] ?? null;
+        $this->repository = $response['repository'] ?? null;
         $this->constraint = $response['constraint'] ?? null;
         $this->formType = $response['formType'] ?? null;
         $this->requests = $response['requests'] ?? [];

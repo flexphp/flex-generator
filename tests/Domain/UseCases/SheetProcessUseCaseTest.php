@@ -46,6 +46,9 @@ final class SheetProcessUseCaseTest extends TestCase
         $this->assertFileExists($response->factory);
         \unlink($response->factory);
 
+        $this->assertFileExists($response->repository);
+        \unlink($response->repository);
+
         $this->assertEquals(5, \count($response->requests));
         \array_map(function (string $request): void {
             $this->assertFileExists($request);
