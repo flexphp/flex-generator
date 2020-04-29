@@ -143,6 +143,32 @@ T
 , $render->build());
     }
 
+    public function testItRenderLoginOk(): void
+    {
+        $render = new RepositoryBuilder('Test', ['login']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+use Domain\Test\Request\LoginTestRequest;
+use FlexPHP\Repositories\Repository;
+
+final class TestRepository extends Repository
+{
+    public function getByLogin(LoginTestRequest \$request): Test
+    {
+        \$data = \$this->getGateway()->getBy('email', \$request->email);
+
+        return (new TestFactory())->make(\$data);
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

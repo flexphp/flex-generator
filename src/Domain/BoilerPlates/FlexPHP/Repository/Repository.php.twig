@@ -44,6 +44,13 @@ final class {{ entity }}Repository extends Repository
 
         $this->getGateway()->pop(${{ item }});
     }
+{% elseif action in ['login'] %}
+    public function getByLogin(Login{{ entity }}Request $request): {{ entity }}
+    {
+        $data = $this->getGateway()->getBy('{{ login }}', $request->{{ login }});
+
+        return (new {{ entity }}Factory())->make($data);
+    }
 {% endif %}
 {% if not loop.last %}
 

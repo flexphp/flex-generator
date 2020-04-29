@@ -14,7 +14,7 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class GatewayBuilderTest extends TestCase
 {
-    public function testItIndexOk(): void
+    public function testItRenderIndexOk(): void
     {
         $render = new GatewayBuilder('Test', ['index']);
 
@@ -32,7 +32,7 @@ T
 , $render->build());
     }
 
-    public function testItCreateOk(): void
+    public function testItRenderCreateOk(): void
     {
         $render = new GatewayBuilder('Test', ['create']);
 
@@ -50,7 +50,7 @@ T
 , $render->build());
     }
 
-    public function testItReadOk(): void
+    public function testItRenderReadOk(): void
     {
         $render = new GatewayBuilder('Test', ['read']);
 
@@ -68,7 +68,7 @@ T
 , $render->build());
     }
 
-    public function testItUpdateOk(): void
+    public function testItRenderUpdateOk(): void
     {
         $render = new GatewayBuilder('Test', ['update']);
 
@@ -86,7 +86,7 @@ T
 , $render->build());
     }
 
-    public function testItDeleteOk(): void
+    public function testItRenderDeleteOk(): void
     {
         $render = new GatewayBuilder('Test', ['delete']);
 
@@ -104,10 +104,28 @@ T
 , $render->build());
     }
 
+    public function testItRenderLoginOk(): void
+    {
+        $render = new GatewayBuilder('Test', ['login']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+interface TestGateway
+{
+    public function getBy(string \$column, \$value): array;
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */
-    public function testItOkManyActions(): void
+    public function testItRenderOkManyActions(): void
     {
         $render = new GatewayBuilder('Test', ['create', 'other']);
 
@@ -128,7 +146,7 @@ T
     /**
      * @dataProvider getEntityName
      */
-    public function testItOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedSingular): void
+    public function testItRenderOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedSingular): void
     {
         $render = new GatewayBuilder($entity, ['create']);
 

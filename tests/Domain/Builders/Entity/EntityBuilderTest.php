@@ -86,6 +86,49 @@ T
 , $render->build());
     }
 
+    public function testItUserEntityInSymfonyOk(): void
+    {
+        $render = new EntityBuilder('User', []);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\User;
+
+use Symfony\Component\Security\Core\User\UserInterface;
+
+final class User implements UserInterface
+{
+    public function getUsername()
+    {
+        return \$this->name();
+    }
+
+    public function getPassword()
+    {
+        return \$this->password();
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function eraseCredentials()
+    {
+        return true;
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

@@ -174,6 +174,32 @@ T
 , $render->build());
     }
 
+    public function testItRenderLoginOk(): void
+    {
+        $render = new ResponseBuilder('Fuz', 'login');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Response;
+
+use Domain\Fuz\Fuz;
+use FlexPHP\Messages\ResponseInterface;
+
+final class LoginFuzResponse implements ResponseInterface
+{
+    public \$fuz;
+
+    public function __construct(Fuz \$fuz)
+    {
+        \$this->fuz = \$fuz;
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

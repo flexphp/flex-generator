@@ -1,8 +1,15 @@
+{% set is_user = name == 'User' %}
 <?php declare(strict_types=1);
 
 namespace Domain\{{ name }};
 
+{% if is_user %}
+use Symfony\Component\Security\Core\User\UserInterface;
+
+final class {{ name }} implements UserInterface
+{% else %}
 final class {{ name }}
+{% endif %}
 {
 {% for _property in _properties %}
     private ${{ _property }};
@@ -29,4 +36,33 @@ final class {{ name }}
 {{ setter|raw }}
 {% endif %}
 {% endfor %}
+{% if (getters or setters) and is_user %}
+
+{% endif %}
+{% if is_user %}
+    public function getUsername()
+    {
+        return $this->name();
+    }
+
+    public function getPassword()
+    {
+        return $this->password();
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function eraseCredentials()
+    {
+        return true;
+    }
+{% endif %}
 }

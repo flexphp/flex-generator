@@ -57,7 +57,7 @@ T
 , $render->build());
     }
 
-    public function testItIndexOk(): void
+    public function testItRenderIndexOk(): void
     {
         $render = new UseCaseBuilder('Test', 'index', $this->getSchemaProperties());
 
@@ -89,7 +89,7 @@ T
 , $render->build());
     }
 
-    public function testItCreateOk(): void
+    public function testItRenderCreateOk(): void
     {
         $render = new UseCaseBuilder('Test', 'create', $this->getSchemaProperties());
 
@@ -121,7 +121,7 @@ T
 , $render->build());
     }
 
-    public function testItReadOk(): void
+    public function testItRenderReadOk(): void
     {
         $render = new UseCaseBuilder('Test', 'read', $this->getSchemaProperties());
 
@@ -153,7 +153,7 @@ T
 , $render->build());
     }
 
-    public function testItUpdateOk(): void
+    public function testItRenderUpdateOk(): void
     {
         $render = new UseCaseBuilder('Test', 'update', $this->getSchemaProperties());
 
@@ -185,7 +185,7 @@ T
 , $render->build());
     }
 
-    public function testItDeleteOk(): void
+    public function testItRenderDeleteOk(): void
     {
         $render = new UseCaseBuilder('Test', 'delete', $this->getSchemaProperties());
 
@@ -217,10 +217,42 @@ T
 , $render->build());
     }
 
+    public function testItRenderLoginOk(): void
+    {
+        $render = new UseCaseBuilder('Test', 'login', $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\UseCase;
+
+use Domain\Test\Request\LoginTestRequest;
+use Domain\Test\Response\LoginTestResponse;
+use FlexPHP\UseCases\UseCase;
+
+final class LoginTestUseCase extends UseCase
+{
+    /**
+     * @param LoginTestRequest \$request
+     *
+     * @return LoginTestResponse
+     */
+    public function execute(\$request)
+    {
+        \$test = \$this->getRepository()->getByLogin(\$request);
+
+        return new LoginTestResponse(\$test);
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */
-    public function testItOkWithDiffEntityName(string $entity, string $expected): void
+    public function testItRenderOkWithDiffEntityName(string $entity, string $expected): void
     {
         $render = new UseCaseBuilder($entity, 'action', []);
 
@@ -253,7 +285,7 @@ T
     /**
      * @dataProvider getActionName
      */
-    public function testItOkWithDiffActionName(string $action, string $expected): void
+    public function testItRenderOkWithDiffActionName(string $action, string $expected): void
     {
         $render = new UseCaseBuilder('test', $action, []);
 
@@ -286,7 +318,7 @@ T
     /**
      * @dataProvider getPropertyName
      */
-    public function testItOkWithDiffPropertyName(string $name, string $expected): void
+    public function testItRenderOkWithDiffPropertyName(string $name, string $expected): void
     {
         $render = new UseCaseBuilder('Test', 'action', [
             [

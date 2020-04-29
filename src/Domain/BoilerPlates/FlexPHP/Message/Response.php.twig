@@ -2,7 +2,7 @@
 
 namespace Domain\{{ entity }}\Response;
 
-{% if action|lower == 'read' %}
+{% if action|lower in ['read', 'login'] %}
 use Domain\{{ entity }}\{{ entity }};
 {% endif %}
 use FlexPHP\Messages\ResponseInterface;
@@ -27,7 +27,7 @@ final class {{ action }}{{ entity }}Response implements ResponseInterface
         $this->status = $status;
         $this->message = $message;
     }
-{% elseif action|lower == 'read' %}
+{% elseif action|lower in ['read', 'login'] %}
     public ${{ name }};
 
     public function __construct({{ entity }} ${{ name }})

@@ -164,6 +164,31 @@ T
 , $render->build());
     }
 
+    public function testItRenderLoginOk(): void
+    {
+        $render = new RequestBuilder('Fuz', 'login', $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class LoginFuzRequest implements RequestInterface
+{
+    public \$email;
+
+    public function __construct(string \$email)
+    {
+        \$this->email = \$email;
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

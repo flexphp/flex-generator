@@ -15,6 +15,8 @@ interface {{ entity }}Gateway
     public function shift({{ entity }} ${{ item }}): void;
 {% elseif action in ['delete'] %}
     public function pop({{ entity }} ${{ item }}): void;
+{% elseif action in ['login'] %}
+    public function getBy(string $column, $value): array;
 {% else %}
 {% endif %}
 {% endfor %}

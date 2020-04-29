@@ -102,6 +102,21 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
         $this->query->execute();
     }
+{% elseif action in ['login'] %}
+
+    public function getBy(string $column, $value): array
+    {
+        $this->query->select([
+{% for id, property in properties %}
+            '{{ property.Name }}' => '{{ id }}',
+{% endfor %}
+        ]);
+        $this->query->from($this->table);
+        $this->query->where($column . ' = :column');
+        $this->query->setParameter('column', $value);
+
+        return $this->query->execute()->fetch();
+    }
 {% endif %}
 {% endfor %}
 }

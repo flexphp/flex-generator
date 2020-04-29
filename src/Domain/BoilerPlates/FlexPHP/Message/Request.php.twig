@@ -13,6 +13,13 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
     {
         $this->{{ key }} = ${{ key }};
     }
+{% elseif action|lower in ['login'] %}
+    public ${{ login }};
+
+    public function __construct(string ${{ login }})
+    {
+        $this->{{ login }} = ${{ login }};
+    }
 {% else %}
 {% for id, property in properties %}
     public ${{ id }};

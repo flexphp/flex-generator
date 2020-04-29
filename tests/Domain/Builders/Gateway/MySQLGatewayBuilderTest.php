@@ -251,6 +251,51 @@ T
 , $render->build());
     }
 
+    public function testItLoginOk(): void
+    {
+        $render = new MySQLGatewayBuilder('Test', ['login'], $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\Gateway;
+
+use Domain\Test\Test;
+use Domain\Test\TestGateway;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types as DB;
+
+final class MySQLTestGateway implements TestGateway
+{
+    private \$query;
+    private \$table = 'tests';
+
+    public function __construct(Connection \$conn)
+    {
+        \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function getBy(string \$column, \$value): array
+    {
+        \$this->query->select([
+            'lower' => 'lower',
+            'UPPER' => 'upper',
+            'PascalCase' => 'pascalCase',
+            'camelCase' => 'camelCase',
+            'snake_case' => 'snakeCase',
+        ]);
+        \$this->query->from(\$this->table);
+        \$this->query->where(\$column . ' = :column');
+        \$this->query->setParameter('column', \$value);
+
+        return \$this->query->execute()->fetch();
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

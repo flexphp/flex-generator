@@ -15,6 +15,7 @@ final class RepositoryBuilder extends AbstractBuilder
 {
     public function __construct(string $entity, array $actions)
     {
+        $login = 'email';
         $item = $this->getCamelCase($this->getSingularize($entity));
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $actions = \array_reduce($actions, function (array $result, string $action) {
@@ -28,7 +29,7 @@ final class RepositoryBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'item', 'actions', 'requests'));
+        parent::__construct(\compact('entity', 'item', 'actions', 'requests', 'login'));
     }
 
     protected function getFileTemplate(): string
