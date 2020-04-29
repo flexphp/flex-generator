@@ -18,7 +18,7 @@ Users:
       DataType: string
       Constraints: 'required|maxlength:255'
     status:
-      Name: status
+      Name: Status
       DataType: string
       Constraints: 'required|maxlength:1'
     lastLoginAt:
