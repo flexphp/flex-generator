@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Security;
+
+use Domain\User\User;
+use Domain\User\UserRepository;
+use Domain\User\Gateway\MySQLUserGateway;
+use Domain\User\Request\LoginUserRequest;
+use Domain\User\Response\LoginUserResponse;
+use Domain\User\UseCase\LoginUserUseCase;
+use Doctrine\DBAL\Connection;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
+use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
+
+/**
+ * @see https://symfony.com/doc/current/security/guard_authentication.html#manually-authenticating-a-user
+ */
+class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
+{
+    use TargetPathTrait;
+
+    private const LOGIN_ROUTE = 'login';
+
+    private $urlGenerator;
+    private $csrfTokenManager;
+    private $passwordEncoder;
+    private $dbConnection;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder, Connection $dbConnection)
+    {
+        $this->urlGenerator = $urlGenerator;
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->passwordEncoder = $passwordEncoder;
+        $this->dbConnection = $dbConnection;
+    }
+
+    public function supports(Request $request)
+    {
+        return self::LOGIN_ROUTE === $request->attributes->get('_route')
+            && $request->isMethod('POST');
+    }
+
+    public function getCredentials(Request $request)
+    {
+        $request->getSession()->set(Security::LAST_USERNAME, $request->request->get('email'));
+
+        return [
+            'email' => $request->request->get('email'),
+            'password' => $request->request->get('password'),
+            'csrf_token' => $request->request->get('_csrf_token'),
+        ];
+    }
+
+    public function getPassword($credentials): ?string
+    {
+        return $credentials['password'];
+    }
+
+    public function getUser($credentials, UserProviderInterface $userProvider)
+    {
+        $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+
+        if (!$this->csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException();
+        }
+
+        $useCase = new LoginUserUseCase(new UserRepository(new MySQLUserGateway($this->dbConnection)));
+
+        $response = $useCase->execute(new LoginUserRequest($credentials['email']));
+
+        if (!$response->user) {
+            throw new CustomUserMessageAuthenticationException('Invalid credentials.');
+        }
+
+        return $response->user;
+    }
+
+    public function checkCredentials($credentials, UserInterface $user)
+    {
+        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+    }
+
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    {
+        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+            return new RedirectResponse($targetPath);
+        }
+
+        return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+    }
+
+    protected function getLoginUrl()
+    {
+        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    }
+}

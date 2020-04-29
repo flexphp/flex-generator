@@ -60,6 +60,7 @@ final class CreatePrototypeUseCase
         $dirs = [
             '/bin',
             '/config',
+            '/config/packages',
             '/public',
             '/public/js',
             '/public/js/bootstrap',
@@ -71,6 +72,7 @@ final class CreatePrototypeUseCase
             '/src/Command',
             '/src/Controller',
             '/src/Migrations',
+            '/src/Security',
             '/templates',
             '/templates/default',
             '/templates/form',
@@ -95,8 +97,13 @@ final class CreatePrototypeUseCase
         $templates = [
             $source . '/config/bootstrap.tphp' => $dest . '/config/bootstrap.php',
             $source . '/config/bundles.tphp' => $dest . '/config/bundles.php',
+            $source . '/config/packages/security.yaml' => $dest . '/config/packages/security.yaml',
             $source . '/public/index.tphp' => $dest . '/public/index.php',
             $source . '/src/Kernel.tphp' => $dest . '/src/Kernel.php',
+            $source . '/src/Controller/DashboardController.tphp' => $dest . '/src/Controller/DashboardController.php',
+            $source . '/src/Controller/SecurityController.tphp' => $dest . '/src/Controller/SecurityController.php',
+            $source . '/src/Security/LoginFormAuthenticator.tphp' => $dest . '/src/Security/LoginFormAuthenticator.php',
+            $source . '/src/Security/UserProvider.tphp' => $dest . '/src/Security/UserProvider.php',
         ];
 
         foreach ($templates as $from => $to) {

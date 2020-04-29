@@ -1,0 +1,27 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        in_memory:
+            memory:
+                users:
+                    'admin@admin': { password: admin, roles: ROLE_ADMIN }
+        in_database:
+            id: App\Security\UserProvider
+        in_chain:
+            chain: 
+                providers: [in_memory, in_database]
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: lazy
+            provider: in_chain
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+    encoders:
+        Symfony\Component\Security\Core\User\User: 'auto'
+        Domain\User\User: 'auto'
+    access_control:
+        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }

@@ -44,7 +44,13 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/src/Migrations');
 
+        $this->assertDirectoryExists($response->outputDir . '/src/Security');
+        $this->assertFileExists($response->outputDir . '/src/Security/LoginFormAuthenticator.php');
+        $this->assertFileExists($response->outputDir . '/src/Security/UserProvider.php');
+
         $this->assertDirectoryExists($response->outputDir . '/src/Controller');
+        $this->assertFileExists($response->outputDir . '/src/Controller/DashboardController.php');
+        $this->assertFileExists($response->outputDir . '/src/Controller/SecurityController.php');
         $this->assertFileExists($response->outputDir . '/src/Controller/PostController.php');
 
         $this->assertDirectoryExists($response->outputDir . '/src/Command');
@@ -69,6 +75,9 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/config/bootstrap.php');
         $this->assertFileExists($response->outputDir . '/config/bundles.php');
         $this->assertFileExists($response->outputDir . '/config/services.yaml');
+        
+        $this->assertDirectoryExists($response->outputDir . '/config/packages');
+        $this->assertFileExists($response->outputDir . '/config/packages/security.yaml');
 
         $this->assertDirectoryExists($response->outputDir . '/public');
         $this->assertFileExists($response->outputDir . '/public/index.php');
