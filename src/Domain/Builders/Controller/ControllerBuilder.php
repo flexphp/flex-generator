@@ -17,6 +17,7 @@ final class ControllerBuilder extends AbstractBuilder
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $route = $this->getDashCase($this->getPluralize($entity));
+        unset($actions['login']);
 
         foreach ($actions as $action => $builder) {
             $actions[$this->getPascalCase($action)] = $builder;

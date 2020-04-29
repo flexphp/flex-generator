@@ -47,7 +47,7 @@ T
     /**
      * @dataProvider getEntityAndRouteName
      */
-    public function testItOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedRoute): void
+    public function testItRenderOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedRoute): void
     {
         $render = new ControllerBuilder($entity, []);
 
@@ -73,7 +73,7 @@ T
 , $render->build());
     }
 
-    public function testItIndexOk(): void
+    public function testItRenderIndexOk(): void
     {
         $entity = 'Test';
         $action = 'index';
@@ -134,7 +134,7 @@ T
 , $render->build());
     }
 
-    public function testItCreateOk(): void
+    public function testItRenderCreateOk(): void
     {
         $entity = 'Test';
         $action = 'create';
@@ -210,7 +210,7 @@ T
 , $render->build());
     }
 
-    public function testItReadOk(): void
+    public function testItRenderReadOk(): void
     {
         $entity = 'Test';
         $action = 'read';
@@ -271,7 +271,7 @@ T
 , $render->build());
     }
 
-    public function testItUpdateOk(): void
+    public function testItRenderUpdateOk(): void
     {
         $entity = 'Test';
         $action = 'update';
@@ -355,7 +355,7 @@ T
 , $render->build());
     }
 
-    public function testItDeleteOk(): void
+    public function testItRenderDeleteOk(): void
     {
         $entity = 'Test';
         $action = 'delete';
@@ -409,6 +409,44 @@ final class TestController extends AbstractController
 
         return \$this->redirectToRoute('tests.index');
     }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderLoginOk(): void
+    {
+        $entity = 'Test';
+        $action = 'login';
+        $actions = [
+            $action => (new ActionBuilder(
+                $entity,
+                $action,
+                (new RequestMessageBuilder($entity, $action))->build(),
+                (new UseCaseBuilder($entity, $action))->build(),
+                (new ResponseMessageBuilder($entity, $action))->build()
+            ))->build(),
+        ];
+
+        $render = new ControllerBuilder($entity, $actions);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace App\Controller;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/tests")
+ */
+final class TestController extends AbstractController
+{
 }
 
 T

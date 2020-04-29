@@ -53,6 +53,10 @@ final class SheetProcessUseCase
             'delete',
         ];
 
+        if ($name === 'Users') {
+            $actions = array_merge($actions, ['login']);
+        }
+
         $controller = $this->createController($name, $actions);
         $entity = $this->createEntity($name, $attributes);
         $gateway = $this->createGateway($name, $actions);
