@@ -98,6 +98,7 @@ final class CreatePrototypeUseCase
             $source . '/config/bootstrap.tphp' => $dest . '/config/bootstrap.php',
             $source . '/config/bundles.tphp' => $dest . '/config/bundles.php',
             $source . '/config/packages/security.yaml' => $dest . '/config/packages/security.yaml',
+            $source . '/config/packages/translation.yaml' => $dest . '/config/packages/translation.yaml',
             $source . '/public/index.tphp' => $dest . '/public/index.php',
             $source . '/src/Kernel.tphp' => $dest . '/src/Kernel.php',
             $source . '/src/Controller/DashboardController.tphp' => $dest . '/src/Controller/DashboardController.php',
