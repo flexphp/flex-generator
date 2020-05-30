@@ -19,17 +19,20 @@ final class TemplateBuilderTest extends TestCase
         $render = new TemplateBuilder('Tests', 'index', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
+{% trans_default_domain 'test' %}
 {% extends 'form/layout.html.twig' %}
 
-{% block title 'Tests' %}
+{% block title %}{% trans %}entity{% endtrans %}{% endblock %}
 
 {% block main %}
     <div class="card">
         <div class="card-header d-flex">
-            <h3 class="card-header-title">Tests</h3>
+            <h3 class="card-header-title">
+                {% trans %}entity{% endtrans %}
+            </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.new') }}" class="btn btn-success">
-                    <i class="fa fa-plus" aria-hidden="true"></i> New
+                    <i class="fa fa-plus" aria-hidden="true"></i> {% trans from 'messages' %}action.new{% endtrans %}
                 </a>
             </div>
         </div>
@@ -37,12 +40,12 @@ final class TemplateBuilderTest extends TestCase
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">Lower</th>
-                        <th scope="col">Upper</th>
-                        <th scope="col">Pascal Case</th>
-                        <th scope="col">Camel Case</th>
-                        <th scope="col">Snake Case</th>
-                        <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> Actions</th>
+                        <th scope="col">{% trans %}label.lower{% endtrans %}</th>
+                        <th scope="col">{% trans %}label.upper{% endtrans %}</th>
+                        <th scope="col">{% trans %}label.pascalCase{% endtrans %}</th>
+                        <th scope="col">{% trans %}label.camelCase{% endtrans %}</th>
+                        <th scope="col">{% trans %}label.snakeCase{% endtrans %}</th>
+                        <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> {% trans from 'messages' %}action.options{% endtrans %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,11 +58,11 @@ final class TemplateBuilderTest extends TestCase
                         <td>{{ register.snakeCase }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ path('tests.read', {id: register.id}) }}" class="btn btn-sm btn-outline-light">
+                                <a href="{{ path('tests.read', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
                                     <i class="fa fa-eye text-dark" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-sm btn-outline-light">
+                                <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
                                     <i class="fa fa-edit text-primary" aria-hidden="true"></i>
                                 </a>
                             </div>
@@ -85,17 +88,20 @@ T
         $render = new TemplateBuilder('Tests', 'create', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
+{% trans_default_domain 'test' %}
 {% extends 'form/layout.html.twig' %}
 
-{% block title 'Tests - New' %}
+{% block title %}{% trans %}title.new{% endtrans %}{% endblock %}
 
 {% block main %}
     <div class="card">
         <div class="card-header d-flex">
-            <h3 class="card-header-title">New Test</h3>
+            <h3 class="card-header-title">
+                {% trans %}title.new{% endtrans %}
+            </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> List
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
                 </a>
             </div>
         </div>
@@ -107,7 +113,7 @@ T
 
             <div class="card-footer text-right">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-save" aria-hidden="true"></i> Create
+                    <i class="fa fa-save" aria-hidden="true"></i> {% trans from 'messages' %}action.create{% endtrans %}
                 </button>
             </div>
         {{ form_end(form) }}
@@ -123,27 +129,30 @@ T
         $render = new TemplateBuilder('Tests', 'read', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
+{% trans_default_domain 'test' %}
 {% extends 'form/layout.html.twig' %}
 
-{% block title 'Tests Detail' %}
+{% block title %}{% trans %}title.show{% endtrans %}{% endblock %}
 
 {% block main %}
     <div class="card">
         <div class="card-header d-flex">
-            <h3 class="card-header-title">Test</h3>
+            <h3 class="card-header-title">
+                {% trans %}entity{% endtrans %}
+            </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> List
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
                 </a>
             </div>
         </div>
 
         <div class="card-body">
-            <div class="form-group"><label>Lower</label><div class="form-control-plaintext">{{ register.lower }}</div></div>
-            <div class="form-group"><label>Upper</label><div class="form-control-plaintext">{{ register.upper }}</div></div>
-            <div class="form-group"><label>Pascal Case</label><div class="form-control-plaintext">{{ register.pascalCase ? register.pascalCase|date('Y-m-d H:i:s') : '-' }}</div></div>
-            <div class="form-group"><label>Camel Case</label><div class="form-control-plaintext">{{ register.camelCase ? 'Yes' : 'No' }}</div></div>
-            <div class="form-group"><label>Snake Case</label><div class="form-control-plaintext">{{ register.snakeCase|nl2br }}</div></div>
+            <div class="form-group"><label>{% trans %}label.lower{% endtrans %}</label><div class="form-control-plaintext">{{ register.lower }}</div></div>
+            <div class="form-group"><label>{% trans %}label.upper{% endtrans %}</label><div class="form-control-plaintext">{{ register.upper }}</div></div>
+            <div class="form-group"><label>{% trans %}label.pascalCase{% endtrans %}</label><div class="form-control-plaintext">{{ register.pascalCase ? register.pascalCase|date('Y-m-d H:i:s') : '-' }}</div></div>
+            <div class="form-group"><label>{% trans %}label.camelCase{% endtrans %}</label><div class="form-control-plaintext">{{ register.camelCase ? label.yes|trans : label.no|trans }}</div></div>
+            <div class="form-group"><label>{% trans %}label.snakeCase{% endtrans %}</label><div class="form-control-plaintext">{{ register.snakeCase|nl2br }}</div></div>
         </div>
 
         <div class="card-footer">
@@ -154,7 +163,7 @@ T
 
                 <div class="col text-right">
                     <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-outline-primary">
-                        <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                        <i class="fa fa-edit" aria-hidden="true"></i> {% trans from 'messages' %}action.edit{% endtrans %}
                     </a>
                 </div>
             </div>
@@ -171,17 +180,20 @@ T
         $render = new TemplateBuilder('Tests', 'update', $this->getSchemaProperties());
 
         $this->assertEquals(<<<T
+{% trans_default_domain 'test' %}
 {% extends 'form/layout.html.twig' %}
 
-{% block title 'Tests - Edit' %}
+{% block title %}{% trans %}title.edit{% endtrans %}{% endblock %}
 
 {% block main %}
     <div class="card">
         <div class="card-header d-flex">
-            <h3 class="card-header-title">Edit Test</h3>
+            <h3 class="card-header-title">
+                {% trans %}title.edit{% endtrans %}
+            </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> List
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
                 </a>
             </div>
         </div>
@@ -200,7 +212,7 @@ T
 
                 <div class="col text-right">
                     <button type="submit" form="test" class="btn btn-primary">
-                        <i class="fa fa-save" aria-hidden="true"></i> Update
+                        <i class="fa fa-save" aria-hidden="true"></i> {% trans from 'messages' %}action.update{% endtrans %}
                     </button>
                 </div>
             </div>
@@ -222,7 +234,7 @@ T
     <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
     <input type="hidden" name="_method" value="delete" />
     <button type="submit" class="btn btn-outline-danger" tabindex="-1">
-        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+        <i class="fa fa-trash" aria-hidden="true"></i> {% trans from 'messages' %}action.delete{% endtrans %}
     </button>
 </form>
 

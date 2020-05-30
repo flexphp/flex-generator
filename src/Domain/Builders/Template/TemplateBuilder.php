@@ -10,7 +10,6 @@
 namespace FlexPHP\Generator\Domain\Builders\Template;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
-use FlexPHP\Inputs\Builder\InputBuilder;
 use FlexPHP\Schema\Constants\Keyword;
 use Jawira\CaseConverter\Convert;
 
@@ -22,15 +21,15 @@ final class TemplateBuilder extends AbstractBuilder
     {
         $this->action = $action;
 
-        $name = $this->getPascalCase($this->getSingularize($entity));
-        $entity = $this->getPascalCase($this->getPluralize($entity));
+        // $name = $this->getPascalCase($this->getSingularize($entity));
+        // $entity = $this->getPascalCase($this->getPluralize($entity));
         $route = $this->getDashCase($entity);
         $item = $this->getCamelCase($this->getSingularize($entity));
-        $headers = \array_reduce($properties, function (array $result, array $property) {
-            $result[] = (new Convert($property[Keyword::NAME]))->toTitle();
+        // $headers = \array_reduce($properties, function (array $result, array $property) {
+        //     $result[] = (new Convert($property[Keyword::NAME]))->toTitle();
 
-            return $result;
-        }, []);
+        //     return $result;
+        // }, []);
 
         $properties = \array_reduce($properties, function (array $result, array $property) {
             $result[$this->getCamelCase($property[Keyword::NAME])] = $property;
@@ -38,7 +37,11 @@ final class TemplateBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('name', 'entity', 'route', 'item', 'headers', 'properties'));
+        parent::__construct(\compact('route', 'item', 'properties'));
+        // parent::__construct(\compact('route', 'item', 'headers', 'properties'));
+        // parent::__construct(\compact('name', 'route', 'item', 'headers', 'properties'));
+        // parent::__construct(\compact('entity', 'route', 'item', 'headers', 'properties'));
+        // parent::__construct(\compact('name', 'entity', 'route', 'item', 'headers', 'properties'));
     }
 
     protected function getFileTemplate(): string

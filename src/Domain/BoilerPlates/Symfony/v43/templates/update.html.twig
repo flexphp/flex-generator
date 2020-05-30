@@ -1,14 +1,17 @@
+{{ '{%' }} trans_default_domain '{{ item }}' {{ '%}' }}
 {{ '{%' }} extends 'form/layout.html.twig' {{ '%}' }}
 
-{{ '{%' }} block title '{{ entity }} - Edit' {{ '%}' }}
+{{ '{%' }} block title {{ '%}' }}{{ '{%' }} trans {{ '%}' }}title.edit{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} endblock {{ '%}' }}
 
 {{ '{%' }} block main {{ '%}' }}
     <div class="card">
         <div class="card-header d-flex">
-            <h3 class="card-header-title">Edit {{ name }}</h3>
+            <h3 class="card-header-title">
+                {{ '{%' }} trans {{ '%}' }}title.edit{{ '{%' }} endtrans {{ '%}' }}
+            </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ '{{' }} path('{{ route }}.index') {{ '}}' }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> List
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> {{ '{%' }} trans from 'messages' {{ '%}' }}action.list{{ '{%' }} endtrans {{ '%}' }}
                 </a>
             </div>
         </div>
@@ -27,7 +30,7 @@
 
                 <div class="col text-right">
                     <button type="submit" form="{{ item }}" class="btn btn-primary">
-                        <i class="fa fa-save" aria-hidden="true"></i> Update
+                        <i class="fa fa-save" aria-hidden="true"></i> {{ '{%' }} trans from 'messages' {{ '%}' }}action.update{{ '{%' }} endtrans {{ '%}' }}
                     </button>
                 </div>
             </div>

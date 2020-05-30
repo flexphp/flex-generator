@@ -1,14 +1,17 @@
+{{ '{%' }} trans_default_domain '{{ item }}' {{ '%}' }}
 {{ '{%' }} extends 'form/layout.html.twig' {{ '%}' }}
 
-{{ '{%' }} block title '{{ entity }} Detail' {{ '%}' }}
+{{ '{%' }} block title {{ '%}' }}{{ '{%' }} trans {{ '%}' }}title.show{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} endblock {{ '%}' }}
 
 {{ '{%' }} block main {{ '%}' }}
     <div class="card">
         <div class="card-header d-flex">
-            <h3 class="card-header-title">{{ name }}</h3>
+            <h3 class="card-header-title">
+                {{ '{%' }} trans {{ '%}' }}entity{{ '{%' }} endtrans {{ '%}' }}
+            </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ '{{' }} path('{{ route }}.index') {{ '}}' }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> List
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> {{ '{%' }} trans from 'messages' {{ '%}' }}action.list{{ '{%' }} endtrans {{ '%}' }}
                 </a>
             </div>
         </div>
@@ -16,15 +19,15 @@
         <div class="card-body">
 {% for id, property in properties %}
 {% if property.DataType starts with 'date' %}
-            <div class="form-group"><label>{{ headers[loop.index - 1] }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</div></div>
+            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</div></div>
 {% elseif property.DataType starts with 'time' %}
-            <div class="form-group"><label>{{ headers[loop.index - 1] }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</div></div>
+            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</div></div>
 {% elseif property.DataType starts with 'bool' %}
-            <div class="form-group"><label>{{ headers[loop.index - 1] }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? 'Yes' : 'No' {{ '}}' }}</div></div>
+            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? label.yes|trans : label.no|trans {{ '}}' }}</div></div>
 {% elseif property.DataType == 'text' %}
-            <div class="form-group"><label>{{ headers[loop.index - 1] }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }}|nl2br {{ '}}' }}</div></div>
+            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }}|nl2br {{ '}}' }}</div></div>
 {% else %}
-            <div class="form-group"><label>{{ headers[loop.index - 1] }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} {{ '}}' }}</div></div>
+            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} {{ '}}' }}</div></div>
 {% endif %}
 {% endfor %}
         </div>
@@ -37,7 +40,7 @@
 
                 <div class="col text-right">
                     <a href="{{ '{{' }} path('{{ route }}.edit', {id: register.id}) {{ '}}' }}" class="btn btn-outline-primary">
-                        <i class="fa fa-edit" aria-hidden="true"></i> Edit
+                        <i class="fa fa-edit" aria-hidden="true"></i> {{ '{%' }} trans from 'messages' {{ '%}' }}action.edit{{ '{%' }} endtrans {{ '%}' }}
                     </a>
                 </div>
             </div>

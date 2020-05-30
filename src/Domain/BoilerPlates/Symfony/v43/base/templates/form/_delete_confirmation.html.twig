@@ -2,22 +2,26 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="modalTitle">Delete</h3>
+                <h3 class="modal-title" id="modalTitle">
+                    {% trans from 'messages' %}action.delete{% endtrans %}
+                </h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
             <div class="modal-body">
-                <p>Are you sure?</p>
+                <p>
+                    {% trans from 'messages' %}message.delete{% endtrans %}
+                </p>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" id="btnNo" data-dismiss="modal">
-                    <i class="fa fa-ban" aria-hidden="true"></i> Cancel
+                    {% trans from 'messages' %}action.cancel{% endtrans %}
                 </button>
                 <button type="button" class="btn btn-danger show-overlay" id="btnYes" data-dismiss="modal">
-                    <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                    <i class="fa fa-trash" aria-hidden="true"></i> {% trans from 'messages' %}action.delete{% endtrans %}
                 </button>
             </div>
         </div>
