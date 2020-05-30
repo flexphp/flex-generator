@@ -4,6 +4,7 @@
 {% if methods == 'GET' %}
      * @Cache(smaxage="{{ cache|default('10') }}")
 {% endif %}
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
 {% if methods in ['PUT'] %}
     public function {{ action_camel }}(Request $request, $id): Response

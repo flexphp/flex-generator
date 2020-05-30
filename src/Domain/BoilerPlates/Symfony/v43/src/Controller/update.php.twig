@@ -1,6 +1,7 @@
     /**
      * @Route("/edit/{id}", methods={"GET"}, name="{{ entity_dash }}.edit")
      * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
     public function edit(Connection $conn, $id): Response
     {
@@ -20,6 +21,7 @@
 
     /**
      * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
     public function {{ action_camel }}(Request $request, Connection $conn): Response
     {

@@ -1,5 +1,6 @@
     /**
      * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
     public function {{ action_camel }}(Connection $conn, $id): Response
     {

@@ -28,6 +28,7 @@ final class ControllerBuilderTest extends TestCase
 namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,6 +58,7 @@ T
 namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -102,6 +104,7 @@ use Domain\Test\Request\IndexTestRequest;
 use Domain\Test\UseCase\IndexTestUseCase;
 use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -115,6 +118,7 @@ final class TestController extends AbstractController
     /**
      * @Route("/", methods={"GET"}, name="tests.index")
      * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_INDEX')", statusCode=401)
      */
     public function index(Request \$request, Connection \$conn): Response
     {
@@ -163,6 +167,7 @@ use Domain\Test\Request\CreateTestRequest;
 use Domain\Test\UseCase\CreateTestUseCase;
 use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -176,6 +181,7 @@ final class TestController extends AbstractController
     /**
      * @Route("/new", methods={"GET"}, name="tests.new")
      * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_CREATE')", statusCode=401)
      */
     public function new(): Response
     {
@@ -188,6 +194,7 @@ final class TestController extends AbstractController
 
     /**
      * @Route("/create", methods={"POST"}, name="tests.create")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_CREATE')", statusCode=401)
      */
     public function create(Request \$request, Connection \$conn): Response
     {
@@ -239,6 +246,7 @@ use Domain\Test\Request\ReadTestRequest;
 use Domain\Test\UseCase\ReadTestUseCase;
 use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -252,6 +260,7 @@ final class TestController extends AbstractController
     /**
      * @Route("/{id}", methods={"GET"}, name="tests.read")
      * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_READ')", statusCode=401)
      */
     public function read(Connection \$conn, \$id): Response
     {
@@ -300,6 +309,7 @@ use Domain\Test\Request\UpdateTestRequest;
 use Domain\Test\UseCase\UpdateTestUseCase;
 use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -313,6 +323,7 @@ final class TestController extends AbstractController
     /**
      * @Route("/edit/{id}", methods={"GET"}, name="tests.edit")
      * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
     public function edit(Connection \$conn, \$id): Response
     {
@@ -332,6 +343,7 @@ final class TestController extends AbstractController
 
     /**
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
     public function update(Request \$request, Connection \$conn): Response
     {
@@ -384,6 +396,7 @@ use Domain\Test\Request\DeleteTestRequest;
 use Domain\Test\UseCase\DeleteTestUseCase;
 use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -396,6 +409,7 @@ final class TestController extends AbstractController
 {
     /**
      * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
      */
     public function delete(Connection \$conn, \$id): Response
     {
@@ -437,6 +451,7 @@ T
 namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -485,6 +500,7 @@ use Domain\Test\Request\CustomFuzTestRequest;
 use Domain\Test\UseCase\ActionTestUseCase;
 use Domain\Test\UseCase\CustomFuzTestUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -497,6 +513,7 @@ final class TestController extends AbstractController
 {
     /**
      * @Route("/action", methods={"POST"}, name="tests.action")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_ACTION')", statusCode=401)
      */
     public function action(Request \$request): Response
     {
@@ -510,6 +527,7 @@ final class TestController extends AbstractController
 
     /**
      * @Route("/custom-fuz", methods={"POST"}, name="tests.custom-fuz")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_CUSTOMFUZ')", statusCode=401)
      */
     public function customFuz(Request \$request): Response
     {

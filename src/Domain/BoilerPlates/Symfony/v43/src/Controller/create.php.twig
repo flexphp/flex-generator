@@ -1,6 +1,7 @@
     /**
      * @Route("/new", methods={"GET"}, name="{{ entity_dash }}.new")
      * @Cache(smaxage="{{ cache|default('10') }}")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
     public function new(): Response
     {
@@ -13,6 +14,7 @@
 
     /**
      * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
     public function {{ action_camel }}(Request $request, Connection $conn): Response
     {
