@@ -20,7 +20,7 @@ final class TemplateBuilder extends AbstractBuilder
     {
         $this->action = $action;
 
-        $route = $this->getDashCase($entity);
+        $route = $this->getPluralize($this->getDashCase($entity));
         $item = $this->getCamelCase($this->getSingularize($entity));
 
         $properties = \array_reduce($properties, function (array $result, array $property) {

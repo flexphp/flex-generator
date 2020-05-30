@@ -241,4 +241,38 @@ T
 T
 , $render->build());
     }
+
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItOkWithDiffEntityName(string $name, string $expectedPath, string $expectedProperty): void
+    {
+        $render = new TemplateBuilder($name, 'delete', $this->getSchemaProperties());
+
+        $this->assertEquals(<<<T
+{{ include('form/_delete_confirmation.html.twig') }}
+<form id="delete-form" name="delete-form" method="post" action="{{ url('{$expectedPath}.delete', {id: {$expectedProperty}.id}) }}" data-confirmation="true">
+    <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+    <input type="hidden" name="_method" value="delete" />
+    <button type="submit" class="btn btn-outline-danger" tabindex="-1">
+        <i class="fa fa-trash" aria-hidden="true"></i> {% trans from 'messages' %}action.delete{% endtrans %}
+    </button>
+</form>
+
+T
+, $render->build());
+    }
+
+    public function getEntityName(): array
+    {
+        return [
+            ['userpassword', 'userpasswords', 'userpassword'],
+            ['USERPASSWORD', 'userpasswords', 'userpassword'],
+            ['UserPassword', 'user-passwords', 'userPassword'],
+            ['userPassword', 'user-passwords', 'userPassword'],
+            ['user_password', 'user-passwords', 'userPassword'],
+            ['user-password', 'user-passwords', 'userPassword'],
+            ['Posts', 'posts', 'post'],
+        ];
+    }
 }
