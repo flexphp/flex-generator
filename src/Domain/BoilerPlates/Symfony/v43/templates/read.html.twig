@@ -23,7 +23,7 @@
 {% elseif property.DataType starts with 'time' %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</div></div>
 {% elseif property.DataType starts with 'bool' %}
-            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? label.yes|trans : label.no|trans {{ '}}' }}</div></div>
+            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{%' }} if register.{{ id }} {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.yes{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} else {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.no{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} endif {{ '%}' }}</div></div>
 {% elseif property.DataType == 'text' %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }}|nl2br {{ '}}' }}</div></div>
 {% else %}

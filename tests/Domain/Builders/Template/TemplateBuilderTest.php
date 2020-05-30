@@ -54,7 +54,7 @@ final class TemplateBuilderTest extends TestCase
                         <td>{{ register.lower }}</td>
                         <td>{{ register.upper }}</td>
                         <td>{{ register.pascalCase ? register.pascalCase|date('Y-m-d H:i:s') : '-' }}</td>
-                        <td>{{ register.camelCase ? 'Yes' : 'No' }}</td>
+                        <td>{% if register.camelCase %}{% trans from 'messages' %}label.yes{% endtrans %}{% else %}{% trans from 'messages' %}label.no{% endtrans %}{% endif %}</td>
                         <td>{{ register.snakeCase }}</td>
                         <td class="text-center">
                             <div class="btn-group">
@@ -151,7 +151,7 @@ T
             <div class="form-group"><label>{% trans %}label.lower{% endtrans %}</label><div class="form-control-plaintext">{{ register.lower }}</div></div>
             <div class="form-group"><label>{% trans %}label.upper{% endtrans %}</label><div class="form-control-plaintext">{{ register.upper }}</div></div>
             <div class="form-group"><label>{% trans %}label.pascalCase{% endtrans %}</label><div class="form-control-plaintext">{{ register.pascalCase ? register.pascalCase|date('Y-m-d H:i:s') : '-' }}</div></div>
-            <div class="form-group"><label>{% trans %}label.camelCase{% endtrans %}</label><div class="form-control-plaintext">{{ register.camelCase ? label.yes|trans : label.no|trans }}</div></div>
+            <div class="form-group"><label>{% trans %}label.camelCase{% endtrans %}</label><div class="form-control-plaintext">{% if register.camelCase %}{% trans from 'messages' %}label.yes{% endtrans %}{% else %}{% trans from 'messages' %}label.no{% endtrans %}{% endif %}</div></div>
             <div class="form-group"><label>{% trans %}label.snakeCase{% endtrans %}</label><div class="form-control-plaintext">{{ register.snakeCase|nl2br }}</div></div>
         </div>
 
