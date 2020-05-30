@@ -1,0 +1,37 @@
+<?php
+
+return [
+    'app' => [
+        'name' => 'Project',
+        'title' => 'Demo',
+    ],
+    'base' => [
+        'notification' => [
+            'title' => 'Notifications',
+            'show' => 'View all notifications',
+        ],
+        'header' => [
+            'account' => 'Account',
+            'setting' => 'Settings',
+            'logout' => 'Logout',
+        ]
+    ],
+    'action' => [
+        'new' => 'New',
+        'read' => 'Read',
+        'edit' => 'Edit',
+        'list' => 'List',
+        'create' => 'Create',
+        'update' => 'Update',
+        'delete' => 'Delete',
+        'cancel' => 'Cancel',
+        'options' => 'Actions',
+    ],
+    'message' => [
+        'delete' => 'Are you sure?',
+    ],
+    'label' => [
+        'yes' => 'Yes',
+        'no' => 'No',
+    ],
+];

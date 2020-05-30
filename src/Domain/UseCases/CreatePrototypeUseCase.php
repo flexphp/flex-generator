@@ -78,6 +78,7 @@ final class CreatePrototypeUseCase
             '/templates/form',
             '/templates/security',
             '/templates/errors',
+            '/translations',
             '/var',
             '/var/cache',
             '/var/log',
@@ -106,6 +107,8 @@ final class CreatePrototypeUseCase
             $source . '/src/Controller/SecurityController.tphp' => $dest . '/src/Controller/SecurityController.php',
             $source . '/src/Security/LoginFormAuthenticator.tphp' => $dest . '/src/Security/LoginFormAuthenticator.php',
             $source . '/src/Security/UserProvider.tphp' => $dest . '/src/Security/UserProvider.php',
+            $source . '/translations/.gitignore' => $dest . '/translations/.gitignore',
+            $source . '/translations/messages.en.tphp' => $dest . '/translations/messages.en.php',
         ];
 
         foreach ($templates as $from => $to) {
