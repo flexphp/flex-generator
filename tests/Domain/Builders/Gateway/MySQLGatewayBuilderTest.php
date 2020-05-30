@@ -288,7 +288,9 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->where(\$column . ' = :column');
         \$this->query->setParameter('column', \$value);
 
-        return \$this->query->execute()->fetch();
+        \$data = \$this->query->execute()->fetch();
+
+        return is_array(\$data) ? \$data : [];
     }
 }
 

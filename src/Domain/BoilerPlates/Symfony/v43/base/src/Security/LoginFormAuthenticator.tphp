@@ -81,7 +81,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
         $response = $useCase->execute(new LoginUserRequest($credentials['email']));
 
-        if (!$response->user) {
+        if (empty($response->user->id())) {
             throw new CustomUserMessageAuthenticationException('Invalid credentials.');
         }
 
