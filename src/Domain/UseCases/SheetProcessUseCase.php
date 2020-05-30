@@ -21,6 +21,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateRepositoryFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateRequestFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateResponseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateTemplateFileRequest;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateTranslateFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateUseCaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateCommandFileResponse;
@@ -35,6 +36,7 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateRepositoryFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateRequestFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateResponseFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateTemplateFileResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateTranslateFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateUseCaseFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
 use FlexPHP\Schema\Schema;
@@ -54,7 +56,7 @@ final class SheetProcessUseCase
         ];
 
         if ($name === 'Users') {
-            $actions = array_merge($actions, ['login']);
+            $actions = \array_merge($actions, ['login']);
         }
 
         $controller = $this->createController($name, $actions);
@@ -64,6 +66,7 @@ final class SheetProcessUseCase
         $factory = $this->createFactory($name, $attributes);
         $repository = $this->createRepository($name, $actions);
         $constraint = $this->createConstraint($name, $attributes);
+        $translate = $this->createTranslate($name, $attributes);
         $formType = $this->createFormType($name, $attributes);
         $requests = $this->createRequests($name, $actions, $attributes);
         $responses = $this->createResponses($name, $actions);
@@ -79,6 +82,7 @@ final class SheetProcessUseCase
             'factory' => $factory->file,
             'repository' => $repository->file,
             'constraint' => $constraint->file,
+            'translate' => $translate->file,
             'formType' => $formType->file,
             'requests' => $requests->files,
             'responses' => $responses->files,
@@ -99,6 +103,13 @@ final class SheetProcessUseCase
     {
         return (new CreateConstraintFileUseCase())->execute(
             new CreateConstraintFileRequest($name, $attributes)
+        );
+    }
+
+    private function createTranslate(string $name, array $attributes): CreateTranslateFileResponse
+    {
+        return (new CreateTranslateFileUseCase())->execute(
+            new CreateTranslateFileRequest($name, $attributes, 'en')
         );
     }
 

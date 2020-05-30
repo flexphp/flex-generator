@@ -1,0 +1,15 @@
+<?php
+
+return [
+    'entity' => '{{ entity }}',
+    'title' => [
+        'new' => 'New {{ entity }}',
+        'edit' => 'Edit {{ entity }}',
+        'show' => '{{ entity }} Details',
+    ],
+    'label' => [
+{% for id, header in headers %}
+        '{{ id }}' => '{{ header }}',
+{% endfor %}
+    ],
+];

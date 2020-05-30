@@ -49,6 +49,11 @@ final class SheetProcessResponse
     /**
      * @var null|string
      */
+    public $translate;
+
+    /**
+     * @var null|string
+     */
     public $formType;
 
     /**
@@ -85,6 +90,7 @@ final class SheetProcessResponse
         $this->factory = $response['factory'] ?? null;
         $this->repository = $response['repository'] ?? null;
         $this->constraint = $response['constraint'] ?? null;
+        $this->translate = $response['translate'] ?? null;
         $this->formType = $response['formType'] ?? null;
         $this->requests = $response['requests'] ?? [];
         $this->responses = $response['responses'] ?? [];
