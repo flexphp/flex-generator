@@ -146,18 +146,18 @@ T
     /**
      * @dataProvider getEntityName
      */
-    public function testItRenderOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedSingular): void
+    public function testItRenderOkWithDiffNameEntity(string $entity, string $expected, string $expectedSingular): void
     {
         $render = new GatewayBuilder($entity, ['create']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\\{$expectedName};
+namespace Domain\\{$expected};
 
-interface {$expectedName}Gateway
+interface {$expected}Gateway
 {
-    public function push({$expectedName} \${$expectedSingular}): void;
+    public function push({$expected} \${$expectedSingular}): void;
 }
 
 T

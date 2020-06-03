@@ -41,7 +41,7 @@
     "scripts": {
         "phpcs": [
             "phpcs --standard=PSR2 src/ --ignore=src/dist/*,src/tmp/*,*.min.css,*.min.js",
-            "phpcs --standard=PSR2 tests/ --ignore=tests/coverage/*,tests/Domain/Builders/Template/TemplateBuilderTest.php"
+            "phpcs --standard=PSR2 tests/ --ignore=tests/coverage/*,tests/Domain/Builders/Template/TemplateBuilderTest.php,tests/Domain/Builders/Factory/FactoryBuilderTest.php"
         ],
         "phpmd": [
             "phpmd src/ ansi naming,unusedcode",

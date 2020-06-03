@@ -26,10 +26,12 @@ jQuery(document).ready(function ($) {
                         $target.focus();
                         if ($target.is(":focus")) {
                             return false;
-                        } else {
-                            $target.attr('tabindex', '-1');
-                            $target.focus();
-                        };
+                        }
+
+                        $target.attr('tabindex', '-1');
+                        $target.focus();
+
+                        return true;
                     });
                 }
             };
@@ -69,11 +71,11 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('submit', 'form:not([data-confirmation])', function (event) {
+    $(document).on('submit', 'form:not([data-confirmation])', function () {
         $('.overlay').show();
     });
 
-    $(document).on('click', '.show-overlay', function (event) {
+    $(document).on('click', '.show-overlay', function () {
         $('.overlay').show();
     });
 });

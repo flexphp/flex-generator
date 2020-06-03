@@ -182,6 +182,6 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/domain/Comment');
 
-        parent::deleteFolder(\dirname($response->outputDir), false);
+        parent::deleteFolder(\dirname($response->outputDir));
     }
 }

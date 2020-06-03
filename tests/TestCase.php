@@ -20,7 +20,9 @@ class TestCase extends PHPUnitTestCase
 {
     public static function tearDownAfterClass(): void
     {
-        self::deleteFolder(self::getOutputFolder(), false);
+        if (\is_dir(self::getOutputFolder())) {
+            self::deleteFolder(self::getOutputFolder());
+        }
     }
 
     public function setUp(): void

@@ -22,7 +22,7 @@ final class CreateTranslateFileRequest
     public $attributes;
 
     /**
-     * @var array
+     * @var string
      */
     public $language;
 

@@ -29,6 +29,7 @@ final class ActionBuilder extends AbstractBuilder
 
         $this->action = $action;
 
+        $data = [];
         $data['action'] = $action;
         $data['entity'] = $this->getPascalCase($this->getSingularize($entity));
         $data['entity_dash'] = $this->getDashCase($this->getPluralize($entity));
