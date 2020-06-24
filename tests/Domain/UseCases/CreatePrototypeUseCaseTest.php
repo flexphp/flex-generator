@@ -61,6 +61,9 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/src/Command/Post/DeletePostCommand.php');
 
         $this->assertDirectoryExists($response->outputDir . '/templates');
+        $this->assertDirectoryExists($response->outputDir . '/templates/dashboard');
+        $this->assertFileExists($response->outputDir . '/templates/dashboard/index.html.twig');
+
         $this->assertDirectoryExists($response->outputDir . '/templates/post');
         $this->assertFileExists($response->outputDir . '/templates/post/index.html.twig');
         $this->assertFileExists($response->outputDir . '/templates/post/new.html.twig');
