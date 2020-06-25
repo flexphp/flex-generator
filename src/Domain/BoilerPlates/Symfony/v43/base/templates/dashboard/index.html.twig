@@ -1,12 +1,13 @@
+{% trans_default_domain 'dashboard' %}
 {% extends 'form/layout.html.twig' %}
 
-{% block title %}{% trans %}app.title{% endtrans %}{% endblock %}
+{% block title %}{% trans %}title{% endtrans %}{% endblock %}
 
 {% block main %}
     <div class="card">
         <div class="card-header d-flex">
             <h3 class="card-header-title">
-                {% trans %}app.title{% endtrans %}
+                {% trans %}title{% endtrans %}
             </h3>
         </div>
         <div class="card-body">

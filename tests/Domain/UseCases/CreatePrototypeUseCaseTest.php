@@ -129,6 +129,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/translations');
         $this->assertFileExists($response->outputDir . '/translations/.gitignore');
+        $this->assertFileExists($response->outputDir . '/translations/dashboard.en.php');
         $this->assertFileExists($response->outputDir . '/translations/messages.en.php');
         $this->assertFileExists($response->outputDir . '/translations/post.en.php');
         $this->assertFileExists($response->outputDir . '/translations/comment.en.php');

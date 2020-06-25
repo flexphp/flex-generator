@@ -110,6 +110,7 @@ final class CreatePrototypeUseCase
             $source . '/src/Security/UserProvider.tphp' => $dest . '/src/Security/UserProvider.php',
             $source . '/translations/.gitignore' => $dest . '/translations/.gitignore',
             $source . '/translations/messages.en.tphp' => $dest . '/translations/messages.en.php',
+            $source . '/translations/dashboard.en.tphp' => $dest . '/translations/dashboard.en.php',
         ];
 
         foreach ($templates as $from => $to) {
