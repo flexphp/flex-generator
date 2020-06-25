@@ -44,6 +44,10 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/src/Migrations');
 
+        $this->assertDirectoryExists($response->outputDir . '/src/Twig');
+        $this->assertFileExists($response->outputDir . '/src/Twig/AppExtension.php');
+        $this->assertFileExists($response->outputDir . '/src/Twig/AppRuntime.php');
+
         $this->assertDirectoryExists($response->outputDir . '/src/Security');
         $this->assertFileExists($response->outputDir . '/src/Security/LoginFormAuthenticator.php');
         $this->assertFileExists($response->outputDir . '/src/Security/UserProvider.php');

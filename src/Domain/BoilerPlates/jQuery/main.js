@@ -1,16 +1,39 @@
 jQuery(document).ready(function ($) {
     'use strict';
-    if ($(".notification-list").length) {
+    if ($('.notification-list').length) {
         $('.notification-list').slimScroll({
             height: '100%'
         });
     }
-    if ($(".menu-list").length) {
+    if ($('.menu-list').length) {
         $('.menu-list').slimScroll({
             height: '100%'
         });
     }
-    if ($(".sidebar-nav-fixed a").length) {
+    if ($('.navbar-nav > .nav-item > a').length) {
+        $('.navbar-nav > .nav-item > a').click(function (event) {
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active');
+                $(this).attr('aria-expanded', 'false');
+
+                return;
+            }
+
+            $('.navbar-nav > .nav-item > a').each(function () {
+                $(this).removeClass('active');
+                $(this).attr('aria-expanded', 'false');
+
+                const target = $(this).data('target');
+
+                $(target).removeClass('show');
+                $(target).attr('aria-expanded', 'false');
+            })
+
+            $(this).addClass('active');
+            $(this).attr('aria-expanded', 'true');
+        });
+    }
+    if ($('.sidebar-nav-fixed a').length) {
         $('.sidebar-nav-fixed a').click(function (event) {
             if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
                 && location.hostname == this.hostname
@@ -24,14 +47,12 @@ jQuery(document).ready(function ($) {
                     }, 1000, function () {
                         var $target = $(target);
                         $target.focus();
-                        if ($target.is(":focus")) {
+                        if ($target.is(':focus')) {
                             return false;
-                        }
-
-                        $target.attr('tabindex', '-1');
-                        $target.focus();
-
-                        return true;
+                        } else {
+                            $target.attr('tabindex', '-1');
+                            $target.focus();
+                        };
                     });
                 }
             };
@@ -71,11 +92,11 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('submit', 'form:not([data-confirmation])', function () {
+    $(document).on('submit', 'form:not([data-confirmation])', function (event) {
         $('.overlay').show();
     });
 
-    $(document).on('click', '.show-overlay', function () {
+    $(document).on('click', '.show-overlay', function (event) {
         $('.overlay').show();
     });
 });

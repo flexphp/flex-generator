@@ -1,0 +1,144 @@
+<?php
+
+namespace App\Twig;
+
+use Exception;
+use Twig\Extension\RuntimeExtensionInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
+class AppRuntime implements RuntimeExtensionInterface
+{
+    private $translator;
+    private $tokenStorage;
+    private $auth;
+    private $router;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $auth,
+        RouterInterface $router
+    ) {
+        $this->translator = $translator;
+        $this->tokenStorage = $tokenStorage;
+        $this->auth = $auth;
+        $this->router = $router;
+    }
+
+    public function menuFlex(string $filename, string $_route): string
+    {
+        $filename = realpath(__DIR__ . DIRECTORY_SEPARATOR . $filename);
+
+        if (!file_exists($filename)) {
+            throw new Exception('Menu file not found: ' . $filename, __LINE__);
+        }
+
+        $menu = include($filename);
+
+        $html = '<ul class="navbar-nav flex-column">';
+
+        foreach ($menu as $name => $item) {
+            $html .= $this->itemMenuFlex($_route, $name, $item);
+        }
+
+        $html .= '</ul>';
+
+        return $html;
+    }
+
+    private function itemMenuFlex(string $_route, string $context, array $item): string
+    {
+        static $counter = 0;
+
+        if (!$this->isGranted($item['roles'] ?? [])) {
+            return '';
+        }
+
+        $counter++;
+        $title = $item['title'] ?? 'undefined';
+        $titleTranslate = $this->translator->trans($title, [], $context);
+        $icon = $item['icon'] ?? 'fas fa-check';
+        $route = $item['route'] ?? '#';
+
+        $children = $item['children'] ?? [];
+        $collapse = count($children) > 0 ? 'data-toggle="collapse"' : '';
+        $subMenus = $this->subMenuFlex($_route, $context, $children, $counter);
+        $active = $this->isActiveMenu($_route, $children);
+        $url = $route !== '#' ? $this->router->generate($route) : $route;
+
+        return sprintf('<li class="nav-item">
+            <a class="nav-link %6$s" href="%8$s" %5$s aria-expanded="%7$s"
+                data-target="#submenu-%4$s" aria-controls="submenu-%4$d">
+                <i class="%2$s"></i> %1$s
+            </a>
+            %3$s
+        </li>', $titleTranslate, $icon, $subMenus, $counter, $collapse, ($active ? 'active' : ''), ($active ? 'true' : 'false'), $url);
+    }
+
+    private function subMenuFlex(string $_route, string $context, array $subitems, int $counter): string
+    {
+        $show = '';
+        $subMenus = '';
+
+        foreach ($subitems as $subitem) {
+            $show = isset($subitem['route']) && $_route === $subitem['route'] ? 'show' : $show;
+            $subMenus .= $this->itemSubMenuFlex($context, $subitem);
+        }
+
+        return sprintf('<div id="submenu-%1$d" class="collapse submenu %2$s">
+            <ul class="nav flex-column">
+                %3$s
+            </ul>
+        </div>', $counter, $show, $subMenus);
+    }
+
+    private function itemSubMenuFlex(string $context, array $subitem): string
+    {
+        if (!$this->isGranted($subitem['roles'] ?? [])) {
+            return '';
+        }
+
+        $title = $subitem['title'] ?? 'item undefined';
+        $titleTranslate = $this->translator->trans($title, [], $context);
+        $icon = $subitem['icon'] ?? 'fas fa-check';
+        $route = $subitem['route'] ?? '#';
+        $url = $route !== '#' ? $this->router->generate($route) : $route;
+
+
+        return sprintf('<li class="nav-item">
+                    <a class="nav-link" href="%3$s">
+                        <i class="%2$s"></i> %1$s
+                    </a>
+                </li>', $titleTranslate, $icon, $url);
+    }
+
+    private function getUser()
+    {
+        return $this->tokenStorage->getToken()->getUser();
+    }
+
+    private function isGranted(array $roles): bool
+    {
+        foreach ($roles as $role) {
+            if ($this->auth->isGranted($role)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function isActiveMenu(string $_route, array $children)
+    {
+        foreach ($children as $child) {
+            if (isset($child['route']) && $_route === $child['route']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
