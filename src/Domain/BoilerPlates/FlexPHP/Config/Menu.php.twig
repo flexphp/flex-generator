@@ -1,0 +1,31 @@
+<?php declare(strict_types=1);
+
+return [
+    'dashboard' => [
+        'title' => 'title',
+        'roles' => ['IS_AUTHENTICATED_FULLY'],
+        'icon' => 'fas fa-chart-line',
+        'route' => 'dashboard',
+    ],
+{% for index,name in names %}
+    '{{ name }}' => [
+        'title' => 'entity',
+        'roles' => ['ROLE_ADMIN', '{{ roles[index]['global'] }}'],
+        'icon' => '{{ icons[index] }}',
+        'children' => [
+            [
+                'title' => 'entity',
+                'roles' => ['ROLE_ADMIN', '{{ roles[index]['index'] }}'],
+                'icon' => 'fas fa-list-ol',
+                'route' => '{{ routes[index]['index'] }}',
+            ],
+            [
+                'title' => 'title.new',
+                'roles' => ['ROLE_ADMIN', '{{ roles[index]['create'] }}'],
+                'icon' => 'fas fa-plus',
+                'route' => '{{ routes[index]['create'] }}',
+            ],
+        ],
+    ],
+{% endfor %}
+];
