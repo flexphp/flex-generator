@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
         });
     }
     if ($('.navbar-nav > .nav-item > a').length) {
-        $('.navbar-nav > .nav-item > a').click(function (event) {
+        $('.navbar-nav > .nav-item > a').click(function () {
             if ($(this).hasClass('active')) {
                 $(this).removeClass('active');
                 $(this).attr('aria-expanded', 'false');
@@ -48,11 +48,13 @@ jQuery(document).ready(function ($) {
                         var $target = $(target);
                         $target.focus();
                         if ($target.is(':focus')) {
-                            return false;
-                        } else {
-                            $target.attr('tabindex', '-1');
-                            $target.focus();
-                        };
+                            return undefined;
+                        }
+
+                        $target.attr('tabindex', '-1');
+                        $target.focus();
+
+                        return undefined;
                     });
                 }
             };
@@ -92,11 +94,11 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('submit', 'form:not([data-confirmation])', function (event) {
+    $(document).on('submit', 'form:not([data-confirmation])', function () {
         $('.overlay').show();
     });
 
-    $(document).on('click', '.show-overlay', function (event) {
+    $(document).on('click', '.show-overlay', function () {
         $('.overlay').show();
     });
 });
