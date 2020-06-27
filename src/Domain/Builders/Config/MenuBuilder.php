@@ -16,6 +16,9 @@ final class MenuBuilder extends AbstractBuilder
     public function __construct(array $entities)
     {
         $names = [];
+        $icons = [];
+        $roles = [];
+        $routes = [];
 
         foreach ($entities as $entity => $icon) {
             $names[] = $this->getName($entity);

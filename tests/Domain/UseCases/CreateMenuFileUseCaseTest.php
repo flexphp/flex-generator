@@ -19,7 +19,7 @@ final class CreateMenuFileUseCaseTest extends TestCase
     /**
      * @dataProvider getEntityFiles()
      *
-     * @param mixed $schemafiles
+     * @param array $schemafiles
      */
     public function testItOk(array $schemafiles): void
     {

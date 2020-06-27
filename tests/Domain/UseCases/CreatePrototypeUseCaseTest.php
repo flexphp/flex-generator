@@ -82,6 +82,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/config/bootstrap.php');
         $this->assertFileExists($response->outputDir . '/config/bundles.php');
         $this->assertFileExists($response->outputDir . '/config/services.yaml');
+        $this->assertFileExists($response->outputDir . '/config/menu.php');
         
         $this->assertDirectoryExists($response->outputDir . '/config/packages');
         $this->assertFileExists($response->outputDir . '/config/packages/security.yaml');

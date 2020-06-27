@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Messages\Requests\CreateDatabaseFileRequest;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateMenuFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreatePrototypeRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreatePrototypeResponse;
@@ -32,6 +33,7 @@ final class CreatePrototypeUseCase
         }
 
         $this->addDatabaseFile($outputDir, $request->name, $request->platform, $sheets);
+        $this->addMenuFile($outputDir, $sheets);
         $this->addFrameworkDirectories($outputDir);
         $this->addAssetFiles($outputDir);
         $this->addFrameworkFiles($sourceDir, $outputDir);
@@ -49,10 +51,19 @@ final class CreatePrototypeUseCase
     private function addDatabaseFile(string $dest, string $name, string $platform, array $schemafiles): void
     {
         $database = (new CreateDatabaseFileUseCase())->execute(
-            new CreateDatabaseFileRequest($platform, $name, $name, \uniqid((string)\time()), $schemafiles)
+            new CreateDatabaseFileRequest($platform, $name, $name, \sha1($name), $schemafiles)
         );
 
         \rename($database->file, $dest . '/domain/Database/create.sql');
+    }
+
+    private function addMenuFile(string $dest, array $schemafiles): void
+    {
+        $menu = (new CreateMenuFileUseCase())->execute(
+            new CreateMenuFileRequest($schemafiles)
+        );
+
+        \rename($menu->file, $dest . '/config/menu.php');
     }
 
     private function addFrameworkDirectories(string $dest): void
