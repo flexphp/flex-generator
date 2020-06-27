@@ -4,11 +4,9 @@ php:
   - 7.1
   - 7.2
   - 7.3
-  - 7.4
 
 before_script:
   - wget -nc http://getcomposer.org/composer.phar
   - php composer.phar install
-  - php composer.phar dump-autoload
 
 script: php composer.phar test
