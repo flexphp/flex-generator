@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
         });
     }
     if ($('.navbar-nav > .nav-item > a').length) {
-        $('.navbar-nav > .nav-item > a').click(function () {
+        $('.navbar-nav > .nav-item > a').click(function (event) {
             if ($(this).hasClass('active')) {
                 $(this).removeClass('active');
                 $(this).attr('aria-expanded', 'false');
@@ -48,13 +48,11 @@ jQuery(document).ready(function ($) {
                         var $target = $(target);
                         $target.focus();
                         if ($target.is(':focus')) {
-                            return undefined;
-                        }
-
-                        $target.attr('tabindex', '-1');
-                        $target.focus();
-
-                        return undefined;
+                            return false;
+                        } else {
+                            $target.attr('tabindex', '-1');
+                            $target.focus();
+                        };
                     });
                 }
             };
@@ -94,11 +92,30 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('submit', 'form:not([data-confirmation])', function () {
+    $(document).on('submit', 'form:not([data-confirmation])', function (event) {
         $('.overlay').show();
     });
 
-    $(document).on('click', '.show-overlay', function () {
+    $(document).on('click', '.show-overlay', function (event) {
         $('.overlay').show();
     });
 });
+
+function getCookie(cname) {
+    const name = cname + "=";
+    const ca = document.cookie.split(';');
+
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+
+    return '';
+}

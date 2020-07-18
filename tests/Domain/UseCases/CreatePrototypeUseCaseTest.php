@@ -44,6 +44,12 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/src/Migrations');
 
+        $this->assertDirectoryExists($response->outputDir . '/src/Form');
+        $this->assertFileExists($response->outputDir . '/src/Form/Type/Select2Type.php');
+
+        $this->assertDirectoryExists($response->outputDir . '/src/Listener');
+        $this->assertFileExists($response->outputDir . '/src/Listener/CsrfListener.php');
+
         $this->assertDirectoryExists($response->outputDir . '/src/Twig');
         $this->assertFileExists($response->outputDir . '/src/Twig/AppExtension.php');
         $this->assertFileExists($response->outputDir . '/src/Twig/AppRuntime.php');
@@ -88,6 +94,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/config/packages/security.yaml');
         $this->assertFileExists($response->outputDir . '/config/packages/translation.yaml');
         $this->assertFileExists($response->outputDir . '/config/packages/framework.yaml');
+        $this->assertFileExists($response->outputDir . '/config/packages/twig.yaml');
 
         $this->assertDirectoryExists($response->outputDir . '/public');
         $this->assertFileExists($response->outputDir . '/public/index.php');

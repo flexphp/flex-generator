@@ -13,7 +13,6 @@ h5,
 h6 {
     color: #3d405c;
     margin: 0px 0px 15px 0px;
-    /*font-family: 'Circular Std Medium';*/
 }
 
 h1 {
@@ -71,7 +70,6 @@ label {
     max-width: 100%;
     margin-bottom: 5px;
     font-size: 15px;
-    color: #71748d;
 }
 
 label.required:after {
@@ -122,7 +120,6 @@ select.form-control {
     background-position: 99% 52%;
     background-size: auto;
     background-repeat: no-repeat;
-    background-image: url(/images/down-arrow.png);
     padding-right: 15px;
     border: 1px solid #d2d2e4;
     border-radius: 2px;

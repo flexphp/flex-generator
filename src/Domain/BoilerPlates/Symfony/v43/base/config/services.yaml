@@ -11,6 +11,7 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services
         bind:               # defines the scalar arguments once and apply them to any service defined/created in this file
             $locales: '%app_locales%'
             $defaultLocale: '%locale%'
@@ -26,6 +27,11 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    # domain are imported separately to make sure services can be injected
+    Domain\:
+        resource: '../domain'
+        tags: ['@router']
 
     Doctrine\DBAL\Configuration:
     Doctrine\DBAL\Connection:

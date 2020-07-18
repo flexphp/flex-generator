@@ -111,6 +111,7 @@ class TestCase extends PHPUnitTestCase
             }
 
             if ($delete) {
+                \closedir(opendir($dir));
                 \rmdir($dir);
             }
         }
