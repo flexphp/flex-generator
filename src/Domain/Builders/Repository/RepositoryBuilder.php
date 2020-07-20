@@ -13,7 +13,7 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 final class RepositoryBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $actions, array $properties)
+    public function __construct(string $entity, array $actions, array $properties = [])
     {
         $login = 'email';
         $item = $this->getCamelCase($this->getSingularize($entity));

@@ -64,7 +64,7 @@ final class SheetProcessUseCase
         $gateway = $this->createGateway($name, $actions);
         $concreteGateway = $this->createConcreteGateway($name, $actions, $attributes);
         $factory = $this->createFactory($name, $attributes);
-        $repository = $this->createRepository($name, $actions);
+        $repository = $this->createRepository($name, $actions, $attributes);
         $constraint = $this->createConstraint($name, $attributes);
         $translate = $this->createTranslate($name, $attributes);
         $formType = $this->createFormType($name, $attributes);
@@ -148,10 +148,10 @@ final class SheetProcessUseCase
         );
     }
 
-    private function createRepository(string $name, array $actions): CreateRepositoryFileResponse
+    private function createRepository(string $name, array $actions, array $attributes): CreateRepositoryFileResponse
     {
         return (new CreateRepositoryFileUseCase())->execute(
-            new CreateRepositoryFileRequest($name, $actions)
+            new CreateRepositoryFileRequest($name, $actions, $attributes)
         );
     }
 

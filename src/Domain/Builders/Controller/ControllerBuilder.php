@@ -13,7 +13,7 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 final class ControllerBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $actions, array $properties)
+    public function __construct(string $entity, array $actions, array $properties = [])
     {
         $fkRels = $this->getFkRelations($properties);
         $entity = $this->getPascalCase($this->getSingularize($entity));

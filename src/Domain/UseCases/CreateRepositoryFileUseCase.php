@@ -23,7 +23,7 @@ final class CreateRepositoryFileUseCase
     {
         $entity = $this->getPascalCase($this->getSingularize($request->entity));
 
-        $repository = new RepositoryBuilder($entity, $request->actions);
+        $repository = new RepositoryBuilder($entity, $request->actions, $request->properties);
         $filename = $entity . 'Repository';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
         $writer = new PhpWriter($repository->build(), $filename, $path);

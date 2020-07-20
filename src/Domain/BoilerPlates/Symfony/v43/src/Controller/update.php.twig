@@ -3,7 +3,7 @@
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
-    public function edit(Connection $conn, $id): Response
+    public function edit(Connection $conn, {{ pkTypeHint }} $id): Response
     {
         $request = new Read{{ entity }}Request($id);
 

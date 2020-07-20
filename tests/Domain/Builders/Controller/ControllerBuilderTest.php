@@ -83,6 +83,7 @@ T
             $action => (new ActionBuilder(
                 $entity,
                 $action,
+                'string',
                 (new RequestMessageBuilder($entity, $action))->build(),
                 (new UseCaseBuilder($entity, $action))->build(),
                 (new ResponseMessageBuilder($entity, $action))->build()
@@ -146,6 +147,7 @@ T
             $action => (new ActionBuilder(
                 $entity,
                 $action,
+                'string',
                 (new RequestMessageBuilder($entity, $action))->build(),
                 (new UseCaseBuilder($entity, $action))->build(),
                 (new ResponseMessageBuilder($entity, $action))->build()
@@ -225,6 +227,7 @@ T
             $action => (new ActionBuilder(
                 $entity,
                 $action,
+                'string',
                 (new RequestMessageBuilder($entity, $action))->build(),
                 (new UseCaseBuilder($entity, $action))->build(),
                 (new ResponseMessageBuilder($entity, $action))->build()
@@ -262,7 +265,7 @@ final class TestController extends AbstractController
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_READ')", statusCode=401)
      */
-    public function read(Connection \$conn, \$id): Response
+    public function read(Connection \$conn, string \$id): Response
     {
         \$request = new ReadTestRequest(\$id);
 
@@ -288,6 +291,7 @@ T
             $action => (new ActionBuilder(
                 $entity,
                 $action,
+                'int',
                 (new RequestMessageBuilder($entity, $action))->build(),
                 (new UseCaseBuilder($entity, $action))->build(),
                 (new ResponseMessageBuilder($entity, $action))->build()
@@ -325,7 +329,7 @@ final class TestController extends AbstractController
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function edit(Connection \$conn, \$id): Response
+    public function edit(Connection \$conn, int \$id): Response
     {
         \$request = new ReadTestRequest(\$id);
 
@@ -375,6 +379,7 @@ T
             $action => (new ActionBuilder(
                 $entity,
                 $action,
+                'int',
                 (new RequestMessageBuilder($entity, $action))->build(),
                 (new UseCaseBuilder($entity, $action))->build(),
                 (new ResponseMessageBuilder($entity, $action))->build()
@@ -411,7 +416,7 @@ final class TestController extends AbstractController
      * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
      */
-    public function delete(Connection \$conn, \$id): Response
+    public function delete(Connection \$conn, int \$id): Response
     {
         \$request = new DeleteTestRequest(\$id);
 
@@ -437,6 +442,7 @@ T
             $action => (new ActionBuilder(
                 $entity,
                 $action,
+                'string',
                 (new RequestMessageBuilder($entity, $action))->build(),
                 (new UseCaseBuilder($entity, $action))->build(),
                 (new ResponseMessageBuilder($entity, $action))->build()
@@ -552,6 +558,7 @@ T
             'action' => (new ActionBuilder(
                 $entity,
                 'action',
+                'string',
                 (new RequestMessageBuilder($entity, 'action'))->build(),
                 (new UseCaseBuilder($entity, 'action'))->build(),
                 (new ResponseMessageBuilder($entity, 'action'))->build()
@@ -559,6 +566,7 @@ T
             'custom Fuz' => (new ActionBuilder(
                 $entity,
                 'custom Fuz',
+                'string',
                 (new RequestMessageBuilder($entity, 'custom Fuz'))->build(),
                 (new UseCaseBuilder($entity, 'custom Fuz'))->build(),
                 (new ResponseMessageBuilder($entity, 'custom Fuz'))->build()

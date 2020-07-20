@@ -19,6 +19,7 @@ final class ActionBuilder extends AbstractBuilder
     public function __construct(
         string $entity,
         string $action,
+        string $pkTypeHint = 'string',
         string $requestMessage = '',
         string $useCase = '',
         string $responseMessage = ''
@@ -34,6 +35,7 @@ final class ActionBuilder extends AbstractBuilder
         $data['entity'] = $this->getPascalCase($this->getSingularize($entity));
         $data['entity_dash'] = $this->getDashCase($this->getPluralize($entity));
         $data['name'] = $this->getDashCase($this->getSingularize($entity));
+        $data['pkTypeHint'] = $pkTypeHint;
         $data['request_message'] = $requestMessage;
         $data['use_case'] = $useCase;
         $data['response_message'] = $responseMessage;

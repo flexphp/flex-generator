@@ -14,7 +14,6 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
-use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class CreateEntityFileUseCase
 {

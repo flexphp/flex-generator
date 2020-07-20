@@ -94,7 +94,7 @@ T
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_READ')", statusCode=401)
      */
-    public function read(Connection \$conn, \$id): Response
+    public function read(Connection \$conn, string \$id): Response
     {
     }
 
@@ -104,7 +104,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new ActionBuilder('Test', 'update');
+        $render = new ActionBuilder('Test', 'update', 'string');
 
         $this->assertEquals(<<<T
     /**
@@ -112,7 +112,7 @@ T
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function edit(Connection \$conn, \$id): Response
+    public function edit(Connection \$conn, string \$id): Response
     {
         \$request = new ReadTestRequest(\$id);
 
@@ -142,14 +142,14 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new ActionBuilder('Test', 'delete');
+        $render = new ActionBuilder('Test', 'delete', 'int');
 
         $this->assertEquals(<<<T
     /**
      * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
      */
-    public function delete(Connection \$conn, \$id): Response
+    public function delete(Connection \$conn, int \$id): Response
     {
     }
 
@@ -183,7 +183,7 @@ T
     {
         $requestMessage = '// foo';
 
-        $render = new ActionBuilder('Test', 'action', $requestMessage);
+        $render = new ActionBuilder('Test', 'action', 'string', $requestMessage);
 
         $this->assertEquals(<<<T
     /**
@@ -203,7 +203,7 @@ T
     {
         $useCase = '// bar';
 
-        $render = new ActionBuilder('Test', 'action', $useCase);
+        $render = new ActionBuilder('Test', 'action', 'string', $useCase);
 
         $this->assertEquals(<<<T
     /**
@@ -223,7 +223,7 @@ T
     {
         $responseMessage = '// buz';
 
-        $render = new ActionBuilder('Test', 'action', $responseMessage);
+        $render = new ActionBuilder('Test', 'action', 'string', $responseMessage);
 
         $this->assertEquals(<<<T
     /**
@@ -245,7 +245,7 @@ T
         $useCase = '// ' . __LINE__;
         $responseMessage = '// ' . __LINE__;
 
-        $render = new ActionBuilder('Test', 'action', $requestMessage, $useCase, $responseMessage);
+        $render = new ActionBuilder('Test', 'action', 'string', $requestMessage, $useCase, $responseMessage);
 
         $this->assertEquals(<<<T
     /**

@@ -21,9 +21,15 @@ final class CreateRepositoryFileRequest
      */
     public $actions;
 
-    public function __construct(string $entity, array $actions)
+    /**
+     * @var array
+     */
+    public $properties;
+
+    public function __construct(string $entity, array $actions, array $properties)
     {
         $this->entity = $entity;
         $this->actions = $actions;
+        $this->properties = $properties;
     }
 }

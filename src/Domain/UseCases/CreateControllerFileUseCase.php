@@ -25,22 +25,21 @@ final class CreateControllerFileUseCase
 
     public function execute(CreateControllerFileRequest $request): CreateControllerFileResponse
     {
-        $entity = $request->entity;
-        $actions = $request->actions;
         $actionBuilders = [];
 
-        foreach ($actions as $action) {
+        foreach ($request->actions as $action) {
             $actionBuilders[$action] = (new ActionBuilder(
-                $entity,
+                $request->entity,
                 $action,
-                (new RequestMessageBuilder($entity, $action))->build(),
-                (new UseCaseBuilder($entity, $action))->build(),
-                (new ResponseMessageBuilder($entity, $action))->build()
+                'int',
+                (new RequestMessageBuilder($request->entity, $action))->build(),
+                (new UseCaseBuilder($request->entity, $action))->build(),
+                (new ResponseMessageBuilder($request->entity, $action))->build()
             ))->build();
         }
 
-        $controller = new ControllerBuilder($entity, $actionBuilders);
-        $filename = $this->getSingularize($entity) . 'Controller';
+        $controller = new ControllerBuilder($request->entity, $actionBuilders);
+        $filename = $this->getSingularize($request->entity) . 'Controller';
         $path = \sprintf('%1$s/../../tmp/skeleton/src/Controller', __DIR__);
 
         $writer = new PhpWriter($controller->build(), $filename, $path);
