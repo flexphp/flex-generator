@@ -5,6 +5,9 @@ namespace Domain\{{ entity }};
 {% for request in requests %}
 use Domain\{{ entity }}\Request\{{ request }}{{ entity }}Request;
 {% endfor %}
+{% for id,fkRel in fkRels %}
+use Domain\{{ entity }}\Request\Find{{ entity }}{{ fkRel.fnSingular }}Request;
+{% endfor %}
 use FlexPHP\Repositories\Repository;
 
 final class {{ entity }}Repository extends Repository

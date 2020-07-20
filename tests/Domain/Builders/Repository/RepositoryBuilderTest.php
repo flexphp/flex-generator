@@ -179,6 +179,8 @@ T
 namespace Domain\Test;
 
 use Domain\Test\Request\IndexTestRequest;
+use Domain\Test\Request\FindTestBarRequest;
+use Domain\Test\Request\FindTestPostRequest;
 use FlexPHP\Repositories\Repository;
 
 final class TestRepository extends Repository
