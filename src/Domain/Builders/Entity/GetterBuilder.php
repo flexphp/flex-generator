@@ -10,17 +10,17 @@
 namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class GetterBuilder extends AbstractBuilder
 {
-    use TypeHintTrait;
-
-    public function __construct(string $name, string $dataType, bool $required = true)
+    public function __construct(SchemaAttributeInterface $property)
     {
-        $name = $this->getCamelCase($name);
-        $typehint = $this->guessTypeHint($dataType);
-
-        parent::__construct(\compact('name', 'typehint', 'required'));
+        parent::__construct([
+            'name' => $this->getCamelCase($property->name()),
+            'typehint' => $property->typeHint(),
+            'required' => $property->isRequired(),
+        ]);
     }
 
     protected function getFileTemplate(): string

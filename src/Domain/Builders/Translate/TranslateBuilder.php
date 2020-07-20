@@ -16,17 +16,21 @@ use Jawira\CaseConverter\Convert;
 
 final class TranslateBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, ?SchemaInterface $schema = null)
+    public function __construct(string $entity, SchemaInterface $schema)
     {
         $headers = [];
         $entity = (new Convert($this->getSingularize($entity)))->toTitle();
 
         if ($schema) {
-            $headers = \array_reduce($schema->attributes(), function (array $result, SchemaAttributeInterface $property) {
-                $result[$this->getCamelCase($property->name())] = (new Convert($property->name()))->toTitle();
+            $headers = \array_reduce(
+                $schema->attributes(),
+                function (array $result, SchemaAttributeInterface $property) {
+                    $result[$this->getCamelCase($property->name())] = (new Convert($property->name()))->toTitle();
 
-                return $result;
-            }, []);
+                    return $result;
+                },
+                []
+            );
         }
 
         parent::__construct(\compact('entity', 'headers'));

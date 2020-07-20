@@ -17,7 +17,7 @@ final class UseCaseBuilder extends AbstractBuilder
 {
     private $action;
 
-    public function __construct(string $entity, string $action, ?SchemaInterface $schema = null)
+    public function __construct(string $entity, string $action, SchemaInterface $schema)
     {
         $this->action = $this->getCamelCase($action);
 

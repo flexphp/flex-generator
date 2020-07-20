@@ -15,7 +15,7 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class CommandBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, string $action, ?SchemaInterface $schema = null)
+    public function __construct(string $entity, string $action, SchemaInterface $schema)
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $action = $this->getPascalCase($action);

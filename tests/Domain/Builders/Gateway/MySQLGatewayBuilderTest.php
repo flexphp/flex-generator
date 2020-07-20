@@ -11,6 +11,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Gateway;
 
 use FlexPHP\Generator\Domain\Builders\Gateway\MySQLGatewayBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
 
 final class MySQLGatewayBuilderTest extends TestCase
 {
@@ -386,7 +387,7 @@ T
      */
     public function testItOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedPlural): void
     {
-        $render = new MySQLGatewayBuilder($entity, []);
+        $render = new MySQLGatewayBuilder($entity, [], new Schema($entity, 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

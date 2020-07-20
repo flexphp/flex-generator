@@ -101,11 +101,12 @@ jQuery(document).ready(function ($) {
     });
 });
 
-function getCookie(cname) {
+function getCookie(cname)
+{
     const name = cname + "=";
     const ca = document.cookie.split(';');
 
-    for(let i = 0; i < ca.length; i++) {
+    for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
 
         while (c.charAt(0) == ' ') {

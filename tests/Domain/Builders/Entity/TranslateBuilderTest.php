@@ -48,7 +48,7 @@ T
      */
     public function testItOkWithDiffTranslateName(string $name, string $expected): void
     {
-        $render = new TranslateBuilder($name);
+        $render = new TranslateBuilder($name, new Schema($name, 'bar', []));
 
         $this->assertEquals(<<<T
 <?php

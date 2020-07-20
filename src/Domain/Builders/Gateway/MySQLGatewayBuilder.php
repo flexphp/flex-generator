@@ -15,7 +15,7 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class MySQLGatewayBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $actions, ?SchemaInterface $schema = null)
+    public function __construct(string $entity, array $actions, SchemaInterface $schema)
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $name = $this->getSnakeCase($this->getPluralize($entity));
@@ -27,26 +27,20 @@ final class MySQLGatewayBuilder extends AbstractBuilder
         }, []);
 
         $dbTypes = [];
-        $pkName = 'id';
-        $fkRels = [];
-        $properties = [];
+        $pkName = $schema->pkName();
+        $fkRels = $this->getFkRelations($schema->fkRelations());
+        $properties = \array_reduce(
+            $schema->attributes(),
+            function (array $result, SchemaAttributeInterface $property) use (&$dbTypes) {
+                $camelName = $this->getCamelCase($property->name());
 
-        if ($schema) {
-            $pkName = $this->getPkName($schema->attributes());
-            $fkRels = $this->getFkRelations($schema->attributes());
-            $properties = \array_reduce(
-                $schema->attributes(),
-                function (array $result, SchemaAttributeInterface $property) use (&$dbTypes) {
-                    $camelName = $this->getCamelCase($property->name());
+                $result[$camelName] = $property->properties();
+                $dbTypes[$camelName] = $this->getDbType($property->dataType());
 
-                    $result[$camelName] = $property->properties();
-                    $dbTypes[$camelName] = $this->getDbType($property->dataType());
-
-                    return $result;
-                },
-                []
-            );
-        }
+                return $result;
+            },
+            []
+        );
 
         parent::__construct(\compact('entity', 'item', 'name', 'actions', 'properties', 'dbTypes', 'pkName', 'fkRels'));
     }

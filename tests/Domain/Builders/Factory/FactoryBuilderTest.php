@@ -11,6 +11,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Factory;
 
 use FlexPHP\Generator\Domain\Builders\Factory\FactoryBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
 
 final class FactoryBuilderTest extends TestCase
 {
@@ -62,7 +63,7 @@ T
      */
     public function testItOkWithDiffNameEntity(string $entity, string $expected, string $item): void
     {
-        $render = new FactoryBuilder($entity);
+        $render = new FactoryBuilder($entity, new Schema('foo', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

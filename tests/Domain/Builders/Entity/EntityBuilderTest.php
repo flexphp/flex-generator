@@ -58,12 +58,12 @@ final class Test
         return \$this->snakeCase;
     }
 
-    public function setLower(string \$lower): void
+    public function setLower(?string \$lower): void
     {
         \$this->lower = \$lower;
     }
 
-    public function setUpper(int \$upper): void
+    public function setUpper(?int \$upper): void
     {
         \$this->upper = \$upper;
     }
@@ -73,12 +73,12 @@ final class Test
         \$this->pascalCase = \$pascalCase;
     }
 
-    public function setCamelCase(bool \$camelCase): void
+    public function setCamelCase(?bool \$camelCase): void
     {
         \$this->camelCase = \$camelCase;
     }
 
-    public function setSnakeCase(string \$snakeCase): void
+    public function setSnakeCase(?string \$snakeCase): void
     {
         \$this->snakeCase = \$snakeCase;
     }
@@ -90,7 +90,7 @@ T
 
     public function testItUserEntityInSymfonyOk(): void
     {
-        $render = new EntityBuilder('User');
+        $render = new EntityBuilder('User', new Schema('User', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -136,7 +136,7 @@ T
      */
     public function testItOkWithDiffEntityName(string $name, string $expected): void
     {
-        $render = new EntityBuilder($name);
+        $render = new EntityBuilder($name, new Schema($name, 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -182,7 +182,7 @@ final class Fuz
         return \$this->{$expected};
     }
 
-    public function {$setter}(string \${$expected}): void
+    public function {$setter}(?string \${$expected}): void
     {
         \$this->{$expected} = \${$expected};
     }

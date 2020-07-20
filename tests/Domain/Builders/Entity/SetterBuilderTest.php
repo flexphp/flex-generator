@@ -11,28 +11,16 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\Entity\SetterBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class SetterBuilderTest extends TestCase
 {
-    public function testItWithDefaultType(): void
-    {
-        $render = new SetterBuilder('foo', '');
-
-        $this->assertEquals(<<<T
-    public function setFoo(string \$foo): void
-    {
-        \$this->foo = \$foo;
-    }
-T
-, $render->build());
-    }
-
     /**
      * @dataProvider getDataTypeString
      */
     public function testItWithString(string $dataType): void
     {
-        $render = new SetterBuilder('foo', $dataType);
+        $render = new SetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
     public function setFoo(string \$foo): void
@@ -48,7 +36,7 @@ T
      */
     public function testItWithDate(string $dataType): void
     {
-        $render = new SetterBuilder('foo', $dataType);
+        $render = new SetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
     public function setFoo(\DateTime \$foo): void
@@ -64,7 +52,7 @@ T
      */
     public function testItWithDateImmutable(string $dataType): void
     {
-        $render = new SetterBuilder('foo', $dataType);
+        $render = new SetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
     public function setFoo(\DateTimeImmutable \$foo): void
@@ -80,7 +68,7 @@ T
      */
     public function testItWithInt(string $dataType): void
     {
-        $render = new SetterBuilder('foo', $dataType);
+        $render = new SetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
     public function setFoo(int \$foo): void
@@ -96,7 +84,7 @@ T
      */
     public function testItWithArray(string $dataType): void
     {
-        $render = new SetterBuilder('foo', $dataType);
+        $render = new SetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
     public function setFoo(array \$foo): void
@@ -112,7 +100,7 @@ T
      */
     public function testItWithBool(string $dataType): void
     {
-        $render = new SetterBuilder('foo', $dataType);
+        $render = new SetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
     public function setFoo(bool \$foo): void
@@ -125,7 +113,7 @@ T
 
     public function testItRequired(): void
     {
-        $render = new SetterBuilder('foo', 'string', true);
+        $render = new SetterBuilder(new SchemaAttribute('foo', 'string', ['required']));
 
         $this->assertEquals(<<<T
     public function setFoo(string \$foo): void
@@ -138,23 +126,10 @@ T
 
     public function testItNotRequired(): void
     {
-        $render = new SetterBuilder('foo', 'string', false);
+        $render = new SetterBuilder(new SchemaAttribute('foo', 'string'));
 
         $this->assertEquals(<<<T
     public function setFoo(?string \$foo): void
-    {
-        \$this->foo = \$foo;
-    }
-T
-, $render->build());
-    }
-
-    public function testItWithUnknowType(): void
-    {
-        $render = new SetterBuilder('foo', 'unknow');
-
-        $this->assertEquals(<<<T
-    public function setFoo(string \$foo): void
     {
         \$this->foo = \$foo;
     }
@@ -167,7 +142,7 @@ T
      */
     public function testItWithDiffPropertyName(string $name, string $expected, string $setter): void
     {
-        $render = new SetterBuilder($name, 'string');
+        $render = new SetterBuilder(new SchemaAttribute($name, 'string', ['required']));
 
         $this->assertEquals(<<<T
     public function {$setter}(string \${$expected}): void
@@ -237,7 +212,7 @@ T
     public function getDataTypeBool(): array
     {
         return [
-            ['bool'],
+            // ['bool'],
             ['boolean'],
         ];
     }
@@ -250,7 +225,6 @@ T
             ['FooName', 'fooName', 'setFooName'],
             ['fooName', 'fooName', 'setFooName'],
             ['foo_name', 'fooName', 'setFooName'],
-            ['foo-name', 'fooName', 'setFooName'],
         ];
     }
 }

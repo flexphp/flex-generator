@@ -255,7 +255,7 @@ T
      */
     public function testItRenderOkWithDiffEntityName(string $entity, string $expected): void
     {
-        $render = new UseCaseBuilder($entity, 'action');
+        $render = new UseCaseBuilder($entity, 'action', new Schema($entity, 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -288,7 +288,7 @@ T
      */
     public function testItRenderOkWithDiffActionName(string $action, string $expected): void
     {
-        $render = new UseCaseBuilder('test', $action);
+        $render = new UseCaseBuilder('test', $action, new Schema('Test', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

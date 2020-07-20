@@ -11,12 +11,13 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\FormType;
 
 use FlexPHP\Generator\Domain\Builders\FormType\FormTypeBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
 
 final class FormTypeBuilderTest extends TestCase
 {
     public function testItOk(): void
     {
-        $render = new FormTypeBuilder('Test');
+        $render = new FormTypeBuilder('Test', new Schema('Test', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -102,7 +103,7 @@ T
      */
     public function testItOkWithDiffNameEntity(string $entity, string $expected): void
     {
-        $render = new FormTypeBuilder($entity);
+        $render = new FormTypeBuilder($entity, new Schema($entity, 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

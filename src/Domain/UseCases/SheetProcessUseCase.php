@@ -152,8 +152,11 @@ final class SheetProcessUseCase
         );
     }
 
-    private function createRepository(string $name, array $actions, SchemaInterface $schema): CreateRepositoryFileResponse
-    {
+    private function createRepository(
+        string $name,
+        array $actions,
+        SchemaInterface $schema
+    ): CreateRepositoryFileResponse {
         return (new CreateRepositoryFileUseCase())->execute(
             new CreateRepositoryFileRequest($name, $actions, $schema)
         );

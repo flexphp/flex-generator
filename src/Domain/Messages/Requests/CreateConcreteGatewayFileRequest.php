@@ -33,7 +33,7 @@ final class CreateConcreteGatewayFileRequest
      */
     public $schema;
 
-    public function __construct(string $entity, string $concrete, array $actions, ?SchemaInterface $schema = null)
+    public function __construct(string $entity, string $concrete, array $actions, SchemaInterface $schema)
     {
         $this->entity = $entity;
         $this->concrete = $concrete;

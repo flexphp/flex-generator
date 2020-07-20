@@ -24,11 +24,15 @@ final class TemplateBuilder extends AbstractBuilder
         $route = $this->getPluralize($this->getDashCase($entity));
         $item = $this->getCamelCase($this->getSingularize($entity));
 
-        $properties = \array_reduce($schema->attributes(), function (array $result, SchemaAttributeInterface $property) {
-            $result[$this->getCamelCase($property->name())] = $property;
+        $properties = \array_reduce(
+            $schema->attributes(),
+            function (array $result, SchemaAttributeInterface $property) {
+                $result[$this->getCamelCase($property->name())] = $property;
 
-            return $result;
-        }, []);
+                return $result;
+            },
+            []
+        );
 
         parent::__construct(\compact('route', 'item', 'properties'));
     }

@@ -16,7 +16,7 @@ use Jawira\CaseConverter\Convert;
 
 final class FormTypeBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, ?SchemaInterface $schema = null)
+    public function __construct(string $entity, SchemaInterface $schema)
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
 

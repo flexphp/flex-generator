@@ -10,23 +10,16 @@
 namespace FlexPHP\Generator\Domain\Builders\Factory;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
-use FlexPHP\Generator\Domain\Builders\Entity\TypeHintTrait;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\Schema\SchemaInterface;
 
 final class FactoryBuilder extends AbstractBuilder
 {
-    use TypeHintTrait;
-
-    public function __construct(string $entity, ?SchemaInterface $schema = null)
+    public function __construct(string $entity, SchemaInterface $schema)
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $item = $this->getCamelCase($this->getSingularize($entity));
-        $setters = [];
-
-        if ($schema) {
-            $setters = $this->getSetterWithCasting($schema->attributes());
-        }
+        $setters = $this->getSetterWithCasting($schema->attributes());
 
         parent::__construct(\compact('entity', 'item', 'setters'));
     }
@@ -47,7 +40,7 @@ final class FactoryBuilder extends AbstractBuilder
             $result[] = [
                 'pascal' => $this->getPascalCase($attributes->name()),
                 'camel' => $this->getCamelCase($attributes->name()),
-                'typehint' => $this->guessTypeHint($attributes->dataType()),
+                'typehint' => $attributes->typeHint(),
             ];
 
             return $result;

@@ -19,7 +19,7 @@ final class ControllerBuilder extends AbstractBuilder
         $fkRels = [];
 
         if ($schema) {
-            $fkRels = $this->getFkRelations($schema->attributes());
+            $fkRels = $this->getFkRelations($schema->fkRelations());
         }
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $route = $this->getDashCase($this->getPluralize($entity));

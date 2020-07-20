@@ -15,7 +15,7 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class EntityBuilder extends AbstractBuilder
 {
-    public function __construct(string $name, ?SchemaInterface $schema = null)
+    public function __construct(string $name, SchemaInterface $schema)
     {
         $getters = [];
         $setters = [];
@@ -61,11 +61,7 @@ final class EntityBuilder extends AbstractBuilder
         return \array_reduce(
             $properties,
             function (array $result, SchemaAttributeInterface $attributes): array {
-                $result[] = new GetterBuilder(
-                    $attributes->name(),
-                    $attributes->dataType(),
-                    $attributes->isRequired()
-                );
+                $result[] = new GetterBuilder($attributes);
 
                 return $result;
             },
@@ -77,8 +73,8 @@ final class EntityBuilder extends AbstractBuilder
     {
         return \array_reduce(
             $properties,
-            function (array $result, SchemaAttributeInterface $attributes): array {
-                $result[] = new SetterBuilder($attributes->name(), $attributes->dataType());
+            function (array $result, SchemaAttributeInterface $attribute): array {
+                $result[] = new SetterBuilder($attribute);
 
                 return $result;
             },

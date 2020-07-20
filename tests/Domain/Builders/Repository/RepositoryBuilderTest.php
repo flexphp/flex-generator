@@ -11,12 +11,13 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Repository;
 
 use FlexPHP\Generator\Domain\Builders\Repository\RepositoryBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
 
 final class RepositoryBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['index']);
+        $render = new RepositoryBuilder('Test', ['index'], new Schema('Test', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -40,7 +41,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['create']);
+        $render = new RepositoryBuilder('Test', ['create'], new Schema('Test', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -66,7 +67,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['read']);
+        $render = new RepositoryBuilder('Test', ['read'], new Schema('Test', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -93,7 +94,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['update']);
+        $render = new RepositoryBuilder('Test', ['update'], new Schema('Test', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -119,7 +120,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['delete']);
+        $render = new RepositoryBuilder('Test', ['delete'], new Schema('Test', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -145,7 +146,7 @@ T
 
     public function testItRenderLoginOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['login']);
+        $render = new RepositoryBuilder('Test', ['login'], new Schema('Test', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -210,7 +211,7 @@ T
      */
     public function testItRenderWithDiffNameOk(string $entity, string $expected): void
     {
-        $render = new RepositoryBuilder($entity, ['action']);
+        $render = new RepositoryBuilder($entity, ['action'], new Schema($entity, 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

@@ -28,7 +28,7 @@ final class CreateConcreteGatewayFileUseCaseTest extends TestCase
 
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateConcreteGatewayFileRequest($schema->name(), 'mysql', ['create']);
+        $request = new CreateConcreteGatewayFileRequest($schema->name(), 'mysql', ['create'], $schema);
 
         $useCase = new CreateConcreteGatewayFileUseCase();
         $useCase->execute($request);
