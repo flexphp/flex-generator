@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders;
 
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
+use FlexPHP\Schema\SchemaAttributeInterface;
 
 abstract class AbstractBuilder implements BuilderInterface
 {
@@ -44,6 +45,19 @@ abstract class AbstractBuilder implements BuilderInterface
     protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/../BoilerPlates', __DIR__);
+    }
+
+    protected function getPkName(array $properties): string
+    {
+        $pkName = 'id';
+
+        \array_filter($properties, function (SchemaAttributeInterface $property) use (&$pkName): void {
+            if ($property->isPk()) {
+                $pkName = $property->name();
+            }
+        });
+
+        return $pkName;
     }
 
     abstract protected function getFileTemplate(): string;

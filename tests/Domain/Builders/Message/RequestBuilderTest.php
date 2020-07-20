@@ -95,11 +95,11 @@ use FlexPHP\Messages\RequestInterface;
 
 final class ReadFuzRequest implements RequestInterface
 {
-    public \$id;
+    public \$lower;
 
-    public function __construct(string \$id)
+    public function __construct(string \$lower)
     {
-        \$this->id = \$id;
+        \$this->lower = \$lower;
     }
 }
 
@@ -153,11 +153,11 @@ use FlexPHP\Messages\RequestInterface;
 
 final class DeleteFuzRequest implements RequestInterface
 {
-    public \$id;
+    public \$lower;
 
-    public function __construct(string \$id)
+    public function __construct(string \$lower)
     {
-        \$this->id = \$id;
+        \$this->lower = \$lower;
     }
 }
 

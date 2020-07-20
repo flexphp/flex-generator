@@ -89,19 +89,6 @@ final class MySQLGatewayBuilder extends AbstractBuilder
         return 'STRING';
     }
 
-    private function getPkName(array $properties): string
-    {
-        $pkName = 'id';
-
-        \array_filter($properties, function (SchemaAttributeInterface $property) use (&$pkName): void {
-            if ($property->isPk()) {
-                $pkName = $property->name();
-            }
-        });
-
-        return $pkName;
-    }
-
     private function getFkRelations(array $properties): array
     {
         $fkRelations = \array_reduce($properties, function (array $result, SchemaAttributeInterface $property): array {

@@ -7,11 +7,11 @@ use FlexPHP\Messages\RequestInterface;
 final class {{ action }}{{ entity }}Request implements RequestInterface
 {
 {% if action|lower in ['read', 'delete'] %}
-    public ${{ key }};
+    public ${{ pkName }};
 
-    public function __construct(string ${{ key }})
+    public function __construct({{ pkTypeHint }} ${{ pkName }})
     {
-        $this->{{ key }} = ${{ key }};
+        $this->{{ pkName }} = ${{ pkName }};
     }
 {% elseif action|lower in ['login'] %}
     public ${{ login }};

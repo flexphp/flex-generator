@@ -10,13 +10,17 @@
 namespace FlexPHP\Generator\Domain\Builders\Message;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Generator\Domain\Builders\Entity\TypeHintTrait;
 use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class RequestBuilder extends AbstractBuilder
 {
+    use TypeHintTrait;
+
     public function __construct(string $entity, string $action, array $properties)
     {
-        $key = 'id';
+        $pkName = $this->getPkName($properties);
+        $pkTypeHint = $this->getPkTypeHint($properties);
         $login = 'email';
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $name = $this->getCamelCase($this->getSingularize($entity));
@@ -27,7 +31,7 @@ final class RequestBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'name', 'action', 'key', 'login', 'properties'));
+        parent::__construct(\compact('entity', 'name', 'action', 'pkName', 'pkTypeHint', 'login', 'properties'));
     }
 
     protected function getFileTemplate(): string
@@ -38,5 +42,18 @@ final class RequestBuilder extends AbstractBuilder
     protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Message', parent::getPathTemplate());
+    }
+
+    private function getPkTypeHint(array $properties): string
+    {
+        $pkTypeHint = 'string';
+
+        \array_filter($properties, function (SchemaAttributeInterface $property) use (&$pkTypeHint): void {
+            if ($property->isPk()) {
+                $pkTypeHint = $this->guessTypeHint($property->dataType());
+            }
+        });
+
+        return $pkTypeHint;
     }
 }
