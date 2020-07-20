@@ -52,7 +52,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endfor %}
 
 {% for id, property in properties %}
-        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbtypes[id] }});
+        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
 {% endfor %}
 
         $this->query->execute();
@@ -67,8 +67,8 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endfor %}
         ]);
         $this->query->from($this->table);
-        $this->query->where('Id = :id');
-        $this->query->setParameter('id', ${{ item }}->id());
+        $this->query->where('{{ properties[pkName].Name }} = :{{ pkName }}');
+        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}());
 
         return $this->query->execute()->fetch();
     }
@@ -83,11 +83,11 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endfor %}
 
 {% for id, property in properties %}
-        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbtypes[id] }});
+        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
 {% endfor %}
 
-        $this->query->where('Id = :id');
-        $this->query->setParameter('id', ${{ item }}->id());
+        $this->query->where('{{ properties[pkName].Name }} = :{{ pkName }}');
+        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}());
 
         $this->query->execute();
     }
@@ -97,8 +97,8 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     {
         $this->query->delete($this->table);
 
-        $this->query->where('Id = :id');
-        $this->query->setParameter('id', ${{ item }}->id());
+        $this->query->where('{{ properties[pkName].Name }} = :{{ pkName }}');
+        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}());
 
         $this->query->execute();
     }
@@ -120,5 +120,23 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         return is_array($data) ? $data : [];
     }
 {% endif %}
+{% for id,fkRel in fkRels %}
+
+    public function filter{{ fkRel.function }}(string $term, int $page, int $limit): array
+    {
+        $this->query->select([
+            '{{ fkRel.id }} id',
+            '{{ fkRel.text }} text',
+        ]);
+        $this->query->from('{{ fkRel.table }}');
+
+        $this->query->where('{{ fkRel.text }} like :{{ fkRel.text }}');
+        $this->query->setParameter(':{{ fkRel.text }}', "%{$term}%");
+
+        $this->query->setMaxResults($limit);
+
+        return $this->query->execute()->fetchAll();
+    }
+{% endfor %}
 {% endfor %}
 }

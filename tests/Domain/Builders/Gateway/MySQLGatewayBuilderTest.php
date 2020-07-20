@@ -11,6 +11,8 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Gateway;
 
 use FlexPHP\Generator\Domain\Builders\Gateway\MySQLGatewayBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Constants\Keyword;
+use FlexPHP\Schema\Schema;
 
 final class MySQLGatewayBuilderTest extends TestCase
 {
@@ -150,8 +152,8 @@ final class MySQLTestGateway implements TestGateway
             'snake_case' => 'snakeCase',
         ]);
         \$this->query->from(\$this->table);
-        \$this->query->where('Id = :id');
-        \$this->query->setParameter('id', \$test->id());
+        \$this->query->where('lower = :lower');
+        \$this->query->setParameter('lower', \$test->lower());
 
         return \$this->query->execute()->fetch();
     }
@@ -201,8 +203,8 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setParameter(':camelCase', \$test->camelCase(), DB::BOOLEAN);
         \$this->query->setParameter(':snakeCase', \$test->snakeCase(), DB::TEXT);
 
-        \$this->query->where('Id = :id');
-        \$this->query->setParameter('id', \$test->id());
+        \$this->query->where('lower = :lower');
+        \$this->query->setParameter('lower', \$test->lower());
 
         \$this->query->execute();
     }
@@ -240,8 +242,8 @@ final class MySQLTestGateway implements TestGateway
     {
         \$this->query->delete(\$this->table);
 
-        \$this->query->where('Id = :id');
-        \$this->query->setParameter('id', \$test->id());
+        \$this->query->where('lower = :lower');
+        \$this->query->setParameter('lower', \$test->lower());
 
         \$this->query->execute();
     }
@@ -291,6 +293,83 @@ final class MySQLTestGateway implements TestGateway
         \$data = \$this->query->execute()->fetch();
 
         return is_array(\$data) ? \$data : [];
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItFkRelationOk(): void
+    {
+        $render = new MySQLGatewayBuilder('Test', ['index'], (Schema::fromArray([
+            'EntityBar' => [
+                Keyword::TITLE => 'Entity Bar Title',
+                Keyword::ATTRIBUTES => [
+                    [
+                        Keyword::NAME => 'foo',
+                        Keyword::DATATYPE => 'integer',
+                        Keyword::CONSTRAINTS => 'fk:bar,fuz,baz',
+                    ],
+                ],
+            ],
+        ]))->attributes());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\Gateway;
+
+use Domain\Test\Test;
+use Domain\Test\TestGateway;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types as DB;
+
+final class MySQLTestGateway implements TestGateway
+{
+    private \$query;
+    private \$table = 'tests';
+
+    public function __construct(Connection \$conn)
+    {
+        \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function search(array \$wheres, array \$orders, int \$limit): array
+    {
+        \$this->query->select([
+            'foo' => 'foo',
+        ]);
+        \$this->query->from(\$this->table);
+
+        foreach(\$wheres as \$column => \$value) {
+            if (!\$value) {
+                continue;
+            }
+
+            \$this->query->where(\$column . ' = :' . \$column);
+            \$this->query->setParameter(\$column, \$value);
+        }
+
+        \$this->query->setMaxResults(\$limit);
+
+        return \$this->query->execute()->fetchAll();
+    }
+
+    public function filterBar(string \$term, int \$page, int \$limit): array
+    {
+        \$this->query->select([
+            'baz id',
+            'fuz text',
+        ]);
+        \$this->query->from('bar');
+
+        \$this->query->where('fuz like :fuz');
+        \$this->query->setParameter(':fuz', "%{\$term}%");
+
+        \$this->query->setMaxResults(\$limit);
+
+        return \$this->query->execute()->fetchAll();
     }
 }
 

@@ -38,7 +38,7 @@ class TestCase extends PHPUnitTestCase
                 [
                     Keyword::NAME => 'lower',
                     Keyword::DATATYPE => 'string',
-                    Keyword::CONSTRAINTS => 'minlength:20|maxlength:100',
+                    Keyword::CONSTRAINTS => 'pk|ai|minlength:20|maxlength:100',
                 ],
                 [
                     Keyword::NAME => 'UPPER',
@@ -72,7 +72,7 @@ class TestCase extends PHPUnitTestCase
     protected function getSchemaProperties(): array
     {
         return \array_map(function (SchemaAttributeInterface $schemaAttribute) {
-            return $schemaAttribute->properties();
+            return $schemaAttribute;
         }, $this->getSchemaAttributes());
     }
 
@@ -111,7 +111,7 @@ class TestCase extends PHPUnitTestCase
             }
 
             if ($delete) {
-                \closedir(opendir($dir));
+                \closedir(\opendir($dir));
                 \rmdir($dir);
             }
         }
