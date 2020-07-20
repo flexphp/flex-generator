@@ -10,7 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Template;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
-use FlexPHP\Schema\Constants\Keyword;
+use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class TemplateBuilder extends AbstractBuilder
 {
@@ -23,8 +23,8 @@ final class TemplateBuilder extends AbstractBuilder
         $route = $this->getPluralize($this->getDashCase($entity));
         $item = $this->getCamelCase($this->getSingularize($entity));
 
-        $properties = \array_reduce($properties, function (array $result, array $property) {
-            $result[$this->getCamelCase($property[Keyword::NAME])] = $property;
+        $properties = \array_reduce($properties, function (array $result, SchemaAttributeInterface $property) {
+            $result[$this->getCamelCase($property->name())] = $property;
 
             return $result;
         }, []);

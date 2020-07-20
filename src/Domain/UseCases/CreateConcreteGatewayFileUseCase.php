@@ -14,7 +14,6 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateConcreteGatewayFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateConcreteGatewayFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
-use FlexPHP\Schema\SchemaAttributeInterface;
 use InvalidArgumentException;
 
 final class CreateConcreteGatewayFileUseCase
@@ -33,21 +32,12 @@ final class CreateConcreteGatewayFileUseCase
         $entity = $this->getPascalCase($this->getSingularize($request->entity));
         $concrete = $request->concrete;
         $concretesAvailable = \array_keys($this->concretes);
-        $properties = \array_reduce(
-            $request->properties,
-            function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $result[] = $schemaAttribute->properties();
-
-                return $result;
-            },
-            []
-        );
 
         if (!\in_array($concrete, $concretesAvailable)) {
             throw new InvalidArgumentException($concrete . ' is not valid, use: ' . \implode(',', $concretesAvailable));
         }
 
-        $gateway = new MySQLGatewayBuilder($entity, $request->actions, $properties);
+        $gateway = new MySQLGatewayBuilder($entity, $request->actions, $request->properties);
         $filename = $concrete . $entity . 'Gateway';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/Gateway', __DIR__, $entity);
         $writer = new PhpWriter($gateway->build(), $filename, $path);

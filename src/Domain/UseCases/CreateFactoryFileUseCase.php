@@ -23,17 +23,8 @@ final class CreateFactoryFileUseCase
     public function execute(CreateFactoryFileRequest $request): CreateFactoryFileResponse
     {
         $entity = $this->getPascalCase($this->getSingularize($request->entity));
-        $properties = \array_reduce(
-            $request->properties,
-            function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $result[] = $schemaAttribute->properties();
 
-                return $result;
-            },
-            []
-        );
-
-        $factory = new FactoryBuilder($entity, $properties);
+        $factory = new FactoryBuilder($entity, $request->properties);
         $filename = $entity . 'Factory';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
         $writer = new PhpWriter($factory->build(), $filename, $path);

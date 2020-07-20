@@ -10,7 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Command;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
-use FlexPHP\Schema\Constants\Keyword;
+use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class CommandBuilder extends AbstractBuilder
 {
@@ -20,8 +20,8 @@ final class CommandBuilder extends AbstractBuilder
         $action = $this->getPascalCase($action);
         $command = $this->getDashCase($this->getPluralize($entity)) . ':' . $this->getDashCase($action);
 
-        $properties = \array_reduce($properties, function ($result, $property) {
-            $result[$property[Keyword::NAME]] = $property;
+        $properties = \array_reduce($properties, function ($result, SchemaAttributeInterface $property) {
+            $result[$property->name()] = $property;
 
             return $result;
         }, []);

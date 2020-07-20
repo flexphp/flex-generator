@@ -24,25 +24,14 @@ final class CreateRequestFileUseCase
     {
         $files = [];
         $entity = $this->getSingularize($request->entity);
-        $actions = $request->actions;
-        $properties = \array_reduce(
-            $request->properties,
-            function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $name = $schemaAttribute->name();
-                $result[$name] = $schemaAttribute->properties();
-
-                return $result;
-            },
-            []
-        );
 
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/Request', __DIR__, $entity);
 
-        foreach ($actions as $action) {
-            $request = new RequestBuilder($entity, $action, $properties);
+        foreach ($request->actions as $action) {
+            $builder = new RequestBuilder($entity, $action, $request->properties);
             $filename = $this->getPascalCase($action) . $entity . 'Request';
 
-            $writer = new PhpWriter($request->build(), $filename, $path);
+            $writer = new PhpWriter($builder->build(), $filename, $path);
             $files[] = $writer->save();
         }
 

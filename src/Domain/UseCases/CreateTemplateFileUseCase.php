@@ -14,7 +14,6 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateTemplateFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateTemplateFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\TemplateWriter;
-use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class CreateTemplateFileUseCase
 {
@@ -32,21 +31,11 @@ final class CreateTemplateFileUseCase
             'delete' => '_delete_form.html',
         ];
 
-        $properties = \array_reduce(
-            $request->attributes,
-            function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $result[$schemaAttribute->name()] = $schemaAttribute->properties();
-
-                return $result;
-            },
-            []
-        );
-
         $path = \sprintf('%1$s/../../tmp/skeleton/templates/%2$s', __DIR__, $entity);
 
         foreach ($actions as $action => $filename) {
-            $request = new TemplateBuilder($entity, $action, $properties);
-            $writer = new TemplateWriter($request->build(), $filename, $path);
+            $builder = new TemplateBuilder($entity, $action, $request->attributes);
+            $writer = new TemplateWriter($builder->build(), $filename, $path);
             $files[] = $writer->save();
         }
 

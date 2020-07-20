@@ -12,6 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\UseCase;
 use FlexPHP\Generator\Domain\Builders\UseCase\UseCaseBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Constants\Keyword;
+use FlexPHP\Schema\Schema;
 
 final class UseCaseBuilderTest extends TestCase
 {
@@ -320,12 +321,17 @@ T
      */
     public function testItRenderOkWithDiffPropertyName(string $name, string $expected): void
     {
-        $render = new UseCaseBuilder('Test', 'action', [
-            [
-                Keyword::NAME => $name,
-                Keyword::DATATYPE => 'integer',
+        $render = new UseCaseBuilder('Test', 'action', Schema::fromArray([
+            'EntityBar' => [
+                Keyword::TITLE => 'Entity Bar Title',
+                Keyword::ATTRIBUTES => [
+                    [
+                        Keyword::NAME => $name,
+                        Keyword::DATATYPE => 'integer',
+                    ],
+                ],
             ],
-        ]);
+        ])->attributes());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -391,7 +397,6 @@ T
             ['FooName', 'fooName'],
             ['fooName', 'fooName'],
             ['foo_name', 'fooName'],
-            ['foo-name', 'fooName'],
         ];
     }
 }

@@ -10,7 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\UseCase;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
-use FlexPHP\Schema\Constants\Keyword;
+use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class UseCaseBuilder extends AbstractBuilder
 {
@@ -25,8 +25,8 @@ final class UseCaseBuilder extends AbstractBuilder
         $item = $this->getCamelCase($this->getPluralize($entity));
         $action = $this->getPascalCase($action);
 
-        $properties = \array_reduce($properties, function ($result, $property) {
-            $result[$this->getCamelCase($property[Keyword::NAME])] = $property;
+        $properties = \array_reduce($properties, function ($result, SchemaAttributeInterface $property) {
+            $result[$this->getCamelCase($property->name())] = $property->properties();
 
             return $result;
         }, []);
@@ -36,7 +36,7 @@ final class UseCaseBuilder extends AbstractBuilder
 
     protected function getFileTemplate(): string
     {
-        if (in_array($this->action, ['index', 'create', 'read', 'update', 'delete', 'login'])) {
+        if (\in_array($this->action, ['index', 'create', 'read', 'update', 'delete', 'login'])) {
             return $this->action . '.php.twig';
         }
 

@@ -14,7 +14,6 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateFormTypeFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateFormTypeFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
-use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class CreateFormTypeFileUseCase
 {
@@ -23,18 +22,8 @@ final class CreateFormTypeFileUseCase
     public function execute(CreateFormTypeFileRequest $request): CreateFormTypeFileResponse
     {
         $entity = $this->getSingularize($request->entity);
-        $properties = \array_reduce(
-            $request->properties,
-            function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $name = $schemaAttribute->name();
-                $result[$name] = $schemaAttribute->properties();
 
-                return $result;
-            },
-            []
-        );
-
-        $formType = new FormTypeBuilder($entity, $properties);
+        $formType = new FormTypeBuilder($entity, $request->properties);
         $filename = $entity . 'FormType';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
 

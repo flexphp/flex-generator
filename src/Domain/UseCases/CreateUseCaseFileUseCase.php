@@ -14,7 +14,6 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateUseCaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateUseCaseFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
-use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class CreateUseCaseFileUseCase
 {
@@ -26,20 +25,10 @@ final class CreateUseCaseFileUseCase
         $entity = $this->getSingularize($request->entity);
         $actions = $request->actions;
 
-        $properties = \array_reduce(
-            $request->attributes,
-            function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $result[$schemaAttribute->name()] = $schemaAttribute->properties();
-
-                return $result;
-            },
-            []
-        );
-
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/UseCase', __DIR__, $entity);
 
         foreach ($actions as $action) {
-            $useCase = new UseCaseBuilder($entity, $action, $properties);
+            $useCase = new UseCaseBuilder($entity, $action, $request->attributes);
             $filename = $this->getPascalCase($action) . $entity . 'UseCase';
 
             $writer = new PhpWriter($useCase->build(), $filename, $path);

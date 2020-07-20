@@ -11,6 +11,8 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\Entity\EntityBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Constants\Keyword;
+use FlexPHP\Schema\Schema;
 
 final class EntityBuilderTest extends TestCase
 {
@@ -154,12 +156,17 @@ T
      */
     public function testItOkWithDiffPropertyName(string $name, string $expected, string $setter, string $getter): void
     {
-        $render = new EntityBuilder('fuz', [
-            [
-                'Name' => $name,
-                'DataType' => 'string',
+        $render = new EntityBuilder('fuz', Schema::fromArray([
+            'EntityBar' => [
+                Keyword::TITLE => 'Entity Bar Title',
+                Keyword::ATTRIBUTES => [
+                    [
+                        Keyword::NAME => $name,
+                        Keyword::DATATYPE => 'string',
+                    ],
+                ],
             ],
-        ]);
+        ])->attributes());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -206,7 +213,6 @@ T
             ['FooName', 'fooName', 'setFooName', 'fooName'],
             ['fooName', 'fooName', 'setFooName', 'fooName'],
             ['foo_name', 'fooName', 'setFooName', 'fooName'],
-            ['foo-name', 'fooName', 'setFooName', 'fooName'],
         ];
     }
 }

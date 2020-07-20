@@ -10,27 +10,29 @@
 namespace FlexPHP\Generator\Tests\Domain\Builders\Command;
 
 use FlexPHP\Generator\Domain\Builders\Command\CommandBuilder;
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Constants\Keyword;
+use FlexPHP\Schema\Schema;
 
 final class CommandBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $action = 'action';
-        $entity = 'Test';
-        $properties = [
-            [
-                Keyword::NAME => 'foo',
-                Keyword::DATATYPE => 'integer',
+        $render = new CommandBuilder('Test', 'action', Schema::fromArray([
+            'EntityBar' => [
+                Keyword::TITLE => 'Entity Bar Title',
+                Keyword::ATTRIBUTES => [
+                    [
+                        Keyword::NAME => 'foo',
+                        Keyword::DATATYPE => 'integer',
+                    ],
+                    [
+                        Keyword::NAME => 'Bar',
+                        Keyword::DATATYPE => 'string',
+                    ],
+                ],
             ],
-            [
-                Keyword::NAME => 'Bar',
-                Keyword::DATATYPE => 'varchar',
-            ],
-        ];
-
-        $render = new CommandBuilder($entity, $action, $properties);
+        ])->attributes());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

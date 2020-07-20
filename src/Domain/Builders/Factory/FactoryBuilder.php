@@ -11,7 +11,7 @@ namespace FlexPHP\Generator\Domain\Builders\Factory;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Generator\Domain\Builders\Entity\TypeHintTrait;
-use FlexPHP\Schema\Constants\Keyword;
+use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class FactoryBuilder extends AbstractBuilder
 {
@@ -38,11 +38,11 @@ final class FactoryBuilder extends AbstractBuilder
 
     private function getSetterWithCasting(array $properties): array
     {
-        return \array_reduce($properties, function (array $result, array $attributes): array {
+        return \array_reduce($properties, function (array $result, SchemaAttributeInterface $attributes): array {
             $result[] = [
-                'pascal' => $this->getPascalCase($attributes[Keyword::NAME]),
-                'camel' => $this->getCamelCase($attributes[Keyword::NAME]),
-                'typehint' => $this->guessTypeHint($attributes[Keyword::DATATYPE]),
+                'pascal' => $this->getPascalCase($attributes->name()),
+                'camel' => $this->getCamelCase($attributes->name()),
+                'typehint' => $this->guessTypeHint($attributes->dataType()),
             ];
 
             return $result;

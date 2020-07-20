@@ -23,17 +23,8 @@ final class CreateEntityFileUseCase
     public function execute(CreateEntityFileRequest $request): CreateEntityFileResponse
     {
         $name = $this->getSingularize($request->name);
-        $properties = \array_reduce(
-            $request->properties,
-            function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $result[] = $schemaAttribute->properties();
 
-                return $result;
-            },
-            []
-        );
-
-        $entity = new EntityBuilder($name, $properties);
+        $entity = new EntityBuilder($name, $request->properties);
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $name);
 
         $writer = new PhpWriter($entity->build(), $name, $path);

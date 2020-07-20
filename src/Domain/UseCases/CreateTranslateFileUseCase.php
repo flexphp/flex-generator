@@ -23,17 +23,8 @@ final class CreateTranslateFileUseCase
     public function execute(CreateTranslateFileRequest $request): CreateTranslateFileResponse
     {
         $entity = $this->getSingularize($request->entity);
-        $properties = \array_reduce(
-            $request->attributes,
-            function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $result[] = $schemaAttribute->properties();
 
-                return $result;
-            },
-            []
-        );
-
-        $translate = new TranslateBuilder($entity, $properties);
+        $translate = new TranslateBuilder($entity, $request->attributes);
         $path = \sprintf('%1$s/../../tmp/skeleton/translations', __DIR__);
         $filename = sprintf('%1$s.%2$s', $this->getDashCase($entity), $request->language);
 

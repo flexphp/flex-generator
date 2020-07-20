@@ -10,7 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
-use FlexPHP\Schema\Constants\Keyword;
+use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class EntityBuilder extends AbstractBuilder
 {
@@ -36,32 +36,46 @@ final class EntityBuilder extends AbstractBuilder
 
     private function getProperties(array $properties): array
     {
-        return \array_values(\array_reduce($properties, function (array $result, array $attributes): array {
-            $result[] = $this->getCamelCase($attributes[Keyword::NAME]);
+        return \array_values(
+            \array_reduce(
+                $properties,
+                function (array $result, SchemaAttributeInterface $attributes): array {
+                    $result[] = $this->getCamelCase($attributes->name());
 
-            return $result;
-        }, []));
+                    return $result;
+                },
+                []
+            )
+        );
     }
 
     private function getGetters(array $properties): array
     {
-        return \array_reduce($properties, function (array $result, array $attributes): array {
-            $result[] = new GetterBuilder(
-                $attributes[Keyword::NAME],
-                $attributes[Keyword::DATATYPE],
-                $attributes[Keyword::CONSTRAINTS]['required'] ?? false
-            );
+        return \array_reduce(
+            $properties,
+            function (array $result, SchemaAttributeInterface $attributes): array {
+                $result[] = new GetterBuilder(
+                    $attributes->name(),
+                    $attributes->dataType(),
+                    $attributes->isRequired()
+                );
 
-            return $result;
-        }, []);
+                return $result;
+            },
+            []
+        );
     }
 
     private function getSetters(array $properties): array
     {
-        return \array_reduce($properties, function (array $result, array $attributes): array {
-            $result[] = new SetterBuilder($attributes[Keyword::NAME], $attributes[Keyword::DATATYPE]);
+        return \array_reduce(
+            $properties,
+            function (array $result, SchemaAttributeInterface $attributes): array {
+                $result[] = new SetterBuilder($attributes->name(), $attributes->dataType());
 
-            return $result;
-        }, []);
+                return $result;
+            },
+            []
+        );
     }
 }

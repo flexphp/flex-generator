@@ -10,7 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Gateway;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
-use FlexPHP\Schema\SchemaAttribute;
+use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class MySQLGatewayBuilder extends AbstractBuilder
 {
@@ -25,18 +25,21 @@ final class MySQLGatewayBuilder extends AbstractBuilder
             return $result;
         }, []);
 
+        $dbTypes = [];
         $pkName = $this->getPkName($properties);
         $fkRels = $this->getFkRelations($properties);
+        $properties = \array_reduce(
+            $properties,
+            function (array $result, SchemaAttributeInterface $property) use (&$dbTypes) {
+                $camelName = $this->getCamelCase($property->name());
 
-        $dbTypes = [];
-        $properties = \array_reduce($properties, function (array $result, SchemaAttribute $property) use (&$dbTypes) {
-            $camelName = $this->getCamelCase($property->name());
+                $result[$camelName] = $property->properties();
+                $dbTypes[$camelName] = $this->getDbType($property->dataType());
 
-            $result[$camelName] = $property->properties();
-            $dbTypes[$camelName] = $this->getDbType($property->dataType());
-
-            return $result;
-        }, []);
+                return $result;
+            },
+            []
+        );
 
         parent::__construct(\compact('entity', 'item', 'name', 'actions', 'properties', 'dbTypes', 'pkName', 'fkRels'));
     }
@@ -90,7 +93,7 @@ final class MySQLGatewayBuilder extends AbstractBuilder
     {
         $pkName = 'id';
 
-        \array_filter($properties, function (SchemaAttribute $property) use (&$pkName): void {
+        \array_filter($properties, function (SchemaAttributeInterface $property) use (&$pkName): void {
             if ($property->isPk()) {
                 $pkName = $property->name();
             }
@@ -101,7 +104,7 @@ final class MySQLGatewayBuilder extends AbstractBuilder
 
     private function getFkRelations(array $properties): array
     {
-        $fkRelations = \array_reduce($properties, function (array $result, SchemaAttribute $property): array {
+        $fkRelations = \array_reduce($properties, function (array $result, SchemaAttributeInterface $property): array {
             if ($property->isfk()) {
                 $result[$property->name()] = [
                     'function' => $this->getPascalCase($property->fkTable()),

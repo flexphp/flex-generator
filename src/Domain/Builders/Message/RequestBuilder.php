@@ -10,7 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Message;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
-use FlexPHP\Schema\Constants\Keyword;
+use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class RequestBuilder extends AbstractBuilder
 {
@@ -21,8 +21,8 @@ final class RequestBuilder extends AbstractBuilder
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $name = $this->getCamelCase($this->getSingularize($entity));
         $action = $this->getPascalCase($action);
-        $properties = \array_reduce($properties, function ($result, $property) {
-            $result[$this->getCamelCase($property[Keyword::NAME])] = $property;
+        $properties = \array_reduce($properties, function ($result, SchemaAttributeInterface $property) {
+            $result[$this->getCamelCase($property->name())] = $property;
 
             return $result;
         }, []);
