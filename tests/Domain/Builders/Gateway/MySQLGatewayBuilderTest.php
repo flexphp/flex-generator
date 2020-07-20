@@ -16,7 +16,7 @@ final class MySQLGatewayBuilderTest extends TestCase
 {
     public function testItIndexOk(): void
     {
-        $render = new MySQLGatewayBuilder('Test', ['index'], $this->getSchemaProperties());
+        $render = new MySQLGatewayBuilder('Test', ['index'], $this->getSchema());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -70,7 +70,7 @@ T
 
     public function testItCreateOk(): void
     {
-        $render = new MySQLGatewayBuilder('Test', ['create'], $this->getSchemaProperties());
+        $render = new MySQLGatewayBuilder('Test', ['create'], $this->getSchema());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -118,7 +118,7 @@ T
 
     public function testItReadOk(): void
     {
-        $render = new MySQLGatewayBuilder('Test', ['read'], $this->getSchemaProperties());
+        $render = new MySQLGatewayBuilder('Test', ['read'], $this->getSchema());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -163,7 +163,7 @@ T
 
     public function testItUpdateOk(): void
     {
-        $render = new MySQLGatewayBuilder('Test', ['update'], $this->getSchemaProperties());
+        $render = new MySQLGatewayBuilder('Test', ['update'], $this->getSchema());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -214,7 +214,7 @@ T
 
     public function testItDeleteOk(): void
     {
-        $render = new MySQLGatewayBuilder('Test', ['delete'], $this->getSchemaProperties());
+        $render = new MySQLGatewayBuilder('Test', ['delete'], $this->getSchema());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -253,7 +253,7 @@ T
 
     public function testItLoginOk(): void
     {
-        $render = new MySQLGatewayBuilder('Test', ['login'], $this->getSchemaProperties());
+        $render = new MySQLGatewayBuilder('Test', ['login'], $this->getSchema());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -300,7 +300,7 @@ T
 
     public function testItFkRelationsOk(): void
     {
-        $render = new MySQLGatewayBuilder('Test', ['index'], $this->getSchemaFkRelationAttibutes());
+        $render = new MySQLGatewayBuilder('Test', ['index'], $this->getSchemaFkRelation());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -386,7 +386,7 @@ T
      */
     public function testItOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedPlural): void
     {
-        $render = new MySQLGatewayBuilder($entity, [], []);
+        $render = new MySQLGatewayBuilder($entity, []);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

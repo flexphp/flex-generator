@@ -11,12 +11,13 @@ namespace FlexPHP\Generator\Domain\Builders\UseCase;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Schema\SchemaAttributeInterface;
+use FlexPHP\Schema\SchemaInterface;
 
 final class UseCaseBuilder extends AbstractBuilder
 {
     private $action;
 
-    public function __construct(string $entity, string $action, array $properties)
+    public function __construct(string $entity, string $action, ?SchemaInterface $schema = null)
     {
         $this->action = $this->getCamelCase($action);
 
@@ -25,11 +26,15 @@ final class UseCaseBuilder extends AbstractBuilder
         $item = $this->getCamelCase($this->getPluralize($entity));
         $action = $this->getPascalCase($action);
 
-        $properties = \array_reduce($properties, function ($result, SchemaAttributeInterface $property) {
-            $result[$this->getCamelCase($property->name())] = $property->properties();
+        $properties = [];
 
-            return $result;
-        }, []);
+        if ($schema) {
+            $properties = \array_reduce($schema->attributes(), function ($result, SchemaAttributeInterface $property) {
+                $result[$this->getCamelCase($property->name())] = $property->properties();
+
+                return $result;
+            }, []);
+        }
 
         parent::__construct(\compact('entity', 'name', 'item', 'action', 'properties'));
     }

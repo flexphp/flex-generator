@@ -27,7 +27,7 @@ final class CreateCommandFileUseCase
         $path = \sprintf('%1$s/../../tmp/skeleton/src/Command/%2$s', __DIR__, $entity);
 
         foreach ($request->actions as $action) {
-            $builder = new CommandBuilder($entity, $action, $request->attributes);
+            $builder = new CommandBuilder($entity, $action, $request->schema);
             $filename = $this->getPascalCase($action) . $entity . 'Command';
 
             $writer = new PhpWriter($builder->build(), $filename, $path);

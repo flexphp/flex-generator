@@ -18,7 +18,7 @@ final class EntityBuilderTest extends TestCase
 {
     public function testItOk(): void
     {
-        $render = new EntityBuilder('Test', $this->getSchemaProperties());
+        $render = new EntityBuilder('Test', $this->getSchema());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -90,7 +90,7 @@ T
 
     public function testItUserEntityInSymfonyOk(): void
     {
-        $render = new EntityBuilder('User', []);
+        $render = new EntityBuilder('User');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -136,7 +136,7 @@ T
      */
     public function testItOkWithDiffEntityName(string $name, string $expected): void
     {
-        $render = new EntityBuilder($name, []);
+        $render = new EntityBuilder($name);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -166,7 +166,7 @@ T
                     ],
                 ],
             ],
-        ])->attributes());
+        ]));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

@@ -25,7 +25,7 @@ final class CreateConstraintFileUseCase
     {
         $entity = $this->getSingularize($request->entity);
         $properties = \array_reduce(
-            $request->properties,
+            $request->schema->attributes(),
             function (array $result, SchemaAttributeInterface $schemaAttribute) {
                 $name = $schemaAttribute->name();
                 $result[$name] = (new RuleBuilder($name, $schemaAttribute->constraints()))->build();

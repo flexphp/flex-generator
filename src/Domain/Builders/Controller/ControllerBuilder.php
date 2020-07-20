@@ -10,12 +10,17 @@
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\SchemaInterface;
 
 final class ControllerBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $actions, array $properties = [])
+    public function __construct(string $entity, array $actions, ?SchemaInterface $schema = null)
     {
-        $fkRels = $this->getFkRelations($properties);
+        $fkRels = [];
+
+        if ($schema) {
+            $fkRels = $this->getFkRelations($schema->attributes());
+        }
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $route = $this->getDashCase($this->getPluralize($entity));
         unset($actions['login']);

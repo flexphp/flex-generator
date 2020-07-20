@@ -24,7 +24,7 @@ final class CreateFactoryFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateFactoryFileRequest($schema->name(), $schema->attributes());
+        $request = new CreateFactoryFileRequest($schema->name(), $schema);
 
         $useCase = new CreateFactoryFileUseCase();
         $response = $useCase->execute($request);

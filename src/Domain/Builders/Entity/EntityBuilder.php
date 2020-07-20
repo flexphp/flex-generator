@@ -11,15 +11,22 @@ namespace FlexPHP\Generator\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Schema\SchemaAttributeInterface;
+use FlexPHP\Schema\SchemaInterface;
 
 final class EntityBuilder extends AbstractBuilder
 {
-    public function __construct(string $name, array $properties)
+    public function __construct(string $name, ?SchemaInterface $schema = null)
     {
+        $getters = [];
+        $setters = [];
+        $_properties = [];
         $name = $this->getPascalCase($this->getSingularize($name));
-        $getters = $this->getGetters($properties);
-        $setters = $this->getSetters($properties);
-        $_properties = $this->getProperties($properties);
+
+        if ($schema) {
+            $getters = $this->getGetters($schema->attributes());
+            $setters = $this->getSetters($schema->attributes());
+            $_properties = $this->getProperties($schema->attributes());
+        }
 
         parent::__construct(\compact('name', 'getters', 'setters', '_properties'));
     }

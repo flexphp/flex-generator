@@ -9,6 +9,8 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
+use FlexPHP\Schema\SchemaInterface;
+
 final class CreateFormTypeFileRequest
 {
     /**
@@ -17,13 +19,13 @@ final class CreateFormTypeFileRequest
     public $entity;
 
     /**
-     * @var array
+     * @var SchemaInterface
      */
-    public $properties;
+    public $schema;
 
-    public function __construct(string $entity, array $properties)
+    public function __construct(string $entity, SchemaInterface $schema)
     {
         $this->entity = $entity;
-        $this->properties = $properties;
+        $this->schema = $schema;
     }
 }

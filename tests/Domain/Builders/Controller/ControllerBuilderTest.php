@@ -476,7 +476,7 @@ T
 
     public function testItRenderFkRelationsOk(): void
     {
-        $render = new ControllerBuilder('Test', [], $this->getSchemaFkRelationAttibutes());
+        $render = new ControllerBuilder('Test', [], $this->getSchemaFkRelation());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

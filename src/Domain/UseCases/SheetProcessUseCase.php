@@ -40,13 +40,14 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateTranslateFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateUseCaseFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaInterface;
 
 final class SheetProcessUseCase
 {
     public function execute(SheetProcessRequest $request): SheetProcessResponse
     {
         $name = $request->name;
-        $attributes = Schema::fromFile($request->path)->attributes();
+        $schema = Schema::fromFile($request->path);
         $actions = [
             'index',
             'create',
@@ -60,19 +61,19 @@ final class SheetProcessUseCase
         }
 
         $controller = $this->createController($name, $actions);
-        $entity = $this->createEntity($name, $attributes);
+        $entity = $this->createEntity($name, $schema);
         $gateway = $this->createGateway($name, $actions);
-        $concreteGateway = $this->createConcreteGateway($name, $actions, $attributes);
-        $factory = $this->createFactory($name, $attributes);
-        $repository = $this->createRepository($name, $actions, $attributes);
-        $constraint = $this->createConstraint($name, $attributes);
-        $translate = $this->createTranslate($name, $attributes);
-        $formType = $this->createFormType($name, $attributes);
-        $requests = $this->createRequests($name, $actions, $attributes);
+        $concreteGateway = $this->createConcreteGateway($name, $actions, $schema);
+        $factory = $this->createFactory($name, $schema);
+        $repository = $this->createRepository($name, $actions, $schema);
+        $constraint = $this->createConstraint($name, $schema);
+        $translate = $this->createTranslate($name, $schema);
+        $formType = $this->createFormType($name, $schema);
+        $requests = $this->createRequests($name, $actions, $schema);
         $responses = $this->createResponses($name, $actions);
-        $useCases = $this->createUseCases($name, $actions, $attributes);
-        $commands = $this->createCommands($name, $actions, $attributes);
-        $templates = $this->createTemplates($name, $attributes);
+        $useCases = $this->createUseCases($name, $actions, $schema);
+        $commands = $this->createCommands($name, $actions, $schema);
+        $templates = $this->createTemplates($name, $schema);
 
         return new SheetProcessResponse([
             'controller' => $controller->file,
@@ -99,31 +100,31 @@ final class SheetProcessUseCase
         );
     }
 
-    private function createConstraint(string $name, array $attributes): CreateConstraintFileResponse
+    private function createConstraint(string $name, SchemaInterface $schema): CreateConstraintFileResponse
     {
         return (new CreateConstraintFileUseCase())->execute(
-            new CreateConstraintFileRequest($name, $attributes)
+            new CreateConstraintFileRequest($name, $schema)
         );
     }
 
-    private function createTranslate(string $name, array $attributes): CreateTranslateFileResponse
+    private function createTranslate(string $name, SchemaInterface $schema): CreateTranslateFileResponse
     {
         return (new CreateTranslateFileUseCase())->execute(
-            new CreateTranslateFileRequest($name, $attributes, 'en')
+            new CreateTranslateFileRequest($name, $schema, 'en')
         );
     }
 
-    private function createFormType(string $name, array $attributes): CreateFormTypeFileResponse
+    private function createFormType(string $name, SchemaInterface $schema): CreateFormTypeFileResponse
     {
         return (new CreateFormTypeFileUseCase())->execute(
-            new CreateFormTypeFileRequest($name, $attributes)
+            new CreateFormTypeFileRequest($name, $schema)
         );
     }
 
-    private function createEntity(string $name, array $attributes): CreateEntityFileResponse
+    private function createEntity(string $name, SchemaInterface $schema): CreateEntityFileResponse
     {
         return (new CreateEntityFileUseCase())->execute(
-            new CreateEntityFileRequest($name, $attributes)
+            new CreateEntityFileRequest($name, $schema)
         );
     }
 
@@ -134,38 +135,41 @@ final class SheetProcessUseCase
         );
     }
 
-    private function createConcreteGateway(string $name, array $actions, array $properties): ConcreteGatewayFileResponse
-    {
+    private function createConcreteGateway(
+        string $name,
+        array $actions,
+        SchemaInterface $schema
+    ): ConcreteGatewayFileResponse {
         return (new CreateConcreteGatewayFileUseCase())->execute(
-            new CreateConcreteGatewayFileRequest($name, 'MySQL', $actions, $properties)
+            new CreateConcreteGatewayFileRequest($name, 'MySQL', $actions, $schema)
         );
     }
 
-    private function createFactory(string $name, array $attributes): CreateFactoryFileResponse
+    private function createFactory(string $name, SchemaInterface $schema): CreateFactoryFileResponse
     {
         return (new CreateFactoryFileUseCase())->execute(
-            new CreateFactoryFileRequest($name, $attributes)
+            new CreateFactoryFileRequest($name, $schema)
         );
     }
 
-    private function createRepository(string $name, array $actions, array $attributes): CreateRepositoryFileResponse
+    private function createRepository(string $name, array $actions, SchemaInterface $schema): CreateRepositoryFileResponse
     {
         return (new CreateRepositoryFileUseCase())->execute(
-            new CreateRepositoryFileRequest($name, $actions, $attributes)
+            new CreateRepositoryFileRequest($name, $actions, $schema)
         );
     }
 
-    private function createUseCases(string $name, array $actions, array $attributes): CreateUseCaseFileResponse
+    private function createUseCases(string $name, array $actions, SchemaInterface $schema): CreateUseCaseFileResponse
     {
         return (new CreateUseCaseFileUseCase())->execute(
-            new CreateUseCaseFileRequest($name, $actions, $attributes)
+            new CreateUseCaseFileRequest($name, $actions, $schema)
         );
     }
 
-    private function createRequests(string $name, array $actions, array $attributes): CreateRequestFileResponse
+    private function createRequests(string $name, array $actions, SchemaInterface $schema): CreateRequestFileResponse
     {
         return (new CreateRequestFileUseCase())->execute(
-            new CreateRequestFileRequest($name, $attributes, $actions)
+            new CreateRequestFileRequest($name, $schema, $actions)
         );
     }
 
@@ -176,17 +180,17 @@ final class SheetProcessUseCase
         );
     }
 
-    private function createCommands(string $name, array $actions, array $attributes): CreateCommandFileResponse
+    private function createCommands(string $name, array $actions, SchemaInterface $schema): CreateCommandFileResponse
     {
         return (new CreateCommandFileUseCase())->execute(
-            new CreateCommandFileRequest($name, $actions, $attributes)
+            new CreateCommandFileRequest($name, $actions, $schema)
         );
     }
 
-    private function createTemplates(string $name, array $attributes): CreateTemplateFileResponse
+    private function createTemplates(string $name, SchemaInterface $schema): CreateTemplateFileResponse
     {
         return (new CreateTemplateFileUseCase())->execute(
-            new CreateTemplateFileRequest($name, $attributes)
+            new CreateTemplateFileRequest($name, $schema)
         );
     }
 }

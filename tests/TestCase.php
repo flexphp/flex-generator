@@ -64,22 +64,17 @@ class TestCase extends PHPUnitTestCase
         ]]);
     }
 
-    protected function getSchemaAttributes(): array
-    {
-        return $this->getSchema()->attributes();
-    }
-
     protected function getSchemaProperties(): array
     {
         return \array_map(function (SchemaAttributeInterface $schemaAttribute) {
             return $schemaAttribute;
-        }, $this->getSchemaAttributes());
+        }, $this->getSchema()->attributes());
     }
 
     protected function getSchemaPropertiesRules(): array
     {
         return \array_reduce(
-            $this->getSchemaAttributes(),
+            $this->getSchema()->attributes(),
             function (array $result, SchemaAttributeInterface $schemaAttribute) {
                 $result[$schemaAttribute->name()] = (new RuleBuilder(
                     $schemaAttribute->name(),
@@ -111,11 +106,6 @@ class TestCase extends PHPUnitTestCase
                 ],
             ],
         ]);
-    }
-
-    protected function getSchemaFkRelationAttibutes(): array
-    {
-        return $this->getSchemaFkRelation()->attributes();
     }
 
     protected static function getOutputFolder(): string

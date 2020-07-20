@@ -9,6 +9,8 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
+use FlexPHP\Schema\SchemaInterface;
+
 final class CreateTranslateFileRequest
 {
     /**
@@ -17,19 +19,19 @@ final class CreateTranslateFileRequest
     public $entity;
 
     /**
-     * @var array
+     * @var SchemaInterface
      */
-    public $attributes;
+    public $schema;
 
     /**
      * @var string
      */
     public $language;
 
-    public function __construct(string $entity, array $attributes, string $language)
+    public function __construct(string $entity, SchemaInterface $schema, string $language)
     {
         $this->entity = $entity;
-        $this->attributes = $attributes;
+        $this->schema = $schema;
         $this->language = $language;
     }
 }

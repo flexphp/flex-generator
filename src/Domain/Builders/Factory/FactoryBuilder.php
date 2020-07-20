@@ -12,16 +12,21 @@ namespace FlexPHP\Generator\Domain\Builders\Factory;
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Generator\Domain\Builders\Entity\TypeHintTrait;
 use FlexPHP\Schema\SchemaAttributeInterface;
+use FlexPHP\Schema\SchemaInterface;
 
 final class FactoryBuilder extends AbstractBuilder
 {
     use TypeHintTrait;
 
-    public function __construct(string $entity, array $properties)
+    public function __construct(string $entity, ?SchemaInterface $schema = null)
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $item = $this->getCamelCase($this->getSingularize($entity));
-        $setters = $this->getSetterWithCasting($properties);
+        $setters = [];
+
+        if ($schema) {
+            $setters = $this->getSetterWithCasting($schema->attributes());
+        }
 
         parent::__construct(\compact('entity', 'item', 'setters'));
     }

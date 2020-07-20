@@ -24,7 +24,7 @@ final class CreateTranslateFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateTranslateFileRequest($schema->name(), $schema->attributes(), 'en');
+        $request = new CreateTranslateFileRequest($schema->name(), $schema, 'en');
 
         $useCase = new CreateTranslateFileUseCase();
         $response = $useCase->execute($request);

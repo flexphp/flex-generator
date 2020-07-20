@@ -34,7 +34,7 @@ final class CreateTemplateFileUseCase
         $path = \sprintf('%1$s/../../tmp/skeleton/templates/%2$s', __DIR__, $entity);
 
         foreach ($actions as $action => $filename) {
-            $builder = new TemplateBuilder($entity, $action, $request->attributes);
+            $builder = new TemplateBuilder($entity, $action, $request->schema);
             $writer = new TemplateWriter($builder->build(), $filename, $path);
             $files[] = $writer->save();
         }

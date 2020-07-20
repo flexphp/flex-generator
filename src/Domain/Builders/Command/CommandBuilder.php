@@ -11,20 +11,25 @@ namespace FlexPHP\Generator\Domain\Builders\Command;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Schema\SchemaAttributeInterface;
+use FlexPHP\Schema\SchemaInterface;
 
 final class CommandBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, string $action, array $properties)
+    public function __construct(string $entity, string $action, ?SchemaInterface $schema = null)
     {
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $action = $this->getPascalCase($action);
         $command = $this->getDashCase($this->getPluralize($entity)) . ':' . $this->getDashCase($action);
 
-        $properties = \array_reduce($properties, function ($result, SchemaAttributeInterface $property) {
-            $result[$property->name()] = $property;
+        $properties = [];
 
-            return $result;
-        }, []);
+        if ($schema) {
+            $properties = \array_reduce($schema->attributes(), function ($result, SchemaAttributeInterface $property) {
+                $result[$property->name()] = $property;
+
+                return $result;
+            }, []);
+        }
 
         parent::__construct(\compact('entity', 'action', 'properties', 'command'));
     }

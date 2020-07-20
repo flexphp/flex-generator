@@ -24,7 +24,7 @@ final class CreateTranslateFileUseCase
     {
         $entity = $this->getSingularize($request->entity);
 
-        $translate = new TranslateBuilder($entity, $request->attributes);
+        $translate = new TranslateBuilder($entity, $request->schema);
         $path = \sprintf('%1$s/../../tmp/skeleton/translations', __DIR__);
         $filename = sprintf('%1$s.%2$s', $this->getDashCase($entity), $request->language);
 

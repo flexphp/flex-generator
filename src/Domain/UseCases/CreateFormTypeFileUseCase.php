@@ -23,7 +23,7 @@ final class CreateFormTypeFileUseCase
     {
         $entity = $this->getSingularize($request->entity);
 
-        $formType = new FormTypeBuilder($entity, $request->properties);
+        $formType = new FormTypeBuilder($entity, $request->schema);
         $filename = $entity . 'FormType';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
 

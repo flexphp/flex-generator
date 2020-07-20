@@ -32,7 +32,7 @@ final class CommandBuilderTest extends TestCase
                     ],
                 ],
             ],
-        ])->attributes());
+        ]));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -78,7 +78,7 @@ T
      */
     public function testItDiffEntityName(string $entity, string $expectedCamel, string $expectedDash): void
     {
-        $render = new CommandBuilder($entity, 'action', []);
+        $render = new CommandBuilder($entity, 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -122,7 +122,7 @@ T
      */
     public function testItDiffActionName(string $action): void
     {
-        $render = new CommandBuilder('test', $action, []);
+        $render = new CommandBuilder('test', $action);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

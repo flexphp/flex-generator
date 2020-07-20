@@ -37,7 +37,7 @@ final class CreateConcreteGatewayFileUseCase
             throw new InvalidArgumentException($concrete . ' is not valid, use: ' . \implode(',', $concretesAvailable));
         }
 
-        $gateway = new MySQLGatewayBuilder($entity, $request->actions, $request->properties);
+        $gateway = new MySQLGatewayBuilder($entity, $request->actions, $request->schema);
         $filename = $concrete . $entity . 'Gateway';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/Gateway', __DIR__, $entity);
         $writer = new PhpWriter($gateway->build(), $filename, $path);

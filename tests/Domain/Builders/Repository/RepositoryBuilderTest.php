@@ -171,7 +171,7 @@ T
 
     public function testItRenderFkRelationsOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['index'], $this->getSchemaFkRelationAttibutes());
+        $render = new RepositoryBuilder('Test', ['index'], $this->getSchemaFkRelation());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

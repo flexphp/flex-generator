@@ -16,7 +16,7 @@ final class TemplateBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {
-        $render = new TemplateBuilder('Tests', 'index', $this->getSchemaProperties());
+        $render = new TemplateBuilder('Tests', 'index', $this->getSchema());
 
         $this->assertEquals(<<<T
 {% trans_default_domain 'test' %}
@@ -85,7 +85,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new TemplateBuilder('Tests', 'create', $this->getSchemaProperties());
+        $render = new TemplateBuilder('Tests', 'create', $this->getSchema());
 
         $this->assertEquals(<<<T
 {% trans_default_domain 'test' %}
@@ -126,7 +126,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new TemplateBuilder('Tests', 'read', $this->getSchemaProperties());
+        $render = new TemplateBuilder('Tests', 'read', $this->getSchema());
 
         $this->assertEquals(<<<T
 {% trans_default_domain 'test' %}
@@ -177,7 +177,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new TemplateBuilder('Tests', 'update', $this->getSchemaProperties());
+        $render = new TemplateBuilder('Tests', 'update', $this->getSchema());
 
         $this->assertEquals(<<<T
 {% trans_default_domain 'test' %}
@@ -226,7 +226,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new TemplateBuilder('Tests', 'delete', $this->getSchemaProperties());
+        $render = new TemplateBuilder('Tests', 'delete', $this->getSchema());
 
         $this->assertEquals(<<<T
 {{ include('form/_delete_confirmation.html.twig') }}
@@ -247,7 +247,7 @@ T
      */
     public function testItOkWithDiffEntityName(string $name, string $expectedPath, string $expectedProperty): void
     {
-        $render = new TemplateBuilder($name, 'delete', $this->getSchemaProperties());
+        $render = new TemplateBuilder($name, 'delete', $this->getSchema());
 
         $this->assertEquals(<<<T
 {{ include('form/_delete_confirmation.html.twig') }}

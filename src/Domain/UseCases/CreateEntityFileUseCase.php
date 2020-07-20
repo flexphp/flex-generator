@@ -23,7 +23,7 @@ final class CreateEntityFileUseCase
     {
         $name = $this->getSingularize($request->name);
 
-        $entity = new EntityBuilder($name, $request->properties);
+        $entity = new EntityBuilder($name, $request->schema);
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $name);
 
         $writer = new PhpWriter($entity->build(), $name, $path);

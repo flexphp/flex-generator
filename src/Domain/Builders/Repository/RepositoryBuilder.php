@@ -10,15 +10,20 @@
 namespace FlexPHP\Generator\Domain\Builders\Repository;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\SchemaInterface;
 
 final class RepositoryBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $actions, array $properties = [])
+    public function __construct(string $entity, array $actions, ?SchemaInterface $schema = null)
     {
         $login = 'email';
         $item = $this->getCamelCase($this->getSingularize($entity));
         $entity = $this->getPascalCase($this->getSingularize($entity));
-        $fkRels = $this->getFkRelations($properties);
+        $fkRels = [];
+
+        if ($schema) {
+            $fkRels = $this->getFkRelations($schema->attributes());
+        }
 
         $requests = [];
         $actions = \array_reduce($actions, function (array $result, string $action) use (&$requests) {

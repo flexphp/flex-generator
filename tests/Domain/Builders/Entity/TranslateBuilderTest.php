@@ -18,7 +18,7 @@ final class TranslateBuilderTest extends TestCase
 {
     public function testItOk(): void
     {
-        $render = new TranslateBuilder('Test', $this->getSchemaProperties());
+        $render = new TranslateBuilder('Test', $this->getSchema());
 
         $this->assertEquals(<<<T
 <?php
@@ -48,7 +48,7 @@ T
      */
     public function testItOkWithDiffTranslateName(string $name, string $expected): void
     {
-        $render = new TranslateBuilder($name, []);
+        $render = new TranslateBuilder($name);
 
         $this->assertEquals(<<<T
 <?php
@@ -83,7 +83,7 @@ T
                     ],
                 ],
             ],
-        ])->attributes());
+        ]));
 
         $this->assertEquals(<<<T
 <?php

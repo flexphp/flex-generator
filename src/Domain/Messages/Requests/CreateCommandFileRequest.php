@@ -9,6 +9,8 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
+use FlexPHP\Schema\SchemaInterface;
+
 final class CreateCommandFileRequest
 {
     /**
@@ -22,14 +24,14 @@ final class CreateCommandFileRequest
     public $actions;
 
     /**
-     * @var array
+     * @var SchemaInterface
      */
-    public $attributes;
+    public $schema;
 
-    public function __construct(string $entity, array $actions, array $attributes)
+    public function __construct(string $entity, array $actions, SchemaInterface $schema)
     {
         $this->entity = $entity;
         $this->actions = $actions;
-        $this->attributes = $attributes;
+        $this->schema = $schema;
     }
 }
