@@ -13,23 +13,22 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 final class RepositoryBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $actions)
+    public function __construct(string $entity, array $actions, array $properties)
     {
         $login = 'email';
         $item = $this->getCamelCase($this->getSingularize($entity));
         $entity = $this->getPascalCase($this->getSingularize($entity));
-        $actions = \array_reduce($actions, function (array $result, string $action) {
+        $fkRels = $this->getFkRelations($properties);
+
+        $requests = [];
+        $actions = \array_reduce($actions, function (array $result, string $action) use (&$requests) {
             $result[] = $this->getCamelCase($action);
-
-            return $result;
-        }, []);
-        $requests = \array_reduce($actions, function (array $result, string $action) {
-            $result[] = $this->getPascalCase($action);
+            $requests[] = $this->getPascalCase($action);
 
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'item', 'actions', 'requests', 'login'));
+        parent::__construct(\compact('entity', 'item', 'actions', 'requests', 'login', 'fkRels'));
     }
 
     protected function getFileTemplate(): string

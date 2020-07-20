@@ -344,7 +344,7 @@ final class MySQLTestGateway implements TestGateway
         return \$this->query->execute()->fetchAll();
     }
 
-    public function filterBar(string \$term, int \$page, int \$limit): array
+    public function filterBars(string \$term, int \$page, int \$limit): array
     {
         \$this->query->select([
             'baz id',

@@ -169,6 +169,40 @@ T
 , $render->build());
     }
 
+    public function testItRenderFkRelationOk(): void
+    {
+        $render = new RepositoryBuilder('Test', ['index'], $this->getSchemaFkRelationAttibutes());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+use Domain\Test\Request\IndexTestRequest;
+use FlexPHP\Repositories\Repository;
+
+final class TestRepository extends Repository
+{
+    public function findBy(IndexTestRequest \$request): array
+    {
+        return \$this->getGateway()->search((array)\$request, [], 10);
+    }
+
+    public function findBarsByTerm(FindCommentBarRequest \$request): array
+    {
+        return \$this->getGateway()->filterBars(\$request->term, \$request->page, 10);
+    }
+
+    public function findPostsByTerm(FindCommentPostRequest \$request): array
+    {
+        return \$this->getGateway()->filterPosts(\$request->term, \$request->page, 10);
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

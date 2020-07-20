@@ -65,7 +65,8 @@ abstract class AbstractBuilder implements BuilderInterface
         $fkRelations = \array_reduce($properties, function (array $result, SchemaAttributeInterface $property): array {
             if ($property->isfk()) {
                 $result[$property->name()] = [
-                    'function' => $this->getPascalCase($property->fkTable()),
+                    'fnPlural' => $this->getPascalCase($this->getPluralize($property->fkTable())),
+                    'fnSingular' => $this->getPascalCase($this->getSingularize($property->fkTable())),
                     'table' => $property->fkTable(),
                     'id' => $property->fkId(),
                     'text' => $property->fkName(),
