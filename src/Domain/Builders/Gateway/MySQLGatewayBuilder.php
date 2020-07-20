@@ -88,22 +88,4 @@ final class MySQLGatewayBuilder extends AbstractBuilder
 
         return 'STRING';
     }
-
-    private function getFkRelations(array $properties): array
-    {
-        $fkRelations = \array_reduce($properties, function (array $result, SchemaAttributeInterface $property): array {
-            if ($property->isfk()) {
-                $result[$property->name()] = [
-                    'function' => $this->getPascalCase($property->fkTable()),
-                    'table' => $property->fkTable(),
-                    'id' => $property->fkId(),
-                    'text' => $property->fkName(),
-                ];
-            }
-
-            return $result;
-        }, []);
-
-        return $fkRelations;
-    }
 }

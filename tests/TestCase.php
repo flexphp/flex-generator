@@ -92,6 +92,32 @@ class TestCase extends PHPUnitTestCase
         );
     }
 
+    protected function getSchemaFkRelation(): Schema
+    {
+        return Schema::fromArray([
+            'EntityBar' => [
+                Keyword::TITLE => 'Entity Bar Title',
+                Keyword::ATTRIBUTES => [
+                    [
+                        Keyword::NAME => 'foo',
+                        Keyword::DATATYPE => 'integer',
+                        Keyword::CONSTRAINTS => 'fk:bar,fuz,baz',
+                    ],
+                    [
+                        Keyword::NAME => 'postId',
+                        Keyword::DATATYPE => 'integer',
+                        Keyword::CONSTRAINTS => 'fk:posts',
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    protected function getSchemaFkRelationAttibutes(): array
+    {
+        return $this->getSchemaFkRelation()->attributes();
+    }
+
     protected static function getOutputFolder(): string
     {
         return __DIR__ . '/../src/tmp/skeleton';

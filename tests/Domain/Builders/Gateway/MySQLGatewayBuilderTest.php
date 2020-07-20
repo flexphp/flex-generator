@@ -11,8 +11,6 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Gateway;
 
 use FlexPHP\Generator\Domain\Builders\Gateway\MySQLGatewayBuilder;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\Schema\Constants\Keyword;
-use FlexPHP\Schema\Schema;
 
 final class MySQLGatewayBuilderTest extends TestCase
 {
@@ -300,20 +298,9 @@ T
 , $render->build());
     }
 
-    public function testItFkRelationOk(): void
+    public function testItFkRelationsOk(): void
     {
-        $render = new MySQLGatewayBuilder('Test', ['index'], (Schema::fromArray([
-            'EntityBar' => [
-                Keyword::TITLE => 'Entity Bar Title',
-                Keyword::ATTRIBUTES => [
-                    [
-                        Keyword::NAME => 'foo',
-                        Keyword::DATATYPE => 'integer',
-                        Keyword::CONSTRAINTS => 'fk:bar,fuz,baz',
-                    ],
-                ],
-            ],
-        ]))->attributes());
+        $render = new MySQLGatewayBuilder('Test', ['index'], $this->getSchemaFkRelationAttibutes());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -339,6 +326,7 @@ final class MySQLTestGateway implements TestGateway
     {
         \$this->query->select([
             'foo' => 'foo',
+            'postId' => 'postId',
         ]);
         \$this->query->from(\$this->table);
 
@@ -366,6 +354,22 @@ final class MySQLTestGateway implements TestGateway
 
         \$this->query->where('fuz like :fuz');
         \$this->query->setParameter(':fuz', "%{\$term}%");
+
+        \$this->query->setMaxResults(\$limit);
+
+        return \$this->query->execute()->fetchAll();
+    }
+
+    public function filterPosts(string \$term, int \$page, int \$limit): array
+    {
+        \$this->query->select([
+            'id id',
+            'name text',
+        ]);
+        \$this->query->from('posts');
+
+        \$this->query->where('name like :name');
+        \$this->query->setParameter(':name', "%{\$term}%");
 
         \$this->query->setMaxResults(\$limit);
 
