@@ -13,8 +13,9 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 final class ControllerBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $actions)
+    public function __construct(string $entity, array $actions, array $properties)
     {
+        $fkRels = $this->getFkRelations($properties);
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $route = $this->getDashCase($this->getPluralize($entity));
         unset($actions['login']);
@@ -24,7 +25,7 @@ final class ControllerBuilder extends AbstractBuilder
             unset($actions[$action]);
         }
 
-        parent::__construct(\compact('entity', 'actions', 'route'));
+        parent::__construct(\compact('entity', 'actions', 'route', 'fkRels'));
     }
 
     protected function getFileTemplate(): string

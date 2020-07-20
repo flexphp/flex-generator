@@ -468,6 +468,83 @@ T
 , $render->build());
     }
 
+    public function testItRenderFkRelationsOk(): void
+    {
+        $render = new ControllerBuilder('Test', [], $this->getSchemaFkRelationAttibutes());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace App\Controller;
+
+use Domain\Test\Request\FindTestBarRequest;
+use Domain\Test\UseCase\FindTestBarUseCase;
+use Domain\Test\Request\FindTestPostRequest;
+use Domain\Test\UseCase\FindTestPostUseCase;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/tests")
+ */
+final class TestController extends AbstractController
+{
+    /**
+     * @Route("/find-bars", methods={"POST"}, name="comments.find.bars")
+     * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_BAR_INDEX')", statusCode=401)
+     */
+    public function findBar(Request \$request, Connection \$conn): Response
+    {
+        if (!\$request->isXmlHttpRequest()) {
+            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
+        }
+
+        \$request = new FindTestBarRequest(\$request->request->all());
+
+        \$useCase = new FindTestBarUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        return new JsonResponse([
+            'results' => \$response->bars,
+            'pagination' => ['more' => false],
+        ]);
+    }
+
+    /**
+     * @Route("/find-posts", methods={"POST"}, name="comments.find.posts")
+     * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_POST_INDEX')", statusCode=401)
+     */
+    public function findPost(Request \$request, Connection \$conn): Response
+    {
+        if (!\$request->isXmlHttpRequest()) {
+            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
+        }
+
+        \$request = new FindTestPostRequest(\$request->request->all());
+
+        \$useCase = new FindTestPostUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        return new JsonResponse([
+            'results' => \$response->posts,
+            'pagination' => ['more' => false],
+        ]);
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderMixedOk(): void
     {
         $entity = 'Test';

@@ -169,7 +169,7 @@ T
 , $render->build());
     }
 
-    public function testItRenderFkRelationOk(): void
+    public function testItRenderFkRelationsOk(): void
     {
         $render = new RepositoryBuilder('Test', ['index'], $this->getSchemaFkRelationAttibutes());
 

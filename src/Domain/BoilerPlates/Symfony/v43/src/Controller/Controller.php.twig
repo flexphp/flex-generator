@@ -14,6 +14,10 @@ use Domain\{{ entity }}\Request\{{ key }}{{ entity }}Request;
 {% for key,action in actions %}
 use Domain\{{ entity }}\UseCase\{{ key }}{{ entity }}UseCase;
 {% endfor %}
+{% for id,fkRel in fkRels %}
+use Domain\{{ entity }}\Request\Find{{ entity }}{{ fkRel.fnSingular }}Request;
+use Domain\{{ entity }}\UseCase\Find{{ entity }}{{ fkRel.fnSingular }}UseCase;
+{% endfor %}
 {% if actions.Index or actions.Create or actions.Read or actions.Update or actions.Delete %}
 use Doctrine\DBAL\Connection;
 {% endif %}
@@ -22,6 +26,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+{% if fkRels|length > 0 %}
+use Symfony\Component\HttpFoundation\JsonResponse;
+{% endif %}
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -34,6 +41,36 @@ final class {{ entity }}Controller extends AbstractController
 {{ action|raw }}
 {% else %}
 {{ action|trim(side='right')|raw }}
+{% endif %}
+{% endfor %}
+{% if actions|length > 0 %}
+
+{% endif %}
+{% for id,fkRel in fkRels %}
+    /**
+     * @Route("/find-{{ fkRel.route }}", methods={"POST"}, name="comments.find.{{ fkRel.route }}")
+     * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ fkRel.fnSingular|upper }}_INDEX')", statusCode=401)
+     */
+    public function find{{ fkRel.fnSingular }}(Request $request, Connection $conn): Response
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
+        }
+
+        $request = new Find{{ entity }}{{ fkRel.fnSingular }}Request($request->request->all());
+
+        $useCase = new Find{{ entity }}{{ fkRel.fnSingular }}UseCase(new {{ entity }}Repository(new MySQL{{ entity }}Gateway($conn)));
+
+        $response = $useCase->execute($request);
+
+        return new JsonResponse([
+            'results' => $response->{{ fkRel.route }},
+            'pagination' => ['more' => false],
+        ]);
+    }
+{% if not loop.last %}
+
 {% endif %}
 {% endfor %}
 }

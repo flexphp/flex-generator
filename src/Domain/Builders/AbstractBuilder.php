@@ -67,6 +67,7 @@ abstract class AbstractBuilder implements BuilderInterface
                 $result[$property->name()] = [
                     'fnPlural' => $this->getPascalCase($this->getPluralize($property->fkTable())),
                     'fnSingular' => $this->getPascalCase($this->getSingularize($property->fkTable())),
+                    'route' => $this->getDashCase($this->getPluralize($property->fkTable())),
                     'table' => $property->fkTable(),
                     'id' => $property->fkId(),
                     'text' => $property->fkName(),
