@@ -175,7 +175,7 @@ final class CreatePrototypeUseCase
 
         $assets = [
             "$src/Bootstrap/css/bootstrap.min.css" => "$dest/public/css/bootstrap/bootstrap.min.css",
-            "$src/Bootstrap/css/select2.min.css" => "$dest/public/  ",
+            "$src/Bootstrap/css/select2.min.css" => "$dest/public/css/select2/select2.min.css",
             "$src/Bootstrap/css/select2bs4.min.css" => "$dest/public/css/select2/select2bs4.min.css",
             "$src/Bootstrap/main.css" => "$dest/public/css/main.css",
             "$src/FontAwesome/css/all.min.css" => "$dest/public/css/fontawesome/all.min.css",

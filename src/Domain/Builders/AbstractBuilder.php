@@ -48,18 +48,21 @@ abstract class AbstractBuilder implements BuilderInterface
 
     protected function getFkRelations(array $fkRelations): array
     {
-        return \array_reduce($fkRelations, function (array $result, array $fkRel): array {
-            $result[] = [
+        $fkRels = [];
+
+        foreach ($fkRelations as $name => $fkRel) {
+            $fkRels[] = [
                 'fnPlural' => $this->getPascalCase($this->getPluralize($fkRel['table'])),
                 'fnSingular' => $this->getPascalCase($this->getSingularize($fkRel['table'])),
+                'pk' => $name,
                 'route' => $this->getDashCase($this->getPluralize($fkRel['table'])),
                 'table' => $fkRel['table'],
                 'id' => $fkRel['id'],
                 'text' => $fkRel['name'],
             ];
+        }
 
-            return $result;
-        }, []);
+        return $fkRels;
     }
 
     abstract protected function getFileTemplate(): string;
