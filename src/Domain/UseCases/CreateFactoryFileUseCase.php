@@ -14,7 +14,6 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateFactoryFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateFactoryFileResponse;
 use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
-use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class CreateFactoryFileUseCase
 {

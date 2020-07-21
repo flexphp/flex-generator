@@ -124,6 +124,57 @@ T
 , $render->build());
     }
 
+    public function testItRenderCreateFkRelationsOk(): void
+    {
+        $render = new TemplateBuilder($this->getSchemaFkRelation(), 'create');
+
+        $this->assertEquals(<<<T
+{% trans_default_domain 'test' %}
+{% extends 'form/layout.html.twig' %}
+
+{% block title %}{% trans %}title.new{% endtrans %}{% endblock %}
+
+{% block main %}
+    <div class="card">
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">
+                {% trans %}title.new{% endtrans %}
+            </h3>
+            <div class="toolbar ml-auto">
+                <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
+                </a>
+            </div>
+        </div>
+
+        {{ form_start(form, {'action': path('tests.create')}) }}
+            <div class="card-body">
+                {{ form_widget(form) }}
+            </div>
+
+            <div class="card-footer text-right">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-save" aria-hidden="true"></i> {% trans from 'messages' %}action.create{% endtrans %}
+                </button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/select2/select2.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/select2/select2bs4.min.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery/jquery.select2.min.js') }}"></script>
+    <script src="{{ asset('js/tests.js') }}"></script>
+{% endblock %}
+
+T
+, $render->build());
+    }
+
     public function testItRenderReadOk(): void
     {
         $render = new TemplateBuilder($this->getSchema(), 'read');
@@ -218,6 +269,65 @@ T
             </div>
         </div>
     </div>
+{% endblock %}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderUpdateFkRelationsOk(): void
+    {
+        $render = new TemplateBuilder($this->getSchemaFkRelation(), 'update');
+
+        $this->assertEquals(<<<T
+{% trans_default_domain 'test' %}
+{% extends 'form/layout.html.twig' %}
+
+{% block title %}{% trans %}title.edit{% endtrans %}{% endblock %}
+
+{% block main %}
+    <div class="card">
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">
+                {% trans %}title.edit{% endtrans %}
+            </h3>
+            <div class="toolbar ml-auto">
+                <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
+                </a>
+            </div>
+        </div>
+
+        {{ form_start(form, {'action': path('tests.update', {id: register.id}), 'method': 'PUT', 'attr': {'id': 'test'}}) }}
+            <div class="card-body">
+                {{ form_widget(form) }}
+            </div>
+        {{ form_end(form) }}
+
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    {{ include('test/_delete_form.html.twig', {test: register}, with_context = false) }}
+                </div>
+
+                <div class="col text-right">
+                    <button type="submit" form="test" class="btn btn-primary">
+                        <i class="fa fa-save" aria-hidden="true"></i> {% trans from 'messages' %}action.update{% endtrans %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/select2/select2.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/select2/select2bs4.min.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery/jquery.select2.min.js') }}"></script>
+    <script src="{{ asset('js/tests.js') }}"></script>
 {% endblock %}
 
 T

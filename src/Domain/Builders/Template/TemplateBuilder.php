@@ -23,7 +23,7 @@ final class TemplateBuilder extends AbstractBuilder
 
         $route = $this->getPluralize($this->getDashCase($schema->name()));
         $item = $this->getCamelCase($this->getSingularize($schema->name()));
-
+        $fkRels = $this->getFkRelations($schema->fkRelations());
         $properties = \array_reduce(
             $schema->attributes(),
             function (array $result, SchemaAttributeInterface $property) {
@@ -34,7 +34,7 @@ final class TemplateBuilder extends AbstractBuilder
             []
         );
 
-        parent::__construct(\compact('route', 'item', 'properties'));
+        parent::__construct(\compact('route', 'item', 'properties', 'fkRels'));
     }
 
     protected function getFileTemplate(): string
