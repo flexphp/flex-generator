@@ -76,10 +76,12 @@ final class CreatePrototypeUseCase
             '/public/js',
             '/public/js/bootstrap',
             '/public/js/jquery',
+            '/public/js/select2',
             '/public/css',
             '/public/css/bootstrap',
             '/public/css/fontawesome',
             '/public/css/webfonts',
+            '/public/css/select2',
             '/src/Command',
             '/src/Controller',
             '/src/Form',
@@ -173,6 +175,8 @@ final class CreatePrototypeUseCase
 
         $assets = [
             "$src/Bootstrap/css/bootstrap.min.css" => "$dest/public/css/bootstrap/bootstrap.min.css",
+            "$src/Bootstrap/css/select2.min.css" => "$dest/public/css/select2/select2.min.css",
+            "$src/Bootstrap/css/select2bs4.min.css" => "$dest/public/css/select2/select2bs4.min.css",
             "$src/Bootstrap/main.css" => "$dest/public/css/main.css",
             "$src/FontAwesome/css/all.min.css" => "$dest/public/css/fontawesome/all.min.css",
             "$src/FontAwesome/webfonts/fonts.css" => "$dest/public/css/webfonts/fonts.css",
@@ -182,6 +186,7 @@ final class CreatePrototypeUseCase
             "$src/Bootstrap/js/bootstrap.min.js" => "$dest/public/js/bootstrap/bootstrap.min.js",
             "$src/jQuery/js/jquery.min.js" => "$dest/public/js/jquery/jquery.min.js",
             "$src/jQuery/plugins/jquery.slimscroll.min.js" => "$dest/public/js/jquery/jquery.slimscroll.min.js",
+            "$src/jQuery/plugins/jquery.select2.min.js" => "$dest/public/js/jquery/jquery.select2.min.js",
             "$src/jQuery/main.js" => "$dest/public/js/main.js",
         ];
 

@@ -107,6 +107,9 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/public/css/bootstrap');
         $this->assertFileExists($response->outputDir . '/public/css/bootstrap/bootstrap.min.css');
+        $this->assertDirectoryExists($response->outputDir . '/public/css/select2');
+        $this->assertFileExists($response->outputDir . '/public/css/select2/select2.min.css');
+        $this->assertFileExists($response->outputDir . '/public/css/select2/select2bs4.min.css');
         $this->assertDirectoryExists($response->outputDir . '/public/css/fontawesome');
         $this->assertFileExists($response->outputDir . '/public/css/fontawesome/all.min.css');
 
@@ -122,6 +125,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/public/js/jquery');
         $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.min.js');
         $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.slimscroll.min.js');
+        $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.select2.min.js');
         $this->assertDirectoryExists($response->outputDir . '/public/js/bootstrap');
         $this->assertFileExists($response->outputDir . '/public/js/bootstrap/bootstrap.min.js');
 
