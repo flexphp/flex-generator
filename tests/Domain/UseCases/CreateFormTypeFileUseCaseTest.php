@@ -24,7 +24,7 @@ final class CreateFormTypeFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateFormTypeFileRequest($schema->name(), $schema);
+        $request = new CreateFormTypeFileRequest($schema);
 
         $useCase = new CreateFormTypeFileUseCase();
         $response = $useCase->execute($request);

@@ -15,12 +15,14 @@ use FlexPHP\Generator\Domain\Builders\Controller\RequestMessageBuilder;
 use FlexPHP\Generator\Domain\Builders\Controller\ResponseMessageBuilder;
 use FlexPHP\Generator\Domain\Builders\Controller\UseCaseBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class ControllerBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $render = new ControllerBuilder('Test', []);
+        $render = new ControllerBuilder(new Schema('Test', 'bar', []), []);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -50,7 +52,7 @@ T
      */
     public function testItRenderOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedRoute): void
     {
-        $render = new ControllerBuilder($entity, []);
+        $render = new ControllerBuilder(new Schema($entity, 'bar', []), []);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -77,20 +79,19 @@ T
 
     public function testItRenderIndexOk(): void
     {
-        $entity = 'Test';
+        $schema = new Schema('Test', 'bar', []);
         $action = 'index';
         $actions = [
             $action => (new ActionBuilder(
-                $entity,
+                $schema,
                 $action,
-                'string',
-                (new RequestMessageBuilder($entity, $action))->build(),
-                (new UseCaseBuilder($entity, $action))->build(),
-                (new ResponseMessageBuilder($entity, $action))->build()
+                (new RequestMessageBuilder($schema, $action))->build(),
+                (new UseCaseBuilder($schema, $action))->build(),
+                (new ResponseMessageBuilder($schema, $action))->build()
             ))->build(),
         ];
 
-        $render = new ControllerBuilder($entity, $actions);
+        $render = new ControllerBuilder($schema, $actions);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -141,20 +142,19 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $entity = 'Test';
+        $schema = new Schema('Test', 'bar', []);
         $action = 'create';
         $actions = [
             $action => (new ActionBuilder(
-                $entity,
+                $schema,
                 $action,
-                'string',
-                (new RequestMessageBuilder($entity, $action))->build(),
-                (new UseCaseBuilder($entity, $action))->build(),
-                (new ResponseMessageBuilder($entity, $action))->build()
+                (new RequestMessageBuilder($schema, $action))->build(),
+                (new UseCaseBuilder($schema, $action))->build(),
+                (new ResponseMessageBuilder($schema, $action))->build()
             ))->build(),
         ];
 
-        $render = new ControllerBuilder($entity, $actions);
+        $render = new ControllerBuilder($schema, $actions);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -221,20 +221,19 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $entity = 'Test';
+        $schema = new Schema('Test', 'bar', []);
         $action = 'read';
         $actions = [
             $action => (new ActionBuilder(
-                $entity,
+                $schema,
                 $action,
-                'string',
-                (new RequestMessageBuilder($entity, $action))->build(),
-                (new UseCaseBuilder($entity, $action))->build(),
-                (new ResponseMessageBuilder($entity, $action))->build()
+                (new RequestMessageBuilder($schema, $action))->build(),
+                (new UseCaseBuilder($schema, $action))->build(),
+                (new ResponseMessageBuilder($schema, $action))->build()
             ))->build(),
         ];
 
-        $render = new ControllerBuilder($entity, $actions);
+        $render = new ControllerBuilder($schema, $actions);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -285,20 +284,19 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $entity = 'Test';
+        $schema = new Schema('Test', 'bar', [new SchemaAttribute('foo', 'integer', 'pk')]);
         $action = 'update';
         $actions = [
             $action => (new ActionBuilder(
-                $entity,
+                $schema,
                 $action,
-                'int',
-                (new RequestMessageBuilder($entity, $action))->build(),
-                (new UseCaseBuilder($entity, $action))->build(),
-                (new ResponseMessageBuilder($entity, $action))->build()
+                (new RequestMessageBuilder($schema, $action))->build(),
+                (new UseCaseBuilder($schema, $action))->build(),
+                (new ResponseMessageBuilder($schema, $action))->build()
             ))->build(),
         ];
 
-        $render = new ControllerBuilder($entity, $actions);
+        $render = new ControllerBuilder($schema, $actions);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -373,20 +371,19 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $entity = 'Test';
+        $schema = new Schema('Test', 'bar', [new SchemaAttribute('foo', 'integer', 'pk')]);
         $action = 'delete';
         $actions = [
             $action => (new ActionBuilder(
-                $entity,
+                $schema,
                 $action,
-                'int',
-                (new RequestMessageBuilder($entity, $action))->build(),
-                (new UseCaseBuilder($entity, $action))->build(),
-                (new ResponseMessageBuilder($entity, $action))->build()
+                (new RequestMessageBuilder($schema, $action))->build(),
+                (new UseCaseBuilder($schema, $action))->build(),
+                (new ResponseMessageBuilder($schema, $action))->build()
             ))->build(),
         ];
 
-        $render = new ControllerBuilder($entity, $actions);
+        $render = new ControllerBuilder($schema, $actions);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -436,20 +433,19 @@ T
 
     public function testItRenderLoginOk(): void
     {
-        $entity = 'Test';
+        $schema = new Schema('Test', 'bar', []);
         $action = 'login';
         $actions = [
             $action => (new ActionBuilder(
-                $entity,
+                $schema,
                 $action,
-                'string',
-                (new RequestMessageBuilder($entity, $action))->build(),
-                (new UseCaseBuilder($entity, $action))->build(),
-                (new ResponseMessageBuilder($entity, $action))->build()
+                (new RequestMessageBuilder($schema, $action))->build(),
+                (new UseCaseBuilder($schema, $action))->build(),
+                (new ResponseMessageBuilder($schema, $action))->build()
             ))->build(),
         ];
 
-        $render = new ControllerBuilder($entity, $actions);
+        $render = new ControllerBuilder($schema, $actions);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -476,7 +472,7 @@ T
 
     public function testItRenderFkRelationsOk(): void
     {
-        $render = new ControllerBuilder('Test', [], $this->getSchemaFkRelation());
+        $render = new ControllerBuilder($this->getSchemaFkRelation(), []);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -553,27 +549,25 @@ T
 
     public function testItRenderMixedOk(): void
     {
-        $entity = 'Test';
+        $schema = new Schema('Test', 'bar', []);
         $actions = [
             'action' => (new ActionBuilder(
-                $entity,
+                $schema,
                 'action',
-                'string',
-                (new RequestMessageBuilder($entity, 'action'))->build(),
-                (new UseCaseBuilder($entity, 'action'))->build(),
-                (new ResponseMessageBuilder($entity, 'action'))->build()
+                (new RequestMessageBuilder($schema, 'action'))->build(),
+                (new UseCaseBuilder($schema, 'action'))->build(),
+                (new ResponseMessageBuilder($schema, 'action'))->build()
             ))->build(),
             'custom Fuz' => (new ActionBuilder(
-                $entity,
+                $schema,
                 'custom Fuz',
-                'string',
-                (new RequestMessageBuilder($entity, 'custom Fuz'))->build(),
-                (new UseCaseBuilder($entity, 'custom Fuz'))->build(),
-                (new ResponseMessageBuilder($entity, 'custom Fuz'))->build()
+                (new RequestMessageBuilder($schema, 'custom Fuz'))->build(),
+                (new UseCaseBuilder($schema, 'custom Fuz'))->build(),
+                (new ResponseMessageBuilder($schema, 'custom Fuz'))->build()
             ))->build(),
         ];
 
-        $render = new ControllerBuilder($entity, $actions);
+        $render = new ControllerBuilder($schema, $actions);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

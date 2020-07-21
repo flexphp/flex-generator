@@ -11,8 +11,8 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Message;
 
 use FlexPHP\Generator\Domain\Builders\Message\RequestBuilder;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class RequestBuilderTest extends TestCase
 {
@@ -245,16 +245,8 @@ T
      */
     public function testItRenderOkWithDiffPropertyName(string $name, string $expected): void
     {
-        $render = new RequestBuilder('Fuz', 'action', Schema::fromArray([
-            'EntityBar' => [
-                Keyword::TITLE => 'Entity Bar Title',
-                Keyword::ATTRIBUTES => [
-                    [
-                        Keyword::NAME => $name,
-                        Keyword::DATATYPE => 'integer',
-                    ],
-                ],
-            ],
+        $render = new RequestBuilder('Fuz', 'action', new Schema('Fuz', 'bar', [
+            new SchemaAttribute($name, 'integer'),
         ]));
 
         $this->assertEquals(<<<T

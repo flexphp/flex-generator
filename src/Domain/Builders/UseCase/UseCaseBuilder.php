@@ -17,24 +17,20 @@ final class UseCaseBuilder extends AbstractBuilder
 {
     private $action;
 
-    public function __construct(string $entity, string $action, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema, string $action)
     {
+        $entity = $schema->name();
         $this->action = $this->getCamelCase($action);
 
         $entity = $this->getPascalCase($this->getSingularize($entity));
         $name = $this->getCamelCase($this->getSingularize($entity));
         $item = $this->getCamelCase($this->getPluralize($entity));
         $action = $this->getPascalCase($action);
+        $properties = \array_reduce($schema->attributes(), function ($result, SchemaAttributeInterface $property) {
+            $result[$this->getCamelCase($property->name())] = $property->properties();
 
-        $properties = [];
-
-        if ($schema) {
-            $properties = \array_reduce($schema->attributes(), function ($result, SchemaAttributeInterface $property) {
-                $result[$this->getCamelCase($property->name())] = $property->properties();
-
-                return $result;
-            }, []);
-        }
+            return $result;
+        }, []);
 
         parent::__construct(\compact('entity', 'name', 'item', 'action', 'properties'));
     }

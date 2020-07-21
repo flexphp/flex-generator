@@ -9,21 +9,23 @@
  */
 namespace FlexPHP\Generator\Domain\Messages\Requests;
 
+use FlexPHP\Schema\SchemaInterface;
+
 final class CreateControllerFileRequest
 {
     /**
-     * @var string
+     * @var SchemaInterface
      */
-    public $entity;
+    public $schema;
 
     /**
      * @var array
      */
     public $actions;
 
-    public function __construct(string $entity, array $actions)
+    public function __construct(SchemaInterface $schema, array $actions)
     {
-        $this->entity = $entity;
+        $this->schema = $schema;
         $this->actions = $actions;
     }
 }

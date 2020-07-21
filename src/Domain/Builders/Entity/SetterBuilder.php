@@ -16,12 +16,12 @@ final class SetterBuilder extends AbstractBuilder
 {
     public function __construct(SchemaAttributeInterface $property)
     {
-        parent::__construct([
-            'name' => $this->getCamelCase($property->name()),
-            'setter' => $this->getPascalCase($property->name()),
-            'typehint' => $property->typeHint(),
-            'required' => $property->isRequired(),
-        ]);
+        $name = $this->getCamelCase($property->name());
+        $setter = $this->getPascalCase($property->name());
+        $typehint = $property->typeHint();
+        $required = $property->isRequired();
+
+        parent::__construct(\compact('name', 'setter', 'typehint', 'required'));
     }
 
     protected function getFileTemplate(): string

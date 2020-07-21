@@ -11,28 +11,17 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Command;
 
 use FlexPHP\Generator\Domain\Builders\Command\CommandBuilder;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class CommandBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $render = new CommandBuilder('Test', 'action', Schema::fromArray([
-            'EntityBar' => [
-                Keyword::TITLE => 'Entity Bar Title',
-                Keyword::ATTRIBUTES => [
-                    [
-                        Keyword::NAME => 'foo',
-                        Keyword::DATATYPE => 'integer',
-                    ],
-                    [
-                        Keyword::NAME => 'Bar',
-                        Keyword::DATATYPE => 'string',
-                    ],
-                ],
-            ],
-        ]));
+        $render = new CommandBuilder(new Schema('Test', 'bar', [
+            new SchemaAttribute('foo', 'integer'),
+            new SchemaAttribute('Bar', 'string'),
+        ]), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -78,7 +67,7 @@ T
      */
     public function testItDiffEntityName(string $entity, string $expectedCamel, string $expectedDash): void
     {
-        $render = new CommandBuilder($entity, 'action', new Schema($entity, 'bar', []));
+        $render = new CommandBuilder(new Schema($entity, 'bar', []), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -122,7 +111,7 @@ T
      */
     public function testItDiffActionName(string $action): void
     {
-        $render = new CommandBuilder('test', $action, new Schema('test', 'bar', []));
+        $render = new CommandBuilder(new Schema('test', 'bar', []), $action);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

@@ -24,7 +24,7 @@ final class CreateTemplateFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateTemplateFileRequest($schema->name(), $schema);
+        $request = new CreateTemplateFileRequest($schema);
 
         $useCase = new CreateTemplateFileUseCase();
         $response = $useCase->execute($request);

@@ -21,12 +21,12 @@ final class CreateEntityFileUseCase
 
     public function execute(CreateEntityFileRequest $request): CreateEntityFileResponse
     {
-        $name = $this->getSingularize($request->name);
+        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
 
-        $entity = new EntityBuilder($name, $request->schema);
-        $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $name);
+        $builder = new EntityBuilder($request->schema);
+        $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
 
-        $writer = new PhpWriter($entity->build(), $name, $path);
+        $writer = new PhpWriter($builder->build(), $entity, $path);
 
         return new CreateEntityFileResponse($writer->save());
     }

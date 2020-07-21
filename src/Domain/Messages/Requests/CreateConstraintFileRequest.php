@@ -14,18 +14,12 @@ use FlexPHP\Schema\SchemaInterface;
 final class CreateConstraintFileRequest
 {
     /**
-     * @var string
-     */
-    public $entity;
-
-    /**
      * @var SchemaInterface
      */
     public $schema;
 
-    public function __construct(string $entity, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema)
     {
-        $this->entity = $entity;
         $this->schema = $schema;
     }
 }

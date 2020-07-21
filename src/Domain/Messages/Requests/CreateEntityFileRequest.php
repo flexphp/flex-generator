@@ -14,18 +14,12 @@ use FlexPHP\Schema\SchemaInterface;
 final class CreateEntityFileRequest
 {
     /**
-     * @var string
-     */
-    public $name;
-
-    /**
      * @var SchemaInterface
      */
     public $schema;
 
-    public function __construct(string $name, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema)
     {
-        $this->name = $name;
         $this->schema = $schema;
     }
 }

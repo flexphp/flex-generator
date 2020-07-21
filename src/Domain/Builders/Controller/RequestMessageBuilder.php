@@ -10,12 +10,13 @@
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\SchemaInterface;
 
 final class RequestMessageBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, string $action)
+    public function __construct(SchemaInterface $schema, string $action)
     {
-        $entity = $this->getPascalCase($this->getSingularize($entity));
+        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $action = $this->getPascalCase($action);
 
         parent::__construct(\compact('entity', 'action'));

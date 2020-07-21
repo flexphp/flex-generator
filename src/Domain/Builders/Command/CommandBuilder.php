@@ -15,21 +15,16 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class CommandBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, string $action, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema, string $action)
     {
-        $entity = $this->getPascalCase($this->getSingularize($entity));
+        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $action = $this->getPascalCase($action);
         $command = $this->getDashCase($this->getPluralize($entity)) . ':' . $this->getDashCase($action);
+        $properties = \array_reduce($schema->attributes(), function ($result, SchemaAttributeInterface $property) {
+            $result[$property->name()] = $property;
 
-        $properties = [];
-
-        if ($schema) {
-            $properties = \array_reduce($schema->attributes(), function ($result, SchemaAttributeInterface $property) {
-                $result[$property->name()] = $property;
-
-                return $result;
-            }, []);
-        }
+            return $result;
+        }, []);
 
         parent::__construct(\compact('entity', 'action', 'properties', 'command'));
     }

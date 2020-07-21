@@ -14,9 +14,9 @@ use FlexPHP\Schema\SchemaInterface;
 final class CreateConcreteGatewayFileRequest
 {
     /**
-     * @var string
+     * @var SchemaInterface
      */
-    public $entity;
+    public $schema;
 
     /**
      * @var string
@@ -28,16 +28,10 @@ final class CreateConcreteGatewayFileRequest
      */
     public $actions;
 
-    /**
-     * @var SchemaInterface|null
-     */
-    public $schema;
-
-    public function __construct(string $entity, string $concrete, array $actions, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema, string $concrete, array $actions)
     {
-        $this->entity = $entity;
+        $this->schema = $schema;
         $this->concrete = $concrete;
         $this->actions = $actions;
-        $this->schema = $schema;
     }
 }

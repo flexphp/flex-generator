@@ -15,18 +15,12 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class EntityBuilder extends AbstractBuilder
 {
-    public function __construct(string $name, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema)
     {
-        $getters = [];
-        $setters = [];
-        $_properties = [];
-        $name = $this->getPascalCase($this->getSingularize($name));
-
-        if ($schema) {
-            $getters = $this->getGetters($schema->attributes());
-            $setters = $this->getSetters($schema->attributes());
-            $_properties = $this->getProperties($schema->attributes());
-        }
+        $name = $this->getPascalCase($this->getSingularize($schema->name()));
+        $getters = $this->getGetters($schema->attributes());
+        $setters = $this->getSetters($schema->attributes());
+        $_properties = $this->getProperties($schema->attributes());
 
         parent::__construct(\compact('name', 'getters', 'setters', '_properties'));
     }

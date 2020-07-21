@@ -367,12 +367,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/flexphp/flex-schema.git",
-                "reference": "855d59c36f78e3d0110426c1a7d32e0d11c45a4c"
+                "reference": "08ea9752a6ed0cf27feeae455d04921f58eb506b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flexphp/flex-schema/zipball/855d59c36f78e3d0110426c1a7d32e0d11c45a4c",
-                "reference": "855d59c36f78e3d0110426c1a7d32e0d11c45a4c",
+                "url": "https://api.github.com/repos/flexphp/flex-schema/zipball/08ea9752a6ed0cf27feeae455d04921f58eb506b",
+                "reference": "08ea9752a6ed0cf27feeae455d04921f58eb506b",
                 "shasum": ""
             },
             "require": {
@@ -404,7 +404,7 @@
                 }
             ],
             "description": "One schema, any framework",
-            "time": "2020-07-20T22:48:30+00:00"
+            "time": "2020-07-20T23:56:03+00:00"
         },
         {
             "name": "jawira/case-converter",

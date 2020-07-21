@@ -11,6 +11,8 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\Controller\ActionBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class ActionBuilderTest extends TestCase
 {
@@ -19,7 +21,7 @@ final class ActionBuilderTest extends TestCase
      */
     public function testItRenderOk(string $entity, string $route, string $role): void
     {
-        $render = new ActionBuilder($entity, '');
+        $render = new ActionBuilder(new Schema($entity, 'bar', []), '');
 
         $this->assertEquals(<<<T
     /**
@@ -37,7 +39,7 @@ T
 
     public function testItRenderIndexOk(): void
     {
-        $render = new ActionBuilder('Test', 'index');
+        $render = new ActionBuilder(new Schema('Test', 'bar', []), 'index');
 
         $this->assertEquals(<<<T
     /**
@@ -55,7 +57,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new ActionBuilder('Test', 'create');
+        $render = new ActionBuilder(new Schema('Test', 'bar', []), 'create');
 
         $this->assertEquals(<<<T
     /**
@@ -86,7 +88,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new ActionBuilder('Test', 'read');
+        $render = new ActionBuilder(new Schema('Test', 'bar', []), 'read');
 
         $this->assertEquals(<<<T
     /**
@@ -104,7 +106,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new ActionBuilder('Test', 'update', 'string');
+        $render = new ActionBuilder(new Schema('Test', 'bar', []), 'update');
 
         $this->assertEquals(<<<T
     /**
@@ -142,7 +144,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new ActionBuilder('Test', 'delete', 'int');
+        $render = new ActionBuilder(new Schema('Test', 'bar', [new SchemaAttribute('foo', 'integer', 'pk')]), 'delete');
 
         $this->assertEquals(<<<T
     /**
@@ -164,7 +166,7 @@ T
      */
     public function testItRenderCustomActionOk($action): void
     {
-        $render = new ActionBuilder('FooBar', $action);
+        $render = new ActionBuilder(new Schema('FooBar', 'bar', []), $action);
 
         $this->assertEquals(<<<T
     /**
@@ -183,7 +185,7 @@ T
     {
         $requestMessage = '// foo';
 
-        $render = new ActionBuilder('Test', 'action', 'string', $requestMessage);
+        $render = new ActionBuilder(new Schema('Test', 'bar', []), 'action', $requestMessage);
 
         $this->assertEquals(<<<T
     /**
@@ -203,7 +205,7 @@ T
     {
         $useCase = '// bar';
 
-        $render = new ActionBuilder('Test', 'action', 'string', $useCase);
+        $render = new ActionBuilder(new Schema('Test', 'bar', []), 'action', $useCase);
 
         $this->assertEquals(<<<T
     /**
@@ -223,7 +225,7 @@ T
     {
         $responseMessage = '// buz';
 
-        $render = new ActionBuilder('Test', 'action', 'string', $responseMessage);
+        $render = new ActionBuilder(new Schema('Test', 'bar', []), 'action', $responseMessage);
 
         $this->assertEquals(<<<T
     /**
@@ -245,7 +247,13 @@ T
         $useCase = '// ' . __LINE__;
         $responseMessage = '// ' . __LINE__;
 
-        $render = new ActionBuilder('Test', 'action', 'string', $requestMessage, $useCase, $responseMessage);
+        $render = new ActionBuilder(
+            new Schema('Test', 'bar', []),
+            'action',
+            $requestMessage,
+            $useCase,
+            $responseMessage
+        );
 
         $this->assertEquals(<<<T
     /**
@@ -267,7 +275,7 @@ T
 
     public function testItRenderToString(): void
     {
-        $render = new ActionBuilder('Test', 'action');
+        $render = new ActionBuilder(new Schema('Test', 'bar', []), 'action');
 
         $this->assertEquals(<<<T
     /**

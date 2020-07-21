@@ -10,11 +10,13 @@
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\SchemaInterface;
 
 final class ResponseMessageBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, string $action)
+    public function __construct(SchemaInterface $schema, string $action)
     {
+        $entity = $schema->name();
         $action = $this->getCamelCase($action);
         $name = $this->getDashCase($this->getSingularize($entity));
         $item = $this->getCamelCase($this->getPluralize($entity));

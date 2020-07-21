@@ -28,7 +28,7 @@ final class CreateConcreteGatewayFileUseCaseTest extends TestCase
 
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateConcreteGatewayFileRequest($schema->name(), 'mysql', ['create'], $schema);
+        $request = new CreateConcreteGatewayFileRequest($schema, 'mysql', ['create']);
 
         $useCase = new CreateConcreteGatewayFileUseCase();
         $useCase->execute($request);
@@ -42,9 +42,9 @@ final class CreateConcreteGatewayFileUseCaseTest extends TestCase
         $concrete = 'MySQL';
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateConcreteGatewayFileRequest($schema->name(), 'MySQL', [
+        $request = new CreateConcreteGatewayFileRequest($schema, 'MySQL', [
             'create',
-        ], $schema);
+        ]);
 
         $useCase = new CreateConcreteGatewayFileUseCase();
         $response = $useCase->execute($request);

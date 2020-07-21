@@ -11,14 +11,14 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\UseCase;
 
 use FlexPHP\Generator\Domain\Builders\UseCase\UseCaseBuilder;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class UseCaseBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'action', $this->getSchema());
+        $render = new UseCaseBuilder($this->getSchema(), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -60,7 +60,7 @@ T
 
     public function testItRenderIndexOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'index', $this->getSchema());
+        $render = new UseCaseBuilder($this->getSchema(), 'index');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -92,7 +92,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'create', $this->getSchema());
+        $render = new UseCaseBuilder($this->getSchema(), 'create');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -124,7 +124,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'read', $this->getSchema());
+        $render = new UseCaseBuilder($this->getSchema(), 'read');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -156,7 +156,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'update', $this->getSchema());
+        $render = new UseCaseBuilder($this->getSchema(), 'update');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -188,7 +188,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'delete', $this->getSchema());
+        $render = new UseCaseBuilder($this->getSchema(), 'delete');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -220,7 +220,7 @@ T
 
     public function testItRenderLoginOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'login', $this->getSchema());
+        $render = new UseCaseBuilder($this->getSchema(), 'login');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -255,7 +255,7 @@ T
      */
     public function testItRenderOkWithDiffEntityName(string $entity, string $expected): void
     {
-        $render = new UseCaseBuilder($entity, 'action', new Schema($entity, 'bar', []));
+        $render = new UseCaseBuilder(new Schema($entity, 'bar', []), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -288,7 +288,7 @@ T
      */
     public function testItRenderOkWithDiffActionName(string $action, string $expected): void
     {
-        $render = new UseCaseBuilder('test', $action, new Schema('Test', 'bar', []));
+        $render = new UseCaseBuilder(new Schema('Test', 'bar', []), $action);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -321,17 +321,9 @@ T
      */
     public function testItRenderOkWithDiffPropertyName(string $name, string $expected): void
     {
-        $render = new UseCaseBuilder('Test', 'action', Schema::fromArray([
-            'EntityBar' => [
-                Keyword::TITLE => 'Entity Bar Title',
-                Keyword::ATTRIBUTES => [
-                    [
-                        Keyword::NAME => $name,
-                        Keyword::DATATYPE => 'integer',
-                    ],
-                ],
-            ],
-        ]));
+        $render = new UseCaseBuilder(new Schema('Test', 'bar', [
+            new SchemaAttribute($name, 'integer'),
+        ]), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

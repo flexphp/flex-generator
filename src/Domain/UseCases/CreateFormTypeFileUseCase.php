@@ -21,9 +21,9 @@ final class CreateFormTypeFileUseCase
 
     public function execute(CreateFormTypeFileRequest $request): CreateFormTypeFileResponse
     {
-        $entity = $this->getSingularize($request->entity);
+        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
 
-        $formType = new FormTypeBuilder($entity, $request->schema);
+        $formType = new FormTypeBuilder($request->schema);
         $filename = $entity . 'FormType';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
 

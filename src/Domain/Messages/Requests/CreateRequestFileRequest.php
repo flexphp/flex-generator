@@ -14,11 +14,6 @@ use FlexPHP\Schema\SchemaInterface;
 final class CreateRequestFileRequest
 {
     /**
-     * @var string
-     */
-    public $entity;
-
-    /**
      * @var SchemaInterface
      */
     public $schema;
@@ -28,9 +23,8 @@ final class CreateRequestFileRequest
      */
     public $actions;
 
-    public function __construct(string $entity, SchemaInterface $schema, array $actions)
+    public function __construct(SchemaInterface $schema, array $actions)
     {
-        $this->entity = $entity;
         $this->schema = $schema;
         $this->actions = $actions;
     }

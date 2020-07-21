@@ -16,11 +16,11 @@ final class GetterBuilder extends AbstractBuilder
 {
     public function __construct(SchemaAttributeInterface $property)
     {
-        parent::__construct([
-            'name' => $this->getCamelCase($property->name()),
-            'typehint' => $property->typeHint(),
-            'required' => $property->isRequired(),
-        ]);
+        $name = $this->getCamelCase($property->name());
+        $typehint = $property->typeHint();
+        $required = $property->isRequired();
+
+        parent::__construct(\compact('name', 'typehint', 'required'));
     }
 
     protected function getFileTemplate(): string

@@ -22,13 +22,11 @@ final class CreateUseCaseFileUseCase
     public function execute(CreateUseCaseFileRequest $request): CreateUseCaseFileResponse
     {
         $files = [];
-        $entity = $this->getSingularize($request->entity);
-        $actions = $request->actions;
-
+        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/UseCase', __DIR__, $entity);
 
-        foreach ($actions as $action) {
-            $useCase = new UseCaseBuilder($entity, $action, $request->schema);
+        foreach ($request->actions as $action) {
+            $useCase = new UseCaseBuilder($request->schema, $action);
             $filename = $this->getPascalCase($action) . $entity . 'UseCase';
 
             $writer = new PhpWriter($useCase->build(), $filename, $path);

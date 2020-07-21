@@ -22,11 +22,11 @@ final class CreateTranslateFileUseCase
 
     public function execute(CreateTranslateFileRequest $request): CreateTranslateFileResponse
     {
-        $entity = $this->getSingularize($request->entity);
+        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
 
-        $translate = new TranslateBuilder($entity, $request->schema);
+        $translate = new TranslateBuilder($request->schema);
         $path = \sprintf('%1$s/../../tmp/skeleton/translations', __DIR__);
-        $filename = sprintf('%1$s.%2$s', $this->getDashCase($entity), $request->language);
+        $filename = sprintf('%1$s.%2$s', $this->getDashCase($entity), $request->schema->language());
 
         $writer = new PhpWriter($translate->build(), $filename, $path);
 

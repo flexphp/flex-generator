@@ -41,17 +41,4 @@ final class RequestBuilder extends AbstractBuilder
     {
         return \sprintf('%1$s/FlexPHP/Message', parent::getPathTemplate());
     }
-
-    private function getPkTypeHint(array $properties): string
-    {
-        $pkTypeHint = 'string';
-
-        \array_filter($properties, function (SchemaAttributeInterface $property) use (&$pkTypeHint): void {
-            if ($property->isPk()) {
-                $pkTypeHint = $this->guessTypeHint($property->dataType());
-            }
-        });
-
-        return $pkTypeHint;
-    }
 }

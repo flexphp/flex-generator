@@ -11,6 +11,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\Controller\UseCaseBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
 
 final class UseCaseBuilderTest extends TestCase
 {
@@ -19,7 +20,7 @@ final class UseCaseBuilderTest extends TestCase
      */
     public function testItRenderOk(string $entity, string $expected): void
     {
-        $render = new UseCaseBuilder($entity, 'action');
+        $render = new UseCaseBuilder(new Schema($entity, 'bar', []), 'action');
 
         $this->assertEquals(<<<T
         \$useCase = new Action{$expected}UseCase();
@@ -30,7 +31,7 @@ T
 
     public function testItRenderIndexOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'index');
+        $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'index');
 
         $this->assertEquals(<<<T
         \$useCase = new IndexTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
@@ -42,7 +43,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'create');
+        $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'create');
 
         $this->assertEquals(<<<T
         \$useCase = new CreateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
@@ -54,7 +55,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'read');
+        $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'read');
 
         $this->assertEquals(<<<T
         \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
@@ -66,7 +67,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'update');
+        $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'update');
 
         $this->assertEquals(<<<T
         \$useCase = new UpdateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
@@ -78,7 +79,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new UseCaseBuilder('Test', 'delete');
+        $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'delete');
 
         $this->assertEquals(<<<T
         \$useCase = new DeleteTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));

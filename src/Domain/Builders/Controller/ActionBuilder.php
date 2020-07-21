@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\SchemaInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class ActionBuilder extends AbstractBuilder
@@ -17,9 +18,8 @@ final class ActionBuilder extends AbstractBuilder
     private $action;
 
     public function __construct(
-        string $entity,
+        SchemaInterface $schema,
         string $action,
-        string $pkTypeHint = 'string',
         string $requestMessage = '',
         string $useCase = '',
         string $responseMessage = ''
@@ -32,16 +32,18 @@ final class ActionBuilder extends AbstractBuilder
 
         $data = [];
         $data['action'] = $action;
-        $data['entity'] = $this->getPascalCase($this->getSingularize($entity));
-        $data['entity_dash'] = $this->getDashCase($this->getPluralize($entity));
-        $data['name'] = $this->getDashCase($this->getSingularize($entity));
-        $data['pkTypeHint'] = $pkTypeHint;
+        $data['entity'] = $this->getPascalCase($this->getSingularize($schema->name()));
+        $data['entity_dash'] = $this->getDashCase($this->getPluralize($schema->name()));
+        $data['name'] = $this->getDashCase($this->getSingularize($schema->name()));
+        $data['pkTypeHint'] = $schema->pkTypeHint();
         $data['request_message'] = $requestMessage;
         $data['use_case'] = $useCase;
         $data['response_message'] = $responseMessage;
         $data['action_camel'] = $this->getCamelCase($action);
         $data['route'] = $this->getGuessRoute($this->getDashCase($action));
-        $data['route_name'] = $this->getPluralize($this->getDashCase($entity)) . '.' . $this->getDashCase($action);
+        $data['route_name'] = $this->getPluralize($this->getDashCase($schema->name()))
+            . '.'
+            . $this->getDashCase($action);
         $data['methods'] = $this->getGuessMethod($action);
 
         parent::__construct($data);
@@ -54,7 +56,7 @@ final class ActionBuilder extends AbstractBuilder
 
     protected function getFileTemplate(): string
     {
-        if (in_array($this->action, ['index', 'create', 'read', 'update', 'delete'])) {
+        if (\in_array($this->action, ['index', 'create', 'read', 'update', 'delete'])) {
             return $this->action . '.php.twig';
         }
 

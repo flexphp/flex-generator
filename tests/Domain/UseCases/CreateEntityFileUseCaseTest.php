@@ -24,7 +24,7 @@ final class CreateEntityFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateEntityFileRequest($schema->name(), $schema);
+        $request = new CreateEntityFileRequest($schema);
 
         $useCase = new CreateEntityFileUseCase();
         $response = $useCase->execute($request);

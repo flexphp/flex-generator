@@ -24,7 +24,7 @@ final class CreateRepositoryFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateRepositoryFileRequest($schema->name(), ['read', 'update'], $schema);
+        $request = new CreateRepositoryFileRequest($schema, ['read', 'update']);
 
         $useCase = new CreateRepositoryFileUseCase();
         $response = $useCase->execute($request);

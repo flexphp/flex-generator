@@ -22,12 +22,12 @@ final class CreateCommandFileUseCase
     public function execute(CreateCommandFileRequest $request): CreateCommandFileResponse
     {
         $files = [];
-        $entity = $this->getSingularize($request->entity);
+        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
 
         $path = \sprintf('%1$s/../../tmp/skeleton/src/Command/%2$s', __DIR__, $entity);
 
         foreach ($request->actions as $action) {
-            $builder = new CommandBuilder($entity, $action, $request->schema);
+            $builder = new CommandBuilder($request->schema, $action);
             $filename = $this->getPascalCase($action) . $entity . 'Command';
 
             $writer = new PhpWriter($builder->build(), $filename, $path);

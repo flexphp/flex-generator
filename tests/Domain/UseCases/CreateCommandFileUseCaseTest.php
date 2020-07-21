@@ -28,7 +28,7 @@ final class CreateCommandFileUseCaseTest extends TestCase
             'D' => 'delete',
         ];
 
-        $request = new CreateCommandFileRequest($schema->name(), $actions, $schema);
+        $request = new CreateCommandFileRequest($schema, $actions);
 
         $useCase = new CreateCommandFileUseCase();
         $response = $useCase->execute($request);

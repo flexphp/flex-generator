@@ -14,24 +14,18 @@ use FlexPHP\Schema\SchemaInterface;
 final class CreateRepositoryFileRequest
 {
     /**
-     * @var string
+     * @var SchemaInterface
      */
-    public $entity;
+    public $schema;
 
     /**
      * @var array
      */
     public $actions;
 
-    /**
-     * @var array
-     */
-    public $schema;
-
-    public function __construct(string $entity, array $actions, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema, array $actions)
     {
-        $this->entity = $entity;
-        $this->actions = $actions;
         $this->schema = $schema;
+        $this->actions = $actions;
     }
 }

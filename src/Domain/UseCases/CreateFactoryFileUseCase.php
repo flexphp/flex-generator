@@ -22,7 +22,7 @@ final class CreateFactoryFileUseCase
 
     public function execute(CreateFactoryFileRequest $request): CreateFactoryFileResponse
     {
-        $entity = $this->getPascalCase($this->getSingularize($request->entity));
+        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
 
         $factory = new FactoryBuilder($entity, $request->schema);
         $filename = $entity . 'Factory';

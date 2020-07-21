@@ -17,7 +17,7 @@ final class FormTypeBuilderTest extends TestCase
 {
     public function testItOk(): void
     {
-        $render = new FormTypeBuilder('Test', new Schema('Test', 'bar', []));
+        $render = new FormTypeBuilder(new Schema('Test', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -41,7 +41,7 @@ T
 
     public function testItOkWithDiffNameProperties(): void
     {
-        $render = new FormTypeBuilder('Test', $this->getSchema());
+        $render = new FormTypeBuilder($this->getSchema());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -103,7 +103,7 @@ T
      */
     public function testItOkWithDiffNameEntity(string $entity, string $expected): void
     {
-        $render = new FormTypeBuilder($entity, new Schema($entity, 'bar', []));
+        $render = new FormTypeBuilder(new Schema($entity, 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

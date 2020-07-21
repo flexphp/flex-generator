@@ -21,7 +21,7 @@ final class CreateGatewayFileUseCase
 
     public function execute(CreateGatewayFileRequest $request): CreateGatewayFileResponse
     {
-        $entity = $this->getPascalCase($this->getSingularize($request->entity));
+        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
 
         $gateway = new GatewayBuilder($entity, $request->actions);
         $filename = $entity . 'Gateway';

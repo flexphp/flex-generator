@@ -14,24 +14,12 @@ use FlexPHP\Schema\SchemaInterface;
 final class CreateTranslateFileRequest
 {
     /**
-     * @var string
-     */
-    public $entity;
-
-    /**
      * @var SchemaInterface
      */
     public $schema;
 
-    /**
-     * @var string
-     */
-    public $language;
-
-    public function __construct(string $entity, SchemaInterface $schema, string $language)
+    public function __construct(SchemaInterface $schema)
     {
-        $this->entity = $entity;
         $this->schema = $schema;
-        $this->language = $language;
     }
 }

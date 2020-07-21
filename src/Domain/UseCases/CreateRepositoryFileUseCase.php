@@ -21,7 +21,7 @@ final class CreateRepositoryFileUseCase
 
     public function execute(CreateRepositoryFileRequest $request): CreateRepositoryFileResponse
     {
-        $entity = $this->getPascalCase($this->getSingularize($request->entity));
+        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
 
         $repository = new RepositoryBuilder($entity, $request->actions, $request->schema);
         $filename = $entity . 'Repository';

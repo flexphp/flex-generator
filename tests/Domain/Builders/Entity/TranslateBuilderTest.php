@@ -11,14 +11,14 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Translate;
 
 use FlexPHP\Generator\Domain\Builders\Translate\TranslateBuilder;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class TranslateBuilderTest extends TestCase
 {
     public function testItOk(): void
     {
-        $render = new TranslateBuilder('Test', $this->getSchema());
+        $render = new TranslateBuilder($this->getSchema());
 
         $this->assertEquals(<<<T
 <?php
@@ -48,7 +48,7 @@ T
      */
     public function testItOkWithDiffTranslateName(string $name, string $expected): void
     {
-        $render = new TranslateBuilder($name, new Schema($name, 'bar', []));
+        $render = new TranslateBuilder(new Schema($name, 'bar', []));
 
         $this->assertEquals(<<<T
 <?php
@@ -73,16 +73,8 @@ T
      */
     public function testItOkWithDiffPropertyName(string $name, string $expected, string $expectedLabel): void
     {
-        $render = new TranslateBuilder('fuz', Schema::fromArray([
-            'EntityBar' => [
-                Keyword::TITLE => 'Entity Bar Title',
-                Keyword::ATTRIBUTES => [
-                    [
-                        Keyword::NAME => $name,
-                        Keyword::DATATYPE => 'string',
-                    ],
-                ],
-            ],
+        $render = new TranslateBuilder(new Schema('fuz', 'bar', [
+            new SchemaAttribute($name, 'string'),
         ]));
 
         $this->assertEquals(<<<T

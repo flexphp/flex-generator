@@ -11,6 +11,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\Controller\RequestMessageBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
 
 final class RequestMessageBuilderTest extends TestCase
 {
@@ -19,7 +20,7 @@ final class RequestMessageBuilderTest extends TestCase
      */
     public function testItRenderOk(string $entity, string $expected): void
     {
-        $render = new RequestMessageBuilder($entity, 'index');
+        $render = new RequestMessageBuilder(new Schema($entity, 'bar', []), 'index');
 
         $this->assertEquals(<<<T
         \$request = new Index{$expected}Request(\$request->request->all());
@@ -29,7 +30,7 @@ T
 
     public function testItRenderIndexOk(): void
     {
-        $render = new RequestMessageBuilder('Test', 'index');
+        $render = new RequestMessageBuilder(new Schema('Test', 'bar', []), 'index');
 
         $this->assertEquals(<<<T
         \$request = new IndexTestRequest(\$request->request->all());
@@ -39,7 +40,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new RequestMessageBuilder('Test', 'create');
+        $render = new RequestMessageBuilder(new Schema('Test', 'bar', []), 'create');
 
         $this->assertEquals(<<<T
         \$form = \$this->createForm(TestFormType::class);
@@ -52,7 +53,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new RequestMessageBuilder('Test', 'read');
+        $render = new RequestMessageBuilder(new Schema('Test', 'bar', []), 'read');
 
         $this->assertEquals(<<<T
         \$request = new ReadTestRequest(\$id);
@@ -62,7 +63,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new RequestMessageBuilder('Test', 'update');
+        $render = new RequestMessageBuilder(new Schema('Test', 'bar', []), 'update');
 
         $this->assertEquals(<<<T
         \$form = \$this->createForm(TestFormType::class);
@@ -76,7 +77,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new RequestMessageBuilder('Test', 'delete');
+        $render = new RequestMessageBuilder(new Schema('Test', 'bar', []), 'delete');
 
         $this->assertEquals(<<<T
         \$request = new DeleteTestRequest(\$id);
@@ -94,7 +95,7 @@ T
     {
         $entity = 'FooBar';
 
-        $render = new RequestMessageBuilder($entity, $action);
+        $render = new RequestMessageBuilder(new Schema($entity, 'bar', []), $action);
 
         $this->assertEquals(<<<T
         \$request = new {$expected}FooBarRequest(\$request->request->all());
@@ -104,7 +105,7 @@ T
 
     public function testItRenderToString(): void
     {
-        $render = new RequestMessageBuilder('Test', 'index');
+        $render = new RequestMessageBuilder(new Schema('Test', 'bar', []), 'index');
 
         $this->assertEquals(<<<T
         \$request = new IndexTestRequest(\$request->request->all());

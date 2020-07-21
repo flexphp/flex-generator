@@ -22,7 +22,7 @@ final class CreateResponseFileUseCase
     public function execute(CreateResponseFileRequest $request): CreateResponseFileResponse
     {
         $files = [];
-        $entity = $this->getSingularize($request->entity);
+        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
         $actions = $request->actions;
 
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/Response', __DIR__, $entity);

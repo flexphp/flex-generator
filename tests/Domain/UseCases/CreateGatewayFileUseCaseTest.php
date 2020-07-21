@@ -24,7 +24,7 @@ final class CreateGatewayFileUseCaseTest extends TestCase
     {
         $schema = Schema::fromFile($schemafile);
 
-        $request = new CreateGatewayFileRequest($schema->name(), ['create']);
+        $request = new CreateGatewayFileRequest($schema, ['create']);
 
         $useCase = new CreateGatewayFileUseCase();
         $response = $useCase->execute($request);

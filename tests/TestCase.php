@@ -10,8 +10,8 @@
 namespace FlexPHP\Generator\Tests;
 
 use FlexPHP\Generator\Domain\Builders\Constraint\RuleBuilder;
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\Schema\SchemaInterface;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
@@ -32,36 +32,13 @@ class TestCase extends PHPUnitTestCase
 
     protected function getSchema(): SchemaInterface
     {
-        return Schema::fromArray(['EntityFoo' => [
-            Keyword::TITLE => 'Entity Foo Title',
-            Keyword::ATTRIBUTES => [
-                [
-                    Keyword::NAME => 'lower',
-                    Keyword::DATATYPE => 'string',
-                    Keyword::CONSTRAINTS => 'pk|ai|minlength:20|maxlength:100',
-                ],
-                [
-                    Keyword::NAME => 'UPPER',
-                    Keyword::DATATYPE => 'integer',
-                    Keyword::CONSTRAINTS => 'min:2|max:10',
-                ],
-                [
-                    Keyword::NAME => 'PascalCase',
-                    Keyword::DATATYPE => 'datetime',
-                    Keyword::CONSTRAINTS => 'required',
-                ],
-                [
-                    Keyword::NAME => 'camelCase',
-                    Keyword::DATATYPE => 'boolean',
-                    Keyword::CONSTRAINTS => '',
-                ],
-                [
-                    Keyword::NAME => 'snake_case',
-                    Keyword::DATATYPE => 'text',
-                    Keyword::CONSTRAINTS => 'length:100,200',
-                ],
-            ],
-        ]]);
+        return new Schema('Test', 'Entity Foo Title', [
+            new SchemaAttribute('lower', 'string', 'pk|ai|minlength:20|maxlength:100'),
+            new SchemaAttribute('UPPER', 'integer', 'min:2|max:10'),
+            new SchemaAttribute('PascalCase', 'datetime', 'required'),
+            new SchemaAttribute('camelCase', 'boolean', ''),
+            new SchemaAttribute('snake_case', 'text', 'length:100,200'),
+        ]);
     }
 
     protected function getSchemaProperties(): array
@@ -89,22 +66,9 @@ class TestCase extends PHPUnitTestCase
 
     protected function getSchemaFkRelation(): Schema
     {
-        return Schema::fromArray([
-            'EntityBar' => [
-                Keyword::TITLE => 'Entity Bar Title',
-                Keyword::ATTRIBUTES => [
-                    [
-                        Keyword::NAME => 'foo',
-                        Keyword::DATATYPE => 'integer',
-                        Keyword::CONSTRAINTS => 'fk:bar,fuz,baz',
-                    ],
-                    [
-                        Keyword::NAME => 'postId',
-                        Keyword::DATATYPE => 'integer',
-                        Keyword::CONSTRAINTS => 'fk:posts',
-                    ],
-                ],
-            ],
+        return new Schema('Test', 'Entity Test Title', [
+            new SchemaAttribute('foo', 'integer', 'fk:bar,fuz,baz'),
+            new SchemaAttribute('postId', 'integer', 'fk:posts'),
         ]);
     }
 

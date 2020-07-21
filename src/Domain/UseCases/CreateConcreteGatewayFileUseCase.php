@@ -29,7 +29,7 @@ final class CreateConcreteGatewayFileUseCase
 
     public function execute(CreateConcreteGatewayFileRequest $request): CreateConcreteGatewayFileResponse
     {
-        $entity = $this->getPascalCase($this->getSingularize($request->entity));
+        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
         $concrete = $request->concrete;
         $concretesAvailable = \array_keys($this->concretes);
 

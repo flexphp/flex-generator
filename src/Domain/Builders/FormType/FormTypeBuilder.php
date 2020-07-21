@@ -16,27 +16,22 @@ use Jawira\CaseConverter\Convert;
 
 final class FormTypeBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema)
     {
-        $entity = $this->getPascalCase($this->getSingularize($entity));
-
+        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $labels = [];
         $inputs = [];
-        $properties = [];
+        $properties = \array_reduce(
+            $schema->attributes(),
+            function (array $result, SchemaAttribute $property) use (&$labels, &$inputs) {
+                $result[$this->getCamelCase($property->name())] = $property->properties();
+                $labels[] = (new Convert($property->name()))->toTitle();
+                $inputs[] = $this->getInputType($property->dataType());
 
-        if ($schema) {
-            $properties = \array_reduce(
-                $schema->attributes(),
-                function (array $result, SchemaAttribute $property) use (&$labels, &$inputs) {
-                    $result[$this->getCamelCase($property->name())] = $property->properties();
-                    $labels[] = (new Convert($property->name()))->toTitle();
-                    $inputs[] = $this->getInputType($property->dataType());
-
-                    return $result;
-                },
-                []
-            );
-        }
+                return $result;
+            },
+            []
+        );
 
         parent::__construct(\compact('entity', 'properties', 'labels', 'inputs'));
     }

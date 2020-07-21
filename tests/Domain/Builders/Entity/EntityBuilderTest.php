@@ -11,14 +11,14 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Entity;
 
 use FlexPHP\Generator\Domain\Builders\Entity\EntityBuilder;
 use FlexPHP\Generator\Tests\TestCase;
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class EntityBuilderTest extends TestCase
 {
     public function testItOk(): void
     {
-        $render = new EntityBuilder('Test', $this->getSchema());
+        $render = new EntityBuilder($this->getSchema());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -90,7 +90,7 @@ T
 
     public function testItUserEntityInSymfonyOk(): void
     {
-        $render = new EntityBuilder('User', new Schema('User', 'bar', []));
+        $render = new EntityBuilder(new Schema('User', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -136,7 +136,7 @@ T
      */
     public function testItOkWithDiffEntityName(string $name, string $expected): void
     {
-        $render = new EntityBuilder($name, new Schema($name, 'bar', []));
+        $render = new EntityBuilder(new Schema($name, 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -156,16 +156,8 @@ T
      */
     public function testItOkWithDiffPropertyName(string $name, string $expected, string $setter, string $getter): void
     {
-        $render = new EntityBuilder('fuz', Schema::fromArray([
-            'EntityBar' => [
-                Keyword::TITLE => 'Entity Bar Title',
-                Keyword::ATTRIBUTES => [
-                    [
-                        Keyword::NAME => $name,
-                        Keyword::DATATYPE => 'string',
-                    ],
-                ],
-            ],
+        $render = new EntityBuilder(new Schema('fuz', 'bar', [
+            new SchemaAttribute($name, 'string'),
         ]));
 
         $this->assertEquals(<<<T

@@ -11,12 +11,13 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\Controller\ResponseMessageBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
 
 final class ResponseMessageBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {
-        $render = new ResponseMessageBuilder('Test', 'index');
+        $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'index');
 
         $this->assertEquals(<<<T
         return \$this->render('test/index.html.twig', [
@@ -28,7 +29,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new ResponseMessageBuilder('Test', 'create');
+        $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'create');
 
         $this->assertEquals(<<<T
         \$this->addFlash(\$response->status, \$response->message);
@@ -40,7 +41,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new ResponseMessageBuilder('Test', 'read');
+        $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'read');
 
         $this->assertEquals(<<<T
         return \$this->render('test/show.html.twig', [
@@ -52,7 +53,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new ResponseMessageBuilder('Test', 'update');
+        $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'update');
 
         $this->assertEquals(<<<T
         \$this->addFlash(\$response->status, \$response->message);
@@ -64,7 +65,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new ResponseMessageBuilder('Test', 'delete');
+        $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'delete');
 
         $this->assertEquals(<<<T
         \$this->addFlash(\$response->status, \$response->message);
@@ -76,7 +77,7 @@ T
 
     public function testItRenderWithActionOk(): void
     {
-        $render = new ResponseMessageBuilder('Test', 'action');
+        $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'action');
 
         $this->assertEquals(<<<T
         return new Response(\$response);

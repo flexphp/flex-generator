@@ -14,14 +14,10 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class ControllerBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $actions, ?SchemaInterface $schema = null)
+    public function __construct(SchemaInterface $schema, array $actions)
     {
-        $fkRels = [];
-
-        if ($schema) {
-            $fkRels = $this->getFkRelations($schema->fkRelations());
-        }
-        $entity = $this->getPascalCase($this->getSingularize($entity));
+        $fkRels = $this->getFkRelations($schema->fkRelations());
+        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $route = $this->getDashCase($this->getPluralize($entity));
         unset($actions['login']);
 

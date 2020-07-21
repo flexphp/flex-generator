@@ -60,20 +60,20 @@ final class SheetProcessUseCase
             $actions = \array_merge($actions, ['login']);
         }
 
-        $controller = $this->createController($name, $actions);
-        $entity = $this->createEntity($name, $schema);
-        $gateway = $this->createGateway($name, $actions);
-        $concreteGateway = $this->createConcreteGateway($name, $actions, $schema);
-        $factory = $this->createFactory($name, $schema);
-        $repository = $this->createRepository($name, $actions, $schema);
-        $constraint = $this->createConstraint($name, $schema);
-        $translate = $this->createTranslate($name, $schema);
-        $formType = $this->createFormType($name, $schema);
-        $requests = $this->createRequests($name, $actions, $schema);
-        $responses = $this->createResponses($name, $actions);
-        $useCases = $this->createUseCases($name, $actions, $schema);
-        $commands = $this->createCommands($name, $actions, $schema);
-        $templates = $this->createTemplates($name, $schema);
+        $controller = $this->createController($schema, $actions);
+        $entity = $this->createEntity($schema);
+        $gateway = $this->createGateway($schema, $actions);
+        $concreteGateway = $this->createConcreteGateway($schema, $actions);
+        $factory = $this->createFactory($schema);
+        $repository = $this->createRepository($schema, $actions);
+        $constraint = $this->createConstraint($schema);
+        $translate = $this->createTranslate($schema);
+        $formType = $this->createFormType($schema);
+        $requests = $this->createRequests($schema, $actions);
+        $responses = $this->createResponses($schema, $actions);
+        $useCases = $this->createUseCases($schema, $actions);
+        $commands = $this->createCommands($schema, $actions);
+        $templates = $this->createTemplates($schema);
 
         return new SheetProcessResponse([
             'controller' => $controller->file,
@@ -93,107 +93,101 @@ final class SheetProcessUseCase
         ]);
     }
 
-    private function createController(string $name, array $actions): CreateControllerFileResponse
+    private function createController(SchemaInterface $schema, array $actions): CreateControllerFileResponse
     {
         return (new CreateControllerFileUseCase())->execute(
-            new CreateControllerFileRequest($name, $actions)
+            new CreateControllerFileRequest($schema, $actions)
         );
     }
 
-    private function createConstraint(string $name, SchemaInterface $schema): CreateConstraintFileResponse
+    private function createConstraint(SchemaInterface $schema): CreateConstraintFileResponse
     {
         return (new CreateConstraintFileUseCase())->execute(
-            new CreateConstraintFileRequest($name, $schema)
+            new CreateConstraintFileRequest($schema)
         );
     }
 
-    private function createTranslate(string $name, SchemaInterface $schema): CreateTranslateFileResponse
+    private function createTranslate(SchemaInterface $schema): CreateTranslateFileResponse
     {
         return (new CreateTranslateFileUseCase())->execute(
-            new CreateTranslateFileRequest($name, $schema, 'en')
+            new CreateTranslateFileRequest($schema)
         );
     }
 
-    private function createFormType(string $name, SchemaInterface $schema): CreateFormTypeFileResponse
+    private function createFormType(SchemaInterface $schema): CreateFormTypeFileResponse
     {
         return (new CreateFormTypeFileUseCase())->execute(
-            new CreateFormTypeFileRequest($name, $schema)
+            new CreateFormTypeFileRequest($schema)
         );
     }
 
-    private function createEntity(string $name, SchemaInterface $schema): CreateEntityFileResponse
+    private function createEntity(SchemaInterface $schema): CreateEntityFileResponse
     {
         return (new CreateEntityFileUseCase())->execute(
-            new CreateEntityFileRequest($name, $schema)
+            new CreateEntityFileRequest($schema)
         );
     }
 
-    private function createGateway(string $name, array $actions): CreateGatewayFileResponse
+    private function createGateway(SchemaInterface $schema, array $actions): CreateGatewayFileResponse
     {
         return (new CreateGatewayFileUseCase())->execute(
-            new CreateGatewayFileRequest($name, $actions)
+            new CreateGatewayFileRequest($schema, $actions)
         );
     }
 
-    private function createConcreteGateway(
-        string $name,
-        array $actions,
-        SchemaInterface $schema
-    ): ConcreteGatewayFileResponse {
+    private function createConcreteGateway(SchemaInterface $schema, array $actions): ConcreteGatewayFileResponse
+    {
         return (new CreateConcreteGatewayFileUseCase())->execute(
-            new CreateConcreteGatewayFileRequest($name, 'MySQL', $actions, $schema)
+            new CreateConcreteGatewayFileRequest($schema, 'MySQL', $actions)
         );
     }
 
-    private function createFactory(string $name, SchemaInterface $schema): CreateFactoryFileResponse
+    private function createFactory(SchemaInterface $schema): CreateFactoryFileResponse
     {
         return (new CreateFactoryFileUseCase())->execute(
-            new CreateFactoryFileRequest($name, $schema)
+            new CreateFactoryFileRequest($schema)
         );
     }
 
-    private function createRepository(
-        string $name,
-        array $actions,
-        SchemaInterface $schema
-    ): CreateRepositoryFileResponse {
+    private function createRepository(SchemaInterface $schema, array $actions): CreateRepositoryFileResponse
+    {
         return (new CreateRepositoryFileUseCase())->execute(
-            new CreateRepositoryFileRequest($name, $actions, $schema)
+            new CreateRepositoryFileRequest($schema, $actions)
         );
     }
 
-    private function createUseCases(string $name, array $actions, SchemaInterface $schema): CreateUseCaseFileResponse
+    private function createUseCases(SchemaInterface $schema, array $actions): CreateUseCaseFileResponse
     {
         return (new CreateUseCaseFileUseCase())->execute(
-            new CreateUseCaseFileRequest($name, $actions, $schema)
+            new CreateUseCaseFileRequest($schema, $actions)
         );
     }
 
-    private function createRequests(string $name, array $actions, SchemaInterface $schema): CreateRequestFileResponse
+    private function createRequests(SchemaInterface $schema, array $actions): CreateRequestFileResponse
     {
         return (new CreateRequestFileUseCase())->execute(
-            new CreateRequestFileRequest($name, $schema, $actions)
+            new CreateRequestFileRequest($schema, $actions)
         );
     }
 
-    private function createResponses(string $name, array $actions): CreateResponseFileResponse
+    private function createResponses(SchemaInterface $schema, array $actions): CreateResponseFileResponse
     {
         return (new CreateResponseFileUseCase())->execute(
-            new CreateResponseFileRequest($name, $actions)
+            new CreateResponseFileRequest($schema, $actions)
         );
     }
 
-    private function createCommands(string $name, array $actions, SchemaInterface $schema): CreateCommandFileResponse
+    private function createCommands(SchemaInterface $schema, array $actions): CreateCommandFileResponse
     {
         return (new CreateCommandFileUseCase())->execute(
-            new CreateCommandFileRequest($name, $actions, $schema)
+            new CreateCommandFileRequest($schema, $actions)
         );
     }
 
-    private function createTemplates(string $name, SchemaInterface $schema): CreateTemplateFileResponse
+    private function createTemplates(SchemaInterface $schema): CreateTemplateFileResponse
     {
         return (new CreateTemplateFileUseCase())->execute(
-            new CreateTemplateFileRequest($name, $schema)
+            new CreateTemplateFileRequest($schema)
         );
     }
 }

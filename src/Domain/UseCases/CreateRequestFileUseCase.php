@@ -23,7 +23,7 @@ final class CreateRequestFileUseCase
     public function execute(CreateRequestFileRequest $request): CreateRequestFileResponse
     {
         $files = [];
-        $entity = $this->getSingularize($request->entity);
+        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
 
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/Request', __DIR__, $entity);
 
