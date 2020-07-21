@@ -18,7 +18,7 @@ final class RequestBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $render = new RequestBuilder('Fuz', 'action', $this->getSchema());
+        $render = new RequestBuilder($this->getSchema('Fuz'), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -51,7 +51,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new RequestBuilder('Fuz', 'create', $this->getSchema());
+        $render = new RequestBuilder($this->getSchema('Fuz'), 'create');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -84,7 +84,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new RequestBuilder('Fuz', 'read', $this->getSchema());
+        $render = new RequestBuilder($this->getSchema('Fuz'), 'read');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -109,7 +109,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new RequestBuilder('Fuz', 'update', $this->getSchema());
+        $render = new RequestBuilder($this->getSchema('Fuz'), 'update');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -142,7 +142,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new RequestBuilder('Fuz', 'delete', $this->getSchema());
+        $render = new RequestBuilder($this->getSchema('Fuz'), 'delete');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -167,7 +167,7 @@ T
 
     public function testItRenderLoginOk(): void
     {
-        $render = new RequestBuilder('Fuz', 'login', $this->getSchema());
+        $render = new RequestBuilder($this->getSchema('Fuz'), 'login');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -195,7 +195,7 @@ T
      */
     public function testItRenderOkWithDiffEntityName(string $entity, string $expected): void
     {
-        $render = new RequestBuilder($entity, 'action', new Schema($entity, 'bar', []));
+        $render = new RequestBuilder(new Schema($entity, 'bar', []), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -220,7 +220,7 @@ T
      */
     public function testItRenderOkWithDiffActionName(string $action, string $expected): void
     {
-        $render = new RequestBuilder('Fuz', $action, new Schema('Fuz', 'bar', []));
+        $render = new RequestBuilder(new Schema('Fuz', 'bar', []), $action);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -245,9 +245,9 @@ T
      */
     public function testItRenderOkWithDiffPropertyName(string $name, string $expected): void
     {
-        $render = new RequestBuilder('Fuz', 'action', new Schema('Fuz', 'bar', [
+        $render = new RequestBuilder(new Schema('Fuz', 'bar', [
             new SchemaAttribute($name, 'integer'),
-        ]));
+        ]), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

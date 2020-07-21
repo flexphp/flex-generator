@@ -17,7 +17,7 @@ final class FactoryBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $render = new FactoryBuilder('Test', $this->getSchema());
+        $render = new FactoryBuilder($this->getSchema());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -63,7 +63,7 @@ T
      */
     public function testItOkWithDiffNameEntity(string $entity, string $expected, string $item): void
     {
-        $render = new FactoryBuilder($entity, new Schema('foo', 'bar', []));
+        $render = new FactoryBuilder(new Schema($entity, 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

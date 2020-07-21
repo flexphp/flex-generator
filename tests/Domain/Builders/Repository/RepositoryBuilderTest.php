@@ -17,7 +17,7 @@ final class RepositoryBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['index'], new Schema('Test', 'bar', []));
+        $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['index']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -41,7 +41,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['create'], new Schema('Test', 'bar', []));
+        $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['create']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -67,7 +67,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['read'], new Schema('Test', 'bar', []));
+        $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['read']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -94,7 +94,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['update'], new Schema('Test', 'bar', []));
+        $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['update']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -120,7 +120,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['delete'], new Schema('Test', 'bar', []));
+        $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['delete']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -146,7 +146,7 @@ T
 
     public function testItRenderLoginOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['login'], new Schema('Test', 'bar', []));
+        $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['login']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -172,7 +172,7 @@ T
 
     public function testItRenderFkRelationsOk(): void
     {
-        $render = new RepositoryBuilder('Test', ['index'], $this->getSchemaFkRelation());
+        $render = new RepositoryBuilder($this->getSchemaFkRelation(), ['index']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -211,7 +211,7 @@ T
      */
     public function testItRenderWithDiffNameOk(string $entity, string $expected): void
     {
-        $render = new RepositoryBuilder($entity, ['action'], new Schema($entity, 'bar', []));
+        $render = new RepositoryBuilder(new Schema($entity, 'bar', []), ['action']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

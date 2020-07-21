@@ -15,9 +15,9 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class FactoryBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema)
     {
-        $entity = $this->getPascalCase($this->getSingularize($entity));
+        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $item = $this->getCamelCase($this->getSingularize($entity));
         $setters = $this->getSetterWithCasting($schema->attributes());
 

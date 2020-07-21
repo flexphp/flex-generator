@@ -15,9 +15,9 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class MySQLGatewayBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $actions, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema, array $actions)
     {
-        $entity = $this->getPascalCase($this->getSingularize($entity));
+        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $name = $this->getSnakeCase($this->getPluralize($entity));
         $item = $this->getCamelCase($this->getSingularize($entity));
         $actions = \array_reduce($actions, function (array $result, string $action) {

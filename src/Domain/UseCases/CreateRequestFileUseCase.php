@@ -28,7 +28,7 @@ final class CreateRequestFileUseCase
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/Request', __DIR__, $entity);
 
         foreach ($request->actions as $action) {
-            $builder = new RequestBuilder($entity, $action, $request->schema);
+            $builder = new RequestBuilder($request->schema, $action);
             $filename = $this->getPascalCase($action) . $entity . 'Request';
 
             $writer = new PhpWriter($builder->build(), $filename, $path);

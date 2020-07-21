@@ -24,7 +24,7 @@ final class CreateFactoryFileUseCase
     {
         $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
 
-        $factory = new FactoryBuilder($entity, $request->schema);
+        $factory = new FactoryBuilder($request->schema);
         $filename = $entity . 'Factory';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
         $writer = new PhpWriter($factory->build(), $filename, $path);

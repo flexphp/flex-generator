@@ -15,10 +15,10 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class RequestBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, string $action, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema, string $action)
     {
         $login = 'email';
-        $entity = $this->getPascalCase($this->getSingularize($entity));
+        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $name = $this->getCamelCase($this->getSingularize($entity));
         $action = $this->getPascalCase($action);
         $pkName = $schema->pkName();

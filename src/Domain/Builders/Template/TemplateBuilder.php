@@ -17,12 +17,12 @@ final class TemplateBuilder extends AbstractBuilder
 {
     private $action;
 
-    public function __construct(string $entity, string $action, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema, string $action)
     {
         $this->action = $action;
 
-        $route = $this->getPluralize($this->getDashCase($entity));
-        $item = $this->getCamelCase($this->getSingularize($entity));
+        $route = $this->getPluralize($this->getDashCase($schema->name()));
+        $item = $this->getCamelCase($this->getSingularize($schema->name()));
 
         $properties = \array_reduce(
             $schema->attributes(),

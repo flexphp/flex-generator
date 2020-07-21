@@ -30,22 +30,15 @@ class TestCase extends PHPUnitTestCase
         \chdir(__DIR__ . '/../');
     }
 
-    protected function getSchema(): SchemaInterface
+    protected function getSchema($name = 'Test'): SchemaInterface
     {
-        return new Schema('Test', 'Entity Foo Title', [
+        return new Schema($name, 'Entity Foo Title', [
             new SchemaAttribute('lower', 'string', 'pk|ai|minlength:20|maxlength:100'),
             new SchemaAttribute('UPPER', 'integer', 'min:2|max:10'),
             new SchemaAttribute('PascalCase', 'datetime', 'required'),
             new SchemaAttribute('camelCase', 'boolean', ''),
             new SchemaAttribute('snake_case', 'text', 'length:100,200'),
         ]);
-    }
-
-    protected function getSchemaProperties(): array
-    {
-        return \array_map(function (SchemaAttributeInterface $schemaAttribute) {
-            return $schemaAttribute;
-        }, $this->getSchema()->attributes());
     }
 
     protected function getSchemaPropertiesRules(): array

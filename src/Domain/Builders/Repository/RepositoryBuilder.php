@@ -14,11 +14,11 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class RepositoryBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $actions, SchemaInterface $schema)
+    public function __construct(SchemaInterface $schema, array $actions)
     {
         $login = 'email';
-        $item = $this->getCamelCase($this->getSingularize($entity));
-        $entity = $this->getPascalCase($this->getSingularize($entity));
+        $item = $this->getCamelCase($this->getSingularize($schema->name()));
+        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $fkRels = $this->getFkRelations($schema->fkRelations());
 
         $requests = [];
