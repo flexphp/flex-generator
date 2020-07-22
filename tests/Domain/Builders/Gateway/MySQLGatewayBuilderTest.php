@@ -326,6 +326,7 @@ final class MySQLTestGateway implements TestGateway
     public function search(array \$wheres, array \$orders, int \$limit): array
     {
         \$this->query->select([
+            'pk' => 'pk',
             'foo' => 'foo',
             'postId' => 'postId',
         ]);

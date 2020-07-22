@@ -165,6 +165,56 @@ T
 , $render->build());
     }
 
+    public function testItRenderReadWithIntPkOk(): void
+    {
+        $render = new RequestBuilder($this->getSchemaFkRelation('Fuz'), 'read');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class ReadFuzRequest implements RequestInterface
+{
+    public \$pk;
+
+    public function __construct(int \$pk)
+    {
+        \$this->pk = \$pk;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderDeleteWithIntPkOk(): void
+    {
+        $render = new RequestBuilder($this->getSchemaFkRelation('Fuz'), 'delete');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class DeleteFuzRequest implements RequestInterface
+{
+    public \$pk;
+
+    public function __construct(int \$pk)
+    {
+        \$this->pk = \$pk;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderLoginOk(): void
     {
         $render = new RequestBuilder($this->getSchema('Fuz'), 'login');

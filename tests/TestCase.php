@@ -30,7 +30,7 @@ class TestCase extends PHPUnitTestCase
         \chdir(__DIR__ . '/../');
     }
 
-    protected function getSchema($name = 'Test'): SchemaInterface
+    protected function getSchema(string $name = 'Test'): SchemaInterface
     {
         return new Schema($name, 'Entity Foo Title', [
             new SchemaAttribute('lower', 'string', 'pk|ai|minlength:20|maxlength:100'),
@@ -57,9 +57,10 @@ class TestCase extends PHPUnitTestCase
         );
     }
 
-    protected function getSchemaFkRelation(): Schema
+    protected function getSchemaFkRelation(string $name = 'Test'): Schema
     {
-        return new Schema('Test', 'Entity Test Title', [
+        return new Schema($name, 'Entity Test Title', [
+            new SchemaAttribute('pk', 'integer', 'pk|required'),
             new SchemaAttribute('foo', 'string', 'fk:bar,fuz,baz|required'),
             new SchemaAttribute('postId', 'integer', 'fk:posts'),
         ]);
