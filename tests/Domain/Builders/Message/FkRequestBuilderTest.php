@@ -44,8 +44,12 @@ T
     /**
      * @dataProvider getEntityName
      */
-    public function testItRenderOkWithDiffEntityName(string $pkEntity, string $fkEntity, string $namespace, string $expected): void
-    {
+    public function testItRenderOkWithDiffEntityName(
+        string $pkEntity,
+        string $fkEntity,
+        string $namespace,
+        string $expected
+    ): void {
         $render = new FkRequestBuilder($pkEntity, $fkEntity);
 
         $this->assertEquals(<<<T

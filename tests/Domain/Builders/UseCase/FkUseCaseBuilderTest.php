@@ -17,8 +17,14 @@ final class FkUseCaseBuilderTest extends TestCase
     /**
      * @dataProvider getEntityName
      */
-    public function testItRenderOk(string $pkEntity, string $fkEntity, string $namespace, string $expected, string $item, string $entity): void
-    {
+    public function testItRenderOk(
+        string $pkEntity,
+        string $fkEntity,
+        string $namespace,
+        string $expected,
+        string $item,
+        string $entity
+    ): void {
         $render = new FkUseCaseBuilder($pkEntity, $fkEntity);
 
         $this->assertEquals(<<<T
