@@ -21,7 +21,7 @@ final class RequestBuilder extends AbstractBuilder
         $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $name = $this->getCamelCase($this->getSingularize($entity));
         $action = $this->getPascalCase($action);
-        $pkName = $schema->pkName();
+        $pkName = $this->getCamelCase($schema->pkName());
         $pkTypeHint = $schema->pkTypeHint();
         $properties = \array_reduce($schema->attributes(), function ($result, SchemaAttributeInterface $property) {
             $result[$this->getCamelCase($property->name())] = $property;

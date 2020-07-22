@@ -27,7 +27,7 @@ final class MySQLGatewayBuilder extends AbstractBuilder
         }, []);
 
         $dbTypes = [];
-        $pkName = $schema->pkName();
+        $pkName = $this->getCamelCase($schema->pkName());
         $fkRels = $this->getFkRelations($schema->fkRelations());
         $properties = \array_reduce(
             $schema->attributes(),

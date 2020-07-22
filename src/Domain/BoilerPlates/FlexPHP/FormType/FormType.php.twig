@@ -38,7 +38,7 @@ final class {{ entity }}FormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 {% for fkRel in fkRels %}
-        ${{ fkRel.pk }}Modifier = function (FormInterface $form, ?{{ fkRel.typeHint }} $value) {
+        ${{ fkRel.pkName }}Modifier = function (FormInterface $form, ?{{ fkRel.typeHint }} $value) {
             $choices = null;
 
             if (!empty($value)) {
@@ -48,9 +48,9 @@ final class {{ entity }}FormType extends AbstractType
                 $choices = [$response->{{ fkRel.item }}->{{ fkRel.text }}() => $value];
             }
 
-            $form->add('{{ fkRel.pk }}', Select2Type::class, [
-                'label' => '{{ labels[fkRel.pk] }}',
-{% if properties[fkRel.pk].Constraints.required %}
+            $form->add('{{ fkRel.pkName }}', Select2Type::class, [
+                'label' => '{{ labels[fkRel.pkName] }}',
+{% if properties[fkRel.pkName].Constraints.required %}
                 'required' => true,
 {% else %}
                 'required' => false,
@@ -63,16 +63,16 @@ final class {{ entity }}FormType extends AbstractType
             ]);
         };
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use (${{ fkRel.pk }}Modifier) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use (${{ fkRel.pkName }}Modifier) {
             if (!$event->getData()) {
                 return null;
             }
 
-            ${{ fkRel.pk }}Modifier($event->getForm(), $event->getData()->{{ fkRel.id }}());
+            ${{ fkRel.pkName }}Modifier($event->getForm(), $event->getData()->{{ fkRel.id }}());
         });
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (${{ fkRel.pk }}Modifier) {
-            ${{ fkRel.pk }}Modifier($event->getForm(), ({{ fkRel.typeHint }})$event->getData()['{{ properties[fkRel.pk].Name }}'] ?? null);
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (${{ fkRel.pkName }}Modifier) {
+            ${{ fkRel.pkName }}Modifier($event->getForm(), ({{ fkRel.typeHint }})$event->getData()['{{ fkRel.pkName }}'] ?? null);
         });
 
 {% endfor %}

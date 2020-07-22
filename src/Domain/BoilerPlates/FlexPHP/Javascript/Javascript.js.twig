@@ -2,17 +2,17 @@ jQuery(document).ready(function ($) {
     'use strict';
 
 {% for fkRel in fkRels %}
-    const {{ fkRel.pk }}Url = $('#{{ route }}_form_{{ fkRel.pk }}').data('autocomplete-url');
+    const {{ fkRel.pkName }}Url = $('#{{ route }}_form_{{ fkRel.pkName }}').data('autocomplete-url');
 {% endfor %}
 {% for fkRel in fkRels %}
 
-    $('#{{ route }}_form_{{ fkRel.pk }}').select2({
+    $('#{{ route }}_form_{{ fkRel.pkName }}').select2({
         theme: 'bootstrap4',
         minimumInputLength: 3,
         placeholder: 'Select post',
         allowClear: true,
         ajax: {
-            url: {{ fkRel.pk }}Url,
+            url: {{ fkRel.pkName }}Url,
             method: 'POST',
             dataType: 'json',
             delay: 300,

@@ -1,10 +1,11 @@
 Posts:
   Title: Posts
+  Icon: fas fa-mail-bulk
   Attributes:
     id:
       Name: Id
       DataType: integer
-      Constraints: 'required|type:number'
+      Constraints: 'pk|required|type:number'
     title:
       Name: Title
       DataType: string

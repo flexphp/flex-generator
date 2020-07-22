@@ -1,10 +1,11 @@
 Users:
   Title: Users
+  Icon: fas fa-users
   Attributes:
     id:
       Name: Id
       DataType: integer
-      Constraints: 'required|type:number'
+      Constraints: 'pk|required|type:number'
     email:
       Name: Email
       DataType: string

@@ -1,10 +1,11 @@
 Comments:
   Title: Comments
+  Icon: fas fa-comments
   Attributes:
     id:
       Name: Id
       DataType: integer
-      Constraints: required
+      Constraints: 'pk|required'
     comment:
       Name: Comment
       DataType: text
@@ -12,7 +13,7 @@ Comments:
     postId:
       Name: PostId
       DataType: integer
-      Constraints: 'required:true'
+      Constraints: 'required:true|fk:Posts,title'
     createdAt:
       Name: CreatedAt
       DataType: datetime

@@ -326,9 +326,9 @@ final class MySQLTestGateway implements TestGateway
     public function search(array \$wheres, array \$orders, int \$limit): array
     {
         \$this->query->select([
-            'pk' => 'pk',
+            'Pk' => 'pk',
             'foo' => 'foo',
-            'postId' => 'postId',
+            'PostId' => 'postId',
         ]);
         \$this->query->from(\$this->table);
 
@@ -352,7 +352,7 @@ final class MySQLTestGateway implements TestGateway
             'baz id',
             'fuz text',
         ]);
-        \$this->query->from('bar');
+        \$this->query->from('bars');
 
         \$this->query->where('fuz like :fuz');
         \$this->query->setParameter(':fuz', "%{\$term}%");

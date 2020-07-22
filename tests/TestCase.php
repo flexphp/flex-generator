@@ -60,9 +60,9 @@ class TestCase extends PHPUnitTestCase
     protected function getSchemaFkRelation(string $name = 'Test'): Schema
     {
         return new Schema($name, 'Entity Test Title', [
-            new SchemaAttribute('pk', 'integer', 'pk|required'),
-            new SchemaAttribute('foo', 'string', 'fk:bar,fuz,baz|required'),
-            new SchemaAttribute('postId', 'integer', 'fk:posts'),
+            new SchemaAttribute('Pk', 'integer', 'pk|required'),
+            new SchemaAttribute('foo', 'string', 'fk:Bar,fuz,baz|required'),
+            new SchemaAttribute('PostId', 'integer', 'fk:posts'),
         ]);
     }
 
