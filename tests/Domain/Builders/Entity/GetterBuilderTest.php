@@ -23,7 +23,7 @@ final class GetterBuilderTest extends TestCase
         $render = new GetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
-    public function foo(): string
+    public function foo(): ?string
     {
         return \$this->foo;
     }
@@ -39,7 +39,7 @@ T
         $render = new GetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
-    public function foo(): \DateTime
+    public function foo(): ?\DateTime
     {
         return \$this->foo;
     }
@@ -55,7 +55,7 @@ T
         $render = new GetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
-    public function foo(): \DateTimeImmutable
+    public function foo(): ?\DateTimeImmutable
     {
         return \$this->foo;
     }
@@ -71,7 +71,7 @@ T
         $render = new GetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
-    public function foo(): int
+    public function foo(): ?int
     {
         return \$this->foo;
     }
@@ -87,7 +87,7 @@ T
         $render = new GetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
-    public function foo(): array
+    public function foo(): ?array
     {
         return \$this->foo;
     }
@@ -103,7 +103,7 @@ T
         $render = new GetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
-    public function foo(): float
+    public function foo(): ?float
     {
         return \$this->foo;
     }
@@ -119,7 +119,7 @@ T
         $render = new GetterBuilder(new SchemaAttribute('foo', $dataType, ['required']));
 
         $this->assertEquals(<<<T
-    public function foo(): bool
+    public function foo(): ?bool
     {
         return \$this->foo;
     }
@@ -132,7 +132,7 @@ T
         $render = new GetterBuilder(new SchemaAttribute('foo', 'string', ['required']));
 
         $this->assertEquals(<<<T
-    public function foo(): string
+    public function foo(): ?string
     {
         return \$this->foo;
     }
@@ -161,7 +161,7 @@ T
         $render = new GetterBuilder(new SchemaAttribute($name, 'string', ['required']));
 
         $this->assertEquals(<<<T
-    public function {$getter}(): string
+    public function {$getter}(): ?string
     {
         return \$this->{$expected};
     }

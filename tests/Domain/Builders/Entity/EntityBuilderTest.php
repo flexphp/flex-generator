@@ -43,7 +43,7 @@ final class Test
         return \$this->upper;
     }
 
-    public function pascalCase(): \DateTime
+    public function pascalCase(): ?\DateTime
     {
         return \$this->pascalCase;
     }
