@@ -1,0 +1,22 @@
+<?php declare(strict_types=1);
+
+namespace Domain\{{ pkEntity }}\UseCase;
+
+use Domain\{{ pkEntity }}\Request\Find{{ pkEntity }}{{ fkEntity }}Request;
+use Domain\{{ pkEntity }}\Response\Find{{ pkEntity }}{{ fkEntity }}Response;
+use FlexPHP\UseCases\UseCase;
+
+final class Find{{ pkEntity }}{{ fkEntity }}UseCase extends UseCase
+{
+    /**
+     * @param Find{{ pkEntity }}{{ fkEntity }}Request $request
+     *
+     * @return Find{{ pkEntity }}{{ fkEntity }}Response
+     */
+    public function execute($request)
+    {
+        ${{ item }} = $this->getRepository()->find{{ name }}ByTerm($request);
+
+        return new Find{{ pkEntity }}{{ fkEntity }}Response(${{ item }});
+    }
+}
