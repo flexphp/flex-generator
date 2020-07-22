@@ -2,17 +2,87 @@
 
 namespace Domain\{{ entity }};
 
+{% if fkRels|length > 0 %}
+use App\Form\Type\Select2Type;
+use Doctrine\DBAL\Connection;
+{% for fkRel in fkRels %}
+use Domain\{{ fkRel.fnSingular }}\UseCase\Read{{ fkRel.fnSingular }}UseCase;
+use Domain\{{ fkRel.fnSingular }}\{{ fkRel.fnSingular }}Repository;
+use Domain\{{ fkRel.fnSingular }}\Gateway\MySQL{{ fkRel.fnSingular }}Gateway;
+use Domain\{{ fkRel.fnSingular }}\Request\Read{{ fkRel.fnSingular }}Request;
+{% endfor %}
+{% endif %}
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
+{% if fkRels|length > 0 %}
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+{% endif %}
 
 final class {{ entity }}FormType extends AbstractType
 {
+{% if fkRels|length > 0 %}
+    private $conn;
+    private $router;
+
+    public function __construct(Connection $conn, UrlGeneratorInterface $router)
+    {
+        $this->conn = $conn;
+        $this->router = $router;
+    }
+
+{% endif %}
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+{% for fkRel in fkRels %}
+        ${{ fkRel.pk }}Modifier = function (FormInterface $form, int $value = 0) {
+            $choices = null;
+
+            if (!empty($value)) {
+                $useCase = new Read{{ fkRel.fnSingular }}UseCase(new {{ fkRel.fnSingular }}Repository(new MySQL{{ fkRel.fnSingular }}Gateway($this->conn)));
+                $response = $useCase->execute(new Read{{ fkRel.fnSingular }}Request($value));
+
+                $choices = [$response->{{ fkRel.item }}->{{ fkRel.text }}() => $value];
+            }
+
+            $form->add('{{ fkRel.pk }}', Select2Type::class, [
+                'label' => '{{ labels[fkRel.pk] }}',
+{% if properties[fkRel.pk].Constraints.required|default(false) %}
+                'required' => true,
+{% else %}
+                'required' => false,
+{% endif %}
+                'attr' => [
+                    'data-autocomplete-url' => $this->router->generate('{{ items }}.find.{{ fkRel.route }}'),
+                ],
+                'choices' => $choices,
+                'data' => $value,
+            ]);
+        };
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use (${{ fkRel.pk }}Modifier) {
+            if (!$event->getData()) {
+                return null;
+            }
+
+            ${{ fkRel.pk }}Modifier($event->getForm(), $event->getData()->{{ fkRel.id }}());
+        });
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (${{ fkRel.pk }}Modifier) {
+            ${{ fkRel.pk }}Modifier($event->getForm(), (int)$event->getData()['{{ properties[fkRel.pk].Name }}'] ?? 0);
+        });
+
+{% endfor %}
 {% for id, property in properties %}
-        $builder->add('{{ id }}', InputType\{{ inputs[loop.index - 1] }}Type::class, [
-            'label' => '{{ labels[loop.index - 1] }}',
+{% if fkRels[id] %}
+        $builder->add('{{ id }}', Select2Type::class, [
+{% else %}
+        $builder->add('{{ id }}', InputType\{{ inputs[id] }}Type::class, [
+{% endif %}
+            'label' => '{{ labels[id] }}',
 {% if property.Constraints.required|default(false) %}
             'required' => true,
 {% else %}
@@ -20,6 +90,9 @@ final class {{ entity }}FormType extends AbstractType
 {% endif %}
 {% if property.Constraints|filter(v => v != 'required')|length > 0 %}
             'attr' => [
+{% if fkRels[id] %}
+                'data-autocomplete-url' => $this->router->generate('{{ items }}.find.{{ fkRels[id].route }}'),
+{% endif %}
 {% if property.Constraints.minlength %}
                 'minlength' => {{ property.Constraints.minlength }},
 {% endif %}
@@ -33,8 +106,11 @@ final class {{ entity }}FormType extends AbstractType
                 'max' => {{ property.Constraints.max }},
 {% endif %}
             ],
+{% if fkRels[id] %}
+            'choices' => [],
 {% endif %}
-{% if inputs[loop.index - 1] in ['Date', 'Time', 'DateTime'] %}
+{% endif %}
+{% if inputs[id] in ['Date', 'Time', 'DateTime'] %}
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
             'format' => 'Y-m-d H:i:s',

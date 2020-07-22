@@ -51,11 +51,12 @@ abstract class AbstractBuilder implements BuilderInterface
         $fkRels = [];
 
         foreach ($fkRelations as $name => $fkRel) {
-            $fkRels[] = [
+            $fkRels[$name] = [
                 'fnPlural' => $this->getPascalCase($this->getPluralize($fkRel['table'])),
                 'fnSingular' => $this->getPascalCase($this->getSingularize($fkRel['table'])),
-                'pk' => $name,
+                'item' => $this->getCamelCase($this->getSingularize($fkRel['table'])),
                 'route' => $this->getDashCase($this->getPluralize($fkRel['table'])),
+                'pk' => $name,
                 'table' => $fkRel['table'],
                 'id' => $fkRel['id'],
                 'text' => $fkRel['name'],

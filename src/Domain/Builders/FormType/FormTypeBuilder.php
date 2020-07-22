@@ -19,21 +19,24 @@ final class FormTypeBuilder extends AbstractBuilder
     public function __construct(SchemaInterface $schema)
     {
         $entity = $this->getPascalCase($this->getSingularize($schema->name()));
+        $items = $this->getDashCase($this->getPluralize($schema->name()));
+        $fkRels = $this->getFkRelations($schema->fkRelations());
         $labels = [];
         $inputs = [];
         $properties = \array_reduce(
             $schema->attributes(),
             function (array $result, SchemaAttribute $property) use (&$labels, &$inputs) {
-                $result[$this->getCamelCase($property->name())] = $property->properties();
-                $labels[] = (new Convert($property->name()))->toTitle();
-                $inputs[] = $this->getInputType($property->dataType());
+                $name = $this->getCamelCase($property->name());
+                $result[$name] = $property->properties();
+                $labels[$name] = (new Convert($property->name()))->toTitle();
+                $inputs[$name] = $this->getInputType($property->dataType());
 
                 return $result;
             },
             []
         );
 
-        parent::__construct(\compact('entity', 'properties', 'labels', 'inputs'));
+        parent::__construct(\compact('entity', 'properties', 'labels', 'inputs', 'items', 'fkRels'));
     }
 
     protected function getFileTemplate(): string
