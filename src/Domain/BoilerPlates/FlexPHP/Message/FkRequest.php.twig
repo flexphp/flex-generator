@@ -1,0 +1,17 @@
+<?php declare(strict_types=1);
+
+namespace Domain\{{ pkEntity }}\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class Find{{ pkEntity }}{{ fkEntity }}Request implements RequestInterface
+{
+    public $term;
+    public $page;
+
+    public function __construct(array $data)
+    {
+        $this->term = $data['term'] ?? '';
+        $this->page = $data['page'] ?? 1;
+    }
+}

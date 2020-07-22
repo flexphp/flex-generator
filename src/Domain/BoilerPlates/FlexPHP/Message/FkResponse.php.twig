@@ -1,0 +1,15 @@
+<?php declare(strict_types=1);
+
+namespace Domain\{{ pkEntity }}\Response;
+
+use FlexPHP\Messages\ResponseInterface;
+
+final class Find{{ pkEntity }}{{ fkEntity }}Response implements ResponseInterface
+{
+    public ${{ item }};
+
+    public function __construct(array ${{ item }})
+    {
+        $this->{{ item }} = ${{ item }};
+    }
+}
