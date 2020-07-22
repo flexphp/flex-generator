@@ -38,7 +38,7 @@ final class {{ entity }}FormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 {% for fkRel in fkRels %}
-        ${{ fkRel.pk }}Modifier = function (FormInterface $form, int $value = 0) {
+        ${{ fkRel.pk }}Modifier = function (FormInterface $form, ?{{ fkRel.typeHint }} $value) {
             $choices = null;
 
             if (!empty($value)) {
@@ -50,7 +50,7 @@ final class {{ entity }}FormType extends AbstractType
 
             $form->add('{{ fkRel.pk }}', Select2Type::class, [
                 'label' => '{{ labels[fkRel.pk] }}',
-{% if properties[fkRel.pk].Constraints.required|default(false) %}
+{% if properties[fkRel.pk].Constraints.required %}
                 'required' => true,
 {% else %}
                 'required' => false,
@@ -72,7 +72,7 @@ final class {{ entity }}FormType extends AbstractType
         });
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (${{ fkRel.pk }}Modifier) {
-            ${{ fkRel.pk }}Modifier($event->getForm(), (int)$event->getData()['{{ properties[fkRel.pk].Name }}'] ?? 0);
+            ${{ fkRel.pk }}Modifier($event->getForm(), ({{ fkRel.typeHint }})$event->getData()['{{ properties[fkRel.pk].Name }}'] ?? null);
         });
 
 {% endfor %}
@@ -83,7 +83,7 @@ final class {{ entity }}FormType extends AbstractType
         $builder->add('{{ id }}', InputType\{{ inputs[id] }}Type::class, [
 {% endif %}
             'label' => '{{ labels[id] }}',
-{% if property.Constraints.required|default(false) %}
+{% if property.Constraints.required %}
             'required' => true,
 {% else %}
             'required' => false,

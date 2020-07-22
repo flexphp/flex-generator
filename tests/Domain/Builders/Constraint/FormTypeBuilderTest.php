@@ -138,7 +138,7 @@ final class TestFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {
-        \$fooModifier = function (FormInterface \$form, int \$value = 0) {
+        \$fooModifier = function (FormInterface \$form, ?string \$value) {
             \$choices = null;
 
             if (!empty(\$value)) {
@@ -150,7 +150,7 @@ final class TestFormType extends AbstractType
 
             \$form->add('foo', Select2Type::class, [
                 'label' => 'Foo',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'data-autocomplete-url' => \$this->router->generate('tests.find.bars'),
                 ],
@@ -168,10 +168,10 @@ final class TestFormType extends AbstractType
         });
 
         \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$fooModifier) {
-            \$fooModifier(\$event->getForm(), (int)\$event->getData()['foo'] ?? 0);
+            \$fooModifier(\$event->getForm(), (string)\$event->getData()['foo'] ?? null);
         });
 
-        \$postIdModifier = function (FormInterface \$form, int \$value = 0) {
+        \$postIdModifier = function (FormInterface \$form, ?int \$value) {
             \$choices = null;
 
             if (!empty(\$value)) {
@@ -201,12 +201,12 @@ final class TestFormType extends AbstractType
         });
 
         \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$postIdModifier) {
-            \$postIdModifier(\$event->getForm(), (int)\$event->getData()['postId'] ?? 0);
+            \$postIdModifier(\$event->getForm(), (int)\$event->getData()['postId'] ?? null);
         });
 
         \$builder->add('foo', Select2Type::class, [
             'label' => 'Foo',
-            'required' => false,
+            'required' => true,
             'attr' => [
                 'data-autocomplete-url' => \$this->router->generate('tests.find.bars'),
             ],
