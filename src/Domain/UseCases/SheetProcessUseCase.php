@@ -17,6 +17,7 @@ use FlexPHP\Generator\Domain\Messages\Requests\CreateEntityFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateFactoryFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateFormTypeFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateGatewayFileRequest;
+use FlexPHP\Generator\Domain\Messages\Requests\CreateJavascriptFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateRepositoryFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateRequestFileRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateResponseFileRequest;
@@ -32,6 +33,7 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateEntityFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateFactoryFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateFormTypeFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateGatewayFileResponse;
+use FlexPHP\Generator\Domain\Messages\Responses\CreateJavascriptFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateRepositoryFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateRequestFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateResponseFileResponse;
@@ -75,6 +77,10 @@ final class SheetProcessUseCase
         $commands = $this->createCommands($schema, $actions);
         $templates = $this->createTemplates($schema);
 
+        if ($schema->fkRelations() > 0) {
+            $javascript = $this->createJavascript($schema);
+        }
+
         return new SheetProcessResponse([
             'controller' => $controller->file,
             'entity' => $entity->file,
@@ -90,6 +96,7 @@ final class SheetProcessUseCase
             'useCases' => $useCases->files,
             'commands' => $commands->files,
             'templates' => $templates->files,
+            'javascript' => $javascript->file,
         ]);
     }
 
@@ -188,6 +195,13 @@ final class SheetProcessUseCase
     {
         return (new CreateTemplateFileUseCase())->execute(
             new CreateTemplateFileRequest($schema)
+        );
+    }
+
+    private function createJavascript(SchemaInterface $schema): CreateJavascriptFileResponse
+    {
+        return (new CreateJavascriptFileUseCase())->execute(
+            new CreateJavascriptFileRequest($schema)
         );
     }
 }

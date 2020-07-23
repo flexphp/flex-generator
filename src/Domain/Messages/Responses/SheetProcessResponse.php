@@ -81,6 +81,11 @@ final class SheetProcessResponse
      */
     public $templates;
 
+    /**
+     * @var null|string
+     */
+    public $javascript;
+
     public function __construct(array $response)
     {
         $this->controller = $response['controller'] ?? null;
@@ -97,5 +102,6 @@ final class SheetProcessResponse
         $this->useCases = $response['useCases'] ?? [];
         $this->commands = $response['commands'] ?? [];
         $this->templates = $response['templates'] ?? [];
+        $this->javascript = $response['javascript'] ?? null;
     }
 }

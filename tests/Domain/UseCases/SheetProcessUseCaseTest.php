@@ -12,6 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\UseCases;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\UseCases\SheetProcessUseCase;
 use FlexPHP\Generator\Tests\TestCase;
+use SebastianBergmann\CodeCoverage\Report\PHP;
 
 final class SheetProcessUseCaseTest extends TestCase
 {
@@ -52,19 +53,33 @@ final class SheetProcessUseCaseTest extends TestCase
         $this->assertFileExists($response->repository);
         \unlink($response->repository);
 
-        $this->assertEquals(5, \count($response->requests));
+        $countFiles = 5;
+
+        switch ($name) {
+            case 'Comments':
+                $this->assertFileExists($response->javascript);
+                \unlink($response->javascript);
+
+                break;
+            case 'Users':
+                $countFiles = 6;
+
+                break;
+        }
+
+        $this->assertEquals($countFiles, \count($response->requests));
         \array_map(function (string $request): void {
             $this->assertFileExists($request);
             \unlink($request);
         }, $response->requests);
 
-        $this->assertEquals(5, \count($response->responses));
+        $this->assertEquals($countFiles, \count($response->responses));
         \array_map(function (string $response): void {
             $this->assertFileExists($response);
             \unlink($response);
         }, $response->responses);
 
-        $this->assertEquals(5, \count($response->useCases));
+        $this->assertEquals($countFiles, \count($response->useCases));
         \array_map(function (string $useCase): void {
             $this->assertFileExists($useCase);
             \unlink($useCase);
@@ -88,6 +103,7 @@ final class SheetProcessUseCaseTest extends TestCase
         return [
             ['Posts', \sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__)],
             ['Comments', \sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__)],
+            ['Users', \sprintf('%1$s/../../Mocks/yaml/users.yaml', __DIR__)],
         ];
     }
 }
