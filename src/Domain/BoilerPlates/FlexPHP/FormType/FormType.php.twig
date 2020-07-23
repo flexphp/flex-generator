@@ -45,7 +45,9 @@ final class {{ entity }}FormType extends AbstractType
                 $useCase = new Read{{ fkRel.fnSingular }}UseCase(new {{ fkRel.fnSingular }}Repository(new MySQL{{ fkRel.fnSingular }}Gateway($this->conn)));
                 $response = $useCase->execute(new Read{{ fkRel.fnSingular }}Request($value));
 
-                $choices = [$response->{{ fkRel.item }}->{{ fkRel.text }}() => $value];
+                if ($response->{{ fkRel.item }}->{{ fkRel.id }}()) {
+                    $choices = [$response->{{ fkRel.item }}->{{ fkRel.text }}() => $value];
+                }
             }
 
             $form->add('{{ fkRel.pkName }}', Select2Type::class, [
@@ -68,7 +70,7 @@ final class {{ entity }}FormType extends AbstractType
                 return null;
             }
 
-            ${{ fkRel.pkName }}Modifier($event->getForm(), $event->getData()->{{ fkRel.id }}());
+            ${{ fkRel.pkName }}Modifier($event->getForm(), $event->getData()->{{ fkRel.pkName }}());
         });
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (${{ fkRel.pkName }}Modifier) {

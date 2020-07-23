@@ -145,7 +145,9 @@ final class TestFormType extends AbstractType
                 \$useCase = new ReadBarUseCase(new BarRepository(new MySQLBarGateway(\$this->conn)));
                 \$response = \$useCase->execute(new ReadBarRequest(\$value));
 
-                \$choices = [\$response->bar->fuz() => \$value];
+                if (\$response->bar->baz()) {
+                    \$choices = [\$response->bar->fuz() => \$value];
+                }
             }
 
             \$form->add('foo', Select2Type::class, [
@@ -164,7 +166,7 @@ final class TestFormType extends AbstractType
                 return null;
             }
 
-            \$fooModifier(\$event->getForm(), \$event->getData()->baz());
+            \$fooModifier(\$event->getForm(), \$event->getData()->foo());
         });
 
         \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$fooModifier) {
@@ -178,7 +180,9 @@ final class TestFormType extends AbstractType
                 \$useCase = new ReadPostUseCase(new PostRepository(new MySQLPostGateway(\$this->conn)));
                 \$response = \$useCase->execute(new ReadPostRequest(\$value));
 
-                \$choices = [\$response->post->name() => \$value];
+                if (\$response->post->id()) {
+                    \$choices = [\$response->post->name() => \$value];
+                }
             }
 
             \$form->add('postId', Select2Type::class, [
@@ -197,7 +201,7 @@ final class TestFormType extends AbstractType
                 return null;
             }
 
-            \$postIdModifier(\$event->getForm(), \$event->getData()->id());
+            \$postIdModifier(\$event->getForm(), \$event->getData()->postId());
         });
 
         \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$postIdModifier) {

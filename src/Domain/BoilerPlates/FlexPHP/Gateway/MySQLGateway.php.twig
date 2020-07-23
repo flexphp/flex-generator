@@ -68,9 +68,11 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         ]);
         $this->query->from($this->table);
         $this->query->where('{{ properties[pkName].Name }} = :{{ pkName }}');
-        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}());
+        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
-        return $this->query->execute()->fetch();
+        $register = $this->query->execute()->fetch();
+
+        return $register ? $register : [];
     }
 {% elseif action in ['update'] %}
 
@@ -87,7 +89,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endfor %}
 
         $this->query->where('{{ properties[pkName].Name }} = :{{ pkName }}');
-        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}());
+        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
         $this->query->execute();
     }
@@ -98,7 +100,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->delete($this->table);
 
         $this->query->where('{{ properties[pkName].Name }} = :{{ pkName }}');
-        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}());
+        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
         $this->query->execute();
     }

@@ -152,9 +152,11 @@ final class MySQLTestGateway implements TestGateway
         ]);
         \$this->query->from(\$this->table);
         \$this->query->where('lower = :lower');
-        \$this->query->setParameter('lower', \$test->lower());
+        \$this->query->setParameter('lower', \$test->lower(), DB::STRING);
 
-        return \$this->query->execute()->fetch();
+        \$register = \$this->query->execute()->fetch();
+
+        return \$register ? \$register : [];
     }
 }
 
@@ -203,7 +205,7 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setParameter(':snakeCase', \$test->snakeCase(), DB::TEXT);
 
         \$this->query->where('lower = :lower');
-        \$this->query->setParameter('lower', \$test->lower());
+        \$this->query->setParameter('lower', \$test->lower(), DB::STRING);
 
         \$this->query->execute();
     }
@@ -242,7 +244,7 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->delete(\$this->table);
 
         \$this->query->where('lower = :lower');
-        \$this->query->setParameter('lower', \$test->lower());
+        \$this->query->setParameter('lower', \$test->lower(), DB::STRING);
 
         \$this->query->execute();
     }
@@ -301,7 +303,7 @@ T
 
     public function testItFkRelationsOk(): void
     {
-        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation(), ['index']);
+        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation(), ['delete']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -323,27 +325,14 @@ final class MySQLTestGateway implements TestGateway
         \$this->query = \$conn->createQueryBuilder();
     }
 
-    public function search(array \$wheres, array \$orders, int \$limit): array
+    public function pop(Test \$test): void
     {
-        \$this->query->select([
-            'Pk' => 'pk',
-            'foo' => 'foo',
-            'PostId' => 'postId',
-        ]);
-        \$this->query->from(\$this->table);
+        \$this->query->delete(\$this->table);
 
-        foreach(\$wheres as \$column => \$value) {
-            if (!\$value) {
-                continue;
-            }
+        \$this->query->where('Pk = :pk');
+        \$this->query->setParameter('pk', \$test->pk(), DB::INTEGER);
 
-            \$this->query->where(\$column . ' = :' . \$column);
-            \$this->query->setParameter(\$column, \$value);
-        }
-
-        \$this->query->setMaxResults(\$limit);
-
-        return \$this->query->execute()->fetchAll();
+        \$this->query->execute();
     }
 
     public function filterBars(string \$term, int \$page, int \$limit): array
