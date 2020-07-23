@@ -23,7 +23,7 @@ final class CreateGatewayFileUseCase
     {
         $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
 
-        $gateway = new GatewayBuilder($entity, $request->actions);
+        $gateway = new GatewayBuilder($request->schema, $request->actions);
         $filename = $entity . 'Gateway';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
         $writer = new PhpWriter($gateway->build(), $filename, $path);

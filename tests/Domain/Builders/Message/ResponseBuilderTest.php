@@ -16,7 +16,7 @@ final class ResponseBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $render = new ResponseBuilder('Fuz', 'action');
+        $render = new ResponseBuilder($this->getSchema('Fuz'), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -38,7 +38,7 @@ T
 
     public function testItRenderIndexOk(): void
     {
-        $render = new ResponseBuilder('Fuz', 'index');
+        $render = new ResponseBuilder($this->getSchema('Fuz'), 'index');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -63,7 +63,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new ResponseBuilder('Fuz', 'create');
+        $render = new ResponseBuilder($this->getSchema('Fuz'), 'create');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -92,7 +92,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new ResponseBuilder('Fuz', 'read');
+        $render = new ResponseBuilder($this->getSchema('Fuz'), 'read');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -118,7 +118,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new ResponseBuilder('Fuz', 'update');
+        $render = new ResponseBuilder($this->getSchema('Fuz'), 'update');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -147,7 +147,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new ResponseBuilder('Fuz', 'delete');
+        $render = new ResponseBuilder($this->getSchema('Fuz'), 'delete');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -176,7 +176,7 @@ T
 
     public function testItRenderLoginOk(): void
     {
-        $render = new ResponseBuilder('Fuz', 'login');
+        $render = new ResponseBuilder($this->getSchema('Fuz'), 'login');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -205,7 +205,7 @@ T
      */
     public function testItRenderOkWithDiffEntityName(string $entity, string $expected): void
     {
-        $render = new ResponseBuilder($entity, 'action');
+        $render = new ResponseBuilder($this->getSchema($entity), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -230,7 +230,7 @@ T
      */
     public function testItRenderOkWithDiffActionName(string $action, string $expected): void
     {
-        $render = new ResponseBuilder('Fuz', $action);
+        $render = new ResponseBuilder($this->getSchema('Fuz'), $action);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

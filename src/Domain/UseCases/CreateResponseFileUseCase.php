@@ -28,7 +28,7 @@ final class CreateResponseFileUseCase
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/Response', __DIR__, $entity);
 
         foreach ($actions as $action) {
-            $response = new ResponseBuilder($entity, $action);
+            $response = new ResponseBuilder($request->schema, $action);
             $filename = $this->getPascalCase($action) . $entity . 'Response';
 
             $writer = new PhpWriter($response->build(), $filename, $path);
