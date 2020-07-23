@@ -121,6 +121,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/public/js');
         $this->assertFileExists($response->outputDir . '/public/js/main.js');
+        $this->assertFileExists($response->outputDir . '/public/js/comments.js');
 
         $this->assertDirectoryExists($response->outputDir . '/public/js/jquery');
         $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.min.js');
@@ -199,8 +200,17 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/domain/Post/UseCase/DeletePostUseCase.php');
 
         $this->assertFileExists($response->outputDir . '/domain/Post/Gateway/MySQLPostGateway.php');
-
+        
         $this->assertDirectoryExists($response->outputDir . '/domain/Comment');
+        $this->assertFileExists($response->outputDir . '/domain/Comment/Request/FindCommentPostRequest.php');
+        $this->assertFileExists($response->outputDir . '/domain/Comment/Response/FindCommentPostResponse.php');
+        $this->assertFileExists($response->outputDir . '/domain/Comment/UseCase/FindCommentPostUseCase.php');
+        
+        $this->assertDirectoryExists($response->outputDir . '/domain/User');
+        $this->assertFileExists($response->outputDir . '/domain/User/Request/LoginUserRequest.php');
+        $this->assertFileExists($response->outputDir . '/domain/User/Response/LoginUserResponse.php');
+        $this->assertFileExists($response->outputDir . '/domain/User/UseCase/LoginUserUseCase.php');
+        $this->assertFileNotExists($response->outputDir . '/domain/User/Command/LoginUserCommand.php');
 
         parent::deleteFolder(\dirname($response->outputDir));
     }
