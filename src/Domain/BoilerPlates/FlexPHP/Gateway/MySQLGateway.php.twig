@@ -122,6 +122,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         return is_array($data) ? $data : [];
     }
 {% endif %}
+{% endfor %}
 {% for id,fkRel in fkRels %}
 
     public function filter{{ fkRel.fnPlural }}(string $term, int $page, int $limit): array
@@ -139,6 +140,5 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
         return $this->query->execute()->fetchAll();
     }
-{% endfor %}
 {% endfor %}
 }

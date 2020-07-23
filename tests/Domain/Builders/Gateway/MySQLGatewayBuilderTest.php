@@ -303,7 +303,7 @@ T
 
     public function testItFkRelationsOk(): void
     {
-        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation(), ['delete']);
+        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation(), ['delete', 'other']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
