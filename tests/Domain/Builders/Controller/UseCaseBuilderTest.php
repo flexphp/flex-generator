@@ -61,6 +61,10 @@ T
         \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
 
         \$response = \$useCase->execute(\$request);
+
+        if (!\$response->test->id()) {
+            throw \$this->createNotFoundException();
+        }
 T
 , $render->build());
     }

@@ -27,11 +27,11 @@ use FlexPHP\Messages\ResponseInterface;
 
 final class FindFuzBarResponse implements ResponseInterface
 {
-    public \$fuzes;
+    public \$bars;
 
-    public function __construct(array \$fuzes)
+    public function __construct(array \$bars)
     {
-        \$this->fuzes = \$fuzes;
+        \$this->bars = \$bars;
     }
 }
 
@@ -75,13 +75,13 @@ T
     public function getEntityName(): array
     {
         return [
-            ['fuz', 'bar', 'Fuz', 'FuzBar', 'fuzes'],
-            ['FUZ', 'BAR', 'Fuz', 'FuzBar', 'fuzes'],
-            ['User', 'UserPassword', 'User', 'UserUserPassword', 'users'],
-            ['user', 'userPassword', 'User', 'UserUserPassword', 'users'],
-            ['user', 'user_password', 'User', 'UserUserPassword', 'users'],
-            ['user', 'user-password', 'User', 'UserUserPassword', 'users'],
-            ['Posts', 'Comments', 'Post', 'PostComment', 'posts'],
+            ['fuz', 'bar', 'Fuz', 'FuzBar', 'bars'],
+            ['FUZ', 'BAR', 'Fuz', 'FuzBar', 'bars'],
+            ['User', 'UserPassword', 'User', 'UserUserPassword', 'userPasswords'],
+            ['user', 'userPassword', 'User', 'UserUserPassword', 'userPasswords'],
+            ['user', 'user_password', 'User', 'UserUserPassword', 'userPasswords'],
+            ['user', 'user-password', 'User', 'UserUserPassword', 'userPasswords'],
+            ['Posts', 'Comments', 'Post', 'PostComment', 'comments'],
         ];
     }
 }

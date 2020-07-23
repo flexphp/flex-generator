@@ -58,13 +58,13 @@ T
     public function getEntityName(): array
     {
         return [
-            ['fuz', 'bar', 'Fuz', 'FuzBar', 'fuzes', 'Fuzes'],
-            ['FUZ', 'BAR', 'Fuz', 'FuzBar', 'fuzes', 'Fuzes'],
-            ['User', 'UserPassword', 'User', 'UserUserPassword', 'users', 'Users'],
-            ['user', 'userPassword', 'User', 'UserUserPassword', 'users', 'Users'],
-            ['user', 'user_password', 'User', 'UserUserPassword', 'users', 'Users'],
-            ['user', 'user-password', 'User', 'UserUserPassword', 'users', 'Users'],
-            ['Posts', 'Comments', 'Post', 'PostComment', 'posts', 'Posts'],
+            ['fuz', 'bar', 'Fuz', 'FuzBar', 'bars', 'Bars'],
+            ['FUZ', 'BAR', 'Fuz', 'FuzBar', 'bars', 'Bars'],
+            ['User', 'UserPassword', 'User', 'UserUserPassword', 'userPasswords', 'UserPasswords'],
+            ['user', 'userPassword', 'User', 'UserUserPassword', 'userPasswords', 'UserPasswords'],
+            ['user', 'user_password', 'User', 'UserUserPassword', 'userPasswords', 'UserPasswords'],
+            ['user', 'user-password', 'User', 'UserUserPassword', 'userPasswords', 'UserPasswords'],
+            ['Posts', 'Comments', 'Post', 'PostComment', 'comments', 'Comments'],
         ];
     }
 }

@@ -272,6 +272,10 @@ final class TestController extends AbstractController
 
         \$response = \$useCase->execute(\$request);
 
+        if (!\$response->test->id()) {
+            throw \$this->createNotFoundException();
+        }
+
         return \$this->render('test/show.html.twig', [
             'register' => \$response->test,
         ]);
@@ -284,7 +288,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $schema = new Schema('Test', 'bar', [new SchemaAttribute('foo', 'integer', 'pk')]);
+        $schema = new Schema('Test', 'bar', [new SchemaAttribute('Foo', 'integer', 'pk')]);
         $action = 'update';
         $actions = [
             $action => (new ActionBuilder(
@@ -334,6 +338,10 @@ final class TestController extends AbstractController
         \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
 
         \$response = \$useCase->execute(\$request);
+
+        if (!\$response->test->foo()) {
+            throw \$this->createNotFoundException();
+        }
 
         \$form = \$this->createForm(TestFormType::class, \$response->test);
 

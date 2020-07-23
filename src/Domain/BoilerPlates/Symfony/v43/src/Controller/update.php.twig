@@ -11,6 +11,10 @@
 
         $response = $useCase->execute($request);
 
+        if (!$response->{{ name }}->{{ pkName }}()) {
+            throw $this->createNotFoundException();
+        }
+
         $form = $this->createForm({{ entity }}FormType::class, $response->{{ name }});
 
         return $this->render('{{ name }}/edit.html.twig', [

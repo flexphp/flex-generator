@@ -122,6 +122,10 @@ T
 
         \$response = \$useCase->execute(\$request);
 
+        if (!\$response->test->id()) {
+            throw \$this->createNotFoundException();
+        }
+
         \$form = \$this->createForm(TestFormType::class, \$response->test);
 
         return \$this->render('test/edit.html.twig', [

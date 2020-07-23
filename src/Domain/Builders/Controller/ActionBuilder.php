@@ -35,6 +35,7 @@ final class ActionBuilder extends AbstractBuilder
         $data['entity'] = $this->getPascalCase($this->getSingularize($schema->name()));
         $data['entity_dash'] = $this->getDashCase($this->getPluralize($schema->name()));
         $data['name'] = $this->getDashCase($this->getSingularize($schema->name()));
+        $data['pkName'] = $this->getCamelCase($schema->pkName());
         $data['pkTypeHint'] = $schema->pkTypeHint();
         $data['request_message'] = $requestMessage;
         $data['use_case'] = $useCase;
