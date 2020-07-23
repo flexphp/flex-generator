@@ -16,7 +16,7 @@ final class GatewayBuilderTest extends TestCase
 {
     public function testItRenderIndexOk(): void
     {
-        $render = new GatewayBuilder('Test', ['index']);
+        $render = new GatewayBuilder($this->getSchema(), ['index']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -34,7 +34,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new GatewayBuilder('Test', ['create']);
+        $render = new GatewayBuilder($this->getSchema(), ['create']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -52,7 +52,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new GatewayBuilder('Test', ['read']);
+        $render = new GatewayBuilder($this->getSchema(), ['read']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -70,7 +70,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new GatewayBuilder('Test', ['update']);
+        $render = new GatewayBuilder($this->getSchema(), ['update']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -88,7 +88,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new GatewayBuilder('Test', ['delete']);
+        $render = new GatewayBuilder($this->getSchema(), ['delete']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -106,7 +106,7 @@ T
 
     public function testItRenderLoginOk(): void
     {
-        $render = new GatewayBuilder('Test', ['login']);
+        $render = new GatewayBuilder($this->getSchema(), ['login']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -122,12 +122,31 @@ T
 , $render->build());
     }
 
+    public function testItRenderRelationsOk(): void
+    {
+        $render = new GatewayBuilder($this->getSchemaFkRelation(), ['other']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+interface TestGateway
+{
+    public function filterBars(string \$term, int \$page, int \$limit): array;
+    public function filterPosts(string \$term, int \$page, int \$limit): array;
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */
     public function testItRenderOkManyActions(): void
     {
-        $render = new GatewayBuilder('Test', ['create', 'other']);
+        $render = new GatewayBuilder($this->getSchema(), ['create', 'other']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -148,7 +167,7 @@ T
      */
     public function testItRenderOkWithDiffNameEntity(string $entity, string $expected, string $expectedSingular): void
     {
-        $render = new GatewayBuilder($entity, ['create']);
+        $render = new GatewayBuilder($this->getSchema($entity), ['create']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

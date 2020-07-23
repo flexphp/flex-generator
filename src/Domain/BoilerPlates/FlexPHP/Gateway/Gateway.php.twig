@@ -20,4 +20,7 @@ interface {{ entity }}Gateway
 {% else %}
 {% endif %}
 {% endfor %}
+{% for fkRel in fkRels %}
+    public function filter{{ fkRel.fnPlural }}(string $term, int $page, int $limit): array;
+{% endfor %}
 }

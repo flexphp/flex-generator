@@ -10,20 +10,22 @@
 namespace FlexPHP\Generator\Domain\Builders\Gateway;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\SchemaInterface;
 
 final class GatewayBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $actions)
+    public function __construct(SchemaInterface $schema, array $actions)
     {
-        $entity = $this->getPascalCase($this->getSingularize($entity));
+        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $item = $this->getCamelCase($entity);
+        $fkRels = $this->getFkRelations($schema->fkRelations());
         $actions = \array_reduce($actions, function (array $result, string $action) {
             $result[] = $this->getCamelCase($action);
 
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'actions', 'item'));
+        parent::__construct(\compact('entity', 'actions', 'item', 'fkRels'));
     }
 
     protected function getFileTemplate(): string
