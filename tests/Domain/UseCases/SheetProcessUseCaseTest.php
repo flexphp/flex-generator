@@ -12,7 +12,6 @@ namespace FlexPHP\Generator\Tests\Domain\UseCases;
 use FlexPHP\Generator\Domain\Messages\Requests\SheetProcessRequest;
 use FlexPHP\Generator\Domain\UseCases\SheetProcessUseCase;
 use FlexPHP\Generator\Tests\TestCase;
-use SebastianBergmann\CodeCoverage\Report\PHP;
 
 final class SheetProcessUseCaseTest extends TestCase
 {
@@ -57,6 +56,7 @@ final class SheetProcessUseCaseTest extends TestCase
 
         switch ($name) {
             case 'Comments':
+                $countFiles = 6;
                 $this->assertFileExists($response->javascript);
                 \unlink($response->javascript);
 

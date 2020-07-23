@@ -9,6 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
+use FlexPHP\Generator\Domain\Builders\Message\FkResponseBuilder;
 use FlexPHP\Generator\Domain\Builders\Message\ResponseBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateResponseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateResponseFileResponse;
@@ -32,6 +33,15 @@ final class CreateResponseFileUseCase
             $filename = $this->getPascalCase($action) . $entity . 'Response';
 
             $writer = new PhpWriter($response->build(), $filename, $path);
+            $files[] = $writer->save();
+        }
+
+        foreach ($request->schema->fkRelations() as $fkRel) {
+            $fkEntity = $this->getPascalCase($this->getSingularize($fkRel['pkTable']));
+            $builder = new FkResponseBuilder($entity, $fkEntity);
+            $filename = 'Find' . $entity . $fkEntity . 'Response';
+
+            $writer = new PhpWriter($builder->build(), $filename, $path);
             $files[] = $writer->save();
         }
 

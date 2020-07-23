@@ -96,7 +96,7 @@ final class SheetProcessUseCase
             'useCases' => $useCases->files,
             'commands' => $commands->files,
             'templates' => $templates->files,
-            'javascript' => $javascript->file,
+            'javascript' => $javascript->file ?? null,
         ]);
     }
 

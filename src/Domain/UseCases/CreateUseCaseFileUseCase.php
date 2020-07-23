@@ -9,6 +9,7 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
+use FlexPHP\Generator\Domain\Builders\UseCase\FkUseCaseBuilder;
 use FlexPHP\Generator\Domain\Builders\UseCase\UseCaseBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateUseCaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateUseCaseFileResponse;
@@ -30,6 +31,15 @@ final class CreateUseCaseFileUseCase
             $filename = $this->getPascalCase($action) . $entity . 'UseCase';
 
             $writer = new PhpWriter($useCase->build(), $filename, $path);
+            $files[] = $writer->save();
+        }
+
+        foreach ($request->schema->fkRelations() as $fkRel) {
+            $fkEntity = $this->getPascalCase($this->getSingularize($fkRel['pkTable']));
+            $builder = new FkUseCaseBuilder($entity, $fkEntity);
+            $filename = 'Find' . $entity . $fkEntity . 'UseCase';
+
+            $writer = new PhpWriter($builder->build(), $filename, $path);
             $files[] = $writer->save();
         }
 
