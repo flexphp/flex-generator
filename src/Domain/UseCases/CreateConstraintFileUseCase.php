@@ -24,18 +24,8 @@ final class CreateConstraintFileUseCase
     public function execute(CreateConstraintFileRequest $request): CreateConstraintFileResponse
     {
         $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
-        $properties = \array_reduce(
-            $request->schema->attributes(),
-            function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $name = $schemaAttribute->name();
-                $result[$name] = (new RuleBuilder($name, $schemaAttribute->constraints()))->build();
 
-                return $result;
-            },
-            []
-        );
-
-        $constraint = new ConstraintBuilder($entity, $properties);
+        $constraint = new ConstraintBuilder($request->schema);
         $filename = $entity . 'Constraint';
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s', __DIR__, $entity);
 

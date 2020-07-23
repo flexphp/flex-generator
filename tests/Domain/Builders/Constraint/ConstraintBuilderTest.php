@@ -11,14 +11,13 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Constraint;
 
 use FlexPHP\Generator\Domain\Builders\Constraint\ConstraintBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Schema;
 
 final class ConstraintBuilderTest extends TestCase
 {
     public function testItOk(): void
     {
-        $entity = 'Test';
-
-        $render = new ConstraintBuilder($entity, []);
+        $render = new ConstraintBuilder(new Schema('Test', 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -61,7 +60,7 @@ T
      */
     public function testItOkWithDiffNameEntity(string $name, string $expected): void
     {
-        $render = new ConstraintBuilder($name, []);
+        $render = new ConstraintBuilder(new Schema($name, 'bar', []));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -101,9 +100,7 @@ T
 
     public function testItOkWithDiffNameProperties(): void
     {
-        $entity = 'Test';
-
-        $render = new ConstraintBuilder($entity, $this->getSchemaPropertiesRules());
+        $render = new ConstraintBuilder($this->getSchema());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

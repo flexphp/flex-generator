@@ -41,22 +41,6 @@ class TestCase extends PHPUnitTestCase
         ]);
     }
 
-    protected function getSchemaPropertiesRules(): array
-    {
-        return \array_reduce(
-            $this->getSchema()->attributes(),
-            function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $result[$schemaAttribute->name()] = (new RuleBuilder(
-                    $schemaAttribute->name(),
-                    $schemaAttribute->constraints()
-                ))->build();
-
-                return $result;
-            },
-            []
-        );
-    }
-
     protected function getSchemaFkRelation(string $name = 'Test'): Schema
     {
         return new Schema($name, 'Entity Test Title', [

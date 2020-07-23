@@ -10,12 +10,24 @@
 namespace FlexPHP\Generator\Domain\Builders\Constraint;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\SchemaAttributeInterface;
+use FlexPHP\Schema\SchemaInterface;
 
 final class ConstraintBuilder extends AbstractBuilder
 {
-    public function __construct(string $entity, array $rules)
+    public function __construct(SchemaInterface $schema)
     {
-        $entity = $this->getSingularize($this->getPascalCase($entity));
+        $entity = $this->getSingularize($this->getPascalCase($schema->name()));
+        $rules = \array_reduce(
+            $schema->attributes(),
+            function (array $result, SchemaAttributeInterface $schemaAttribute) {
+                $name = $schemaAttribute->name();
+                $result[$name] = (new RuleBuilder($name, $schemaAttribute->constraints()))->build();
+
+                return $result;
+            },
+            []
+        );
 
         parent::__construct(\compact('entity', 'rules'));
     }
