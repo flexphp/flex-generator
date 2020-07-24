@@ -20,7 +20,7 @@ final class CreateResponseFileUseCaseTest extends TestCase
     /**
      * @dataProvider getEntityFile()
      */
-    public function testItOk(string $schemafile, array $expectedFiles): void
+    public function testItOk(string $schemafile, array $expectedFiles, int $countFiles): void
     {
         $schema = Schema::fromFile($schemafile);
         $actions = [
@@ -34,7 +34,7 @@ final class CreateResponseFileUseCaseTest extends TestCase
         $response = $useCase->execute($request);
 
         $this->assertInstanceOf(CreateResponseFileResponse::class, $response);
-        $this->assertEquals(\count($actions), \count($response->files));
+        $this->assertEquals($countFiles, \count($response->files));
 
         foreach ($response->files as $index => $file) {
             $filename = \explode('/', $file);
@@ -51,11 +51,12 @@ final class CreateResponseFileUseCaseTest extends TestCase
             [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__), [
                 'ReadPostResponse.php',
                 'DeletePostResponse.php',
-            ]],
+            ], 2],
             [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), [
                 'ReadCommentResponse.php',
                 'DeleteCommentResponse.php',
-            ]],
+                'FindCommentPostResponse.php',
+            ], 3],
         ];
     }
 }

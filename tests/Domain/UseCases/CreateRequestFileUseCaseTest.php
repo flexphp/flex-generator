@@ -20,7 +20,7 @@ final class CreateRequestFileUseCaseTest extends TestCase
     /**
      * @dataProvider getEntityFile()
      */
-    public function testItOk(string $schemafile, array $expectedFiles): void
+    public function testItOk(string $schemafile, array $expectedFiles, int $countFiles): void
     {
         $schema = Schema::fromFile($schemafile);
         $actions = [
@@ -34,13 +34,20 @@ final class CreateRequestFileUseCaseTest extends TestCase
         $response = $useCase->execute($request);
 
         $this->assertInstanceOf(CreateRequestFileResponse::class, $response);
-        $this->assertEquals(\count($actions), \count($response->files));
+        $this->assertEquals($countFiles, \count($response->files));
 
         foreach ($response->files as $index => $file) {
             $filename = \explode('/', $file);
             $this->assertEquals($expectedFiles[$index], \array_pop($filename));
             $this->assertFileExists($file);
             $content = \file_get_contents($file);
+
+            if ($expectedFiles[$index] === 'FindCommentPostRequest.php') {
+                $this->assertStringContainsStringIgnoringCase('->term ', $content);
+                \unlink($file);
+
+                continue;
+            }
 
             foreach ($schema->attributes() as $attribute) {
                 $this->assertStringContainsStringIgnoringCase($attribute->name(), $content);
@@ -56,11 +63,12 @@ final class CreateRequestFileUseCaseTest extends TestCase
             [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__), [
                 'CreatePostRequest.php',
                 'UpdatePostRequest.php',
-            ]],
+            ], 2],
             [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), [
                 'CreateCommentRequest.php',
                 'UpdateCommentRequest.php',
-            ]],
+                'FindCommentPostRequest.php',
+            ], 3],
         ];
     }
 }

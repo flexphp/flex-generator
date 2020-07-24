@@ -9,7 +9,7 @@ Comments:
     comment:
       Name: Comment
       DataType: text
-      Constraints: 'required|min:3|max:256'
+      Constraints: 'required|minlength:3|maxlength:256'
     postId:
       Name: PostId
       DataType: integer

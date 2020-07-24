@@ -288,7 +288,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $schema = new Schema('Test', 'bar', [new SchemaAttribute('Foo', 'integer', 'pk')]);
+        $schema = new Schema('Test', 'bar', [new SchemaAttribute('Foo', 'integer', 'pk|required')]);
         $action = 'update';
         $actions = [
             $action => (new ActionBuilder(
@@ -355,13 +355,13 @@ final class TestController extends AbstractController
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function update(Request \$request, Connection \$conn): Response
+    public function update(Request \$request, Connection \$conn, int \$id): Response
     {
         \$form = \$this->createForm(TestFormType::class);
         \$form->submit(\$request->request->get(\$form->getName()));
         \$form->handleRequest(\$request);
 
-        \$request = new UpdateTestRequest(\$form->getData());
+        \$request = new UpdateTestRequest(\$id, \$form->getData());
 
         \$useCase = new UpdateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
 
@@ -379,7 +379,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $schema = new Schema('Test', 'bar', [new SchemaAttribute('foo', 'integer', 'pk')]);
+        $schema = new Schema('Test', 'bar', [new SchemaAttribute('foo', 'integer', 'pk|required')]);
         $action = 'delete';
         $actions = [
             $action => (new ActionBuilder(

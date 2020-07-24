@@ -136,6 +136,8 @@ final class TestConstraint
     private function lower(): array
     {
         return [
+            new Assert\NotNull(),
+            new Assert\NotBlank(),
             new Assert\Length([
                 'min' => 20,
                 'max' => 100,

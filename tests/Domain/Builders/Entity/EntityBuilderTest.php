@@ -58,7 +58,7 @@ final class Test
         return \$this->snakeCase;
     }
 
-    public function setLower(?string \$lower): void
+    public function setLower(string \$lower): void
     {
         \$this->lower = \$lower;
     }
