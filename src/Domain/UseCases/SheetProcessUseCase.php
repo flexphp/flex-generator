@@ -76,6 +76,7 @@ final class SheetProcessUseCase
         $useCases = $this->createUseCases($schema, $actions);
         $commands = $this->createCommands($schema, $actions);
         $templates = $this->createTemplates($schema);
+        $javascript = null;
 
         if (!empty($schema->fkRelations())) {
             $javascript = $this->createJavascript($schema);

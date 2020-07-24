@@ -52,9 +52,10 @@ final class SheetProcessUseCaseTest extends TestCase
         $this->assertFileExists($response->repository);
         \unlink($response->repository);
 
+        $countFiles = 5;
+
         switch ($name) {
             case 'Posts':
-                $countFiles = 5;
                 $this->assertNull($response->javascript);
 
                 break;

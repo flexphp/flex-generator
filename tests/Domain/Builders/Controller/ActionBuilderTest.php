@@ -148,7 +148,9 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new ActionBuilder(new Schema('Test', 'bar', [new SchemaAttribute('foo', 'integer', 'pk|required')]), 'delete');
+        $render = new ActionBuilder(new Schema('Test', 'bar', [
+            new SchemaAttribute('foo', 'integer', 'pk|ai|required'),
+        ]), 'delete');
 
         $this->assertEquals(<<<T
     /**

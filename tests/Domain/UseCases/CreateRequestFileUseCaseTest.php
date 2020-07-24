@@ -40,18 +40,6 @@ final class CreateRequestFileUseCaseTest extends TestCase
             $filename = \explode('/', $file);
             $this->assertEquals($expectedFiles[$index], \array_pop($filename));
             $this->assertFileExists($file);
-            $content = \file_get_contents($file);
-
-            if ($expectedFiles[$index] === 'FindCommentPostRequest.php') {
-                $this->assertStringContainsStringIgnoringCase('->term ', $content);
-                \unlink($file);
-
-                continue;
-            }
-
-            foreach ($schema->attributes() as $attribute) {
-                $this->assertStringContainsStringIgnoringCase($attribute->name(), $content);
-            }
 
             \unlink($file);
         }

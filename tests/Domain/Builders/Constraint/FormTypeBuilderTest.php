@@ -208,10 +208,6 @@ final class TestFormType extends AbstractType
             \$postIdModifier(\$event->getForm(), (int)\$event->getData()['postId'] ?? null);
         });
 
-        \$builder->add('pk', InputType\IntegerType::class, [
-            'label' => 'Pk',
-            'required' => true,
-        ]);
         \$builder->add('foo', Select2Type::class, [
             'label' => 'Foo',
             'required' => true,

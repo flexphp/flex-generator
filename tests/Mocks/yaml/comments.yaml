@@ -5,7 +5,7 @@ Comments:
     id:
       Name: Id
       DataType: integer
-      Constraints: 'pk|required'
+      Constraints: 'pk|ai|required'
     comment:
       Name: Comment
       DataType: text
@@ -17,8 +17,8 @@ Comments:
     createdAt:
       Name: CreatedAt
       DataType: datetime
-      Constraints: ''
+      Constraints: 'ca'
     updatedAt:
       Name: UpdatedAt
       DataType: datetime
-      Constraints: ''
+      Constraints: 'ua'

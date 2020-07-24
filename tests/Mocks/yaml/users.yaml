@@ -5,7 +5,7 @@ Users:
     id:
       Name: Id
       DataType: integer
-      Constraints: 'pk|required|type:number'
+      Constraints: 'pk|ai|required|type:number'
     email:
       Name: Email
       DataType: string
@@ -29,8 +29,8 @@ Users:
     createdAt:
       Name: CreatedAt
       DataType: datetime
-      Constraints: ''
+      Constraints: 'ca'
     updatedAt:
       Name: UpdatedAt
       DataType: datetime
-      Constraints: ''
+      Constraints: 'ua'

@@ -5,7 +5,7 @@ Posts:
     id:
       Name: Id
       DataType: integer
-      Constraints: 'pk|required|type:number'
+      Constraints: 'pk|ai|required|type:number'
     title:
       Name: Title
       DataType: string
@@ -21,8 +21,8 @@ Posts:
     createdAt:
       Name: CreatedAt
       DataType: datetime
-      Constraints: ''
+      Constraints: 'ca'
     updatedAt:
       Name: UpdatedAt
       DataType: datetime
-      Constraints: ''
+      Constraints: 'ua'

@@ -288,7 +288,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $schema = new Schema('Test', 'bar', [new SchemaAttribute('Foo', 'integer', 'pk|required')]);
+        $schema = new Schema('Test', 'bar', [new SchemaAttribute('Foo', 'integer', 'pk|ai|required')]);
         $action = 'update';
         $actions = [
             $action => (new ActionBuilder(
@@ -379,7 +379,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $schema = new Schema('Test', 'bar', [new SchemaAttribute('foo', 'integer', 'pk|required')]);
+        $schema = new Schema('Test', 'bar', [new SchemaAttribute('foo', 'integer', 'pk|ai|required')]);
         $action = 'delete';
         $actions = [
             $action => (new ActionBuilder(
