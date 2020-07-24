@@ -58,7 +58,7 @@ final class TestFormType extends AbstractType
     {
         \$builder->add('lower', InputType\TextType::class, [
             'label' => 'Lower',
-            'required' => false,
+            'required' => true,
             'attr' => [
                 'minlength' => 20,
                 'maxlength' => 100,
@@ -227,6 +227,34 @@ final class TestFormType extends AbstractType
                 'data-autocomplete-url' => \$this->router->generate('tests.find.posts'),
             ],
             'choices' => [],
+        ]);
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItAutoIncrementalAndBlameable(): void
+    {
+        $render = new FormTypeBuilder($this->getSchemaAiAndBlame());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type as InputType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+final class TestFormType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface \$builder, array \$options): void
+    {
+        \$builder->add('value', InputType\IntegerType::class, [
+            'label' => 'Value',
+            'required' => true,
         ]);
     }
 }

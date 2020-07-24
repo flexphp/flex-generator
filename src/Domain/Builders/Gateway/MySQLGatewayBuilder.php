@@ -34,7 +34,7 @@ final class MySQLGatewayBuilder extends AbstractBuilder
             function (array $result, SchemaAttributeInterface $property) use (&$dbTypes) {
                 $camelName = $this->getCamelCase($property->name());
 
-                $result[$camelName] = $property->properties();
+                $result[$camelName] = $property;
                 $dbTypes[$camelName] = $this->getDbType($property->dataType());
 
                 return $result;

@@ -52,7 +52,7 @@ final class {{ entity }}FormType extends AbstractType
 
             $form->add('{{ fkRel.pkName }}', Select2Type::class, [
                 'label' => '{{ labels[fkRel.pkName] }}',
-{% if properties[fkRel.pkName].Constraints.required %}
+{% if properties[fkRel.pkName].isRequired %}
                 'required' => true,
 {% else %}
                 'required' => false,
@@ -79,13 +79,14 @@ final class {{ entity }}FormType extends AbstractType
 
 {% endfor %}
 {% for id, property in properties %}
+{% if not property.isAi and not property.isBlame %}
 {% if fkRels[id] %}
         $builder->add('{{ id }}', Select2Type::class, [
 {% else %}
         $builder->add('{{ id }}', InputType\{{ inputs[id] }}Type::class, [
 {% endif %}
             'label' => '{{ labels[id] }}',
-{% if property.Constraints.required %}
+{% if property.isRequired %}
             'required' => true,
 {% else %}
             'required' => false,
@@ -95,17 +96,17 @@ final class {{ entity }}FormType extends AbstractType
 {% if fkRels[id] %}
                 'data-autocomplete-url' => $this->router->generate('{{ items }}.find.{{ fkRels[id].route }}'),
 {% endif %}
-{% if property.Constraints.minlength %}
-                'minlength' => {{ property.Constraints.minlength }},
+{% if property.minLength %}
+                'minlength' => {{ property.minLength }},
 {% endif %}
-{% if property.Constraints.maxlength %}
-                'maxlength' => {{ property.Constraints.maxlength }},
+{% if property.maxLength %}
+                'maxlength' => {{ property.maxLength }},
 {% endif %}
-{% if property.Constraints.min %}
-                'min' => {{ property.Constraints.min }},
+{% if property.min %}
+                'min' => {{ property.min }},
 {% endif %}
-{% if property.Constraints.max %}
-                'max' => {{ property.Constraints.max }},
+{% if property.max %}
+                'max' => {{ property.max }},
 {% endif %}
             ],
 {% if fkRels[id] %}
@@ -118,6 +119,7 @@ final class {{ entity }}FormType extends AbstractType
             'format' => 'Y-m-d H:i:s',
 {% endif %}
         ]);
+{% endif %}
 {% endfor %}
     }
 }

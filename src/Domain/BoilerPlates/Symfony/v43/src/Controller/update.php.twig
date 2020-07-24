@@ -27,7 +27,7 @@
      * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
-    public function {{ action_camel }}(Request $request, Connection $conn): Response
+    public function {{ action_camel }}(Request $request, Connection $conn, {{ pkTypeHint }} $id): Response
     {
 {% if request_message %}
         {{ request_message|trim|raw }}

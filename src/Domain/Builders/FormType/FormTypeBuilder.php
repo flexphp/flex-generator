@@ -27,7 +27,7 @@ final class FormTypeBuilder extends AbstractBuilder
             $schema->attributes(),
             function (array $result, SchemaAttribute $property) use (&$labels, &$inputs) {
                 $name = $this->getCamelCase($property->name());
-                $result[$name] = $property->properties();
+                $result[$name] = $property;
                 $labels[$name] = (new Convert($property->name()))->toTitle();
                 $inputs[$name] = $this->getInputType($property->dataType());
 

@@ -126,9 +126,9 @@ final class UpdateFuzRequest implements RequestInterface
     public \$camelCase;
     public \$snakeCase;
 
-    public function __construct(array \$data)
+    public function __construct(string \$lower, array \$data)
     {
-        \$this->lower = \$data['lower'] ?? null;
+        \$this->lower = \$lower;
         \$this->upper = \$data['upper'] ?? null;
         \$this->pascalCase = \$data['pascalCase'] ?? null;
         \$this->camelCase = \$data['camelCase'] ?? null;
@@ -233,6 +233,58 @@ final class LoginFuzRequest implements RequestInterface
     public function __construct(string \$email)
     {
         \$this->email = \$email;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItCreateAutoIncrementalAndBlameable(): void
+    {
+        $render = new RequestBuilder($this->getSchemaAiAndBlame('Bar'), 'create');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Bar\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class CreateBarRequest implements RequestInterface
+{
+    public \$value;
+
+    public function __construct(array \$data)
+    {
+        \$this->value = \$data['value'] ?? null;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItUpdateAutoIncrementalAndBlameable(): void
+    {
+        $render = new RequestBuilder($this->getSchemaAiAndBlame('Bar'), 'update');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Bar\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class UpdateBarRequest implements RequestInterface
+{
+    public \$key;
+    public \$value;
+
+    public function __construct(int \$key, array \$data)
+    {
+        \$this->key = \$key;
+        \$this->value = \$data['value'] ?? null;
     }
 }
 

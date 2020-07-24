@@ -70,7 +70,7 @@ T
         \$form->submit(\$request->request->get(\$form->getName()));
         \$form->handleRequest(\$request);
 
-        \$request = new UpdateTestRequest(\$form->getData());
+        \$request = new UpdateTestRequest(\$id, \$form->getData());
 T
 , $render->build());
     }

@@ -33,7 +33,7 @@ class TestCase extends PHPUnitTestCase
     protected function getSchema(string $name = 'Test'): SchemaInterface
     {
         return new Schema($name, 'Entity Foo Title', [
-            new SchemaAttribute('lower', 'string', 'pk|ai|minlength:20|maxlength:100'),
+            new SchemaAttribute('lower', 'string', 'pk|minlength:20|maxlength:100|required'),
             new SchemaAttribute('UPPER', 'integer', 'min:2|max:10'),
             new SchemaAttribute('PascalCase', 'datetime', 'required'),
             new SchemaAttribute('camelCase', 'boolean', ''),
@@ -47,6 +47,16 @@ class TestCase extends PHPUnitTestCase
             new SchemaAttribute('Pk', 'integer', 'pk|required'),
             new SchemaAttribute('foo', 'string', 'fk:Bar,fuz,baz|required'),
             new SchemaAttribute('PostId', 'integer', 'fk:posts'),
+        ]);
+    }
+
+    protected function getSchemaAiAndBlame(string $name = 'Test'): Schema
+    {
+        return new Schema($name, 'bar', [
+            new SchemaAttribute('key', 'integer', 'pk|ai|required'),
+            new SchemaAttribute('Value', 'integer', 'required'),
+            new SchemaAttribute('Created', 'datetime', 'ca'),
+            new SchemaAttribute('Updated', 'datetime', 'ua'),
         ]);
     }
 

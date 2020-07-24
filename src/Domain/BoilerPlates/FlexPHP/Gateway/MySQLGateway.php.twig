@@ -23,7 +23,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     {
         $this->query->select([
 {% for id, property in properties %}
-            '{{ property.Name }}' => '{{ id }}',
+            '{{ property.name }}' => '{{ id }}',
 {% endfor %}
         ]);
         $this->query->from($this->table);
@@ -48,11 +48,17 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->insert($this->table);
 
 {% for id, property in properties %}
-        $this->query->setValue('{{ property.Name }}', ':{{ id }}');
+{% if not property.isAi %}
+        $this->query->setValue('{{ property.name }}', ':{{ id }}');
+{% endif %}
 {% endfor %}
 
 {% for id, property in properties %}
+{% if not property.isAi and not property.isBlame %}
         $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
+{% elseif property.isBlame %}
+        $this->query->setParameter(':{{ id }}', new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
+{% endif %}
 {% endfor %}
 
         $this->query->execute();
@@ -63,11 +69,11 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     {
         $this->query->select([
 {% for id, property in properties %}
-            '{{ property.Name }}' => '{{ id }}',
+            '{{ property.name }}' => '{{ id }}',
 {% endfor %}
         ]);
         $this->query->from($this->table);
-        $this->query->where('{{ properties[pkName].Name }} = :{{ pkName }}');
+        $this->query->where('{{ properties[pkName].name }} = :{{ pkName }}');
         $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
         $register = $this->query->execute()->fetch();
@@ -81,14 +87,20 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->update($this->table);
 
 {% for id, property in properties %}
-        $this->query->set('{{ property.Name }}', ':{{ id }}');
+{% if not property.isAi and not property.isCa %}
+        $this->query->set('{{ property.name }}', ':{{ id }}');
+{% endif %}
 {% endfor %}
 
 {% for id, property in properties %}
+{% if not property.isAi and not property.isBlame %}
         $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
+{% elseif property.isBlame and property.isUa %}
+        $this->query->setParameter(':{{ id }}', new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
+{% endif %}
 {% endfor %}
 
-        $this->query->where('{{ properties[pkName].Name }} = :{{ pkName }}');
+        $this->query->where('{{ properties[pkName].name }} = :{{ pkName }}');
         $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
         $this->query->execute();
@@ -99,7 +111,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     {
         $this->query->delete($this->table);
 
-        $this->query->where('{{ properties[pkName].Name }} = :{{ pkName }}');
+        $this->query->where('{{ properties[pkName].name }} = :{{ pkName }}');
         $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
         $this->query->execute();
@@ -110,7 +122,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     {
         $this->query->select([
 {% for id, property in properties %}
-            '{{ property.Name }}' => '{{ id }}',
+            '{{ property.name }}' => '{{ id }}',
 {% endfor %}
         ]);
         $this->query->from($this->table);

@@ -12,6 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Gateway;
 use FlexPHP\Generator\Domain\Builders\Gateway\MySQLGatewayBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class MySQLGatewayBuilderTest extends TestCase
 {
@@ -365,6 +366,66 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setMaxResults(\$limit);
 
         return \$this->query->execute()->fetchAll();
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItAutoIncrementalAndBlameable(): void
+    {
+        $render = new MySQLGatewayBuilder($this->getSchemaAiAndBlame(), ['create', 'update']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\Gateway;
+
+use Domain\Test\Test;
+use Domain\Test\TestGateway;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types as DB;
+
+final class MySQLTestGateway implements TestGateway
+{
+    private \$query;
+    private \$table = 'tests';
+
+    public function __construct(Connection \$conn)
+    {
+        \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function push(Test \$test): void
+    {
+        \$this->query->insert(\$this->table);
+
+        \$this->query->setValue('Value', ':value');
+        \$this->query->setValue('Created', ':created');
+        \$this->query->setValue('Updated', ':updated');
+
+        \$this->query->setParameter(':value', \$test->value(), DB::INTEGER);
+        \$this->query->setParameter(':created', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+        \$this->query->setParameter(':updated', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+
+        \$this->query->execute();
+    }
+
+    public function shift(Test \$test): void
+    {
+        \$this->query->update(\$this->table);
+
+        \$this->query->set('Value', ':value');
+        \$this->query->set('Updated', ':updated');
+
+        \$this->query->setParameter(':value', \$test->value(), DB::INTEGER);
+        \$this->query->setParameter(':updated', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+
+        \$this->query->where('key = :key');
+        \$this->query->setParameter('key', \$test->key(), DB::INTEGER);
+
+        \$this->query->execute();
     }
 }
 

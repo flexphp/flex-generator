@@ -22,15 +22,25 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
     }
 {% else %}
 {% for id, property in properties %}
+{% if (action|lower in ['update'] and property.isPk) or (not property.isAi and not property.isBlame) %}
     public ${{ id }};
+{% endif %}
 {% endfor %}
 {% if properties %}
 
 {% endif %}
+{% if action|lower in ['update'] %}
+    public function __construct({{ pkTypeHint }} ${{ pkName }}, array $data)
+{% else %}
     public function __construct(array $data)
+{% endif %}
     {
 {% for id, property in properties %}
+{% if action|lower in ['update'] and property.isPk %}
+        $this->{{ id }} = ${{ pkName }};
+{% elseif not (action|lower in ['create'] and property.isAi) and not property.isBlame %}
         $this->{{ id }} = $data['{{ id }}'] ?? null;
+{% endif %}
 {% endfor %}
     }
 {% endif %}

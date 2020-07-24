@@ -321,12 +321,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/flexphp/flex-database.git",
-                "reference": "fa6865e40186debc825fa1e7a19c8e7820eb1fc7"
+                "reference": "e3651f56ae1318abcd48ff3339805946e7e4158c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flexphp/flex-database/zipball/fa6865e40186debc825fa1e7a19c8e7820eb1fc7",
-                "reference": "fa6865e40186debc825fa1e7a19c8e7820eb1fc7",
+                "url": "https://api.github.com/repos/flexphp/flex-database/zipball/e3651f56ae1318abcd48ff3339805946e7e4158c",
+                "reference": "e3651f56ae1318abcd48ff3339805946e7e4158c",
                 "shasum": ""
             },
             "require": {
@@ -359,7 +359,7 @@
                 }
             ],
             "description": "Database PHP for FlexPHP library",
-            "time": "2020-03-28T22:49:01+00:00"
+            "time": "2020-07-23T17:04:13+00:00"
         },
         {
             "name": "flexphp/schema",
@@ -367,12 +367,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/flexphp/flex-schema.git",
-                "reference": "287cbe30a18a473e129e44a0422d8cb084a7fc32"
+                "reference": "1dfcbc2cfe7eea4dca7f3dc31f33509dc588d56a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flexphp/flex-schema/zipball/287cbe30a18a473e129e44a0422d8cb084a7fc32",
-                "reference": "287cbe30a18a473e129e44a0422d8cb084a7fc32",
+                "url": "https://api.github.com/repos/flexphp/flex-schema/zipball/1dfcbc2cfe7eea4dca7f3dc31f33509dc588d56a",
+                "reference": "1dfcbc2cfe7eea4dca7f3dc31f33509dc588d56a",
                 "shasum": ""
             },
             "require": {
@@ -404,7 +404,7 @@
                 }
             ],
             "description": "One schema, any framework",
-            "time": "2020-07-22T14:29:04+00:00"
+            "time": "2020-07-24T01:55:55+00:00"
         },
         {
             "name": "jawira/case-converter",

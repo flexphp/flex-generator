@@ -138,7 +138,7 @@ T
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function update(Request \$request, Connection \$conn): Response
+    public function update(Request \$request, Connection \$conn, string \$id): Response
     {
     }
 
@@ -156,6 +156,48 @@ T
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
      */
     public function delete(Connection \$conn, int \$id): Response
+    {
+    }
+
+T
+, $render->build());
+    }
+
+    public function testItRenderUpdateAutoIncrementalAndBlameableOk(): void
+    {
+        $render = new ActionBuilder($this->getSchemaAiAndBlame(), 'update');
+
+        $this->assertEquals(<<<T
+    /**
+     * @Route("/edit/{id}", methods={"GET"}, name="tests.edit")
+     * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
+     */
+    public function edit(Connection \$conn, int \$id): Response
+    {
+        \$request = new ReadTestRequest(\$id);
+
+        \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        if (!\$response->test->key()) {
+            throw \$this->createNotFoundException();
+        }
+
+        \$form = \$this->createForm(TestFormType::class, \$response->test);
+
+        return \$this->render('test/edit.html.twig', [
+            'register' => \$response->test,
+            'form' => \$form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
+     */
+    public function update(Request \$request, Connection \$conn, int \$id): Response
     {
     }
 
