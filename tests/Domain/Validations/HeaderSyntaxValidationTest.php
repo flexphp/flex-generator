@@ -9,10 +9,10 @@
  */
 namespace FlexPHP\Generator\Tests\Domain\Validations;
 
-use FlexPHP\Schema\Constants\Keyword;
 use FlexPHP\Generator\Domain\Exceptions\HeaderSyntaxValidationException;
 use FlexPHP\Generator\Domain\Validations\HeaderSyntaxValidation;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\Constants\Keyword;
 
 final class HeaderSyntaxValidationTest extends TestCase
 {
@@ -30,15 +30,47 @@ final class HeaderSyntaxValidationTest extends TestCase
         $validation->validate();
     }
 
-    public function testItHeadersRequiredIncompleteThrowException(): void
+    /**
+     * @dataProvider getHeadersInvalid
+     */
+    public function testItHeadersRequiredIncompleteThrowException(array $headers): void
     {
         $this->expectException(HeaderSyntaxValidationException::class);
         $this->expectExceptionMessage('Required');
 
-        $validation = new HeaderSyntaxValidation([
-            Keyword::NAME,
-        ]);
+        $validation = new HeaderSyntaxValidation($headers);
 
         $validation->validate();
+    }
+
+    /**
+     * @dataProvider getHeadersValid
+     */
+    public function testItHeadersOk(array $headers): void
+    {
+        $validation = new HeaderSyntaxValidation($headers);
+
+        $validation->validate();
+
+        $this->assertTrue(true);
+    }
+
+    public function getHeadersInvalid(): array
+    {
+        return [
+            [[]],
+            [[Keyword::NAME]],
+            [[Keyword::NAME, Keyword::CONSTRAINTS]],
+        ];
+    }
+
+    public function getHeadersValid(): array
+    {
+        return [
+            [[Keyword::NAME, Keyword::DATATYPE]],
+            [[Keyword::NAME, Keyword::DATATYPE, Keyword::CONSTRAINTS]],
+            [[Keyword::CONSTRAINTS, Keyword::NAME, Keyword::DATATYPE]],
+            [[Keyword::DATATYPE, Keyword::CONSTRAINTS, Keyword::NAME]],
+        ];
     }
 }
