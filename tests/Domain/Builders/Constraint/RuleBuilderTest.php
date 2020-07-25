@@ -11,24 +11,35 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Constraint;
 
 use FlexPHP\Generator\Domain\Builders\Constraint\RuleBuilder;
 use FlexPHP\Generator\Tests\TestCase;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class RuleBuilderTest extends TestCase
 {
     /**
      * @dataProvider getPropertyName
      */
-    public function testItNoConstraintsOk(string $name): void
+    public function testItNoConstraintsOk(string $name, string $expected): void
     {
-        $render = new RuleBuilder($name, []);
+        $render = new RuleBuilder(new SchemaAttribute($name, 'string', []));
 
-        $this->assertEquals('', $render->build());
+        $this->assertEquals(<<<T
+    private function {$expected}(): array
+    {
+        return [
+            new Assert\Type([
+                'type' => 'string',
+            ]),
+        ];
+    }
+T
+, $render->build());
     }
 
     public function testItRequiredOk(): void
     {
-        $render = new RuleBuilder('foo', [
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
             'required' => true,
-        ]);
+        ]));
 
         $this->assertEquals(<<<T
     private function foo(): array
@@ -36,6 +47,9 @@ final class RuleBuilderTest extends TestCase
         return [
             new Assert\NotNull(),
             new Assert\NotBlank(),
+            new Assert\Type([
+                'type' => 'string',
+            ]),
         ];
     }
 T
@@ -44,14 +58,17 @@ T
 
     public function testItMinLengthOk(): void
     {
-        $render = new RuleBuilder('foo', [
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
             'minlength' => 20,
-        ]);
+        ]));
 
         $this->assertEquals(<<<T
     private function foo(): array
     {
         return [
+            new Assert\Type([
+                'type' => 'string',
+            ]),
             new Assert\Length([
                 'min' => 20,
             ]),
@@ -63,14 +80,17 @@ T
 
     public function testItMaxLengthOk(): void
     {
-        $render = new RuleBuilder('foo', [
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
             'maxlength' => 100,
-        ]);
+        ]));
 
         $this->assertEquals(<<<T
     private function foo(): array
     {
         return [
+            new Assert\Type([
+                'type' => 'string',
+            ]),
             new Assert\Length([
                 'max' => 100,
             ]),
@@ -82,17 +102,20 @@ T
 
     public function testItLengthOk(): void
     {
-        $render = new RuleBuilder('foo', [
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
             'length' => [
                 'min' => 20,
                 'max' => 100,
             ],
-        ]);
+        ]));
 
         $this->assertEquals(<<<T
     private function foo(): array
     {
         return [
+            new Assert\Type([
+                'type' => 'string',
+            ]),
             new Assert\Length([
                 'min' => 20,
                 'max' => 100,
@@ -105,14 +128,17 @@ T
 
     public function testItMinCheckLengthOk(): void
     {
-        $render = new RuleBuilder('foo', [
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
             'mincheck' => 3,
-        ]);
+        ]));
 
         $this->assertEquals(<<<T
     private function foo(): array
     {
         return [
+            new Assert\Type([
+                'type' => 'string',
+            ]),
             new Assert\Count([
                 'min' => 3,
             ]),
@@ -124,14 +150,17 @@ T
 
     public function testItMaxCheckLengthOk(): void
     {
-        $render = new RuleBuilder('foo', [
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
             'maxcheck' => 4,
-        ]);
+        ]));
 
         $this->assertEquals(<<<T
     private function foo(): array
     {
         return [
+            new Assert\Type([
+                'type' => 'string',
+            ]),
             new Assert\Count([
                 'max' => 4,
             ]),
@@ -143,17 +172,20 @@ T
 
     public function testItCheckOk(): void
     {
-        $render = new RuleBuilder('foo', [
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
             'check' => [
                 'min' => 1,
                 'max' => 5,
             ],
-        ]);
+        ]));
 
         $this->assertEquals(<<<T
     private function foo(): array
     {
         return [
+            new Assert\Type([
+                'type' => 'string',
+            ]),
             new Assert\Count([
                 'min' => 1,
                 'max' => 5,
@@ -166,14 +198,17 @@ T
 
     public function testItMinOk(): void
     {
-        $render = new RuleBuilder('foo', [
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'integer', [
             'min' => 19,
-        ]);
+        ]));
 
         $this->assertEquals(<<<T
     private function foo(): array
     {
         return [
+            new Assert\Type([
+                'type' => 'int',
+            ]),
             new Assert\LessThanOrEqual([
                 'value' => 19,
             ]),
@@ -185,14 +220,17 @@ T
 
     public function testItMaxOk(): void
     {
-        $render = new RuleBuilder('foo', [
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'integer', [
             'max' => 21,
-        ]);
+        ]));
 
         $this->assertEquals(<<<T
     private function foo(): array
     {
         return [
+            new Assert\Type([
+                'type' => 'int',
+            ]),
             new Assert\GreaterThanOrEqual([
                 'value' => 21,
             ]),
@@ -204,14 +242,17 @@ T
 
     public function testItEqualToOk(): void
     {
-        $render = new RuleBuilder('foo', [
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
             'equalto' => 'EQUAL',
-        ]);
+        ]));
 
         $this->assertEquals(<<<T
     private function foo(): array
     {
         return [
+            new Assert\Type([
+                'type' => 'string',
+            ]),
             new Assert\EqualTo([
                 'value' => 'EQUAL',
             ]),
@@ -223,9 +264,26 @@ T
 
     public function testItTypeOk(): void
     {
-        $render = new RuleBuilder('foo', [
-            'type' => 'string',
-        ]);
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
+            'type' => 'number',
+        ]));
+
+        $this->assertEquals(<<<T
+    private function foo(): array
+    {
+        return [
+            new Assert\Type([
+                'type' => 'string',
+            ]),
+        ];
+    }
+T
+, $render->build());
+    }
+
+    public function testItTypeInplicitOk(): void
+    {
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', []));
 
         $this->assertEquals(<<<T
     private function foo(): array
@@ -242,9 +300,11 @@ T
 
     public function testItPatternOk(): void
     {
-        $render = new RuleBuilder('foo', [
+        $this->markTestSkipped('Pattern rule is no available yet');
+
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
             'pattern' => '/^[a-z_]*$/',
-        ]);
+        ]));
 
         $this->assertEquals(<<<T
     private function foo(): array
@@ -259,16 +319,9 @@ T
 , $render->build());
     }
 
-    public function testItSomeOk(): void
+    public function testItPrimaryKeyOk(): void
     {
-        $render = new RuleBuilder('foo', [
-            'required' => true,
-            'pattern' => '/^[a-z_]*$/',
-            'length' => [
-                'min' => 20,
-                'max' => 100,
-            ],
-        ]);
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', 'pk|required'));
 
         $this->assertEquals(<<<T
     private function foo(): array
@@ -276,12 +329,100 @@ T
         return [
             new Assert\NotNull(),
             new Assert\NotBlank(),
+            new Assert\Type([
+                'type' => 'string',
+            ]),
+        ];
+    }
+T, $render->build());
+    }
+
+    public function testItForeingKeyOk(): void
+    {
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', 'fk:table|required'));
+
+        $this->assertEquals(<<<T
+    private function foo(): array
+    {
+        return [
+            new Assert\NotNull(),
+            new Assert\NotBlank(),
+            new Assert\Type([
+                'type' => 'string',
+            ]),
+        ];
+    }
+T, $render->build());
+    }
+
+    public function testItAutoIncremetalOk(): void
+    {
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'integer', 'pk|ai|required'));
+
+        $this->assertEquals(<<<T
+    private function foo(): array
+    {
+        return [
+            new Assert\NotNull(),
+            new Assert\NotBlank(),
+            new Assert\Type([
+                'type' => 'int',
+            ]),
+        ];
+    }
+T, $render->build());
+    }
+
+    public function testItTypeDateAtOk(): void
+    {
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'datetime', []));
+
+        $this->assertEquals(<<<T
+    private function foo(): array
+    {
+        return [
+            new Assert\DateTime(),
+        ];
+    }
+T, $render->build());
+    }
+
+    public function testItCreatedAtOk(): void
+    {
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'datetime', 'ca'));
+
+        $this->assertEquals('', $render->build());
+    }
+
+    public function testItUpdatedAtOk(): void
+    {
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'datetime', 'ua'));
+
+        $this->assertEquals('', $render->build());
+    }
+
+    public function testItSomeOk(): void
+    {
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
+            'required' => true,
+            'length' => [
+                'min' => 20,
+                'max' => 100,
+            ],
+        ]));
+
+        $this->assertEquals(<<<T
+    private function foo(): array
+    {
+        return [
+            new Assert\NotNull(),
+            new Assert\NotBlank(),
+            new Assert\Type([
+                'type' => 'string',
+            ]),
             new Assert\Length([
                 'min' => 20,
                 'max' => 100,
-            ]),
-            new Assert\Regex([
-                'pattern' => '/^[a-z_]*$/',
             ]),
         ];
     }
@@ -297,7 +438,6 @@ T
             ['FooName', 'fooName'],
             ['fooName', 'fooName'],
             ['foo_name', 'fooName'],
-            ['foo-name', 'fooName'],
         ];
     }
 }

@@ -10,14 +10,15 @@
 namespace FlexPHP\Generator\Domain\Builders\Constraint;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class RuleBuilder extends AbstractBuilder
 {
-    public function __construct(string $property, array $constraints)
+    public function __construct(SchemaAttributeInterface $property)
     {
-        $property = $this->getCamelCase($property);
+        $name = $this->getCamelCase($property->name());
 
-        parent::__construct(\compact('property', 'constraints'));
+        parent::__construct(\compact('name', 'property'));
     }
 
     public function build(): string

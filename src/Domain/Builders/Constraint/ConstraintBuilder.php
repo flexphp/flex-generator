@@ -21,8 +21,7 @@ final class ConstraintBuilder extends AbstractBuilder
         $rules = \array_reduce(
             $schema->attributes(),
             function (array $result, SchemaAttributeInterface $schemaAttribute) {
-                $name = $schemaAttribute->name();
-                $result[$name] = (new RuleBuilder($name, $schemaAttribute->constraints()))->build();
+                $result[$schemaAttribute->name()] = (new RuleBuilder($schemaAttribute))->build();
 
                 return $result;
             },

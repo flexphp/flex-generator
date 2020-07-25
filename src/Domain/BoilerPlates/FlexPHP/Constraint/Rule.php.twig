@@ -1,59 +1,57 @@
-{% if constraints|length > 0 %}
-    private function {{ property }}(): array
+{% if not property.isCa and not property.isUa  %}
+    private function {{ name }}(): array
     {
         return [
-{% if constraints.required %}
+{% if property.isRequired %}
             new Assert\NotNull(),
             new Assert\NotBlank(),
 {% endif %}
-{% if constraints.length or constraints.minlength or constraints.maxlength %}
-            new Assert\Length([
-{% if constraints.length.min or constraints.minlength %}
-                'min' => {{ constraints.length.min }}{{ constraints.minlength }},
-{% endif %}
-{% if constraints.length.max or constraints.maxlength %}
-                'max' => {{ constraints.length.max }}{{ constraints.maxlength }},
-{% endif %}
-            ]),
-{% endif %}
-{% if constraints.check or constraints.mincheck or constraints.maxcheck %}
-            new Assert\Count([
-{% if constraints.check.min or constraints.mincheck %}
-                'min' => {{ constraints.check.min }}{{ constraints.mincheck }},
-{% endif %}
-{% if constraints.check.max or constraints.maxcheck %}
-                'max' => {{ constraints.check.max }}{{ constraints.maxcheck }},
-{% endif %}
-            ]),
-{% endif %}
-{% if constraints.min %}
-            new Assert\LessThanOrEqual([
-                'value' => {{ constraints.min }},
-            ]),
-{% endif %}
-{% if constraints.max %}
-            new Assert\GreaterThanOrEqual([
-                'value' => {{ constraints.max }},
-            ]),
-{% endif %}
-{% if constraints.equalto %}
-            new Assert\EqualTo([
-                'value' => '{{ constraints.equalto }}',
-            ]),
-{% endif %}
-{% if constraints.pattern %}
-            new Assert\Regex([
-                'pattern' => '/^[a-z_]*$/',
-            ]),
-{% endif %}
-{% if constraints.type %}
-{% if constraints.type.datetime %}
+{% if property.typeHint starts with '\\Date' %}
             new Assert\DateTime(),
-{% else %}
+{% else  %}
             new Assert\Type([
-                'type' => '{{ constraints.type }}',
+                'type' => '{{ property.typeHint }}',
             ]),
 {% endif %}
+{% if property.minlength or property.maxlength %}
+            new Assert\Length([
+{% if property.minlength %}
+                'min' => {{ property.minlength }},
+{% endif %}
+{% if property.maxlength %}
+                'max' => {{ property.maxlength }},
+{% endif %}
+            ]),
+{% endif %}
+{% if property.mincheck or property.maxcheck %}
+            new Assert\Count([
+{% if property.mincheck %}
+                'min' => {{ property.mincheck }},
+{% endif %}
+{% if property.maxcheck %}
+                'max' => {{ property.maxcheck }},
+{% endif %}
+            ]),
+{% endif %}
+{% if property.min %}
+            new Assert\LessThanOrEqual([
+                'value' => {{ property.min }},
+            ]),
+{% endif %}
+{% if property.max %}
+            new Assert\GreaterThanOrEqual([
+                'value' => {{ property.max }},
+            ]),
+{% endif %}
+{% if property.equalTo %}
+            new Assert\EqualTo([
+                'value' => '{{ property.equalTo }}',
+            ]),
+{% endif %}
+{% if property.pattern %}
+            new Assert\Regex([
+                'pattern' => '{{ property.pattern }}',
+            ]),
 {% endif %}
         ];
     }
