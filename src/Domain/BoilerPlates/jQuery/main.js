@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
         });
     }
     if ($('.navbar-nav > .nav-item > a').length) {
-        $('.navbar-nav > .nav-item > a').click(function (event) {
+        $('.navbar-nav > .nav-item > a').click(function () {
             if ($(this).hasClass('active')) {
                 $(this).removeClass('active');
                 $(this).attr('aria-expanded', 'false');
@@ -49,10 +49,11 @@ jQuery(document).ready(function ($) {
                         $target.focus();
                         if ($target.is(':focus')) {
                             return false;
-                        } else {
-                            $target.attr('tabindex', '-1');
-                            $target.focus();
-                        };
+                        }
+
+                        $target.attr('tabindex', '-1');
+                        $target.focus();
+                        return true;
                     });
                 }
             };
@@ -92,11 +93,11 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    $(document).on('submit', 'form:not([data-confirmation])', function (event) {
+    $(document).on('submit', 'form:not([data-confirmation])', function () {
         $('.overlay').show();
     });
 
-    $(document).on('click', '.show-overlay', function (event) {
+    $(document).on('click', '.show-overlay', function () {
         $('.overlay').show();
     });
 });
@@ -113,7 +114,7 @@ function getCookie(cname)
             c = c.substring(1);
         }
 
-        if (c.indexOf(name) == 0) {
+        if (c.indexOf(name) === 0) {
             return c.substring(name.length, c.length);
         }
     }

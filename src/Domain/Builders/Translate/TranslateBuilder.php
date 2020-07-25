@@ -18,7 +18,6 @@ final class TranslateBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema)
     {
-        $headers = [];
         $entity = (new Convert($this->getSingularize($schema->name())))->toTitle();
         $headers = \array_reduce($schema->attributes(), function (array $result, SchemaAttributeInterface $property) {
             $result[$this->getCamelCase($property->name())] = (new Convert($property->name()))->toTitle();
