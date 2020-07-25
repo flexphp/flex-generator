@@ -25,7 +25,7 @@ final class TemplateWriterTest extends TestCase
 
         $_filename = \explode('/', $output);
         $this->assertEquals(\array_pop($_filename), $filename . '.twig');
-        $this->assertFileExists($output);
+        $this->assertFileExists(\sprintf('%s%s%s.twig', $path, \DIRECTORY_SEPARATOR, $filename));
         $this->assertEquals(<<<T
 $content
 T

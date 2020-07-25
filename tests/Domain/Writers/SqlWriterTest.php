@@ -25,7 +25,7 @@ final class SqlWriterTest extends TestCase
 
         $_filename = \explode('/', $output);
         $this->assertEquals(\array_pop($_filename), $filename . '.sql');
-        $this->assertFileExists($output);
+        $this->assertFileExists(\sprintf('%s%s%s.sql', $path, \DIRECTORY_SEPARATOR, $filename));
         $this->assertEquals(<<<T
 $content
 T

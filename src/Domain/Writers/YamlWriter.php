@@ -13,9 +13,9 @@ use Symfony\Component\Yaml\Yaml;
 
 final class YamlWriter extends AbstractWriter
 {
-    public function __construct(array $data, string $filename)
+    public function __construct(array $data, string $filename, string $path)
     {
-        parent::__construct(Yaml::dump($data, 4, 2), $filename, \sprintf('%1$s/../../tmp', __DIR__));
+        parent::__construct(Yaml::dump($data, 4, 2), $filename, $path);
     }
 
     protected function getExtension(): string

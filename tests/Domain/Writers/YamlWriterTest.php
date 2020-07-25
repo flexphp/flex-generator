@@ -17,39 +17,17 @@ final class YamlWriterTest extends TestCase
     public function testItSaveOk(): void
     {
         $filename = 'Test';
+        $data = ['SheetName' => []];
+        $path = __DIR__;
 
-        $data = [
-            'SheetName' => [
-                'Title' => 'My Title',
-                'Attributes' => [
-                    'foo' => [
-                        'Name' => 'foo',
-                        'DataType' => 'bar',
-                    ],
-                    'bar' => [
-                        'Name' => 'bar',
-                        'DataType' => 'buz',
-                    ],
-                ],
-            ],
-        ];
-
-        $writer = new YamlWriter($data, $filename);
+        $writer = new YamlWriter($data, $filename, $path);
         $output = $writer->save();
 
         $_filename = \explode('/', $output);
         $this->assertEquals(\array_pop($_filename), $filename . '.yaml');
-        $this->assertFileExists($output);
+        $this->assertFileExists(\sprintf('%s%s%s.yaml', $path, \DIRECTORY_SEPARATOR, $filename));
         $this->assertEquals(<<<T
-SheetName:
-  Title: 'My Title'
-  Attributes:
-    foo:
-      Name: foo
-      DataType: bar
-    bar:
-      Name: bar
-      DataType: buz
+SheetName: {  }
 T
 , \rtrim(\file_get_contents($output)));
 
