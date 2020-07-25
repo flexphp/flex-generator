@@ -10,6 +10,8 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Box\Spout\Reader\ReaderInterface;
+use Box\Spout\Reader\SheetInterface;
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Exceptions\FormatPathNotValidException;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
@@ -24,6 +26,14 @@ final class ProcessFormatUseCase
 {
     use InflectorTrait;
 
+    private const ROW_HEADERS = 'ROW_HEADERS';
+
+    private const COLUMN_A = 0;
+
+    private const COLUMN_B = 1;
+
+    private $rowHeaders;
+
     /**
      * @throws FormatPathNotValidException
      * @throws FormatNotSupportedException
@@ -32,25 +42,12 @@ final class ProcessFormatUseCase
     {
         $sheetNames = [];
         $path = $request->path;
-        $extension = $request->extension;
 
         if (!\is_file($path)) {
             throw new FormatPathNotValidException();
         }
 
-        switch ($extension) {
-            case 'xlsx': // MS Excel >= 2007
-                $reader = ReaderEntityFactory::createXLSXReader();
-
-                break;
-            // case 'ods': // Open Format
-            //     $reader = ReaderEntityFactory::createODSReader();
-
-            //     break;
-            default:
-                throw new FormatNotSupportedException();
-        }
-
+        $reader = $this->getReader($request->extension);
         $reader->open($path);
 
         foreach ($reader->getSheetIterator() as $sheet) {
@@ -59,51 +56,115 @@ final class ProcessFormatUseCase
             }
 
             $sheetName = $this->getPascalCase($sheet->getName());
+            $conf = $this->getConf($sheetName, $sheet);
+            $headers = $this->getHeaders($sheet);
+            $attributes = $this->getAttributes($sheet, $headers);
 
-            $headers = [];
-            $fields = [];
+            $this->createFile($sheetName, $conf, $attributes);
 
-            foreach ($sheet->getRowIterator() as $rowNumber => $row) {
-                $rowNumber -= 1;
-                $cols = $row->getCells();
-
-                if ($rowNumber === 0) {
-                    foreach ($cols as $colNumber => $col) {
-                        $headers[$colNumber] = $col->getValue();
-                    }
-
-                    $headerValidation = new HeaderSyntaxValidation($headers);
-                    $headerValidation->validate();
-
-                    continue;
-                }
-
-                $field = [];
-
-                foreach ($cols as $colNumber => $col) {
-                    $field[$headers[$colNumber]] = $col->getValue();
-                }
-
-                $fieldValidation = new FieldSyntaxValidation($field);
-                $fieldValidation->validate();
-
-                $colHeaderName = $headers[\array_search(Keyword::NAME, $headers)];
-                $fieldName = $this->getCamelCase($field[$colHeaderName]);
-                $fields[$fieldName] = $field;
-            }
-
-            $writer = new YamlWriter([
-                $sheetName => [
-                    'Entity' => $sheetName,
-                    'Attributes' => $fields,
-                ],
-            ], \strtolower($sheetName));
-
-            $writer->save();
-
-            $sheetNames[$sheetName] = \count($fields);
+            $sheetNames[$sheetName] = \count($attributes);
         }
 
         return new ProcessFormatResponse($sheetNames);
+    }
+
+    private function getReader(string $extension): ReaderInterface
+    {
+        switch ($extension) {
+            case 'xlsx': // MS Excel >= 2007
+                return ReaderEntityFactory::createXLSXReader();
+            // case 'ods': // Open Format
+            //     return ReaderEntityFactory::createODSReader();
+            default:
+                throw new FormatNotSupportedException();
+        }
+    }
+
+    private function getConf(string $sheetName, SheetInterface $sheet): array
+    {
+        $this->rowHeaders = 1;
+
+        $conf = [
+            Keyword::TITLE => $sheetName,
+            Keyword::ICON => '',
+        ];
+
+        foreach ($sheet->getRowIterator() as $rowNumber => $row) {
+            $this->rowHeaders = $rowNumber;
+
+            if ($row->getCellAtIndex(self::COLUMN_A)->getValue() === Keyword::NAME) {
+                break;
+            }
+
+            $conf[$row->getCellAtIndex(self::COLUMN_A)->getValue()] = $row->getCellAtIndex(self::COLUMN_B)->getValue();
+        }
+
+        return $conf;
+    }
+
+    private function getHeaders(SheetInterface $sheet): array
+    {
+        $headers = [];
+
+        foreach ($sheet->getRowIterator() as $rowNumber => $row) {
+            if ($rowNumber < $this->rowHeaders) {
+                continue;
+            }
+
+            $cols = $row->getCells();
+
+            foreach ($cols as $colNumber => $col) {
+                $headers[$colNumber] = $col->getValue();
+            }
+
+            (new HeaderSyntaxValidation($headers))->validate();
+
+            break;
+        }
+
+        return $headers;
+    }
+
+    private function getAttributes(SheetInterface $sheet, array $headers): array
+    {
+        $attributes = [];
+
+        foreach ($sheet->getRowIterator() as $rowNumber => $row) {
+            if ($rowNumber <= $this->rowHeaders) {
+                continue;
+            }
+
+            $cols = $row->getCells();
+
+            $properties = $this->getProperties($cols, $headers);
+
+            $colHeaderName = $headers[\array_search(Keyword::NAME, $headers)];
+            $name = $this->getCamelCase($properties[$colHeaderName]);
+            $attributes[$name] = $properties;
+        }
+
+        return $attributes;
+    }
+
+    private function getProperties(array $cols, array $headers): array
+    {
+        $attributes = [];
+
+        foreach ($cols as $colNumber => $col) {
+            $attributes[$headers[$colNumber]] = $col->getValue();
+        }
+
+        (new FieldSyntaxValidation($attributes))->validate();
+
+        return $attributes;
+    }
+
+    private function createFile(string $sheetName, array $conf, array $attributes): void
+    {
+        $writer = new YamlWriter([
+            $sheetName => $conf + [Keyword::ATTRIBUTES => $attributes],
+        ], \strtolower($sheetName));
+
+        $writer->save();
     }
 }
