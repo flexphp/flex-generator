@@ -240,6 +240,37 @@ T
 , $render->build());
     }
 
+    public function testItIndexAutoIncrementalAndBlameable(): void
+    {
+        $render = new RequestBuilder($this->getSchemaAiAndBlame('Bar'), 'index');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Bar\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class IndexBarRequest implements RequestInterface
+{
+    public \$key;
+    public \$value;
+    public \$created;
+    public \$updated;
+
+    public function __construct(array \$data)
+    {
+        \$this->key = \$data['key'] ?? null;
+        \$this->value = \$data['value'] ?? null;
+        \$this->created = \$data['created'] ?? null;
+        \$this->updated = \$data['updated'] ?? null;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItCreateAutoIncrementalAndBlameable(): void
     {
         $render = new RequestBuilder($this->getSchemaAiAndBlame('Bar'), 'create');

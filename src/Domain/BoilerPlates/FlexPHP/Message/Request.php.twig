@@ -22,7 +22,7 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
     }
 {% else %}
 {% for id, property in properties %}
-{% if (action|lower in ['update'] and property.isPk) or (not property.isAi and not property.isBlame) %}
+{% if (action|lower in ['update'] and property.isPk) or action|lower in ['index'] or (not property.isAi and not property.isBlame) %}
     public ${{ id }};
 {% endif %}
 {% endfor %}
@@ -39,6 +39,8 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% if action|lower in ['update'] and property.isPk %}
         $this->{{ id }} = ${{ pkName }};
 {% elseif not (action|lower in ['create'] and property.isAi) and not property.isBlame %}
+        $this->{{ id }} = $data['{{ id }}'] ?? null;
+{% elseif action|lower in ['index'] %}
         $this->{{ id }} = $data['{{ id }}'] ?? null;
 {% endif %}
 {% endfor %}
