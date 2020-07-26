@@ -17,13 +17,19 @@ final class ProcessFormatRequest
     public $path;
 
     /**
+     * @var string
+     */
+    public $filename;
+
+    /**
      * @var null|string
      */
     public $extension;
 
-    public function __construct(string $path, ?string $extension)
+    public function __construct(string $path, string $filename, ?string $extension)
     {
         $this->path = $path;
+        $this->filename = $filename;
         $this->extension = $extension;
     }
 }

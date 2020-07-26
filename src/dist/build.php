@@ -38,12 +38,23 @@ try {
         $response->messages = ['message' => $error];
     } else {
         $response = (new ProcessFormatUseCase())->execute(
-            new ProcessFormatRequest((string)$file->getRealPath(), $file->guessClientExtension())
+            new ProcessFormatRequest(
+                (string)$file->getRealPath(),
+                $file->getFilename(),
+                $file->guessClientExtension()
+            )
         );
     }
 } catch (Exception $e) {
     $response = new \stdClass();
-    $response->messages = ['message' => \sprintf('%1$s(%2$d): %3$s', $e->getFile(), $e->getLine(), $e->getMessage())];
+    $response->messages = [
+        'message' => \sprintf(
+            '%1$s(%2$d): %3$s',
+            $e->getFile(),
+            $e->getLine(),
+            $e->getMessage()
+        ),
+    ];
     $response->hasError = true;
 } finally {
     $content = \json_encode($response->messages);

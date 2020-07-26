@@ -27,7 +27,7 @@ final class ProcessFormatUseCaseTest extends TestCase
     {
         $this->expectException(FormatPathNotValidException::class);
 
-        $request = new ProcessFormatRequest($path, 'xlsx');
+        $request = new ProcessFormatRequest($path, 'filename', 'xlsx');
 
         $useCase = new ProcessFormatUseCase();
         $useCase->execute($request);
@@ -45,7 +45,11 @@ final class ProcessFormatUseCaseTest extends TestCase
     {
         $this->expectException(FormatNotSupportedException::class);
 
-        $request = new ProcessFormatRequest(\sprintf('%1$s/../../../src/dist/templates/Format.xlsx', __DIR__), 'doc');
+        $request = new ProcessFormatRequest(
+            \sprintf('%1$s/../../../src/dist/templates/Format.xlsx', __DIR__),
+            'filename',
+            'doc'
+        );
 
         $useCase = new ProcessFormatUseCase();
         $useCase->execute($request);
@@ -53,7 +57,13 @@ final class ProcessFormatUseCaseTest extends TestCase
 
     public function testItFormatOk(): void
     {
-        $request = new ProcessFormatRequest(\sprintf('%1$s/../../../src/dist/templates/Format.xlsx', __DIR__), 'xlsx');
+        $name = 'Format';
+        $extension = 'xlsx';
+        $request = new ProcessFormatRequest(
+            \sprintf('%s/../../../src/dist/templates/%s.%s', __DIR__, $name, $extension),
+            $name,
+            $extension
+        );
 
         $useCase = new ProcessFormatUseCase();
         $response = $useCase->execute($request);
@@ -64,17 +74,14 @@ final class ProcessFormatUseCaseTest extends TestCase
 
         foreach ($sheetNames as $sheetName => $numberFields) {
             $numberExpected = 0;
-            $contentExpected = '';
 
             switch ($sheetName) {
                 case 'Posts':
                     $numberExpected = 6;
-                    $contentExpected = $this->getContentPostFile();
 
                     break;
                 case 'Comments':
                     $numberExpected = 5;
-                    $contentExpected = $this->getContentCommentFile();
 
                     break;
                 default:
@@ -84,14 +91,14 @@ final class ProcessFormatUseCaseTest extends TestCase
             }
 
             $this->assertEquals($numberExpected, $numberFields);
-
-            $yaml = \sprintf('%1$s/../../../src/tmp/%2$s.yaml', __DIR__, \strtolower($sheetName));
-
-            $this->assertFileExists($yaml);
-            $this->assertEquals($contentExpected, \file_get_contents($yaml));
-
-            \unlink($yaml);
         }
+
+        $zip = \sprintf('%1$s/../../../src/tmp/%2$s.zip', __DIR__, $name);
+
+        $this->assertFileExists($zip);
+        $this->assertTrue(\filesize($zip) > 0);
+
+        \unlink($zip);
     }
 
     private function getContentPostFile(): string

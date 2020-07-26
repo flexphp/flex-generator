@@ -74,14 +74,13 @@ final class GeneratorTest extends WebTestCase
         \ob_start();
 
         include __DIR__ . '/../../src/dist/build.php';
-        $response = \ob_get_clean();
 
-        $sheetNames = \json_decode($response, true);
+        $this->assertEquals('{"Posts":6,"Comments":5}', \ob_get_clean());
 
-        foreach (\array_keys($sheetNames) as $sheetName) {
-            $yaml = \sprintf('%1$s/../../src/tmp/%2$s.yaml', __DIR__, \strtolower($sheetName));
-            $this->assertFileExists($yaml);
-            \unlink($yaml);
-        }
+        $zip = \sprintf('%1$s/../../src/tmp/%2$s.zip', __DIR__, $name);
+
+        $this->assertFileExists($zip);
+
+        \unlink($zip);
     }
 }

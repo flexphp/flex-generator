@@ -32,6 +32,7 @@ final class CreatePrototypeUseCase
             $this->processSheet($name, $schemafile);
         }
 
+        $this->addDomainDirectories($outputDir);
         $this->addDatabaseFile($outputDir, $request->name, $request->platform, $sheets);
         $this->addMenuFile($outputDir, $sheets);
         $this->addFrameworkDirectories($outputDir);
@@ -64,6 +65,21 @@ final class CreatePrototypeUseCase
         );
 
         \rename($menu->file, $dest . '/config/menu.php');
+    }
+
+    private function addDomainDirectories(string $dest): void
+    {
+        $dirs = [
+            '/config',
+            '/domain',
+            '/domain/Database',
+        ];
+
+        foreach ($dirs as $dir) {
+            if (!\is_dir($dest . $dir)) {
+                \mkdir($dest . $dir, 0770, true);
+            }
+        }
     }
 
     private function addFrameworkDirectories(string $dest): void
@@ -133,6 +149,10 @@ final class CreatePrototypeUseCase
             $source . '/translations/.gitignore' => $dest . '/translations/.gitignore',
             $source . '/translations/messages.en.tphp' => $dest . '/translations/messages.en.php',
             $source . '/translations/dashboard.en.tphp' => $dest . '/translations/dashboard.en.php',
+            $source . '/var/cache/.gitkeep' => $dest . '/var/cache/.gitkeep',
+            $source . '/var/log/.gitkeep' => $dest . '/var/log/.gitkeep',
+            $source . '/var/sessions/.gitkeep' => $dest . '/var/sessions/.gitkeep',
+            $source . '/tests/.gitkeep' => $dest . '/tests/.gitkeep',
         ];
 
         foreach ($templates as $from => $to) {

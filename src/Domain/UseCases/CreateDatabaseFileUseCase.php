@@ -27,7 +27,7 @@ final class CreateDatabaseFileUseCase
             $builder->createTable(Schema::fromFile($schemafile));
         }, $request->yamls);
 
-        $path = \sprintf('%1$s/../../tmp/skeleton/domain/Database/', __DIR__);
+        $path = \sprintf('%1$s/../../tmp/skeleton/domain/Database', __DIR__);
 
         $writer = new SqlWriter($builder->toSql(), 'database', $path);
 
