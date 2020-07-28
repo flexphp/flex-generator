@@ -12,6 +12,7 @@ namespace FlexPHP\Generator\Domain\UseCases;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Box\Spout\Reader\ReaderInterface;
 use Box\Spout\Reader\SheetInterface;
+use Exception;
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Exceptions\FormatPathNotValidException;
 use FlexPHP\Generator\Domain\Messages\Requests\CreatePrototypeRequest;
@@ -128,10 +129,20 @@ final class ProcessFormatUseCase
             $cols = $row->getCells();
 
             foreach ($cols as $colNumber => $col) {
-                $headers[$colNumber] = $col->getValue();
+                $header = \trim($col->getValue());
+
+                if (empty($header)) {
+                    continue;
+                }
+
+                $headers[$colNumber] = $header;
             }
 
-            (new HeaderSyntaxValidation($headers))->validate();
+            try {
+                (new HeaderSyntaxValidation($headers))->validate();
+            } catch (Exception $e) {
+                throw new Exception(\sprintf('Sheet [%s]: %s', $sheet->getName(), $e->getMessage()));
+            }
 
             break;
         }
@@ -165,7 +176,13 @@ final class ProcessFormatUseCase
         $attributes = [];
 
         foreach ($cols as $colNumber => $col) {
-            $attributes[$headers[$colNumber]] = $col->getValue();
+            $value = \trim($col->getValue());
+
+            if (empty($value)) {
+                continue;
+            }
+
+            $attributes[$headers[$colNumber]] = $value;
         }
 
         (new FieldSyntaxValidation($attributes))->validate();
