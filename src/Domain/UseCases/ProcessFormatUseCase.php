@@ -64,7 +64,7 @@ final class ProcessFormatUseCase
         $reader->open($path);
 
         foreach ($reader->getSheetIterator() as $sheet) {
-            if (!$sheet->isVisible()) {
+            if ($this->isIgnored($sheet)) {
                 continue;
             }
 
@@ -81,6 +81,11 @@ final class ProcessFormatUseCase
         $this->createZip($request->filename, $outputTmp, $outputDir);
 
         return new ProcessFormatResponse($sheetNames);
+    }
+
+    private function isIgnored(SheetInterface $sheet): bool
+    {
+        return !$sheet->isVisible() || \substr($sheet->getName(), 0, 1) === '_';
     }
 
     private function getReader(?string $extension): ReaderInterface
