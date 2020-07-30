@@ -40,7 +40,7 @@ try {
         $response = (new ProcessFormatUseCase())->execute(
             new ProcessFormatRequest(
                 (string)$file->getRealPath(),
-                $file->getFilename(),
+                $file->getClientOriginalName(),
                 $file->guessClientExtension()
             )
         );
@@ -49,13 +49,18 @@ try {
     $response = new \stdClass();
     $response->messages = [
         'message' => \sprintf(
-            '%1$s(%2$d): %3$s',
-            $e->getFile(),
-            $e->getLine(),
+            "Error processing %s file:\n\n%s",
+            $file->getClientOriginalName(),
             $e->getMessage()
         ),
     ];
     $response->hasError = true;
+
+    \file_put_contents(
+        \sprintf('%s/../../log/build_%s.log', __DIR__, \date('Y_m_d')),
+        $e->getTraceAsString() . "\n",
+        \FILE_APPEND
+    );
 } finally {
     $content = \json_encode($response->messages);
     $status = $response->hasError

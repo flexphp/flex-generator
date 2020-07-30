@@ -6,3 +6,4 @@ vendor
 infection.*
 src/tmp/*
 src/dist/templates/~*
+log/*.log
