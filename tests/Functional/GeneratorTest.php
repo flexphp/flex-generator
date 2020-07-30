@@ -63,9 +63,9 @@ final class GeneratorTest extends WebTestCase
 
     public function testItFileFormatXlsx(): void
     {
-        $name = 'Format.xlsx';
+        $name = 'Format';
         $type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-        $path = \getcwd() . '/src/dist/templates/' . $name;
+        $path = \getcwd() . "/src/dist/templates/{$name}.xlsx";
 
         $_FILES = [
             'file' => $this->getFileMock($name, $path, $type),

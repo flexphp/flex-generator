@@ -16,9 +16,34 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class CreateDatabaseFileUseCaseTest extends TestCase
 {
-    public function testItOk(): void
+    public function testItMySQLOk(): void
     {
         $platform = 'MySQL';
+        $dbname = 'test';
+        $username = 'foo';
+        $password = '';
+        $yamls = [
+            \sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__),
+            \sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__),
+        ];
+
+        $request = new CreateDatabaseFileRequest($platform, $dbname, $username, $password, $yamls);
+
+        $useCase = new CreateDatabaseFileUseCase();
+        $response = $useCase->execute($request);
+
+        $this->assertInstanceOf(CreateDatabaseFileResponse::class, $response);
+        $file = $response->file;
+        $filename = \explode('/', $file);
+        $this->assertEquals('database.sql', \array_pop($filename));
+        $this->assertFileExists($file);
+
+        \unlink($file);
+    }
+
+    public function testItSQLSrvOk(): void
+    {
+        $platform = 'SQLSrv';
         $dbname = 'test';
         $username = 'foo';
         $password = '';

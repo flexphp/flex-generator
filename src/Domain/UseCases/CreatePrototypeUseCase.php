@@ -28,16 +28,16 @@ final class CreatePrototypeUseCase
             \mkdir($outputDir, 0777, true); // @codeCoverageIgnore
         }
 
-        foreach ($sheets as $name => $schemafile) {
-            $this->processSheet($name, $schemafile);
-        }
-
         $this->addDomainDirectories($outputDir);
         $this->addDatabaseFile($outputDir, $request->name, $request->platform, $sheets);
         $this->addMenuFile($outputDir, $sheets);
         $this->addFrameworkDirectories($outputDir);
         $this->addAssetFiles($outputDir);
         $this->addFrameworkFiles($sourceDir, $outputDir);
+
+        foreach ($sheets as $name => $schemafile) {
+            $this->processSheet($name, $schemafile);
+        }
 
         return new CreatePrototypeResponse($outputDir);
     }

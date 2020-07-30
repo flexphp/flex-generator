@@ -59,6 +59,7 @@ final class ProcessFormatUseCase
         $sheetNames = [];
         $outputDir = \sprintf('%1$s/../../../src/tmp', __DIR__);
         $outputTmp = \sprintf('%1$s/../../../src/tmp/skeleton', __DIR__);
+        $name = \str_ireplace('.' . $request->extension, '', $request->filename);
 
         $reader = $this->getReader($request->extension);
         $reader->open($path);
@@ -76,9 +77,9 @@ final class ProcessFormatUseCase
             $yamls[$sheetName] = $this->createYaml($sheetName, $conf, $attributes, $outputTmp . '/yamls');
         }
 
-        $this->createPrototype($request->filename, $yamls, $outputTmp);
+        $this->createPrototype($this->getDashCase($name), $yamls, $outputTmp);
 
-        $this->createZip($request->filename, $outputTmp, $outputDir);
+        $this->createZip($name, $outputTmp, $outputDir);
 
         return new ProcessFormatResponse($sheetNames);
     }

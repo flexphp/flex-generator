@@ -50,7 +50,7 @@ try {
     $response->messages = [
         'message' => \sprintf(
             "Error processing %s file:\n\n%s",
-            $file->getClientOriginalName(),
+            (isset($file) ? $file->getClientOriginalName() : 'Format'),
             $e->getMessage()
         ),
     ];
