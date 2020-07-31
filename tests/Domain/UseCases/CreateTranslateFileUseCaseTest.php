@@ -38,11 +38,46 @@ final class CreateTranslateFileUseCaseTest extends TestCase
         \unlink($response->file);
     }
 
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItDiffEntityName(string $name, string $expectedFile): void
+    {
+        $schema = new Schema($name, 'bar', []);
+
+        $request = new CreateTranslateFileRequest($schema);
+
+        $useCase = new CreateTranslateFileUseCase();
+        $response = $useCase->execute($request);
+
+        $this->assertInstanceOf(CreateTranslateFileResponse::class, $response);
+
+        $filename = \explode('/', $response->file);
+        $this->assertEquals($expectedFile, \array_pop($filename));
+        $this->assertFileExists($response->file);
+
+        \unlink($response->file);
+    }
+
     public function getEntityFile(): array
     {
         return [
             [\sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__), 'post.en.php'],
             [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), 'comment.en.php'],
+        ];
+    }
+
+    public function getEntityName(): array
+    {
+        return [
+            // entity, filename
+            ['userpassword', 'userpassword.en.php'],
+            ['USERPASSWORD', 'userpassword.en.php'],
+            ['UserPassword', 'userPassword.en.php'],
+            ['userPassword', 'userPassword.en.php'],
+            ['user_password', 'userPassword.en.php'],
+            ['user-password', 'userPassword.en.php'],
+            ['Posts', 'post.en.php'],
         ];
     }
 }

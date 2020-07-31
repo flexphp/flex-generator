@@ -25,7 +25,7 @@ final class CreateTranslateFileUseCase
 
         $translate = new TranslateBuilder($request->schema);
         $path = \sprintf('%1$s/../../tmp/skeleton/translations', __DIR__);
-        $filename = \sprintf('%1$s.%2$s', $this->getDashCase($entity), $request->schema->language());
+        $filename = \sprintf('%1$s.%2$s', $this->getCamelCase($entity), $request->schema->language());
 
         $writer = new PhpWriter($translate->build(), $filename, $path);
 
