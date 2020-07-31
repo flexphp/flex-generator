@@ -20,6 +20,7 @@ final class FormTypeBuilder extends AbstractBuilder
     {
         $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $items = $this->getDashCase($this->getPluralize($schema->name()));
+        $fkFns = $this->getFkFunctions($schema->fkRelations());
         $fkRels = $this->getFkRelations($schema->fkRelations());
         $labels = [];
         $inputs = [];
@@ -36,7 +37,7 @@ final class FormTypeBuilder extends AbstractBuilder
             []
         );
 
-        parent::__construct(\compact('entity', 'properties', 'labels', 'inputs', 'items', 'fkRels'));
+        parent::__construct(\compact('entity', 'properties', 'labels', 'inputs', 'items', 'fkRels', 'fkFns'));
     }
 
     protected function getFileTemplate(): string

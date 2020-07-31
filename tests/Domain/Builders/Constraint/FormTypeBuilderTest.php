@@ -259,6 +259,57 @@ T
 , $render->build());
     }
 
+    public function testItBlameBy(): void
+    {
+        $render = new FormTypeBuilder($this->getSchemaStringAndBlameBy());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+use App\Form\Type\Select2Type;
+use Doctrine\DBAL\Connection;
+use Domain\User\UseCase\ReadUserUseCase;
+use Domain\User\UserRepository;
+use Domain\User\Gateway\MySQLUserGateway;
+use Domain\User\Request\ReadUserRequest;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type as InputType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+final class TestFormType extends AbstractType
+{
+    private \$conn;
+    private \$router;
+
+    public function __construct(Connection \$conn, UrlGeneratorInterface \$router)
+    {
+        \$this->conn = \$conn;
+        \$this->router = \$router;
+    }
+
+    public function buildForm(FormBuilderInterface \$builder, array \$options): void
+    {
+        \$builder->add('code', InputType\TextType::class, [
+            'label' => 'Code',
+            'required' => true,
+        ]);
+        \$builder->add('name', InputType\TextareaType::class, [
+            'label' => 'Name',
+            'required' => true,
+        ]);
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */
