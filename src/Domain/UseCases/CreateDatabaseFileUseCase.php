@@ -12,15 +12,18 @@ namespace FlexPHP\Generator\Domain\UseCases;
 use FlexPHP\Database\Builder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateDatabaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateDatabaseFileResponse;
+use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\SqlWriter;
 use FlexPHP\Schema\Schema;
 
 final class CreateDatabaseFileUseCase
 {
+    use InflectorTrait;
+
     public function execute(CreateDatabaseFileRequest  $request): CreateDatabaseFileResponse
     {
         $builder = new Builder($request->platform);
-        $builder->createDatabase($request->dbname);
+        $builder->createDatabase($this->getSnakeCase($request->dbname));
         $builder->createUser($request->username, $request->password);
 
         \array_map(function (string $schemafile) use ($builder): void {

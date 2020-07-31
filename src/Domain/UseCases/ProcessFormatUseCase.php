@@ -77,7 +77,7 @@ final class ProcessFormatUseCase
             $yamls[$sheetName] = $this->createYaml($sheetName, $conf, $attributes, $outputTmp . '/yamls');
         }
 
-        $this->createPrototype($this->getDashCase($name), $yamls, $outputTmp);
+        $this->createPrototype($this->getSnakeCase($name), $yamls, $outputTmp);
 
         $this->createZip($name, $outputTmp, $outputDir);
 
