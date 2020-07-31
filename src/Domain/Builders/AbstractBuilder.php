@@ -71,5 +71,16 @@ abstract class AbstractBuilder implements BuilderInterface
         return $fkRels;
     }
 
+    protected function getFkFunctions(array $fkRelations): array
+    {
+        $fkFunctions = [];
+
+        \array_map(function (array $fkRel) use (&$fkFunctions): void {
+            $fkFunctions[$fkRel['fnSingular']] = $fkRel;
+        }, $this->getFkRelations($fkRelations));
+
+        return $fkFunctions;
+    }
+
     abstract protected function getFileTemplate(): string;
 }

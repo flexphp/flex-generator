@@ -16,9 +16,9 @@ final class ControllerBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema, array $actions)
     {
-        $fkRels = $this->getFkRelations($schema->fkRelations());
         $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $route = $this->getDashCase($this->getPluralize($entity));
+        $fkFns = $this->getFkFunctions($schema->fkRelations());
         unset($actions['login']);
 
         foreach ($actions as $action => $builder) {
@@ -26,9 +26,9 @@ final class ControllerBuilder extends AbstractBuilder
             unset($actions[$action]);
         }
 
-        parent::__construct(\compact('entity', 'actions', 'route', 'fkRels'));
+        parent::__construct(\compact('entity', 'actions', 'route', 'fkFns'));
     }
-
+    
     protected function getFileTemplate(): string
     {
         return 'Controller.php.twig';

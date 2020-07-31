@@ -60,6 +60,16 @@ class TestCase extends PHPUnitTestCase
         ]);
     }
 
+    protected function getSchemaStringAndBlameBy(string $name = 'Test'): Schema
+    {
+        return new Schema($name, 'bar', [
+            new SchemaAttribute('code', 'string', 'pk|required'),
+            new SchemaAttribute('Name', 'integer', 'required'),
+            new SchemaAttribute('CreatedBy', 'integer', 'cb|fk:users,name'),
+            new SchemaAttribute('UpdatedBy', 'integer', 'ub|fk:users,name'),
+        ]);
+    }
+
     protected static function getOutputFolder(): string
     {
         return __DIR__ . '/../src/tmp/skeleton';

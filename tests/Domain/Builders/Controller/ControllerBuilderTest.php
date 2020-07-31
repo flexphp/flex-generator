@@ -555,6 +555,58 @@ T
 , $render->build());
     }
 
+    public function testItRenderBlameByOk(): void
+    {
+        $render = new ControllerBuilder($this->getSchemaStringAndBlameBy(), []);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace App\Controller;
+
+use Domain\Test\Request\FindTestUserRequest;
+use Domain\Test\UseCase\FindTestUserUseCase;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/tests")
+ */
+final class TestController extends AbstractController
+{
+    /**
+     * @Route("/find-users", methods={"POST"}, name="comments.find.users")
+     * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_USER_INDEX')", statusCode=401)
+     */
+    public function findUser(Request \$request, Connection \$conn): Response
+    {
+        if (!\$request->isXmlHttpRequest()) {
+            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
+        }
+
+        \$request = new FindTestUserRequest(\$request->request->all());
+
+        \$useCase = new FindTestUserUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        return new JsonResponse([
+            'results' => \$response->users,
+            'pagination' => ['more' => false],
+        ]);
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderMixedOk(): void
     {
         $schema = new Schema('Test', 'bar', []);
