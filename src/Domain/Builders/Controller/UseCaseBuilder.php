@@ -18,7 +18,7 @@ final class UseCaseBuilder extends AbstractBuilder
     {
         $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $action = $this->getPascalCase($action);
-        $name = $this->getDashCase($this->getSingularize($schema->name()));
+        $name = $this->getCamelCase($this->getSingularize($schema->name()));
         $pkName = $this->getCamelCase($schema->pkName());
 
         parent::__construct(\compact('entity', 'action', 'name', 'pkName'));

@@ -11,14 +11,14 @@
 
         $response = $useCase->execute($request);
 
-        if (!$response->{{ name }}->{{ pkName }}()) {
+        if (!$response->{{ item }}->{{ pkName }}()) {
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm({{ entity }}FormType::class, $response->{{ name }});
+        $form = $this->createForm({{ entity }}FormType::class, $response->{{ item }});
 
         return $this->render('{{ name }}/edit.html.twig', [
-            'register' => $response->{{ name }},
+            'register' => $response->{{ item }},
             'form' => $form->createView(),
         ]);
     }

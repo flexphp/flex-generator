@@ -86,6 +86,45 @@ T
 , $render->build());
     }
 
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItRenderCreateDiffNameOk(
+        string $name,
+        string $expected,
+        string $route,
+        string $template,
+        string $role
+    ): void {
+        $render = new ActionBuilder(new Schema($name, 'bar', []), 'create');
+
+        $this->assertEquals(<<<T
+    /**
+     * @Route("/new", methods={"GET"}, name="{$route}.new")
+     * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_CREATE')", statusCode=401)
+     */
+    public function new(): Response
+    {
+        \$form = \$this->createForm({$expected}FormType::class);
+
+        return \$this->render('{$template}/new.html.twig', [
+            'form' => \$form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/create", methods={"POST"}, name="{$route}.create")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_CREATE')", statusCode=401)
+     */
+    public function create(Request \$request, Connection \$conn): Response
+    {
+    }
+
+T
+, $render->build());
+    }
+
     public function testItRenderReadOk(): void
     {
         $render = new ActionBuilder(new Schema('Test', 'bar', []), 'read');
@@ -137,6 +176,57 @@ T
     /**
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
+     */
+    public function update(Request \$request, Connection \$conn, string \$id): Response
+    {
+    }
+
+T
+, $render->build());
+    }
+
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItRenderUpdateDiffNameOk(
+        string $name,
+        string $expected,
+        string $route,
+        string $template,
+        string $role,
+        string $item
+    ): void {
+        $render = new ActionBuilder(new Schema($name, 'bar', []), 'update');
+
+        $this->assertEquals(<<<T
+    /**
+     * @Route("/edit/{id}", methods={"GET"}, name="{$route}.edit")
+     * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_UPDATE')", statusCode=401)
+     */
+    public function edit(Connection \$conn, string \$id): Response
+    {
+        \$request = new Read{$expected}Request(\$id);
+
+        \$useCase = new Read{$expected}UseCase(new {$expected}Repository(new MySQL{$expected}Gateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        if (!\$response->{$item}->id()) {
+            throw \$this->createNotFoundException();
+        }
+
+        \$form = \$this->createForm({$expected}FormType::class, \$response->{$item});
+
+        return \$this->render('{$template}/edit.html.twig', [
+            'register' => \$response->{$item},
+            'form' => \$form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/update/{id}", methods={"PUT"}, name="{$route}.update")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_UPDATE')", statusCode=401)
      */
     public function update(Request \$request, Connection \$conn, string \$id): Response
     {
@@ -362,6 +452,20 @@ T
             ['user_password', 'user-passwords', 'USERPASSWORD'],
             ['user-password', 'user-passwords', 'USERPASSWORD'],
             ['Posts', 'posts', 'POST'],
+        ];
+    }
+
+    public function getEntityName(): array
+    {
+        return [
+            // entity, function, route, template, role, item
+            ['userpassword', 'Userpassword', 'userpasswords', 'userpassword', 'USERPASSWORD', 'userpassword'],
+            ['USERPASSWORD', 'Userpassword', 'userpasswords', 'userpassword', 'USERPASSWORD', 'userpassword'],
+            ['UserPassword', 'UserPassword', 'user-passwords', 'user-password', 'USERPASSWORD', 'userPassword'],
+            ['userPassword', 'UserPassword', 'user-passwords', 'user-password', 'USERPASSWORD', 'userPassword'],
+            ['user_password', 'UserPassword', 'user-passwords', 'user-password', 'USERPASSWORD', 'userPassword'],
+            ['user-password', 'UserPassword', 'user-passwords', 'user-password', 'USERPASSWORD', 'userPassword'],
+            ['Posts', 'Post', 'posts', 'post', 'POST', 'post'],
         ];
     }
 }

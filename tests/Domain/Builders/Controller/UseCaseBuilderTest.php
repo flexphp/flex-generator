@@ -69,6 +69,25 @@ T
 , $render->build());
     }
 
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItRenderReadDiffEntityNameOk(string $name, string $expected, string $item): void
+    {
+        $render = new UseCaseBuilder(new Schema($name, 'bar', []), 'read');
+
+        $this->assertEquals(<<<T
+        \$useCase = new Read{$expected}UseCase(new {$expected}Repository(new MySQL{$expected}Gateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        if (!\$response->{$item}->id()) {
+            throw \$this->createNotFoundException();
+        }
+T
+, $render->build());
+    }
+
     public function testItRenderUpdateOk(): void
     {
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'update');
@@ -96,13 +115,14 @@ T
     public function getEntityName(): array
     {
         return [
-            ['userpassword', 'Userpassword'],
-            ['USERPASSWORD', 'Userpassword'],
-            ['UserPassword', 'UserPassword'],
-            ['userPassword', 'UserPassword'],
-            ['user_password', 'UserPassword'],
-            ['user-password', 'UserPassword'],
-            ['Posts', 'Post'],
+            // entity, function, item
+            ['userpassword', 'Userpassword', 'userpassword'],
+            ['USERPASSWORD', 'Userpassword', 'userpassword'],
+            ['UserPassword', 'UserPassword', 'userPassword'],
+            ['userPassword', 'UserPassword', 'userPassword'],
+            ['user_password', 'UserPassword', 'userPassword'],
+            ['user-password', 'UserPassword', 'userPassword'],
+            ['Posts', 'Post', 'post'],
         ];
     }
 }
