@@ -433,6 +433,84 @@ T
 , $render->build());
     }
 
+    public function testItBlameBy(): void
+    {
+        $render = new MySQLGatewayBuilder($this->getSchemaStringAndBlameBy(), ['create', 'update']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test\Gateway;
+
+use Domain\Test\Test;
+use Domain\Test\TestGateway;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types as DB;
+
+final class MySQLTestGateway implements TestGateway
+{
+    private \$query;
+    private \$table = 'tests';
+
+    public function __construct(Connection \$conn)
+    {
+        \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function push(Test \$test): void
+    {
+        \$this->query->insert(\$this->table);
+
+        \$this->query->setValue('code', ':code');
+        \$this->query->setValue('Name', ':name');
+        \$this->query->setValue('CreatedBy', ':createdBy');
+
+        \$this->query->setParameter(':code', \$test->code(), DB::STRING);
+        \$this->query->setParameter(':name', \$test->name(), DB::TEXT);
+        \$this->query->setParameter(':createdBy', \$test->createdBy(), DB::INTEGER);
+
+        \$this->query->execute();
+    }
+
+    public function shift(Test \$test): void
+    {
+        \$this->query->update(\$this->table);
+
+        \$this->query->set('code', ':code');
+        \$this->query->set('Name', ':name');
+        \$this->query->set('UpdatedBy', ':updatedBy');
+
+        \$this->query->setParameter(':code', \$test->code(), DB::STRING);
+        \$this->query->setParameter(':name', \$test->name(), DB::TEXT);
+        \$this->query->setParameter(':updatedBy', \$test->updatedBy(), DB::INTEGER);
+
+        \$this->query->where('code = :code');
+        \$this->query->setParameter('code', \$test->code(), DB::STRING);
+
+        \$this->query->execute();
+    }
+
+    public function filterUsers(string \$term, int \$page, int \$limit): array
+    {
+        \$this->query->select([
+            'id id',
+            'name text',
+        ]);
+        \$this->query->from('users');
+
+        \$this->query->where('name like :name');
+        \$this->query->setParameter(':name', "%{\$term}%");
+
+        \$this->query->setMaxResults(\$limit);
+
+        return \$this->query->execute()->fetchAll();
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

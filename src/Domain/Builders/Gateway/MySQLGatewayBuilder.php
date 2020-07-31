@@ -28,7 +28,7 @@ final class MySQLGatewayBuilder extends AbstractBuilder
 
         $dbTypes = [];
         $pkName = $this->getCamelCase($schema->pkName());
-        $fkRels = $this->getFkRelations($schema->fkRelations());
+        $fkFns = $this->getFkFunctions($schema->fkRelations());
         $properties = \array_reduce(
             $schema->attributes(),
             function (array $result, SchemaAttributeInterface $property) use (&$dbTypes) {
@@ -42,7 +42,7 @@ final class MySQLGatewayBuilder extends AbstractBuilder
             []
         );
 
-        parent::__construct(\compact('entity', 'item', 'name', 'actions', 'properties', 'dbTypes', 'pkName', 'fkRels'));
+        parent::__construct(\compact('entity', 'item', 'name', 'actions', 'properties', 'dbTypes', 'pkName', 'fkFns'));
     }
 
     protected function getFileTemplate(): string

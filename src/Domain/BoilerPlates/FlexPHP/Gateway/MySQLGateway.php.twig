@@ -48,15 +48,15 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->insert($this->table);
 
 {% for id, property in properties %}
-{% if not property.isAi %}
+{% if not property.isAi and not property.isUb %}
         $this->query->setValue('{{ property.name }}', ':{{ id }}');
 {% endif %}
 {% endfor %}
 
 {% for id, property in properties %}
-{% if not property.isAi and not property.isBlame %}
+{% if not property.isAi and not property.isBlameAt and not property.isUb %}
         $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
-{% elseif property.isBlame %}
+{% elseif property.isBlameAt %}
         $this->query->setParameter(':{{ id }}', new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
 {% endif %}
 {% endfor %}
@@ -87,15 +87,15 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->update($this->table);
 
 {% for id, property in properties %}
-{% if not property.isAi and not property.isCa %}
+{% if not property.isAi and not property.isCa and not property.isCb %}
         $this->query->set('{{ property.name }}', ':{{ id }}');
 {% endif %}
 {% endfor %}
 
 {% for id, property in properties %}
-{% if not property.isAi and not property.isBlame %}
+{% if not property.isAi and not property.isBlameAt and not property.isCb %}
         $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
-{% elseif property.isBlame and property.isUa %}
+{% elseif property.isBlameAt and property.isUa %}
         $this->query->setParameter(':{{ id }}', new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
 {% endif %}
 {% endfor %}
@@ -135,18 +135,18 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     }
 {% endif %}
 {% endfor %}
-{% for id,fkRel in fkRels %}
+{% for id,fkFn in fkFns %}
 
-    public function filter{{ fkRel.fnPlural }}(string $term, int $page, int $limit): array
+    public function filter{{ fkFn.fnPlural }}(string $term, int $page, int $limit): array
     {
         $this->query->select([
-            '{{ fkRel.id }} id',
-            '{{ fkRel.text }} text',
+            '{{ fkFn.id }} id',
+            '{{ fkFn.text }} text',
         ]);
-        $this->query->from('{{ fkRel.table }}');
+        $this->query->from('{{ fkFn.table }}');
 
-        $this->query->where('{{ fkRel.text }} like :{{ fkRel.text }}');
-        $this->query->setParameter(':{{ fkRel.text }}', "%{$term}%");
+        $this->query->where('{{ fkFn.text }} like :{{ fkFn.text }}');
+        $this->query->setParameter(':{{ fkFn.text }}', "%{$term}%");
 
         $this->query->setMaxResults($limit);
 

@@ -64,7 +64,7 @@ class TestCase extends PHPUnitTestCase
     {
         return new Schema($name, 'bar', [
             new SchemaAttribute('code', 'string', 'pk|required'),
-            new SchemaAttribute('Name', 'integer', 'required'),
+            new SchemaAttribute('Name', 'text', 'required'),
             new SchemaAttribute('CreatedBy', 'integer', 'cb|fk:users,name'),
             new SchemaAttribute('UpdatedBy', 'integer', 'ub|fk:users,name'),
         ]);
