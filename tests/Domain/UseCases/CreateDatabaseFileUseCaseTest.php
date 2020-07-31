@@ -38,6 +38,11 @@ final class CreateDatabaseFileUseCaseTest extends TestCase
         $this->assertEquals('database.sql', \array_pop($filename));
         $this->assertFileExists($file);
 
+        $content = file_get_contents($file);
+
+        $this->assertContains('USE ', $content);
+        $this->assertContains('GRANT ALL', $content);
+
         \unlink($file);
     }
 

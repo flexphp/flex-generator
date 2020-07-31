@@ -22,9 +22,11 @@ final class CreateDatabaseFileUseCase
 
     public function execute(CreateDatabaseFileRequest  $request): CreateDatabaseFileResponse
     {
+        $dbname = $this->getSnakeCase($request->dbname);
+
         $builder = new Builder($request->platform);
-        $builder->createDatabase($this->getSnakeCase($request->dbname));
-        $builder->createUser($request->username, $request->password);
+        $builder->createDatabaseWithUse($dbname);
+        $builder->createUser($request->username, $request->password, '%', ['ALL PRIVILEGES'], $dbname);
 
         \array_map(function (string $schemafile) use ($builder): void {
             $builder->createTable(Schema::fromFile($schemafile));
