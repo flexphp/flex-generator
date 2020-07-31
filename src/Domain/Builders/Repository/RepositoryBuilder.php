@@ -19,7 +19,7 @@ final class RepositoryBuilder extends AbstractBuilder
         $login = 'email';
         $item = $this->getCamelCase($this->getSingularize($schema->name()));
         $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $fkRels = $this->getFkRelations($schema->fkRelations());
+        $fkFns = $this->getFkFunctions($schema->fkRelations());
 
         $requests = [];
         $actions = \array_reduce($actions, function (array $result, string $action) use (&$requests) {
@@ -29,7 +29,7 @@ final class RepositoryBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'item', 'actions', 'requests', 'login', 'fkRels'));
+        parent::__construct(\compact('entity', 'item', 'actions', 'requests', 'login', 'fkFns'));
     }
 
     protected function getFileTemplate(): string

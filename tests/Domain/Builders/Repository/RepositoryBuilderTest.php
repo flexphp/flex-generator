@@ -206,6 +206,36 @@ T
 , $render->build());
     }
 
+    public function testItRenderBlameByOk(): void
+    {
+        $render = new RepositoryBuilder($this->getSchemaStringAndBlameBy(), ['index']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+use Domain\Test\Request\IndexTestRequest;
+use Domain\Test\Request\FindTestUserRequest;
+use FlexPHP\Repositories\Repository;
+
+final class TestRepository extends Repository
+{
+    public function findBy(IndexTestRequest \$request): array
+    {
+        return \$this->getGateway()->search((array)\$request, [], 10);
+    }
+
+    public function findUsersByTerm(FindCommentUserRequest \$request): array
+    {
+        return \$this->getGateway()->filterUsers(\$request->term, \$request->page, 10);
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

@@ -5,8 +5,8 @@ namespace Domain\{{ entity }};
 {% for request in requests %}
 use Domain\{{ entity }}\Request\{{ request }}{{ entity }}Request;
 {% endfor %}
-{% for id,fkRel in fkRels %}
-use Domain\{{ entity }}\Request\Find{{ entity }}{{ fkRel.fnSingular }}Request;
+{% for id,fkFn in fkFns %}
+use Domain\{{ entity }}\Request\Find{{ entity }}{{ fkFn.fnSingular }}Request;
 {% endfor %}
 use FlexPHP\Repositories\Repository;
 
@@ -59,11 +59,11 @@ final class {{ entity }}Repository extends Repository
 
 {% endif %}
 {% endfor %}
-{% for id,fkRel in fkRels %}
+{% for id,fkFn in fkFns %}
 
-    public function find{{ fkRel.fnPlural }}ByTerm(FindComment{{ fkRel.fnSingular }}Request $request): array
+    public function find{{ fkFn.fnPlural }}ByTerm(FindComment{{ fkFn.fnSingular }}Request $request): array
     {
-        return $this->getGateway()->filter{{ fkRel.fnPlural }}($request->term, $request->page, 10);
+        return $this->getGateway()->filter{{ fkFn.fnPlural }}($request->term, $request->page, 10);
     }
 {% endfor %}
 }
