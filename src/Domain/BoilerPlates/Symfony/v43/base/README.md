@@ -1,18 +1,36 @@
 # Demo
 
-[![Latest Stable Version](https://poser.pugx.org/flexphp/demo/v/stable)](https://packagist.org/packages/flexphp/demo)
-[![Total Downloads](https://poser.pugx.org/flexphp/demo/downloads)](https://packagist.org/packages/flexphp/demo)
-[![Latest Unstable Version](https://poser.pugx.org/flexphp/demo/v/unstable)](https://packagist.org/packages/flexphp/demo)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/flexphp/flex-demo/badges/quality-score.png)](https://scrutinizer-ci.com/g/flexphp/flex-demo)
-[![Code Coverage](https://scrutinizer-ci.com/g/flexphp/flex-demo/badges/coverage.png)](https://scrutinizer-ci.com/g/flexphp/flex-demo)
-[![License](https://poser.pugx.org/flexphp/demo/license)](https://packagist.org/packages/flexphp/demo)
-[![composer.lock](https://poser.pugx.org/flexphp/demo/composerlock)](https://packagist.org/packages/flexphp/demo)
-
 Flex PHP to Any Framework
 
 Change between frameworks when you need. Keep It Simple, SOLID and DRY with FlexPHP.
 
+## Repository
+
+```bash
+git init
+git config user.name "Freddie Gar"
+git config user.email "freddie.gar@outlook.com"
+git checkout -b develop
+git add .
+git commit -m "Initial commit"
+```
+
 ## Installation
+
+Create database
+
+```bash
+mysql -uroot -p < domain/Database/create.sql
+```
+
+Create environment and set `dbhost`, `dbport`, `dbname`, `dbuser` and `dbpassword` to database
+
+```bash
+cp -p .env.example .env
+vim .env
+
+DATABASE_URL=mysql://dbuser:dbpassword@dbhost:dbport/dbname
+```
 
 Install the package with Composer:
 
@@ -25,8 +43,8 @@ After install check [web server configuration](https://symfony.com/doc/current/s
 or, Apache conf file add:
 
 ```
-Alias /demo/ "/var/www/html/flexphp/flex-demo/public/"
-<Directory "/var/www/html/flexphp/flex-demo/public">
+Alias /mak/ "/var/www/html/public/"
+<Directory "/var/www/html/public">
     AllowOverride None
     DirectoryIndex index.php
 
