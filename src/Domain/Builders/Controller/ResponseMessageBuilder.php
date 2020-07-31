@@ -18,11 +18,12 @@ final class ResponseMessageBuilder extends AbstractBuilder
     {
         $entity = $schema->name();
         $action = $this->getCamelCase($action);
-        $name = $this->getDashCase($this->getSingularize($entity));
-        $item = $this->getCamelCase($this->getPluralize($entity));
+        $item = $this->getCamelCase($this->getSingularize($entity));
+        $items = $this->getCamelCase($this->getPluralize($entity));
+        $templates = $this->getCamelCase($this->getSingularize($entity));
         $entity = $this->getDashCase($this->getPluralize($entity));
 
-        parent::__construct(\compact('entity', 'action', 'name', 'item'));
+        parent::__construct(\compact('entity', 'action', 'item', 'items', 'templates'));
     }
 
     public function build(): string

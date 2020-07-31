@@ -1,14 +1,14 @@
 {% if action == 'index' %}
-        return $this->render('{{ name }}/index.html.twig', [
-            'registers' => $response->{{ item }},
+        return $this->render('{{ templates }}/index.html.twig', [
+            'registers' => $response->{{ items }},
         ]);
 {% elseif action in ['create', 'update', 'delete'] %}
         $this->addFlash($response->status, $response->message);
 
         return $this->redirectToRoute('{{ entity }}.index');
 {% elseif action == 'read' %}
-        return $this->render('{{ name }}/show.html.twig', [
-            'register' => $response->{{ name }},
+        return $this->render('{{ templates }}/show.html.twig', [
+            'register' => $response->{{ item }},
         ]);
 {% else %}
         return new Response($response);

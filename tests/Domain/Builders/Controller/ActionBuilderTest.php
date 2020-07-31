@@ -461,10 +461,10 @@ T
             // entity, function, route, template, role, item
             ['userpassword', 'Userpassword', 'userpasswords', 'userpassword', 'USERPASSWORD', 'userpassword'],
             ['USERPASSWORD', 'Userpassword', 'userpasswords', 'userpassword', 'USERPASSWORD', 'userpassword'],
-            ['UserPassword', 'UserPassword', 'user-passwords', 'user-password', 'USERPASSWORD', 'userPassword'],
-            ['userPassword', 'UserPassword', 'user-passwords', 'user-password', 'USERPASSWORD', 'userPassword'],
-            ['user_password', 'UserPassword', 'user-passwords', 'user-password', 'USERPASSWORD', 'userPassword'],
-            ['user-password', 'UserPassword', 'user-passwords', 'user-password', 'USERPASSWORD', 'userPassword'],
+            ['UserPassword', 'UserPassword', 'user-passwords', 'userPassword', 'USERPASSWORD', 'userPassword'],
+            ['userPassword', 'UserPassword', 'user-passwords', 'userPassword', 'USERPASSWORD', 'userPassword'],
+            ['user_password', 'UserPassword', 'user-passwords', 'userPassword', 'USERPASSWORD', 'userPassword'],
+            ['user-password', 'UserPassword', 'user-passwords', 'userPassword', 'USERPASSWORD', 'userPassword'],
             ['Posts', 'Post', 'posts', 'post', 'POST', 'post'],
         ];
     }

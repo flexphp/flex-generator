@@ -51,6 +51,21 @@ T
 , $render->build());
     }
 
+    /**
+     * @dataProvider getEntityName
+     */
+    public function testItRenderReadDiffNameOk(string $name, string $expected): void
+    {
+        $render = new ResponseMessageBuilder(new Schema($name, 'bar', []), 'read');
+
+        $this->assertEquals(<<<T
+        return \$this->render('{$expected}/show.html.twig', [
+            'register' => \$response->{$expected},
+        ]);
+T
+, $render->build());
+    }
+
     public function testItRenderUpdateOk(): void
     {
         $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'update');
@@ -83,5 +98,19 @@ T
         return new Response(\$response);
 T
 , $render->build());
+    }
+
+    public function getEntityName(): array
+    {
+        return [
+            // entity, item
+            ['userpassword', 'userpassword'],
+            ['USERPASSWORD', 'userpassword'],
+            ['UserPassword', 'userPassword'],
+            ['userPassword', 'userPassword'],
+            ['user_password','userPassword'],
+            ['user-password','userPassword'],
+            ['Posts','post'],
+        ];
     }
 }

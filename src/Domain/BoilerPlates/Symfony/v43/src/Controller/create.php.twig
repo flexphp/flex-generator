@@ -7,7 +7,7 @@
     {
         $form = $this->createForm({{ entity }}FormType::class);
 
-        return $this->render('{{ name }}/new.html.twig', [
+        return $this->render('{{ item }}/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
