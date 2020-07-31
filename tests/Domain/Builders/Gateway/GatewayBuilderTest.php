@@ -141,6 +141,24 @@ T
 , $render->build());
     }
 
+    public function testItRenderBlameByOk(): void
+    {
+        $render = new GatewayBuilder($this->getSchemaStringAndBlameBy(), ['other']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+interface TestGateway
+{
+    public function filterUsers(string \$term, int \$page, int \$limit): array;
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

@@ -18,14 +18,14 @@ final class GatewayBuilder extends AbstractBuilder
     {
         $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $item = $this->getCamelCase($entity);
-        $fkRels = $this->getFkRelations($schema->fkRelations());
+        $fkFns = $this->getFkFunctions($schema->fkRelations());
         $actions = \array_reduce($actions, function (array $result, string $action) {
             $result[] = $this->getCamelCase($action);
 
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'actions', 'item', 'fkRels'));
+        parent::__construct(\compact('entity', 'actions', 'item', 'fkFns'));
     }
 
     protected function getFileTemplate(): string
