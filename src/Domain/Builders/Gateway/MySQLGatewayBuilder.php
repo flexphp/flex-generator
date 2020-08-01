@@ -19,7 +19,7 @@ final class MySQLGatewayBuilder extends AbstractBuilder
     {
         $entity = $this->getPascalCase($this->getSingularize($schema->name()));
         $name = $this->getSnakeCase($this->getPluralize($entity));
-        $item = $this->getCamelCase($this->getSingularize($entity));
+        $item = $this->getCamelCase($this->getSingularize($schema->name()));
         $actions = \array_reduce($actions, function (array $result, string $action) {
             $result[] = $this->getCamelCase($action);
 

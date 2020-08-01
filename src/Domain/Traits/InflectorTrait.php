@@ -36,15 +36,29 @@ trait InflectorTrait
 
     protected function getSingularize(string $string): string
     {
+        if (\substr(\strtolower($string), -6) === 'status') {
+            return $string;
+        }
+
         $singularize = Inflector::singularize($string);
 
         return \is_array($singularize)
-            ? $singularize[0]
+            ? \array_pop($singularize)
             : $singularize;
     }
 
     protected function getPluralize(string $string): string
     {
+        if (\substr(\strtolower($string), -3) === 'ice') {
+            $onlyUpper = \preg_match('@^[A-Z]+$@', $string);
+
+            return $string . ($onlyUpper ? 'S' : 's');
+        }
+
+        if (\substr(\strtolower($string), -6) === 'status') {
+            return $string;
+        }
+
         $pluralize = Inflector::pluralize($this->getSingularize($string));
 
         return \is_array($pluralize)

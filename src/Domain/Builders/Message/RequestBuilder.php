@@ -19,7 +19,7 @@ final class RequestBuilder extends AbstractBuilder
     {
         $login = 'email';
         $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $name = $this->getCamelCase($this->getSingularize($entity));
+        $name = $this->getCamelCase($this->getSingularize($schema->name()));
         $action = $this->getPascalCase($action);
         $pkName = $this->getCamelCase($schema->pkName());
         $pkTypeHint = $schema->pkTypeHint();

@@ -15,9 +15,9 @@ final class FkResponseBuilder extends AbstractBuilder
 {
     public function __construct(string $pkEntity, string $fkEntity)
     {
+        $item = $this->getPluralize($this->getCamelCase($fkEntity));
         $pkEntity = $this->getPascalCase($this->getSingularize($pkEntity));
         $fkEntity = $this->getPascalCase($this->getSingularize($fkEntity));
-        $item = $this->getCamelCase($this->getPluralize($fkEntity));
 
         parent::__construct(\compact('pkEntity', 'fkEntity', 'item'));
     }

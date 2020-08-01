@@ -36,7 +36,7 @@ final class CreateUseCaseFileUseCase
 
         foreach ($request->schema->fkRelations() as $fkRel) {
             $fkEntity = $this->getPascalCase($this->getSingularize($fkRel['pkTable']));
-            $builder = new FkUseCaseBuilder($entity, $fkEntity);
+            $builder = new FkUseCaseBuilder($request->schema->name(), $fkEntity);
             $filename = 'Find' . $entity . $fkEntity . 'UseCase';
 
             $writer = new PhpWriter($builder->build(), $filename, $path);

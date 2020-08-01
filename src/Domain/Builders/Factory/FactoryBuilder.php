@@ -18,7 +18,7 @@ final class FactoryBuilder extends AbstractBuilder
     public function __construct(SchemaInterface $schema)
     {
         $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $item = $this->getCamelCase($this->getSingularize($entity));
+        $item = $this->getCamelCase($this->getSingularize($schema->name()));
         $setters = $this->getSetterWithCasting($schema->attributes());
 
         parent::__construct(\compact('entity', 'item', 'setters'));

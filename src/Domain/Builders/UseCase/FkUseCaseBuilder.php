@@ -15,10 +15,10 @@ final class FkUseCaseBuilder extends AbstractBuilder
 {
     public function __construct(string $pkEntity, string $fkEntity)
     {
+        $name = $this->getPluralize($this->getPascalCase($fkEntity));
+        $item = $this->getPluralize($this->getCamelCase($fkEntity));
         $pkEntity = $this->getPascalCase($this->getSingularize($pkEntity));
         $fkEntity = $this->getPascalCase($this->getSingularize($fkEntity));
-        $name = $this->getPluralize($fkEntity);
-        $item = $this->getCamelCase($this->getPluralize($fkEntity));
 
         parent::__construct(\compact('pkEntity', 'fkEntity', 'name', 'item'));
     }
