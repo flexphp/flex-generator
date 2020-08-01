@@ -9,7 +9,6 @@ jQuery(document).ready(function ($) {
     $('#{{ item }}_form_{{ fkRel.pkName }}').select2({
         theme: 'bootstrap4',
         minimumInputLength: 3,
-        placeholder: 'Select post',
         allowClear: true,
         ajax: {
             url: {{ fkRel.pkName }}Url,

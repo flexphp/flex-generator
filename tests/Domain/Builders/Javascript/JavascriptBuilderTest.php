@@ -42,7 +42,6 @@ jQuery(document).ready(function ($) {
     $('#test_form_foo').select2({
         theme: 'bootstrap4',
         minimumInputLength: 3,
-        placeholder: 'Select post',
         allowClear: true,
         ajax: {
             url: fooUrl,
@@ -65,7 +64,6 @@ jQuery(document).ready(function ($) {
     $('#test_form_postId').select2({
         theme: 'bootstrap4',
         minimumInputLength: 3,
-        placeholder: 'Select post',
         allowClear: true,
         ajax: {
             url: postIdUrl,
