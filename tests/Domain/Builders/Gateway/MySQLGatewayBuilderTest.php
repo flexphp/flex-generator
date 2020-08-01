@@ -12,7 +12,6 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Gateway;
 use FlexPHP\Generator\Domain\Builders\Gateway\MySQLGatewayBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
-use FlexPHP\Schema\SchemaAttribute;
 
 final class MySQLGatewayBuilderTest extends TestCase
 {
@@ -33,7 +32,7 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'tests';
+    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -87,7 +86,7 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'tests';
+    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -135,7 +134,7 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'tests';
+    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -182,7 +181,7 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'tests';
+    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -233,7 +232,7 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'tests';
+    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -272,7 +271,7 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'tests';
+    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -319,7 +318,7 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'tests';
+    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -390,7 +389,7 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'tests';
+    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -450,7 +449,7 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'tests';
+    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -514,7 +513,7 @@ T
     /**
      * @dataProvider getEntityName
      */
-    public function testItOkWithDiffNameEntity(string $entity, string $expectedName, string $expectedPlural): void
+    public function testItOkWithDiffNameEntity(string $entity, string $expectedName): void
     {
         $render = new MySQLGatewayBuilder(new Schema($entity, 'bar', []), []);
 
@@ -531,7 +530,7 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQL{$expectedName}Gateway implements {$expectedName}Gateway
 {
     private \$query;
-    private \$table = '{$expectedPlural}';
+    private \$table = '{$entity}';
 
     public function __construct(Connection \$conn)
     {
@@ -546,13 +545,12 @@ T
     public function getEntityName(): array
     {
         return [
-            ['userpasswords', 'Userpassword', 'userpasswords'],
-            ['USERPASSWORDS', 'Userpassword', 'userpasswords'],
-            ['UserPasswords', 'UserPassword', 'user_passwords'],
-            ['userPasswords', 'UserPassword', 'user_passwords'],
-            ['user_passwords', 'UserPassword', 'user_passwords'],
-            ['user-passwords', 'UserPassword', 'user_passwords'],
-            ['Posts', 'Post', 'posts'],
+            ['userpasswords', 'Userpassword'],
+            ['USERPASSWORDS', 'Userpassword'],
+            ['UserPasswords', 'UserPassword'],
+            ['userPasswords', 'UserPassword'],
+            ['user_passwords', 'UserPassword'],
+            ['Posts', 'Post'],
         ];
     }
 }

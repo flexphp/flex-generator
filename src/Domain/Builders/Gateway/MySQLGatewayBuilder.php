@@ -17,8 +17,8 @@ final class MySQLGatewayBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema, array $actions)
     {
+        $table = $schema->name();
         $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $name = $this->getSnakeCase($this->getPluralize($entity));
         $item = $this->getCamelCase($this->getSingularize($schema->name()));
         $actions = \array_reduce($actions, function (array $result, string $action) {
             $result[] = $this->getCamelCase($action);
@@ -42,7 +42,7 @@ final class MySQLGatewayBuilder extends AbstractBuilder
             []
         );
 
-        parent::__construct(\compact('entity', 'item', 'name', 'actions', 'properties', 'dbTypes', 'pkName', 'fkFns'));
+        parent::__construct(\compact('entity', 'item', 'table', 'actions', 'properties', 'dbTypes', 'pkName', 'fkFns'));
     }
 
     protected function getFileTemplate(): string
