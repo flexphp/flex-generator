@@ -48,7 +48,7 @@ final class {{ entity }}Controller extends AbstractController
 {% endif %}
 {% for id,fkFn in fkFns %}
     /**
-     * @Route("/find-{{ fkFn.route }}", methods={"POST"}, name="comments.find.{{ fkFn.route }}")
+     * @Route("/find-{{ fkFn.route }}", methods={"POST"}, name="{{ fkFn.fkRoute }}.find.{{ fkFn.route }}")
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ fkFn.fnSingular|upper }}_INDEX')", statusCode=401)
      */

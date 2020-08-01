@@ -505,7 +505,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class TestController extends AbstractController
 {
     /**
-     * @Route("/find-bars", methods={"POST"}, name="comments.find.bars")
+     * @Route("/find-bars", methods={"POST"}, name="tests.find.bars")
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_BAR_INDEX')", statusCode=401)
      */
@@ -528,7 +528,7 @@ final class TestController extends AbstractController
     }
 
     /**
-     * @Route("/find-posts", methods={"POST"}, name="comments.find.posts")
+     * @Route("/find-posts", methods={"POST"}, name="tests.find.posts")
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_POST_INDEX')", statusCode=401)
      */
@@ -580,7 +580,7 @@ use Symfony\Component\Routing\Annotation\Route;
 final class TestController extends AbstractController
 {
     /**
-     * @Route("/find-users", methods={"POST"}, name="comments.find.users")
+     * @Route("/find-users", methods={"POST"}, name="tests.find.users")
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_USER_INDEX')", statusCode=401)
      */
@@ -692,7 +692,6 @@ T
             ['UserPassword', 'UserPassword', 'user-passwords'],
             ['userPassword', 'UserPassword', 'user-passwords'],
             ['user_password', 'UserPassword', 'user-passwords'],
-            ['user-password', 'UserPassword', 'user-passwords'],
             ['Posts', 'Post', 'posts'],
         ];
     }

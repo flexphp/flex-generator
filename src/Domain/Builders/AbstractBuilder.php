@@ -65,6 +65,7 @@ abstract class AbstractBuilder implements BuilderInterface
                 'typeHint' => $fkRel['pkTypeHint'],
                 'id' => $this->getCamelCase($fkRel['fkId']),
                 'text' => $this->getCamelCase($fkRel['fkName']),
+                'fkRoute' => $this->getDashCase($this->getPluralize($fkRel['fkTable'])),
             ];
         }
 
