@@ -42,7 +42,7 @@ final class MenuBuilder extends AbstractBuilder
 
     private function getName(string $entity): string
     {
-        return $this->getDashCase($this->getSnakeCase($this->getSingularize($entity)));
+        return $this->getCamelCase($this->getSingularize($entity));
     }
 
     private function getRole(string $entity): array

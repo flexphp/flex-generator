@@ -90,7 +90,7 @@ return [
             ],
         ],
     ],
-    'user-password' => [
+    'userPassword' => [
         'title' => 'entity',
         'roles' => ['ROLE_ADMIN', 'ROLE_USER_USERPASSWORD_*'],
         'icon' => 'fas fa-key',
