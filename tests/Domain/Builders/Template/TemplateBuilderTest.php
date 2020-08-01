@@ -381,7 +381,6 @@ T
             ['UserPassword', 'user-passwords', 'userPassword'],
             ['userPassword', 'user-passwords', 'userPassword'],
             ['user_password', 'user-passwords', 'userPassword'],
-            ['user-password', 'user-passwords', 'userPassword'],
             ['Posts', 'posts', 'post'],
         ];
     }

@@ -450,7 +450,6 @@ T
             ['UserPassword', 'user-passwords', 'USERPASSWORD'],
             ['userPassword', 'user-passwords', 'USERPASSWORD'],
             ['user_password', 'user-passwords', 'USERPASSWORD'],
-            ['user-password', 'user-passwords', 'USERPASSWORD'],
             ['Posts', 'posts', 'POST'],
         ];
     }
@@ -464,7 +463,6 @@ T
             ['UserPassword', 'UserPassword', 'user-passwords', 'userPassword', 'USERPASSWORD', 'userPassword'],
             ['userPassword', 'UserPassword', 'user-passwords', 'userPassword', 'USERPASSWORD', 'userPassword'],
             ['user_password', 'UserPassword', 'user-passwords', 'userPassword', 'USERPASSWORD', 'userPassword'],
-            ['user-password', 'UserPassword', 'user-passwords', 'userPassword', 'USERPASSWORD', 'userPassword'],
             ['Posts', 'Post', 'posts', 'post', 'POST', 'post'],
         ];
     }

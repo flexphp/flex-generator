@@ -96,7 +96,6 @@ T
             ['UserPassword', 'UserPassword', 'userPassword'],
             ['userPassword', 'UserPassword', 'userPassword'],
             ['user_password', 'UserPassword', 'userPassword'],
-            ['user-password', 'UserPassword', 'userPassword'],
             ['Posts', 'Post', 'post'],
         ];
     }

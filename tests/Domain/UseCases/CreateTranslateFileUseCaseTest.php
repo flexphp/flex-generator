@@ -76,7 +76,6 @@ final class CreateTranslateFileUseCaseTest extends TestCase
             ['UserPassword', 'userPassword.en.php'],
             ['userPassword', 'userPassword.en.php'],
             ['user_password', 'userPassword.en.php'],
-            ['user-password', 'userPassword.en.php'],
             ['Posts', 'post.en.php'],
         ];
     }
