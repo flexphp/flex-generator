@@ -22,7 +22,7 @@ final class CreateTemplateFileUseCase
     public function execute(CreateTemplateFileRequest $request): CreateTemplateFileResponse
     {
         $files = [];
-        $entity = $this->getDashCase($this->getSingularize($request->schema->name()));
+        $entity = $this->getCamelCase($this->getSingularize($request->schema->name()));
         $actions = [
             'index' => 'index.html',
             'create' => 'new.html',

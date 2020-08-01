@@ -20,7 +20,7 @@ final class CreateTemplateFileUseCaseTest extends TestCase
     /**
      * @dataProvider getEntityFile()
      */
-    public function testItSymfony43Ok(string $schemafile, array $expectedFiles): void
+    public function testItSymfony43Ok(string $schemafile, array $expectedFiles, string $expectedDir): void
     {
         $schema = Schema::fromFile($schemafile);
 
@@ -35,6 +35,7 @@ final class CreateTemplateFileUseCaseTest extends TestCase
         foreach ($response->files as $index => $file) {
             $filename = \explode('/', $file);
             $this->assertEquals($expectedFiles[$index], \array_pop($filename));
+            $this->assertEquals($expectedDir, \array_pop($filename));
             $this->assertFileExists($file);
 
             \unlink($file);
@@ -50,14 +51,21 @@ final class CreateTemplateFileUseCaseTest extends TestCase
                 'show.html.twig',
                 'edit.html.twig',
                 '_delete_form.html.twig',
-            ]],
+            ], 'post'],
             [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), [
                 'index.html.twig',
                 'new.html.twig',
                 'show.html.twig',
                 'edit.html.twig',
                 '_delete_form.html.twig',
-            ]],
+            ], 'comment'],
+            [\sprintf('%1$s/../../Mocks/yaml/userStatus.yaml', __DIR__), [
+                'index.html.twig',
+                'new.html.twig',
+                'show.html.twig',
+                'edit.html.twig',
+                '_delete_form.html.twig',
+            ], 'userStatus'],
         ];
     }
 }
