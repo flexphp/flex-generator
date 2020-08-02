@@ -166,6 +166,10 @@ final class Inflector
 
     private function singularize(string $string): string
     {
+        if (\substr(\strtolower($string), -3) === 'ice') {
+            return $string;
+        }
+
         if (\substr(\strtolower($string), -6) === 'status') {
             return $string;
         }

@@ -20,11 +20,11 @@ final class CreateTranslateFileUseCase
     public function execute(CreateTranslateFileRequest $request): CreateTranslateFileResponse
     {
         $inflector = new Inflector();
-        $entity = $inflector->entity($request->schema->name());
+        $file = $inflector->item($request->schema->name());
 
         $translate = new TranslateBuilder($request->schema);
         $path = \sprintf('%1$s/../../tmp/skeleton/translations', __DIR__);
-        $filename = \sprintf('%1$s.%2$s', $inflector->item($entity), $request->schema->language());
+        $filename = \sprintf('%1$s.%2$s', $file, $request->schema->language());
 
         $writer = new PhpWriter($translate->build(), $filename, $path);
 
