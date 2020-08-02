@@ -40,7 +40,7 @@ final class InflectorTest extends TestCase
         $this->assertEquals('posts.index', $inflector->routeName('POSTS', 'index'));
         $this->assertEquals('Index', $inflector->pascalAction('index'));
         $this->assertEquals('post-comments:action', $inflector->commandName('postComments', 'action'));
-        $this->assertEquals('Post Comment', $inflector->entityTitle('postComments'));
+        $this->assertEquals('Post Comment', $inflector->entityTitleSingular('postComments'));
         $this->assertEquals('Post Comments', $inflector->propertyTitle('postComments'));
         $this->assertEquals('post_comments', $inflector->dbName('postComments'));
         $this->assertEquals('postComments', $inflector->jsName('PostComment'));

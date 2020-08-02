@@ -17,14 +17,17 @@ final class TranslateBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema)
     {
-        $entity = $this->getInflector()->entityTitle($schema->name());
+        $titleSingular = $this->getInflector()->entityTitleSingular($schema->name());
+        $titlePlural = $this->getInflector()->entityTitlePlural($schema->name());
         $headers = \array_reduce($schema->attributes(), function (array $result, SchemaAttributeInterface $property) {
-            $result[$this->getInflector()->camelProperty($property->name())] = $this->getInflector()->propertyTitle($property->name());
+            $result[
+                $this->getInflector()->camelProperty($property->name())
+            ] = $this->getInflector()->propertyTitle($property->name());
 
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'headers'));
+        parent::__construct(\compact('titleSingular', 'titlePlural', 'headers'));
     }
 
     protected function getFileTemplate(): string

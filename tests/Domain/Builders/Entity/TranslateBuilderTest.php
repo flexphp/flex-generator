@@ -29,6 +29,7 @@ return [
         'new' => 'New Test',
         'edit' => 'Edit Test',
         'show' => 'Test Details',
+        'list' => 'Tests',
     ],
     'label' => [
         'lower' => 'Lower',
@@ -46,7 +47,7 @@ T
     /**
      * @dataProvider getTranslateName
      */
-    public function testItOkWithDiffTranslateName(string $name, string $expected): void
+    public function testItOkWithDiffTranslateName(string $name, string $singular, string $plural): void
     {
         $render = new TranslateBuilder(new Schema($name, 'bar', []));
 
@@ -54,11 +55,12 @@ T
 <?php
 
 return [
-    'entity' => '{$expected}',
+    'entity' => '{$singular}',
     'title' => [
-        'new' => 'New {$expected}',
-        'edit' => 'Edit {$expected}',
-        'show' => '{$expected} Details',
+        'new' => 'New {$singular}',
+        'edit' => 'Edit {$singular}',
+        'show' => '{$singular} Details',
+        'list' => '{$plural}',
     ],
     'label' => [
     ],
@@ -86,6 +88,7 @@ return [
         'new' => 'New Fuz',
         'edit' => 'Edit Fuz',
         'show' => 'Fuz Details',
+        'list' => 'Fuzes',
     ],
     'label' => [
         '{$expected}' => '{$expectedLabel}',
@@ -99,12 +102,13 @@ T
     public function getTranslateName(): array
     {
         return [
-            ['userpassword', 'Userpassword'],
-            ['USERPASSWORD', 'Userpassword'],
-            ['UserPassword', 'User Password'],
-            ['userPassword', 'User Password'],
-            ['user_password', 'User Password'],
-            ['Posts', 'Post'],
+            // entity, singular, plural
+            ['userpassword', 'Userpassword', 'Userpasswords'],
+            ['USERPASSWORD', 'Userpassword', 'Userpasswords'],
+            ['UserPassword', 'User Password', 'User Passwords'],
+            ['userPassword', 'User Password', 'User Passwords'],
+            ['user_password', 'User Password', 'User Passwords'],
+            ['Posts', 'Post', 'Posts'],
         ];
     }
 

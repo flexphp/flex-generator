@@ -1,11 +1,12 @@
 <?php
 
 return [
-    'entity' => '{{ entity }}',
+    'entity' => '{{ titleSingular }}',
     'title' => [
-        'new' => 'New {{ entity }}',
-        'edit' => 'Edit {{ entity }}',
-        'show' => '{{ entity }} Details',
+        'new' => 'New {{ titleSingular }}',
+        'edit' => 'Edit {{ titleSingular }}',
+        'show' => '{{ titleSingular }} Details',
+        'list' => '{{ titlePlural }}',
     ],
     'label' => [
 {% for id, header in headers %}

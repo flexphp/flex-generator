@@ -99,14 +99,19 @@ final class Inflector
         return $this->pluralize($this->dash($entity)) . ':' . $this->dash($action);
     }
 
-    public function entityTitle(string $string): string
+    public function entityTitleSingular(string $entity): string
     {
-        return (new Convert($this->singularize($string)))->toTitle();
+        return $this->singularize((new Convert($entity))->toTitle());
     }
 
-    public function propertyTitle(string $string): string
+    public function entityTitlePlural(string $entity): string
     {
-        return (new Convert($string))->toTitle();
+        return $this->pluralize((new Convert($entity))->toTitle());
+    }
+
+    public function propertyTitle(string $name): string
+    {
+        return (new Convert($name))->toTitle();
     }
 
     public function dbName(string $string): string
