@@ -91,6 +91,22 @@ T
 , $render->build());
     }
 
+    public function testItRenderUpdateBlameByOk(): void
+    {
+        $render = new RequestMessageBuilder(new Schema('Test', 'bar', [
+            new SchemaAttribute('Key', 'integer', 'ub'),
+        ]), 'update');
+
+        $this->assertEquals(<<<T
+        \$form = \$this->createForm(TestFormType::class);
+        \$form->submit(\$request->request->get(\$form->getName()));
+        \$form->handleRequest(\$request);
+
+        \$request = new UpdateTestRequest(\$id, \$form->getData(), \$this->getUser()->key());
+T
+, $render->build());
+    }
+
     public function testItRenderDeleteOk(): void
     {
         $render = new RequestMessageBuilder(new Schema('Test', 'bar', []), 'delete');

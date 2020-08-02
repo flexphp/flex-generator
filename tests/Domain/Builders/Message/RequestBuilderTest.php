@@ -296,6 +296,33 @@ T
 , $render->build());
     }
 
+    public function testItUpdateAiAndBlameAt(): void
+    {
+        $render = new RequestBuilder($this->getSchemaAiAndBlameAt('Bar'), 'update');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Bar\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class UpdateBarRequest implements RequestInterface
+{
+    public \$key;
+    public \$value;
+
+    public function __construct(int \$key, array \$data)
+    {
+        \$this->key = \$key;
+        \$this->value = \$data['value'] ?? null;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItCreateBlameBy(): void
     {
         $render = new RequestBuilder($this->getSchemaStringAndBlameBy('Bar'), 'create');
@@ -325,26 +352,28 @@ T
 , $render->build());
     }
 
-    public function testItUpdateAiAndBlameAt(): void
+    public function testItRenderUpdateBlameBy(): void
     {
-        $render = new RequestBuilder($this->getSchemaAiAndBlameAt('Bar'), 'update');
+        $render = new RequestBuilder($this->getSchemaStringAndBlameBy('Fuz'), 'update');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Bar\Request;
+namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
 
-final class UpdateBarRequest implements RequestInterface
+final class UpdateFuzRequest implements RequestInterface
 {
-    public \$key;
-    public \$value;
+    public \$code;
+    public \$name;
+    public \$updatedBy;
 
-    public function __construct(int \$key, array \$data)
+    public function __construct(string \$code, array \$data, int \$updatedBy)
     {
-        \$this->key = \$key;
-        \$this->value = \$data['value'] ?? null;
+        \$this->code = \$code;
+        \$this->name = \$data['name'] ?? null;
+        \$this->updatedBy = \$updatedBy;
     }
 }
 

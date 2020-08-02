@@ -10,7 +10,7 @@
         $form->submit($request->request->get($form->getName()));
         $form->handleRequest($request);
 
-        $request = new {{ action }}{{ entity }}Request($id, $form->getData());
+        $request = new {{ action }}{{ entity }}Request($id, $form->getData(){% if updatedBy %}, $this->getUser()->{{ updatedBy }}(){% endif %});
 {% else %}
         $request = new {{ action }}{{ entity }}Request($request->request->all());
 {% endif %}
