@@ -20,7 +20,9 @@
                 <thead>
                     <tr>
 {% for id, property in properties %}
+{% if not property.isBlame %}
                         <th scope="col">{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</th>
+{% endif %}
 {% endfor %}
                         <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> {{ '{%' }} trans from 'messages' {{ '%}' }}action.options{{ '{%' }} endtrans {{ '%}' }}</th>
                     </tr>
@@ -29,7 +31,8 @@
                 {{ '{%' }} for register in registers {{ '%}' }}
                     <tr>
 {% for id, property in properties %}
-{% if property.DataType starts with 'date' %}
+{% if property.isBlame %}
+{% elseif property.DataType starts with 'date' %}
                         <td>{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</td>
 {% elseif property.DataType starts with 'time' %}
                         <td>{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</td>
@@ -53,7 +56,7 @@
                     </tr>
                 {{ '{%' }} else {{ '%}' }}
                     <tr>
-                        <td colspan="{{ (properties|length) + 1 }}" align="center">Nothing here</td>
+                        <td colspan="{{ (properties|filter(v => not v.isBlame)|length) + 1 }}" align="center">Nothing here</td>
                     </tr>
                 {{ '{%' }} endfor {{ '%}' }}
                 </tbody>

@@ -240,9 +240,9 @@ T
 , $render->build());
     }
 
-    public function testItIndexAutoIncrementalAndBlameable(): void
+    public function testItIndexAiAndBlameAt(): void
     {
-        $render = new RequestBuilder($this->getSchemaAiAndBlame('Bar'), 'index');
+        $render = new RequestBuilder($this->getSchemaAiAndBlameAt('Bar'), 'index');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -271,9 +271,9 @@ T
 , $render->build());
     }
 
-    public function testItCreateAutoIncrementalAndBlameable(): void
+    public function testItCreateAiAndBlameAt(): void
     {
-        $render = new RequestBuilder($this->getSchemaAiAndBlame('Bar'), 'create');
+        $render = new RequestBuilder($this->getSchemaAiAndBlameAt('Bar'), 'create');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -296,9 +296,9 @@ T
 , $render->build());
     }
 
-    public function testItUpdateAutoIncrementalAndBlameable(): void
+    public function testItUpdateAiAndBlameAt(): void
     {
-        $render = new RequestBuilder($this->getSchemaAiAndBlame('Bar'), 'update');
+        $render = new RequestBuilder($this->getSchemaAiAndBlameAt('Bar'), 'update');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

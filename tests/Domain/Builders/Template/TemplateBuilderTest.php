@@ -83,6 +83,131 @@ T
 , $render->build());
     }
 
+    public function testItRenderIndexBlameAtOk(): void
+    {
+        $render = new TemplateBuilder($this->getSchemaAiAndBlameAt(), 'index');
+
+        $this->assertEquals(<<<T
+{% trans_default_domain 'test' %}
+{% extends 'form/layout.html.twig' %}
+
+{% block title %}{% trans %}entity{% endtrans %}{% endblock %}
+
+{% block main %}
+    <div class="card">
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">
+                {% trans %}entity{% endtrans %}
+            </h3>
+            <div class="toolbar ml-auto">
+                <a href="{{ path('tests.new') }}" class="btn btn-success">
+                    <i class="fa fa-plus" aria-hidden="true"></i> {% trans from 'messages' %}action.new{% endtrans %}
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">{% trans %}label.key{% endtrans %}</th>
+                        <th scope="col">{% trans %}label.value{% endtrans %}</th>
+                        <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> {% trans from 'messages' %}action.options{% endtrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for register in registers %}
+                    <tr>
+                        <td>{{ register.key }}</td>
+                        <td>{{ register.value }}</td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a href="{{ path('tests.read', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
+                                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
+                                </a>
+
+                                <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
+                                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" align="center">Nothing here</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderIndexBlameByOk(): void
+    {
+        $render = new TemplateBuilder($this->getSchemaStringAndBlameBy(), 'index');
+
+        $this->assertEquals(<<<T
+{% trans_default_domain 'test' %}
+{% extends 'form/layout.html.twig' %}
+
+{% block title %}{% trans %}entity{% endtrans %}{% endblock %}
+
+{% block main %}
+    <div class="card">
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">
+                {% trans %}entity{% endtrans %}
+            </h3>
+            <div class="toolbar ml-auto">
+                <a href="{{ path('tests.new') }}" class="btn btn-success">
+                    <i class="fa fa-plus" aria-hidden="true"></i> {% trans from 'messages' %}action.new{% endtrans %}
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">{% trans %}label.code{% endtrans %}</th>
+                        <th scope="col">{% trans %}label.name{% endtrans %}</th>
+                        <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> {% trans from 'messages' %}action.options{% endtrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for register in registers %}
+                    <tr>
+                        <td>{{ register.code }}</td>
+                        <td>{{ register.name }}</td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a href="{{ path('tests.read', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
+                                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
+                                </a>
+
+                                <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
+                                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" align="center">Nothing here</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+T, $render->build());
+    }
+
     public function testItRenderCreateOk(): void
     {
         $render = new TemplateBuilder($this->getSchema(), 'create');

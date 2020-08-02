@@ -51,7 +51,7 @@ class TestCase extends PHPUnitTestCase
         ]);
     }
 
-    protected function getSchemaAiAndBlame(string $name = 'Test'): Schema
+    protected function getSchemaAiAndBlameAt(string $name = 'Test'): Schema
     {
         return new Schema($name, 'bar', [
             new SchemaAttribute('key', 'integer', 'pk|ai|required'),

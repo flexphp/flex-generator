@@ -23,7 +23,9 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     {
         $this->query->select([
 {% for id, property in properties %}
+{% if not property.isBlame %}
             '{{ property.name }}' => '{{ id }}',
+{% endif %}
 {% endfor %}
         ]);
         $this->query->from($this->table);

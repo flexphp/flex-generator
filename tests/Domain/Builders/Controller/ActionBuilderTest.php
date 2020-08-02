@@ -255,9 +255,9 @@ T
 , $render->build());
     }
 
-    public function testItRenderUpdateAutoIncrementalAndBlameableOk(): void
+    public function testItRenderUpdateAiAndBlameAtOk(): void
     {
-        $render = new ActionBuilder($this->getSchemaAiAndBlame(), 'update');
+        $render = new ActionBuilder($this->getSchemaAiAndBlameAt(), 'update');
 
         $this->assertEquals(<<<T
     /**

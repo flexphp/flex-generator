@@ -278,9 +278,9 @@ T
 , $render->build());
     }
 
-    public function testItAutoIncrementalAndBlameable(): void
+    public function testItAiAndBlameAt(): void
     {
-        $render = new FormTypeBuilder($this->getSchemaAiAndBlame());
+        $render = new FormTypeBuilder($this->getSchemaAiAndBlameAt());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

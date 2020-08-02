@@ -388,9 +388,9 @@ T
 , $render->build());
     }
 
-    public function testItAutoIncrementalAndBlameable(): void
+    public function testItAiAndBlameAt(): void
     {
-        $render = new MySQLGatewayBuilder($this->getSchemaAiAndBlame(), ['create', 'update']);
+        $render = new MySQLGatewayBuilder($this->getSchemaAiAndBlameAt(), ['index', 'create', 'update']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -410,6 +410,28 @@ final class MySQLTestGateway implements TestGateway
     public function __construct(Connection \$conn)
     {
         \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function search(array \$wheres, array \$orders, int \$limit): array
+    {
+        \$this->query->select([
+            'key' => 'key',
+            'Value' => 'value',
+        ]);
+        \$this->query->from(\$this->table);
+
+        foreach(\$wheres as \$column => \$value) {
+            if (!\$value) {
+                continue;
+            }
+
+            \$this->query->where(\$column . ' = :' . \$column);
+            \$this->query->setParameter(\$column, \$value);
+        }
+
+        \$this->query->setMaxResults(\$limit);
+
+        return \$this->query->execute()->fetchAll();
     }
 
     public function push(Test \$test): void
@@ -450,7 +472,7 @@ T
 
     public function testItBlameBy(): void
     {
-        $render = new MySQLGatewayBuilder($this->getSchemaStringAndBlameBy(), ['create', 'update']);
+        $render = new MySQLGatewayBuilder($this->getSchemaStringAndBlameBy(), ['index', 'create', 'update']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -470,6 +492,28 @@ final class MySQLTestGateway implements TestGateway
     public function __construct(Connection \$conn)
     {
         \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function search(array \$wheres, array \$orders, int \$limit): array
+    {
+        \$this->query->select([
+            'code' => 'code',
+            'Name' => 'name',
+        ]);
+        \$this->query->from(\$this->table);
+
+        foreach(\$wheres as \$column => \$value) {
+            if (!\$value) {
+                continue;
+            }
+
+            \$this->query->where(\$column . ' = :' . \$column);
+            \$this->query->setParameter(\$column, \$value);
+        }
+
+        \$this->query->setMaxResults(\$limit);
+
+        return \$this->query->execute()->fetchAll();
     }
 
     public function push(Test \$test): void

@@ -55,9 +55,9 @@ T
 , $render->build());
     }
 
-    public function testItAutoIncrementalAndBlameable(): void
+    public function testItAiAndBlameAt(): void
     {
-        $render = new ConstraintBuilder($this->getSchemaAiAndBlame());
+        $render = new ConstraintBuilder($this->getSchemaAiAndBlameAt());
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
