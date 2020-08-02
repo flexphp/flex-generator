@@ -61,7 +61,7 @@ final class {{ entity }}Repository extends Repository
 {% endfor %}
 {% for id,fkFn in fkFns %}
 
-    public function find{{ fkFn.fnPlural }}ByTerm(FindComment{{ fkFn.fnSingular }}Request $request): array
+    public function find{{ fkFn.fnPlural }}ByTerm(Find{{ entity }}{{ fkFn.fnSingular }}Request $request): array
     {
         return $this->getGateway()->filter{{ fkFn.fnPlural }}($request->term, $request->page, 10);
     }

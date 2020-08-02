@@ -192,17 +192,17 @@ final class PostCommentRepository extends Repository
         return \$this->getGateway()->search((array)\$request, [], 10);
     }
 
-    public function findBarsByTerm(FindCommentBarRequest \$request): array
+    public function findBarsByTerm(FindPostCommentBarRequest \$request): array
     {
         return \$this->getGateway()->filterBars(\$request->term, \$request->page, 10);
     }
 
-    public function findPostsByTerm(FindCommentPostRequest \$request): array
+    public function findPostsByTerm(FindPostCommentPostRequest \$request): array
     {
         return \$this->getGateway()->filterPosts(\$request->term, \$request->page, 10);
     }
 
-    public function findUserStatusByTerm(FindCommentUserStatusRequest \$request): array
+    public function findUserStatusByTerm(FindPostCommentUserStatusRequest \$request): array
     {
         return \$this->getGateway()->filterUserStatus(\$request->term, \$request->page, 10);
     }
