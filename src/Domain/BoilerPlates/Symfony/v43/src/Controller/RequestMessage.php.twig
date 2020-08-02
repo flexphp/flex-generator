@@ -4,7 +4,7 @@
         $form = $this->createForm({{ entity }}FormType::class);
         $form->handleRequest($request);
 
-        $request = new {{ action }}{{ entity }}Request($form->getData());
+        $request = new {{ action }}{{ entity }}Request($form->getData(){% if createdBy %}, $this->getUser()->{{ createdBy }}(){% endif %});
 {% elseif action in ['Update'] %}
         $form = $this->createForm({{ entity }}FormType::class);
         $form->submit($request->request->get($form->getName()));

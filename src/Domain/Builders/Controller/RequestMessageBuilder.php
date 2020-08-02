@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\Schema\SchemaInterface;
 
 final class RequestMessageBuilder extends AbstractBuilder
@@ -18,8 +19,23 @@ final class RequestMessageBuilder extends AbstractBuilder
     {
         $entity = $this->getInflector()->entity($schema->name());
         $action = $this->getInflector()->pascalAction($action);
+        $createdBy = null;
+        $updatedBy = null;
 
-        parent::__construct(\compact('entity', 'action'));
+        \array_filter(
+            $schema->attributes(),
+            function (SchemaAttributeInterface $property) use (&$createdBy, &$updatedBy): void {
+                if ($property->isCb()) {
+                    $createdBy = $this->getInflector()->camelProperty($property->name());
+                }
+
+                if ($property->isUb()) {
+                    $updatedBy = $this->getInflector()->camelProperty($property->name());
+                }
+            }
+        );
+
+        parent::__construct(\compact('entity', 'action', 'createdBy', 'updatedBy'));
     }
 
     public function build(): string

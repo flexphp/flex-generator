@@ -296,6 +296,35 @@ T
 , $render->build());
     }
 
+    public function testItCreateBlameBy(): void
+    {
+        $render = new RequestBuilder($this->getSchemaStringAndBlameBy('Bar'), 'create');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Bar\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class CreateBarRequest implements RequestInterface
+{
+    public \$code;
+    public \$name;
+    public \$createdBy;
+
+    public function __construct(array \$data, int \$createdBy)
+    {
+        \$this->code = \$data['code'] ?? null;
+        \$this->name = \$data['name'] ?? null;
+        \$this->createdBy = \$createdBy;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItUpdateAiAndBlameAt(): void
     {
         $render = new RequestBuilder($this->getSchemaAiAndBlameAt('Bar'), 'update');

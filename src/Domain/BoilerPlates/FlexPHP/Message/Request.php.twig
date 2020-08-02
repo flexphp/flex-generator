@@ -1,3 +1,4 @@
+{% set CreatedBy, CreatedById = properties|filter(v => v.isCb)|first, '' %}
 <?php declare(strict_types=1);
 
 namespace Domain\{{ entity }}\Request;
@@ -22,14 +23,19 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
     }
 {% else %}
 {% for id, property in properties %}
-{% if (action|lower in ['update'] and property.isPk) or action|lower in ['index'] or (not property.isAi and not property.isBlame) %}
+{% if property.isCb %}
+{% set CreatedById = id %}
+{% endif %}
+{% if (action|lower in ['update'] and property.isPk) or (action|lower in ['create'] and property.isCb) or action|lower in ['index'] or (not property.isAi and not property.isBlame) %}
     public ${{ id }};
 {% endif %}
 {% endfor %}
 {% if properties %}
 
 {% endif %}
-{% if action|lower in ['update'] %}
+{% if action|lower in ['create'] and CreatedBy %}
+    public function __construct(array $data, {{ CreatedBy.typeHint }} ${{ CreatedById }})
+{% elseif action|lower in ['update'] %}
     public function __construct({{ pkTypeHint }} ${{ pkName }}, array $data)
 {% else %}
     public function __construct(array $data)
@@ -38,6 +44,8 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% for id, property in properties %}
 {% if action|lower in ['update'] and property.isPk %}
         $this->{{ id }} = ${{ pkName }};
+{% elseif action|lower in ['create'] and property.isCb %}
+        $this->{{ id }} = ${{ id }};
 {% elseif not (action|lower in ['create'] and property.isAi) and not property.isBlame %}
         $this->{{ id }} = $data['{{ id }}'] ?? null;
 {% elseif action|lower in ['index'] %}

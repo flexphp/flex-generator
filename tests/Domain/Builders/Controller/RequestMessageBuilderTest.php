@@ -12,6 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Controller;
 use FlexPHP\Generator\Domain\Builders\Controller\RequestMessageBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class RequestMessageBuilderTest extends TestCase
 {
@@ -47,6 +48,21 @@ T
         \$form->handleRequest(\$request);
 
         \$request = new CreateTestRequest(\$form->getData());
+T
+, $render->build());
+    }
+
+    public function testItRenderCreateBlameByOk(): void
+    {
+        $render = new RequestMessageBuilder(new Schema('Test', 'bar', [
+            new SchemaAttribute('Pk', 'integer', 'cb'),
+        ]), 'create');
+
+        $this->assertEquals(<<<T
+        \$form = \$this->createForm(TestFormType::class);
+        \$form->handleRequest(\$request);
+
+        \$request = new CreateTestRequest(\$form->getData(), \$this->getUser()->pk());
 T
 , $render->build());
     }
