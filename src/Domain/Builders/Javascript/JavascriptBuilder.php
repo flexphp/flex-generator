@@ -17,10 +17,10 @@ final class JavascriptBuilder extends AbstractBuilder
     public function __construct(SchemaInterface $schema)
     {
         $route = $this->getPluralize($this->getDashCase($schema->name()));
-        $item = $this->getCamelCase($this->getSingularize($schema->name()));
+        $form = $this->getSnakeCase($this->getSingularize($schema->name()));
         $fkRels = $this->getFkRelations($schema->fkRelations());
 
-        parent::__construct(\compact('route', 'item', 'fkRels'));
+        parent::__construct(\compact('route', 'form', 'fkRels'));
     }
 
     protected function getFileTemplate(): string
