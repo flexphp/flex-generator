@@ -39,7 +39,7 @@ return [
         'icon' => 'fas fa-mail-bulk',
         'children' => [
             [
-                'title' => 'entity.list',
+                'title' => 'title.list',
                 'roles' => ['ROLE_ADMIN', 'ROLE_USER_POST_INDEX'],
                 'icon' => 'fas fa-list-ol',
                 'route' => 'posts.index',
@@ -58,7 +58,7 @@ return [
         'icon' => 'fas fa-comments',
         'children' => [
             [
-                'title' => 'entity.list',
+                'title' => 'title.list',
                 'roles' => ['ROLE_ADMIN', 'ROLE_USER_COMMENT_INDEX'],
                 'icon' => 'fas fa-list-ol',
                 'route' => 'comments.index',
@@ -77,7 +77,7 @@ return [
         'icon' => 'fas fa-users',
         'children' => [
             [
-                'title' => 'entity.list',
+                'title' => 'title.list',
                 'roles' => ['ROLE_ADMIN', 'ROLE_USER_USER_INDEX'],
                 'icon' => 'fas fa-list-ol',
                 'route' => 'users.index',
@@ -96,7 +96,7 @@ return [
         'icon' => 'fas fa-key',
         'children' => [
             [
-                'title' => 'entity.list',
+                'title' => 'title.list',
                 'roles' => ['ROLE_ADMIN', 'ROLE_USER_USERPASSWORD_INDEX'],
                 'icon' => 'fas fa-list-ol',
                 'route' => 'user-passwords.index',
