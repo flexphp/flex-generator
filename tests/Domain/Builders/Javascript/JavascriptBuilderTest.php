@@ -110,4 +110,18 @@ jQuery(document).ready(function ($) {
 T
 , $render->build());
     }
+
+    public function testItBlameByOk(): void
+    {
+        $render = new JavascriptBuilder($this->getSchemaStringAndBlameBy('Test'));
+
+        $this->assertEquals(<<<T
+jQuery(document).ready(function ($) {
+    'use strict';
+
+});
+
+T
+, $render->build());
+    }
 }

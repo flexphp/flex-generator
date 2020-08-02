@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Javascript;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\Schema\SchemaInterface;
 
 final class JavascriptBuilder extends AbstractBuilder
@@ -18,7 +19,7 @@ final class JavascriptBuilder extends AbstractBuilder
     {
         $route = $this->getPluralize($this->getDashCase($schema->name()));
         $form = $this->getSnakeCase($this->getSingularize($schema->name()));
-        $fkRels = $this->getFkRelations($schema->fkRelations());
+        $fkRels = $this->getNotBlameFkRelations($schema);
 
         parent::__construct(\compact('route', 'form', 'fkRels'));
     }
@@ -31,5 +32,23 @@ final class JavascriptBuilder extends AbstractBuilder
     protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/Javascript', parent::getPathTemplate());
+    }
+
+    private function getNotBlameFkRelations(SchemaInterface $schema)
+    {
+        $properties = \array_map(function (SchemaAttributeInterface $property) {
+            if ($property->isBlameBy()) {
+                return $property->name();
+            }
+        }, $schema->attributes());
+
+        $properties = \array_filter($properties);
+        $fkRels = $this->getFkRelations($schema->fkRelations());
+
+        return \array_filter($fkRels, function (array $fkRel) use ($properties) {
+            if (!\in_array($fkRel['pk'], $properties)) {
+                return $fkRel;
+            }
+        });
     }
 }
