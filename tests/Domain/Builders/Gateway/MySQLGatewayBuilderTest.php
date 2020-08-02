@@ -303,34 +303,34 @@ T
 
     public function testItFkRelationsOk(): void
     {
-        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation(), ['delete', 'other']);
+        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation('PostComments'), ['delete', 'other']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Test\Gateway;
+namespace Domain\PostComment\Gateway;
 
-use Domain\Test\Test;
-use Domain\Test\TestGateway;
+use Domain\PostComment\PostComment;
+use Domain\PostComment\PostCommentGateway;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types as DB;
 
-final class MySQLTestGateway implements TestGateway
+final class MySQLPostCommentGateway implements PostCommentGateway
 {
     private \$query;
-    private \$table = 'Test';
+    private \$table = 'PostComments';
 
     public function __construct(Connection \$conn)
     {
         \$this->query = \$conn->createQueryBuilder();
     }
 
-    public function pop(Test \$test): void
+    public function pop(PostComment \$postComment): void
     {
         \$this->query->delete(\$this->table);
 
         \$this->query->where('Pk = :pk');
-        \$this->query->setParameter('pk', \$test->pk(), DB::INTEGER);
+        \$this->query->setParameter('pk', \$postComment->pk(), DB::INTEGER);
 
         \$this->query->execute();
     }
@@ -358,6 +358,22 @@ final class MySQLTestGateway implements TestGateway
             'name text',
         ]);
         \$this->query->from('posts');
+
+        \$this->query->where('name like :name');
+        \$this->query->setParameter(':name', "%{\$term}%");
+
+        \$this->query->setMaxResults(\$limit);
+
+        return \$this->query->execute()->fetchAll();
+    }
+
+    public function filterUserStatus(string \$term, int \$page, int \$limit): array
+    {
+        \$this->query->select([
+            'id id',
+            'name text',
+        ]);
+        \$this->query->from('user_status');
 
         \$this->query->where('name like :name');
         \$this->query->setParameter(':name', "%{\$term}%");

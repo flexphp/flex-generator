@@ -30,16 +30,17 @@ T
 
     public function testItFkRelationsOk(): void
     {
-        $render = new JavascriptBuilder($this->getSchemaFkRelation());
+        $render = new JavascriptBuilder($this->getSchemaFkRelation('PostComments'));
 
         $this->assertEquals(<<<T
 jQuery(document).ready(function ($) {
     'use strict';
 
-    const fooUrl = $('#test_form_foo').data('autocomplete-url');
-    const postIdUrl = $('#test_form_postId').data('autocomplete-url');
+    const fooUrl = $('#postComment_form_foo').data('autocomplete-url');
+    const postIdUrl = $('#postComment_form_postId').data('autocomplete-url');
+    const statusIdUrl = $('#postComment_form_statusId').data('autocomplete-url');
 
-    $('#test_form_foo').select2({
+    $('#postComment_form_foo').select2({
         theme: 'bootstrap4',
         minimumInputLength: 3,
         allowClear: true,
@@ -61,12 +62,34 @@ jQuery(document).ready(function ($) {
         },
     });
 
-    $('#test_form_postId').select2({
+    $('#postComment_form_postId').select2({
         theme: 'bootstrap4',
         minimumInputLength: 3,
         allowClear: true,
         ajax: {
             url: postIdUrl,
+            method: 'POST',
+            dataType: 'json',
+            delay: 300,
+            cache: true,
+            headers: {
+                'X-XSRF-Token': getCookie('XSRF-Token')
+            },
+            data: function (params) {
+                return {
+                    term: params.term,
+                    page: params.page
+                };
+            }
+        },
+    });
+
+    $('#postComment_form_statusId').select2({
+        theme: 'bootstrap4',
+        minimumInputLength: 3,
+        allowClear: true,
+        ajax: {
+            url: statusIdUrl,
             method: 'POST',
             dataType: 'json',
             delay: 300,

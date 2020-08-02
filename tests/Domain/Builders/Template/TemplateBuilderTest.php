@@ -126,10 +126,10 @@ T
 
     public function testItRenderCreateFkRelationsOk(): void
     {
-        $render = new TemplateBuilder($this->getSchemaFkRelation(), 'create');
+        $render = new TemplateBuilder($this->getSchemaFkRelation('PostComments'), 'create');
 
         $this->assertEquals(<<<T
-{% trans_default_domain 'test' %}
+{% trans_default_domain 'postComment' %}
 {% extends 'form/layout.html.twig' %}
 
 {% block title %}{% trans %}title.new{% endtrans %}{% endblock %}
@@ -141,13 +141,13 @@ T
                 {% trans %}title.new{% endtrans %}
             </h3>
             <div class="toolbar ml-auto">
-                <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ path('post-comments.index') }}" class="btn btn-outline-secondary">
                     <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
                 </a>
             </div>
         </div>
 
-        {{ form_start(form, {'action': path('tests.create')}) }}
+        {{ form_start(form, {'action': path('post-comments.create')}) }}
             <div class="card-body">
                 {{ form_widget(form) }}
             </div>
@@ -168,7 +168,7 @@ T
 
 {% block javascripts %}
     <script src="{{ asset('js/jquery/jquery.select2.min.js') }}"></script>
-    <script src="{{ asset('js/tests.js') }}"></script>
+    <script src="{{ asset('js/postComments.js') }}"></script>
 {% endblock %}
 
 T
@@ -277,10 +277,10 @@ T
 
     public function testItRenderUpdateFkRelationsOk(): void
     {
-        $render = new TemplateBuilder($this->getSchemaFkRelation(), 'update');
+        $render = new TemplateBuilder($this->getSchemaFkRelation('PostComments'), 'update');
 
         $this->assertEquals(<<<T
-{% trans_default_domain 'test' %}
+{% trans_default_domain 'postComment' %}
 {% extends 'form/layout.html.twig' %}
 
 {% block title %}{% trans %}title.edit{% endtrans %}{% endblock %}
@@ -292,13 +292,13 @@ T
                 {% trans %}title.edit{% endtrans %}
             </h3>
             <div class="toolbar ml-auto">
-                <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ path('post-comments.index') }}" class="btn btn-outline-secondary">
                     <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
                 </a>
             </div>
         </div>
 
-        {{ form_start(form, {'action': path('tests.update', {id: register.id}), 'method': 'PUT', 'attr': {'id': 'test'}}) }}
+        {{ form_start(form, {'action': path('post-comments.update', {id: register.id}), 'method': 'PUT', 'attr': {'id': 'postComment'}}) }}
             <div class="card-body">
                 {{ form_widget(form) }}
             </div>
@@ -307,11 +307,11 @@ T
         <div class="card-footer">
             <div class="row">
                 <div class="col">
-                    {{ include('test/_delete_form.html.twig', {test: register}, with_context = false) }}
+                    {{ include('postComment/_delete_form.html.twig', {postComment: register}, with_context = false) }}
                 </div>
 
                 <div class="col text-right">
-                    <button type="submit" form="test" class="btn btn-primary">
+                    <button type="submit" form="postComment" class="btn btn-primary">
                         <i class="fa fa-save" aria-hidden="true"></i> {% trans from 'messages' %}action.update{% endtrans %}
                     </button>
                 </div>
@@ -327,7 +327,7 @@ T
 
 {% block javascripts %}
     <script src="{{ asset('js/jquery/jquery.select2.min.js') }}"></script>
-    <script src="{{ asset('js/tests.js') }}"></script>
+    <script src="{{ asset('js/postComments.js') }}"></script>
 {% endblock %}
 
 T

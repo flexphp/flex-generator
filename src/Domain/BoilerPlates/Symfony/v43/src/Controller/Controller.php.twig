@@ -65,7 +65,7 @@ final class {{ entity }}Controller extends AbstractController
         $response = $useCase->execute($request);
 
         return new JsonResponse([
-            'results' => $response->{{ fkFn.route }},
+            'results' => $response->{{ fkFn.items }},
             'pagination' => ['more' => false],
         ]);
     }

@@ -124,17 +124,18 @@ T
 
     public function testItRenderRelationsOk(): void
     {
-        $render = new GatewayBuilder($this->getSchemaFkRelation(), ['other']);
+        $render = new GatewayBuilder($this->getSchemaFkRelation('PostComments'), ['other']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Test;
+namespace Domain\PostComment;
 
-interface TestGateway
+interface PostCommentGateway
 {
     public function filterBars(string \$term, int \$page, int \$limit): array;
     public function filterPosts(string \$term, int \$page, int \$limit): array;
+    public function filterUserStatus(string \$term, int \$page, int \$limit): array;
 }
 
 T

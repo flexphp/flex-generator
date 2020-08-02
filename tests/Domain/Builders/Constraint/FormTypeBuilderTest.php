@@ -100,12 +100,12 @@ T
 
     public function testItFkRelationsOk(): void
     {
-        $render = new FormTypeBuilder($this->getSchemaFkRelation());
+        $render = new FormTypeBuilder($this->getSchemaFkRelation('PostComments'));
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Test;
+namespace Domain\PostComment;
 
 use App\Form\Type\Select2Type;
 use Doctrine\DBAL\Connection;
@@ -117,6 +117,10 @@ use Domain\Post\UseCase\ReadPostUseCase;
 use Domain\Post\PostRepository;
 use Domain\Post\Gateway\MySQLPostGateway;
 use Domain\Post\Request\ReadPostRequest;
+use Domain\UserStatus\UseCase\ReadUserStatusUseCase;
+use Domain\UserStatus\UserStatusRepository;
+use Domain\UserStatus\Gateway\MySQLUserStatusGateway;
+use Domain\UserStatus\Request\ReadUserStatusRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -125,7 +129,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class TestFormType extends AbstractType
+final class PostCommentFormType extends AbstractType
 {
     private \$conn;
     private \$router;
@@ -154,7 +158,7 @@ final class TestFormType extends AbstractType
                 'label' => 'Foo',
                 'required' => true,
                 'attr' => [
-                    'data-autocomplete-url' => \$this->router->generate('tests.find.bars'),
+                    'data-autocomplete-url' => \$this->router->generate('post-comments.find.bars'),
                 ],
                 'choices' => \$choices,
                 'data' => \$value,
@@ -189,7 +193,7 @@ final class TestFormType extends AbstractType
                 'label' => 'Post Id',
                 'required' => false,
                 'attr' => [
-                    'data-autocomplete-url' => \$this->router->generate('tests.find.posts'),
+                    'data-autocomplete-url' => \$this->router->generate('post-comments.find.posts'),
                 ],
                 'choices' => \$choices,
                 'data' => \$value,
@@ -208,11 +212,46 @@ final class TestFormType extends AbstractType
             \$postIdModifier(\$event->getForm(), (int)\$event->getData()['postId'] ?? null);
         });
 
+        \$statusIdModifier = function (FormInterface \$form, ?int \$value) {
+            \$choices = null;
+
+            if (!empty(\$value)) {
+                \$useCase = new ReadUserStatusUseCase(new UserStatusRepository(new MySQLUserStatusGateway(\$this->conn)));
+                \$response = \$useCase->execute(new ReadUserStatusRequest(\$value));
+
+                if (\$response->userStatus->id()) {
+                    \$choices = [\$response->userStatus->name() => \$value];
+                }
+            }
+
+            \$form->add('statusId', Select2Type::class, [
+                'label' => 'Status Id',
+                'required' => false,
+                'attr' => [
+                    'data-autocomplete-url' => \$this->router->generate('post-comments.find.user-status'),
+                ],
+                'choices' => \$choices,
+                'data' => \$value,
+            ]);
+        };
+
+        \$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent \$event) use (\$statusIdModifier) {
+            if (!\$event->getData()) {
+                return null;
+            }
+
+            \$statusIdModifier(\$event->getForm(), \$event->getData()->statusId());
+        });
+
+        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$statusIdModifier) {
+            \$statusIdModifier(\$event->getForm(), (int)\$event->getData()['statusId'] ?? null);
+        });
+
         \$builder->add('foo', Select2Type::class, [
             'label' => 'Foo',
             'required' => true,
             'attr' => [
-                'data-autocomplete-url' => \$this->router->generate('tests.find.bars'),
+                'data-autocomplete-url' => \$this->router->generate('post-comments.find.bars'),
             ],
             'choices' => [],
         ]);
@@ -220,7 +259,15 @@ final class TestFormType extends AbstractType
             'label' => 'Post Id',
             'required' => false,
             'attr' => [
-                'data-autocomplete-url' => \$this->router->generate('tests.find.posts'),
+                'data-autocomplete-url' => \$this->router->generate('post-comments.find.posts'),
+            ],
+            'choices' => [],
+        ]);
+        \$builder->add('statusId', Select2Type::class, [
+            'label' => 'Status Id',
+            'required' => false,
+            'attr' => [
+                'data-autocomplete-url' => \$this->router->generate('post-comments.find.user-status'),
             ],
             'choices' => [],
         ]);

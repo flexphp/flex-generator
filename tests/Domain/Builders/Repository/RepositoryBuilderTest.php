@@ -172,21 +172,22 @@ T
 
     public function testItRenderFkRelationsOk(): void
     {
-        $render = new RepositoryBuilder($this->getSchemaFkRelation(), ['index']);
+        $render = new RepositoryBuilder($this->getSchemaFkRelation('PostComments'), ['index']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
-namespace Domain\Test;
+namespace Domain\PostComment;
 
-use Domain\Test\Request\IndexTestRequest;
-use Domain\Test\Request\FindTestBarRequest;
-use Domain\Test\Request\FindTestPostRequest;
+use Domain\PostComment\Request\IndexPostCommentRequest;
+use Domain\PostComment\Request\FindPostCommentBarRequest;
+use Domain\PostComment\Request\FindPostCommentPostRequest;
+use Domain\PostComment\Request\FindPostCommentUserStatusRequest;
 use FlexPHP\Repositories\Repository;
 
-final class TestRepository extends Repository
+final class PostCommentRepository extends Repository
 {
-    public function findBy(IndexTestRequest \$request): array
+    public function findBy(IndexPostCommentRequest \$request): array
     {
         return \$this->getGateway()->search((array)\$request, [], 10);
     }
@@ -199,6 +200,11 @@ final class TestRepository extends Repository
     public function findPostsByTerm(FindCommentPostRequest \$request): array
     {
         return \$this->getGateway()->filterPosts(\$request->term, \$request->page, 10);
+    }
+
+    public function findUserStatusByTerm(FindCommentUserStatusRequest \$request): array
+    {
+        return \$this->getGateway()->filterUserStatus(\$request->term, \$request->page, 10);
     }
 }
 

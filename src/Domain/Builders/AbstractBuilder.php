@@ -57,6 +57,7 @@ abstract class AbstractBuilder implements BuilderInterface
                 'fnPlural' => $this->getPascalCase($this->getPluralize($fkRel['pkTable'])),
                 'fnSingular' => $this->getPascalCase($this->getSingularize($fkRel['pkTable'])),
                 'item' => $this->getCamelCase($this->getSingularize($fkRel['pkTable'])),
+                'items' => $this->getCamelCase($this->getPluralize($fkRel['pkTable'])),
                 'route' => $this->getDashCase($this->getPluralize($fkRel['pkTable'])),
                 'table' => $this->getSnakeCase($this->getPluralize($fkRel['pkTable'])),
                 'pk' => $fkRel['pkId'],

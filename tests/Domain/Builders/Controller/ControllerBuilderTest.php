@@ -480,17 +480,19 @@ T
 
     public function testItRenderFkRelationsOk(): void
     {
-        $render = new ControllerBuilder($this->getSchemaFkRelation(), []);
+        $render = new ControllerBuilder($this->getSchemaFkRelation('PostComments'), []);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
 namespace App\Controller;
 
-use Domain\Test\Request\FindTestBarRequest;
-use Domain\Test\UseCase\FindTestBarUseCase;
-use Domain\Test\Request\FindTestPostRequest;
-use Domain\Test\UseCase\FindTestPostUseCase;
+use Domain\PostComment\Request\FindPostCommentBarRequest;
+use Domain\PostComment\UseCase\FindPostCommentBarUseCase;
+use Domain\PostComment\Request\FindPostCommentPostRequest;
+use Domain\PostComment\UseCase\FindPostCommentPostUseCase;
+use Domain\PostComment\Request\FindPostCommentUserStatusRequest;
+use Domain\PostComment\UseCase\FindPostCommentUserStatusUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -500,12 +502,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/tests")
+ * @Route("/post-comments")
  */
-final class TestController extends AbstractController
+final class PostCommentController extends AbstractController
 {
     /**
-     * @Route("/find-bars", methods={"POST"}, name="tests.find.bars")
+     * @Route("/find-bars", methods={"POST"}, name="post-comments.find.bars")
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_BAR_INDEX')", statusCode=401)
      */
@@ -515,9 +517,9 @@ final class TestController extends AbstractController
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        \$request = new FindTestBarRequest(\$request->request->all());
+        \$request = new FindPostCommentBarRequest(\$request->request->all());
 
-        \$useCase = new FindTestBarUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        \$useCase = new FindPostCommentBarUseCase(new PostCommentRepository(new MySQLPostCommentGateway(\$conn)));
 
         \$response = \$useCase->execute(\$request);
 
@@ -528,7 +530,7 @@ final class TestController extends AbstractController
     }
 
     /**
-     * @Route("/find-posts", methods={"POST"}, name="tests.find.posts")
+     * @Route("/find-posts", methods={"POST"}, name="post-comments.find.posts")
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_POST_INDEX')", statusCode=401)
      */
@@ -538,14 +540,37 @@ final class TestController extends AbstractController
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        \$request = new FindTestPostRequest(\$request->request->all());
+        \$request = new FindPostCommentPostRequest(\$request->request->all());
 
-        \$useCase = new FindTestPostUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        \$useCase = new FindPostCommentPostUseCase(new PostCommentRepository(new MySQLPostCommentGateway(\$conn)));
 
         \$response = \$useCase->execute(\$request);
 
         return new JsonResponse([
             'results' => \$response->posts,
+            'pagination' => ['more' => false],
+        ]);
+    }
+
+    /**
+     * @Route("/find-user-status", methods={"POST"}, name="post-comments.find.user-status")
+     * @Cache(smaxage="10")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_USERSTATUS_INDEX')", statusCode=401)
+     */
+    public function findUserStatus(Request \$request, Connection \$conn): Response
+    {
+        if (!\$request->isXmlHttpRequest()) {
+            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
+        }
+
+        \$request = new FindPostCommentUserStatusRequest(\$request->request->all());
+
+        \$useCase = new FindPostCommentUserStatusUseCase(new PostCommentRepository(new MySQLPostCommentGateway(\$conn)));
+
+        \$response = \$useCase->execute(\$request);
+
+        return new JsonResponse([
+            'results' => \$response->userStatus,
             'pagination' => ['more' => false],
         ]);
     }

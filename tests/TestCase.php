@@ -47,6 +47,7 @@ class TestCase extends PHPUnitTestCase
             new SchemaAttribute('Pk', 'integer', 'pk|ai|required'),
             new SchemaAttribute('foo', 'string', 'fk:Bar,fuz,baz|required'),
             new SchemaAttribute('PostId', 'integer', 'fk:posts'),
+            new SchemaAttribute('StatusId', 'integer', 'fk:UserStatus'),
         ]);
     }
 
