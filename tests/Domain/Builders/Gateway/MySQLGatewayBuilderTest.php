@@ -341,7 +341,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
             'baz id',
             'fuz text',
         ]);
-        \$this->query->from('bars');
+        \$this->query->from('Bar');
 
         \$this->query->where('fuz like :fuz');
         \$this->query->setParameter(':fuz', "%{\$term}%");
@@ -373,7 +373,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
             'id id',
             'name text',
         ]);
-        \$this->query->from('user_status');
+        \$this->query->from('UserStatus');
 
         \$this->query->where('name like :name');
         \$this->query->setParameter(':name', "%{\$term}%");
