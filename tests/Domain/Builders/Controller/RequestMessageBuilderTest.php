@@ -55,14 +55,14 @@ T
     public function testItRenderCreateBlameByOk(): void
     {
         $render = new RequestMessageBuilder(new Schema('Test', 'bar', [
-            new SchemaAttribute('Pk', 'integer', 'cb'),
+            new SchemaAttribute('UserCreateId', 'integer', 'cb|fk:Users,Name,UserId'),
         ]), 'create');
 
         $this->assertEquals(<<<T
         \$form = \$this->createForm(TestFormType::class);
         \$form->handleRequest(\$request);
 
-        \$request = new CreateTestRequest(\$form->getData(), \$this->getUser()->pk());
+        \$request = new CreateTestRequest(\$form->getData(), \$this->getUser()->userId());
 T
 , $render->build());
     }
@@ -94,7 +94,7 @@ T
     public function testItRenderUpdateBlameByOk(): void
     {
         $render = new RequestMessageBuilder(new Schema('Test', 'bar', [
-            new SchemaAttribute('Key', 'integer', 'ub'),
+            new SchemaAttribute('Key', 'integer', 'ub|fk:Users'),
         ]), 'update');
 
         $this->assertEquals(<<<T
@@ -102,7 +102,7 @@ T
         \$form->submit(\$request->request->get(\$form->getName()));
         \$form->handleRequest(\$request);
 
-        \$request = new UpdateTestRequest(\$id, \$form->getData(), \$this->getUser()->key());
+        \$request = new UpdateTestRequest(\$id, \$form->getData(), \$this->getUser()->id());
 T
 , $render->build());
     }

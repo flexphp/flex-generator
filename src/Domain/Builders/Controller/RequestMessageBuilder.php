@@ -26,11 +26,11 @@ final class RequestMessageBuilder extends AbstractBuilder
             $schema->attributes(),
             function (SchemaAttributeInterface $property) use (&$createdBy, &$updatedBy): void {
                 if ($property->isCb()) {
-                    $createdBy = $this->getInflector()->camelProperty($property->name());
+                    $createdBy = $this->getInflector()->camelProperty($property->fkId());
                 }
 
                 if ($property->isUb()) {
-                    $updatedBy = $this->getInflector()->camelProperty($property->name());
+                    $updatedBy = $this->getInflector()->camelProperty($property->fkId());
                 }
             }
         );
