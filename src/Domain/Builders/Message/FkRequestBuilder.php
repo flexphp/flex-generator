@@ -15,8 +15,8 @@ final class FkRequestBuilder extends AbstractBuilder
 {
     public function __construct(string $pkEntity, string $fkEntity)
     {
-        $pkEntity = $this->getPascalCase($this->getSingularize($pkEntity));
-        $fkEntity = $this->getPascalCase($this->getSingularize($fkEntity));
+        $pkEntity = $this->getInflector()->entity($pkEntity);
+        $fkEntity = $this->getInflector()->entity($fkEntity);
 
         parent::__construct(\compact('pkEntity', 'fkEntity'));
     }

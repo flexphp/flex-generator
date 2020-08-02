@@ -15,8 +15,8 @@ final class {{ action }}{{ entity }}UseCase extends UseCase
      */
     public function execute($request)
     {
-        ${{ item }} = $this->getRepository()->findBy($request);
+        ${{ items }} = $this->getRepository()->findBy($request);
 
-        return new {{ action }}{{ entity }}Response(${{ item }});
+        return new {{ action }}{{ entity }}Response(${{ items }});
     }
 }

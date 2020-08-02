@@ -12,14 +12,11 @@ namespace FlexPHP\Generator\Domain\UseCases;
 use FlexPHP\Generator\Domain\Builders\Config\MenuBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateMenuFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateMenuFileResponse;
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 use FlexPHP\Schema\Schema;
 
 final class CreateMenuFileUseCase
 {
-    use InflectorTrait;
-
     public function execute(CreateMenuFileRequest $request): CreateMenuFileResponse
     {
         $entities = [];

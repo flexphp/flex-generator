@@ -16,11 +16,11 @@ final class GatewayBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema, array $actions)
     {
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $item = $this->getCamelCase($entity);
+        $entity = $this->getInflector()->entity($schema->name());
+        $item = $this->getInflector()->item($schema->name());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
         $actions = \array_reduce($actions, function (array $result, string $action) {
-            $result[] = $this->getCamelCase($action);
+            $result[] = $this->getInflector()->camelAction($action);
 
             return $result;
         }, []);

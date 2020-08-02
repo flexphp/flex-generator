@@ -21,14 +21,14 @@ final class TemplateBuilder extends AbstractBuilder
     {
         $this->action = $action;
 
-        $route = $this->getPluralize($this->getDashCase($schema->name()));
-        $item = $this->getCamelCase($this->getSingularize($schema->name()));
-        $items = $this->getCamelCase($this->getPluralize($schema->name()));
+        $route = $this->getInflector()->route($schema->name());
+        $item = $this->getInflector()->item($schema->name());
+        $items = $this->getInflector()->items($schema->name());
         $fkRels = $this->getFkRelations($schema->fkRelations());
         $properties = \array_reduce(
             $schema->attributes(),
             function (array $result, SchemaAttributeInterface $property) {
-                $result[$this->getCamelCase($property->name())] = $property;
+                $result[$this->getInflector()->camelProperty($property->name())] = $property;
 
                 return $result;
             },

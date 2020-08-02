@@ -10,18 +10,17 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Builders\Gateway\GatewayBuilder;
+use FlexPHP\Generator\Domain\Builders\Inflector;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateGatewayFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateGatewayFileResponse;
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 
 final class CreateGatewayFileUseCase
 {
-    use InflectorTrait;
-
     public function execute(CreateGatewayFileRequest $request): CreateGatewayFileResponse
     {
-        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
+        $inflector = new Inflector();
+        $entity = $inflector->entity($request->schema->name());
 
         $gateway = new GatewayBuilder($request->schema, $request->actions);
         $filename = $entity . 'Gateway';

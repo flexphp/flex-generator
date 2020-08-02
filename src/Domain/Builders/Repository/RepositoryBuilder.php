@@ -17,14 +17,14 @@ final class RepositoryBuilder extends AbstractBuilder
     public function __construct(SchemaInterface $schema, array $actions)
     {
         $login = 'email';
-        $item = $this->getCamelCase($this->getSingularize($schema->name()));
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
+        $item = $this->getInflector()->item($schema->name());
+        $entity = $this->getInflector()->entity($schema->name());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
 
         $requests = [];
         $actions = \array_reduce($actions, function (array $result, string $action) use (&$requests) {
-            $result[] = $this->getCamelCase($action);
-            $requests[] = $this->getPascalCase($action);
+            $result[] = $this->getInflector()->camelAction($action);
+            $requests[] = $this->getInflector()->pascalAction($action);
 
             return $result;
         }, []);

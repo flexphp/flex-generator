@@ -5,7 +5,7 @@
 {% elseif action in ['create', 'update', 'delete'] %}
         $this->addFlash($response->status, $response->message);
 
-        return $this->redirectToRoute('{{ entity }}.index');
+        return $this->redirectToRoute('{{ route }}.index');
 {% elseif action == 'read' %}
         return $this->render('{{ templates }}/show.html.twig', [
             'register' => $response->{{ item }},

@@ -9,20 +9,19 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
+use FlexPHP\Generator\Domain\Builders\Inflector;
 use FlexPHP\Generator\Domain\Builders\Template\TemplateBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateTemplateFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateTemplateFileResponse;
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\TemplateWriter;
 
 final class CreateTemplateFileUseCase
 {
-    use InflectorTrait;
-
     public function execute(CreateTemplateFileRequest $request): CreateTemplateFileResponse
     {
         $files = [];
-        $entity = $this->getCamelCase($this->getSingularize($request->schema->name()));
+        $inflector = new Inflector();
+        $filename = $inflector->item($request->schema->name());
         $actions = [
             'index' => 'index.html',
             'create' => 'new.html',
@@ -31,7 +30,7 @@ final class CreateTemplateFileUseCase
             'delete' => '_delete_form.html',
         ];
 
-        $path = \sprintf('%1$s/../../tmp/skeleton/templates/%2$s', __DIR__, $entity);
+        $path = \sprintf('%1$s/../../tmp/skeleton/templates/%2$s', __DIR__, $filename);
 
         foreach ($actions as $action => $filename) {
             $builder = new TemplateBuilder($request->schema, $action);

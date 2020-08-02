@@ -17,7 +17,7 @@ final class ConstraintBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema)
     {
-        $entity = $this->getSingularize($this->getPascalCase($schema->name()));
+        $entity = $this->getInflector()->entity($schema->name());
         $rules = \array_reduce(
             $schema->attributes(),
             function (array $result, SchemaAttributeInterface $schemaAttribute) {

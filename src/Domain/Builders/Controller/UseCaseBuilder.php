@@ -16,12 +16,12 @@ final class UseCaseBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema, string $action)
     {
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $action = $this->getPascalCase($action);
-        $name = $this->getCamelCase($this->getSingularize($schema->name()));
-        $pkName = $this->getCamelCase($schema->pkName());
+        $entity = $this->getInflector()->entity($schema->name());
+        $action = $this->getInflector()->pascalAction($action);
+        $item = $this->getInflector()->item($schema->name());
+        $pkName = $this->getInflector()->camelProperty($schema->pkName());
 
-        parent::__construct(\compact('entity', 'action', 'name', 'pkName'));
+        parent::__construct(\compact('entity', 'action', 'item', 'pkName'));
     }
 
     public function build(): string

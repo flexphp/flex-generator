@@ -59,7 +59,7 @@ final class {{ entity }}FormType extends AbstractType
                 'required' => false,
 {% endif %}
                 'attr' => [
-                    'data-autocomplete-url' => $this->router->generate('{{ items }}.find.{{ fkRel.route }}'),
+                    'data-autocomplete-url' => $this->router->generate('{{ route }}.find.{{ fkRel.route }}'),
                 ],
                 'choices' => $choices,
                 'data' => $value,
@@ -96,7 +96,7 @@ final class {{ entity }}FormType extends AbstractType
 {% if property.Constraints|filter(v => v != 'required')|length > 0 %}
             'attr' => [
 {% if fkRels[id] %}
-                'data-autocomplete-url' => $this->router->generate('{{ items }}.find.{{ fkRels[id].route }}'),
+                'data-autocomplete-url' => $this->router->generate('{{ route }}.find.{{ fkRels[id].route }}'),
 {% endif %}
 {% if property.minLength %}
                 'minlength' => {{ property.minLength }},

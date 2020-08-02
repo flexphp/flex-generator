@@ -13,13 +13,13 @@ use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Box\Spout\Reader\ReaderInterface;
 use Box\Spout\Reader\SheetInterface;
 use Exception;
+use FlexPHP\Generator\Domain\Builders\Inflector;
 use FlexPHP\Generator\Domain\Exceptions\FormatNotSupportedException;
 use FlexPHP\Generator\Domain\Exceptions\FormatPathNotValidException;
 use FlexPHP\Generator\Domain\Messages\Requests\CreatePrototypeRequest;
 use FlexPHP\Generator\Domain\Messages\Requests\ProcessFormatRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreatePrototypeResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\ProcessFormatResponse;
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Validations\FieldSyntaxValidation;
 use FlexPHP\Generator\Domain\Validations\HeaderSyntaxValidation;
 use FlexPHP\Generator\Domain\Writers\YamlWriter;
@@ -30,10 +30,6 @@ use ZipArchive;
 
 final class ProcessFormatUseCase
 {
-    use InflectorTrait;
-
-    private const ROW_HEADERS = 'ROW_HEADERS';
-
     private const COLUMN_A = 0;
 
     private const COLUMN_B = 1;
@@ -42,6 +38,16 @@ final class ProcessFormatUseCase
      * @var int
      */
     private $rowHeaders;
+
+    /**
+     * @var Inflector
+     */
+    private $inflector;
+
+    public function __construct()
+    {
+        $this->inflector = new Inflector();
+    }
 
     /**
      * @throws FormatPathNotValidException
@@ -69,7 +75,7 @@ final class ProcessFormatUseCase
                 continue;
             }
 
-            $sheetName = $this->getPascalCase($sheet->getName());
+            $sheetName = $this->inflector->sheetName($sheet->getName());
             $conf = $this->getConf($sheetName, $sheet);
             $headers = $this->getHeaders($sheet);
             $attributes = $this->getAttributes($sheet, $headers);
@@ -77,7 +83,7 @@ final class ProcessFormatUseCase
             $yamls[$sheetName] = $this->createYaml($sheetName, $conf, $attributes, $outputTmp . '/yamls');
         }
 
-        $this->createPrototype($this->getSnakeCase($name), $yamls, $outputTmp);
+        $this->createPrototype($this->inflector->prototypeName($name), $yamls, $outputTmp);
 
         $this->createZip($name, $outputTmp, $outputDir);
 
@@ -170,7 +176,7 @@ final class ProcessFormatUseCase
             $properties = $this->getProperties($cols, $headers);
 
             $colHeaderName = $headers[\array_search(Keyword::NAME, $headers)];
-            $name = $this->getCamelCase($properties[$colHeaderName]);
+            $name = $this->inflector->camelProperty($properties[$colHeaderName]);
             $attributes[$name] = $properties;
         }
 

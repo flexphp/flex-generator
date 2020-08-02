@@ -10,18 +10,17 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Builders\FormType\FormTypeBuilder;
+use FlexPHP\Generator\Domain\Builders\Inflector;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateFormTypeFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateFormTypeFileResponse;
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 
 final class CreateFormTypeFileUseCase
 {
-    use InflectorTrait;
-
     public function execute(CreateFormTypeFileRequest $request): CreateFormTypeFileResponse
     {
-        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
+        $inflector = new Inflector();
+        $entity = $inflector->entity($request->schema->name());
 
         $formType = new FormTypeBuilder($request->schema);
         $filename = $entity . 'FormType';

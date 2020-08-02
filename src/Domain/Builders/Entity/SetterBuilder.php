@@ -16,8 +16,8 @@ final class SetterBuilder extends AbstractBuilder
 {
     public function __construct(SchemaAttributeInterface $property)
     {
-        $name = $this->getCamelCase($property->name());
-        $setter = $this->getPascalCase($property->name());
+        $name = $this->getInflector()->camelProperty($property->name());
+        $setter = $this->getInflector()->pascalProperty($property->name());
         $typehint = $property->typeHint();
         $required = $property->isRequired();
 

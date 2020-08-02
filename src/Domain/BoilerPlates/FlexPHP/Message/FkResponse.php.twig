@@ -6,10 +6,10 @@ use FlexPHP\Messages\ResponseInterface;
 
 final class Find{{ pkEntity }}{{ fkEntity }}Response implements ResponseInterface
 {
-    public ${{ item }};
+    public ${{ items }};
 
-    public function __construct(array ${{ item }})
+    public function __construct(array ${{ items }})
     {
-        $this->{{ item }} = ${{ item }};
+        $this->{{ items }} = ${{ items }};
     }
 }

@@ -15,11 +15,11 @@ final class FkResponseBuilder extends AbstractBuilder
 {
     public function __construct(string $pkEntity, string $fkEntity)
     {
-        $item = $this->getPluralize($this->getCamelCase($fkEntity));
-        $pkEntity = $this->getPascalCase($this->getSingularize($pkEntity));
-        $fkEntity = $this->getPascalCase($this->getSingularize($fkEntity));
+        $items = $this->getInflector()->items($fkEntity);
+        $pkEntity = $this->getInflector()->entity($pkEntity);
+        $fkEntity = $this->getInflector()->entity($fkEntity);
 
-        parent::__construct(\compact('pkEntity', 'fkEntity', 'item'));
+        parent::__construct(\compact('pkEntity', 'fkEntity', 'items'));
     }
 
     protected function getFileTemplate(): string

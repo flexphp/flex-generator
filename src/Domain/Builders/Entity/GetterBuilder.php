@@ -16,7 +16,7 @@ final class GetterBuilder extends AbstractBuilder
 {
     public function __construct(SchemaAttributeInterface $property)
     {
-        $name = $this->getCamelCase($property->name());
+        $name = $this->getInflector()->camelProperty($property->name());
         $typehint = $property->typeHint();
         $required = $property->isRequired();
 

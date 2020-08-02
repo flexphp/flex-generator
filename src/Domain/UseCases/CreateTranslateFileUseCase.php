@@ -9,23 +9,22 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
+use FlexPHP\Generator\Domain\Builders\Inflector;
 use FlexPHP\Generator\Domain\Builders\Translate\TranslateBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateTranslateFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateTranslateFileResponse;
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 
 final class CreateTranslateFileUseCase
 {
-    use InflectorTrait;
-
     public function execute(CreateTranslateFileRequest $request): CreateTranslateFileResponse
     {
-        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
+        $inflector = new Inflector();
+        $entity = $inflector->entity($request->schema->name());
 
         $translate = new TranslateBuilder($request->schema);
         $path = \sprintf('%1$s/../../tmp/skeleton/translations', __DIR__);
-        $filename = \sprintf('%1$s.%2$s', $this->getCamelCase($entity), $request->schema->language());
+        $filename = \sprintf('%1$s.%2$s', $inflector->item($entity), $request->schema->language());
 
         $writer = new PhpWriter($translate->build(), $filename, $path);
 

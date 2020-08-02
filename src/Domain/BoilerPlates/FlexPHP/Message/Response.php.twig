@@ -10,11 +10,11 @@ use FlexPHP\Messages\ResponseInterface;
 final class {{ action }}{{ entity }}Response implements ResponseInterface
 {
 {% if action|lower == 'index' %}
-    public ${{ item }};
+    public ${{ items }};
 
-    public function __construct(array ${{ item }})
+    public function __construct(array ${{ items }})
     {
-        $this->{{ item }} = ${{ item }};
+        $this->{{ items }} = ${{ items }};
     }
 {% elseif action|lower in ['create', 'update', 'delete'] %}
     public $code;
@@ -28,11 +28,11 @@ final class {{ action }}{{ entity }}Response implements ResponseInterface
         $this->message = $message;
     }
 {% elseif action|lower in ['read', 'login'] %}
-    public ${{ name }};
+    public ${{ item }};
 
-    public function __construct({{ entity }} ${{ name }})
+    public function __construct({{ entity }} ${{ item }})
     {
-        $this->{{ name }} = ${{ name }};
+        $this->{{ item }} = ${{ item }};
     }
 {% else %}
     public function __construct(array $data = [])

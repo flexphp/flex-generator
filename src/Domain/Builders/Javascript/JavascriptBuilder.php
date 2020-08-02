@@ -17,8 +17,8 @@ final class JavascriptBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema)
     {
-        $route = $this->getPluralize($this->getDashCase($schema->name()));
-        $form = $this->getSnakeCase($this->getSingularize($schema->name()));
+        $route = $this->getInflector()->route($schema->name());
+        $form = $this->getInflector()->form($schema->name());
         $fkRels = $this->getNotBlameFkRelations($schema);
 
         parent::__construct(\compact('route', 'form', 'fkRels'));

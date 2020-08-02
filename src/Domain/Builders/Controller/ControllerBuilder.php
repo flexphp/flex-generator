@@ -16,13 +16,13 @@ final class ControllerBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema, array $actions)
     {
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $route = $this->getDashCase($this->getPluralize($entity));
+        $entity = $this->getInflector()->entity($schema->name());
+        $route = $this->getInflector()->route($schema->name());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
         unset($actions['login']);
 
         foreach ($actions as $action => $builder) {
-            $actions[$this->getPascalCase($action)] = $builder;
+            $actions[$this->getInflector()->pascalAction($action)] = $builder;
             unset($actions[$action]);
         }
 

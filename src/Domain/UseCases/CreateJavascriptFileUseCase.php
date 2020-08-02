@@ -9,19 +9,18 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
+use FlexPHP\Generator\Domain\Builders\Inflector;
 use FlexPHP\Generator\Domain\Builders\Javascript\JavascriptBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateJavascriptFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateJavascriptFileResponse;
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\JsWriter;
 
 final class CreateJavascriptFileUseCase
 {
-    use InflectorTrait;
-
     public function execute(CreateJavascriptFileRequest $request): CreateJavascriptFileResponse
     {
-        $filename = $this->getCamelCase($this->getPluralize($request->schema->name()));
+        $inflector = new Inflector();
+        $filename = $inflector->jsName($request->schema->name());
 
         $factory = new JavascriptBuilder($request->schema);
         $path = \sprintf('%1$s/../../tmp/skeleton/public/js', __DIR__);

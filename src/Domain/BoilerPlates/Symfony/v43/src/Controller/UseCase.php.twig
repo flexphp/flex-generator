@@ -7,7 +7,7 @@
         $response = $useCase->execute($request);
 {% if action|lower in ['read'] %}
 
-        if (!$response->{{ name }}->{{ pkName }}()) {
+        if (!$response->{{ item }}->{{ pkName }}()) {
             throw $this->createNotFoundException();
         }
 {% endif %}

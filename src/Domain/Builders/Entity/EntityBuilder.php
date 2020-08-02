@@ -17,7 +17,7 @@ final class EntityBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema)
     {
-        $name = $this->getPascalCase($this->getSingularize($schema->name()));
+        $name = $this->getInflector()->entity($schema->name());
         $getters = $this->getGetters($schema->attributes());
         $setters = $this->getSetters($schema->attributes());
         $_properties = $this->getProperties($schema->attributes());
@@ -41,7 +41,7 @@ final class EntityBuilder extends AbstractBuilder
             \array_reduce(
                 $properties,
                 function (array $result, SchemaAttributeInterface $attributes): array {
-                    $result[] = $this->getCamelCase($attributes->name());
+                    $result[] = $this->getInflector()->camelProperty($attributes->name());
 
                     return $result;
                 },

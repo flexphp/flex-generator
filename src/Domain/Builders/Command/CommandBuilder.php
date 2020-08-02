@@ -17,9 +17,9 @@ final class CommandBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema, string $action)
     {
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $action = $this->getPascalCase($action);
-        $command = $this->getDashCase($this->getPluralize($entity)) . ':' . $this->getDashCase($action);
+        $entity = $this->getInflector()->entity($schema->name());
+        $action = $this->getInflector()->pascalAction($action);
+        $command = $this->getInflector()->commandName($entity, $action);
         $properties = \array_reduce($schema->attributes(), function ($result, SchemaAttributeInterface $property) {
             $result[$property->name()] = $property;
 

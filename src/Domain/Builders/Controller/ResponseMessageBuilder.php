@@ -16,14 +16,13 @@ final class ResponseMessageBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema, string $action)
     {
-        $entity = $schema->name();
-        $action = $this->getCamelCase($action);
-        $item = $this->getCamelCase($this->getSingularize($entity));
-        $items = $this->getCamelCase($this->getPluralize($entity));
-        $templates = $this->getCamelCase($this->getSingularize($entity));
-        $entity = $this->getDashCase($this->getPluralize($entity));
+        $action = $this->getInflector()->camelAction($action);
+        $item = $this->getInflector()->item($schema->name());
+        $items = $this->getInflector()->items($schema->name());
+        $templates = $item;
+        $route = $this->getInflector()->route($schema->name());
 
-        parent::__construct(\compact('entity', 'action', 'item', 'items', 'templates'));
+        parent::__construct(\compact('route', 'action', 'item', 'items', 'templates'));
     }
 
     public function build(): string

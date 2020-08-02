@@ -16,7 +16,7 @@ final class RuleBuilder extends AbstractBuilder
 {
     public function __construct(SchemaAttributeInterface $property)
     {
-        $name = $this->getCamelCase($property->name());
+        $name = $this->getInflector()->camelProperty($property->name());
 
         parent::__construct(\compact('name', 'property'));
     }

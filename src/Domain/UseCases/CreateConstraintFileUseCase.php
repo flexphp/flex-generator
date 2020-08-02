@@ -10,20 +10,17 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Generator\Domain\Builders\Constraint\ConstraintBuilder;
-use FlexPHP\Generator\Domain\Builders\Constraint\RuleBuilder;
+use FlexPHP\Generator\Domain\Builders\Inflector;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateConstraintFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateConstraintFileResponse;
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
-use FlexPHP\Schema\SchemaAttributeInterface;
 
 final class CreateConstraintFileUseCase
 {
-    use InflectorTrait;
-
     public function execute(CreateConstraintFileRequest $request): CreateConstraintFileResponse
     {
-        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
+        $inflector = new Inflector();
+        $entity = $inflector->entity($request->schema->name());
 
         $constraint = new ConstraintBuilder($request->schema);
         $filename = $entity . 'Constraint';

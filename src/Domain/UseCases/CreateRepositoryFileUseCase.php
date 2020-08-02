@@ -9,19 +9,18 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
+use FlexPHP\Generator\Domain\Builders\Inflector;
 use FlexPHP\Generator\Domain\Builders\Repository\RepositoryBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateRepositoryFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateRepositoryFileResponse;
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 
 final class CreateRepositoryFileUseCase
 {
-    use InflectorTrait;
-
     public function execute(CreateRepositoryFileRequest $request): CreateRepositoryFileResponse
     {
-        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
+        $inflector = new Inflector();
+        $entity = $inflector->entity($request->schema->name());
 
         $repository = new RepositoryBuilder($request->schema, $request->actions);
         $filename = $entity . 'Repository';

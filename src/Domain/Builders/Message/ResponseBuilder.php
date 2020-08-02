@@ -16,13 +16,13 @@ final class ResponseBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema, string $action)
     {
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $name = $this->getCamelCase($this->getSingularize($schema->name()));
-        $item = $this->getCamelCase($this->getPluralize($schema->name()));
-        $action = $this->getPascalCase($action);
+        $entity = $this->getInflector()->entity($schema->name());
+        $item = $this->getInflector()->item($schema->name());
+        $items = $this->getInflector()->items($schema->name());
+        $action = $this->getInflector()->pascalAction($action);
         $key = 'id';
 
-        parent::__construct(\compact('entity', 'name', 'item', 'action', 'key'));
+        parent::__construct(\compact('entity', 'item', 'items', 'action', 'key'));
     }
 
     protected function getFileTemplate(): string

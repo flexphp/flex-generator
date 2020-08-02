@@ -15,8 +15,8 @@ final class {{ action }}{{ entity }}UseCase extends UseCase
      */
     public function execute($request)
     {
-        ${{ name }} = $this->getRepository()->getByLogin($request);
+        ${{ item }} = $this->getRepository()->getByLogin($request);
 
-        return new Login{{ entity }}Response(${{ name }});
+        return new Login{{ entity }}Response(${{ item }});
     }
 }

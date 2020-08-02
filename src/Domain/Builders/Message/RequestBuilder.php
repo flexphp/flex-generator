@@ -18,13 +18,13 @@ final class RequestBuilder extends AbstractBuilder
     public function __construct(SchemaInterface $schema, string $action)
     {
         $login = 'email';
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $name = $this->getCamelCase($this->getSingularize($schema->name()));
-        $action = $this->getPascalCase($action);
-        $pkName = $this->getCamelCase($schema->pkName());
+        $entity = $this->getInflector()->entity($schema->name());
+        $name = $this->getInflector()->item($schema->name());
+        $action = $this->getInflector()->pascalAction($action);
+        $pkName = $this->getInflector()->camelProperty($schema->pkName());
         $pkTypeHint = $schema->pkTypeHint();
         $properties = \array_reduce($schema->attributes(), function ($result, SchemaAttributeInterface $property) {
-            $result[$this->getCamelCase($property->name())] = $property;
+            $result[$this->getInflector()->camelProperty($property->name())] = $property;
 
             return $result;
         }, []);

@@ -8,8 +8,8 @@ use FlexPHP\UseCases\UseCase;
 
 final class {{ action }}{{ entity }}UseCase extends UseCase
 {
-{% for name, property in properties %}
-    private ${{ name }};
+{% for id, property in properties %}
+    private ${{ id }};
 {% if loop.last %}
 
 {% endif %}
@@ -21,8 +21,8 @@ final class {{ action }}{{ entity }}UseCase extends UseCase
      */
     public function execute($request)
     {
-{% for name, property in properties %}
-        $this->{{ name }} = $request->{{ name }};
+{% for id, property in properties %}
+        $this->{{ id }} = $request->{{ id }};
 {% if loop.last %}
 
 {% endif %}

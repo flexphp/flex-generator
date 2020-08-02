@@ -188,7 +188,7 @@ T
     /**
      * @dataProvider getEntityName
      */
-    public function testItRenderUpdateDiffNameOk(
+    public function __testItRenderUpdateDiffNameOk(
         string $name,
         string $expected,
         string $route,

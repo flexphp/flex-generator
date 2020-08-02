@@ -10,19 +10,18 @@
 namespace FlexPHP\Generator\Domain\UseCases;
 
 use FlexPHP\Database\Builder;
+use FlexPHP\Generator\Domain\Builders\Inflector;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateDatabaseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateDatabaseFileResponse;
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\SqlWriter;
 use FlexPHP\Schema\Schema;
 
 final class CreateDatabaseFileUseCase
 {
-    use InflectorTrait;
-
     public function execute(CreateDatabaseFileRequest  $request): CreateDatabaseFileResponse
     {
-        $dbname = $this->getSnakeCase($request->dbname);
+        $inflector = new Inflector();
+        $dbname = $inflector->dbName($request->dbname);
 
         $builder = new Builder($request->platform);
         $builder->createDatabaseWithUse($dbname);

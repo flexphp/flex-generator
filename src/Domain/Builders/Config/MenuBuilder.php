@@ -42,12 +42,12 @@ final class MenuBuilder extends AbstractBuilder
 
     private function getName(string $entity): string
     {
-        return $this->getCamelCase($this->getSingularize($entity));
+        return $this->getInflector()->item($entity);
     }
 
     private function getRole(string $entity): array
     {
-        $name = \strtoupper($this->getSingularize($entity));
+        $name = $this->getInflector()->role($entity);
 
         return [
             'global' => \sprintf('ROLE_USER_%s_*', $name),
@@ -58,7 +58,7 @@ final class MenuBuilder extends AbstractBuilder
 
     private function getRoute(string $entity): array
     {
-        $name = $this->getPluralize($this->getDashCase($entity));
+        $name = $this->getInflector()->route($entity);
 
         return [
             'index' => \sprintf('%s.index', $name),

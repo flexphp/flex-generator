@@ -18,8 +18,8 @@ final class FormTypeBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema)
     {
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $items = $this->getDashCase($this->getPluralize($schema->name()));
+        $entity = $this->getInflector()->entity($schema->name());
+        $route = $this->getInflector()->route($schema->name());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
         $fkRels = $this->getFkRelations($schema->fkRelations());
         $labels = [];
@@ -27,7 +27,7 @@ final class FormTypeBuilder extends AbstractBuilder
         $properties = \array_reduce(
             $schema->attributes(),
             function (array $result, SchemaAttribute $property) use (&$labels, &$inputs) {
-                $name = $this->getCamelCase($property->name());
+                $name = $this->getInflector()->camelProperty($property->name());
                 $result[$name] = $property;
                 $labels[$name] = (new Convert($property->name()))->toTitle();
                 $inputs[$name] = $this->getInputType($property->dataType());
@@ -37,7 +37,7 @@ final class FormTypeBuilder extends AbstractBuilder
             []
         );
 
-        parent::__construct(\compact('entity', 'properties', 'labels', 'inputs', 'items', 'fkRels', 'fkFns'));
+        parent::__construct(\compact('entity', 'properties', 'labels', 'inputs', 'route', 'fkRels', 'fkFns'));
     }
 
     protected function getFileTemplate(): string

@@ -18,21 +18,21 @@ final class MySQLGatewayBuilder extends AbstractBuilder
     public function __construct(SchemaInterface $schema, array $actions)
     {
         $table = $schema->name();
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $item = $this->getCamelCase($this->getSingularize($schema->name()));
+        $entity = $this->getInflector()->entity($schema->name());
+        $item = $this->getInflector()->item($schema->name());
         $actions = \array_reduce($actions, function (array $result, string $action) {
-            $result[] = $this->getCamelCase($action);
+            $result[] = $this->getInflector()->camelAction($action);
 
             return $result;
         }, []);
 
         $dbTypes = [];
-        $pkName = $this->getCamelCase($schema->pkName());
+        $pkName = $this->getInflector()->camelProperty($schema->pkName());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
         $properties = \array_reduce(
             $schema->attributes(),
             function (array $result, SchemaAttributeInterface $property) use (&$dbTypes) {
-                $camelName = $this->getCamelCase($property->name());
+                $camelName = $this->getInflector()->camelProperty($property->name());
 
                 $result[$camelName] = $property;
                 $dbTypes[$camelName] = $this->getDbType($property->dataType());

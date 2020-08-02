@@ -19,19 +19,23 @@ final class UseCaseBuilder extends AbstractBuilder
 
     public function __construct(SchemaInterface $schema, string $action)
     {
-        $this->action = $this->getCamelCase($action);
+        $this->action = $this->getInflector()->camelAction($action);
 
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $name = $this->getCamelCase($this->getSingularize($schema->name()));
-        $item = $this->getCamelCase($this->getPluralize($schema->name()));
-        $action = $this->getPascalCase($action);
-        $properties = \array_reduce($schema->attributes(), function ($result, SchemaAttributeInterface $property) {
-            $result[$this->getCamelCase($property->name())] = $property->properties();
+        $entity = $this->getInflector()->entity($schema->name());
+        $item = $this->getInflector()->item($schema->name());
+        $items = $this->getInflector()->items($schema->name());
+        $action = $this->getInflector()->pascalAction($action);
+        $properties = \array_reduce(
+            $schema->attributes(),
+            function ($result, SchemaAttributeInterface $property) {
+                $result[$this->getInflector()->camelProperty($property->name())] = $property->properties();
 
-            return $result;
-        }, []);
+                return $result;
+            },
+            []
+        );
 
-        parent::__construct(\compact('entity', 'name', 'item', 'action', 'properties'));
+        parent::__construct(\compact('entity', 'item', 'items', 'action', 'properties'));
     }
 
     protected function getFileTemplate(): string

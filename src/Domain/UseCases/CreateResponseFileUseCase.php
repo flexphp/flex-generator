@@ -9,35 +9,34 @@
  */
 namespace FlexPHP\Generator\Domain\UseCases;
 
+use FlexPHP\Generator\Domain\Builders\Inflector;
 use FlexPHP\Generator\Domain\Builders\Message\FkResponseBuilder;
 use FlexPHP\Generator\Domain\Builders\Message\ResponseBuilder;
 use FlexPHP\Generator\Domain\Messages\Requests\CreateResponseFileRequest;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateResponseFileResponse;
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
 use FlexPHP\Generator\Domain\Writers\PhpWriter;
 
 final class CreateResponseFileUseCase
 {
-    use InflectorTrait;
-
     public function execute(CreateResponseFileRequest $request): CreateResponseFileResponse
     {
         $files = [];
-        $entity = $this->getPascalCase($this->getSingularize($request->schema->name()));
+        $inflector = new Inflector();
+        $entity = $inflector->entity($request->schema->name());
         $actions = $request->actions;
 
         $path = \sprintf('%1$s/../../tmp/skeleton/domain/%2$s/Response', __DIR__, $entity);
 
         foreach ($actions as $action) {
             $response = new ResponseBuilder($request->schema, $action);
-            $filename = $this->getPascalCase($action) . $entity . 'Response';
+            $filename = $inflector->pascalAction($action) . $entity . 'Response';
 
             $writer = new PhpWriter($response->build(), $filename, $path);
             $files[] = $writer->save();
         }
 
         foreach ($request->schema->fkRelations() as $fkRel) {
-            $fkEntity = $this->getPascalCase($this->getSingularize($fkRel['pkTable']));
+            $fkEntity = $inflector->entity($fkRel['pkTable']);
             $builder = new FkResponseBuilder($request->schema->name(), $fkEntity);
             $filename = 'Find' . $entity . $fkEntity . 'Response';
 

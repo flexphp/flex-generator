@@ -17,8 +17,8 @@ final class FactoryBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema)
     {
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $item = $this->getCamelCase($this->getSingularize($schema->name()));
+        $entity = $this->getInflector()->entity($schema->name());
+        $item = $this->getInflector()->item($schema->name());
         $setters = $this->getSetterWithCasting($schema->attributes());
 
         parent::__construct(\compact('entity', 'item', 'setters'));
@@ -38,8 +38,8 @@ final class FactoryBuilder extends AbstractBuilder
     {
         return \array_reduce($properties, function (array $result, SchemaAttributeInterface $attributes): array {
             $result[] = [
-                'pascal' => $this->getPascalCase($attributes->name()),
-                'camel' => $this->getCamelCase($attributes->name()),
+                'pascal' => $this->getInflector()->pascalProperty($attributes->name()),
+                'camel' => $this->getInflector()->camelProperty($attributes->name()),
                 'typehint' => $attributes->typeHint(),
             ];
 

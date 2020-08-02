@@ -9,12 +9,8 @@
  */
 namespace FlexPHP\Generator\Domain\Builders;
 
-use FlexPHP\Generator\Domain\Traits\InflectorTrait;
-
 abstract class AbstractBuilder implements BuilderInterface
 {
-    use InflectorTrait;
-
     /**
      * @var array<array|string>
      */
@@ -41,6 +37,17 @@ abstract class AbstractBuilder implements BuilderInterface
         return $twig->render($this->getFileTemplate(), $this->data);
     }
 
+    protected function getInflector(): Inflector
+    {
+        static $inflector;
+
+        if ($inflector) {
+            return $inflector;
+        }
+
+        return $inflector = new Inflector();
+    }
+
     protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/../BoilerPlates', __DIR__);
@@ -51,22 +58,22 @@ abstract class AbstractBuilder implements BuilderInterface
         $fkRels = [];
 
         foreach ($fkRelations as $name => $fkRel) {
-            $name = $this->getCamelCase($fkRel['pkId']);
+            $name = $this->getInflector()->camelProperty($fkRel['pkId']);
 
             $fkRels[$name] = [
-                'fnPlural' => $this->getPascalCase($this->getPluralize($fkRel['pkTable'])),
-                'fnSingular' => $this->getPascalCase($this->getSingularize($fkRel['pkTable'])),
-                'item' => $this->getCamelCase($this->getSingularize($fkRel['pkTable'])),
-                'items' => $this->getCamelCase($this->getPluralize($fkRel['pkTable'])),
-                'route' => $this->getDashCase($this->getPluralize($fkRel['pkTable'])),
+                'fnPlural' => $this->getInflector()->fnPlural($fkRel['pkTable']),
+                'fnSingular' => $this->getInflector()->fnSingular($fkRel['pkTable']),
+                'item' => $this->getInflector()->item($fkRel['pkTable']),
+                'items' => $this->getInflector()->items($fkRel['pkTable']),
+                'route' => $this->getInflector()->route($fkRel['pkTable']),
                 'table' => $fkRel['pkTable'],
                 'pk' => $fkRel['pkId'],
                 'pkName' => $name,
                 'dataType' => $fkRel['pkDataType'],
                 'typeHint' => $fkRel['pkTypeHint'],
-                'id' => $this->getCamelCase($fkRel['fkId']),
-                'text' => $this->getCamelCase($fkRel['fkName']),
-                'fkRoute' => $this->getDashCase($this->getPluralize($fkRel['fkTable'])),
+                'id' => $this->getInflector()->camelProperty($fkRel['fkId']),
+                'text' => $this->getInflector()->camelProperty($fkRel['fkName']),
+                'fkRoute' => $this->getInflector()->route($fkRel['fkTable']),
             ];
         }
 

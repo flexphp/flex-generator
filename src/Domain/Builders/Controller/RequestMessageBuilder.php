@@ -16,8 +16,8 @@ final class RequestMessageBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema, string $action)
     {
-        $entity = $this->getPascalCase($this->getSingularize($schema->name()));
-        $action = $this->getPascalCase($action);
+        $entity = $this->getInflector()->entity($schema->name());
+        $action = $this->getInflector()->pascalAction($action);
 
         parent::__construct(\compact('entity', 'action'));
     }

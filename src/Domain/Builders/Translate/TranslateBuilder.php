@@ -12,15 +12,14 @@ namespace FlexPHP\Generator\Domain\Builders\Translate;
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\Schema\SchemaInterface;
-use Jawira\CaseConverter\Convert;
 
 final class TranslateBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema)
     {
-        $entity = (new Convert($this->getSingularize($schema->name())))->toTitle();
+        $entity = $this->getInflector()->entityTitle($schema->name());
         $headers = \array_reduce($schema->attributes(), function (array $result, SchemaAttributeInterface $property) {
-            $result[$this->getCamelCase($property->name())] = (new Convert($property->name()))->toTitle();
+            $result[$this->getInflector()->camelProperty($property->name())] = $this->getInflector()->propertyTitle($property->name());
 
             return $result;
         }, []);

@@ -24,28 +24,26 @@ final class ActionBuilder extends AbstractBuilder
         string $useCase = '',
         string $responseMessage = ''
     ) {
+        $nflector = $this->getInflector();
         $action = !empty($action)
-            ? $this->getSnakeCase($action)
+            ? $nflector->action($action)
             : 'index';
 
         $this->action = $action;
 
         $data = [];
         $data['action'] = $action;
-        $data['entity'] = $this->getPascalCase($this->getSingularize($schema->name()));
-        $data['entity_dash'] = $this->getPluralize($this->getDashCase($schema->name()));
-        $data['item'] = $this->getCamelCase($this->getSingularize($schema->name()));
-        $data['name'] = $this->getDashCase($this->getSingularize($schema->name()));
-        $data['pkName'] = $this->getCamelCase($schema->pkName());
+        $data['entity'] = $nflector->entity($schema->name());
+        $data['entity_dash'] = $nflector->route($schema->name());
+        $data['item'] = $nflector->item($schema->name());
+        $data['pkName'] = $nflector->camelProperty($schema->pkName());
         $data['pkTypeHint'] = $schema->pkTypeHint();
         $data['request_message'] = $requestMessage;
         $data['use_case'] = $useCase;
         $data['response_message'] = $responseMessage;
-        $data['action_camel'] = $this->getCamelCase($action);
-        $data['route'] = $this->getGuessRoute($this->getDashCase($action));
-        $data['route_name'] = $this->getPluralize($this->getDashCase($schema->name()))
-            . '.'
-            . $this->getDashCase($action);
+        $data['action_camel'] = $nflector->camelAction($action);
+        $data['route'] = $this->getGuessRoute($nflector->dashAction($action));
+        $data['route_name'] = $nflector->routeName($schema->name(), $action);
         $data['methods'] = $this->getGuessMethod($action);
 
         parent::__construct($data);
