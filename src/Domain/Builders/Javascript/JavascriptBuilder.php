@@ -34,7 +34,7 @@ final class JavascriptBuilder extends AbstractBuilder
         return \sprintf('%1$s/FlexPHP/Javascript', parent::getPathTemplate());
     }
 
-    private function getNotBlameFkRelations(SchemaInterface $schema)
+    private function getNotBlameFkRelations(SchemaInterface $schema): array
     {
         $properties = \array_map(function (SchemaAttributeInterface $property) {
             if ($property->isBlameBy()) {

@@ -232,7 +232,7 @@ final class TestRepository extends Repository
         return \$this->getGateway()->search((array)\$request, [], 10);
     }
 
-    public function findUsersByTerm(FindCommentUserRequest \$request): array
+    public function findUsersByTerm(FindTestUserRequest \$request): array
     {
         return \$this->getGateway()->filterUsers(\$request->term, \$request->page, 10);
     }

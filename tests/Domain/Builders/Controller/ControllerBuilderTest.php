@@ -480,19 +480,19 @@ T
 
     public function testItRenderFkRelationsOk(): void
     {
-        $render = new ControllerBuilder($this->getSchemaFkRelation('PostComments'), []);
+        $render = new ControllerBuilder($this->getSchemaFkRelation('UserPosts'), []);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 
 namespace App\Controller;
 
-use Domain\PostComment\Request\FindPostCommentBarRequest;
-use Domain\PostComment\UseCase\FindPostCommentBarUseCase;
-use Domain\PostComment\Request\FindPostCommentPostRequest;
-use Domain\PostComment\UseCase\FindPostCommentPostUseCase;
-use Domain\PostComment\Request\FindPostCommentUserStatusRequest;
-use Domain\PostComment\UseCase\FindPostCommentUserStatusUseCase;
+use Domain\UserPost\Request\FindUserPostBarRequest;
+use Domain\UserPost\UseCase\FindUserPostBarUseCase;
+use Domain\UserPost\Request\FindUserPostPostRequest;
+use Domain\UserPost\UseCase\FindUserPostPostUseCase;
+use Domain\UserPost\Request\FindUserPostUserStatusRequest;
+use Domain\UserPost\UseCase\FindUserPostUserStatusUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -502,12 +502,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/post-comments")
+ * @Route("/user-posts")
  */
-final class PostCommentController extends AbstractController
+final class UserPostController extends AbstractController
 {
     /**
-     * @Route("/find-bars", methods={"POST"}, name="post-comments.find.bars")
+     * @Route("/find-bars", methods={"POST"}, name="user-posts.find.bars")
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_BAR_INDEX')", statusCode=401)
      */
@@ -517,9 +517,9 @@ final class PostCommentController extends AbstractController
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        \$request = new FindPostCommentBarRequest(\$request->request->all());
+        \$request = new FindUserPostBarRequest(\$request->request->all());
 
-        \$useCase = new FindPostCommentBarUseCase(new PostCommentRepository(new MySQLPostCommentGateway(\$conn)));
+        \$useCase = new FindUserPostBarUseCase(new UserPostRepository(new MySQLUserPostGateway(\$conn)));
 
         \$response = \$useCase->execute(\$request);
 
@@ -530,7 +530,7 @@ final class PostCommentController extends AbstractController
     }
 
     /**
-     * @Route("/find-posts", methods={"POST"}, name="post-comments.find.posts")
+     * @Route("/find-posts", methods={"POST"}, name="user-posts.find.posts")
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_POST_INDEX')", statusCode=401)
      */
@@ -540,9 +540,9 @@ final class PostCommentController extends AbstractController
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        \$request = new FindPostCommentPostRequest(\$request->request->all());
+        \$request = new FindUserPostPostRequest(\$request->request->all());
 
-        \$useCase = new FindPostCommentPostUseCase(new PostCommentRepository(new MySQLPostCommentGateway(\$conn)));
+        \$useCase = new FindUserPostPostUseCase(new UserPostRepository(new MySQLUserPostGateway(\$conn)));
 
         \$response = \$useCase->execute(\$request);
 
@@ -553,7 +553,7 @@ final class PostCommentController extends AbstractController
     }
 
     /**
-     * @Route("/find-user-status", methods={"POST"}, name="post-comments.find.user-status")
+     * @Route("/find-user-status", methods={"POST"}, name="user-posts.find.user-status")
      * @Cache(smaxage="10")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_USERSTATUS_INDEX')", statusCode=401)
      */
@@ -563,9 +563,9 @@ final class PostCommentController extends AbstractController
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        \$request = new FindPostCommentUserStatusRequest(\$request->request->all());
+        \$request = new FindUserPostUserStatusRequest(\$request->request->all());
 
-        \$useCase = new FindPostCommentUserStatusUseCase(new PostCommentRepository(new MySQLPostCommentGateway(\$conn)));
+        \$useCase = new FindUserPostUserStatusUseCase(new UserPostRepository(new MySQLUserPostGateway(\$conn)));
 
         \$response = \$useCase->execute(\$request);
 

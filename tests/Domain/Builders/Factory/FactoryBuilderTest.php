@@ -19,38 +19,38 @@ final class FactoryBuilderTest extends TestCase
     {
         $render = new FactoryBuilder($this->getSchema());
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
 
 namespace Domain\Test;
 
 final class TestFactory
 {
-    public function make(\$data)
+    public function make($data)
     {
-        \$test = new Test();
+        $test = new Test();
 
-        if (is_array(\$data)) {
-            \$data = (object)\$data;
-        }
-
-        if (isset(\$data->lower)) {
-            \$test->setLower((string)\$data->lower);
-        }
-        if (isset(\$data->upper)) {
-            \$test->setUpper((int)\$data->upper);
-        }
-        if (isset(\$data->pascalCase)) {
-            \$test->setPascalCase(is_string(\$data->pascalCase) ? new \DateTime(\$data->pascalCase) : \$data->pascalCase);
-        }
-        if (isset(\$data->camelCase)) {
-            \$test->setCamelCase((bool)\$data->camelCase);
-        }
-        if (isset(\$data->snakeCase)) {
-            \$test->setSnakeCase((string)\$data->snakeCase);
+        if (is_array($data)) {
+            $data = (object)$data;
         }
 
-        return \$test;
+        if (isset($data->lower)) {
+            $test->setLower((string)$data->lower);
+        }
+        if (isset($data->upper)) {
+            $test->setUpper((int)$data->upper);
+        }
+        if (isset($data->pascalCase)) {
+            $test->setPascalCase(is_string($data->pascalCase) ? new \DateTime($data->pascalCase) : $data->pascalCase);
+        }
+        if (isset($data->camelCase)) {
+            $test->setCamelCase((bool)$data->camelCase);
+        }
+        if (isset($data->snakeCase)) {
+            $test->setSnakeCase((string)$data->snakeCase);
+        }
+
+        return $test;
     }
 }
 

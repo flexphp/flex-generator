@@ -102,7 +102,7 @@ T
     {
         $render = new FormTypeBuilder($this->getSchemaFkRelation('PostComments'));
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
 
 namespace Domain\PostComment;
@@ -131,143 +131,143 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class PostCommentFormType extends AbstractType
 {
-    private \$conn;
-    private \$router;
+    private $conn;
+    private $router;
 
-    public function __construct(Connection \$conn, UrlGeneratorInterface \$router)
+    public function __construct(Connection $conn, UrlGeneratorInterface $router)
     {
-        \$this->conn = \$conn;
-        \$this->router = \$router;
+        $this->conn = $conn;
+        $this->router = $router;
     }
 
-    public function buildForm(FormBuilderInterface \$builder, array \$options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        \$fooModifier = function (FormInterface \$form, ?string \$value) {
-            \$choices = null;
+        $fooModifier = function (FormInterface $form, ?string $value) {
+            $choices = null;
 
-            if (!empty(\$value)) {
-                \$useCase = new ReadBarUseCase(new BarRepository(new MySQLBarGateway(\$this->conn)));
-                \$response = \$useCase->execute(new ReadBarRequest(\$value));
+            if (!empty($value)) {
+                $useCase = new ReadBarUseCase(new BarRepository(new MySQLBarGateway($this->conn)));
+                $response = $useCase->execute(new ReadBarRequest($value));
 
-                if (\$response->bar->baz()) {
-                    \$choices = [\$response->bar->fuz() => \$value];
+                if ($response->bar->baz()) {
+                    $choices = [$response->bar->fuz() => $value];
                 }
             }
 
-            \$form->add('foo', Select2Type::class, [
+            $form->add('foo', Select2Type::class, [
                 'label' => 'Foo',
                 'required' => true,
                 'attr' => [
-                    'data-autocomplete-url' => \$this->router->generate('post-comments.find.bars'),
+                    'data-autocomplete-url' => $this->router->generate('post-comments.find.bars'),
                 ],
-                'choices' => \$choices,
-                'data' => \$value,
+                'choices' => $choices,
+                'data' => $value,
             ]);
         };
 
-        \$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent \$event) use (\$fooModifier) {
-            if (!\$event->getData()) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($fooModifier) {
+            if (!$event->getData()) {
                 return null;
             }
 
-            \$fooModifier(\$event->getForm(), \$event->getData()->foo());
+            $fooModifier($event->getForm(), $event->getData()->foo());
         });
 
-        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$fooModifier) {
-            \$fooModifier(\$event->getForm(), (string)\$event->getData()['foo'] ?? null);
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($fooModifier) {
+            $fooModifier($event->getForm(), (string)$event->getData()['foo'] ?? null);
         });
 
-        \$postIdModifier = function (FormInterface \$form, ?int \$value) {
-            \$choices = null;
+        $postIdModifier = function (FormInterface $form, ?int $value) {
+            $choices = null;
 
-            if (!empty(\$value)) {
-                \$useCase = new ReadPostUseCase(new PostRepository(new MySQLPostGateway(\$this->conn)));
-                \$response = \$useCase->execute(new ReadPostRequest(\$value));
+            if (!empty($value)) {
+                $useCase = new ReadPostUseCase(new PostRepository(new MySQLPostGateway($this->conn)));
+                $response = $useCase->execute(new ReadPostRequest($value));
 
-                if (\$response->post->id()) {
-                    \$choices = [\$response->post->name() => \$value];
+                if ($response->post->id()) {
+                    $choices = [$response->post->name() => $value];
                 }
             }
 
-            \$form->add('postId', Select2Type::class, [
+            $form->add('postId', Select2Type::class, [
                 'label' => 'Post Id',
                 'required' => false,
                 'attr' => [
-                    'data-autocomplete-url' => \$this->router->generate('post-comments.find.posts'),
+                    'data-autocomplete-url' => $this->router->generate('post-comments.find.posts'),
                 ],
-                'choices' => \$choices,
-                'data' => \$value,
+                'choices' => $choices,
+                'data' => $value,
             ]);
         };
 
-        \$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent \$event) use (\$postIdModifier) {
-            if (!\$event->getData()) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($postIdModifier) {
+            if (!$event->getData()) {
                 return null;
             }
 
-            \$postIdModifier(\$event->getForm(), \$event->getData()->postId());
+            $postIdModifier($event->getForm(), $event->getData()->postId());
         });
 
-        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$postIdModifier) {
-            \$postIdModifier(\$event->getForm(), (int)\$event->getData()['postId'] ?? null);
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($postIdModifier) {
+            $postIdModifier($event->getForm(), (int)$event->getData()['postId'] ?? null);
         });
 
-        \$statusIdModifier = function (FormInterface \$form, ?int \$value) {
-            \$choices = null;
+        $statusIdModifier = function (FormInterface $form, ?int $value) {
+            $choices = null;
 
-            if (!empty(\$value)) {
-                \$useCase = new ReadUserStatusUseCase(new UserStatusRepository(new MySQLUserStatusGateway(\$this->conn)));
-                \$response = \$useCase->execute(new ReadUserStatusRequest(\$value));
+            if (!empty($value)) {
+                $useCase = new ReadUserStatusUseCase(new UserStatusRepository(new MySQLUserStatusGateway($this->conn)));
+                $response = $useCase->execute(new ReadUserStatusRequest($value));
 
-                if (\$response->userStatus->id()) {
-                    \$choices = [\$response->userStatus->name() => \$value];
+                if ($response->userStatus->id()) {
+                    $choices = [$response->userStatus->name() => $value];
                 }
             }
 
-            \$form->add('statusId', Select2Type::class, [
+            $form->add('statusId', Select2Type::class, [
                 'label' => 'Status Id',
                 'required' => false,
                 'attr' => [
-                    'data-autocomplete-url' => \$this->router->generate('post-comments.find.user-status'),
+                    'data-autocomplete-url' => $this->router->generate('post-comments.find.user-status'),
                 ],
-                'choices' => \$choices,
-                'data' => \$value,
+                'choices' => $choices,
+                'data' => $value,
             ]);
         };
 
-        \$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent \$event) use (\$statusIdModifier) {
-            if (!\$event->getData()) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($statusIdModifier) {
+            if (!$event->getData()) {
                 return null;
             }
 
-            \$statusIdModifier(\$event->getForm(), \$event->getData()->statusId());
+            $statusIdModifier($event->getForm(), $event->getData()->statusId());
         });
 
-        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$statusIdModifier) {
-            \$statusIdModifier(\$event->getForm(), (int)\$event->getData()['statusId'] ?? null);
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($statusIdModifier) {
+            $statusIdModifier($event->getForm(), (int)$event->getData()['statusId'] ?? null);
         });
 
-        \$builder->add('foo', Select2Type::class, [
+        $builder->add('foo', Select2Type::class, [
             'label' => 'Foo',
             'required' => true,
             'attr' => [
-                'data-autocomplete-url' => \$this->router->generate('post-comments.find.bars'),
+                'data-autocomplete-url' => $this->router->generate('post-comments.find.bars'),
             ],
             'choices' => [],
         ]);
-        \$builder->add('postId', Select2Type::class, [
+        $builder->add('postId', Select2Type::class, [
             'label' => 'Post Id',
             'required' => false,
             'attr' => [
-                'data-autocomplete-url' => \$this->router->generate('post-comments.find.posts'),
+                'data-autocomplete-url' => $this->router->generate('post-comments.find.posts'),
             ],
             'choices' => [],
         ]);
-        \$builder->add('statusId', Select2Type::class, [
+        $builder->add('statusId', Select2Type::class, [
             'label' => 'Status Id',
             'required' => false,
             'attr' => [
-                'data-autocomplete-url' => \$this->router->generate('post-comments.find.user-status'),
+                'data-autocomplete-url' => $this->router->generate('post-comments.find.user-status'),
             ],
             'choices' => [],
         ]);
