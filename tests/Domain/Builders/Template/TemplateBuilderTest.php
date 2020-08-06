@@ -314,7 +314,7 @@ T
     <div class="card">
         <div class="card-header d-flex">
             <h3 class="card-header-title">
-                {% trans %}entity{% endtrans %}
+                {% trans %}entity{% endtrans %}: {{ register.lower }}
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
@@ -324,7 +324,6 @@ T
         </div>
 
         <div class="card-body">
-            <div class="form-group"><label>{% trans %}label.lower{% endtrans %}</label><div class="form-control-plaintext">{{ register.lower }}</div></div>
             <div class="form-group"><label>{% trans %}label.upper{% endtrans %}</label><div class="form-control-plaintext">{{ register.upper }}</div></div>
             <div class="form-group"><label>{% trans %}label.pascalCase{% endtrans %}</label><div class="form-control-plaintext">{{ register.pascalCase ? register.pascalCase|date('Y-m-d H:i:s') : '-' }}</div></div>
             <div class="form-group"><label>{% trans %}label.camelCase{% endtrans %}</label><div class="form-control-plaintext">{% if register.camelCase %}{% trans from 'messages' %}label.yes{% endtrans %}{% else %}{% trans from 'messages' %}label.no{% endtrans %}{% endif %}</div></div>
@@ -365,7 +364,7 @@ T
     <div class="card">
         <div class="card-header d-flex">
             <h3 class="card-header-title">
-                {% trans %}entity{% endtrans %}
+                {% trans %}entity{% endtrans %}: {{ register.pk }}
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
@@ -375,7 +374,6 @@ T
         </div>
 
         <div class="card-body">
-            <div class="form-group"><label>{% trans %}label.pk{% endtrans %}</label><div class="form-control-plaintext">{{ register.pk }}</div></div>
             <div class="form-group"><label>{% trans %}label.foo{% endtrans %}</label><div class="form-control-plaintext">{{ register.fooInstance.fuz|default }}</div></div>
             <div class="form-group"><label>{% trans %}label.postId{% endtrans %}</label><div class="form-control-plaintext">{{ register.postIdInstance.name|default }}</div></div>
             <div class="form-group"><label>{% trans %}label.statusId{% endtrans %}</label><div class="form-control-plaintext">{{ register.statusIdInstance.name|default }}</div></div>

@@ -25,6 +25,7 @@ final class TemplateBuilder extends AbstractBuilder
         $item = $this->getInflector()->item($schema->name());
         $items = $this->getInflector()->items($schema->name());
         $fkRels = $this->getFkRelations($schema->fkRelations());
+        $pkName = $this->getInflector()->camelProperty($schema->pkName());
         $properties = \array_reduce(
             $schema->attributes(),
             function (array $result, SchemaAttributeInterface $property) {
@@ -35,7 +36,7 @@ final class TemplateBuilder extends AbstractBuilder
             []
         );
 
-        parent::__construct(\compact('route', 'item', 'items', 'properties', 'fkRels'));
+        parent::__construct(\compact('route', 'item', 'items', 'properties', 'fkRels', 'pkName'));
     }
 
     protected function getFileTemplate(): string

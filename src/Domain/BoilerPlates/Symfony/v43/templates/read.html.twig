@@ -7,7 +7,7 @@
     <div class="card">
         <div class="card-header d-flex">
             <h3 class="card-header-title">
-                {{ '{%' }} trans {{ '%}' }}entity{{ '{%' }} endtrans {{ '%}' }}
+                {{ '{%' }} trans {{ '%}' }}entity{{ '{%' }} endtrans {{ '%}' }}: {{ '{{' }} register.{{ pkName }} {{ '}}' }}
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ '{{' }} path('{{ route }}.index') {{ '}}' }}" class="btn btn-outline-secondary">
@@ -18,13 +18,14 @@
 
         <div class="card-body">
 {% for id, property in properties %}
-{% if property.DataType starts with 'date' %}
+{% if property.isPk %}
+{% elseif property.dataType starts with 'date' %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</div></div>
-{% elseif property.DataType starts with 'time' %}
+{% elseif property.dataType starts with 'time' %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</div></div>
-{% elseif property.DataType starts with 'bool' %}
+{% elseif property.dataType starts with 'bool' %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{%' }} if register.{{ id }} {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.yes{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} else {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.no{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} endif {{ '%}' }}</div></div>
-{% elseif property.DataType == 'text' %}
+{% elseif property.dataType == 'text' %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }}|nl2br {{ '}}' }}</div></div>
 {% elseif fkRels[id] %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ fkRels[id].pkName }}Instance.{{ fkRels[id].text }}|default {{ '}}' }}</div></div>
