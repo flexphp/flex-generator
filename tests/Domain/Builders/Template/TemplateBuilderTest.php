@@ -45,7 +45,7 @@ final class TemplateBuilderTest extends TestCase
                         <th scope="col">{% trans %}label.pascalCase{% endtrans %}</th>
                         <th scope="col">{% trans %}label.camelCase{% endtrans %}</th>
                         <th scope="col">{% trans %}label.snakeCase{% endtrans %}</th>
-                        <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> {% trans from 'messages' %}action.options{% endtrans %}</th>
+                        <th scope="col" class="text-center" style="width: 105px;"><i class="fa fa-cogs" aria-hidden="true"></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,7 +111,7 @@ T
                     <tr>
                         <th scope="col">{% trans %}label.key{% endtrans %}</th>
                         <th scope="col">{% trans %}label.value{% endtrans %}</th>
-                        <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> {% trans from 'messages' %}action.options{% endtrans %}</th>
+                        <th scope="col" class="text-center" style="width: 105px;"><i class="fa fa-cogs" aria-hidden="true"></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -174,7 +174,7 @@ T
                     <tr>
                         <th scope="col">{% trans %}label.code{% endtrans %}</th>
                         <th scope="col">{% trans %}label.name{% endtrans %}</th>
-                        <th scope="col" class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i> {% trans from 'messages' %}action.options{% endtrans %}</th>
+                        <th scope="col" class="text-center" style="width: 105px;"><i class="fa fa-cogs" aria-hidden="true"></i></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -376,9 +376,9 @@ T
 
         <div class="card-body">
             <div class="form-group"><label>{% trans %}label.pk{% endtrans %}</label><div class="form-control-plaintext">{{ register.pk }}</div></div>
-            <div class="form-group"><label>{% trans %}label.foo{% endtrans %}</label><div class="form-control-plaintext">{{ register.fooInstance.fuz }}</div></div>
-            <div class="form-group"><label>{% trans %}label.postId{% endtrans %}</label><div class="form-control-plaintext">{{ register.postIdInstance.name }}</div></div>
-            <div class="form-group"><label>{% trans %}label.statusId{% endtrans %}</label><div class="form-control-plaintext">{{ register.statusIdInstance.name }}</div></div>
+            <div class="form-group"><label>{% trans %}label.foo{% endtrans %}</label><div class="form-control-plaintext">{{ register.fooInstance.fuz|default }}</div></div>
+            <div class="form-group"><label>{% trans %}label.postId{% endtrans %}</label><div class="form-control-plaintext">{{ register.postIdInstance.name|default }}</div></div>
+            <div class="form-group"><label>{% trans %}label.statusId{% endtrans %}</label><div class="form-control-plaintext">{{ register.statusIdInstance.name|default }}</div></div>
         </div>
 
         <div class="card-footer">

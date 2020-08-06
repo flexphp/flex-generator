@@ -2,8 +2,11 @@
 <?php declare(strict_types=1);
 
 namespace Domain\{{ name }};
+{% if fkFns %}
+
+{% endif %}
 {% for fkFn in fkFns %}
-namespace Domain\{{ fkFn.fnSingular }}\{{ fkFn.fnSingular }};
+use Domain\{{ fkFn.fnSingular }}\{{ fkFn.fnSingular }};
 {% endfor %}
 
 {% if is_user %}

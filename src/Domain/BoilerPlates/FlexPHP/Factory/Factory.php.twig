@@ -44,15 +44,15 @@ final class {{ entity }}Factory
 
     private function getFkEntity(string $prefix, array &$data): array
     {
-        $data = [];
+        $_data = [];
 
-        \array_map(function (string $key, ?string $value) use ($prefix, &$data): void {
+        \array_map(function (string $key, ?string $value) use ($prefix, &$_data): void {
             if (\strpos($key, $prefix) !== false) {
-                $data[\substr($key, \strlen($prefix))] = $value;
+                $_data[\substr($key, \strlen($prefix))] = $value;
             }
         }, \array_keys($data), $data);
 
-        return $data;
+        return $_data;
     }
 {% endif %}
 }

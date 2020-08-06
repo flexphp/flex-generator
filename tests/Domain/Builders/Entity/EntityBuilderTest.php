@@ -96,9 +96,10 @@ T
 <?php declare(strict_types=1);
 
 namespace Domain\Test;
-namespace Domain\Bar\Bar;
-namespace Domain\Post\Post;
-namespace Domain\UserStatus\UserStatus;
+
+use Domain\Bar\Bar;
+use Domain\Post\Post;
+use Domain\UserStatus\UserStatus;
 
 final class Test
 {
@@ -193,7 +194,8 @@ T
 <?php declare(strict_types=1);
 
 namespace Domain\Test;
-namespace Domain\User\User;
+
+use Domain\User\User;
 
 final class Test
 {

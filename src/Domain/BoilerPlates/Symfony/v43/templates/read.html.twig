@@ -27,7 +27,7 @@
 {% elseif property.DataType == 'text' %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }}|nl2br {{ '}}' }}</div></div>
 {% elseif fkRels[id] %}
-            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ fkRels[id].pkName }}Instance.{{ fkRels[id].text }} {{ '}}' }}</div></div>
+            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ fkRels[id].pkName }}Instance.{{ fkRels[id].text }}|default {{ '}}' }}</div></div>
 {% else %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} register.{{ id }} {{ '}}' }}</div></div>
 {% endif %}
