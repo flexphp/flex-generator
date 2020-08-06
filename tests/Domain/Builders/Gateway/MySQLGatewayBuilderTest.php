@@ -12,6 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Gateway;
 use FlexPHP\Generator\Domain\Builders\Gateway\MySQLGatewayBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class MySQLGatewayBuilderTest extends TestCase
 {
@@ -42,11 +43,11 @@ final class MySQLTestGateway implements TestGateway
     public function search(array \$wheres, array \$orders, int \$limit): array
     {
         \$this->query->select([
-            'lower' => 'lower',
-            'UPPER' => 'upper',
-            'PascalCase' => 'pascalCase',
-            'camelCase' => 'camelCase',
-            'snake_case' => 'snakeCase',
+            'lower as lower',
+            'UPPER as upper',
+            'PascalCase as pascalCase',
+            'camelCase as camelCase',
+            'snake_case as snakeCase',
         ]);
         \$this->query->from(\$this->table);
 
@@ -55,8 +56,8 @@ final class MySQLTestGateway implements TestGateway
                 continue;
             }
 
-            \$this->query->where(\$column . ' = :' . \$column);
-            \$this->query->setParameter(\$column, \$value);
+            \$this->query->where("{\$column} = :{\$column}");
+            \$this->query->setParameter(":{\$column}", \$value);
         }
 
         \$this->query->setMaxResults(\$limit);
@@ -144,19 +145,87 @@ final class MySQLTestGateway implements TestGateway
     public function get(Test \$test): array
     {
         \$this->query->select([
-            'lower' => 'lower',
-            'UPPER' => 'upper',
-            'PascalCase' => 'pascalCase',
-            'camelCase' => 'camelCase',
-            'snake_case' => 'snakeCase',
+            'test.lower as lower',
+            'test.UPPER as upper',
+            'test.PascalCase as pascalCase',
+            'test.camelCase as camelCase',
+            'test.snake_case as snakeCase',
         ]);
-        \$this->query->from(\$this->table);
-        \$this->query->where('lower = :lower');
-        \$this->query->setParameter('lower', \$test->lower(), DB::STRING);
+        \$this->query->from(\$this->table, 'test');
+        \$this->query->where('test.lower = :lower');
+        \$this->query->setParameter(':lower', \$test->lower(), DB::STRING);
 
         \$register = \$this->query->execute()->fetch();
 
         return \$register ? \$register : [];
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItReadJoinOk(): void
+    {
+        $render = new MySQLGatewayBuilder(new Schema('Join', 'The Test Join', [
+            new SchemaAttribute('pk', 'integer', 'pk|ai|required'),
+            new SchemaAttribute('field', 'string', 'required'),
+            new SchemaAttribute('joinField', 'integer', 'fk:joinTable,fkName,fkId'),
+        ]), ['read']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Join\Gateway;
+
+use Domain\Join\Join;
+use Domain\Join\JoinGateway;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types as DB;
+
+final class MySQLJoinGateway implements JoinGateway
+{
+    private \$query;
+    private \$table = 'Join';
+
+    public function __construct(Connection \$conn)
+    {
+        \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function get(Join \$join): array
+    {
+        \$this->query->select([
+            'join.pk as pk',
+            'join.field as field',
+            'join.joinField as joinField',
+            'joinField.fkId as `joinField.fkId`',
+            'joinField.fkName as `joinField.fkName`',
+        ]);
+        \$this->query->from(\$this->table, 'join');
+        \$this->query->leftJoin('join', 'joinTable', 'joinField', 'join.joinField = joinField.fkId');
+        \$this->query->where('join.pk = :pk');
+        \$this->query->setParameter(':pk', \$join->pk(), DB::INTEGER);
+
+        \$register = \$this->query->execute()->fetch();
+
+        return \$register ? \$register : [];
+    }
+
+    public function filterJoinTables(string \$term, int \$page, int \$limit): array
+    {
+        \$this->query->select([
+            'fkId id',
+            'fkName text',
+        ]);
+        \$this->query->from('joinTable');
+
+        \$this->query->where('fkName like :fkName');
+        \$this->query->setParameter(':fkName', "%{\$term}%");
+
+        \$this->query->setMaxResults(\$limit);
+
+        return \$this->query->execute()->fetchAll();
     }
 }
 
@@ -205,7 +274,7 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setParameter(':snakeCase', \$test->snakeCase(), DB::TEXT);
 
         \$this->query->where('lower = :lower');
-        \$this->query->setParameter('lower', \$test->lower(), DB::STRING);
+        \$this->query->setParameter(':lower', \$test->lower(), DB::STRING);
 
         \$this->query->execute();
     }
@@ -244,7 +313,7 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->delete(\$this->table);
 
         \$this->query->where('lower = :lower');
-        \$this->query->setParameter('lower', \$test->lower(), DB::STRING);
+        \$this->query->setParameter(':lower', \$test->lower(), DB::STRING);
 
         \$this->query->execute();
     }
@@ -281,15 +350,15 @@ final class MySQLTestGateway implements TestGateway
     public function getBy(string \$column, \$value): array
     {
         \$this->query->select([
-            'lower' => 'lower',
-            'UPPER' => 'upper',
-            'PascalCase' => 'pascalCase',
-            'camelCase' => 'camelCase',
-            'snake_case' => 'snakeCase',
+            'lower as lower',
+            'UPPER as upper',
+            'PascalCase as pascalCase',
+            'camelCase as camelCase',
+            'snake_case as snakeCase',
         ]);
         \$this->query->from(\$this->table);
         \$this->query->where(\$column . ' = :column');
-        \$this->query->setParameter('column', \$value);
+        \$this->query->setParameter(':column', \$value);
 
         \$data = \$this->query->execute()->fetch();
 
@@ -303,7 +372,7 @@ T
 
     public function testItFkRelationsOk(): void
     {
-        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation('PostComments'), ['delete', 'other']);
+        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation('PostComments'), ['read', 'delete', 'other']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -325,12 +394,38 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         \$this->query = \$conn->createQueryBuilder();
     }
 
+    public function get(PostComment \$postComment): array
+    {
+        \$this->query->select([
+            'postComment.Pk as pk',
+            'postComment.foo as foo',
+            'postComment.PostId as postId',
+            'postComment.StatusId as statusId',
+            'foo.baz as `foo.baz`',
+            'foo.fuz as `foo.fuz`',
+            'postId.id as `postId.id`',
+            'postId.name as `postId.name`',
+            'statusId.id as `statusId.id`',
+            'statusId.name as `statusId.name`',
+        ]);
+        \$this->query->from(\$this->table, 'postComment');
+        \$this->query->join('postComment', 'Bar', 'foo', 'postComment.foo = foo.baz');
+        \$this->query->leftJoin('postComment', 'posts', 'postId', 'postComment.PostId = postId.id');
+        \$this->query->leftJoin('postComment', 'UserStatus', 'statusId', 'postComment.StatusId = statusId.id');
+        \$this->query->where('postComment.Pk = :pk');
+        \$this->query->setParameter(':pk', \$postComment->pk(), DB::INTEGER);
+
+        \$register = \$this->query->execute()->fetch();
+
+        return \$register ? \$register : [];
+    }
+
     public function pop(PostComment \$postComment): void
     {
         \$this->query->delete(\$this->table);
 
         \$this->query->where('Pk = :pk');
-        \$this->query->setParameter('pk', \$postComment->pk(), DB::INTEGER);
+        \$this->query->setParameter(':pk', \$postComment->pk(), DB::INTEGER);
 
         \$this->query->execute();
     }
@@ -415,8 +510,8 @@ final class MySQLTestGateway implements TestGateway
     public function search(array \$wheres, array \$orders, int \$limit): array
     {
         \$this->query->select([
-            'key' => 'key',
-            'Value' => 'value',
+            'key as key',
+            'Value as value',
         ]);
         \$this->query->from(\$this->table);
 
@@ -425,8 +520,8 @@ final class MySQLTestGateway implements TestGateway
                 continue;
             }
 
-            \$this->query->where(\$column . ' = :' . \$column);
-            \$this->query->setParameter(\$column, \$value);
+            \$this->query->where("{\$column} = :{\$column}");
+            \$this->query->setParameter(":{\$column}", \$value);
         }
 
         \$this->query->setMaxResults(\$limit);
@@ -460,7 +555,7 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setParameter(':updated', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
 
         \$this->query->where('key = :key');
-        \$this->query->setParameter('key', \$test->key(), DB::INTEGER);
+        \$this->query->setParameter(':key', \$test->key(), DB::INTEGER);
 
         \$this->query->execute();
     }
@@ -472,7 +567,7 @@ T
 
     public function testItBlameBy(): void
     {
-        $render = new MySQLGatewayBuilder($this->getSchemaStringAndBlameBy(), ['index', 'create', 'update']);
+        $render = new MySQLGatewayBuilder($this->getSchemaStringAndBlameBy(), ['index', 'create', 'read', 'update']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -497,8 +592,8 @@ final class MySQLTestGateway implements TestGateway
     public function search(array \$wheres, array \$orders, int \$limit): array
     {
         \$this->query->select([
-            'code' => 'code',
-            'Name' => 'name',
+            'code as code',
+            'Name as name',
         ]);
         \$this->query->from(\$this->table);
 
@@ -507,8 +602,8 @@ final class MySQLTestGateway implements TestGateway
                 continue;
             }
 
-            \$this->query->where(\$column . ' = :' . \$column);
-            \$this->query->setParameter(\$column, \$value);
+            \$this->query->where("{\$column} = :{\$column}");
+            \$this->query->setParameter(":{\$column}", \$value);
         }
 
         \$this->query->setMaxResults(\$limit);
@@ -531,6 +626,29 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->execute();
     }
 
+    public function get(Test \$test): array
+    {
+        \$this->query->select([
+            'test.code as code',
+            'test.Name as name',
+            'test.CreatedBy as createdBy',
+            'test.UpdatedBy as updatedBy',
+            'createdBy.id as `createdBy.id`',
+            'createdBy.name as `createdBy.name`',
+            'updatedBy.id as `updatedBy.id`',
+            'updatedBy.name as `updatedBy.name`',
+        ]);
+        \$this->query->from(\$this->table, 'test');
+        \$this->query->leftJoin('test', 'users', 'createdBy', 'test.CreatedBy = createdBy.id');
+        \$this->query->leftJoin('test', 'users', 'updatedBy', 'test.UpdatedBy = updatedBy.id');
+        \$this->query->where('test.code = :code');
+        \$this->query->setParameter(':code', \$test->code(), DB::STRING);
+
+        \$register = \$this->query->execute()->fetch();
+
+        return \$register ? \$register : [];
+    }
+
     public function shift(Test \$test): void
     {
         \$this->query->update(\$this->table);
@@ -544,7 +662,7 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setParameter(':updatedBy', \$test->updatedBy(), DB::INTEGER);
 
         \$this->query->where('code = :code');
-        \$this->query->setParameter('code', \$test->code(), DB::STRING);
+        \$this->query->setParameter(':code', \$test->code(), DB::STRING);
 
         \$this->query->execute();
     }

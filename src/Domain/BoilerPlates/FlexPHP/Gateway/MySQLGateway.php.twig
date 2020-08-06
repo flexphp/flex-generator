@@ -24,7 +24,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->select([
 {% for id, property in properties %}
 {% if not property.isBlame %}
-            '{{ property.name }}' => '{{ id }}',
+            '{{ property.name }} as {{ id }}',
 {% endif %}
 {% endfor %}
         ]);
@@ -35,8 +35,8 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
                 continue;
             }
 
-            $this->query->where($column . ' = :' . $column);
-            $this->query->setParameter($column, $value);
+            $this->query->where("{$column} = :{$column}");
+            $this->query->setParameter(":{$column}", $value);
         }
 
         $this->query->setMaxResults($limit);
@@ -71,12 +71,20 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     {
         $this->query->select([
 {% for id, property in properties %}
-            '{{ property.name }}' => '{{ id }}',
+            '{{ item }}.{{ property.name }} as {{ id }}',
+{% endfor %}
+{% for id, fkRel in fkRels %}
+            '{{ fkRel.pkName }}.{{ fkRel.id }} as `{{ fkRel.pkName }}.{{ fkRel.id }}`',
+            '{{ fkRel.pkName }}.{{ fkRel.text }} as `{{ fkRel.pkName }}.{{ fkRel.text }}`',
 {% endfor %}
         ]);
-        $this->query->from($this->table);
-        $this->query->where('{{ properties[pkName].name }} = :{{ pkName }}');
-        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
+        $this->query->from($this->table, '{{ item }}');
+{% for id, fkRel in fkRels %}
+{% set joinType = fkRel.required ? 'join' : 'leftJoin' %}
+        $this->query->{{ joinType }}('{{ item }}', '{{ fkRel.table }}', '{{ fkRel.pkName }}', '{{ item }}.{{ fkRel.pk }} = {{ fkRel.pkName }}.{{ fkRel.id }}');
+{% endfor %}
+        $this->query->where('{{ item }}.{{ properties[pkName].name }} = :{{ pkName }}');
+        $this->query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
         $register = $this->query->execute()->fetch();
 
@@ -103,7 +111,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endfor %}
 
         $this->query->where('{{ properties[pkName].name }} = :{{ pkName }}');
-        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
+        $this->query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
         $this->query->execute();
     }
@@ -114,7 +122,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->delete($this->table);
 
         $this->query->where('{{ properties[pkName].name }} = :{{ pkName }}');
-        $this->query->setParameter('{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
+        $this->query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
         $this->query->execute();
     }
@@ -124,12 +132,12 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     {
         $this->query->select([
 {% for id, property in properties %}
-            '{{ property.name }}' => '{{ id }}',
+            '{{ property.name }} as {{ id }}',
 {% endfor %}
         ]);
         $this->query->from($this->table);
         $this->query->where($column . ' = :column');
-        $this->query->setParameter('column', $value);
+        $this->query->setParameter(':column', $value);
 
         $data = $this->query->execute()->fetch();
 
