@@ -131,7 +131,7 @@ final class TestController extends AbstractController
         \$response = \$useCase->execute(\$request);
 
         return \$this->render('test/index.html.twig', [
-            'registers' => \$response->tests,
+            'tests' => \$response->tests,
         ]);
     }
 }
@@ -277,7 +277,7 @@ final class TestController extends AbstractController
         }
 
         return \$this->render('test/show.html.twig', [
-            'register' => \$response->test,
+            'test' => \$response->test,
         ]);
     }
 }
@@ -346,7 +346,7 @@ final class TestController extends AbstractController
         \$form = \$this->createForm(TestFormType::class, \$response->test);
 
         return \$this->render('test/edit.html.twig', [
-            'register' => \$response->test,
+            'test' => \$response->test,
             'form' => \$form->createView(),
         ]);
     }

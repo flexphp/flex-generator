@@ -22,13 +22,13 @@ final class TemplateBuilderTest extends TestCase
 {% trans_default_domain 'test' %}
 {% extends 'form/layout.html.twig' %}
 
-{% block title %}{% trans %}entity{% endtrans %}{% endblock %}
+{% block title %}{% trans %}title.list{% endtrans %}{% endblock %}
 
 {% block main %}
     <div class="card">
         <div class="card-header d-flex">
             <h3 class="card-header-title">
-                {% trans %}entity{% endtrans %}
+                {% trans %}title.list{% endtrans %}
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.new') }}" class="btn btn-success">
@@ -49,20 +49,20 @@ final class TemplateBuilderTest extends TestCase
                     </tr>
                 </thead>
                 <tbody>
-                {% for register in registers %}
+                {% for _test in tests %}
                     <tr>
-                        <td>{{ register.lower }}</td>
-                        <td>{{ register.upper }}</td>
-                        <td>{{ register.pascalCase ? register.pascalCase|date('Y-m-d H:i:s') : '-' }}</td>
-                        <td>{% if register.camelCase %}{% trans from 'messages' %}label.yes{% endtrans %}{% else %}{% trans from 'messages' %}label.no{% endtrans %}{% endif %}</td>
-                        <td>{{ register.snakeCase }}</td>
+                        <td>{{ _test.lower }}</td>
+                        <td>{{ _test.upper }}</td>
+                        <td>{{ _test.pascalCase ? _test.pascalCase|date('Y-m-d H:i:s') : '-' }}</td>
+                        <td>{% if _test.camelCase %}{% trans from 'messages' %}label.yes{% endtrans %}{% else %}{% trans from 'messages' %}label.no{% endtrans %}{% endif %}</td>
+                        <td>{{ _test.snakeCase }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ path('tests.read', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
+                                <a href="{{ path('tests.read', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
                                     <i class="fa fa-eye text-dark" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
+                                <a href="{{ path('tests.edit', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
                                     <i class="fa fa-edit text-primary" aria-hidden="true"></i>
                                 </a>
                             </div>
@@ -85,22 +85,22 @@ T
 
     public function testItRenderIndexBlameAtOk(): void
     {
-        $render = new TemplateBuilder($this->getSchemaAiAndBlameAt(), 'index');
+        $render = new TemplateBuilder($this->getSchemaAiAndBlameAt('UserStatus'), 'index');
 
         $this->assertEquals(<<<T
-{% trans_default_domain 'test' %}
+{% trans_default_domain 'userStatus' %}
 {% extends 'form/layout.html.twig' %}
 
-{% block title %}{% trans %}entity{% endtrans %}{% endblock %}
+{% block title %}{% trans %}title.list{% endtrans %}{% endblock %}
 
 {% block main %}
     <div class="card">
         <div class="card-header d-flex">
             <h3 class="card-header-title">
-                {% trans %}entity{% endtrans %}
+                {% trans %}title.list{% endtrans %}
             </h3>
             <div class="toolbar ml-auto">
-                <a href="{{ path('tests.new') }}" class="btn btn-success">
+                <a href="{{ path('user-status.new') }}" class="btn btn-success">
                     <i class="fa fa-plus" aria-hidden="true"></i> {% trans from 'messages' %}action.new{% endtrans %}
                 </a>
             </div>
@@ -115,17 +115,17 @@ T
                     </tr>
                 </thead>
                 <tbody>
-                {% for register in registers %}
+                {% for _userStatus in userStatus %}
                     <tr>
-                        <td>{{ register.key }}</td>
-                        <td>{{ register.value }}</td>
+                        <td>{{ _userStatus.key }}</td>
+                        <td>{{ _userStatus.value }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ path('tests.read', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
+                                <a href="{{ path('user-status.read', {id: _userStatus.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
                                     <i class="fa fa-eye text-dark" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
+                                <a href="{{ path('user-status.edit', {id: _userStatus.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
                                     <i class="fa fa-edit text-primary" aria-hidden="true"></i>
                                 </a>
                             </div>
@@ -154,13 +154,13 @@ T
 {% trans_default_domain 'test' %}
 {% extends 'form/layout.html.twig' %}
 
-{% block title %}{% trans %}entity{% endtrans %}{% endblock %}
+{% block title %}{% trans %}title.list{% endtrans %}{% endblock %}
 
 {% block main %}
     <div class="card">
         <div class="card-header d-flex">
             <h3 class="card-header-title">
-                {% trans %}entity{% endtrans %}
+                {% trans %}title.list{% endtrans %}
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.new') }}" class="btn btn-success">
@@ -178,17 +178,17 @@ T
                     </tr>
                 </thead>
                 <tbody>
-                {% for register in registers %}
+                {% for _test in tests %}
                     <tr>
-                        <td>{{ register.code }}</td>
-                        <td>{{ register.name }}</td>
+                        <td>{{ _test.code }}</td>
+                        <td>{{ _test.name }}</td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ path('tests.read', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
+                                <a href="{{ path('tests.read', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
                                     <i class="fa fa-eye text-dark" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
+                                <a href="{{ path('tests.edit', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
                                     <i class="fa fa-edit text-primary" aria-hidden="true"></i>
                                 </a>
                             </div>
@@ -314,7 +314,7 @@ T
     <div class="card">
         <div class="card-header d-flex">
             <h3 class="card-header-title">
-                {% trans %}entity{% endtrans %}: {{ register.lower }}
+                {% trans %}entity{% endtrans %}: {{ test.lower }}
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
@@ -324,20 +324,20 @@ T
         </div>
 
         <div class="card-body">
-            <div class="form-group"><label>{% trans %}label.upper{% endtrans %}</label><div class="form-control-plaintext">{{ register.upper }}</div></div>
-            <div class="form-group"><label>{% trans %}label.pascalCase{% endtrans %}</label><div class="form-control-plaintext">{{ register.pascalCase ? register.pascalCase|date('Y-m-d H:i:s') : '-' }}</div></div>
-            <div class="form-group"><label>{% trans %}label.camelCase{% endtrans %}</label><div class="form-control-plaintext">{% if register.camelCase %}{% trans from 'messages' %}label.yes{% endtrans %}{% else %}{% trans from 'messages' %}label.no{% endtrans %}{% endif %}</div></div>
-            <div class="form-group"><label>{% trans %}label.snakeCase{% endtrans %}</label><div class="form-control-plaintext">{{ register.snakeCase|nl2br }}</div></div>
+            <div class="form-group"><label>{% trans %}label.upper{% endtrans %}</label><div class="form-control-plaintext">{{ test.upper }}</div></div>
+            <div class="form-group"><label>{% trans %}label.pascalCase{% endtrans %}</label><div class="form-control-plaintext">{{ test.pascalCase ? test.pascalCase|date('Y-m-d H:i:s') : '-' }}</div></div>
+            <div class="form-group"><label>{% trans %}label.camelCase{% endtrans %}</label><div class="form-control-plaintext">{% if test.camelCase %}{% trans from 'messages' %}label.yes{% endtrans %}{% else %}{% trans from 'messages' %}label.no{% endtrans %}{% endif %}</div></div>
+            <div class="form-group"><label>{% trans %}label.snakeCase{% endtrans %}</label><div class="form-control-plaintext">{{ test.snakeCase|nl2br }}</div></div>
         </div>
 
         <div class="card-footer">
             <div class="row">
                 <div class="col">
-                    {{ include('test/_delete_form.html.twig', {test: register}, with_context = false) }}
+                    {{ include('test/_delete_form.html.twig', {test: test}, with_context = false) }}
                 </div>
 
                 <div class="col text-right">
-                    <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-outline-primary">
+                    <a href="{{ path('tests.edit', {id: test.id}) }}" class="btn btn-outline-primary">
                         <i class="fa fa-edit" aria-hidden="true"></i> {% trans from 'messages' %}action.edit{% endtrans %}
                     </a>
                 </div>
@@ -364,7 +364,7 @@ T
     <div class="card">
         <div class="card-header d-flex">
             <h3 class="card-header-title">
-                {% trans %}entity{% endtrans %}: {{ register.pk }}
+                {% trans %}entity{% endtrans %}: {{ test.pk }}
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
@@ -374,19 +374,19 @@ T
         </div>
 
         <div class="card-body">
-            <div class="form-group"><label>{% trans %}label.foo{% endtrans %}</label><div class="form-control-plaintext">{{ register.fooInstance.fuz|default }}</div></div>
-            <div class="form-group"><label>{% trans %}label.postId{% endtrans %}</label><div class="form-control-plaintext">{{ register.postIdInstance.name|default }}</div></div>
-            <div class="form-group"><label>{% trans %}label.statusId{% endtrans %}</label><div class="form-control-plaintext">{{ register.statusIdInstance.name|default }}</div></div>
+            <div class="form-group"><label>{% trans %}label.foo{% endtrans %}</label><div class="form-control-plaintext">{{ test.fooInstance.fuz|default }}</div></div>
+            <div class="form-group"><label>{% trans %}label.postId{% endtrans %}</label><div class="form-control-plaintext">{{ test.postIdInstance.name|default }}</div></div>
+            <div class="form-group"><label>{% trans %}label.statusId{% endtrans %}</label><div class="form-control-plaintext">{{ test.statusIdInstance.name|default }}</div></div>
         </div>
 
         <div class="card-footer">
             <div class="row">
                 <div class="col">
-                    {{ include('test/_delete_form.html.twig', {test: register}, with_context = false) }}
+                    {{ include('test/_delete_form.html.twig', {test: test}, with_context = false) }}
                 </div>
 
                 <div class="col text-right">
-                    <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-outline-primary">
+                    <a href="{{ path('tests.edit', {id: test.id}) }}" class="btn btn-outline-primary">
                         <i class="fa fa-edit" aria-hidden="true"></i> {% trans from 'messages' %}action.edit{% endtrans %}
                     </a>
                 </div>
@@ -422,7 +422,7 @@ T
             </div>
         </div>
 
-        {{ form_start(form, {'action': path('tests.update', {id: register.id}), 'method': 'PUT', 'attr': {'id': 'test'}}) }}
+        {{ form_start(form, {'action': path('tests.update', {id: test.id}), 'method': 'PUT', 'attr': {'id': 'test'}}) }}
             <div class="card-body">
                 {{ form_widget(form) }}
             </div>
@@ -431,7 +431,7 @@ T
         <div class="card-footer">
             <div class="row">
                 <div class="col">
-                    {{ include('test/_delete_form.html.twig', {test: register}, with_context = false) }}
+                    {{ include('test/_delete_form.html.twig', {test: test}, with_context = false) }}
                 </div>
 
                 <div class="col text-right">
@@ -471,7 +471,7 @@ T
             </div>
         </div>
 
-        {{ form_start(form, {'action': path('post-comments.update', {id: register.id}), 'method': 'PUT', 'attr': {'id': 'postComment'}}) }}
+        {{ form_start(form, {'action': path('post-comments.update', {id: postComment.id}), 'method': 'PUT', 'attr': {'id': 'postComment'}}) }}
             <div class="card-body">
                 {{ form_widget(form) }}
             </div>
@@ -480,7 +480,7 @@ T
         <div class="card-footer">
             <div class="row">
                 <div class="col">
-                    {{ include('postComment/_delete_form.html.twig', {postComment: register}, with_context = false) }}
+                    {{ include('postComment/_delete_form.html.twig', {postComment: postComment}, with_context = false) }}
                 </div>
 
                 <div class="col text-right">

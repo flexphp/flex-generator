@@ -86,9 +86,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query->where('{{ item }}.{{ properties[pkName].name }} = :{{ pkName }}');
         $this->query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
-        $register = $this->query->execute()->fetch();
-
-        return $register ? $register : [];
+        return $this->query->execute()->fetch() ?: [];
     }
 {% elseif action in ['update'] %}
 

@@ -168,7 +168,7 @@ T
         \$form = \$this->createForm(TestFormType::class, \$response->test);
 
         return \$this->render('test/edit.html.twig', [
-            'register' => \$response->test,
+            'test' => \$response->test,
             'form' => \$form->createView(),
         ]);
     }
@@ -219,7 +219,7 @@ T
         \$form = \$this->createForm({$expected}FormType::class, \$response->{$item});
 
         return \$this->render('{$template}/edit.html.twig', [
-            'register' => \$response->{$item},
+            '{$item}' => \$response->{$item},
             'form' => \$form->createView(),
         ]);
     }
@@ -280,7 +280,7 @@ T
         \$form = \$this->createForm(TestFormType::class, \$response->test);
 
         return \$this->render('test/edit.html.twig', [
-            'register' => \$response->test,
+            'test' => \$response->test,
             'form' => \$form->createView(),
         ]);
     }

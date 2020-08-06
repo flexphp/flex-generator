@@ -21,7 +21,7 @@ final class ResponseMessageBuilderTest extends TestCase
 
         $this->assertEquals(<<<T
         return \$this->render('test/index.html.twig', [
-            'registers' => \$response->tests,
+            'tests' => \$response->tests,
         ]);
 T
 , $render->build());
@@ -45,7 +45,7 @@ T
 
         $this->assertEquals(<<<T
         return \$this->render('test/show.html.twig', [
-            'register' => \$response->test,
+            'test' => \$response->test,
         ]);
 T
 , $render->build());
@@ -60,7 +60,7 @@ T
 
         $this->assertEquals(<<<T
         return \$this->render('{$expected}/show.html.twig', [
-            'register' => \$response->{$expected},
+            '{$expected}' => \$response->{$expected},
         ]);
 T
 , $render->build());

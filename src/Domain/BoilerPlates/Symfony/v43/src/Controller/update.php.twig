@@ -18,7 +18,7 @@
         $form = $this->createForm({{ entity }}FormType::class, $response->{{ item }});
 
         return $this->render('{{ item }}/edit.html.twig', [
-            'register' => $response->{{ item }},
+            '{{ item }}' => $response->{{ item }},
             'form' => $form->createView(),
         ]);
     }

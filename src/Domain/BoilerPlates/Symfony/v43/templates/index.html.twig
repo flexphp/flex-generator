@@ -1,13 +1,13 @@
 {{ '{%' }} trans_default_domain '{{ item }}' {{ '%}' }}
 {{ '{%' }} extends 'form/layout.html.twig' {{ '%}' }}
 
-{{ '{%' }} block title {{ '%}' }}{{ '{%' }} trans {{ '%}' }}entity{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} endblock {{ '%}' }}
+{{ '{%' }} block title {{ '%}' }}{{ '{%' }} trans {{ '%}' }}title.list{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} endblock {{ '%}' }}
 
 {{ '{%' }} block main {{ '%}' }}
     <div class="card">
         <div class="card-header d-flex">
             <h3 class="card-header-title">
-                {{ '{%' }} trans {{ '%}' }}entity{{ '{%' }} endtrans {{ '%}' }}
+                {{ '{%' }} trans {{ '%}' }}title.list{{ '{%' }} endtrans {{ '%}' }}
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ '{{' }} path('{{ route }}.new') {{ '}}' }}" class="btn btn-success">
@@ -28,27 +28,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                {{ '{%' }} for register in registers {{ '%}' }}
+                {{ '{%' }} for _{{ item }} in {{ items }} {{ '%}' }}
                     <tr>
 {% for id, property in properties %}
 {% if property.isBlame %}
 {% elseif property.DataType starts with 'date' %}
-                        <td>{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</td>
+                        <td>{{ '{{' }} _{{ item }}.{{ id }} ? _{{ item }}.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</td>
 {% elseif property.DataType starts with 'time' %}
-                        <td>{{ '{{' }} register.{{ id }} ? register.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</td>
+                        <td>{{ '{{' }} _{{ item }}.{{ id }} ? _{{ item }}.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</td>
 {% elseif property.DataType starts with 'bool' %}
-                        <td>{{ '{%' }} if register.{{ id }} {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.yes{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} else {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.no{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} endif {{ '%}' }}</td>
+                        <td>{{ '{%' }} if _{{ item }}.{{ id }} {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.yes{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} else {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.no{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} endif {{ '%}' }}</td>
 {% else %}
-                        <td>{{ '{{' }} register.{{ id }} {{ '}}' }}</td>
+                        <td>{{ '{{' }} _{{ item }}.{{ id }} {{ '}}' }}</td>
 {% endif %}
 {% endfor %}
                         <td class="text-center">
                             <div class="btn-group">
-                                <a href="{{ '{{' }} path('{{ route }}.read', {id: register.id}) {{ '}}' }}" class="btn btn-sm btn-outline-light" title="{{ '{%' }} trans from 'messages' {{ '%}' }}action.read{{ '{%' }} endtrans {{ '%}' }}">
+                                <a href="{{ '{{' }} path('{{ route }}.read', {id: _{{ item }}.id}) {{ '}}' }}" class="btn btn-sm btn-outline-light" title="{{ '{%' }} trans from 'messages' {{ '%}' }}action.read{{ '{%' }} endtrans {{ '%}' }}">
                                     <i class="fa fa-eye text-dark" aria-hidden="true"></i>
                                 </a>
 
-                                <a href="{{ '{{' }} path('{{ route }}.edit', {id: register.id}) {{ '}}' }}" class="btn btn-sm btn-outline-light" title="{{ '{%' }} trans from 'messages' {{ '%}' }}action.edit{{ '{%' }} endtrans {{ '%}' }}">
+                                <a href="{{ '{{' }} path('{{ route }}.edit', {id: _{{ item }}.id}) {{ '}}' }}" class="btn btn-sm btn-outline-light" title="{{ '{%' }} trans from 'messages' {{ '%}' }}action.edit{{ '{%' }} endtrans {{ '%}' }}">
                                     <i class="fa fa-edit text-primary" aria-hidden="true"></i>
                                 </a>
                             </div>

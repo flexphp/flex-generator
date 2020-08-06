@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        {{ '{{' }} form_start(form, {'action': path('{{ route }}.update', {id: register.id}), 'method': 'PUT', 'attr': {'id': '{{ item }}'}}) {{ '}}' }}
+        {{ '{{' }} form_start(form, {'action': path('{{ route }}.update', {id: {{ item }}.id}), 'method': 'PUT', 'attr': {'id': '{{ item }}'}}) {{ '}}' }}
             <div class="card-body">
                 {{ '{{' }} form_widget(form) {{ '}}' }}
             </div>
@@ -25,7 +25,7 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col">
-                    {{ '{{' }} include('{{ item }}/_delete_form.html.twig', {{ '{' }}{{ item }}: register{{ '}' }}, with_context = false) {{ '}}' }}
+                    {{ '{{' }} include('{{ item }}/_delete_form.html.twig', {{ '{' }}{{ item }}: {{ item }}{{ '}' }}, with_context = false) {{ '}}' }}
                 </div>
 
                 <div class="col text-right">

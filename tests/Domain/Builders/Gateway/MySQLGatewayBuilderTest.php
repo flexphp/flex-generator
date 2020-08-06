@@ -155,9 +155,7 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->where('test.lower = :lower');
         \$this->query->setParameter(':lower', \$test->lower(), DB::STRING);
 
-        \$register = \$this->query->execute()->fetch();
-
-        return \$register ? \$register : [];
+        return \$this->query->execute()->fetch() ?: [];
     }
 }
 
@@ -207,9 +205,7 @@ final class MySQLJoinGateway implements JoinGateway
         \$this->query->where('join.pk = :pk');
         \$this->query->setParameter(':pk', \$join->pk(), DB::INTEGER);
 
-        \$register = \$this->query->execute()->fetch();
-
-        return \$register ? \$register : [];
+        return \$this->query->execute()->fetch() ?: [];
     }
 
     public function filterJoinTables(string \$term, int \$page, int \$limit): array
@@ -415,9 +411,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         \$this->query->where('postComment.Pk = :pk');
         \$this->query->setParameter(':pk', \$postComment->pk(), DB::INTEGER);
 
-        \$register = \$this->query->execute()->fetch();
-
-        return \$register ? \$register : [];
+        return \$this->query->execute()->fetch() ?: [];
     }
 
     public function pop(PostComment \$postComment): void
@@ -644,9 +638,7 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->where('test.code = :code');
         \$this->query->setParameter(':code', \$test->code(), DB::STRING);
 
-        \$register = \$this->query->execute()->fetch();
-
-        return \$register ? \$register : [];
+        return \$this->query->execute()->fetch() ?: [];
     }
 
     public function shift(Test \$test): void

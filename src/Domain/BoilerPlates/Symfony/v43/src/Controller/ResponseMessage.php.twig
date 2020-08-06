@@ -1,6 +1,6 @@
 {% if action == 'index' %}
         return $this->render('{{ templates }}/index.html.twig', [
-            'registers' => $response->{{ items }},
+            '{{ items }}' => $response->{{ items }},
         ]);
 {% elseif action in ['create', 'update', 'delete'] %}
         $this->addFlash($response->status, $response->message);
@@ -8,7 +8,7 @@
         return $this->redirectToRoute('{{ route }}.index');
 {% elseif action == 'read' %}
         return $this->render('{{ templates }}/show.html.twig', [
-            'register' => $response->{{ item }},
+            '{{ item }}' => $response->{{ item }},
         ]);
 {% else %}
         return new Response($response);
