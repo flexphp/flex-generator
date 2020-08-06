@@ -20,8 +20,10 @@ final class FactoryBuilder extends AbstractBuilder
         $entity = $this->getInflector()->entity($schema->name());
         $item = $this->getInflector()->item($schema->name());
         $setters = $this->getSetterWithCasting($schema->attributes());
+        $fkFns = $this->getFkFunctions($schema->fkRelations());
+        $fkRels = $this->getFkRelations($schema->fkRelations());
 
-        parent::__construct(\compact('entity', 'item', 'setters'));
+        parent::__construct(\compact('entity', 'item', 'setters', 'fkFns', 'fkRels'));
     }
 
     protected function getFileTemplate(): string

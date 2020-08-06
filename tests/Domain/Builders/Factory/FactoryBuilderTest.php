@@ -26,31 +26,98 @@ namespace Domain\Test;
 
 final class TestFactory
 {
-    public function make($data)
+    public function make($data): Test
     {
         $test = new Test();
 
-        if (is_array($data)) {
-            $data = (object)$data;
+        if (is_object($data)) {
+            $data = (array)$data;
         }
 
-        if (isset($data->lower)) {
-            $test->setLower((string)$data->lower);
+        if (isset($data['lower'])) {
+            $test->setLower((string)$data['lower']);
         }
-        if (isset($data->upper)) {
-            $test->setUpper((int)$data->upper);
+        if (isset($data['upper'])) {
+            $test->setUpper((int)$data['upper']);
         }
-        if (isset($data->pascalCase)) {
-            $test->setPascalCase(is_string($data->pascalCase) ? new \DateTime($data->pascalCase) : $data->pascalCase);
+        if (isset($data['pascalCase'])) {
+            $test->setPascalCase(is_string($data['pascalCase']) ? new \DateTime($data['pascalCase']) : $data['pascalCase']);
         }
-        if (isset($data->camelCase)) {
-            $test->setCamelCase((bool)$data->camelCase);
+        if (isset($data['camelCase'])) {
+            $test->setCamelCase((bool)$data['camelCase']);
         }
-        if (isset($data->snakeCase)) {
-            $test->setSnakeCase((string)$data->snakeCase);
+        if (isset($data['snakeCase'])) {
+            $test->setSnakeCase((string)$data['snakeCase']);
         }
 
         return $test;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItFkRelationsOk(): void
+    {
+        $render = new FactoryBuilder($this->getSchemaFkRelation('FkEntity'));
+
+        $this->assertEquals(<<<'T'
+<?php declare(strict_types=1);
+
+namespace Domain\FkEntity;
+
+use Domain\Bar\BarFactory;
+use Domain\Post\PostFactory;
+use Domain\UserStatus\UserStatusFactory;
+
+final class FkEntityFactory
+{
+    public function make($data): FkEntity
+    {
+        $fkEntity = new FkEntity();
+
+        if (is_object($data)) {
+            $data = (array)$data;
+        }
+
+        if (isset($data['pk'])) {
+            $fkEntity->setPk((int)$data['pk']);
+        }
+        if (isset($data['foo'])) {
+            $fkEntity->setFoo((string)$data['foo']);
+        }
+        if (isset($data['postId'])) {
+            $fkEntity->setPostId((int)$data['postId']);
+        }
+        if (isset($data['statusId'])) {
+            $fkEntity->setStatusId((int)$data['statusId']);
+        }
+
+        if (isset($data['foo.baz'])) {
+            $fkEntity->setFooInstance((new BarFactory())->make($this->getFkEntity('foo.', $data)));
+        }
+        if (isset($data['postId.id'])) {
+            $fkEntity->setPostIdInstance((new PostFactory())->make($this->getFkEntity('postId.', $data)));
+        }
+        if (isset($data['statusId.id'])) {
+            $fkEntity->setStatusIdInstance((new UserStatusFactory())->make($this->getFkEntity('statusId.', $data)));
+        }
+
+        return $fkEntity;
+    }
+
+    private function getFkEntity(string $prefix, array &$data): array
+    {
+        $data = [];
+
+        \array_map(function (string $key, ?string $value) use ($prefix, &$data): void {
+            if (\strpos($key, $prefix) !== false) {
+                $data[\substr($key, \strlen($prefix))] = $value;
+            }
+        }, \array_keys($data), $data);
+
+        return $data;
     }
 }
 
@@ -72,12 +139,12 @@ namespace Domain\\{$expected};
 
 final class {$expected}Factory
 {
-    public function make(\$data)
+    public function make(\$data): $expected
     {
         \${$item} = new {$expected}();
 
-        if (is_array(\$data)) {
-            \$data = (object)\$data;
+        if (is_object(\$data)) {
+            \$data = (array)\$data;
         }
 
         return \${$item};

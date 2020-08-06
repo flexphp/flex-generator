@@ -75,6 +75,7 @@ abstract class AbstractBuilder implements BuilderInterface
                 'text' => $this->getInflector()->camelProperty($fkRel['fkName']),
                 'fkRoute' => $this->getInflector()->route($fkRel['fkTable']),
                 'required' => $fkRel['isRequired'],
+                'pkNamePascal' => $this->getInflector()->pascalProperty($fkRel['pkId']),
             ];
         }
 
