@@ -79,7 +79,6 @@ jQuery(document).ready(function ($) {
             $confirm = $('#confirmationModal');
 
         if ($confirm.data('result') !== 'yes') {
-            //cancel submit event
             event.preventDefault();
 
             $confirm
