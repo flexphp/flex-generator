@@ -351,6 +351,56 @@ T
 , $render->build());
     }
 
+    public function testItRenderReadFkRelationsOk(): void
+    {
+        $render = new TemplateBuilder($this->getSchemaFkRelation(), 'read');
+
+        $this->assertEquals(<<<T
+{% trans_default_domain 'test' %}
+{% extends 'form/layout.html.twig' %}
+
+{% block title %}{% trans %}title.show{% endtrans %}{% endblock %}
+
+{% block main %}
+    <div class="card">
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">
+                {% trans %}entity{% endtrans %}
+            </h3>
+            <div class="toolbar ml-auto">
+                <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="form-group"><label>{% trans %}label.pk{% endtrans %}</label><div class="form-control-plaintext">{{ register.pk }}</div></div>
+            <div class="form-group"><label>{% trans %}label.foo{% endtrans %}</label><div class="form-control-plaintext">{{ register.fooInstance.fuz }}</div></div>
+            <div class="form-group"><label>{% trans %}label.postId{% endtrans %}</label><div class="form-control-plaintext">{{ register.postIdInstance.name }}</div></div>
+            <div class="form-group"><label>{% trans %}label.statusId{% endtrans %}</label><div class="form-control-plaintext">{{ register.statusIdInstance.name }}</div></div>
+        </div>
+
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    {{ include('test/_delete_form.html.twig', {test: register}, with_context = false) }}
+                </div>
+
+                <div class="col text-right">
+                    <a href="{{ path('tests.edit', {id: register.id}) }}" class="btn btn-outline-primary">
+                        <i class="fa fa-edit" aria-hidden="true"></i> {% trans from 'messages' %}action.edit{% endtrans %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+T
+, $render->build());
+    }
+
     public function testItRenderUpdateOk(): void
     {
         $render = new TemplateBuilder($this->getSchema(), 'update');
