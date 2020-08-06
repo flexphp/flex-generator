@@ -20,9 +20,15 @@ final class EntityBuilder extends AbstractBuilder
         $name = $this->getInflector()->entity($schema->name());
         $getters = $this->getGetters($schema->attributes());
         $setters = $this->getSetters($schema->attributes());
+        $fkGetters = $this->getFkGetters($schema->fkRelations());
+        $fkSetters = $this->getFkSetters($schema->fkRelations());
         $_properties = $this->getProperties($schema->attributes());
+        $fkFns = $this->getFkFunctions($schema->fkRelations());
+        $fkRels = $this->getFkRelations($schema->fkRelations());
 
-        parent::__construct(\compact('name', 'getters', 'setters', '_properties'));
+        parent::__construct(
+            \compact('name', 'getters', 'fkGetters', 'setters', 'fkSetters', '_properties', 'fkFns', 'fkRels')
+        );
     }
 
     protected function getFileTemplate(): string
@@ -69,6 +75,32 @@ final class EntityBuilder extends AbstractBuilder
             $properties,
             function (array $result, SchemaAttributeInterface $attribute): array {
                 $result[] = new SetterBuilder($attribute);
+
+                return $result;
+            },
+            []
+        );
+    }
+
+    private function getFkGetters(array $fkRelations): array
+    {
+        return \array_reduce(
+            $fkRelations,
+            function (array $result, array $fkRel): array {
+                $result[] = new FkGetterBuilder($fkRel['pkId'], $fkRel['pkTable']);
+
+                return $result;
+            },
+            []
+        );
+    }
+
+    private function getFkSetters(array $fkRelations): array
+    {
+        return \array_reduce(
+            $fkRelations,
+            function (array $result, array $fkRel): array {
+                $result[] = new FkSetterBuilder($fkRel['pkId'], $fkRel['pkTable'], $fkRel['isRequired']);
 
                 return $result;
             },

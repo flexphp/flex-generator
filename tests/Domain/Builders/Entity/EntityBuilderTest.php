@@ -88,6 +88,187 @@ T
 , $render->build());
     }
 
+    public function testItFkRelationsOk(): void
+    {
+        $render = new EntityBuilder($this->getSchemaFkRelation());
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+namespace Domain\Bar\Bar;
+namespace Domain\Post\Post;
+namespace Domain\UserStatus\UserStatus;
+
+final class Test
+{
+    private \$pk;
+    private \$foo;
+    private \$postId;
+    private \$statusId;
+    private \$fooInstance;
+    private \$postIdInstance;
+    private \$statusIdInstance;
+
+    public function pk(): ?int
+    {
+        return \$this->pk;
+    }
+
+    public function foo(): ?string
+    {
+        return \$this->foo;
+    }
+
+    public function postId(): ?int
+    {
+        return \$this->postId;
+    }
+
+    public function statusId(): ?int
+    {
+        return \$this->statusId;
+    }
+
+    public function fooInstance(): ?Bar
+    {
+        return \$this->fooInstance;
+    }
+
+    public function postIdInstance(): ?Post
+    {
+        return \$this->postIdInstance;
+    }
+
+    public function statusIdInstance(): ?UserStatus
+    {
+        return \$this->statusIdInstance;
+    }
+
+    public function setPk(int \$pk): void
+    {
+        \$this->pk = \$pk;
+    }
+
+    public function setFoo(string \$foo): void
+    {
+        \$this->foo = \$foo;
+    }
+
+    public function setPostId(?int \$postId): void
+    {
+        \$this->postId = \$postId;
+    }
+
+    public function setStatusId(?int \$statusId): void
+    {
+        \$this->statusId = \$statusId;
+    }
+
+    public function setFooInstance(Bar \$bar): void
+    {
+        \$this->fooInstance = \$bar;
+    }
+
+    public function setPostIdInstance(?Post \$post): void
+    {
+        \$this->postIdInstance = \$post;
+    }
+
+    public function setStatusIdInstance(?UserStatus \$userStatus): void
+    {
+        \$this->statusIdInstance = \$userStatus;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItBlameByOk(): void
+    {
+        $render = new EntityBuilder($this->getSchemaStringAndBlameBy());
+
+        $this->assertEquals(<<<'T'
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+namespace Domain\User\User;
+
+final class Test
+{
+    private $code;
+    private $name;
+    private $createdBy;
+    private $updatedBy;
+    private $createdByInstance;
+    private $updatedByInstance;
+
+    public function code(): ?string
+    {
+        return $this->code;
+    }
+
+    public function name(): ?string
+    {
+        return $this->name;
+    }
+
+    public function createdBy(): ?int
+    {
+        return $this->createdBy;
+    }
+
+    public function updatedBy(): ?int
+    {
+        return $this->updatedBy;
+    }
+
+    public function createdByInstance(): ?User
+    {
+        return $this->createdByInstance;
+    }
+
+    public function updatedByInstance(): ?User
+    {
+        return $this->updatedByInstance;
+    }
+
+    public function setCode(string $code): void
+    {
+        $this->code = $code;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function setCreatedBy(?int $createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    public function setUpdatedBy(?int $updatedBy): void
+    {
+        $this->updatedBy = $updatedBy;
+    }
+
+    public function setCreatedByInstance(?User $user): void
+    {
+        $this->createdByInstance = $user;
+    }
+
+    public function setUpdatedByInstance(?User $user): void
+    {
+        $this->updatedByInstance = $user;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItUserEntityInSymfonyOk(): void
     {
         $render = new EntityBuilder(new Schema('User', 'bar', []));
