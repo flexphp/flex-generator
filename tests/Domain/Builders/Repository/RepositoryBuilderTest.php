@@ -222,7 +222,6 @@ T
 namespace Domain\Test;
 
 use Domain\Test\Request\IndexTestRequest;
-use Domain\Test\Request\FindTestUserRequest;
 use FlexPHP\Repositories\Repository;
 
 final class TestRepository extends Repository
@@ -230,11 +229,6 @@ final class TestRepository extends Repository
     public function findBy(IndexTestRequest \$request): array
     {
         return \$this->getGateway()->search((array)\$request, [], 10);
-    }
-
-    public function findUsersByTerm(FindTestUserRequest \$request): array
-    {
-        return \$this->getGateway()->filterUsers(\$request->term, \$request->page, 10);
     }
 }
 

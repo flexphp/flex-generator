@@ -57,6 +57,7 @@ final class InflectorTest extends TestCase
             'types' => 'type',
             'services' => 'service',
             'indices' => 'indice',
+            'series' => 'series',
         ];
 
         $inflector = new Inflector();

@@ -98,7 +98,6 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\TestFactory;
 use Domain\Test\TestFormType;
 use Domain\Test\TestRepository;
 use Domain\Test\Gateway\MySQLTestGateway;
@@ -161,7 +160,6 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\TestFactory;
 use Domain\Test\TestFormType;
 use Domain\Test\TestRepository;
 use Domain\Test\Gateway\MySQLTestGateway;
@@ -240,7 +238,6 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\TestFactory;
 use Domain\Test\TestFormType;
 use Domain\Test\TestRepository;
 use Domain\Test\Gateway\MySQLTestGateway;
@@ -307,7 +304,6 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\TestFactory;
 use Domain\Test\TestFormType;
 use Domain\Test\TestRepository;
 use Domain\Test\Gateway\MySQLTestGateway;
@@ -398,7 +394,6 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\TestFactory;
 use Domain\Test\TestFormType;
 use Domain\Test\TestRepository;
 use Domain\Test\Gateway\MySQLTestGateway;
@@ -589,14 +584,11 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\Request\FindTestUserRequest;
-use Domain\Test\UseCase\FindTestUserUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -604,28 +596,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 final class TestController extends AbstractController
 {
-    /**
-     * @Route("/find-users", methods={"POST"}, name="tests.find.users")
-     * @Cache(smaxage="10")
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_USER_INDEX')", statusCode=401)
-     */
-    public function findUser(Request \$request, Connection \$conn): Response
-    {
-        if (!\$request->isXmlHttpRequest()) {
-            return new JsonResponse([], Response::HTTP_BAD_REQUEST);
-        }
-
-        \$request = new FindTestUserRequest(\$request->request->all());
-
-        \$useCase = new FindTestUserUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
-
-        \$response = \$useCase->execute(\$request);
-
-        return new JsonResponse([
-            'results' => \$response->users,
-            'pagination' => ['more' => false],
-        ]);
-    }
 }
 
 T

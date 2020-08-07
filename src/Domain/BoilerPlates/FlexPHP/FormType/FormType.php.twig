@@ -1,21 +1,24 @@
+{% set fkRelsNoBlame = fkRels|filter(v => not v.blameBy) %}
 <?php declare(strict_types=1);
 
 namespace Domain\{{ entity }};
 
-{% if fkRels|length > 0 %}
+{% if fkRelsNoBlame %}
 use App\Form\Type\Select2Type;
 use Doctrine\DBAL\Connection;
 {% for fkFn in fkFns %}
+{% if not properties[fkFn.pkName].isBlameBy %}
 use Domain\{{ fkFn.fnSingular }}\UseCase\Read{{ fkFn.fnSingular }}UseCase;
 use Domain\{{ fkFn.fnSingular }}\{{ fkFn.fnSingular }}Repository;
 use Domain\{{ fkFn.fnSingular }}\Gateway\MySQL{{ fkFn.fnSingular }}Gateway;
 use Domain\{{ fkFn.fnSingular }}\Request\Read{{ fkFn.fnSingular }}Request;
+{% endif %}
 {% endfor %}
 {% endif %}
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
-{% if fkRels|length > 0 %}
+{% if fkRelsNoBlame %}
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -24,7 +27,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class {{ entity }}FormType extends AbstractType
 {
-{% if fkRels|length > 0 %}
+{% if fkRelsNoBlame %}
     private $conn;
     private $router;
 
@@ -37,8 +40,7 @@ final class {{ entity }}FormType extends AbstractType
 {% endif %}
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-{% for id, fkRel in fkRels %}
-{% if not properties[id].isBlameBy %}
+{% for id, fkRel in fkRelsNoBlame %}
         ${{ fkRel.pkName }}Modifier = function (FormInterface $form, ?{{ fkRel.typeHint }} $value) {
             $choices = null;
 
@@ -78,11 +80,10 @@ final class {{ entity }}FormType extends AbstractType
             ${{ fkRel.pkName }}Modifier($event->getForm(), ({{ fkRel.typeHint }})$event->getData()['{{ fkRel.pkName }}'] ?? null);
         });
 
-{% endif %}
 {% endfor %}
 {% for id, property in properties %}
 {% if not property.isAi and not property.isBlame %}
-{% if fkRels[id] %}
+{% if fkRelsNoBlame[id] %}
         $builder->add('{{ id }}', Select2Type::class, [
 {% else %}
         $builder->add('{{ id }}', InputType\{{ inputs[id] }}Type::class, [
@@ -95,8 +96,8 @@ final class {{ entity }}FormType extends AbstractType
 {% endif %}
 {% if property.Constraints|filter(v => v != 'required')|length > 0 %}
             'attr' => [
-{% if fkRels[id] %}
-                'data-autocomplete-url' => $this->router->generate('{{ route }}.find.{{ fkRels[id].route }}'),
+{% if fkRelsNoBlame[id] %}
+                'data-autocomplete-url' => $this->router->generate('{{ route }}.find.{{ fkRelsNoBlame[id].route }}'),
 {% endif %}
 {% if property.minLength %}
                 'minlength' => {{ property.minLength }},
@@ -111,7 +112,7 @@ final class {{ entity }}FormType extends AbstractType
                 'max' => {{ property.max }},
 {% endif %}
             ],
-{% if fkRels[id] %}
+{% if fkRelsNoBlame[id] %}
             'choices' => [],
 {% endif %}
 {% endif %}

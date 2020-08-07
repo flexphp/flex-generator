@@ -14,6 +14,40 @@ use FlexPHP\Generator\Tests\TestCase;
 
 final class GatewayBuilderTest extends TestCase
 {
+    public function testItRenderOk(): void
+    {
+        $render = new GatewayBuilder($this->getSchemaFkRelation(), ['index', 'create', 'read', 'update', 'other', 'delete', 'login']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+interface TestGateway
+{
+    public function search(array \$wheres, array \$orders, int \$limit): array;
+
+    public function push(Test \$test): void;
+
+    public function get(Test \$test): array;
+
+    public function shift(Test \$test): void;
+
+    public function pop(Test \$test): void;
+
+    public function getBy(string \$column, \$value): array;
+
+    public function filterBars(string \$term, int \$page, int \$limit): array;
+
+    public function filterPosts(string \$term, int \$page, int \$limit): array;
+
+    public function filterUserStatus(string \$term, int \$page, int \$limit): array;
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderIndexOk(): void
     {
         $render = new GatewayBuilder($this->getSchema(), ['index']);
@@ -134,7 +168,9 @@ namespace Domain\PostComment;
 interface PostCommentGateway
 {
     public function filterBars(string \$term, int \$page, int \$limit): array;
+
     public function filterPosts(string \$term, int \$page, int \$limit): array;
+
     public function filterUserStatus(string \$term, int \$page, int \$limit): array;
 }
 
@@ -153,7 +189,6 @@ namespace Domain\Test;
 
 interface TestGateway
 {
-    public function filterUsers(string \$term, int \$page, int \$limit): array;
 }
 
 T

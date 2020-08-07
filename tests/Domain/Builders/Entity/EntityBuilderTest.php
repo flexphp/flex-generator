@@ -314,6 +314,74 @@ T
 , $render->build());
     }
 
+    public function testItOkBlameByInFk(): void
+    {
+        $render = new EntityBuilder(new Schema('Users', 'bar', [
+            new SchemaAttribute('createdBy', 'integer', 'cb|fk:Users'),
+        ]));
+
+        $this->assertEquals(<<<'T'
+<?php declare(strict_types=1);
+
+namespace Domain\User;
+
+use Symfony\Component\Security\Core\User\UserInterface;
+
+final class User implements UserInterface
+{
+    private $createdBy;
+    private $createdByInstance;
+
+    public function createdBy(): ?int
+    {
+        return $this->createdBy;
+    }
+
+    public function createdByInstance(): ?User
+    {
+        return $this->createdByInstance;
+    }
+
+    public function setCreatedBy(?int $createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    public function setCreatedByInstance(?User $user): void
+    {
+        $this->createdByInstance = $user;
+    }
+
+    public function getUsername()
+    {
+        return $this->name();
+    }
+
+    public function getPassword()
+    {
+        return $this->password();
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_ADMIN', 'ROLE_USER'];
+    }
+
+    public function eraseCredentials()
+    {
+        return true;
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */

@@ -1,11 +1,13 @@
 <?php declare(strict_types=1);
 
 namespace Domain\{{ entity }};
-{% if fkFns %}
+{% if fkFns|filter(v => v.fnSingular != entity)|length > 0 %}
 
 {% endif %}
 {% for fkFn in fkFns %}
+{% if fkFn.fnSingular != entity %}
 use Domain\{{ fkFn.fnSingular }}\{{ fkFn.fnSingular }}Factory;
+{% endif %}
 {% endfor %}
 
 final class {{ entity }}Factory

@@ -658,22 +658,6 @@ final class MySQLTestGateway implements TestGateway
 
         \$this->query->execute();
     }
-
-    public function filterUsers(string \$term, int \$page, int \$limit): array
-    {
-        \$this->query->select([
-            'id id',
-            'name text',
-        ]);
-        \$this->query->from('users');
-
-        \$this->query->where('name like :name');
-        \$this->query->setParameter(':name', "%{\$term}%");
-
-        \$this->query->setMaxResults(\$limit);
-
-        return \$this->query->execute()->fetchAll();
-    }
 }
 
 T

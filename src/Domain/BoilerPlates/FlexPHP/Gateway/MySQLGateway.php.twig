@@ -143,7 +143,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
     }
 {% endif %}
 {% endfor %}
-{% for id,fkFn in fkFns %}
+{% for id,fkFn in fkFns|filter(v => not v.blameBy) %}
 
     public function filter{{ fkFn.fnPlural }}(string $term, int $page, int $limit): array
     {

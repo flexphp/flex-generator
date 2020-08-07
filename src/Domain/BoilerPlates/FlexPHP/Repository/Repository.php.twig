@@ -1,3 +1,4 @@
+{% set fkFnsNoBlame = fkFns|filter(v => not v.blameBy) %}
 <?php declare(strict_types=1);
 
 namespace Domain\{{ entity }};
@@ -5,7 +6,7 @@ namespace Domain\{{ entity }};
 {% for request in requests %}
 use Domain\{{ entity }}\Request\{{ request }}{{ entity }}Request;
 {% endfor %}
-{% for id,fkFn in fkFns %}
+{% for id,fkFn in fkFnsNoBlame %}
 use Domain\{{ entity }}\Request\Find{{ entity }}{{ fkFn.fnSingular }}Request;
 {% endfor %}
 use FlexPHP\Repositories\Repository;
@@ -59,7 +60,7 @@ final class {{ entity }}Repository extends Repository
 
 {% endif %}
 {% endfor %}
-{% for id,fkFn in fkFns %}
+{% for id,fkFn in fkFnsNoBlame %}
 
     public function find{{ fkFn.fnPlural }}ByTerm(Find{{ entity }}{{ fkFn.fnSingular }}Request $request): array
     {

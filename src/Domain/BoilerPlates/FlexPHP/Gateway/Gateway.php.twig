@@ -1,10 +1,14 @@
+{% set methods = actions|filter(v => v in ['index', 'create', 'read', 'update', 'delete', 'login']) %}
 <?php declare(strict_types=1);
 
 namespace Domain\{{ entity }};
 
 interface {{ entity }}Gateway
 {
-{% for action in actions %}
+{% for action in methods %}
+{% if not loop.first %}
+
+{% endif %}
 {% if action in ['index'] %}
     public function search(array $wheres, array $orders, int $limit): array;
 {% elseif action in ['create'] %}
@@ -17,10 +21,15 @@ interface {{ entity }}Gateway
     public function pop({{ entity }} ${{ item }}): void;
 {% elseif action in ['login'] %}
     public function getBy(string $column, $value): array;
-{% else %}
 {% endif %}
 {% endfor %}
-{% for fkFn in fkFns %}
+{% if methods|length > 0 and fkFns|filter(v => not v.blameBy)|length > 0 %}
+
+{% endif %}
+{% for fkFn in fkFns|filter(v => not v.blameBy) %}
     public function filter{{ fkFn.fnPlural }}(string $term, int $page, int $limit): array;
+{% if not loop.last %}
+
+{% endif %}
 {% endfor %}
 }

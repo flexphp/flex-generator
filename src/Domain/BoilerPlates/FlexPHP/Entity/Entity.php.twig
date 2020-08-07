@@ -2,18 +2,20 @@
 <?php declare(strict_types=1);
 
 namespace Domain\{{ name }};
-{% if fkFns %}
 
-{% endif %}
 {% for fkFn in fkFns %}
+{% if fkFn.fnSingular != name %}
 use Domain\{{ fkFn.fnSingular }}\{{ fkFn.fnSingular }};
+{% endif %}
 {% endfor %}
-
 {% if is_user %}
 use Symfony\Component\Security\Core\User\UserInterface;
 
 final class {{ name }} implements UserInterface
 {% else %}
+{% if fkFns %}
+
+{% endif %}
 final class {{ name }}
 {% endif %}
 {

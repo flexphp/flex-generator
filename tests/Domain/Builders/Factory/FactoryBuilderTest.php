@@ -12,6 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Factory;
 use FlexPHP\Generator\Domain\Builders\Factory\FactoryBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class FactoryBuilderTest extends TestCase
 {
@@ -105,6 +106,56 @@ final class FkEntityFactory
         }
 
         return $fkEntity;
+    }
+
+    private function getFkEntity(string $prefix, array &$data): array
+    {
+        $_data = [];
+
+        \array_map(function (string $key, ?string $value) use ($prefix, &$_data): void {
+            if (\strpos($key, $prefix) !== false) {
+                $_data[\substr($key, \strlen($prefix))] = $value;
+            }
+        }, \array_keys($data), $data);
+
+        return $_data;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItOkBlameByInFk(): void
+    {
+        $render = new FactoryBuilder(new Schema('Users', 'bar', [
+            new SchemaAttribute('createdBy', 'integer', 'cb|fk:Users'),
+        ]));
+
+        $this->assertEquals(<<<'T'
+<?php declare(strict_types=1);
+
+namespace Domain\User;
+
+final class UserFactory
+{
+    public function make($data): User
+    {
+        $user = new User();
+
+        if (is_object($data)) {
+            $data = (array)$data;
+        }
+
+        if (isset($data['createdBy'])) {
+            $user->setCreatedBy((int)$data['createdBy']);
+        }
+
+        if (isset($data['createdBy.id'])) {
+            $user->setCreatedByInstance((new UserFactory())->make($this->getFkEntity('createdBy.', $data)));
+        }
+
+        return $user;
     }
 
     private function getFkEntity(string $prefix, array &$data): array
