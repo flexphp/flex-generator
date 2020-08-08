@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3a6c64aec61dc29bb979f87183ee70b3",
+    "content-hash": "88cc0d8b4e1ecd663420814c6da0a530",
     "packages": [
         {
             "name": "box/spout",
@@ -318,10 +318,15 @@
         {
             "name": "flexphp/database",
             "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/flexphp/flex-database.git",
+                "reference": "58ca2f9b61290365bb08364176d5d11572d6d32a"
+            },
             "dist": {
                 "type": "path",
-                "url": "../flex-database",
-                "reference": "61618baf5599d5a4e82de08e51def829b34679f1"
+                "url": "https://api.github.com/repos/flexphp/flex-database/zipball/58ca2f9b61290365bb08364176d5d11572d6d32a",
+                "reference": "58ca2f9b61290365bb08364176d5d11572d6d32a"
             },
             "require": {
                 "doctrine/dbal": "^2.9",
@@ -384,10 +389,16 @@
         {
             "name": "flexphp/schema",
             "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/flexphp/flex-schema.git",
+                "reference": "4eb6c937fc21db7f3b2f859f9859626de0092cbe"
+            },
             "dist": {
-                "type": "path",
-                "url": "../flex-schema",
-                "reference": "6b671f9630ec7177066a9f4d7f61d7d457b2716e"
+                "type": "zip",
+                "url": "https://api.github.com/repos/flexphp/flex-schema/zipball/4eb6c937fc21db7f3b2f859f9859626de0092cbe",
+                "reference": "4eb6c937fc21db7f3b2f859f9859626de0092cbe",
+                "shasum": ""
             },
             "require": {
                 "ext-json": "*",
@@ -407,34 +418,7 @@
                     "FlexPHP\\Schema\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "FlexPHP\\Schema\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "phpcs": [
-                    "phpcs --standard=PSR2 src/ tests/ --ignore=tests/coverage/*"
-                ],
-                "phpmd": [
-                    "phpmd src/,tests/ ansi design,naming,unusedcode"
-                ],
-                "phpfix": [
-                    "phpcbf --standard=PSR2 --extensions=php src/ tests/"
-                ],
-                "phpstan": [
-                    "phpstan analyse -l 8 src/ tests/"
-                ],
-                "phpunit": [
-                    "phpunit --bootstrap vendor/autoload.php --testdox tests/"
-                ],
-                "test": [
-                    "@phpcs",
-                    "@phpmd",
-                    "@phpstan",
-                    "@phpunit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -444,7 +428,8 @@
                     "email": "freddie.gar@outlook.com"
                 }
             ],
-            "description": "One schema, any framework"
+            "description": "One schema, any framework",
+            "time": "2020-08-08T03:51:43+00:00"
         },
         {
             "name": "jawira/case-converter",

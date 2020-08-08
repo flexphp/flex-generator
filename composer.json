@@ -68,16 +68,6 @@
             "php": "7.1.3"
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../flex-schema"
-        },
-        {
-            "type": "path",
-            "url": "../flex-database"
-        }
-    ],
     "prefer-stable": true,
     "minimum-stability": "dev"
 }
