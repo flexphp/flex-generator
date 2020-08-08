@@ -18,6 +18,7 @@ use Domain\{{ fkFn.fnSingular }}\Request\Read{{ fkFn.fnSingular }}Request;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 {% if fkRelsNoBlame %}
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
@@ -54,7 +55,7 @@ final class {{ entity }}FormType extends AbstractType
             }
 
             $form->add('{{ fkRel.pkName }}', Select2Type::class, [
-                'label' => '{{ labels[fkRel.pkName] }}',
+                'label' => 'label.{{ fkRel.pkName }}',
 {% if properties[fkRel.pkName].isRequired %}
                 'required' => true,
 {% else %}
@@ -88,7 +89,7 @@ final class {{ entity }}FormType extends AbstractType
 {% else %}
         $builder->add('{{ id }}', InputType\{{ inputs[id] }}Type::class, [
 {% endif %}
-            'label' => '{{ labels[id] }}',
+            'label' => 'label.{{ id }}',
 {% if property.isRequired %}
             'required' => true,
 {% else %}
@@ -121,5 +122,12 @@ final class {{ entity }}FormType extends AbstractType
         ]);
 {% endif %}
 {% endfor %}
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'translation_domain' => '{{ item }}',
+        ]);
     }
 }

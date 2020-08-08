@@ -2,4 +2,5 @@
 
 return [
     'title' => 'Dashboard',
+    'description' => 'Welcome back!',
 ];

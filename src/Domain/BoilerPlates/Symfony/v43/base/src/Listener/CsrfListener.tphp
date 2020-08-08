@@ -8,8 +8,8 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class CsrfListener implements EventSubscriberInterface
 {
@@ -29,7 +29,7 @@ class CsrfListener implements EventSubscriberInterface
         $this->tokenManager = $tokenManager;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if (in_array($event->getRequest()->getMethod(), array('POST', 'PUT', 'DELETE', 'PATCH')) && $event->getRequest()->isXmlHttpRequest()) {
             if (!$this->tokenManager->isTokenValid(new CsrfToken('ajax', $event->getRequest()->headers->get('X-XSRF-Token')))) {
@@ -39,7 +39,7 @@ class CsrfListener implements EventSubscriberInterface
         }
     }
 
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event)
     {
         if ($event->getRequest()->isMethod('GET') && !$event->getRequest()->isXmlHttpRequest()) {
             $event->getResponse()->headers->setCookie(new Cookie('XSRF-Token', $this->tokenManager->getToken('ajax'), 0, '/', null, true, false, false, Cookie::SAMESITE_STRICT));

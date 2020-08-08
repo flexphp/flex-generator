@@ -1,0 +1,12 @@
+<?php
+
+return [
+    'title' => [
+        'action' => 'Ingresar',
+        'description' => 'Bienvenido',
+    ],
+    'label' => [
+        'email' => 'Correo',
+        'password' => 'Contraseña',
+    ],
+];

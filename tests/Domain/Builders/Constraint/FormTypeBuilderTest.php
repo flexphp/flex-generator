@@ -27,11 +27,19 @@ namespace Domain\Test;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TestFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {
+    }
+
+    public function configureOptions(OptionsResolver \$resolver)
+    {
+        \$resolver->setDefaults([
+            'translation_domain' => 'test',
+        ]);
     }
 }
 
@@ -51,13 +59,14 @@ namespace Domain\Test;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TestFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {
         \$builder->add('lower', InputType\TextType::class, [
-            'label' => 'Lower',
+            'label' => 'label.lower',
             'required' => true,
             'attr' => [
                 'minlength' => 20,
@@ -65,7 +74,7 @@ final class TestFormType extends AbstractType
             ],
         ]);
         \$builder->add('upper', InputType\IntegerType::class, [
-            'label' => 'Upper',
+            'label' => 'label.upper',
             'required' => false,
             'attr' => [
                 'min' => 2,
@@ -73,23 +82,30 @@ final class TestFormType extends AbstractType
             ],
         ]);
         \$builder->add('pascalCase', InputType\DateTimeType::class, [
-            'label' => 'Pascal Case',
+            'label' => 'label.pascalCase',
             'required' => true,
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
             'format' => 'Y-m-d H:i:s',
         ]);
         \$builder->add('camelCase', InputType\CheckboxType::class, [
-            'label' => 'Camel Case',
+            'label' => 'label.camelCase',
             'required' => false,
         ]);
         \$builder->add('snakeCase', InputType\TextareaType::class, [
-            'label' => 'Snake Case',
+            'label' => 'label.snakeCase',
             'required' => false,
             'attr' => [
                 'minlength' => 100,
                 'maxlength' => 200,
             ],
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver \$resolver)
+    {
+        \$resolver->setDefaults([
+            'translation_domain' => 'test',
         ]);
     }
 }
@@ -124,6 +140,7 @@ use Domain\UserStatus\Request\ReadUserStatusRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -155,7 +172,7 @@ final class PostCommentFormType extends AbstractType
             }
 
             $form->add('foo', Select2Type::class, [
-                'label' => 'Foo',
+                'label' => 'label.foo',
                 'required' => true,
                 'attr' => [
                     'data-autocomplete-url' => $this->router->generate('post-comments.find.bars'),
@@ -190,7 +207,7 @@ final class PostCommentFormType extends AbstractType
             }
 
             $form->add('postId', Select2Type::class, [
-                'label' => 'Post Id',
+                'label' => 'label.postId',
                 'required' => false,
                 'attr' => [
                     'data-autocomplete-url' => $this->router->generate('post-comments.find.posts'),
@@ -225,7 +242,7 @@ final class PostCommentFormType extends AbstractType
             }
 
             $form->add('statusId', Select2Type::class, [
-                'label' => 'Status Id',
+                'label' => 'label.statusId',
                 'required' => false,
                 'attr' => [
                     'data-autocomplete-url' => $this->router->generate('post-comments.find.user-status'),
@@ -248,25 +265,32 @@ final class PostCommentFormType extends AbstractType
         });
 
         $builder->add('foo', Select2Type::class, [
-            'label' => 'Foo',
+            'label' => 'label.foo',
             'required' => true,
             'attr' => [
                 'data-autocomplete-url' => $this->router->generate('post-comments.find.bars'),
             ],
         ]);
         $builder->add('postId', Select2Type::class, [
-            'label' => 'Post Id',
+            'label' => 'label.postId',
             'required' => false,
             'attr' => [
                 'data-autocomplete-url' => $this->router->generate('post-comments.find.posts'),
             ],
         ]);
         $builder->add('statusId', Select2Type::class, [
-            'label' => 'Status Id',
+            'label' => 'label.statusId',
             'required' => false,
             'attr' => [
                 'data-autocomplete-url' => $this->router->generate('post-comments.find.user-status'),
             ],
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'translation_domain' => 'postComment',
         ]);
     }
 }
@@ -287,14 +311,22 @@ namespace Domain\Test;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TestFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {
         \$builder->add('value', InputType\IntegerType::class, [
-            'label' => 'Value',
+            'label' => 'label.value',
             'required' => true,
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver \$resolver)
+    {
+        \$resolver->setDefaults([
+            'translation_domain' => 'test',
         ]);
     }
 }
@@ -315,18 +347,26 @@ namespace Domain\Test;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TestFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {
         \$builder->add('code', InputType\TextType::class, [
-            'label' => 'Code',
+            'label' => 'label.code',
             'required' => true,
         ]);
         \$builder->add('name', InputType\TextareaType::class, [
-            'label' => 'Name',
+            'label' => 'label.name',
             'required' => true,
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver \$resolver)
+    {
+        \$resolver->setDefaults([
+            'translation_domain' => 'test',
         ]);
     }
 }
@@ -338,7 +378,7 @@ T
     /**
      * @dataProvider getEntityName
      */
-    public function testItOkWithDiffNameEntity(string $entity, string $expected): void
+    public function testItOkWithDiffNameEntity(string $entity, string $expected, string $item): void
     {
         $render = new FormTypeBuilder(new Schema($entity, 'bar', []));
 
@@ -350,11 +390,19 @@ namespace Domain\\{$expected};
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class {$expected}FormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {
+    }
+
+    public function configureOptions(OptionsResolver \$resolver)
+    {
+        \$resolver->setDefaults([
+            'translation_domain' => '{$item}',
+        ]);
     }
 }
 
@@ -365,12 +413,13 @@ T
     public function getEntityName(): array
     {
         return [
-            ['userpassword', 'Userpassword'],
-            ['USERPASSWORD', 'Userpassword'],
-            ['UserPassword', 'UserPassword'],
-            ['userPassword', 'UserPassword'],
-            ['user_password', 'UserPassword'],
-            ['Posts', 'Post'],
+            // entity, expected, item
+            ['userpassword', 'Userpassword', 'userpassword'],
+            ['USERPASSWORD', 'Userpassword', 'userpassword'],
+            ['UserPassword', 'UserPassword', 'userPassword'],
+            ['userPassword', 'UserPassword', 'userPassword'],
+            ['user_password', 'UserPassword', 'userPassword'],
+            ['Posts', 'Post', 'post'],
         ];
     }
 }

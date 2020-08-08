@@ -42,7 +42,7 @@
     "scripts": {
         "phpcs": [
             "phpcs --standard=PSR2 src/ --ignore=src/dist/*,src/tmp/*,*.min.css,*.min.js",
-            "phpcs --standard=PSR2 tests/ --ignore=tests/coverage/*,tests/Domain/Builders/Template/TemplateBuilderTest.php,tests/Domain/Builders/Factory/FactoryBuilderTest.php"
+            "phpcs --standard=PSR2 tests/ --ignore=tests/coverage/*,tests/Domain/Builders/Template/TemplateBuilderTest.php"
         ],
         "phpmd": [
             "phpmd src/ ansi naming,unusedcode",
@@ -68,6 +68,16 @@
             "php": "7.1.3"
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../flex-schema"
+        },
+        {
+            "type": "path",
+            "url": "../flex-database"
+        }
+    ],
     "prefer-stable": true,
     "minimum-stability": "dev"
 }

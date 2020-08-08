@@ -49,6 +49,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/src/Listener');
         $this->assertFileExists($response->outputDir . '/src/Listener/CsrfListener.php');
+        $this->assertFileExists($response->outputDir . '/src/Listener/LocaleListener.php');
 
         $this->assertDirectoryExists($response->outputDir . '/src/Twig');
         $this->assertFileExists($response->outputDir . '/src/Twig/AppExtension.php');
@@ -60,6 +61,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/src/Controller');
         $this->assertFileExists($response->outputDir . '/src/Controller/DashboardController.php');
+        $this->assertFileExists($response->outputDir . '/src/Controller/LocaleController.php');
         $this->assertFileExists($response->outputDir . '/src/Controller/SecurityController.php');
         $this->assertFileExists($response->outputDir . '/src/Controller/PostController.php');
 
@@ -147,7 +149,11 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/translations');
         $this->assertFileExists($response->outputDir . '/translations/.gitignore');
         $this->assertFileExists($response->outputDir . '/translations/dashboard.en.php');
+        $this->assertFileExists($response->outputDir . '/translations/dashboard.es.php');
+        $this->assertFileExists($response->outputDir . '/translations/login.en.php');
+        $this->assertFileExists($response->outputDir . '/translations/login.es.php');
         $this->assertFileExists($response->outputDir . '/translations/messages.en.php');
+        $this->assertFileExists($response->outputDir . '/translations/messages.es.php');
         $this->assertFileExists($response->outputDir . '/translations/post.en.php');
         $this->assertFileExists($response->outputDir . '/translations/comment.en.php');
 

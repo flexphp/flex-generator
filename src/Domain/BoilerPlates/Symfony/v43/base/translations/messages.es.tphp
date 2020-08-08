@@ -1,0 +1,40 @@
+<?php
+
+return [
+    'app' => [
+        'name' => 'Project',
+        'title' => 'Demo',
+    ],
+    'base' => [
+        'notification' => [
+            'title' => 'Notificaciones',
+            'show' => 'Ver todas',
+        ],
+        'header' => [
+            'account' => 'Perfil',
+            'setting' => 'Configuración',
+            'logout' => 'Salir',
+        ],
+        'navbar' => [
+            'navigation' => 'Navegación',
+        ],
+    ],
+    'action' => [
+        'new' => 'Nuevo',
+        'read' => 'Read',
+        'edit' => 'Editar',
+        'list' => 'Listado',
+        'create' => 'Crear',
+        'update' => 'Actualizar',
+        'delete' => 'Eliminar',
+        'cancel' => 'Cancelar',
+        'options' => 'Acciones',
+    ],
+    'message' => [
+        'delete' => 'Estás seguro?',
+    ],
+    'label' => [
+        'yes' => 'Si',
+        'no' => 'No',
+    ],
+];

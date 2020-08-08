@@ -1,0 +1,12 @@
+<?php
+
+return [
+    'title' => [
+        'action' => 'Sing in',
+        'description' => 'Welcome',
+    ],
+    'label' => [
+        'email' => 'Email',
+        'password' => 'Password',
+    ],
+];

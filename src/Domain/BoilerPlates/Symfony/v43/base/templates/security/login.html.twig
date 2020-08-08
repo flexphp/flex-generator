@@ -1,8 +1,17 @@
+{% trans_default_domain 'login' %}
 {% extends 'base.html.twig' %}
 
 {% block title %}Login{% endblock %}
-{% block header %}{% endblock %}
 {% block sidebar %}{% endblock %}
+{% block header %}
+<div class="dashboard-header">
+    <div class="bg-white fixed-top text-right py-2 pr-3">
+        <a href="{{ path('locale', {'locale': 'en', 'url': app.request.uri }) }}">English</a>
+        |
+        <a href="{{ path('locale', {'locale': 'es', 'url': app.request.uri }) }}">Español</a>
+    </div>
+</div>
+{% endblock %}
 
 {% block stylesheets %}
 <style>
@@ -16,17 +25,17 @@
 <div class="splash-container">
     <div class="card ">
         <div class="card-header text-center">
-            <span class="splash-description">Please enter your user information.</span>
+            <span class="splash-description">{% trans %}title.description{% endtrans %}</span>
         </div>
 
         <div class="card-body">
             <form action="{{ path('login') }}" method="post">
                 <div class="form-group">
-                    <input class="form-control form-control-lg" id="email" name="email" type="email" placeholder="Email" autocomplete="off" required>
+                    <input class="form-control form-control-lg" id="email" name="email" type="email" placeholder="{% trans %}label.email{% endtrans %}" autocomplete="off" required>
                 </div>
 
                 <div class="form-group">
-                    <input class="form-control form-control-lg" id="password" name="password" type="password" placeholder="Password" required>
+                    <input class="form-control form-control-lg" id="password" name="password" type="password" placeholder="{% trans %}label.password{% endtrans %}" required>
                 </div>
 
                 {% if error %}
@@ -41,7 +50,7 @@
 
                 <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}"/>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-                <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">{% trans %}title.action{% endtrans %}</button>
             </form>
         </div>
     </div>
