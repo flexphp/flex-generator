@@ -44,6 +44,7 @@ jQuery(document).ready(function ($) {
         theme: 'bootstrap4',
         minimumInputLength: 3,
         allowClear: true,
+        placeholder: '',
         ajax: {
             url: fooUrl,
             method: 'POST',
@@ -66,6 +67,7 @@ jQuery(document).ready(function ($) {
         theme: 'bootstrap4',
         minimumInputLength: 3,
         allowClear: true,
+        placeholder: '',
         ajax: {
             url: postIdUrl,
             method: 'POST',
@@ -88,6 +90,7 @@ jQuery(document).ready(function ($) {
         theme: 'bootstrap4',
         minimumInputLength: 3,
         allowClear: true,
+        placeholder: '',
         ajax: {
             url: statusIdUrl,
             method: 'POST',

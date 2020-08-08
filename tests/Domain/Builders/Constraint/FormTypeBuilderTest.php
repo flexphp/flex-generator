@@ -174,7 +174,7 @@ final class PostCommentFormType extends AbstractType
         });
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($fooModifier) {
-            $fooModifier($event->getForm(), (string)$event->getData()['foo'] ?? null);
+            $fooModifier($event->getForm(), (string)$event->getData()['foo'] ?: null);
         });
 
         $postIdModifier = function (FormInterface $form, ?int $value) {
@@ -209,7 +209,7 @@ final class PostCommentFormType extends AbstractType
         });
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($postIdModifier) {
-            $postIdModifier($event->getForm(), (int)$event->getData()['postId'] ?? null);
+            $postIdModifier($event->getForm(), (int)$event->getData()['postId'] ?: null);
         });
 
         $statusIdModifier = function (FormInterface $form, ?int $value) {
@@ -244,7 +244,7 @@ final class PostCommentFormType extends AbstractType
         });
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($statusIdModifier) {
-            $statusIdModifier($event->getForm(), (int)$event->getData()['statusId'] ?? null);
+            $statusIdModifier($event->getForm(), (int)$event->getData()['statusId'] ?: null);
         });
 
         $builder->add('foo', Select2Type::class, [
@@ -253,7 +253,6 @@ final class PostCommentFormType extends AbstractType
             'attr' => [
                 'data-autocomplete-url' => $this->router->generate('post-comments.find.bars'),
             ],
-            'choices' => [],
         ]);
         $builder->add('postId', Select2Type::class, [
             'label' => 'Post Id',
@@ -261,7 +260,6 @@ final class PostCommentFormType extends AbstractType
             'attr' => [
                 'data-autocomplete-url' => $this->router->generate('post-comments.find.posts'),
             ],
-            'choices' => [],
         ]);
         $builder->add('statusId', Select2Type::class, [
             'label' => 'Status Id',
@@ -269,7 +267,6 @@ final class PostCommentFormType extends AbstractType
             'attr' => [
                 'data-autocomplete-url' => $this->router->generate('post-comments.find.user-status'),
             ],
-            'choices' => [],
         ]);
     }
 }

@@ -77,7 +77,7 @@ final class {{ entity }}FormType extends AbstractType
         });
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (${{ fkRel.pkName }}Modifier) {
-            ${{ fkRel.pkName }}Modifier($event->getForm(), ({{ fkRel.typeHint }})$event->getData()['{{ fkRel.pkName }}'] ?? null);
+            ${{ fkRel.pkName }}Modifier($event->getForm(), ({{ fkRel.typeHint }})$event->getData()['{{ fkRel.pkName }}'] ?: null);
         });
 
 {% endfor %}
@@ -112,9 +112,6 @@ final class {{ entity }}FormType extends AbstractType
                 'max' => {{ property.max }},
 {% endif %}
             ],
-{% if fkRelsNoBlame[id] %}
-            'choices' => [],
-{% endif %}
 {% endif %}
 {% if inputs[id] in ['Date', 'Time', 'DateTime'] %}
             'date_widget' => 'single_text',
