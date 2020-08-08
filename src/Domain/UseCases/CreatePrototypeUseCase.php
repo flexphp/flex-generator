@@ -173,6 +173,7 @@ final class CreatePrototypeUseCase
             '/LICENSE.md',
             '/phpunit.xml',
             '/bin/console',
+            '/config/routes.yaml',
             '/config/services.yaml',
             '/public/robots.txt',
             '/public/.htaccess',

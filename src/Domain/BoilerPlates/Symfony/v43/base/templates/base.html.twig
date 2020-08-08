@@ -87,7 +87,7 @@
                                 </div>
                                 <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>{% trans %}base.header.account{% endtrans %}</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>{% trans %}base.header.setting{% endtrans %}</a>
-                                <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>{% trans %}base.header.logout{% endtrans %}</a>
+                                <a class="dropdown-item" href="{{ path('logout') }}"><i class="fas fa-power-off mr-2"></i>{% trans %}base.header.logout{% endtrans %}</a>
                             </div>
                         </li>
                     </ul>

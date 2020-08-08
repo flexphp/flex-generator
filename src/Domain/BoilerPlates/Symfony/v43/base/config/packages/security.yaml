@@ -20,6 +20,9 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
+            logout:
+                path: logout
+                target: login
     encoders:
         Symfony\Component\Security\Core\User\User: 'auto'
         Domain\User\User: 'auto'
