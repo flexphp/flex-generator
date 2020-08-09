@@ -31,7 +31,9 @@ final class TestRepository extends Repository
 {
     public function findBy(IndexTestRequest \$request): array
     {
-        return \$this->getGateway()->search((array)\$request, [], 10);
+        return array_map(function (array \$test) {
+            return (new TestFactory())->make(\$test);
+        }, \$this->getGateway()->search((array)\$request, [], \$request->page, 10));
     }
 }
 
@@ -189,7 +191,9 @@ final class PostCommentRepository extends Repository
 {
     public function findBy(IndexPostCommentRequest \$request): array
     {
-        return \$this->getGateway()->search((array)\$request, [], 10);
+        return array_map(function (array \$postComment) {
+            return (new PostCommentFactory())->make(\$postComment);
+        }, \$this->getGateway()->search((array)\$request, [], \$request->page, 10));
     }
 
     public function findBarsByTerm(FindPostCommentBarRequest \$request): array
@@ -228,7 +232,9 @@ final class TestRepository extends Repository
 {
     public function findBy(IndexTestRequest \$request): array
     {
-        return \$this->getGateway()->search((array)\$request, [], 10);
+        return array_map(function (array \$test) {
+            return (new TestFactory())->make(\$test);
+        }, \$this->getGateway()->search((array)\$request, [], \$request->page, 10));
     }
 }
 

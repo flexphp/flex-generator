@@ -17,7 +17,9 @@ final class {{ entity }}Repository extends Repository
 {% if action in ['index'] %}
     public function findBy(Index{{ entity }}Request $request): array
     {
-        return $this->getGateway()->search((array)$request, [], $request->page, 10);
+        return array_map(function (array ${{ item }}) {
+            return (new {{ entity }}Factory())->make(${{ item }});
+        }, $this->getGateway()->search((array)$request, [], $request->page, 10));
     }
 {% elseif action in ['create'] %}
     public function add(Create{{ entity }}Request $request): void

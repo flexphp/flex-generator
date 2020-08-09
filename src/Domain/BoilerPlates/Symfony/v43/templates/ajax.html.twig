@@ -8,6 +8,8 @@
         <td>{{ '{{' }} _{{ item }}.{{ id }} ? _{{ item }}.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</td>
 {% elseif property.DataType starts with 'bool' %}
         <td>{{ '{%' }} if _{{ item }}.{{ id }} {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.yes{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} else {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.no{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} endif {{ '%}' }}</td>
+{% elseif fkRels[id] %}
+        <td>{{ '{{' }} _{{ item }}.{{ fkRels[id].pkName }}Instance.{{ fkRels[id].text }}|default {{ '}}' }}</td>
 {% else %}
         <td>{{ '{{' }} _{{ item }}.{{ id }} {{ '}}' }}</td>
 {% endif %}

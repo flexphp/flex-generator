@@ -49,34 +49,16 @@ final class TemplateBuilderTest extends TestCase
                     </tr>
                 </thead>
                 <tbody>
-                {% for _test in tests %}
-                    <tr>
-                        <td>{{ _test.lower }}</td>
-                        <td>{{ _test.upper }}</td>
-                        <td>{{ _test.pascalCase ? _test.pascalCase|date('Y-m-d H:i:s') : '-' }}</td>
-                        <td>{% if _test.camelCase %}{% trans from 'messages' %}label.yes{% endtrans %}{% else %}{% trans from 'messages' %}label.no{% endtrans %}{% endif %}</td>
-                        <td>{{ _test.snakeCase }}</td>
-                        <td class="text-center">
-                            <div class="btn-group">
-                                <a href="{{ path('tests.read', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
-                                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
-                                </a>
-
-                                <a href="{{ path('tests.edit', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
-                                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="6" align="center">Nothing here</td>
-                    </tr>
-                {% endfor %}
+                {{ include('test/_ajax.html.twig', {tests: tests}) }}
                 </tbody>
             </table>
+            {{ include('default/_infinite.html.twig') }}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery/jquery.infinite.min.js') }}"></script>
 {% endblock %}
 
 T
@@ -115,31 +97,16 @@ T
                     </tr>
                 </thead>
                 <tbody>
-                {% for _userStatus in userStatus %}
-                    <tr>
-                        <td>{{ _userStatus.key }}</td>
-                        <td>{{ _userStatus.value }}</td>
-                        <td class="text-center">
-                            <div class="btn-group">
-                                <a href="{{ path('user-status.read', {id: _userStatus.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
-                                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
-                                </a>
-
-                                <a href="{{ path('user-status.edit', {id: _userStatus.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
-                                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="3" align="center">Nothing here</td>
-                    </tr>
-                {% endfor %}
+                {{ include('userStatus/_ajax.html.twig', {userStatus: userStatus}) }}
                 </tbody>
             </table>
+            {{ include('default/_infinite.html.twig') }}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery/jquery.infinite.min.js') }}"></script>
 {% endblock %}
 
 T
@@ -178,32 +145,126 @@ T
                     </tr>
                 </thead>
                 <tbody>
-                {% for _test in tests %}
-                    <tr>
-                        <td>{{ _test.code }}</td>
-                        <td>{{ _test.name }}</td>
-                        <td class="text-center">
-                            <div class="btn-group">
-                                <a href="{{ path('tests.read', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
-                                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
-                                </a>
-
-                                <a href="{{ path('tests.edit', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
-                                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="3" align="center">Nothing here</td>
-                    </tr>
-                {% endfor %}
+                {{ include('test/_ajax.html.twig', {tests: tests}) }}
                 </tbody>
             </table>
+            {{ include('default/_infinite.html.twig') }}
         </div>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery/jquery.infinite.min.js') }}"></script>
+{% endblock %}
+
+T, $render->build());
+    }
+
+    public function testItRenderIndexAjaxOk(): void
+    {
+        $render = new TemplateBuilder($this->getSchema(), 'ajax');
+
+        $this->assertEquals(<<<T
+{% for _test in tests %}
+    <tr>
+        <td>{{ _test.lower }}</td>
+        <td>{{ _test.upper }}</td>
+        <td>{{ _test.pascalCase ? _test.pascalCase|date('Y-m-d H:i:s') : '-' }}</td>
+        <td>{% if _test.camelCase %}{% trans from 'messages' %}label.yes{% endtrans %}{% else %}{% trans from 'messages' %}label.no{% endtrans %}{% endif %}</td>
+        <td>{{ _test.snakeCase }}</td>
+        <td class="text-center">
+            <div class="btn-group">
+                <a href="{{ path('tests.read', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
+                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
+                </a>
+
+                <a href="{{ path('tests.edit', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
+                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
+                </a>
+            </div>
+        </td>
+    </tr>
+{% endfor %}
+
+T, $render->build());
+    }
+
+    public function testItRenderIndexAjaxBlameAtOk(): void
+    {
+        $render = new TemplateBuilder($this->getSchemaAiAndBlameAt('UserStatus'), 'ajax');
+
+        $this->assertEquals(<<<T
+{% for _userStatus in userStatus %}
+    <tr>
+        <td>{{ _userStatus.key }}</td>
+        <td>{{ _userStatus.value }}</td>
+        <td class="text-center">
+            <div class="btn-group">
+                <a href="{{ path('user-status.read', {id: _userStatus.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
+                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
+                </a>
+
+                <a href="{{ path('user-status.edit', {id: _userStatus.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
+                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
+                </a>
+            </div>
+        </td>
+    </tr>
+{% endfor %}
+
+T, $render->build());
+    }
+
+    public function testItRenderIndexAjaxBlameByOk(): void
+    {
+        $render = new TemplateBuilder($this->getSchemaStringAndBlameBy(), 'ajax');
+
+        $this->assertEquals(<<<T
+{% for _test in tests %}
+    <tr>
+        <td>{{ _test.code }}</td>
+        <td>{{ _test.name }}</td>
+        <td class="text-center">
+            <div class="btn-group">
+                <a href="{{ path('tests.read', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
+                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
+                </a>
+
+                <a href="{{ path('tests.edit', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
+                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
+                </a>
+            </div>
+        </td>
+    </tr>
+{% endfor %}
+
+T, $render->build());
+    }
+
+    public function testItRenderIndexAjaxFkRelationsOk(): void
+    {
+        $render = new TemplateBuilder($this->getSchemaFkRelation(), 'ajax');
+
+        $this->assertEquals(<<<T
+{% for _test in tests %}
+    <tr>
+        <td>{{ _test.pk }}</td>
+        <td>{{ _test.fooInstance.fuz|default }}</td>
+        <td>{{ _test.postIdInstance.name|default }}</td>
+        <td>{{ _test.statusIdInstance.name|default }}</td>
+        <td class="text-center">
+            <div class="btn-group">
+                <a href="{{ path('tests.read', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
+                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
+                </a>
+
+                <a href="{{ path('tests.edit', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
+                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
+                </a>
+            </div>
+        </td>
+    </tr>
+{% endfor %}
 
 T, $render->build());
     }
