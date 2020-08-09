@@ -8,14 +8,14 @@ use FlexPHP\Messages\RequestInterface;
 
 final class {{ action }}{{ entity }}Request implements RequestInterface
 {
-{% if action|lower in ['read', 'delete'] %}
+{% if action in ['Read', 'Delete'] %}
     public ${{ pkName }};
 
     public function __construct({{ pkTypeHint }} ${{ pkName }})
     {
         $this->{{ pkName }} = ${{ pkName }};
     }
-{% elseif action|lower in ['login'] %}
+{% elseif action in ['Login'] %}
     public ${{ login }};
 
     public function __construct(string ${{ login }})
@@ -30,34 +30,42 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% if property.isUb %}
 {% set UpdatedById = id %}
 {% endif %}
-{% if (action|lower in ['update'] and (property.isPk or property.isUb)) or (action|lower in ['create'] and property.isCb) or action|lower in ['index'] or (not property.isAi and not property.isBlame) %}
+{% if (action in ['Update'] and (property.isPk or property.isUb)) or (action in ['Create'] and property.isCb) or action in ['Index'] or (not property.isAi and not property.isBlame) %}
     public ${{ id }};
 {% endif %}
 {% endfor %}
+{% if action in ['Index'] %}
+    public $page;
+{% endif %}
 {% if properties %}
 
 {% endif %}
-{% if action|lower in ['create'] and CreatedBy %}
+{% if action in ['Create'] and CreatedBy %}
     public function __construct(array $data, {{ CreatedBy.typeHint }} ${{ CreatedById }})
-{% elseif action|lower in ['update'] and UpdatedBy %}
+{% elseif action in ['Update'] and UpdatedBy %}
     public function __construct({{ pkTypeHint }} ${{ pkName }}, array $data, {{ UpdatedBy.typeHint }} ${{ UpdatedById }})
-{% elseif action|lower in ['update'] %}
+{% elseif action in ['Update'] %}
     public function __construct({{ pkTypeHint }} ${{ pkName }}, array $data)
+{% elseif action in ['Index'] %}
+    public function __construct(array $data, int $page)
 {% else %}
     public function __construct(array $data)
 {% endif %}
     {
 {% for id, property in properties %}
-{% if action|lower in ['update'] and property.isPk %}
+{% if action in ['Update'] and property.isPk %}
         $this->{{ id }} = ${{ pkName }};
-{% elseif (action|lower in ['create'] and property.isCb) or (action|lower in ['update'] and property.isUb) %}
+{% elseif (action in ['Create'] and property.isCb) or (action in ['Update'] and property.isUb) %}
         $this->{{ id }} = ${{ id }};
-{% elseif not (action|lower in ['create'] and property.isAi) and not property.isBlame %}
+{% elseif not (action in ['Create'] and property.isAi) and not property.isBlame %}
         $this->{{ id }} = $data['{{ id }}'] ?? null;
-{% elseif action|lower in ['index'] %}
+{% elseif action in ['Index'] %}
         $this->{{ id }} = $data['{{ id }}'] ?? null;
 {% endif %}
 {% endfor %}
+{% if action in ['Index'] %}
+        $this->page = $page;
+{% endif %}
     }
 {% endif %}
 }

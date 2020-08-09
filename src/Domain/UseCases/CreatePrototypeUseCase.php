@@ -181,6 +181,7 @@ final class CreatePrototypeUseCase
             '/templates/base.html.twig',
             '/templates/dashboard/index.html.twig',
             '/templates/default/_flash.html.twig',
+            '/templates/default/_infinite.html.twig',
             '/templates/default/homepage.html.twig',
             '/templates/form/layout.html.twig',
             '/templates/form/_delete_confirmation.html.twig',
@@ -214,6 +215,7 @@ final class CreatePrototypeUseCase
             "$src/jQuery/js/jquery.min.js" => "$dest/public/js/jquery/jquery.min.js",
             "$src/jQuery/plugins/jquery.slimscroll.min.js" => "$dest/public/js/jquery/jquery.slimscroll.min.js",
             "$src/jQuery/plugins/jquery.select2.min.js" => "$dest/public/js/jquery/jquery.select2.min.js",
+            "$src/jQuery/plugins/jquery.infinite.min.js" => "$dest/public/js/jquery/jquery.infinite.min.js",
             "$src/jQuery/main.js" => "$dest/public/js/main.js",
         ];
 

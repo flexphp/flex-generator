@@ -40,19 +40,19 @@ final class MySQLTestGateway implements TestGateway
         \$this->query = \$conn->createQueryBuilder();
     }
 
-    public function search(array \$wheres, array \$orders, int \$limit): array
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit): array
     {
         \$this->query->select([
-            'lower as lower',
-            'UPPER as upper',
-            'PascalCase as pascalCase',
-            'camelCase as camelCase',
-            'snake_case as snakeCase',
+            'test.lower as lower',
+            'test.UPPER as upper',
+            'test.PascalCase as pascalCase',
+            'test.camelCase as camelCase',
+            'test.snake_case as snakeCase',
         ]);
-        \$this->query->from(\$this->table);
+        \$this->query->from(\$this->table, 'test');
 
         foreach(\$wheres as \$column => \$value) {
-            if (!\$value) {
+            if (\$column === 'page' || !\$value) {
                 continue;
             }
 
@@ -60,6 +60,7 @@ final class MySQLTestGateway implements TestGateway
             \$this->query->setParameter(":{\$column}", \$value);
         }
 
+        \$this->query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
         \$this->query->setMaxResults(\$limit);
 
         return \$this->query->execute()->fetchAll();
@@ -368,7 +369,7 @@ T
 
     public function testItFkRelationsOk(): void
     {
-        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation('PostComments'), ['read', 'delete', 'other']);
+        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation('PostComments'), ['index', 'read', 'delete', 'other']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -388,6 +389,40 @@ final class MySQLPostCommentGateway implements PostCommentGateway
     public function __construct(Connection \$conn)
     {
         \$this->query = \$conn->createQueryBuilder();
+    }
+
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit): array
+    {
+        \$this->query->select([
+            'postComment.Pk as pk',
+            'postComment.foo as foo',
+            'postComment.PostId as postId',
+            'postComment.StatusId as statusId',
+            'foo.baz as `foo.baz`',
+            'foo.fuz as `foo.fuz`',
+            'postId.id as `postId.id`',
+            'postId.name as `postId.name`',
+            'statusId.id as `statusId.id`',
+            'statusId.name as `statusId.name`',
+        ]);
+        \$this->query->from(\$this->table, 'postComment');
+        \$this->query->join('postComment', 'Bar', 'foo', 'postComment.foo = foo.baz');
+        \$this->query->leftJoin('postComment', 'posts', 'postId', 'postComment.PostId = postId.id');
+        \$this->query->leftJoin('postComment', 'UserStatus', 'statusId', 'postComment.StatusId = statusId.id');
+
+        foreach(\$wheres as \$column => \$value) {
+            if (\$column === 'page' || !\$value) {
+                continue;
+            }
+
+            \$this->query->where("{\$column} = :{\$column}");
+            \$this->query->setParameter(":{\$column}", \$value);
+        }
+
+        \$this->query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$this->query->setMaxResults(\$limit);
+
+        return \$this->query->execute()->fetchAll();
     }
 
     public function get(PostComment \$postComment): array
@@ -501,16 +536,16 @@ final class MySQLTestGateway implements TestGateway
         \$this->query = \$conn->createQueryBuilder();
     }
 
-    public function search(array \$wheres, array \$orders, int \$limit): array
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit): array
     {
         \$this->query->select([
-            'key as key',
-            'Value as value',
+            'test.key as key',
+            'test.Value as value',
         ]);
-        \$this->query->from(\$this->table);
+        \$this->query->from(\$this->table, 'test');
 
         foreach(\$wheres as \$column => \$value) {
-            if (!\$value) {
+            if (\$column === 'page' || !\$value) {
                 continue;
             }
 
@@ -518,6 +553,7 @@ final class MySQLTestGateway implements TestGateway
             \$this->query->setParameter(":{\$column}", \$value);
         }
 
+        \$this->query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
         \$this->query->setMaxResults(\$limit);
 
         return \$this->query->execute()->fetchAll();
@@ -583,16 +619,16 @@ final class MySQLTestGateway implements TestGateway
         \$this->query = \$conn->createQueryBuilder();
     }
 
-    public function search(array \$wheres, array \$orders, int \$limit): array
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit): array
     {
         \$this->query->select([
-            'code as code',
-            'Name as name',
+            'test.code as code',
+            'test.Name as name',
         ]);
-        \$this->query->from(\$this->table);
+        \$this->query->from(\$this->table, 'test');
 
         foreach(\$wheres as \$column => \$value) {
-            if (!\$value) {
+            if (\$column === 'page' || !\$value) {
                 continue;
             }
 
@@ -600,6 +636,7 @@ final class MySQLTestGateway implements TestGateway
             \$this->query->setParameter(":{\$column}", \$value);
         }
 
+        \$this->query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
         \$this->query->setMaxResults(\$limit);
 
         return \$this->query->execute()->fetchAll();

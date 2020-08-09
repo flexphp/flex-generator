@@ -1,5 +1,5 @@
 {% if action == 'index' %}
-        return $this->render('{{ templates }}/index.html.twig', [
+        return $this->render($template, [
             '{{ items }}' => $response->{{ items }},
         ]);
 {% elseif action in ['create', 'update', 'delete'] %}

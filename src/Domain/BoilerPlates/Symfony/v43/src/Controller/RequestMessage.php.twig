@@ -11,6 +11,10 @@
         $form->handleRequest($request);
 
         $request = new {{ action }}{{ entity }}Request($id, $form->getData(){% if updatedBy %}, $this->getUser()->{{ updatedBy }}(){% endif %});
+{% elseif action in ['Index'] %}
+        $template = $request->isXmlHttpRequest() ? '{{ item }}/_ajax.html.twig' : '{{ item }}/index.html.twig';
+
+        $request = new {{ action }}{{ entity }}Request($request->request->all(), (int)$request->query->get('page', 1));
 {% else %}
         $request = new {{ action }}{{ entity }}Request($request->request->all());
 {% endif %}

@@ -28,6 +28,7 @@ final class CreateTemplateFileUseCase
             'read' => 'show.html',
             'update' => 'edit.html',
             'delete' => '_delete_form.html',
+            'ajax' => '_ajax.html',
         ];
 
         $path = \sprintf('%1$s/../../tmp/skeleton/templates/%2$s', __DIR__, $filename);

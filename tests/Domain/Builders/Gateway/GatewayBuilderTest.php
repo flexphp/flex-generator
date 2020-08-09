@@ -25,7 +25,7 @@ namespace Domain\Test;
 
 interface TestGateway
 {
-    public function search(array \$wheres, array \$orders, int \$limit): array;
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit): array;
 
     public function push(Test \$test): void;
 
@@ -59,7 +59,7 @@ namespace Domain\Test;
 
 interface TestGateway
 {
-    public function search(array \$wheres, array \$orders, int \$limit): array;
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit): array;
 }
 
 T

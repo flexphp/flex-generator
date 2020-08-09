@@ -96,7 +96,7 @@ final class SheetProcessUseCaseTest extends TestCase
             \unlink($command);
         }, $response->commands);
 
-        $this->assertEquals(5, \count($response->templates));
+        $this->assertEquals(6, \count($response->templates));
         \array_map(function (string $template): void {
             $this->assertFileExists($template);
             \unlink($template);

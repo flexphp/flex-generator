@@ -123,13 +123,15 @@ final class TestController extends AbstractController
      */
     public function index(Request \$request, Connection \$conn): Response
     {
-        \$request = new IndexTestRequest(\$request->request->all());
+        \$template = \$request->isXmlHttpRequest() ? 'test/_ajax.html.twig' : 'test/index.html.twig';
+
+        \$request = new IndexTestRequest(\$request->request->all(), (int)\$request->query->get('page', 1));
 
         \$useCase = new IndexTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
 
         \$response = \$useCase->execute(\$request);
 
-        return \$this->render('test/index.html.twig', [
+        return \$this->render(\$template, [
             'tests' => \$response->tests,
         ]);
     }

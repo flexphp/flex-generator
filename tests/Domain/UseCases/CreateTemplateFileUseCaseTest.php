@@ -30,7 +30,7 @@ final class CreateTemplateFileUseCaseTest extends TestCase
         $response = $useCase->execute($request);
 
         $this->assertInstanceOf(CreateTemplateFileResponse::class, $response);
-        $this->assertEquals(5, \count($response->files));
+        $this->assertEquals(\count($expectedFiles), \count($response->files));
 
         foreach ($response->files as $index => $file) {
             $filename = \explode('/', $file);
@@ -51,6 +51,7 @@ final class CreateTemplateFileUseCaseTest extends TestCase
                 'show.html.twig',
                 'edit.html.twig',
                 '_delete_form.html.twig',
+                '_ajax.html.twig',
             ], 'post'],
             [\sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__), [
                 'index.html.twig',
@@ -58,6 +59,7 @@ final class CreateTemplateFileUseCaseTest extends TestCase
                 'show.html.twig',
                 'edit.html.twig',
                 '_delete_form.html.twig',
+                '_ajax.html.twig',
             ], 'comment'],
             [\sprintf('%1$s/../../Mocks/yaml/userStatus.yaml', __DIR__), [
                 'index.html.twig',
@@ -65,6 +67,7 @@ final class CreateTemplateFileUseCaseTest extends TestCase
                 'show.html.twig',
                 'edit.html.twig',
                 '_delete_form.html.twig',
+                '_ajax.html.twig',
             ], 'userStatus'],
         ];
     }

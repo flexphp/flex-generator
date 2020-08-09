@@ -18,6 +18,7 @@ final class RequestMessageBuilder extends AbstractBuilder
     public function __construct(SchemaInterface $schema, string $action)
     {
         $entity = $this->getInflector()->entity($schema->name());
+        $item = $this->getInflector()->item($schema->name());
         $action = $this->getInflector()->pascalAction($action);
         $createdBy = null;
         $updatedBy = null;
@@ -35,7 +36,7 @@ final class RequestMessageBuilder extends AbstractBuilder
             }
         );
 
-        parent::__construct(\compact('entity', 'action', 'createdBy', 'updatedBy'));
+        parent::__construct(\compact('entity', 'item', 'action', 'createdBy', 'updatedBy'));
     }
 
     public function build(): string

@@ -49,6 +49,41 @@ T
 , $render->build());
     }
 
+    public function testItRenderIndexOk(): void
+    {
+        $render = new RequestBuilder($this->getSchema('Fuz'), 'index');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class IndexFuzRequest implements RequestInterface
+{
+    public \$lower;
+    public \$upper;
+    public \$pascalCase;
+    public \$camelCase;
+    public \$snakeCase;
+    public \$page;
+
+    public function __construct(array \$data, int \$page)
+    {
+        \$this->lower = \$data['lower'] ?? null;
+        \$this->upper = \$data['upper'] ?? null;
+        \$this->pascalCase = \$data['pascalCase'] ?? null;
+        \$this->camelCase = \$data['camelCase'] ?? null;
+        \$this->snakeCase = \$data['snakeCase'] ?? null;
+        \$this->page = \$page;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderCreateOk(): void
     {
         $render = new RequestBuilder($this->getSchema('Fuz'), 'create');
@@ -257,13 +292,15 @@ final class IndexBarRequest implements RequestInterface
     public \$value;
     public \$created;
     public \$updated;
+    public \$page;
 
-    public function __construct(array \$data)
+    public function __construct(array \$data, int \$page)
     {
         \$this->key = \$data['key'] ?? null;
         \$this->value = \$data['value'] ?? null;
         \$this->created = \$data['created'] ?? null;
         \$this->updated = \$data['updated'] ?? null;
+        \$this->page = \$page;
     }
 }
 

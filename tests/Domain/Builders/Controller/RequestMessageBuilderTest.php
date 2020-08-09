@@ -21,10 +21,10 @@ final class RequestMessageBuilderTest extends TestCase
      */
     public function testItRenderOk(string $entity, string $expected): void
     {
-        $render = new RequestMessageBuilder(new Schema($entity, 'bar', []), 'index');
+        $render = new RequestMessageBuilder(new Schema($entity, 'bar', []), 'action');
 
         $this->assertEquals(<<<T
-        \$request = new Index{$expected}Request(\$request->request->all());
+        \$request = new Action{$expected}Request(\$request->request->all());
 T
 , $render->build());
     }
@@ -34,7 +34,9 @@ T
         $render = new RequestMessageBuilder(new Schema('Test', 'bar', []), 'index');
 
         $this->assertEquals(<<<T
-        \$request = new IndexTestRequest(\$request->request->all());
+        \$template = \$request->isXmlHttpRequest() ? 'test/_ajax.html.twig' : 'test/index.html.twig';
+
+        \$request = new IndexTestRequest(\$request->request->all(), (int)\$request->query->get('page', 1));
 T
 , $render->build());
     }
@@ -137,10 +139,10 @@ T
 
     public function testItRenderToString(): void
     {
-        $render = new RequestMessageBuilder(new Schema('Test', 'bar', []), 'index');
+        $render = new RequestMessageBuilder(new Schema('UserStatus', 'bar', []), 'fuz');
 
         $this->assertEquals(<<<T
-        \$request = new IndexTestRequest(\$request->request->all());
+        \$request = new FuzUserStatusRequest(\$request->request->all());
 T
 , $render);
     }

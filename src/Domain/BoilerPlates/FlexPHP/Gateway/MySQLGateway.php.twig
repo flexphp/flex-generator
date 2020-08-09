@@ -19,19 +19,31 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% for action in actions %}
 {% if action in ['index'] %}
 
-    public function search(array $wheres, array $orders, int $limit): array
+    public function search(array $wheres, array $orders, int $page, int $limit): array
     {
         $this->query->select([
 {% for id, property in properties %}
 {% if not property.isBlame %}
-            '{{ property.name }} as {{ id }}',
+            '{{ item }}.{{ property.name }} as {{ id }}',
+{% endif %}
+{% endfor %}
+{% for id, fkRel in fkRels %}
+{% if not fkRel.blameBy %}
+            '{{ fkRel.pkName }}.{{ fkRel.id }} as `{{ fkRel.pkName }}.{{ fkRel.id }}`',
+            '{{ fkRel.pkName }}.{{ fkRel.text }} as `{{ fkRel.pkName }}.{{ fkRel.text }}`',
 {% endif %}
 {% endfor %}
         ]);
-        $this->query->from($this->table);
+        $this->query->from($this->table, '{{ item }}');
+{% for id, fkRel in fkRels %}
+{% if not fkRel.blameBy %}
+{% set joinType = fkRel.required ? 'join' : 'leftJoin' %}
+        $this->query->{{ joinType }}('{{ item }}', '{{ fkRel.table }}', '{{ fkRel.pkName }}', '{{ item }}.{{ fkRel.pk }} = {{ fkRel.pkName }}.{{ fkRel.id }}');
+{% endif %}
+{% endfor %}
 
         foreach($wheres as $column => $value) {
-            if (!$value) {
+            if ($column === 'page' || !$value) {
                 continue;
             }
 
@@ -39,6 +51,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
             $this->query->setParameter(":{$column}", $value);
         }
 
+        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
         $this->query->setMaxResults($limit);
 
         return $this->query->execute()->fetchAll();

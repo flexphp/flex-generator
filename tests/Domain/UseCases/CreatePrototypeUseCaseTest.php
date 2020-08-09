@@ -82,6 +82,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/templates/post/show.html.twig');
         $this->assertFileExists($response->outputDir . '/templates/post/edit.html.twig');
         $this->assertFileExists($response->outputDir . '/templates/post/_delete_form.html.twig');
+        $this->assertFileExists($response->outputDir . '/templates/post/_ajax.html.twig');
 
         $this->assertDirectoryExists($response->outputDir . '/bin');
         $this->assertFileExists($response->outputDir . '/bin/console');
@@ -130,6 +131,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.min.js');
         $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.slimscroll.min.js');
         $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.select2.min.js');
+        $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.infinite.min.js');
         $this->assertDirectoryExists($response->outputDir . '/public/js/bootstrap');
         $this->assertFileExists($response->outputDir . '/public/js/bootstrap/bootstrap.min.js');
 
@@ -138,6 +140,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
 
         $this->assertDirectoryExists($response->outputDir . '/templates/default');
         $this->assertFileExists($response->outputDir . '/templates/default/_flash.html.twig');
+        $this->assertFileExists($response->outputDir . '/templates/default/_infinite.html.twig');
         $this->assertFileExists($response->outputDir . '/templates/default/homepage.html.twig');
 
         $this->assertDirectoryExists($response->outputDir . '/templates/form');

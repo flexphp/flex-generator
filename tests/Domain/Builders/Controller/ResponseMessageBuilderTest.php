@@ -20,7 +20,7 @@ final class ResponseMessageBuilderTest extends TestCase
         $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'index');
 
         $this->assertEquals(<<<T
-        return \$this->render('test/index.html.twig', [
+        return \$this->render(\$template, [
             'tests' => \$response->tests,
         ]);
 T

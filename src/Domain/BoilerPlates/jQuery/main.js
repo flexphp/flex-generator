@@ -99,11 +99,28 @@ jQuery(document).ready(function ($) {
     $(document).on('click', '.show-overlay', function () {
         $('.overlay').show();
     });
+
+    if (typeof InfiniteScroll === 'function') {
+        const infScroll = new InfiniteScroll('.dashboard-content', {
+            path: function () {
+                return '?page=' + (parseInt((new URLSearchParams(window.location.search)).get('page') || this.pageIndex) + 1);
+            },
+            responseType: 'html',
+            status: '.infinite-scroll-status',
+            history: false,
+        }).on('load', function (html) {
+            if (html === '') {
+                infScroll.destroy();
+            }
+
+            document.querySelector('.dashboard-content .table > tbody').innerHTML += html;
+        });
+    }
 });
 
 function getCookie(cname)
 {
-    const name = cname + "=";
+    const name = cname + '=';
     const ca = document.cookie.split(';');
 
     for (let i = 0; i < ca.length; i++) {

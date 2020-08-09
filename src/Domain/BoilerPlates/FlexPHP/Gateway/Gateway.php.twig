@@ -10,7 +10,7 @@ interface {{ entity }}Gateway
 
 {% endif %}
 {% if action in ['index'] %}
-    public function search(array $wheres, array $orders, int $limit): array;
+    public function search(array $wheres, array $orders, int $page, int $limit): array;
 {% elseif action in ['create'] %}
     public function push({{ entity }} ${{ item }}): void;
 {% elseif action in ['read'] %}

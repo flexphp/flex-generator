@@ -33,6 +33,10 @@ return [
     'message' => [
         'delete' => 'Are you sure?',
     ],
+    'search' => [
+        'empty' => 'Nothing here',
+        'loading' => 'Loading',
+    ],
     'label' => [
         'yes' => 'Yes',
         'no' => 'No',
