@@ -177,7 +177,7 @@ T
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function update(Request \$request, Connection \$conn, string \$id): Response
+    public function update(Request \$request, Connection \$conn, TranslatorInterface \$trans, string \$id): Response
     {
     }
 
@@ -289,7 +289,7 @@ T
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function update(Request \$request, Connection \$conn, int \$id): Response
+    public function update(Request \$request, Connection \$conn, TranslatorInterface \$trans, int \$id): Response
     {
     }
 

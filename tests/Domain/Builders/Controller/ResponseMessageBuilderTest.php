@@ -68,12 +68,12 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'update');
+        $render = new ResponseMessageBuilder(new Schema('Fuz', 'bar', []), 'update');
 
         $this->assertEquals(<<<T
-        \$this->addFlash(\$response->status, \$response->message);
+        \$this->addFlash('success', \$trans->trans('message.updated', [], 'fuz'));
 
-        return \$this->redirectToRoute('tests.index');
+        return \$this->redirectToRoute('fuzes.index');
 T
 , $render->build());
     }

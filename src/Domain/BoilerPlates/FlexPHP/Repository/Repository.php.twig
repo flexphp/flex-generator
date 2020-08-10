@@ -44,6 +44,8 @@ final class {{ entity }}Repository extends Repository
         ${{ item }} = (new {{ entity }}Factory())->make($request);
 
         $this->getGateway()->shift(${{ item }});
+
+        return ${{ item }};
     }
 {% elseif action == 'delete' %}
     public function remove(Delete{{ entity }}Request $request): void

@@ -174,9 +174,7 @@ final class UpdateTestUseCase extends UseCase
      */
     public function execute(\$request)
     {
-        \$this->getRepository()->change(\$request);
-
-        return new UpdateTestResponse(200, 'success', 'Test was updated!');
+        return new UpdateTestResponse(\$this->getRepository()->change(\$request));
     }
 }
 

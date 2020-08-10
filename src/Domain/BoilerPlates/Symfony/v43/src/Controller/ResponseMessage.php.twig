@@ -3,8 +3,8 @@
             '{{ items }}' => $response->{{ items }},
         ]);
 {% elseif action in ['create', 'update', 'delete'] %}
-{% if action == 'create' %}
-        $this->addFlash('success', $trans->trans('message.created', [], '{{ item }}'));
+{% if action in ['create', 'update'] %}
+        $this->addFlash('success', $trans->trans('message.{{ action }}d', [], '{{ item }}'));
 {% else %}
         $this->addFlash($response->status, $response->message);
 {% endif %}

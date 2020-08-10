@@ -122,19 +122,16 @@ T
 
 namespace Domain\Fuz\Response;
 
+use Domain\Fuz\Fuz;
 use FlexPHP\Messages\ResponseInterface;
 
 final class UpdateFuzResponse implements ResponseInterface
 {
-    public \$code;
-    public \$status;
-    public \$message;
+    public \$fuz;
 
-    public function __construct(int \$code, string \$status, string \$message)
+    public function __construct(Fuz \$fuz)
     {
-        \$this->code = \$code;
-        \$this->status = \$status;
-        \$this->message = \$message;
+        \$this->fuz = \$fuz;
     }
 }
 

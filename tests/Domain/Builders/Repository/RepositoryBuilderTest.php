@@ -146,6 +146,8 @@ final class TestRepository extends Repository
         \$test = (new TestFactory())->make(\$request);
 
         \$this->getGateway()->shift(\$test);
+
+        return \$test;
     }
 }
 

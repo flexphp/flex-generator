@@ -354,7 +354,7 @@ final class TestController extends AbstractController
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function update(Request \$request, Connection \$conn, int \$id): Response
+    public function update(Request \$request, Connection \$conn, TranslatorInterface \$trans, int \$id): Response
     {
         \$form = \$this->createForm(TestFormType::class);
         \$form->submit(\$request->request->get(\$form->getName()));
@@ -364,9 +364,9 @@ final class TestController extends AbstractController
 
         \$useCase = new UpdateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
 
-        \$response = \$useCase->execute(\$request);
+        \$useCase->execute(\$request);
 
-        \$this->addFlash(\$response->status, \$response->message);
+        \$this->addFlash('success', \$trans->trans('message.updated', [], 'test'));
 
         return \$this->redirectToRoute('tests.index');
     }
