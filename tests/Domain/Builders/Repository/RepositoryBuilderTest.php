@@ -141,7 +141,7 @@ use FlexPHP\Repositories\Repository;
 
 final class TestRepository extends Repository
 {
-    public function change(UpdateTestRequest \$request): void
+    public function change(UpdateTestRequest \$request): Test
     {
         \$test = (new TestFactory())->make(\$request);
 

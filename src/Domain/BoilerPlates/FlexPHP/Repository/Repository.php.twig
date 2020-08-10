@@ -39,7 +39,7 @@ final class {{ entity }}Repository extends Repository
         return $factory->make($data);
     }
 {% elseif action == 'update' %}
-    public function change(Update{{ entity }}Request $request): void
+    public function change(Update{{ entity }}Request $request): {{ entity }}
     {
         ${{ item }} = (new {{ entity }}Factory())->make($request);
 

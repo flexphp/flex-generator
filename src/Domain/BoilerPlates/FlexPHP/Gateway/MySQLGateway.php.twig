@@ -10,7 +10,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {
     private $query;
-    private $table = '{{ table }}';
 
     public function __construct(Connection $conn)
     {
@@ -34,11 +33,11 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endif %}
 {% endfor %}
         ]);
-        $this->query->from($this->table, '{{ item }}');
+        $this->query->from('`{{ table }}`', '`{{ item }}`');
 {% for id, fkRel in fkRels %}
 {% if not fkRel.blameBy %}
 {% set joinType = fkRel.required ? 'join' : 'leftJoin' %}
-        $this->query->{{ joinType }}('{{ item }}', '{{ fkRel.table }}', '{{ fkRel.pkName }}', '{{ item }}.{{ fkRel.pk }} = {{ fkRel.pkName }}.{{ fkRel.id }}');
+        $this->query->{{ joinType }}('`{{ item }}`', '`{{ fkRel.table }}`', '`{{ fkRel.pkName }}`', '{{ item }}.{{ fkRel.pk }} = {{ fkRel.pkName }}.{{ fkRel.id }}');
 {% endif %}
 {% endfor %}
 
@@ -60,7 +59,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
     public function push({{ entity }} ${{ item }}): {{ properties[pkName].typeHint }}
     {
-        $this->query->insert($this->table);
+        $this->query->insert('`{{ table }}`');
 
 {% for id, property in properties %}
 {% if not property.isAi and not property.isUb %}
@@ -81,7 +80,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% if properties[pkName].isAi %}
         return ({{ properties[pkName].typeHint}})$this->query->getConnection()->lastInsertId();
 {% else %}
-        return ${{ item }}->{{ properties[pkName].name }}();
+        return ${{ item }}->{{ pkName }}();
 {% endif %}
     }
 {% elseif action == 'read' %}
@@ -97,10 +96,10 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
             '{{ fkRel.pkName }}.{{ fkRel.text }} as `{{ fkRel.pkName }}.{{ fkRel.text }}`',
 {% endfor %}
         ]);
-        $this->query->from($this->table, '{{ item }}');
+        $this->query->from('`{{ table }}`', '`{{ item }}`');
 {% for id, fkRel in fkRels %}
 {% set joinType = fkRel.required ? 'join' : 'leftJoin' %}
-        $this->query->{{ joinType }}('{{ item }}', '{{ fkRel.table }}', '{{ fkRel.pkName }}', '{{ item }}.{{ fkRel.pk }} = {{ fkRel.pkName }}.{{ fkRel.id }}');
+        $this->query->{{ joinType }}('`{{ item }}`', '`{{ fkRel.table }}`', '`{{ fkRel.pkName }}`', '{{ item }}.{{ fkRel.pk }} = {{ fkRel.pkName }}.{{ fkRel.id }}');
 {% endfor %}
         $this->query->where('{{ item }}.{{ properties[pkName].name }} = :{{ pkName }}');
         $this->query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
@@ -111,7 +110,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
     public function shift({{ entity }} ${{ item }}): void
     {
-        $this->query->update($this->table);
+        $this->query->update('`{{ table }}`');
 
 {% for id, property in properties %}
 {% if not property.isAi and not property.isCa and not property.isCb %}
@@ -136,7 +135,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
     public function pop({{ entity }} ${{ item }}): void
     {
-        $this->query->delete($this->table);
+        $this->query->delete('`{{ table }}`');
 
         $this->query->where('{{ properties[pkName].name }} = :{{ pkName }}');
         $this->query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
@@ -152,7 +151,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
             '{{ property.name }} as {{ id }}',
 {% endfor %}
         ]);
-        $this->query->from($this->table);
+        $this->query->from('`{{ table }}`');
         $this->query->where($column . ' = :column');
         $this->query->setParameter(':column', $value);
 
@@ -170,7 +169,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
             '{{ fkFn.id }} id',
             '{{ fkFn.text }} text',
         ]);
-        $this->query->from('{{ fkFn.table }}');
+        $this->query->from('`{{ fkFn.table }}`');
 
         $this->query->where('{{ fkFn.text }} like :{{ fkFn.text }}');
         $this->query->setParameter(':{{ fkFn.text }}', "%{$term}%");

@@ -33,7 +33,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -49,7 +48,7 @@ final class MySQLTestGateway implements TestGateway
             'test.camelCase as camelCase',
             'test.snake_case as snakeCase',
         ]);
-        \$this->query->from(\$this->table, 'test');
+        \$this->query->from('`Test`', '`test`');
 
         foreach(\$wheres as \$column => \$value) {
             if (\$column === 'page' || !\$value) {
@@ -88,7 +87,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -97,7 +95,7 @@ final class MySQLTestGateway implements TestGateway
 
     public function push(Test \$test): string
     {
-        \$this->query->insert(\$this->table);
+        \$this->query->insert('`Test`');
 
         \$this->query->setValue('lower', ':lower');
         \$this->query->setValue('UPPER', ':upper');
@@ -114,6 +112,107 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->execute();
 
         return \$test->lower();
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItPkMayusOk(): void
+    {
+        $render = new MySQLGatewayBuilder(new Schema('Upper', 'title', [
+            new SchemaAttribute('Foo', 'string', 'pk|required'),
+        ]), ['index', 'create', 'read', 'update', 'delete']);
+
+        $this->assertEquals(<<<'T'
+<?php declare(strict_types=1);
+
+namespace Domain\Upper\Gateway;
+
+use Domain\Upper\Upper;
+use Domain\Upper\UpperGateway;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types as DB;
+
+final class MySQLUpperGateway implements UpperGateway
+{
+    private $query;
+
+    public function __construct(Connection $conn)
+    {
+        $this->query = $conn->createQueryBuilder();
+    }
+
+    public function search(array $wheres, array $orders, int $page, int $limit): array
+    {
+        $this->query->select([
+            'upper.Foo as foo',
+        ]);
+        $this->query->from('`Upper`', '`upper`');
+
+        foreach($wheres as $column => $value) {
+            if ($column === 'page' || !$value) {
+                continue;
+            }
+
+            $this->query->where("{$column} = :{$column}");
+            $this->query->setParameter(":{$column}", $value);
+        }
+
+        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $this->query->setMaxResults($limit);
+
+        return $this->query->execute()->fetchAll();
+    }
+
+    public function push(Upper $upper): string
+    {
+        $this->query->insert('`Upper`');
+
+        $this->query->setValue('Foo', ':foo');
+
+        $this->query->setParameter(':foo', $upper->foo(), DB::STRING);
+
+        $this->query->execute();
+
+        return $upper->foo();
+    }
+
+    public function get(Upper $upper): array
+    {
+        $this->query->select([
+            'upper.Foo as foo',
+        ]);
+        $this->query->from('`Upper`', '`upper`');
+        $this->query->where('upper.Foo = :foo');
+        $this->query->setParameter(':foo', $upper->foo(), DB::STRING);
+
+        return $this->query->execute()->fetch() ?: [];
+    }
+
+    public function shift(Upper $upper): void
+    {
+        $this->query->update('`Upper`');
+
+        $this->query->set('Foo', ':foo');
+
+        $this->query->setParameter(':foo', $upper->foo(), DB::STRING);
+
+        $this->query->where('Foo = :foo');
+        $this->query->setParameter(':foo', $upper->foo(), DB::STRING);
+
+        $this->query->execute();
+    }
+
+    public function pop(Upper $upper): void
+    {
+        $this->query->delete('`Upper`');
+
+        $this->query->where('Foo = :foo');
+        $this->query->setParameter(':foo', $upper->foo(), DB::STRING);
+
+        $this->query->execute();
     }
 }
 
@@ -138,7 +237,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -154,7 +252,7 @@ final class MySQLTestGateway implements TestGateway
             'test.camelCase as camelCase',
             'test.snake_case as snakeCase',
         ]);
-        \$this->query->from(\$this->table, 'test');
+        \$this->query->from('`Test`', '`test`');
         \$this->query->where('test.lower = :lower');
         \$this->query->setParameter(':lower', \$test->lower(), DB::STRING);
 
@@ -187,7 +285,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLJoinGateway implements JoinGateway
 {
     private \$query;
-    private \$table = 'Join';
 
     public function __construct(Connection \$conn)
     {
@@ -203,8 +300,8 @@ final class MySQLJoinGateway implements JoinGateway
             'joinField.fkId as `joinField.fkId`',
             'joinField.fkName as `joinField.fkName`',
         ]);
-        \$this->query->from(\$this->table, 'join');
-        \$this->query->leftJoin('join', 'joinTable', 'joinField', 'join.joinField = joinField.fkId');
+        \$this->query->from('`Join`', '`join`');
+        \$this->query->leftJoin('`join`', '`joinTable`', '`joinField`', 'join.joinField = joinField.fkId');
         \$this->query->where('join.pk = :pk');
         \$this->query->setParameter(':pk', \$join->pk(), DB::INTEGER);
 
@@ -217,7 +314,7 @@ final class MySQLJoinGateway implements JoinGateway
             'fkId id',
             'fkName text',
         ]);
-        \$this->query->from('joinTable');
+        \$this->query->from('`joinTable`');
 
         \$this->query->where('fkName like :fkName');
         \$this->query->setParameter(':fkName', "%{\$term}%");
@@ -249,7 +346,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -258,7 +354,7 @@ final class MySQLTestGateway implements TestGateway
 
     public function shift(Test \$test): void
     {
-        \$this->query->update(\$this->table);
+        \$this->query->update('`Test`');
 
         \$this->query->set('lower', ':lower');
         \$this->query->set('UPPER', ':upper');
@@ -300,7 +396,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -309,7 +404,7 @@ final class MySQLTestGateway implements TestGateway
 
     public function pop(Test \$test): void
     {
-        \$this->query->delete(\$this->table);
+        \$this->query->delete('`Test`');
 
         \$this->query->where('lower = :lower');
         \$this->query->setParameter(':lower', \$test->lower(), DB::STRING);
@@ -339,7 +434,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -355,7 +449,7 @@ final class MySQLTestGateway implements TestGateway
             'camelCase as camelCase',
             'snake_case as snakeCase',
         ]);
-        \$this->query->from(\$this->table);
+        \$this->query->from('`Test`');
         \$this->query->where(\$column . ' = :column');
         \$this->query->setParameter(':column', \$value);
 
@@ -393,7 +487,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLPostCommentGateway implements PostCommentGateway
 {
     private \$query;
-    private \$table = 'PostComments';
 
     public function __construct(Connection \$conn)
     {
@@ -414,10 +507,10 @@ final class MySQLPostCommentGateway implements PostCommentGateway
             'statusId.id as `statusId.id`',
             'statusId.name as `statusId.name`',
         ]);
-        \$this->query->from(\$this->table, 'postComment');
-        \$this->query->join('postComment', 'Bar', 'foo', 'postComment.foo = foo.baz');
-        \$this->query->leftJoin('postComment', 'posts', 'postId', 'postComment.PostId = postId.id');
-        \$this->query->leftJoin('postComment', 'UserStatus', 'statusId', 'postComment.StatusId = statusId.id');
+        \$this->query->from('`PostComments`', '`postComment`');
+        \$this->query->join('`postComment`', '`Bar`', '`foo`', 'postComment.foo = foo.baz');
+        \$this->query->leftJoin('`postComment`', '`posts`', '`postId`', 'postComment.PostId = postId.id');
+        \$this->query->leftJoin('`postComment`', '`UserStatus`', '`statusId`', 'postComment.StatusId = statusId.id');
 
         foreach(\$wheres as \$column => \$value) {
             if (\$column === 'page' || !\$value) {
@@ -436,7 +529,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
 
     public function push(PostComment \$postComment): int
     {
-        \$this->query->insert(\$this->table);
+        \$this->query->insert('`PostComments`');
 
         \$this->query->setValue('foo', ':foo');
         \$this->query->setValue('PostId', ':postId');
@@ -465,10 +558,10 @@ final class MySQLPostCommentGateway implements PostCommentGateway
             'statusId.id as `statusId.id`',
             'statusId.name as `statusId.name`',
         ]);
-        \$this->query->from(\$this->table, 'postComment');
-        \$this->query->join('postComment', 'Bar', 'foo', 'postComment.foo = foo.baz');
-        \$this->query->leftJoin('postComment', 'posts', 'postId', 'postComment.PostId = postId.id');
-        \$this->query->leftJoin('postComment', 'UserStatus', 'statusId', 'postComment.StatusId = statusId.id');
+        \$this->query->from('`PostComments`', '`postComment`');
+        \$this->query->join('`postComment`', '`Bar`', '`foo`', 'postComment.foo = foo.baz');
+        \$this->query->leftJoin('`postComment`', '`posts`', '`postId`', 'postComment.PostId = postId.id');
+        \$this->query->leftJoin('`postComment`', '`UserStatus`', '`statusId`', 'postComment.StatusId = statusId.id');
         \$this->query->where('postComment.Pk = :pk');
         \$this->query->setParameter(':pk', \$postComment->pk(), DB::INTEGER);
 
@@ -477,7 +570,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
 
     public function shift(PostComment \$postComment): void
     {
-        \$this->query->update(\$this->table);
+        \$this->query->update('`PostComments`');
 
         \$this->query->set('foo', ':foo');
         \$this->query->set('PostId', ':postId');
@@ -495,7 +588,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
 
     public function pop(PostComment \$postComment): void
     {
-        \$this->query->delete(\$this->table);
+        \$this->query->delete('`PostComments`');
 
         \$this->query->where('Pk = :pk');
         \$this->query->setParameter(':pk', \$postComment->pk(), DB::INTEGER);
@@ -509,7 +602,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
             'baz id',
             'fuz text',
         ]);
-        \$this->query->from('Bar');
+        \$this->query->from('`Bar`');
 
         \$this->query->where('fuz like :fuz');
         \$this->query->setParameter(':fuz', "%{\$term}%");
@@ -525,7 +618,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
             'id id',
             'name text',
         ]);
-        \$this->query->from('posts');
+        \$this->query->from('`posts`');
 
         \$this->query->where('name like :name');
         \$this->query->setParameter(':name', "%{\$term}%");
@@ -541,7 +634,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
             'id id',
             'name text',
         ]);
-        \$this->query->from('UserStatus');
+        \$this->query->from('`UserStatus`');
 
         \$this->query->where('name like :name');
         \$this->query->setParameter(':name', "%{\$term}%");
@@ -573,7 +666,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -586,7 +678,7 @@ final class MySQLTestGateway implements TestGateway
             'test.key as key',
             'test.Value as value',
         ]);
-        \$this->query->from(\$this->table, 'test');
+        \$this->query->from('`Test`', '`test`');
 
         foreach(\$wheres as \$column => \$value) {
             if (\$column === 'page' || !\$value) {
@@ -605,7 +697,7 @@ final class MySQLTestGateway implements TestGateway
 
     public function push(Test \$test): int
     {
-        \$this->query->insert(\$this->table);
+        \$this->query->insert('`Test`');
 
         \$this->query->setValue('Value', ':value');
         \$this->query->setValue('Created', ':created');
@@ -622,7 +714,7 @@ final class MySQLTestGateway implements TestGateway
 
     public function shift(Test \$test): void
     {
-        \$this->query->update(\$this->table);
+        \$this->query->update('`Test`');
 
         \$this->query->set('Value', ':value');
         \$this->query->set('Updated', ':updated');
@@ -658,7 +750,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQLTestGateway implements TestGateway
 {
     private \$query;
-    private \$table = 'Test';
 
     public function __construct(Connection \$conn)
     {
@@ -671,7 +762,7 @@ final class MySQLTestGateway implements TestGateway
             'test.code as code',
             'test.Name as name',
         ]);
-        \$this->query->from(\$this->table, 'test');
+        \$this->query->from('`Test`', '`test`');
 
         foreach(\$wheres as \$column => \$value) {
             if (\$column === 'page' || !\$value) {
@@ -690,7 +781,7 @@ final class MySQLTestGateway implements TestGateway
 
     public function push(Test \$test): string
     {
-        \$this->query->insert(\$this->table);
+        \$this->query->insert('`Test`');
 
         \$this->query->setValue('code', ':code');
         \$this->query->setValue('Name', ':name');
@@ -717,9 +808,9 @@ final class MySQLTestGateway implements TestGateway
             'updatedBy.id as `updatedBy.id`',
             'updatedBy.name as `updatedBy.name`',
         ]);
-        \$this->query->from(\$this->table, 'test');
-        \$this->query->leftJoin('test', 'users', 'createdBy', 'test.CreatedBy = createdBy.id');
-        \$this->query->leftJoin('test', 'users', 'updatedBy', 'test.UpdatedBy = updatedBy.id');
+        \$this->query->from('`Test`', '`test`');
+        \$this->query->leftJoin('`test`', '`users`', '`createdBy`', 'test.CreatedBy = createdBy.id');
+        \$this->query->leftJoin('`test`', '`users`', '`updatedBy`', 'test.UpdatedBy = updatedBy.id');
         \$this->query->where('test.code = :code');
         \$this->query->setParameter(':code', \$test->code(), DB::STRING);
 
@@ -728,7 +819,7 @@ final class MySQLTestGateway implements TestGateway
 
     public function shift(Test \$test): void
     {
-        \$this->query->update(\$this->table);
+        \$this->query->update('`Test`');
 
         \$this->query->set('code', ':code');
         \$this->query->set('Name', ':name');
@@ -769,7 +860,6 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQL{$expectedName}Gateway implements {$expectedName}Gateway
 {
     private \$query;
-    private \$table = '{$entity}';
 
     public function __construct(Connection \$conn)
     {
