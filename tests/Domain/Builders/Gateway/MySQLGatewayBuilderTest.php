@@ -95,7 +95,7 @@ final class MySQLTestGateway implements TestGateway
         \$this->query = \$conn->createQueryBuilder();
     }
 
-    public function push(Test \$test): void
+    public function push(Test \$test): string
     {
         \$this->query->insert(\$this->table);
 
@@ -112,6 +112,8 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setParameter(':snakeCase', \$test->snakeCase(), DB::TEXT);
 
         \$this->query->execute();
+
+        return \$test->lower();
     }
 }
 
@@ -369,7 +371,14 @@ T
 
     public function testItFkRelationsOk(): void
     {
-        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation('PostComments'), ['index', 'read', 'delete', 'other']);
+        $render = new MySQLGatewayBuilder($this->getSchemaFkRelation('PostComments'), [
+            'index',
+            'create',
+            'read',
+            'update',
+            'delete',
+            'other',
+        ]);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -425,6 +434,23 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         return \$this->query->execute()->fetchAll();
     }
 
+    public function push(PostComment \$postComment): int
+    {
+        \$this->query->insert(\$this->table);
+
+        \$this->query->setValue('foo', ':foo');
+        \$this->query->setValue('PostId', ':postId');
+        \$this->query->setValue('StatusId', ':statusId');
+
+        \$this->query->setParameter(':foo', \$postComment->foo(), DB::STRING);
+        \$this->query->setParameter(':postId', \$postComment->postId(), DB::INTEGER);
+        \$this->query->setParameter(':statusId', \$postComment->statusId(), DB::INTEGER);
+
+        \$this->query->execute();
+
+        return (int)\$this->query->getConnection()->lastInsertId();
+    }
+
     public function get(PostComment \$postComment): array
     {
         \$this->query->select([
@@ -447,6 +473,24 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         \$this->query->setParameter(':pk', \$postComment->pk(), DB::INTEGER);
 
         return \$this->query->execute()->fetch() ?: [];
+    }
+
+    public function shift(PostComment \$postComment): void
+    {
+        \$this->query->update(\$this->table);
+
+        \$this->query->set('foo', ':foo');
+        \$this->query->set('PostId', ':postId');
+        \$this->query->set('StatusId', ':statusId');
+
+        \$this->query->setParameter(':foo', \$postComment->foo(), DB::STRING);
+        \$this->query->setParameter(':postId', \$postComment->postId(), DB::INTEGER);
+        \$this->query->setParameter(':statusId', \$postComment->statusId(), DB::INTEGER);
+
+        \$this->query->where('Pk = :pk');
+        \$this->query->setParameter(':pk', \$postComment->pk(), DB::INTEGER);
+
+        \$this->query->execute();
     }
 
     public function pop(PostComment \$postComment): void
@@ -559,7 +603,7 @@ final class MySQLTestGateway implements TestGateway
         return \$this->query->execute()->fetchAll();
     }
 
-    public function push(Test \$test): void
+    public function push(Test \$test): int
     {
         \$this->query->insert(\$this->table);
 
@@ -572,6 +616,8 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setParameter(':updated', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
 
         \$this->query->execute();
+
+        return (int)\$this->query->getConnection()->lastInsertId();
     }
 
     public function shift(Test \$test): void
@@ -642,7 +688,7 @@ final class MySQLTestGateway implements TestGateway
         return \$this->query->execute()->fetchAll();
     }
 
-    public function push(Test \$test): void
+    public function push(Test \$test): string
     {
         \$this->query->insert(\$this->table);
 
@@ -655,6 +701,8 @@ final class MySQLTestGateway implements TestGateway
         \$this->query->setParameter(':createdBy', \$test->createdBy(), DB::INTEGER);
 
         \$this->query->execute();
+
+        return \$test->code();
     }
 
     public function get(Test \$test): array

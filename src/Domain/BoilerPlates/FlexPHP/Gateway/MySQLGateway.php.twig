@@ -17,7 +17,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         $this->query = $conn->createQueryBuilder();
     }
 {% for action in actions %}
-{% if action in ['index'] %}
+{% if action == 'index' %}
 
     public function search(array $wheres, array $orders, int $page, int $limit): array
     {
@@ -56,9 +56,9 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
         return $this->query->execute()->fetchAll();
     }
-{% elseif action in ['create'] %}
+{% elseif action == 'create' %}
 
-    public function push({{ entity }} ${{ item }}): void
+    public function push({{ entity }} ${{ item }}): {{ properties[pkName].typeHint }}
     {
         $this->query->insert($this->table);
 
@@ -77,8 +77,14 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endfor %}
 
         $this->query->execute();
+
+{% if properties[pkName].isAi %}
+        return ({{ properties[pkName].typeHint}})$this->query->getConnection()->lastInsertId();
+{% else %}
+        return ${{ item }}->{{ properties[pkName].name }}();
+{% endif %}
     }
-{% elseif action in ['read'] %}
+{% elseif action == 'read' %}
 
     public function get({{ entity }} ${{ item }}): array
     {
@@ -101,7 +107,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
         return $this->query->execute()->fetch() ?: [];
     }
-{% elseif action in ['update'] %}
+{% elseif action == 'update' %}
 
     public function shift({{ entity }} ${{ item }}): void
     {
@@ -126,7 +132,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
         $this->query->execute();
     }
-{% elseif action in ['delete'] %}
+{% elseif action == 'delete' %}
 
     public function pop({{ entity }} ${{ item }}): void
     {
@@ -137,7 +143,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
         $this->query->execute();
     }
-{% elseif action in ['login'] %}
+{% elseif action == 'login' %}
 
     public function getBy(string $column, $value): array
     {

@@ -78,7 +78,7 @@ T
      * @Route("/create", methods={"POST"}, name="tests.create")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_CREATE')", statusCode=401)
      */
-    public function create(Request \$request, Connection \$conn): Response
+    public function create(Request \$request, Connection \$conn, TranslatorInterface \$trans): Response
     {
     }
 
@@ -117,7 +117,7 @@ T
      * @Route("/create", methods={"POST"}, name="{$route}.create")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_CREATE')", statusCode=401)
      */
-    public function create(Request \$request, Connection \$conn): Response
+    public function create(Request \$request, Connection \$conn, TranslatorInterface \$trans): Response
     {
     }
 

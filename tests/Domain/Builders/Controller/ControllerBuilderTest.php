@@ -174,6 +174,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/tests")
@@ -198,7 +199,7 @@ final class TestController extends AbstractController
      * @Route("/create", methods={"POST"}, name="tests.create")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_CREATE')", statusCode=401)
      */
-    public function create(Request \$request, Connection \$conn): Response
+    public function create(Request \$request, Connection \$conn, TranslatorInterface \$trans): Response
     {
         \$form = \$this->createForm(TestFormType::class);
         \$form->handleRequest(\$request);
@@ -207,9 +208,9 @@ final class TestController extends AbstractController
 
         \$useCase = new CreateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
 
-        \$response = \$useCase->execute(\$request);
+        \$useCase->execute(\$request);
 
-        \$this->addFlash(\$response->status, \$response->message);
+        \$this->addFlash('success', \$trans->trans('message.created', [], 'test'));
 
         return \$this->redirectToRoute('tests.index');
     }

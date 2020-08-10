@@ -2,21 +2,21 @@
 
 namespace Domain\{{ entity }}\Response;
 
-{% if action|lower in ['read', 'login'] %}
+{% if action in ['Create', 'Read', 'Login'] %}
 use Domain\{{ entity }}\{{ entity }};
 {% endif %}
 use FlexPHP\Messages\ResponseInterface;
 
 final class {{ action }}{{ entity }}Response implements ResponseInterface
 {
-{% if action|lower == 'index' %}
+{% if action == 'Index' %}
     public ${{ items }};
 
     public function __construct(array ${{ items }})
     {
         $this->{{ items }} = ${{ items }};
     }
-{% elseif action|lower in ['create', 'update', 'delete'] %}
+{% elseif action in ['Update', 'Delete'] %}
     public $code;
     public $status;
     public $message;
@@ -27,7 +27,7 @@ final class {{ action }}{{ entity }}Response implements ResponseInterface
         $this->status = $status;
         $this->message = $message;
     }
-{% elseif action|lower in ['read', 'login'] %}
+{% elseif action in ['Create', 'Read', 'Login'] %}
     public ${{ item }};
 
     public function __construct({{ entity }} ${{ item }})

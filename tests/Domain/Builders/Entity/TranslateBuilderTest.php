@@ -38,6 +38,11 @@ return [
         'camelCase' => 'Camel Case',
         'snakeCase' => 'Snake Case',
     ],
+    'message' => [
+        'created' => 'Test created',
+        'updated' => 'Test updated',
+        'deleted' => 'Test deleted',
+    ],
 ];
 
 T
@@ -63,6 +68,11 @@ return [
         'list' => '{$plural}',
     ],
     'label' => [
+    ],
+    'message' => [
+        'created' => '{$singular} created',
+        'updated' => '{$singular} updated',
+        'deleted' => '{$singular} deleted',
     ],
 ];
 
@@ -92,6 +102,11 @@ return [
     ],
     'label' => [
         '{$expected}' => '{$expectedLabel}',
+    ],
+    'message' => [
+        'created' => 'Fuz created',
+        'updated' => 'Fuz updated',
+        'deleted' => 'Fuz deleted',
     ],
 ];
 

@@ -32,7 +32,7 @@ T
         $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'create');
 
         $this->assertEquals(<<<T
-        \$this->addFlash(\$response->status, \$response->message);
+        \$this->addFlash('success', \$trans->trans('message.created', [], 'test'));
 
         return \$this->redirectToRoute('tests.index');
 T

@@ -48,7 +48,7 @@ T
         $this->assertEquals(<<<T
         \$useCase = new CreateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
 
-        \$response = \$useCase->execute(\$request);
+        \$useCase->execute(\$request);
 T
 , $render->build());
     }

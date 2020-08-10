@@ -3,7 +3,11 @@
             '{{ items }}' => $response->{{ items }},
         ]);
 {% elseif action in ['create', 'update', 'delete'] %}
+{% if action == 'create' %}
+        $this->addFlash('success', $trans->trans('message.created', [], '{{ item }}'));
+{% else %}
         $this->addFlash($response->status, $response->message);
+{% endif %}
 
         return $this->redirectToRoute('{{ route }}.index');
 {% elseif action == 'read' %}

@@ -14,21 +14,23 @@ use FlexPHP\Repositories\Repository;
 final class {{ entity }}Repository extends Repository
 {
 {% for action in actions %}
-{% if action in ['index'] %}
+{% if action == 'index' %}
     public function findBy(Index{{ entity }}Request $request): array
     {
         return array_map(function (array ${{ item }}) {
             return (new {{ entity }}Factory())->make(${{ item }});
         }, $this->getGateway()->search((array)$request, [], $request->page, 10));
     }
-{% elseif action in ['create'] %}
-    public function add(Create{{ entity }}Request $request): void
+{% elseif action == 'create' %}
+    public function add(Create{{ entity }}Request $request): {{ entity }}
     {
         ${{ item }} = (new {{ entity }}Factory())->make($request);
 
-        $this->getGateway()->push(${{ item }});
+        ${{item }}->set{{ pkName }}($this->getGateway()->push(${{ item }}));
+
+        return ${{ item }};
     }
-{% elseif action in ['read'] %}
+{% elseif action == 'read' %}
     public function getById(Read{{ entity }}Request $request): {{ entity }}
     {
         $factory = new {{ entity }}Factory();
@@ -36,21 +38,21 @@ final class {{ entity }}Repository extends Repository
 
         return $factory->make($data);
     }
-{% elseif action in ['update'] %}
+{% elseif action == 'update' %}
     public function change(Update{{ entity }}Request $request): void
     {
         ${{ item }} = (new {{ entity }}Factory())->make($request);
 
         $this->getGateway()->shift(${{ item }});
     }
-{% elseif action in ['delete'] %}
+{% elseif action == 'delete' %}
     public function remove(Delete{{ entity }}Request $request): void
     {
         ${{ item }} = (new {{ entity }}Factory())->make($request);
 
         $this->getGateway()->pop(${{ item }});
     }
-{% elseif action in ['login'] %}
+{% elseif action == 'login' %}
     public function getByLogin(Login{{ entity }}Request $request): {{ entity }}
     {
         $data = $this->getGateway()->getBy('{{ login }}', $request->{{ login }});

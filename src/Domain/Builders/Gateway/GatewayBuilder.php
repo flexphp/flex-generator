@@ -19,13 +19,14 @@ final class GatewayBuilder extends AbstractBuilder
         $entity = $this->getInflector()->entity($schema->name());
         $item = $this->getInflector()->item($schema->name());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
+        $typeHint = $schema->pkTypeHint();
         $actions = \array_reduce($actions, function (array $result, string $action) {
             $result[] = $this->getInflector()->camelAction($action);
 
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'actions', 'item', 'fkFns'));
+        parent::__construct(\compact('entity', 'actions', 'item', 'fkFns', 'typeHint'));
     }
 
     protected function getFileTemplate(): string

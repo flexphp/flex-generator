@@ -12,6 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\Repository;
 use FlexPHP\Generator\Domain\Builders\Repository\RepositoryBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class RepositoryBuilderTest extends TestCase
 {
@@ -43,7 +44,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['create']);
+        $render = new RepositoryBuilder($this->getSchemaStringAndBlameBy(), ['create']);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -55,11 +56,43 @@ use FlexPHP\Repositories\Repository;
 
 final class TestRepository extends Repository
 {
-    public function add(CreateTestRequest \$request): void
+    public function add(CreateTestRequest \$request): Test
     {
         \$test = (new TestFactory())->make(\$request);
 
-        \$this->getGateway()->push(\$test);
+        \$test->setCode(\$this->getGateway()->push(\$test));
+
+        return \$test;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderCreateAiOk(): void
+    {
+        $render = new RepositoryBuilder(new Schema('Test', 'bar', [
+            new SchemaAttribute('key', 'integer', 'pk|ai|required'),
+        ]), ['create']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+use Domain\Test\Request\CreateTestRequest;
+use FlexPHP\Repositories\Repository;
+
+final class TestRepository extends Repository
+{
+    public function add(CreateTestRequest \$request): Test
+    {
+        \$test = (new TestFactory())->make(\$request);
+
+        \$test->setKey(\$this->getGateway()->push(\$test));
+
+        return \$test;
     }
 }
 

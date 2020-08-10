@@ -112,9 +112,7 @@ final class CreateTestUseCase extends UseCase
      */
     public function execute(\$request)
     {
-        \$this->getRepository()->add(\$request);
-
-        return new CreateTestResponse(201, 'success', 'Test was created!');
+        return new CreateTestResponse(\$this->getRepository()->add(\$request));
     }
 }
 

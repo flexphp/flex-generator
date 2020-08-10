@@ -1,11 +1,15 @@
-{% if action|lower in ['index', 'create', 'read', 'update', 'delete'] %}
+{% if action in ['Index', 'Create', 'Read', 'Update', 'Delete'] %}
         $useCase = new {{ action }}{{ entity }}UseCase(new {{ entity }}Repository(new MySQL{{ entity }}Gateway($conn)));
 
 {% else %}
         $useCase = new {{ action }}{{ entity }}UseCase();
 {% endif %}
+{% if action == 'Create' %}
+        $useCase->execute($request);
+{% else %}
         $response = $useCase->execute($request);
-{% if action|lower in ['read'] %}
+{% endif %}
+{% if action in ['Read'] %}
 
         if (!$response->{{ item }}->{{ pkName }}()) {
             throw $this->createNotFoundException();

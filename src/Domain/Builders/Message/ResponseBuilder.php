@@ -20,9 +20,8 @@ final class ResponseBuilder extends AbstractBuilder
         $item = $this->getInflector()->item($schema->name());
         $items = $this->getInflector()->items($schema->name());
         $action = $this->getInflector()->pascalAction($action);
-        $key = 'id';
 
-        parent::__construct(\compact('entity', 'item', 'items', 'action', 'key'));
+        parent::__construct(\compact('entity', 'item', 'items', 'action'));
     }
 
     protected function getFileTemplate(): string

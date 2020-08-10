@@ -12,7 +12,7 @@ interface {{ entity }}Gateway
 {% if action in ['index'] %}
     public function search(array $wheres, array $orders, int $page, int $limit): array;
 {% elseif action in ['create'] %}
-    public function push({{ entity }} ${{ item }}): void;
+    public function push({{ entity }} ${{ item }}): {{ typeHint }};
 {% elseif action in ['read'] %}
     public function get({{ entity }} ${{ item }}): array;
 {% elseif action in ['update'] %}

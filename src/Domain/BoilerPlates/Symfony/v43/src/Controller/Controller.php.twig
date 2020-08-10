@@ -30,6 +30,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 {% endif %}
 use Symfony\Component\Routing\Annotation\Route;
+{% if actions.Create %}
+use Symfony\Contracts\Translation\TranslatorInterface;
+{% endif %}
 
 /**
  * @Route("/{{ route }}")

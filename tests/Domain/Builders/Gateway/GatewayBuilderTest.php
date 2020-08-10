@@ -27,7 +27,7 @@ interface TestGateway
 {
     public function search(array \$wheres, array \$orders, int \$page, int \$limit): array;
 
-    public function push(Test \$test): void;
+    public function push(Test \$test): int;
 
     public function get(Test \$test): array;
 
@@ -77,7 +77,7 @@ namespace Domain\Test;
 
 interface TestGateway
 {
-    public function push(Test \$test): void;
+    public function push(Test \$test): string;
 }
 
 T
@@ -209,7 +209,7 @@ namespace Domain\Test;
 
 interface TestGateway
 {
-    public function push(Test \$test): void;
+    public function push(Test \$test): string;
 }
 
 T
@@ -230,7 +230,7 @@ namespace Domain\\{$expected};
 
 interface {$expected}Gateway
 {
-    public function push({$expected} \${$expectedSingular}): void;
+    public function push({$expected} \${$expectedSingular}): string;
 }
 
 T

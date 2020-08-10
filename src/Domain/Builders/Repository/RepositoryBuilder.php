@@ -20,6 +20,7 @@ final class RepositoryBuilder extends AbstractBuilder
         $item = $this->getInflector()->item($schema->name());
         $entity = $this->getInflector()->entity($schema->name());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
+        $pkName = $this->getInflector()->pascalProperty($schema->pkName());
 
         $requests = [];
         $actions = \array_reduce($actions, function (array $result, string $action) use (&$requests) {
@@ -29,7 +30,7 @@ final class RepositoryBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'item', 'actions', 'requests', 'login', 'fkFns'));
+        parent::__construct(\compact('entity', 'item', 'actions', 'requests', 'login', 'fkFns', 'pkName'));
     }
 
     protected function getFileTemplate(): string
