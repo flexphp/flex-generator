@@ -169,11 +169,16 @@ use FlexPHP\Repositories\Repository;
 
 final class TestRepository extends Repository
 {
-    public function remove(DeleteTestRequest \$request): void
+    public function remove(DeleteTestRequest \$request): Test
     {
-        \$test = (new TestFactory())->make(\$request);
+        \$factory = new TestFactory();
+        \$data = \$this->getGateway()->get(\$factory->make(\$request));
+
+        \$test = \$factory->make(\$data);
 
         \$this->getGateway()->pop(\$test);
+
+        return \$test;
     }
 }
 

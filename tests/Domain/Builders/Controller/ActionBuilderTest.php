@@ -247,7 +247,26 @@ T
      * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
      */
-    public function delete(Connection \$conn, int \$id): Response
+    public function delete(Connection \$conn, TranslatorInterface \$trans, int \$id): Response
+    {
+    }
+
+T
+, $render->build());
+    }
+
+    public function testItRenderDeleteStringOk(): void
+    {
+        $render = new ActionBuilder(new Schema('Test', 'bar', [
+            new SchemaAttribute('foo', 'string', 'pk|required'),
+        ]), 'delete');
+
+        $this->assertEquals(<<<T
+    /**
+     * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
+     */
+    public function delete(Connection \$conn, TranslatorInterface \$trans, string \$id): Response
     {
     }
 

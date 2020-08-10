@@ -80,12 +80,12 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'delete');
+        $render = new ResponseMessageBuilder(new Schema('UserPassword', 'bar', []), 'delete');
 
         $this->assertEquals(<<<T
-        \$this->addFlash(\$response->status, \$response->message);
+        \$this->addFlash('success', \$trans->trans('message.deleted', [], 'userPassword'));
 
-        return \$this->redirectToRoute('tests.index');
+        return \$this->redirectToRoute('user-passwords.index');
 T
 , $render->build());
     }

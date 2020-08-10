@@ -2,7 +2,7 @@
 
 namespace Domain\{{ entity }}\Response;
 
-{% if action in ['Create', 'Read', 'Update', 'Login'] %}
+{% if action in ['Create', 'Read', 'Update', 'Delete','Login'] %}
 use Domain\{{ entity }}\{{ entity }};
 {% endif %}
 use FlexPHP\Messages\ResponseInterface;
@@ -16,18 +16,7 @@ final class {{ action }}{{ entity }}Response implements ResponseInterface
     {
         $this->{{ items }} = ${{ items }};
     }
-{% elseif action in ['Delete'] %}
-    public $code;
-    public $status;
-    public $message;
-
-    public function __construct(int $code, string $status, string $message)
-    {
-        $this->code = $code;
-        $this->status = $status;
-        $this->message = $message;
-    }
-{% elseif action in ['Create', 'Read', 'Update', 'Login'] %}
+{% elseif action in ['Create', 'Read', 'Update', 'Delete','Login'] %}
     public ${{ item }};
 
     public function __construct({{ entity }} ${{ item }})

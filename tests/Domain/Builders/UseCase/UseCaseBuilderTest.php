@@ -204,9 +204,7 @@ final class DeleteTestUseCase extends UseCase
      */
     public function execute(\$request)
     {
-        \$this->getRepository()->remove(\$request);
-
-        return new DeleteTestResponse(200, 'success', 'Test was deleted!');
+        return new DeleteTestResponse(\$this->getRepository()->remove(\$request));
     }
 }
 

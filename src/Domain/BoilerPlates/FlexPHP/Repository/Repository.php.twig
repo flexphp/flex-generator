@@ -48,11 +48,16 @@ final class {{ entity }}Repository extends Repository
         return ${{ item }};
     }
 {% elseif action == 'delete' %}
-    public function remove(Delete{{ entity }}Request $request): void
+    public function remove(Delete{{ entity }}Request $request): {{ entity }}
     {
-        ${{ item }} = (new {{ entity }}Factory())->make($request);
+        $factory = new {{ entity }}Factory();
+        $data = $this->getGateway()->get($factory->make($request));
+
+        ${{ item }} = $factory->make($data);
 
         $this->getGateway()->pop(${{ item }});
+
+        return ${{ item }};
     }
 {% elseif action == 'login' %}
     public function getByLogin(Login{{ entity }}Request $request): {{ entity }}

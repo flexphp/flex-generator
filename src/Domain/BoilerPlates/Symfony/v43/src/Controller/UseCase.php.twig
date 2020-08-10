@@ -4,7 +4,7 @@
 {% else %}
         $useCase = new {{ action }}{{ entity }}UseCase();
 {% endif %}
-{% if action in ['Create', 'Update'] %}
+{% if action in ['Create', 'Update', 'Delete'] %}
         $useCase->execute($request);
 {% else %}
         $response = $useCase->execute($request);

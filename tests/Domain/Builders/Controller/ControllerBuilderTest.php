@@ -419,15 +419,15 @@ final class TestController extends AbstractController
      * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
      */
-    public function delete(Connection \$conn, int \$id): Response
+    public function delete(Connection \$conn, TranslatorInterface \$trans, int \$id): Response
     {
         \$request = new DeleteTestRequest(\$id);
 
         \$useCase = new DeleteTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
 
-        \$response = \$useCase->execute(\$request);
+        \$useCase->execute(\$request);
 
-        \$this->addFlash(\$response->status, \$response->message);
+        \$this->addFlash('success', \$trans->trans('message.deleted', [], 'test'));
 
         return \$this->redirectToRoute('tests.index');
     }
