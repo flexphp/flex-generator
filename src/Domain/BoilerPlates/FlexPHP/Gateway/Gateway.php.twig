@@ -1,7 +1,16 @@
 {% set methods = actions|filter(v => v in ['index', 'create', 'read', 'update', 'delete', 'login']) %}
+{% set fkFnsNoBlame = fkFns|filter(v => not v.blameBy) %}
+{% set useStatements = [] %}
 <?php declare(strict_types=1);
 
 namespace Domain\{{ entity }};
+{% for fkFn in fkFnsNoBlame %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\Request\\Find' ~ entity ~ fkFn.fnSingular ~ 'Request;']) %}
+{% endfor %}
+{% if useStatements|length > 0 %}
+
+{{ useStatements|sort|join("\n") }}
+{% endif %}
 
 interface {{ entity }}Gateway
 {
@@ -23,11 +32,11 @@ interface {{ entity }}Gateway
     public function getBy(string $column, $value): array;
 {% endif %}
 {% endfor %}
-{% if methods|length > 0 and fkFns|filter(v => not v.blameBy)|length > 0 %}
+{% if methods|length > 0 and fkFnsNoBlame|length > 0 %}
 
 {% endif %}
-{% for fkFn in fkFns|filter(v => not v.blameBy) %}
-    public function filter{{ fkFn.fnPlural }}(string $term, int $page, int $limit): array;
+{% for fkFn in fkFnsNoBlame %}
+    public function filter{{ fkFn.fnPlural }}(Find{{ entity }}{{ fkFn.fnSingular }}Request $request, int $page, int $limit): array;
 {% if not loop.last %}
 
 {% endif %}

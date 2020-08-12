@@ -1,11 +1,19 @@
+{% set fkFnsNoBlame = fkFns|filter(v => not v.blameBy) %}
+{% set useStatements = [] %}
 <?php declare(strict_types=1);
 
 namespace Domain\{{ entity }}\Gateway;
 
-use Domain\{{ entity }}\{{ entity }};
-use Domain\{{ entity }}\{{ entity }}Gateway;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types as DB;
+{% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\' ~ entity ~ ';']) %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\' ~ entity ~ 'Gateway;']) %}
+{% for id,fkFn in fkFnsNoBlame %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\Request\\Find' ~ entity ~ fkFn.fnSingular ~ 'Request;']) %}
+{% endfor %}
+{% if useStatements|length > 0 %}
+{{ useStatements|sort|join("\n") }}
+{% endif %}
 
 final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {
@@ -152,28 +160,27 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endfor %}
         ]);
         $this->query->from('`{{ table }}`');
-        $this->query->where($column . ' = :column');
+        $this->query->where("{$column} = :column");
         $this->query->setParameter(':column', $value);
 
-        $data = $this->query->execute()->fetch();
-
-        return is_array($data) ? $data : [];
+        return $this->query->execute()->fetch() ?: [];
     }
 {% endif %}
 {% endfor %}
-{% for id,fkFn in fkFns|filter(v => not v.blameBy) %}
+{% for id,fkFn in fkFnsNoBlame %}
 
-    public function filter{{ fkFn.fnPlural }}(string $term, int $page, int $limit): array
+    public function filter{{ fkFn.fnPlural }}(Find{{ entity }}{{ fkFn.fnSingular }}Request $request, int $page, int $limit): array
     {
         $this->query->select([
-            '{{ fkFn.id }} id',
-            '{{ fkFn.text }} text',
+            '{{ id }}.{{ fkFn.id }} as id',
+            '{{ id }}.{{ fkFn.text }} as text',
         ]);
-        $this->query->from('`{{ fkFn.table }}`');
+        $this->query->from('`{{ fkFn.table }}`', '`{{ id }}`');
 
-        $this->query->where('{{ fkFn.text }} like :{{ fkFn.text }}');
-        $this->query->setParameter(':{{ fkFn.text }}', "%{$term}%");
+        $this->query->where('{{ id }}.{{ fkFn.text }} like :{{ id }}-{{ fkFn.text }}');
+        $this->query->setParameter(':{{ id }}-{{ fkFn.text }}', "%{$request->term}%");
 
+        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
         $this->query->setMaxResults($limit);
 
         return $this->query->execute()->fetchAll();

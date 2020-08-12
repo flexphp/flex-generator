@@ -98,12 +98,12 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\TestFormType;
-use Domain\Test\TestRepository;
+use Doctrine\DBAL\Connection;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\IndexTestRequest;
+use Domain\Test\TestFormType;
+use Domain\Test\TestRepository;
 use Domain\Test\UseCase\IndexTestUseCase;
-use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -162,12 +162,12 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\TestFormType;
-use Domain\Test\TestRepository;
+use Doctrine\DBAL\Connection;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\CreateTestRequest;
+use Domain\Test\TestFormType;
+use Domain\Test\TestRepository;
 use Domain\Test\UseCase\CreateTestUseCase;
-use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -241,12 +241,12 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\TestFormType;
-use Domain\Test\TestRepository;
+use Doctrine\DBAL\Connection;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\ReadTestRequest;
+use Domain\Test\TestFormType;
+use Domain\Test\TestRepository;
 use Domain\Test\UseCase\ReadTestUseCase;
-use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -307,12 +307,12 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\TestFormType;
-use Domain\Test\TestRepository;
+use Doctrine\DBAL\Connection;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\UpdateTestRequest;
+use Domain\Test\TestFormType;
+use Domain\Test\TestRepository;
 use Domain\Test\UseCase\UpdateTestUseCase;
-use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -397,12 +397,12 @@ T
 
 namespace App\Controller;
 
-use Domain\Test\TestFormType;
-use Domain\Test\TestRepository;
+use Doctrine\DBAL\Connection;
 use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\DeleteTestRequest;
+use Domain\Test\TestFormType;
+use Domain\Test\TestRepository;
 use Domain\Test\UseCase\DeleteTestUseCase;
-use Doctrine\DBAL\Connection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -486,17 +486,17 @@ T
 namespace App\Controller;
 
 use Domain\UserPost\Request\FindUserPostBarRequest;
-use Domain\UserPost\UseCase\FindUserPostBarUseCase;
 use Domain\UserPost\Request\FindUserPostPostRequest;
-use Domain\UserPost\UseCase\FindUserPostPostUseCase;
 use Domain\UserPost\Request\FindUserPostUserStatusRequest;
+use Domain\UserPost\UseCase\FindUserPostBarUseCase;
+use Domain\UserPost\UseCase\FindUserPostPostUseCase;
 use Domain\UserPost\UseCase\FindUserPostUserStatusUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**

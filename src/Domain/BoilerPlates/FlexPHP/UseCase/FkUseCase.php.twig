@@ -15,7 +15,7 @@ final class Find{{ pkEntity }}{{ fkEntity }}UseCase extends UseCase
      */
     public function execute($request)
     {
-        ${{ items }} = $this->getRepository()->find{{ name }}ByTerm($request);
+        ${{ items }} = $this->getRepository()->find{{ name }}By($request);
 
         return new Find{{ pkEntity }}{{ fkEntity }}Response(${{ items }});
     }

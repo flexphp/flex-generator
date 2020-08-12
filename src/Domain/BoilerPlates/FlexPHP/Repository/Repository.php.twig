@@ -1,19 +1,25 @@
 {% set fkFnsNoBlame = fkFns|filter(v => not v.blameBy) %}
+{% set useStatements = [] %}
 <?php declare(strict_types=1);
 
 namespace Domain\{{ entity }};
 
 {% for request in requests %}
-use Domain\{{ entity }}\Request\{{ request }}{{ entity }}Request;
+{% if request in ['Index', 'Create', 'Read', 'Update', 'Delete', 'Login'] %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\Request\\' ~ request ~ entity ~ 'Request;']) %}
+{% endif %}
 {% endfor %}
 {% for id,fkFn in fkFnsNoBlame %}
-use Domain\{{ entity }}\Request\Find{{ entity }}{{ fkFn.fnSingular }}Request;
+{% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\Request\\Find' ~ entity ~ fkFn.fnSingular ~ 'Request;']) %}
 {% endfor %}
+{% if useStatements|length > 0 %}
+{{ useStatements|sort|join("\n") }}
+{% endif %}
 use FlexPHP\Repositories\Repository;
 
 final class {{ entity }}Repository extends Repository
 {
-{% for action in actions %}
+{% for index, action in actions %}
 {% if action == 'index' %}
     public function findBy(Index{{ entity }}Request $request): array
     {
@@ -67,15 +73,15 @@ final class {{ entity }}Repository extends Repository
         return (new {{ entity }}Factory())->make($data);
     }
 {% endif %}
-{% if not loop.last %}
+{% if not loop.last and actions[index + 1] in ['index', 'create', 'read', 'update', 'delete', 'login'] %}
 
 {% endif %}
 {% endfor %}
 {% for id,fkFn in fkFnsNoBlame %}
 
-    public function find{{ fkFn.fnPlural }}ByTerm(Find{{ entity }}{{ fkFn.fnSingular }}Request $request): array
+    public function find{{ fkFn.fnPlural }}By(Find{{ entity }}{{ fkFn.fnSingular }}Request $request): array
     {
-        return $this->getGateway()->filter{{ fkFn.fnPlural }}($request->term, $request->page, 10);
+        return $this->getGateway()->filter{{ fkFn.fnPlural }}($request, $request->page, 10);
     }
 {% endfor %}
 }

@@ -45,7 +45,7 @@ final class Find{$expected}UseCase extends UseCase
      */
     public function execute(\$request)
     {
-        \${$item} = \$this->getRepository()->find{$entity}ByTerm(\$request);
+        \${$item} = \$this->getRepository()->find{$entity}By(\$request);
 
         return new Find{$expected}Response(\${$item});
     }

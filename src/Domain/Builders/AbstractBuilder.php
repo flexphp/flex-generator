@@ -88,7 +88,9 @@ abstract class AbstractBuilder implements BuilderInterface
         $fkFunctions = [];
 
         \array_map(function (array $fkRel) use (&$fkFunctions): void {
-            $fkFunctions[$fkRel['fnSingular']] = $fkRel;
+            $name = $this->getInflector()->camelProperty($fkRel['fnSingular']);
+
+            $fkFunctions[$name] = $fkRel;
         }, $this->getFkRelations($fkRelations));
 
         return $fkFunctions;
