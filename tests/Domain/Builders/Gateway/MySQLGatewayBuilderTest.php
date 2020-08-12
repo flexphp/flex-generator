@@ -317,8 +317,8 @@ final class MySQLJoinGateway implements JoinGateway
         ]);
         $this->query->from('`joinTable`', '`joinTable`');
 
-        $this->query->where('joinTable.fkName like :joinTable-fkName');
-        $this->query->setParameter(':joinTable-fkName', "%{$request->term}%");
+        $this->query->where('joinTable.fkName like :joinTable_fkName');
+        $this->query->setParameter(':joinTable_fkName', "%{$request->term}%");
 
         $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
         $this->query->setMaxResults($limit);
@@ -607,8 +607,8 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         ]);
         $this->query->from('`Bar`', '`bar`');
 
-        $this->query->where('bar.fuz like :bar-fuz');
-        $this->query->setParameter(':bar-fuz', "%{$request->term}%");
+        $this->query->where('bar.fuz like :bar_fuz');
+        $this->query->setParameter(':bar_fuz', "%{$request->term}%");
 
         $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
         $this->query->setMaxResults($limit);
@@ -624,8 +624,8 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         ]);
         $this->query->from('`posts`', '`post`');
 
-        $this->query->where('post.name like :post-name');
-        $this->query->setParameter(':post-name', "%{$request->term}%");
+        $this->query->where('post.name like :post_name');
+        $this->query->setParameter(':post_name', "%{$request->term}%");
 
         $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
         $this->query->setMaxResults($limit);
@@ -641,8 +641,8 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         ]);
         $this->query->from('`UserStatus`', '`userStatus`');
 
-        $this->query->where('userStatus.name like :userStatus-name');
-        $this->query->setParameter(':userStatus-name', "%{$request->term}%");
+        $this->query->where('userStatus.name like :userStatus_name');
+        $this->query->setParameter(':userStatus_name', "%{$request->term}%");
 
         $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
         $this->query->setMaxResults($limit);

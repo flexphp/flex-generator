@@ -177,8 +177,8 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
         ]);
         $this->query->from('`{{ fkFn.table }}`', '`{{ id }}`');
 
-        $this->query->where('{{ id }}.{{ fkFn.text }} like :{{ id }}-{{ fkFn.text }}');
-        $this->query->setParameter(':{{ id }}-{{ fkFn.text }}', "%{$request->term}%");
+        $this->query->where('{{ id }}.{{ fkFn.text }} like :{{ id }}_{{ fkFn.text }}');
+        $this->query->setParameter(':{{ id }}_{{ fkFn.text }}', "%{$request->term}%");
 
         $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
         $this->query->setMaxResults($limit);
