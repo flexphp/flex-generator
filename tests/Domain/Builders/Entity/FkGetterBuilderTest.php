@@ -44,8 +44,8 @@ T
      * @dataProvider getEntityNameAndFkGetter
      */
     public function testItWithDiffEntityName(
-        string $name, 
-        string $entity, 
+        string $name,
+        string $entity,
         string $entityExpected,
         string $getter
     ): void {
@@ -64,8 +64,8 @@ T
      * @dataProvider getPropertyNameAndFkGetter
      */
     public function testItWithDiffPropertyName(
-        string $name, 
-        string $type, 
+        string $name,
+        string $type,
         string $nameExpected,
         string $getter
     ): void {

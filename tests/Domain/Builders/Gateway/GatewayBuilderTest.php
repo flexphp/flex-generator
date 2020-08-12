@@ -16,7 +16,15 @@ final class GatewayBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $render = new GatewayBuilder($this->getSchemaFkRelation(), ['index', 'create', 'read', 'update', 'other', 'delete', 'login']);
+        $render = new GatewayBuilder($this->getSchemaFkRelation(), [
+            'index',
+            'create',
+            'read',
+            'update',
+            'other',
+            'delete',
+            'login',
+        ]);
 
         $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
