@@ -125,25 +125,25 @@ namespace Domain\PostComment;
 
 use App\Form\Type\Select2Type;
 use Doctrine\DBAL\Connection;
-use Domain\Bar\UseCase\ReadBarUseCase;
 use Domain\Bar\BarRepository;
 use Domain\Bar\Gateway\MySQLBarGateway;
 use Domain\Bar\Request\ReadBarRequest;
-use Domain\Post\UseCase\ReadPostUseCase;
-use Domain\Post\PostRepository;
+use Domain\Bar\UseCase\ReadBarUseCase;
 use Domain\Post\Gateway\MySQLPostGateway;
+use Domain\Post\PostRepository;
 use Domain\Post\Request\ReadPostRequest;
-use Domain\UserStatus\UseCase\ReadUserStatusUseCase;
-use Domain\UserStatus\UserStatusRepository;
+use Domain\Post\UseCase\ReadPostUseCase;
 use Domain\UserStatus\Gateway\MySQLUserStatusGateway;
 use Domain\UserStatus\Request\ReadUserStatusRequest;
+use Domain\UserStatus\UseCase\ReadUserStatusUseCase;
+use Domain\UserStatus\UserStatusRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class PostCommentFormType extends AbstractType

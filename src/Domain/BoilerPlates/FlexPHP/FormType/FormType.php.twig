@@ -1,29 +1,33 @@
 {% set fkRelsNoBlame = fkRels|filter(v => not v.blameBy) %}
+{% set useStatements = [] %}
 <?php declare(strict_types=1);
 
 namespace Domain\{{ entity }};
 
 {% if fkRelsNoBlame %}
-use App\Form\Type\Select2Type;
-use Doctrine\DBAL\Connection;
+{% set useStatements = useStatements|merge(['use App\\Form\\Type\\Select2Type;']) %}
+{% set useStatements = useStatements|merge(['use Doctrine\\DBAL\\Connection;']) %}
 {% for fkFn in fkFns %}
 {% if not properties[fkFn.pkName].isBlameBy %}
-use Domain\{{ fkFn.fnSingular }}\UseCase\Read{{ fkFn.fnSingular }}UseCase;
-use Domain\{{ fkFn.fnSingular }}\{{ fkFn.fnSingular }}Repository;
-use Domain\{{ fkFn.fnSingular }}\Gateway\MySQL{{ fkFn.fnSingular }}Gateway;
-use Domain\{{ fkFn.fnSingular }}\Request\Read{{ fkFn.fnSingular }}Request;
+{% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\UseCase\\Read' ~ fkFn.fnSingular ~ 'UseCase;']) %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\' ~ fkFn.fnSingular ~ 'Repository;']) %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\Gateway\\MySQL' ~ fkFn.fnSingular ~ 'Gateway;']) %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\Request\\Read' ~ fkFn.fnSingular ~ 'Request;']) %}
 {% endif %}
 {% endfor %}
 {% endif %}
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type as InputType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\AbstractType;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\Extension\\Core\\Type as InputType;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormBuilderInterface;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\OptionsResolver\\OptionsResolver;']) %}
 {% if fkRelsNoBlame %}
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormInterface;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormEvent;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormEvents;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface;']) %}
+{% endif %}
+{% if useStatements|length > 0 %}
+{{ useStatements|sort|join("\n") }}
 {% endif %}
 
 final class {{ entity }}FormType extends AbstractType
