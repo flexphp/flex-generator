@@ -2,7 +2,7 @@
 
 return [
     'app' => [
-        'name' => 'Project',
+        'name' => 'Proyecto',
         'title' => 'Demo',
     ],
     'base' => [
@@ -16,7 +16,7 @@ return [
             'logout' => 'Salir',
         ],
         'navbar' => [
-            'navigation' => 'Navegación',
+            'navigation' => 'Menú',
         ],
     ],
     'action' => [
@@ -29,13 +29,19 @@ return [
         'delete' => 'Eliminar',
         'cancel' => 'Cancelar',
         'options' => 'Acciones',
+        'toggle' => 'Mostrar / Ocultar',
+        'add' => 'Agregar',
+        'remove' => 'Quitar',
+        'filter' => 'Filtrar',
+        'back' => 'Regresar',
     ],
     'message' => [
         'delete' => 'Estás seguro?',
     ],
     'search' => [
         'empty' => 'Nada por aquí',
-        'loading' => 'Cargando',
+        'loading' => 'Consultando más registros',
+        'last' => 'No hay más registros',
     ],
     'label' => [
         'yes' => 'Si',

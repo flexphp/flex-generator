@@ -138,12 +138,14 @@ final class CreatePrototypeUseCase
             $source . '/config/packages/framework.yaml' => $dest . '/config/packages/framework.yaml',
             $source . '/public/index.tphp' => $dest . '/public/index.php',
             $source . '/src/Kernel.tphp' => $dest . '/src/Kernel.php',
+            $source . '/src/Controller/.gitignore' => $dest . '/src/Controller/.gitignore',
             $source . '/src/Controller/DashboardController.tphp' => $dest . '/src/Controller/DashboardController.php',
             $source . '/src/Controller/LocaleController.tphp' => $dest . '/src/Controller/LocaleController.php',
             $source . '/src/Controller/SecurityController.tphp' => $dest . '/src/Controller/SecurityController.php',
             $source . '/src/Form/Type/Select2Type.tphp' => $dest . '/src/Form/Type/Select2Type.php',
             $source . '/src/Listener/CsrfListener.tphp' => $dest . '/src/Listener/CsrfListener.php',
             $source . '/src/Listener/LocaleListener.tphp' => $dest . '/src/Listener/LocaleListener.php',
+            $source . '/src/Listener/ExceptionListener.tphp' => $dest . '/src/Listener/ExceptionListener.php',
             $source . '/src/Security/LoginFormAuthenticator.tphp' => $dest . '/src/Security/LoginFormAuthenticator.php',
             $source . '/src/Security/UserProvider.tphp' => $dest . '/src/Security/UserProvider.php',
             $source . '/src/Twig/AppExtension.tphp' => $dest . '/src/Twig/AppExtension.php',
@@ -159,6 +161,8 @@ final class CreatePrototypeUseCase
             $source . '/var/log/.gitkeep' => $dest . '/var/log/.gitkeep',
             $source . '/var/sessions/.gitkeep' => $dest . '/var/sessions/.gitkeep',
             $source . '/tests/.gitkeep' => $dest . '/tests/.gitkeep',
+            $source . '/tests/TestCase.tphp' => $dest . '/tests/TestCase.php',
+            $source . '/tests/WebTestCase.tphp' => $dest . '/tests/WebTestCase.php',
         ];
 
         foreach ($templates as $from => $to) {
@@ -171,7 +175,7 @@ final class CreatePrototypeUseCase
             '/.gitignore',
             '/README.md',
             '/LICENSE.md',
-            '/phpunit.xml',
+            '/phpunit.xml.dist',
             '/bin/console',
             '/config/routes.yaml',
             '/config/services.yaml',
@@ -182,6 +186,7 @@ final class CreatePrototypeUseCase
             '/templates/dashboard/index.html.twig',
             '/templates/default/_flash.html.twig',
             '/templates/default/_infinite.html.twig',
+            '/templates/default/_back_button.html.twig',
             '/templates/default/homepage.html.twig',
             '/templates/form/layout.html.twig',
             '/templates/form/_delete_confirmation.html.twig',
@@ -216,6 +221,7 @@ final class CreatePrototypeUseCase
             "$src/jQuery/plugins/jquery.slimscroll.min.js" => "$dest/public/js/jquery/jquery.slimscroll.min.js",
             "$src/jQuery/plugins/jquery.select2.min.js" => "$dest/public/js/jquery/jquery.select2.min.js",
             "$src/jQuery/plugins/jquery.infinite.min.js" => "$dest/public/js/jquery/jquery.infinite.min.js",
+            "$src/jQuery/plugins/chart.bundle.min.js" => "$dest/public/js/jquery/chart.bundle.min.js",
             "$src/jQuery/main.js" => "$dest/public/js/main.js",
         ];
 

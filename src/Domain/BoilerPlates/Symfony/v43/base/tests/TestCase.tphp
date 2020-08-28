@@ -1,0 +1,39 @@
+<?php declare(strict_types=1);
+
+namespace App\Tests;
+
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase as TestCaseSymfony;
+
+abstract class TestCase extends TestCaseSymfony
+{
+    /**
+     * @return Application
+     */
+    protected function application()
+    {
+        static $application;
+
+        if ($application) {
+            return $application;
+        }
+
+        $kernel = static::createKernel();
+
+        return $application = new Application($kernel);
+    }
+
+    /**
+     * @return \Doctrine\Dbal\Connection
+     */
+    protected function connection()
+    {
+        static $connection;
+
+        if ($connection) {
+            return $connection;
+        }
+
+        return $connection = self::$container->get('Doctrine\DBAL\Connection');
+    }
+}

@@ -10,12 +10,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class DashboardController extends AbstractController
 {
     /**
-     * @Route("/", methods={"GET"}, name="dashboard")
+     * @Route("/", methods={"GET"}, name="dashboard.index")
+     * @Cache(smaxage="3600")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_DASHBOARD_INDEX')", statusCode=401)
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         return $this->render('dashboard/index.html.twig');
     }
 }

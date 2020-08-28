@@ -74,6 +74,10 @@ jQuery(document).ready(function ($) {
         $('[data-toggle="popover"]').popover()
     }
 
+    $('.money-format').each(function () {
+        $(this).html(getMoneyFormat($(this).html()));
+    });
+
     $(document).on('submit', 'form[data-confirmation]', function (event) {
         var $form = $(this),
             $confirm = $('#confirmationModal');
@@ -90,31 +94,61 @@ jQuery(document).ready(function ($) {
                 })
                 .modal('show');
         }
-    });
-
-    $(document).on('submit', 'form:not([data-confirmation])', function () {
+    }).on('submit', 'form:not([data-confirmation])', function () {
         $('.overlay').show();
-    });
-
-    $(document).on('click', '.show-overlay', function () {
+    }).on('click', '.show-overlay', function () {
         $('.overlay').show();
+    }).on('change', '.money-format', function () {
+        const $html = $(this);
+        const isInput = $html.is('input');
+        const number = isInput ? $html.val() : $html.html();
+        const money = getMoneyFormat(number);
+
+        $html.data('mf-amount', number);
+
+        isInput ? $html.val(money) : $html.html(money);
     });
 
+    /** global: InfiniteScroll */
     if (typeof InfiniteScroll === 'function') {
         const infScroll = new InfiniteScroll('.dashboard-content', {
             path: function () {
-                return '?page=' + (parseInt((new URLSearchParams(window.location.search)).get('page') || this.pageIndex) + 1);
+                /** global: URLSearchParams */
+                const page= (parseInt((new URLSearchParams(window.location.search)).get('page') || this.pageIndex) + 1);
+                const form = document.querySelector('.dashboard-sidebar form');
+                let queryFilters = '';
+
+                if (form) {
+                    /** global: FormData */
+                    queryFilters = '&' + new URLSearchParams(new FormData(form)).toString();
+                }
+
+                return '?page=' + page + queryFilters;
             },
             responseType: 'html',
             status: '.infinite-scroll-status',
             history: false,
         }).on('load', function (html) {
             if (html === '') {
-                infScroll.destroy();
+                infScroll.dispatchEvent('last');
+
+                return;
             }
 
             document.querySelector('.dashboard-content .table > tbody').innerHTML += html;
+
+            const moneyFormats = document.querySelectorAll('.dashboard-content .table > tbody > tr > td.money-format');
+
+            [].forEach.call(moneyFormats, function(moneyFormat) {
+                if (isNaN(moneyFormat.innerHTML)) {
+                    return undefined;
+                }
+
+                moneyFormat.innerHTML = getMoneyFormat(moneyFormat.innerHTML);
+            });
         });
+
+        window.infScroll = infScroll;
     }
 });
 
@@ -136,4 +170,23 @@ function getCookie(cname)
     }
 
     return '';
+}
+
+function getMoneyFormat(number)
+{
+    if (isNaN(number)) {
+        return 0;
+    }
+
+    /** global: Intl */
+    if (!(typeof Intl == 'object' && Intl && typeof Intl.NumberFormat == 'function')) {
+        return number;
+    }
+
+    return (number * 1).toLocaleString('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    });
 }

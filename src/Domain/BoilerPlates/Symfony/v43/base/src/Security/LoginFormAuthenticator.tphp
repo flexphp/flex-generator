@@ -1,14 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Security;
 
-use Domain\User\User;
-use Domain\User\UserRepository;
+use Doctrine\DBAL\Connection;
 use Domain\User\Gateway\MySQLUserGateway;
 use Domain\User\Request\LoginUserRequest;
-use Domain\User\Response\LoginUserResponse;
 use Domain\User\UseCase\LoginUserUseCase;
-use Doctrine\DBAL\Connection;
+use Domain\User\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -35,8 +33,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private const LOGIN_ROUTE = 'login';
 
     private $urlGenerator;
+
     private $csrfTokenManager;
+
     private $passwordEncoder;
+
     private $dbConnection;
 
     public function __construct(UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder, Connection $dbConnection)
@@ -99,7 +100,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+        return new RedirectResponse($this->urlGenerator->generate('dashboard.index'));
     }
 
     protected function getLoginUrl()

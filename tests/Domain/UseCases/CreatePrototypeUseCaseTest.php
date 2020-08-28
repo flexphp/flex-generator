@@ -37,7 +37,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/.gitignore');
         $this->assertFileExists($response->outputDir . '/LICENSE.md');
         $this->assertFileExists($response->outputDir . '/README.md');
-        $this->assertFileExists($response->outputDir . '/phpunit.xml');
+        $this->assertFileExists($response->outputDir . '/phpunit.xml.dist');
 
         $this->assertDirectoryExists($response->outputDir . '/src');
         $this->assertFileExists($response->outputDir . '/src/Kernel.php');
@@ -50,6 +50,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/src/Listener');
         $this->assertFileExists($response->outputDir . '/src/Listener/CsrfListener.php');
         $this->assertFileExists($response->outputDir . '/src/Listener/LocaleListener.php');
+        $this->assertFileExists($response->outputDir . '/src/Listener/ExceptionListener.php');
 
         $this->assertDirectoryExists($response->outputDir . '/src/Twig');
         $this->assertFileExists($response->outputDir . '/src/Twig/AppExtension.php');
@@ -60,6 +61,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/src/Security/UserProvider.php');
 
         $this->assertDirectoryExists($response->outputDir . '/src/Controller');
+        $this->assertFileExists($response->outputDir . '/src/Controller/.gitignore');
         $this->assertFileExists($response->outputDir . '/src/Controller/DashboardController.php');
         $this->assertFileExists($response->outputDir . '/src/Controller/LocaleController.php');
         $this->assertFileExists($response->outputDir . '/src/Controller/SecurityController.php');
@@ -132,6 +134,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.slimscroll.min.js');
         $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.select2.min.js');
         $this->assertFileExists($response->outputDir . '/public/js/jquery/jquery.infinite.min.js');
+        $this->assertFileExists($response->outputDir . '/public/js/jquery/chart.bundle.min.js');
         $this->assertDirectoryExists($response->outputDir . '/public/js/bootstrap');
         $this->assertFileExists($response->outputDir . '/public/js/bootstrap/bootstrap.min.js');
 
@@ -141,6 +144,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/templates/default');
         $this->assertFileExists($response->outputDir . '/templates/default/_flash.html.twig');
         $this->assertFileExists($response->outputDir . '/templates/default/_infinite.html.twig');
+        $this->assertFileExists($response->outputDir . '/templates/default/_back_button.html.twig');
         $this->assertFileExists($response->outputDir . '/templates/default/homepage.html.twig');
 
         $this->assertDirectoryExists($response->outputDir . '/templates/form');
@@ -173,6 +177,8 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/var/sessions');
 
         $this->assertDirectoryExists($response->outputDir . '/tests');
+        $this->assertFileExists($response->outputDir . '/tests/TestCase.php');
+        $this->assertFileExists($response->outputDir . '/tests/WebTestCase.php');
 
         $this->assertDirectoryExists($response->outputDir . '/domain');
         $this->assertDirectoryExists($response->outputDir . '/domain/Database');

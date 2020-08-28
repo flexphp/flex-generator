@@ -1,0 +1,135 @@
+<?php declare(strict_types=1);
+
+namespace App\Tests;
+
+use Domain\User\Gateway\MySQLUserGateway;
+use Domain\User\Request\LoginUserRequest;
+use Domain\User\UseCase\LoginUserUseCase;
+use Domain\User\UserRepository;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as WebTestCaseSymfony;
+use Symfony\Component\BrowserKit\Client;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
+abstract class WebTestCase extends WebTestCaseSymfony
+{
+    /**
+     * @var Client
+     */
+    protected $client;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client = static::createClient();
+        $this->client->followRedirects();
+
+        // $this->createDb();
+        // $this->seedDb();
+    }
+
+    public function tearDown(): void
+    {
+        // $this->destroyDb();
+
+        parent::tearDown();
+    }
+
+    protected function logIn(string $email = 'admin@admin'): void
+    {
+        $session = self::$container->get('session');
+
+        $response = (new LoginUserUseCase(new UserRepository(new MySQLUserGateway($this->connection()))))->execute(new LoginUserRequest($email));
+        $user = $response->user;
+
+        $firewallName = 'main';
+        $firewallContext = 'main';
+
+        $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
+        $session->set('_security_' . $firewallContext, \serialize($token));
+        $session->save();
+
+        $cookie = new Cookie($session->getName(), $session->getId());
+
+        $this->client->getCookieJar()->set($cookie);
+    }
+
+    protected function getCsrfToken(string $id = 'ajax')
+    {
+        return self::$container->get('security.csrf.token_manager')->getToken($id)->getValue();
+    }
+
+    protected function getHeaderCsrfToken(string $id = 'ajax')
+    {
+        return ['HTTP_X-XSRF-Token' => $this->getCsrfToken($id)];
+    }
+
+    protected function getInputCsrfToken(string $id = 'ajax')
+    {
+        return ['_token' => $this->getCsrfToken($id)];
+    }
+
+    protected function createDb(): bool
+    {
+        $file = \dirname(__DIR__) . '/domain/Database/create - sqlite.sql';
+
+        if (!\file_exists($file)) {
+            return false;
+        }
+
+        \file_put_contents(\dirname(__DIR__) . '/var/testing.db', '');
+
+        $this->executeDb(\file_get_contents($file));
+
+        return false;
+    }
+
+    protected function seedDb(): bool
+    {
+        $file = \dirname(__DIR__) . '/domain/Database/preinserts.sql';
+
+        if (!\file_exists($file)) {
+            return false;
+        }
+
+        $this->executeDb(\file_get_contents($file));
+
+        return true;
+    }
+
+    protected function destroyDb(): bool
+    {
+        $file = \dirname(__DIR__) . '/var/testing.db';
+
+        if (\file_exists($file)) {
+            return \unlink($file);
+        }
+
+        return false;
+    }
+
+    protected function executeDb(string $sql): void
+    {
+        $sentences = \explode(';', $sql);
+
+        foreach ($sentences as $sentence) {
+            $query = $this->connection()->prepare($sentence);
+            $query->execute();
+        }
+    }
+
+    /**
+     * @return \Doctrine\Dbal\Connection
+     */
+    protected function connection()
+    {
+        static $connection;
+
+        if ($connection) {
+            return $connection;
+        }
+
+        return $connection = self::$container->get('Doctrine\DBAL\Connection');
+    }
+}

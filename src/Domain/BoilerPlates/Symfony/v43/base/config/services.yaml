@@ -45,3 +45,8 @@ services:
         arguments: ['%locale%']
         tags:
             - { name: kernel.event_subscriber }
+
+    app.event_subscriber.exception_susbscriber:
+        class: App\Listener\ExceptionListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

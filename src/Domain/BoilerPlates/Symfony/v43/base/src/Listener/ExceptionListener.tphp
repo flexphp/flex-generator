@@ -1,0 +1,51 @@
+<?php declare(strict_types=1);
+
+namespace App\Listener;
+
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+final class ExceptionListener
+{
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $router;
+
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    public function __construct(UrlGeneratorInterface $router, SessionInterface $session)
+    {
+        $this->router = $router;
+        $this->session = $session;
+    }
+
+    public function onKernelException(ExceptionEvent $event): void
+    {
+        $exception = $event->getThrowable();
+
+        if (!$exception instanceof HttpExceptionInterface && $exception->getCode() > 0) {
+            $response = new Response();
+
+            $response->setStatusCode($exception->getCode());
+            $response->setContent($exception->getMessage());
+
+            $event->setResponse($response);
+        }
+
+        if ($exception instanceof HttpExceptionInterface && $exception->getStatusCode() === 401) {
+            $this->session->getFlashBag()->add('danger', $exception->getMessage());
+
+            $response = new RedirectResponse($this->router->generate('login'), 302);
+
+            $event->setResponse($response);
+        }
+    }
+}

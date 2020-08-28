@@ -58,6 +58,7 @@ class AppRuntime implements RuntimeExtensionInterface
         }
 
         $counter++;
+        $context = $item['context'] ?? $context;
         $title = $item['title'] ?? 'undefined';
         $titleTranslate = $this->translator->trans($title, [], $context);
         $icon = $item['icon'] ?? 'fas fa-check';
@@ -68,14 +69,15 @@ class AppRuntime implements RuntimeExtensionInterface
         $subMenus = $this->subMenuFlex($_route, $context, $children, $counter);
         $active = $this->isActiveMenu($_route, $children);
         $url = $route !== '#' ? $this->router->generate($route) : $route;
+        $showOverlay = $subMenus === '' ? 'show-overlay ' : '';
 
         return sprintf('<li class="nav-item">
-            <a class="nav-link %6$s" href="%8$s" %5$s aria-expanded="%7$s"
+            <a class="%9$snav-link %6$s" href="%8$s" %5$s aria-expanded="%7$s"
                 data-target="#submenu-%4$s" aria-controls="submenu-%4$d">
                 <i class="%2$s"></i> %1$s
             </a>
             %3$s
-        </li>', $titleTranslate, $icon, $subMenus, $counter, $collapse, ($active ? 'active' : ''), ($active ? 'true' : 'false'), $url);
+        </li>', $titleTranslate, $icon, $subMenus, $counter, $collapse, ($active ? 'active' : ''), ($active ? 'true' : 'false'), $url, $showOverlay);
     }
 
     private function subMenuFlex(string $_route, string $context, array $subitems, int $counter): string
@@ -85,7 +87,12 @@ class AppRuntime implements RuntimeExtensionInterface
 
         foreach ($subitems as $subitem) {
             $show = isset($subitem['route']) && $_route === $subitem['route'] ? 'show' : $show;
+            $context = $subitem['context'] ?? $context;
             $subMenus .= $this->itemSubMenuFlex($context, $subitem);
+        }
+
+        if ($subMenus === '') {
+            return '';
         }
 
         return sprintf('<div id="submenu-%1$d" class="collapse submenu %2$s">
@@ -109,7 +116,7 @@ class AppRuntime implements RuntimeExtensionInterface
 
 
         return sprintf('<li class="nav-item">
-                    <a class="nav-link" href="%3$s">
+                    <a class="show-overlay nav-link" href="%3$s">
                         <i class="%2$s"></i> %1$s
                     </a>
                 </li>', $titleTranslate, $icon, $url);

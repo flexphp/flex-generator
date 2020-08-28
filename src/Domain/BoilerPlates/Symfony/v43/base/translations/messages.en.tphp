@@ -29,6 +29,11 @@ return [
         'delete' => 'Delete',
         'cancel' => 'Cancel',
         'options' => 'Actions',
+        'toggle' => 'Show / Hide',
+        'add' => 'Add',
+        'remove' => 'Remove',
+        'filter' => 'Filter',
+        'back' => 'Back',
     ],
     'message' => [
         'delete' => 'Are you sure?',
@@ -36,6 +41,7 @@ return [
     'search' => [
         'empty' => 'Nothing here',
         'loading' => 'Loading',
+        'last' => 'Nothing else',
     ],
     'label' => [
         'yes' => 'Yes',

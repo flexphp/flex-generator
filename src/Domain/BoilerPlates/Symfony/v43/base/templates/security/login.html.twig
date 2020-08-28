@@ -31,7 +31,7 @@
         <div class="card-body">
             <form action="{{ path('login') }}" method="post">
                 <div class="form-group">
-                    <input class="form-control form-control-lg" id="email" name="email" type="email" placeholder="{% trans %}label.email{% endtrans %}" autocomplete="off" required>
+                    <input class="form-control form-control-lg" id="email" name="email" type="email" placeholder="{% trans %}label.email{% endtrans %}" autocomplete="off" required autofocus>
                 </div>
 
                 <div class="form-group">
@@ -39,7 +39,7 @@
                 </div>
 
                 {% if error %}
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-dismissible alert-danger" role="alert">
                         {{ error.messageKey|trans(error.messageData, 'security') }}
 
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -47,6 +47,8 @@
                         </button>
                     </div>
                 {% endif %}
+
+                {{ include('default/_flash.html.twig') }}
 
                 <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to') }}"/>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>

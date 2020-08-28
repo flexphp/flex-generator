@@ -209,7 +209,7 @@ a {
 }
 
 a:hover {
-    color: #ff407b;
+    color: #6c757d;
     text-decoration: none;
 }
 
@@ -252,12 +252,30 @@ label {
     border-radius: 2px;
 }
 
-.form-control:focus {
+.form-control:focus, .select2-container:focus>span.selection>span.select2-selection {
     color: #71748d;
     background-color: #fff;
     border-color: #a7a7f0;
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(214, 214, 255, .75);
+}
+
+.required:after {
+    content: '*';
+    color: red;
+}
+
+.select2-container>span.selection>span.select2-selection {
+    border: 1px solid #d2d2e4;
+    border-radius: 2px;
+}
+
+.form-control:invalid {
+    border-left-color: red;
+}
+
+.select2-hidden-accessible:invalid+.select2-container>span.selection>span.select2-selection {
+    border-left-color: red;
 }
 
 input[type=file] {
@@ -800,7 +818,7 @@ html body .display-7 {
     position: absolute;
     left: 0;
     font-size: 14px;
-    color: #ff407b;
+    color: #6c757d;
     content: '\f058';
     font-style: initial;
 }
@@ -840,7 +858,7 @@ Background Color / Color
 }
 
 .bg-secondary {
-    background-color: #ff407b !important;
+    background-color: #6c757d !important;
     color: #fff !important;
 }
 
@@ -939,7 +957,7 @@ Borders
 }
 
 .text-secondary {
-    color: #ff407b !important;
+    color: #6c757d !important;
 }
 
 .text-success {
@@ -991,7 +1009,7 @@ Borders
 }
 
 .border-secondary {
-    border-color: #ff407b !important;
+    border-color: #6c757d !important;
 }
 
 .border-brand {
@@ -1560,6 +1578,14 @@ Top Header
 Left Navigation Sidebar
 ------------------------- */
 
+.left-sidebar {
+    position: fixed;
+    width: 264px;
+    height: 85vh;
+    padding-top: 20px;
+    overflow: auto;
+}
+
 .nav-left-sidebar {
     position: fixed;
     width: 264px;
@@ -1598,7 +1624,7 @@ Left Navigation Sidebar
 
 .nav-left-sidebar .nav-link[data-toggle="collapse"]:after {
     transition: transform .35s ease, opacity .35s ease;
-    opacity: .5;
+    /* opacity: .5; */
 }
 
 .nav-left-sidebar .navbar-nav {
@@ -1744,13 +1770,17 @@ Leftsidebar - dark
 .sidebar-dark.nav-left-sidebar .navbar-nav .nav-item {}
 
 .sidebar-dark.nav-left-sidebar .navbar-nav .nav-link {
-    color: #7a80b4;
+    color: #fff;
 }
 
 .sidebar-dark.nav-left-sidebar .navbar-nav .nav-link:focus, .sidebar-dark.nav-left-sidebar .navbar-nav .nav-link:hover {
     color: #fff;
     background-color: #242849;
     border-radius: 2px;
+}
+
+.sidebar-dark.nav-left-sidebar .navbar-nav .nav-link:hover {
+    padding-left: 20px;
 }
 
 .sidebar-dark.nav-left-sidebar .navbar-nav .nav-link:focus, .sidebar-dark.nav-left-sidebar .navbar-nav .nav-link.active {
@@ -1861,7 +1891,7 @@ Container / Wrapper
 }
 
 .dashboard-content {
-    padding: 30px 30px 60px 30px;
+    padding: 20px 15px 60px 20px;
 }
 
 /*-----------------------
@@ -2620,7 +2650,7 @@ Pageheader
 }
 
 .btn-wishlist:hover {
-    background-color: #ff407b;
+    background-color: #6c757d;
     color: #fff;
 }
 
@@ -2680,27 +2710,27 @@ Pageheader
 
 .btn-secondary {
     color: #fff;
-    background-color: #ff407b;
-    border-color: #ff407b;
+    background-color: #6c757d;
+    border-color: #6c757d;
 }
 
 .btn-secondary:hover {
     color: #fff;
-    background-color: #f0346e;
-    border-color: #f0346e;
+    background-color: #5a6268;
+    border-color: #545b62;
 }
 
 .btn-secondary.focus, .btn-secondary:focus {
     color: #fff;
-    background-color: #f0346e;
-    border-color: #f0346e;
-    box-shadow: 0 0 0 1px rgb(222, 17, 80);
+    background-color: #545b62;
+    border-color: #545b62;
+    box-shadow: 0 0 0 1px rgb(108,117,125,.5);
 }
 
 .btn-secondary:not(:disabled):not(.disabled).active, .btn-secondary:not(:disabled):not(.disabled):active, .show>.btn-secondary.dropdown-toggle {
     color: #fff;
-    background-color: #f0346e;
-    border-color: #f0346e;
+    background-color: #545b62;
+    border-color: #545b62;
 }
 
 /*--- btn success --*/
@@ -2898,28 +2928,28 @@ Pageheader
 /*--- btn outline secondary --*/
 
 .btn-outline-secondary {
-    color: #ff407b;
+    color: #6c757d;
     background-color: transparent;
-    border-color: #ff407b;
+    border-color: #6c757d;
 }
 
 .btn-outline-secondary:hover {
     color: #fff;
-    background-color: #ff407b;
-    border-color: #ff407b;
+    background-color: #6c757d;
+    border-color: #6c757d;
 }
 
 .btn-outline-secondary.focus, .btn-outline-secondary:focus {
     color: #fff;
-    background-color: #ff407b;
-    border-color: #ff407b;
-    box-shadow: 0 0 0 1px rgb(227, 45, 201);
+    background-color: #6c757d;
+    border-color: #6c757d;
+    box-shadow: 0 0 0 1px rgb(108,117,125,.5);
 }
 
 .btn-outline-secondary:not(:disabled):not(.disabled).active, .btn-outline-secondary:not(:disabled):not(.disabled):active, .show>.btn-outline-secondary.dropdown-toggle {
     color: #fff;
-    background-color: #ff407b;
-    border-color: #ff407b;
+    background-color: #6c757d;
+    border-color: #6c757d;
 }
 
 /*--- btn outline success --*/
@@ -3130,7 +3160,7 @@ btn-link
 }
 
 .btn-secondary-link {
-    color: #ff407b !important;
+    color: #6c757d !important;
 }
 
 /* -----------------------
@@ -3926,12 +3956,12 @@ Pills vertical
 }
 
 .badge-secondary {
-    background-color: #ff407b;
+    background-color: #6c757d;
 }
 
 .badge-secondary[href]:focus, .badge-secondary[href]:hover {
     color: #fff;
-    background-color: #ff407b;
+    background-color: #6c757d;
     text-decoration: none;
 }
 
@@ -6617,7 +6647,7 @@ Media Query
         margin-left: 0px;
     }
     .dashboard-content {
-        padding: 20px 20px 60px 20px;
+        padding: 10px 10px 60px 10px;
     }
     .nav-left-sidebar .navbar a {
         color: #fff;
@@ -6626,7 +6656,7 @@ Media Query
     .nav-left-sidebar .navbar-toggler {
         background-color: #fff;
     }
-    .nav-left-sidebar {
+    .left-sidebar, .nav-left-sidebar {
         width: 100%;
         height: 100%;
         position: relative;
@@ -6647,7 +6677,7 @@ Media Query
 
 @media only screen and (max-width:768px) {
     .dashboard-content {
-        padding: 10px 10px 50px 10px;
+        padding: 10px 10px 30px 10px;
     }
     /* infulencer dahboard */
     .dashboard-influence .card-footer-item {
@@ -6702,7 +6732,7 @@ Media Query
     .nav-left-sidebar .navbar {
         padding: 14px;
     }
-    .nav-left-sidebar {
+    .left-sidebar, .nav-left-sidebar {
         width: 100%;
         position: relative;
         top: 0px;
@@ -6781,6 +6811,17 @@ Media Query
     }
     .simple-card .nav.nav-tabs .nav-item .nav-link {
         padding: 17px 29px;
+    }
+    .card, .btn-group, :not(.btn-group) > .btn:not(.btn-link) {
+        -webkit-box-shadow: 4px 4px 3px 0px gray;
+        -moz-box-shadow: 4px 4px 3px 0px gray;
+        box-shadow: 4px 4px 3px 0px gray;
+    }
+    /* :not(.btn-group) > .btn {
+        font-size: 1.25em;
+    } */
+    .btn > .btn-text {
+        display: none;
     }
 }
 
