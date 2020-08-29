@@ -6,6 +6,9 @@ use Domain\{{ entity }}\Request\{{ action }}{{ entity }}Request;
 use Domain\{{ entity }}\Response\{{ action }}{{ entity }}Response;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\{{ entity }}\{{ entity }}Repository getRepository
+ */
 final class {{ action }}{{ entity }}UseCase extends UseCase
 {
     /**

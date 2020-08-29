@@ -29,6 +29,9 @@ use Domain\Test\Request\ActionTestRequest;
 use Domain\Test\Response\ActionTestResponse;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\Test\TestRepository getRepository
+ */
 final class ActionTestUseCase extends UseCase
 {
     private \$lower;
@@ -71,6 +74,9 @@ use Domain\Test\Request\IndexTestRequest;
 use Domain\Test\Response\IndexTestResponse;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\Test\TestRepository getRepository
+ */
 final class IndexTestUseCase extends UseCase
 {
     /**
@@ -103,6 +109,9 @@ use Domain\Test\Request\CreateTestRequest;
 use Domain\Test\Response\CreateTestResponse;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\Test\TestRepository getRepository
+ */
 final class CreateTestUseCase extends UseCase
 {
     /**
@@ -133,6 +142,9 @@ use Domain\Test\Request\ReadTestRequest;
 use Domain\Test\Response\ReadTestResponse;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\Test\TestRepository getRepository
+ */
 final class ReadTestUseCase extends UseCase
 {
     /**
@@ -165,6 +177,9 @@ use Domain\Test\Request\UpdateTestRequest;
 use Domain\Test\Response\UpdateTestResponse;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\Test\TestRepository getRepository
+ */
 final class UpdateTestUseCase extends UseCase
 {
     /**
@@ -195,6 +210,9 @@ use Domain\Test\Request\DeleteTestRequest;
 use Domain\Test\Response\DeleteTestResponse;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\Test\TestRepository getRepository
+ */
 final class DeleteTestUseCase extends UseCase
 {
     /**
@@ -225,6 +243,9 @@ use Domain\Test\Request\LoginTestRequest;
 use Domain\Test\Response\LoginTestResponse;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\Test\TestRepository getRepository
+ */
 final class LoginTestUseCase extends UseCase
 {
     /**
@@ -260,6 +281,9 @@ use Domain\\{$expected}\Request\Action{$expected}Request;
 use Domain\\{$expected}\Response\Action{$expected}Response;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\\{$expected}\\{$expected}Repository getRepository
+ */
 final class Action{$expected}UseCase extends UseCase
 {
     /**
@@ -293,6 +317,9 @@ use Domain\Test\Request\\{$expected}TestRequest;
 use Domain\Test\Response\\{$expected}TestResponse;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\Test\TestRepository getRepository
+ */
 final class {$expected}TestUseCase extends UseCase
 {
     /**
@@ -328,6 +355,9 @@ use Domain\Test\Request\ActionTestRequest;
 use Domain\Test\Response\ActionTestResponse;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\Test\TestRepository getRepository
+ */
 final class ActionTestUseCase extends UseCase
 {
     private \${$expected};

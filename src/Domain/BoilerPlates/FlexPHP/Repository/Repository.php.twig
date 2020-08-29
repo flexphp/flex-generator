@@ -17,6 +17,9 @@ namespace Domain\{{ entity }};
 {% endif %}
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method {{ entity }}Gateway getGateway
+ */
 final class {{ entity }}Repository extends Repository
 {
 {% for index, action in actions %}

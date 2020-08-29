@@ -36,6 +36,9 @@ use Domain\\{$namespace}\Request\Find{$expected}Request;
 use Domain\\{$namespace}\Response\Find{$expected}Response;
 use FlexPHP\UseCases\UseCase;
 
+/**
+ * @method \Domain\\{$namespace}\\{$namespace}Repository getRepository
+ */
 final class Find{$expected}UseCase extends UseCase
 {
     /**

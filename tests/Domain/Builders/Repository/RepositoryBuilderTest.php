@@ -41,6 +41,9 @@ use Domain\Test\Request\ReadTestRequest;
 use Domain\Test\Request\UpdateTestRequest;
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method TestGateway getGateway
+ */
 final class TestRepository extends Repository
 {
     public function findBy(IndexTestRequest $request): array
@@ -112,6 +115,9 @@ namespace Domain\Test;
 use Domain\Test\Request\IndexTestRequest;
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method TestGateway getGateway
+ */
 final class TestRepository extends Repository
 {
     public function findBy(IndexTestRequest $request): array
@@ -138,6 +144,9 @@ namespace Domain\Test;
 use Domain\Test\Request\CreateTestRequest;
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method TestGateway getGateway
+ */
 final class TestRepository extends Repository
 {
     public function add(CreateTestRequest $request): Test
@@ -168,6 +177,9 @@ namespace Domain\Test;
 use Domain\Test\Request\CreateTestRequest;
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method TestGateway getGateway
+ */
 final class TestRepository extends Repository
 {
     public function add(CreateTestRequest $request): Test
@@ -196,6 +208,9 @@ namespace Domain\Test;
 use Domain\Test\Request\ReadTestRequest;
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method TestGateway getGateway
+ */
 final class TestRepository extends Repository
 {
     public function getById(ReadTestRequest $request): Test
@@ -223,6 +238,9 @@ namespace Domain\Test;
 use Domain\Test\Request\UpdateTestRequest;
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method TestGateway getGateway
+ */
 final class TestRepository extends Repository
 {
     public function change(UpdateTestRequest $request): Test
@@ -251,6 +269,9 @@ namespace Domain\Test;
 use Domain\Test\Request\DeleteTestRequest;
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method TestGateway getGateway
+ */
 final class TestRepository extends Repository
 {
     public function remove(DeleteTestRequest $request): Test
@@ -282,6 +303,9 @@ namespace Domain\Test;
 use Domain\Test\Request\LoginTestRequest;
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method TestGateway getGateway
+ */
 final class TestRepository extends Repository
 {
     public function getByLogin(LoginTestRequest $request): Test
@@ -312,6 +336,9 @@ use Domain\PostComment\Request\IndexPostCommentRequest;
 use Domain\PostComment\Request\UpdatePostCommentRequest;
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method PostCommentGateway getGateway
+ */
 final class PostCommentRepository extends Repository
 {
     public function findBy(IndexPostCommentRequest $request): array
@@ -362,6 +389,9 @@ namespace Domain\Test;
 use Domain\Test\Request\IndexTestRequest;
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method TestGateway getGateway
+ */
 final class TestRepository extends Repository
 {
     public function findBy(IndexTestRequest $request): array
@@ -390,6 +420,9 @@ namespace Domain\\{$expected};
 
 use FlexPHP\Repositories\Repository;
 
+/**
+ * @method {$expected}Gateway getGateway
+ */
 final class {$expected}Repository extends Repository
 {
 }
