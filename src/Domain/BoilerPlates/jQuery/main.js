@@ -139,7 +139,7 @@ jQuery(document).ready(function ($) {
 
             const moneyFormats = document.querySelectorAll('.dashboard-content .table > tbody > tr > td.money-format');
 
-            [].forEach.call(moneyFormats, function(moneyFormat) {
+            [].forEach.call(moneyFormats, function (moneyFormat) {
                 if (isNaN(moneyFormat.innerHTML)) {
                     return undefined;
                 }
