@@ -321,12 +321,13 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/flexphp/flex-database.git",
-                "reference": "58ca2f9b61290365bb08364176d5d11572d6d32a"
+                "reference": "a1a700638f0157da5bfba378c7994d707e63bf82"
             },
             "dist": {
-                "type": "path",
-                "url": "https://api.github.com/repos/flexphp/flex-database/zipball/58ca2f9b61290365bb08364176d5d11572d6d32a",
-                "reference": "58ca2f9b61290365bb08364176d5d11572d6d32a"
+                "type": "zip",
+                "url": "https://api.github.com/repos/flexphp/flex-database/zipball/a1a700638f0157da5bfba378c7994d707e63bf82",
+                "reference": "a1a700638f0157da5bfba378c7994d707e63bf82",
+                "shasum": ""
             },
             "require": {
                 "doctrine/dbal": "^2.9",
@@ -347,34 +348,7 @@
                     "FlexPHP\\Database\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "FlexPHP\\Database\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "phpcs": [
-                    "phpcs --standard=PSR2 src/ tests/ --ignore=tests/coverage/*"
-                ],
-                "phpmd": [
-                    "phpmd src/,tests/ ansi design,naming,unusedcode"
-                ],
-                "phpfix": [
-                    "phpcbf --standard=PSR2 --extensions=php src/ tests/"
-                ],
-                "phpstan": [
-                    "phpstan analyse -l 8 src/ tests/"
-                ],
-                "phpunit": [
-                    "phpunit --bootstrap vendor/autoload.php --testdox tests/"
-                ],
-                "test": [
-                    "@phpcs",
-                    "@phpmd",
-                    "@phpstan",
-                    "@phpunit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -384,7 +358,8 @@
                     "email": "freddie.gar@outlook.com"
                 }
             ],
-            "description": "Database PHP for FlexPHP library"
+            "description": "Database PHP for FlexPHP library",
+            "time": "2020-08-21T20:28:51+00:00"
         },
         {
             "name": "flexphp/schema",
