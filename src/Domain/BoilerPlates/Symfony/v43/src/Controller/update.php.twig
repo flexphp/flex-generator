@@ -1,6 +1,6 @@
     /**
      * @Route("/edit/{id}", methods={"GET"}, name="{{ entity_dash }}.edit")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="{{ cache|default('3600') }}")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
     public function edit(Connection $conn, {{ pkTypeHint }} $id): Response

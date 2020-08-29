@@ -118,7 +118,7 @@ final class TestController extends AbstractController
 {
     /**
      * @Route("/", methods={"GET"}, name="tests.index")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_INDEX')", statusCode=401)
      */
     public function index(Request \$request, Connection \$conn): Response
@@ -183,7 +183,7 @@ final class TestController extends AbstractController
 {
     /**
      * @Route("/new", methods={"GET"}, name="tests.new")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_CREATE')", statusCode=401)
      */
     public function new(): Response
@@ -261,7 +261,7 @@ final class TestController extends AbstractController
 {
     /**
      * @Route("/{id}", methods={"GET"}, name="tests.read")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_READ')", statusCode=401)
      */
     public function read(Connection \$conn, string \$id): Response
@@ -327,7 +327,7 @@ final class TestController extends AbstractController
 {
     /**
      * @Route("/edit/{id}", methods={"GET"}, name="tests.edit")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
     public function edit(Connection \$conn, int \$id): Response
@@ -506,7 +506,7 @@ final class UserPostController extends AbstractController
 {
     /**
      * @Route("/find-bars", methods={"POST"}, name="user-posts.find.bars")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_BAR_INDEX')", statusCode=401)
      */
     public function findBar(Request \$request, Connection \$conn): Response
@@ -529,7 +529,7 @@ final class UserPostController extends AbstractController
 
     /**
      * @Route("/find-posts", methods={"POST"}, name="user-posts.find.posts")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_POST_INDEX')", statusCode=401)
      */
     public function findPost(Request \$request, Connection \$conn): Response
@@ -552,7 +552,7 @@ final class UserPostController extends AbstractController
 
     /**
      * @Route("/find-user-status", methods={"POST"}, name="user-posts.find.user-status")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_USERSTATUS_INDEX')", statusCode=401)
      */
     public function findUserStatus(Request \$request, Connection \$conn): Response

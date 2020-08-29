@@ -26,7 +26,7 @@ final class ActionBuilderTest extends TestCase
         $this->assertEquals(<<<T
     /**
      * @Route("/", methods={"GET"}, name="{$route}.index")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_INDEX')", statusCode=401)
      */
     public function index(Request \$request, Connection \$conn): Response
@@ -44,7 +44,7 @@ T
         $this->assertEquals(<<<T
     /**
      * @Route("/", methods={"GET"}, name="tests.index")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_INDEX')", statusCode=401)
      */
     public function index(Request \$request, Connection \$conn): Response
@@ -62,7 +62,7 @@ T
         $this->assertEquals(<<<T
     /**
      * @Route("/new", methods={"GET"}, name="tests.new")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_CREATE')", statusCode=401)
      */
     public function new(): Response
@@ -101,7 +101,7 @@ T
         $this->assertEquals(<<<T
     /**
      * @Route("/new", methods={"GET"}, name="{$route}.new")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_CREATE')", statusCode=401)
      */
     public function new(): Response
@@ -132,7 +132,7 @@ T
         $this->assertEquals(<<<T
     /**
      * @Route("/{id}", methods={"GET"}, name="tests.read")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_READ')", statusCode=401)
      */
     public function read(Connection \$conn, string \$id): Response
@@ -150,7 +150,7 @@ T
         $this->assertEquals(<<<T
     /**
      * @Route("/edit/{id}", methods={"GET"}, name="tests.edit")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
     public function edit(Connection \$conn, string \$id): Response
@@ -201,7 +201,7 @@ T
         $this->assertEquals(<<<T
     /**
      * @Route("/edit/{id}", methods={"GET"}, name="{$route}.edit")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_UPDATE')", statusCode=401)
      */
     public function edit(Connection \$conn, string \$id): Response
@@ -281,7 +281,7 @@ T
         $this->assertEquals(<<<T
     /**
      * @Route("/edit/{id}", methods={"GET"}, name="tests.edit")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
     public function edit(Connection \$conn, int \$id): Response

@@ -2,7 +2,7 @@
     /**
      * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
 {% if methods == 'GET' %}
-     * @Cache(smaxage="{{ cache|default('10') }}")
+     * @Cache(smaxage="{{ cache|default('3600') }}")
 {% endif %}
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */

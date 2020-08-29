@@ -56,7 +56,7 @@ final class {{ entity }}Controller extends AbstractController
 {% for id,fkFn in fkFnsNoBlame %}
     /**
      * @Route("/find-{{ fkFn.route }}", methods={"POST"}, name="{{ fkFn.fkRoute }}.find.{{ fkFn.route }}")
-     * @Cache(smaxage="10")
+     * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ fkFn.fnSingular|upper }}_INDEX')", statusCode=401)
      */
     public function find{{ fkFn.fnSingular }}(Request $request, Connection $conn): Response
