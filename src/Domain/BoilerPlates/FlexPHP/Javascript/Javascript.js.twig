@@ -2,11 +2,11 @@ jQuery(document).ready(function ($) {
     'use strict';
 
 {% for fkRel in fkRels %}
-    const {{ fkRel.pkName }}Url = $('#{{ form }}_form_{{ fkRel.pkName }}').data('autocomplete-url');
+    const {{ fkRel.pkName }}Url = $('[id$=form_{{ fkRel.pkName }}]').data('autocomplete-url');
 {% endfor %}
 {% for fkRel in fkRels %}
 
-    $('#{{ form }}_form_{{ fkRel.pkName }}').select2({
+    $('[id$=form_{{ fkRel.pkName }}]').select2({
         theme: 'bootstrap4',
         minimumInputLength: 3,
         allowClear: true,

@@ -36,11 +36,11 @@ T
 jQuery(document).ready(function ($) {
     'use strict';
 
-    const fooUrl = $('#post_comment_form_foo').data('autocomplete-url');
-    const postIdUrl = $('#post_comment_form_postId').data('autocomplete-url');
-    const statusIdUrl = $('#post_comment_form_statusId').data('autocomplete-url');
+    const fooUrl = $('[id$=form_foo]').data('autocomplete-url');
+    const postIdUrl = $('[id$=form_postId]').data('autocomplete-url');
+    const statusIdUrl = $('[id$=form_statusId]').data('autocomplete-url');
 
-    $('#post_comment_form_foo').select2({
+    $('[id$=form_foo]').select2({
         theme: 'bootstrap4',
         minimumInputLength: 3,
         allowClear: true,
@@ -63,7 +63,7 @@ jQuery(document).ready(function ($) {
         },
     });
 
-    $('#post_comment_form_postId').select2({
+    $('[id$=form_postId]').select2({
         theme: 'bootstrap4',
         minimumInputLength: 3,
         allowClear: true,
@@ -86,7 +86,7 @@ jQuery(document).ready(function ($) {
         },
     });
 
-    $('#post_comment_form_statusId').select2({
+    $('[id$=form_statusId]').select2({
         theme: 'bootstrap4',
         minimumInputLength: 3,
         allowClear: true,
