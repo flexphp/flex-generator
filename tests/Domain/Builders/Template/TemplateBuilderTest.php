@@ -31,12 +31,13 @@ final class TemplateBuilderTest extends TestCase
                 {% trans %}title.list{% endtrans %}
             </h3>
             <div class="toolbar ml-auto">
-                <a href="{{ path('tests.new') }}" class="btn btn-success">
-                    <i class="fa fa-plus" aria-hidden="true"></i> {% trans from 'messages' %}action.new{% endtrans %}
+                <a href="{{ path('tests.new') }}" class="btn btn-primary">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans %}title.new{% endtrans %}</span>
                 </a>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body p-0 table-responsive-sm">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -82,12 +83,13 @@ T
                 {% trans %}title.list{% endtrans %}
             </h3>
             <div class="toolbar ml-auto">
-                <a href="{{ path('user-status.new') }}" class="btn btn-success">
-                    <i class="fa fa-plus" aria-hidden="true"></i> {% trans from 'messages' %}action.new{% endtrans %}
+                <a href="{{ path('user-status.new') }}" class="btn btn-primary">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans %}title.new{% endtrans %}</span>
                 </a>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body p-0 table-responsive-sm">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -130,12 +132,13 @@ T
                 {% trans %}title.list{% endtrans %}
             </h3>
             <div class="toolbar ml-auto">
-                <a href="{{ path('tests.new') }}" class="btn btn-success">
-                    <i class="fa fa-plus" aria-hidden="true"></i> {% trans from 'messages' %}action.new{% endtrans %}
+                <a href="{{ path('tests.new') }}" class="btn btn-primary">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans %}title.new{% endtrans %}</span>
                 </a>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body p-0 table-responsive-sm">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -179,7 +182,7 @@ T, $render->build());
                 </a>
 
                 <a href="{{ path('tests.edit', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
-                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
+                    <i class="fa fa-edit text-info" aria-hidden="true"></i>
                 </a>
             </div>
         </td>
@@ -205,7 +208,7 @@ T, $render->build());
                 </a>
 
                 <a href="{{ path('user-status.edit', {id: _userStatus.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
-                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
+                    <i class="fa fa-edit text-info" aria-hidden="true"></i>
                 </a>
             </div>
         </td>
@@ -231,7 +234,7 @@ T, $render->build());
                 </a>
 
                 <a href="{{ path('tests.edit', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
-                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
+                    <i class="fa fa-edit text-info" aria-hidden="true"></i>
                 </a>
             </div>
         </td>
@@ -249,9 +252,9 @@ T, $render->build());
 {% for _test in tests %}
     <tr>
         <td>{{ _test.pk }}</td>
-        <td>{{ _test.fooInstance.fuz|default }}</td>
-        <td>{{ _test.postIdInstance.name|default }}</td>
-        <td>{{ _test.statusIdInstance.name|default }}</td>
+        <td>{{ _test.fooInstance.fuz|default('-') }}</td>
+        <td>{{ _test.postIdInstance.name|default('-') }}</td>
+        <td>{{ _test.statusIdInstance.name|default('-') }}</td>
         <td class="text-center">
             <div class="btn-group">
                 <a href="{{ path('tests.read', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
@@ -259,7 +262,7 @@ T, $render->build());
                 </a>
 
                 <a href="{{ path('tests.edit', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
-                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
+                    <i class="fa fa-edit text-info" aria-hidden="true"></i>
                 </a>
             </div>
         </td>
@@ -287,7 +290,8 @@ T, $render->build());
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
+                    <i class="fa fa-list-ol" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans from 'messages' %}action.list{% endtrans %}</span>
                 </a>
             </div>
         </div>
@@ -299,7 +303,8 @@ T, $render->build());
 
             <div class="card-footer text-right">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-save" aria-hidden="true"></i> {% trans from 'messages' %}action.create{% endtrans %}
+                    <i class="fa fa-save" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans from 'messages' %}action.create{% endtrans %}</span>
                 </button>
             </div>
         {{ form_end(form) }}
@@ -328,7 +333,8 @@ T
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('post-comments.index') }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
+                    <i class="fa fa-list-ol" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans from 'messages' %}action.list{% endtrans %}</span>
                 </a>
             </div>
         </div>
@@ -340,7 +346,8 @@ T
 
             <div class="card-footer text-right">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-save" aria-hidden="true"></i> {% trans from 'messages' %}action.create{% endtrans %}
+                    <i class="fa fa-save" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans from 'messages' %}action.create{% endtrans %}</span>
                 </button>
             </div>
         {{ form_end(form) }}
@@ -379,7 +386,8 @@ T
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
+                    <i class="fa fa-list-ol" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans from 'messages' %}action.list{% endtrans %}</span>
                 </a>
             </div>
         </div>
@@ -399,7 +407,8 @@ T
 
                 <div class="col text-right">
                     <a href="{{ path('tests.edit', {id: test.id}) }}" class="btn btn-outline-primary">
-                        <i class="fa fa-edit" aria-hidden="true"></i> {% trans from 'messages' %}action.edit{% endtrans %}
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                        <span class="btn-text">{% trans from 'messages' %}action.edit{% endtrans %}</span>
                     </a>
                 </div>
             </div>
@@ -429,15 +438,16 @@ T
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
+                    <i class="fa fa-list-ol" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans from 'messages' %}action.list{% endtrans %}</span>
                 </a>
             </div>
         </div>
 
         <div class="card-body">
-            <div class="form-group"><label>{% trans %}label.foo{% endtrans %}</label><div class="form-control-plaintext">{{ test.fooInstance.fuz|default }}</div></div>
-            <div class="form-group"><label>{% trans %}label.postId{% endtrans %}</label><div class="form-control-plaintext">{{ test.postIdInstance.name|default }}</div></div>
-            <div class="form-group"><label>{% trans %}label.statusId{% endtrans %}</label><div class="form-control-plaintext">{{ test.statusIdInstance.name|default }}</div></div>
+            <div class="form-group"><label>{% trans %}label.foo{% endtrans %}</label><div class="form-control-plaintext">{{ test.fooInstance.fuz|default('-') }}</div></div>
+            <div class="form-group"><label>{% trans %}label.postId{% endtrans %}</label><div class="form-control-plaintext">{{ test.postIdInstance.name|default('-') }}</div></div>
+            <div class="form-group"><label>{% trans %}label.statusId{% endtrans %}</label><div class="form-control-plaintext">{{ test.statusIdInstance.name|default('-') }}</div></div>
         </div>
 
         <div class="card-footer">
@@ -448,7 +458,8 @@ T
 
                 <div class="col text-right">
                     <a href="{{ path('tests.edit', {id: test.id}) }}" class="btn btn-outline-primary">
-                        <i class="fa fa-edit" aria-hidden="true"></i> {% trans from 'messages' %}action.edit{% endtrans %}
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                        <span class="btn-text">{% trans from 'messages' %}action.edit{% endtrans %}</span>
                     </a>
                 </div>
             </div>
@@ -478,7 +489,8 @@ T
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
+                    <i class="fa fa-list-ol" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans from 'messages' %}action.list{% endtrans %}</span>
                 </a>
             </div>
         </div>
@@ -497,7 +509,8 @@ T
 
                 <div class="col text-right">
                     <button type="submit" form="test" class="btn btn-primary">
-                        <i class="fa fa-save" aria-hidden="true"></i> {% trans from 'messages' %}action.update{% endtrans %}
+                        <i class="fa fa-save" aria-hidden="true"></i>
+                        <span class="btn-text">{% trans from 'messages' %}action.update{% endtrans %}</span>
                     </button>
                 </div>
             </div>
@@ -527,7 +540,8 @@ T
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ path('post-comments.index') }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> {% trans from 'messages' %}action.list{% endtrans %}
+                    <i class="fa fa-list-ol" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans from 'messages' %}action.list{% endtrans %}</span>
                 </a>
             </div>
         </div>
@@ -546,7 +560,8 @@ T
 
                 <div class="col text-right">
                     <button type="submit" form="postComment" class="btn btn-primary">
-                        <i class="fa fa-save" aria-hidden="true"></i> {% trans from 'messages' %}action.update{% endtrans %}
+                        <i class="fa fa-save" aria-hidden="true"></i>
+                        <span class="btn-text">{% trans from 'messages' %}action.update{% endtrans %}</span>
                     </button>
                 </div>
             </div>
@@ -578,7 +593,8 @@ T
     <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
     <input type="hidden" name="_method" value="delete" />
     <button type="submit" class="btn btn-outline-danger" tabindex="-1">
-        <i class="fa fa-trash" aria-hidden="true"></i> {% trans from 'messages' %}action.delete{% endtrans %}
+        <i class="fa fa-trash" aria-hidden="true"></i>
+        <span class="btn-text">{% trans from 'messages' %}action.delete{% endtrans %}</span>
     </button>
 </form>
 
@@ -599,7 +615,8 @@ T
     <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
     <input type="hidden" name="_method" value="delete" />
     <button type="submit" class="btn btn-outline-danger" tabindex="-1">
-        <i class="fa fa-trash" aria-hidden="true"></i> {% trans from 'messages' %}action.delete{% endtrans %}
+        <i class="fa fa-trash" aria-hidden="true"></i>
+        <span class="btn-text">{% trans from 'messages' %}action.delete{% endtrans %}</span>
     </button>
 </form>
 

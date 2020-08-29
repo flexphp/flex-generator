@@ -9,7 +9,7 @@
 {% elseif property.DataType starts with 'bool' %}
         <td>{{ '{%' }} if _{{ item }}.{{ id }} {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.yes{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} else {{ '%}' }}{{ '{%' }} trans from 'messages' {{ '%}' }}label.no{{ '{%' }} endtrans {{ '%}' }}{{ '{%' }} endif {{ '%}' }}</td>
 {% elseif fkRels[id] %}
-        <td>{{ '{{' }} _{{ item }}.{{ fkRels[id].pkName }}Instance.{{ fkRels[id].text }}|default {{ '}}' }}</td>
+        <td>{{ '{{' }} _{{ item }}.{{ fkRels[id].pkName }}Instance.{{ fkRels[id].text }}|default('-') {{ '}}' }}</td>
 {% else %}
         <td>{{ '{{' }} _{{ item }}.{{ id }} {{ '}}' }}</td>
 {% endif %}
@@ -21,7 +21,7 @@
                 </a>
 
                 <a href="{{ '{{' }} path('{{ route }}.edit', {id: _{{ item }}.id}) {{ '}}' }}" class="btn btn-sm btn-outline-light" title="{{ '{%' }} trans from 'messages' {{ '%}' }}action.edit{{ '{%' }} endtrans {{ '%}' }}">
-                    <i class="fa fa-edit text-primary" aria-hidden="true"></i>
+                    <i class="fa fa-edit text-info" aria-hidden="true"></i>
                 </a>
             </div>
         </td>

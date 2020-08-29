@@ -11,7 +11,8 @@
             </h3>
             <div class="toolbar ml-auto">
                 <a href="{{ '{{' }} path('{{ route }}.index') {{ '}}' }}" class="btn btn-outline-secondary">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i> {{ '{%' }} trans from 'messages' {{ '%}' }}action.list{{ '{%' }} endtrans {{ '%}' }}
+                    <i class="fa fa-list-ol" aria-hidden="true"></i>
+                    <span class="btn-text">{{ '{%' }} trans from 'messages' {{ '%}' }}action.list{{ '{%' }} endtrans {{ '%}' }}</span>
                 </a>
             </div>
         </div>
@@ -23,7 +24,8 @@
 
             <div class="card-footer text-right">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-save" aria-hidden="true"></i> {{ '{%' }} trans from 'messages' {{ '%}' }}action.create{{ '{%' }} endtrans {{ '%}' }}
+                    <i class="fa fa-save" aria-hidden="true"></i>
+                    <span class="btn-text">{{ '{%' }} trans from 'messages' {{ '%}' }}action.create{{ '{%' }} endtrans {{ '%}' }}</span>
                 </button>
             </div>
         {{ '{{' }} form_end(form) {{ '}}' }}
