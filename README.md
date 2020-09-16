@@ -20,6 +20,17 @@ Install the package with Composer:
 composer require flexphp/generator
 ```
 
+## Permissions
+
+```bash
+# Group
+chgrp -Rf www-data src/tmp
+chgrp -Rf www-data log
+# Mode
+chmod -Rf 774 src/tmp
+chmod -Rf 774 log
+```
+
 ## License
 
 Generator is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
