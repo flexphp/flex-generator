@@ -16,18 +16,26 @@
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
+        <testsuite name="Framework Test Suite">
             <directory>tests</directory>
+        </testsuite>
+        <testsuite name="Domain Test Suite">
+            <directory>domain/Tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
+            <directory suffix=".php">domain</directory>
         </whitelist>
     </filter>
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
     </listeners>
+
+    <logging>
+        <log type="coverage-html" target="./tests/coverage"/>
+    </logging>
 </phpunit>
