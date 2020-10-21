@@ -152,8 +152,8 @@ final class ProcessFormatUseCase
 
             try {
                 (new HeaderSyntaxValidation($headers))->validate();
-            } catch (Exception $e) {
-                throw new Exception(\sprintf('Sheet [%s]: %s', $sheet->getName(), $e->getMessage()));
+            } catch (Exception $exception) {
+                throw new Exception(\sprintf('Sheet [%s]: %s', $sheet->getName(), $exception->getMessage()));
             }
 
             break;
