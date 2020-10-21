@@ -17,18 +17,20 @@ use Doctrine\DBAL\Types\Types as DB;
 
 final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 {% for action in actions %}
 {% if action == 'index' %}
 
     public function search(array $wheres, array $orders, int $page, int $limit): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
 {% for id, property in properties %}
 {% if not property.isBlame %}
             '{{ item }}.{{ property.name }} as {{ id }}',
@@ -41,11 +43,11 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endif %}
 {% endfor %}
         ]);
-        $this->query->from('`{{ table }}`', '`{{ item }}`');
+        $query->from('`{{ table }}`', '`{{ item }}`');
 {% for id, fkRel in fkRels %}
 {% if not fkRel.blameBy %}
 {% set joinType = fkRel.required ? 'join' : 'leftJoin' %}
-        $this->query->{{ joinType }}('`{{ item }}`', '`{{ fkRel.table }}`', '`{{ fkRel.pkName }}`', '{{ item }}.{{ fkRel.pk }} = {{ fkRel.pkName }}.{{ fkRel.id }}');
+        $query->{{ joinType }}('`{{ item }}`', '`{{ fkRel.table }}`', '`{{ fkRel.pkName }}`', '{{ item }}.{{ fkRel.pk }} = {{ fkRel.pkName }}.{{ fkRel.id }}');
 {% endif %}
 {% endfor %}
 
@@ -54,39 +56,41 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
                 continue;
             }
 
-            $this->query->where("{$column} = :{$column}");
-            $this->query->setParameter(":{$column}", $value);
+            $query->where("{$column} = :{$column}");
+            $query->setParameter(":{$column}", $value);
         }
 
-        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $this->query->setMaxResults($limit);
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
 
-        return $this->query->execute()->fetchAll();
+        return $query->execute()->fetchAll();
     }
 {% elseif action == 'create' %}
 
     public function push({{ entity }} ${{ item }}): {{ properties[pkName].typeHint }}
     {
-        $this->query->insert('`{{ table }}`');
+        $query = $this->conn->createQueryBuilder();
+
+        $query->insert('`{{ table }}`');
 
 {% for id, property in properties %}
 {% if not property.isAi and not property.isUb %}
-        $this->query->setValue('{{ property.name }}', ':{{ id }}');
+        $query->setValue('{{ property.name }}', ':{{ id }}');
 {% endif %}
 {% endfor %}
 
 {% for id, property in properties %}
 {% if not property.isAi and not property.isBlameAt and not property.isUb %}
-        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
+        $query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
 {% elseif property.isBlameAt %}
-        $this->query->setParameter(':{{ id }}', new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
+        $query->setParameter(':{{ id }}', new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
 {% endif %}
 {% endfor %}
 
-        $this->query->execute();
+        $query->execute();
 
 {% if properties[pkName].isAi %}
-        return ({{ properties[pkName].typeHint}})$this->query->getConnection()->lastInsertId();
+        return ({{ properties[pkName].typeHint}})$query->getConnection()->lastInsertId();
 {% else %}
         return ${{ item }}->{{ pkName }}();
 {% endif %}
@@ -95,7 +99,9 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
     public function get({{ entity }} ${{ item }}): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
 {% for id, property in properties %}
             '{{ item }}.{{ property.name }} as {{ id }}',
 {% endfor %}
@@ -104,66 +110,72 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
             '{{ fkRel.pkName }}.{{ fkRel.text }} as `{{ fkRel.pkName }}.{{ fkRel.text }}`',
 {% endfor %}
         ]);
-        $this->query->from('`{{ table }}`', '`{{ item }}`');
+        $query->from('`{{ table }}`', '`{{ item }}`');
 {% for id, fkRel in fkRels %}
 {% set joinType = fkRel.required ? 'join' : 'leftJoin' %}
-        $this->query->{{ joinType }}('`{{ item }}`', '`{{ fkRel.table }}`', '`{{ fkRel.pkName }}`', '{{ item }}.{{ fkRel.pk }} = {{ fkRel.pkName }}.{{ fkRel.id }}');
+        $query->{{ joinType }}('`{{ item }}`', '`{{ fkRel.table }}`', '`{{ fkRel.pkName }}`', '{{ item }}.{{ fkRel.pk }} = {{ fkRel.pkName }}.{{ fkRel.id }}');
 {% endfor %}
-        $this->query->where('{{ item }}.{{ properties[pkName].name }} = :{{ pkName }}');
-        $this->query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
+        $query->where('{{ item }}.{{ properties[pkName].name }} = :{{ pkName }}');
+        $query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
-        return $this->query->execute()->fetch() ?: [];
+        return $query->execute()->fetch() ?: [];
     }
 {% elseif action == 'update' %}
 
     public function shift({{ entity }} ${{ item }}): void
     {
-        $this->query->update('`{{ table }}`');
+        $query = $this->conn->createQueryBuilder();
+
+        $query->update('`{{ table }}`');
 
 {% for id, property in properties %}
 {% if not property.isAi and not property.isCa and not property.isCb %}
-        $this->query->set('{{ property.name }}', ':{{ id }}');
+        $query->set('{{ property.name }}', ':{{ id }}');
 {% endif %}
 {% endfor %}
 
 {% for id, property in properties %}
 {% if not property.isAi and not property.isBlameAt and not property.isCb %}
-        $this->query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
+        $query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
 {% elseif property.isBlameAt and property.isUa %}
-        $this->query->setParameter(':{{ id }}', new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
+        $query->setParameter(':{{ id }}', new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
 {% endif %}
 {% endfor %}
 
-        $this->query->where('{{ properties[pkName].name }} = :{{ pkName }}');
-        $this->query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
+        $query->where('{{ properties[pkName].name }} = :{{ pkName }}');
+        $query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
 
-        $this->query->execute();
+        $query->execute();
     }
 {% elseif action == 'delete' %}
 
     public function pop({{ entity }} ${{ item }}): void
     {
-        $this->query->delete('`{{ table }}`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->where('{{ properties[pkName].name }} = :{{ pkName }}');
-        $this->query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
+        $query->delete('`{{ table }}`');
 
-        $this->query->execute();
+        $query->where('{{ properties[pkName].name }} = :{{ pkName }}');
+        $query->setParameter(':{{ pkName }}', ${{ item }}->{{ pkName }}(), DB::{{ dbTypes[pkName] }});
+
+        $query->execute();
     }
 {% elseif action == 'login' %}
 
     public function getBy(string $column, $value): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
 {% for id, property in properties %}
             '{{ property.name }} as {{ id }}',
 {% endfor %}
         ]);
-        $this->query->from('`{{ table }}`');
-        $this->query->where("{$column} = :column");
-        $this->query->setParameter(':column', $value);
+        $query->from('`{{ table }}`');
+        $query->where("{$column} = :column");
+        $query->setParameter(':column', $value);
 
-        return $this->query->execute()->fetch() ?: [];
+        return $query->execute()->fetch() ?: [];
     }
 {% endif %}
 {% endfor %}
@@ -171,19 +183,21 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 
     public function filter{{ fkFn.fnPlural }}(Find{{ entity }}{{ fkFn.fnSingular }}Request $request, int $page, int $limit): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             '{{ id }}.{{ fkFn.id }} as id',
             '{{ id }}.{{ fkFn.text }} as text',
         ]);
-        $this->query->from('`{{ fkFn.table }}`', '`{{ id }}`');
+        $query->from('`{{ fkFn.table }}`', '`{{ id }}`');
 
-        $this->query->where('{{ id }}.{{ fkFn.text }} like :{{ id }}_{{ fkFn.text }}');
-        $this->query->setParameter(':{{ id }}_{{ fkFn.text }}', "%{$request->term}%");
+        $query->where('{{ id }}.{{ fkFn.text }} like :{{ id }}_{{ fkFn.text }}');
+        $query->setParameter(':{{ id }}_{{ fkFn.text }}', "%{$request->term}%");
 
-        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $this->query->setMaxResults($limit);
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
 
-        return $this->query->execute()->fetchAll();
+        return $query->execute()->fetchAll();
     }
 {% endfor %}
 }

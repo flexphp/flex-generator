@@ -32,37 +32,39 @@ use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 
     public function search(array $wheres, array $orders, int $page, int $limit): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'test.lower as lower',
             'test.UPPER as upper',
             'test.PascalCase as pascalCase',
             'test.camelCase as camelCase',
             'test.snake_case as snakeCase',
         ]);
-        $this->query->from('`Test`', '`test`');
+        $query->from('`Test`', '`test`');
 
         foreach($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
 
-            $this->query->where("{$column} = :{$column}");
-            $this->query->setParameter(":{$column}", $value);
+            $query->where("{$column} = :{$column}");
+            $query->setParameter(":{$column}", $value);
         }
 
-        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $this->query->setMaxResults($limit);
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
 
-        return $this->query->execute()->fetchAll();
+        return $query->execute()->fetchAll();
     }
 }
 
@@ -86,30 +88,32 @@ use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 
     public function push(Test $test): string
     {
-        $this->query->insert('`Test`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->setValue('lower', ':lower');
-        $this->query->setValue('UPPER', ':upper');
-        $this->query->setValue('PascalCase', ':pascalCase');
-        $this->query->setValue('camelCase', ':camelCase');
-        $this->query->setValue('snake_case', ':snakeCase');
+        $query->insert('`Test`');
 
-        $this->query->setParameter(':lower', $test->lower(), DB::STRING);
-        $this->query->setParameter(':upper', $test->upper(), DB::INTEGER);
-        $this->query->setParameter(':pascalCase', $test->pascalCase(), DB::DATETIME_MUTABLE);
-        $this->query->setParameter(':camelCase', $test->camelCase(), DB::BOOLEAN);
-        $this->query->setParameter(':snakeCase', $test->snakeCase(), DB::TEXT);
+        $query->setValue('lower', ':lower');
+        $query->setValue('UPPER', ':upper');
+        $query->setValue('PascalCase', ':pascalCase');
+        $query->setValue('camelCase', ':camelCase');
+        $query->setValue('snake_case', ':snakeCase');
 
-        $this->query->execute();
+        $query->setParameter(':lower', $test->lower(), DB::STRING);
+        $query->setParameter(':upper', $test->upper(), DB::INTEGER);
+        $query->setParameter(':pascalCase', $test->pascalCase(), DB::DATETIME_MUTABLE);
+        $query->setParameter(':camelCase', $test->camelCase(), DB::BOOLEAN);
+        $query->setParameter(':snakeCase', $test->snakeCase(), DB::TEXT);
+
+        $query->execute();
 
         return $test->lower();
     }
@@ -137,82 +141,92 @@ use Domain\Upper\UpperGateway;
 
 final class MySQLUpperGateway implements UpperGateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 
     public function search(array $wheres, array $orders, int $page, int $limit): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'upper.Foo as foo',
         ]);
-        $this->query->from('`Upper`', '`upper`');
+        $query->from('`Upper`', '`upper`');
 
         foreach($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
 
-            $this->query->where("{$column} = :{$column}");
-            $this->query->setParameter(":{$column}", $value);
+            $query->where("{$column} = :{$column}");
+            $query->setParameter(":{$column}", $value);
         }
 
-        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $this->query->setMaxResults($limit);
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
 
-        return $this->query->execute()->fetchAll();
+        return $query->execute()->fetchAll();
     }
 
     public function push(Upper $upper): string
     {
-        $this->query->insert('`Upper`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->setValue('Foo', ':foo');
+        $query->insert('`Upper`');
 
-        $this->query->setParameter(':foo', $upper->foo(), DB::STRING);
+        $query->setValue('Foo', ':foo');
 
-        $this->query->execute();
+        $query->setParameter(':foo', $upper->foo(), DB::STRING);
+
+        $query->execute();
 
         return $upper->foo();
     }
 
     public function get(Upper $upper): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'upper.Foo as foo',
         ]);
-        $this->query->from('`Upper`', '`upper`');
-        $this->query->where('upper.Foo = :foo');
-        $this->query->setParameter(':foo', $upper->foo(), DB::STRING);
+        $query->from('`Upper`', '`upper`');
+        $query->where('upper.Foo = :foo');
+        $query->setParameter(':foo', $upper->foo(), DB::STRING);
 
-        return $this->query->execute()->fetch() ?: [];
+        return $query->execute()->fetch() ?: [];
     }
 
     public function shift(Upper $upper): void
     {
-        $this->query->update('`Upper`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->set('Foo', ':foo');
+        $query->update('`Upper`');
 
-        $this->query->setParameter(':foo', $upper->foo(), DB::STRING);
+        $query->set('Foo', ':foo');
 
-        $this->query->where('Foo = :foo');
-        $this->query->setParameter(':foo', $upper->foo(), DB::STRING);
+        $query->setParameter(':foo', $upper->foo(), DB::STRING);
 
-        $this->query->execute();
+        $query->where('Foo = :foo');
+        $query->setParameter(':foo', $upper->foo(), DB::STRING);
+
+        $query->execute();
     }
 
     public function pop(Upper $upper): void
     {
-        $this->query->delete('`Upper`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->where('Foo = :foo');
-        $this->query->setParameter(':foo', $upper->foo(), DB::STRING);
+        $query->delete('`Upper`');
 
-        $this->query->execute();
+        $query->where('Foo = :foo');
+        $query->setParameter(':foo', $upper->foo(), DB::STRING);
+
+        $query->execute();
     }
 }
 
@@ -236,27 +250,29 @@ use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 
     public function get(Test $test): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'test.lower as lower',
             'test.UPPER as upper',
             'test.PascalCase as pascalCase',
             'test.camelCase as camelCase',
             'test.snake_case as snakeCase',
         ]);
-        $this->query->from('`Test`', '`test`');
-        $this->query->where('test.lower = :lower');
-        $this->query->setParameter(':lower', $test->lower(), DB::STRING);
+        $query->from('`Test`', '`test`');
+        $query->where('test.lower = :lower');
+        $query->setParameter(':lower', $test->lower(), DB::STRING);
 
-        return $this->query->execute()->fetch() ?: [];
+        return $query->execute()->fetch() ?: [];
     }
 }
 
@@ -285,45 +301,49 @@ use Domain\Join\Request\FindJoinJoinTableRequest;
 
 final class MySQLJoinGateway implements JoinGateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 
     public function get(Join $join): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'join.pk as pk',
             'join.field as field',
             'join.joinField as joinField',
             'joinField.fkId as `joinField.fkId`',
             'joinField.fkName as `joinField.fkName`',
         ]);
-        $this->query->from('`Join`', '`join`');
-        $this->query->leftJoin('`join`', '`joinTable`', '`joinField`', 'join.joinField = joinField.fkId');
-        $this->query->where('join.pk = :pk');
-        $this->query->setParameter(':pk', $join->pk(), DB::INTEGER);
+        $query->from('`Join`', '`join`');
+        $query->leftJoin('`join`', '`joinTable`', '`joinField`', 'join.joinField = joinField.fkId');
+        $query->where('join.pk = :pk');
+        $query->setParameter(':pk', $join->pk(), DB::INTEGER);
 
-        return $this->query->execute()->fetch() ?: [];
+        return $query->execute()->fetch() ?: [];
     }
 
     public function filterJoinTables(FindJoinJoinTableRequest $request, int $page, int $limit): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'joinTable.fkId as id',
             'joinTable.fkName as text',
         ]);
-        $this->query->from('`joinTable`', '`joinTable`');
+        $query->from('`joinTable`', '`joinTable`');
 
-        $this->query->where('joinTable.fkName like :joinTable_fkName');
-        $this->query->setParameter(':joinTable_fkName', "%{$request->term}%");
+        $query->where('joinTable.fkName like :joinTable_fkName');
+        $query->setParameter(':joinTable_fkName', "%{$request->term}%");
 
-        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $this->query->setMaxResults($limit);
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
 
-        return $this->query->execute()->fetchAll();
+        return $query->execute()->fetchAll();
     }
 }
 
@@ -347,33 +367,35 @@ use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 
     public function shift(Test $test): void
     {
-        $this->query->update('`Test`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->set('lower', ':lower');
-        $this->query->set('UPPER', ':upper');
-        $this->query->set('PascalCase', ':pascalCase');
-        $this->query->set('camelCase', ':camelCase');
-        $this->query->set('snake_case', ':snakeCase');
+        $query->update('`Test`');
 
-        $this->query->setParameter(':lower', $test->lower(), DB::STRING);
-        $this->query->setParameter(':upper', $test->upper(), DB::INTEGER);
-        $this->query->setParameter(':pascalCase', $test->pascalCase(), DB::DATETIME_MUTABLE);
-        $this->query->setParameter(':camelCase', $test->camelCase(), DB::BOOLEAN);
-        $this->query->setParameter(':snakeCase', $test->snakeCase(), DB::TEXT);
+        $query->set('lower', ':lower');
+        $query->set('UPPER', ':upper');
+        $query->set('PascalCase', ':pascalCase');
+        $query->set('camelCase', ':camelCase');
+        $query->set('snake_case', ':snakeCase');
 
-        $this->query->where('lower = :lower');
-        $this->query->setParameter(':lower', $test->lower(), DB::STRING);
+        $query->setParameter(':lower', $test->lower(), DB::STRING);
+        $query->setParameter(':upper', $test->upper(), DB::INTEGER);
+        $query->setParameter(':pascalCase', $test->pascalCase(), DB::DATETIME_MUTABLE);
+        $query->setParameter(':camelCase', $test->camelCase(), DB::BOOLEAN);
+        $query->setParameter(':snakeCase', $test->snakeCase(), DB::TEXT);
 
-        $this->query->execute();
+        $query->where('lower = :lower');
+        $query->setParameter(':lower', $test->lower(), DB::STRING);
+
+        $query->execute();
     }
 }
 
@@ -397,21 +419,23 @@ use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 
     public function pop(Test $test): void
     {
-        $this->query->delete('`Test`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->where('lower = :lower');
-        $this->query->setParameter(':lower', $test->lower(), DB::STRING);
+        $query->delete('`Test`');
 
-        $this->query->execute();
+        $query->where('lower = :lower');
+        $query->setParameter(':lower', $test->lower(), DB::STRING);
+
+        $query->execute();
     }
 }
 
@@ -435,27 +459,29 @@ use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 
     public function getBy(string $column, $value): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'lower as lower',
             'UPPER as upper',
             'PascalCase as pascalCase',
             'camelCase as camelCase',
             'snake_case as snakeCase',
         ]);
-        $this->query->from('`Test`');
-        $this->query->where("{$column} = :column");
-        $this->query->setParameter(':column', $value);
+        $query->from('`Test`');
+        $query->where("{$column} = :column");
+        $query->setParameter(':column', $value);
 
-        return $this->query->execute()->fetch() ?: [];
+        return $query->execute()->fetch() ?: [];
     }
 }
 
@@ -489,16 +515,18 @@ use Domain\PostComment\Request\FindPostCommentUserStatusRequest;
 
 final class MySQLPostCommentGateway implements PostCommentGateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 
     public function search(array $wheres, array $orders, int $page, int $limit): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'postComment.Pk as pk',
             'postComment.foo as foo',
             'postComment.PostId as postId',
@@ -510,46 +538,50 @@ final class MySQLPostCommentGateway implements PostCommentGateway
             'statusId.id as `statusId.id`',
             'statusId.name as `statusId.name`',
         ]);
-        $this->query->from('`PostComments`', '`postComment`');
-        $this->query->join('`postComment`', '`Bar`', '`foo`', 'postComment.foo = foo.baz');
-        $this->query->leftJoin('`postComment`', '`posts`', '`postId`', 'postComment.PostId = postId.id');
-        $this->query->leftJoin('`postComment`', '`UserStatus`', '`statusId`', 'postComment.StatusId = statusId.id');
+        $query->from('`PostComments`', '`postComment`');
+        $query->join('`postComment`', '`Bar`', '`foo`', 'postComment.foo = foo.baz');
+        $query->leftJoin('`postComment`', '`posts`', '`postId`', 'postComment.PostId = postId.id');
+        $query->leftJoin('`postComment`', '`UserStatus`', '`statusId`', 'postComment.StatusId = statusId.id');
 
         foreach($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
 
-            $this->query->where("{$column} = :{$column}");
-            $this->query->setParameter(":{$column}", $value);
+            $query->where("{$column} = :{$column}");
+            $query->setParameter(":{$column}", $value);
         }
 
-        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $this->query->setMaxResults($limit);
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
 
-        return $this->query->execute()->fetchAll();
+        return $query->execute()->fetchAll();
     }
 
     public function push(PostComment $postComment): int
     {
-        $this->query->insert('`PostComments`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->setValue('foo', ':foo');
-        $this->query->setValue('PostId', ':postId');
-        $this->query->setValue('StatusId', ':statusId');
+        $query->insert('`PostComments`');
 
-        $this->query->setParameter(':foo', $postComment->foo(), DB::STRING);
-        $this->query->setParameter(':postId', $postComment->postId(), DB::INTEGER);
-        $this->query->setParameter(':statusId', $postComment->statusId(), DB::INTEGER);
+        $query->setValue('foo', ':foo');
+        $query->setValue('PostId', ':postId');
+        $query->setValue('StatusId', ':statusId');
 
-        $this->query->execute();
+        $query->setParameter(':foo', $postComment->foo(), DB::STRING);
+        $query->setParameter(':postId', $postComment->postId(), DB::INTEGER);
+        $query->setParameter(':statusId', $postComment->statusId(), DB::INTEGER);
 
-        return (int)$this->query->getConnection()->lastInsertId();
+        $query->execute();
+
+        return (int)$query->getConnection()->lastInsertId();
     }
 
     public function get(PostComment $postComment): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'postComment.Pk as pk',
             'postComment.foo as foo',
             'postComment.PostId as postId',
@@ -561,93 +593,103 @@ final class MySQLPostCommentGateway implements PostCommentGateway
             'statusId.id as `statusId.id`',
             'statusId.name as `statusId.name`',
         ]);
-        $this->query->from('`PostComments`', '`postComment`');
-        $this->query->join('`postComment`', '`Bar`', '`foo`', 'postComment.foo = foo.baz');
-        $this->query->leftJoin('`postComment`', '`posts`', '`postId`', 'postComment.PostId = postId.id');
-        $this->query->leftJoin('`postComment`', '`UserStatus`', '`statusId`', 'postComment.StatusId = statusId.id');
-        $this->query->where('postComment.Pk = :pk');
-        $this->query->setParameter(':pk', $postComment->pk(), DB::INTEGER);
+        $query->from('`PostComments`', '`postComment`');
+        $query->join('`postComment`', '`Bar`', '`foo`', 'postComment.foo = foo.baz');
+        $query->leftJoin('`postComment`', '`posts`', '`postId`', 'postComment.PostId = postId.id');
+        $query->leftJoin('`postComment`', '`UserStatus`', '`statusId`', 'postComment.StatusId = statusId.id');
+        $query->where('postComment.Pk = :pk');
+        $query->setParameter(':pk', $postComment->pk(), DB::INTEGER);
 
-        return $this->query->execute()->fetch() ?: [];
+        return $query->execute()->fetch() ?: [];
     }
 
     public function shift(PostComment $postComment): void
     {
-        $this->query->update('`PostComments`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->set('foo', ':foo');
-        $this->query->set('PostId', ':postId');
-        $this->query->set('StatusId', ':statusId');
+        $query->update('`PostComments`');
 
-        $this->query->setParameter(':foo', $postComment->foo(), DB::STRING);
-        $this->query->setParameter(':postId', $postComment->postId(), DB::INTEGER);
-        $this->query->setParameter(':statusId', $postComment->statusId(), DB::INTEGER);
+        $query->set('foo', ':foo');
+        $query->set('PostId', ':postId');
+        $query->set('StatusId', ':statusId');
 
-        $this->query->where('Pk = :pk');
-        $this->query->setParameter(':pk', $postComment->pk(), DB::INTEGER);
+        $query->setParameter(':foo', $postComment->foo(), DB::STRING);
+        $query->setParameter(':postId', $postComment->postId(), DB::INTEGER);
+        $query->setParameter(':statusId', $postComment->statusId(), DB::INTEGER);
 
-        $this->query->execute();
+        $query->where('Pk = :pk');
+        $query->setParameter(':pk', $postComment->pk(), DB::INTEGER);
+
+        $query->execute();
     }
 
     public function pop(PostComment $postComment): void
     {
-        $this->query->delete('`PostComments`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->where('Pk = :pk');
-        $this->query->setParameter(':pk', $postComment->pk(), DB::INTEGER);
+        $query->delete('`PostComments`');
 
-        $this->query->execute();
+        $query->where('Pk = :pk');
+        $query->setParameter(':pk', $postComment->pk(), DB::INTEGER);
+
+        $query->execute();
     }
 
     public function filterBars(FindPostCommentBarRequest $request, int $page, int $limit): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'bar.baz as id',
             'bar.fuz as text',
         ]);
-        $this->query->from('`Bar`', '`bar`');
+        $query->from('`Bar`', '`bar`');
 
-        $this->query->where('bar.fuz like :bar_fuz');
-        $this->query->setParameter(':bar_fuz', "%{$request->term}%");
+        $query->where('bar.fuz like :bar_fuz');
+        $query->setParameter(':bar_fuz', "%{$request->term}%");
 
-        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $this->query->setMaxResults($limit);
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
 
-        return $this->query->execute()->fetchAll();
+        return $query->execute()->fetchAll();
     }
 
     public function filterPosts(FindPostCommentPostRequest $request, int $page, int $limit): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'post.id as id',
             'post.name as text',
         ]);
-        $this->query->from('`posts`', '`post`');
+        $query->from('`posts`', '`post`');
 
-        $this->query->where('post.name like :post_name');
-        $this->query->setParameter(':post_name', "%{$request->term}%");
+        $query->where('post.name like :post_name');
+        $query->setParameter(':post_name', "%{$request->term}%");
 
-        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $this->query->setMaxResults($limit);
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
 
-        return $this->query->execute()->fetchAll();
+        return $query->execute()->fetchAll();
     }
 
     public function filterUserStatus(FindPostCommentUserStatusRequest $request, int $page, int $limit): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'userStatus.id as id',
             'userStatus.name as text',
         ]);
-        $this->query->from('`UserStatus`', '`userStatus`');
+        $query->from('`UserStatus`', '`userStatus`');
 
-        $this->query->where('userStatus.name like :userStatus_name');
-        $this->query->setParameter(':userStatus_name', "%{$request->term}%");
+        $query->where('userStatus.name like :userStatus_name');
+        $query->setParameter(':userStatus_name', "%{$request->term}%");
 
-        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $this->query->setMaxResults($limit);
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
 
-        return $this->query->execute()->fetchAll();
+        return $query->execute()->fetchAll();
     }
 }
 
@@ -671,67 +713,73 @@ use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 
     public function search(array $wheres, array $orders, int $page, int $limit): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'test.key as key',
             'test.Value as value',
         ]);
-        $this->query->from('`Test`', '`test`');
+        $query->from('`Test`', '`test`');
 
         foreach($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
 
-            $this->query->where("{$column} = :{$column}");
-            $this->query->setParameter(":{$column}", $value);
+            $query->where("{$column} = :{$column}");
+            $query->setParameter(":{$column}", $value);
         }
 
-        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $this->query->setMaxResults($limit);
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
 
-        return $this->query->execute()->fetchAll();
+        return $query->execute()->fetchAll();
     }
 
     public function push(Test $test): int
     {
-        $this->query->insert('`Test`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->setValue('Value', ':value');
-        $this->query->setValue('Created', ':created');
-        $this->query->setValue('Updated', ':updated');
+        $query->insert('`Test`');
 
-        $this->query->setParameter(':value', $test->value(), DB::INTEGER);
-        $this->query->setParameter(':created', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
-        $this->query->setParameter(':updated', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+        $query->setValue('Value', ':value');
+        $query->setValue('Created', ':created');
+        $query->setValue('Updated', ':updated');
 
-        $this->query->execute();
+        $query->setParameter(':value', $test->value(), DB::INTEGER);
+        $query->setParameter(':created', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+        $query->setParameter(':updated', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
 
-        return (int)$this->query->getConnection()->lastInsertId();
+        $query->execute();
+
+        return (int)$query->getConnection()->lastInsertId();
     }
 
     public function shift(Test $test): void
     {
-        $this->query->update('`Test`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->set('Value', ':value');
-        $this->query->set('Updated', ':updated');
+        $query->update('`Test`');
 
-        $this->query->setParameter(':value', $test->value(), DB::INTEGER);
-        $this->query->setParameter(':updated', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+        $query->set('Value', ':value');
+        $query->set('Updated', ':updated');
 
-        $this->query->where('key = :key');
-        $this->query->setParameter(':key', $test->key(), DB::INTEGER);
+        $query->setParameter(':value', $test->value(), DB::INTEGER);
+        $query->setParameter(':updated', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
 
-        $this->query->execute();
+        $query->where('key = :key');
+        $query->setParameter(':key', $test->key(), DB::INTEGER);
+
+        $query->execute();
     }
 }
 
@@ -755,56 +803,62 @@ use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
-    private $query;
+    private $conn;
 
     public function __construct(Connection $conn)
     {
-        $this->query = $conn->createQueryBuilder();
+        $this->conn = $conn;
     }
 
     public function search(array $wheres, array $orders, int $page, int $limit): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'test.code as code',
             'test.Name as name',
         ]);
-        $this->query->from('`Test`', '`test`');
+        $query->from('`Test`', '`test`');
 
         foreach($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
 
-            $this->query->where("{$column} = :{$column}");
-            $this->query->setParameter(":{$column}", $value);
+            $query->where("{$column} = :{$column}");
+            $query->setParameter(":{$column}", $value);
         }
 
-        $this->query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $this->query->setMaxResults($limit);
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
 
-        return $this->query->execute()->fetchAll();
+        return $query->execute()->fetchAll();
     }
 
     public function push(Test $test): string
     {
-        $this->query->insert('`Test`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->setValue('code', ':code');
-        $this->query->setValue('Name', ':name');
-        $this->query->setValue('CreatedBy', ':createdBy');
+        $query->insert('`Test`');
 
-        $this->query->setParameter(':code', $test->code(), DB::STRING);
-        $this->query->setParameter(':name', $test->name(), DB::TEXT);
-        $this->query->setParameter(':createdBy', $test->createdBy(), DB::INTEGER);
+        $query->setValue('code', ':code');
+        $query->setValue('Name', ':name');
+        $query->setValue('CreatedBy', ':createdBy');
 
-        $this->query->execute();
+        $query->setParameter(':code', $test->code(), DB::STRING);
+        $query->setParameter(':name', $test->name(), DB::TEXT);
+        $query->setParameter(':createdBy', $test->createdBy(), DB::INTEGER);
+
+        $query->execute();
 
         return $test->code();
     }
 
     public function get(Test $test): array
     {
-        $this->query->select([
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
             'test.code as code',
             'test.Name as name',
             'test.CreatedBy as createdBy',
@@ -814,31 +868,33 @@ final class MySQLTestGateway implements TestGateway
             'updatedBy.id as `updatedBy.id`',
             'updatedBy.name as `updatedBy.name`',
         ]);
-        $this->query->from('`Test`', '`test`');
-        $this->query->leftJoin('`test`', '`users`', '`createdBy`', 'test.CreatedBy = createdBy.id');
-        $this->query->leftJoin('`test`', '`users`', '`updatedBy`', 'test.UpdatedBy = updatedBy.id');
-        $this->query->where('test.code = :code');
-        $this->query->setParameter(':code', $test->code(), DB::STRING);
+        $query->from('`Test`', '`test`');
+        $query->leftJoin('`test`', '`users`', '`createdBy`', 'test.CreatedBy = createdBy.id');
+        $query->leftJoin('`test`', '`users`', '`updatedBy`', 'test.UpdatedBy = updatedBy.id');
+        $query->where('test.code = :code');
+        $query->setParameter(':code', $test->code(), DB::STRING);
 
-        return $this->query->execute()->fetch() ?: [];
+        return $query->execute()->fetch() ?: [];
     }
 
     public function shift(Test $test): void
     {
-        $this->query->update('`Test`');
+        $query = $this->conn->createQueryBuilder();
 
-        $this->query->set('code', ':code');
-        $this->query->set('Name', ':name');
-        $this->query->set('UpdatedBy', ':updatedBy');
+        $query->update('`Test`');
 
-        $this->query->setParameter(':code', $test->code(), DB::STRING);
-        $this->query->setParameter(':name', $test->name(), DB::TEXT);
-        $this->query->setParameter(':updatedBy', $test->updatedBy(), DB::INTEGER);
+        $query->set('code', ':code');
+        $query->set('Name', ':name');
+        $query->set('UpdatedBy', ':updatedBy');
 
-        $this->query->where('code = :code');
-        $this->query->setParameter(':code', $test->code(), DB::STRING);
+        $query->setParameter(':code', $test->code(), DB::STRING);
+        $query->setParameter(':name', $test->name(), DB::TEXT);
+        $query->setParameter(':updatedBy', $test->updatedBy(), DB::INTEGER);
 
-        $this->query->execute();
+        $query->where('code = :code');
+        $query->setParameter(':code', $test->code(), DB::STRING);
+
+        $query->execute();
     }
 }
 
@@ -865,11 +921,11 @@ use Domain\\{$expectedName}\\{$expectedName}Gateway;
 
 final class MySQL{$expectedName}Gateway implements {$expectedName}Gateway
 {
-    private \$query;
+    private \$conn;
 
     public function __construct(Connection \$conn)
     {
-        \$this->query = \$conn->createQueryBuilder();
+        \$this->conn = \$conn;
     }
 }
 
