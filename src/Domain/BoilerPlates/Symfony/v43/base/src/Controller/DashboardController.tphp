@@ -7,15 +7,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/dashboard")
+ */
 class DashboardController extends AbstractController
 {
     /**
      * @Route("/", methods={"GET"}, name="dashboard.index")
      * @Cache(smaxage="3600")
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_DASHBOARD_INDEX')", statusCode=401)
      */
     public function index(): Response
     {
-        return $this->render('dashboard/index.html.twig');
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->render('dashboard/index.html.twig');
+        }
+
+        return $this->redirectToRoute('homepage.index');
     }
 }
