@@ -2,8 +2,8 @@
 
 return [
     'app' => [
-        'name' => 'Proyecto',
-        'title' => 'Demo',
+        'name' => $_ENV['APP_NAME'] ?? '',
+        'title' => $_ENV['APP_NAME'] ?? '',
     ],
     'base' => [
         'notification' => [
@@ -18,6 +18,9 @@ return [
         'navbar' => [
             'navigation' => 'Menú',
         ],
+    ],
+    'menu' => [
+        'settings' => 'Configuraciones',
     ],
     'action' => [
         'new' => 'Nuevo',

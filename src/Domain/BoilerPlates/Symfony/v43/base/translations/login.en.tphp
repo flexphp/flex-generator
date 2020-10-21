@@ -2,7 +2,7 @@
 
 return [
     'title' => [
-        'action' => 'Sing in',
+        'action' => 'Sign in',
         'description' => 'Welcome',
     ],
     'label' => [
