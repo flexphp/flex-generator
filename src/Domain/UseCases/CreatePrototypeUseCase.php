@@ -22,13 +22,14 @@ final class CreatePrototypeUseCase
     {
         $sheets = $request->sheets;
         $outputDir = $request->outputDir;
-        $sourceDir = __DIR__ . '/../BoilerPlates/Symfony/v43/base';
+        $sourceDir = realpath(__DIR__ . '/../BoilerPlates/Symfony/v43/base');
 
         if (!\is_dir($outputDir)) {
             \mkdir($outputDir, 0777, true); // @codeCoverageIgnore
         }
 
         $this->addDomainDirectories($outputDir);
+        $this->addDomainFiles(realpath(__DIR__ . '/../BoilerPlates/FlexPHP'), $outputDir);
         $this->addDatabaseFile($outputDir, $request->name, $request->platform, $sheets);
         $this->addMenuFile($outputDir, $sheets);
         $this->addFrameworkDirectories($outputDir);
@@ -55,7 +56,7 @@ final class CreatePrototypeUseCase
             new CreateDatabaseFileRequest($platform, $name, $name, \sha1($name), $schemafiles)
         );
 
-        \rename($database->file, $dest . '/domain/Database/create.sql');
+        \rename($database->file, $dest . '/domain/Database/1 - create.sql');
     }
 
     private function addMenuFile(string $dest, array $schemafiles): void
@@ -73,6 +74,9 @@ final class CreatePrototypeUseCase
             '/config',
             '/domain',
             '/domain/Database',
+            '/domain/Helper',
+            '/domain/Tests',
+            '/domain/User',
         ];
 
         foreach ($dirs as $dir) {
@@ -80,6 +84,29 @@ final class CreatePrototypeUseCase
                 \mkdir($dest . $dir, 0770, true);
             }
         }
+    }
+
+    private function addDomainFiles(string $source, string $dest): void
+    {
+        $templates = [
+            $source . '/Extras/Helper/DateTimeTrait.tphp' => $dest . '/domain/Helper/DateTimeTrait.php',
+            $source . '/Extras/Helper/DbalCriteriaHelper.tphp' => $dest . '/domain/Helper/DbalCriteriaHelper.php',
+            $source . '/Extras/Tests/TestCase.tphp' => $dest . '/domain/Tests/TestCase.php',
+            $source . '/Extras/Tests/AbstractGateway.tphp' => $dest . '/domain/Tests/AbstractGateway.php',
+            $source . '/Extras/User/UserRbac.tphp' => $dest . '/domain/User/UserRbac.php',
+        ];
+
+        foreach ($templates as $from => $to) {
+            \copy($from, $to);
+        }
+
+        // $files = [
+        //     '/templates/errors/error500.html.twig',
+        // ];
+
+        // foreach ($files as $file) {
+        //     \copy($source . $file, $dest . $file);
+        // }
     }
 
     private function addFrameworkDirectories(string $dest): void
@@ -92,12 +119,14 @@ final class CreatePrototypeUseCase
             '/public/js',
             '/public/js/bootstrap',
             '/public/js/jquery',
+            '/public/js/jquery/locales',
             '/public/js/select2',
             '/public/css',
             '/public/css/bootstrap',
             '/public/css/fontawesome',
             '/public/css/webfonts',
             '/public/css/select2',
+            '/public/css/datepicker',
             '/src/Command',
             '/src/Controller',
             '/src/Form',
@@ -142,7 +171,9 @@ final class CreatePrototypeUseCase
             $source . '/src/Controller/DashboardController.tphp' => $dest . '/src/Controller/DashboardController.php',
             $source . '/src/Controller/LocaleController.tphp' => $dest . '/src/Controller/LocaleController.php',
             $source . '/src/Controller/SecurityController.tphp' => $dest . '/src/Controller/SecurityController.php',
+            $source . '/src/Controller/HomepageController.tphp' => $dest . '/src/Controller/HomepageController.php',
             $source . '/src/Form/Type/Select2Type.tphp' => $dest . '/src/Form/Type/Select2Type.php',
+            $source . '/src/Form/Type/DatepickerType.tphp' => $dest . '/src/Form/Type/DatepickerType.php',
             $source . '/src/Listener/CsrfListener.tphp' => $dest . '/src/Listener/CsrfListener.php',
             $source . '/src/Listener/LocaleListener.tphp' => $dest . '/src/Listener/LocaleListener.php',
             $source . '/src/Listener/ExceptionListener.tphp' => $dest . '/src/Listener/ExceptionListener.php',
@@ -172,9 +203,11 @@ final class CreatePrototypeUseCase
         $files = [
             '/composer.json',
             '/.env.example',
+            '/.env.test.example',
             '/.gitignore',
             '/README.md',
             '/LICENSE.md',
+            '/CHANGELOG.md',
             '/phpunit.xml.dist',
             '/bin/console',
             '/config/routes.yaml',
@@ -187,9 +220,11 @@ final class CreatePrototypeUseCase
             '/templates/default/_flash.html.twig',
             '/templates/default/_infinite.html.twig',
             '/templates/default/_back_button.html.twig',
+            '/templates/default/_filter_button.html.twig',
             '/templates/default/homepage.html.twig',
             '/templates/form/layout.html.twig',
             '/templates/form/_delete_confirmation.html.twig',
+            '/templates/form/fields.html.twig',
             '/templates/security/login.html.twig',
             '/templates/errors/error.html.twig',
             '/templates/errors/error403.html.twig',
@@ -210,6 +245,7 @@ final class CreatePrototypeUseCase
             "$src/Bootstrap/css/bootstrap.min.css" => "$dest/public/css/bootstrap/bootstrap.min.css",
             "$src/Bootstrap/css/select2.min.css" => "$dest/public/css/select2/select2.min.css",
             "$src/Bootstrap/css/select2bs4.min.css" => "$dest/public/css/select2/select2bs4.min.css",
+            "$src/Bootstrap/css/datepicker.min.css" => "$dest/public/css/datepicker/datepicker.min.css",
             "$src/Bootstrap/main.css" => "$dest/public/css/main.css",
             "$src/FontAwesome/css/all.min.css" => "$dest/public/css/fontawesome/all.min.css",
             "$src/FontAwesome/webfonts/fonts.css" => "$dest/public/css/webfonts/fonts.css",
@@ -221,11 +257,27 @@ final class CreatePrototypeUseCase
             "$src/jQuery/plugins/jquery.slimscroll.min.js" => "$dest/public/js/jquery/jquery.slimscroll.min.js",
             "$src/jQuery/plugins/jquery.select2.min.js" => "$dest/public/js/jquery/jquery.select2.min.js",
             "$src/jQuery/plugins/jquery.infinite.min.js" => "$dest/public/js/jquery/jquery.infinite.min.js",
+            "$src/jQuery/plugins/jquery.datepicker.min.js" => "$dest/public/js/jquery/jquery.datepicker.min.js",
             "$src/jQuery/plugins/chart.bundle.min.js" => "$dest/public/js/jquery/chart.bundle.min.js",
             "$src/jQuery/main.js" => "$dest/public/js/main.js",
+            "$src/jQuery/i18n" => "$dest/public/js/jquery/locales",
         ];
 
         foreach ($assets as $from => $to) {
+            if (\is_dir($from)) {
+                $dir = \opendir($from);
+
+                while (false !== ($file = \readdir($dir))) {
+                    if (!\in_array($file, ['.', '..'])) {
+                        \copy($from . '/' . $file, $to . '/' . $file);
+                    }
+                }
+
+                \closedir($dir);
+
+                continue;
+            }
+
             \copy($from, $to);
         }
     }
