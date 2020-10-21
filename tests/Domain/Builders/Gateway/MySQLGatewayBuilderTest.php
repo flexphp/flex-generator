@@ -54,7 +54,7 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.lower', 'ASC');
 
-        foreach($wheres as $column => $value) {
+        foreach ($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
@@ -161,7 +161,7 @@ final class MySQLUpperGateway implements UpperGateway
 
         $query->orderBy('upper.Foo', 'ASC');
 
-        foreach($wheres as $column => $value) {
+        foreach ($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
@@ -549,7 +549,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
 
         $query->orderBy('postComment.Pk', 'DESC');
 
-        foreach($wheres as $column => $value) {
+        foreach ($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
@@ -738,7 +738,7 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.Updated', 'DESC');
 
-        foreach($wheres as $column => $value) {
+        foreach ($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
@@ -830,7 +830,7 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.code', 'ASC');
 
-        foreach($wheres as $column => $value) {
+        foreach ($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
@@ -951,7 +951,7 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.CreatedAt', 'DESC');
 
-        foreach($wheres as $column => $value) {
+        foreach ($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
@@ -1063,7 +1063,7 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.UpdatedAt', 'DESC');
 
-        foreach($wheres as $column => $value) {
+        foreach ($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }

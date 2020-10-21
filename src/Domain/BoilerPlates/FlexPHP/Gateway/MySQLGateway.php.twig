@@ -67,7 +67,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endif %}
 {% endfor %}
 
-        foreach($wheres as $column => $value) {
+        foreach ($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
             }
