@@ -5,26 +5,26 @@ namespace App\Twig;
 use Exception;
 use Twig\Extension\RuntimeExtensionInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AppRuntime implements RuntimeExtensionInterface
 {
     private $translator;
     private $tokenStorage;
-    private $auth;
+    private $security;
     private $router;
 
     public function __construct(
         TranslatorInterface $translator,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $auth,
+        Security $security,
         RouterInterface $router
     ) {
         $this->translator = $translator;
         $this->tokenStorage = $tokenStorage;
-        $this->auth = $auth;
+        $this->security = $security;
         $this->router = $router;
     }
 
@@ -122,15 +122,10 @@ class AppRuntime implements RuntimeExtensionInterface
                 </li>', $titleTranslate, $icon, $url);
     }
 
-    private function getUser()
-    {
-        return $this->tokenStorage->getToken()->getUser();
-    }
-
     private function isGranted(array $roles): bool
     {
         foreach ($roles as $role) {
-            if ($this->auth->isGranted($role)) {
+            if ($this->security->isGranted($role)) {
                 return true;
             }
         }

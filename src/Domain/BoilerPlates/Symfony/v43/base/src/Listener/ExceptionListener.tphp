@@ -2,6 +2,7 @@
 
 namespace App\Listener;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -21,17 +22,23 @@ final class ExceptionListener
      */
     private $session;
 
-    public function __construct(UrlGeneratorInterface $router, SessionInterface $session)
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(UrlGeneratorInterface $router, SessionInterface $session, LoggerInterface $logger)
     {
         $this->router = $router;
         $this->session = $session;
+        $this->logger = $logger;
     }
 
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
 
-        if (!$exception instanceof HttpExceptionInterface && $exception->getCode() > 0) {
+        if (!$exception instanceof HttpExceptionInterface && $exception->getCode() >= 100) {
             $response = new Response();
 
             $response->setStatusCode($exception->getCode());
@@ -41,11 +48,15 @@ final class ExceptionListener
         }
 
         if ($exception instanceof HttpExceptionInterface && $exception->getStatusCode() === 401) {
-            $this->session->getFlashBag()->add('danger', $exception->getMessage());
+            if (!empty($event->getRequest()->getUser())) {
+                $this->session->getFlashBag()->add('danger', $exception->getMessage());
+            }
 
             $response = new RedirectResponse($this->router->generate('login'), 302);
 
             $event->setResponse($response);
         }
+
+        $this->logger->error($exception->getMessage(), $exception->getTrace());
     }
 }
