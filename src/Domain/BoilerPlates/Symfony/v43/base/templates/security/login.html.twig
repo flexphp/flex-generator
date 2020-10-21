@@ -15,8 +15,22 @@
 
 {% block stylesheets %}
 <style>
+    body {
+        background-image: url("{{ asset('images/bg_login.jpg') }}");
+        background-position: center center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: white;
+    }
     .dashboard-wrapper {
         margin-left: 0;
+    }
+    #credits-image {
+        position: fixed !important;
+        color: white !important;
+        right: 0 !important;
+        bottom: 60px !important;
     }
 </style>
 {% endblock %}
@@ -57,4 +71,5 @@
         </div>
     </div>
 </div>
+<a id="credits-image" href="https://www.freepik.es/fotos/tecnologia">Foto de Tecnología creado por standret - www.freepik.es</a>
 {% endblock %}

@@ -4,14 +4,27 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}{% trans %}app.title{% endtrans %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap/bootstrap.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/fontawesome/all.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/webfonts/fonts.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/datepicker/datepicker.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/select2/select2.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/select2/select2bs4.min.css') }}" />
     {% block stylesheets %}{% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <script>
+        window.flex = {
+            baseUrl: window.location.origin + '{{ app.request.getBaseURL() }}',
+            defaultLocale: 'es-CO',
+            defaultDateFormat: 'yyyy-mm-dd',
+            defaultCurrency: 'COP',
+            defaultTimezone: 'UTC',
+        };
+    </script>
 </head>
 
 <body>
@@ -166,8 +179,12 @@
     <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('js/jquery/jquery.slimscroll.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/jquery/jquery.datepicker.min.js') }}"></script>
+    <script src="{{ asset('js/jquery/locales/bootstrap-datepicker.%locale%.min.js'|replace({'%locale%': app.request.locale|replace({'_': '-'}) })) }}"></script>
+    <script src="{{ asset('js/jquery/jquery.select2.min.js') }}"></script>
+    <script src="{{ asset('js/jquery/locales/select2.%locale%.min.js'|replace({'%locale%': app.request.locale|replace({'_': '-'}) })) }}"></script>
     {% block javascripts %}{% endblock %}
+    <script src="{{ asset('js/main.js') }}"></script>
 </body>
 
 </html>
