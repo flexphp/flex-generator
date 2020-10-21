@@ -1,4 +1,6 @@
 {% set fkFnsNoBlame = fkFns|filter(v => not v.blameBy) %}
+{% set columnCreatedAt = properties|filter(v => v.isCa) %}
+{% set columnUpdatedAt = properties|filter(v => v.isUa) %}
 {% set useStatements = [] %}
 <?php declare(strict_types=1);
 
@@ -48,6 +50,20 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% if not fkRel.blameBy %}
 {% set joinType = fkRel.required ? 'join' : 'leftJoin' %}
         $query->{{ joinType }}('`{{ item }}`', '`{{ fkRel.table }}`', '`{{ fkRel.pkName }}`', '{{ item }}.{{ fkRel.pk }} = {{ fkRel.pkName }}.{{ fkRel.id }}');
+{% endif %}
+{% endfor %}
+
+{% for id, property in properties %}
+{% if property.isPk and columnCreatedAt|length == 0 and columnUpdatedAt|length == 0 %}
+{% if property.isAi %}
+        $query->orderBy('{{ item }}.{{ property.name }}', 'DESC');
+{% else %}
+        $query->orderBy('{{ item }}.{{ property.name }}', 'ASC');
+{% endif %}
+{% elseif columnUpdatedAt|length == 0 and property.isCa %}
+        $query->orderBy('{{ item }}.{{ property.name }}', 'DESC');
+{% elseif property.isUa %}
+        $query->orderBy('{{ item }}.{{ property.name }}', 'DESC');
 {% endif %}
 {% endfor %}
 

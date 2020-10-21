@@ -52,6 +52,8 @@ final class MySQLTestGateway implements TestGateway
         ]);
         $query->from('`Test`', '`test`');
 
+        $query->orderBy('test.lower', 'ASC');
+
         foreach($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
@@ -156,6 +158,8 @@ final class MySQLUpperGateway implements UpperGateway
             'upper.Foo as foo',
         ]);
         $query->from('`Upper`', '`upper`');
+
+        $query->orderBy('upper.Foo', 'ASC');
 
         foreach($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
@@ -543,6 +547,8 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         $query->leftJoin('`postComment`', '`posts`', '`postId`', 'postComment.PostId = postId.id');
         $query->leftJoin('`postComment`', '`UserStatus`', '`statusId`', 'postComment.StatusId = statusId.id');
 
+        $query->orderBy('postComment.Pk', 'DESC');
+
         foreach($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
@@ -730,6 +736,8 @@ final class MySQLTestGateway implements TestGateway
         ]);
         $query->from('`Test`', '`test`');
 
+        $query->orderBy('test.Updated', 'DESC');
+
         foreach($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
@@ -820,6 +828,8 @@ final class MySQLTestGateway implements TestGateway
         ]);
         $query->from('`Test`', '`test`');
 
+        $query->orderBy('test.code', 'ASC');
+
         foreach($wheres as $column => $value) {
             if ($column === 'page' || !$value) {
                 continue;
@@ -890,6 +900,232 @@ final class MySQLTestGateway implements TestGateway
         $query->setParameter(':code', $test->code(), DB::STRING);
         $query->setParameter(':name', $test->name(), DB::TEXT);
         $query->setParameter(':updatedBy', $test->updatedBy(), DB::INTEGER);
+
+        $query->where('code = :code');
+        $query->setParameter(':code', $test->code(), DB::STRING);
+
+        $query->execute();
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItIndexStringAndOnlyCreatedAt(): void
+    {
+        $render = new MySQLGatewayBuilder(new Schema('Test', 'bar', [
+            new SchemaAttribute('code', 'string', 'pk|required'),
+            new SchemaAttribute('Name', 'text', 'required'),
+            new SchemaAttribute('CreatedAt', 'datetime', 'ca'),
+        ]), ['index', 'create', 'read', 'update']);
+
+        $this->assertEquals(<<<'T'
+<?php declare(strict_types=1);
+
+namespace Domain\Test\Gateway;
+
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types as DB;
+use Domain\Test\Test;
+use Domain\Test\TestGateway;
+
+final class MySQLTestGateway implements TestGateway
+{
+    private $conn;
+
+    public function __construct(Connection $conn)
+    {
+        $this->conn = $conn;
+    }
+
+    public function search(array $wheres, array $orders, int $page, int $limit): array
+    {
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
+            'test.code as code',
+            'test.Name as name',
+        ]);
+        $query->from('`Test`', '`test`');
+
+        $query->orderBy('test.CreatedAt', 'DESC');
+
+        foreach($wheres as $column => $value) {
+            if ($column === 'page' || !$value) {
+                continue;
+            }
+
+            $query->where("{$column} = :{$column}");
+            $query->setParameter(":{$column}", $value);
+        }
+
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
+
+        return $query->execute()->fetchAll();
+    }
+
+    public function push(Test $test): string
+    {
+        $query = $this->conn->createQueryBuilder();
+
+        $query->insert('`Test`');
+
+        $query->setValue('code', ':code');
+        $query->setValue('Name', ':name');
+        $query->setValue('CreatedAt', ':createdAt');
+
+        $query->setParameter(':code', $test->code(), DB::STRING);
+        $query->setParameter(':name', $test->name(), DB::TEXT);
+        $query->setParameter(':createdAt', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+
+        $query->execute();
+
+        return $test->code();
+    }
+
+    public function get(Test $test): array
+    {
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
+            'test.code as code',
+            'test.Name as name',
+            'test.CreatedAt as createdAt',
+        ]);
+        $query->from('`Test`', '`test`');
+        $query->where('test.code = :code');
+        $query->setParameter(':code', $test->code(), DB::STRING);
+
+        return $query->execute()->fetch() ?: [];
+    }
+
+    public function shift(Test $test): void
+    {
+        $query = $this->conn->createQueryBuilder();
+
+        $query->update('`Test`');
+
+        $query->set('code', ':code');
+        $query->set('Name', ':name');
+
+        $query->setParameter(':code', $test->code(), DB::STRING);
+        $query->setParameter(':name', $test->name(), DB::TEXT);
+
+        $query->where('code = :code');
+        $query->setParameter(':code', $test->code(), DB::STRING);
+
+        $query->execute();
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItIndexStringAndOnlyUpdatedAt(): void
+    {
+        $render = new MySQLGatewayBuilder(new Schema('Test', 'bar', [
+            new SchemaAttribute('code', 'string', 'pk|required'),
+            new SchemaAttribute('Name', 'text', 'required'),
+            new SchemaAttribute('UpdatedAt', 'datetime', 'ua'),
+        ]), ['index', 'create', 'read', 'update']);
+
+        $this->assertEquals(<<<'T'
+<?php declare(strict_types=1);
+
+namespace Domain\Test\Gateway;
+
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types as DB;
+use Domain\Test\Test;
+use Domain\Test\TestGateway;
+
+final class MySQLTestGateway implements TestGateway
+{
+    private $conn;
+
+    public function __construct(Connection $conn)
+    {
+        $this->conn = $conn;
+    }
+
+    public function search(array $wheres, array $orders, int $page, int $limit): array
+    {
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
+            'test.code as code',
+            'test.Name as name',
+        ]);
+        $query->from('`Test`', '`test`');
+
+        $query->orderBy('test.UpdatedAt', 'DESC');
+
+        foreach($wheres as $column => $value) {
+            if ($column === 'page' || !$value) {
+                continue;
+            }
+
+            $query->where("{$column} = :{$column}");
+            $query->setParameter(":{$column}", $value);
+        }
+
+        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
+        $query->setMaxResults($limit);
+
+        return $query->execute()->fetchAll();
+    }
+
+    public function push(Test $test): string
+    {
+        $query = $this->conn->createQueryBuilder();
+
+        $query->insert('`Test`');
+
+        $query->setValue('code', ':code');
+        $query->setValue('Name', ':name');
+        $query->setValue('UpdatedAt', ':updatedAt');
+
+        $query->setParameter(':code', $test->code(), DB::STRING);
+        $query->setParameter(':name', $test->name(), DB::TEXT);
+        $query->setParameter(':updatedAt', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+
+        $query->execute();
+
+        return $test->code();
+    }
+
+    public function get(Test $test): array
+    {
+        $query = $this->conn->createQueryBuilder();
+
+        $query->select([
+            'test.code as code',
+            'test.Name as name',
+            'test.UpdatedAt as updatedAt',
+        ]);
+        $query->from('`Test`', '`test`');
+        $query->where('test.code = :code');
+        $query->setParameter(':code', $test->code(), DB::STRING);
+
+        return $query->execute()->fetch() ?: [];
+    }
+
+    public function shift(Test $test): void
+    {
+        $query = $this->conn->createQueryBuilder();
+
+        $query->update('`Test`');
+
+        $query->set('code', ':code');
+        $query->set('Name', ':name');
+        $query->set('UpdatedAt', ':updatedAt');
+
+        $query->setParameter(':code', $test->code(), DB::STRING);
+        $query->setParameter(':name', $test->name(), DB::TEXT);
+        $query->setParameter(':updatedAt', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
 
         $query->where('code = :code');
         $query->setParameter(':code', $test->code(), DB::STRING);
