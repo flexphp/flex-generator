@@ -1,0 +1,69 @@
+<?php declare(strict_types=1);
+
+namespace Domain\Tests;
+
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase as FrameworkTestCase;
+
+abstract class TestCase extends FrameworkTestCase
+{
+    /**
+     * @return \Doctrine\Dbal\Connection
+     */
+    protected function connection()
+    {
+        static $connection;
+
+        if ($connection) {
+            return $connection;
+        }
+
+        return $connection = \Doctrine\DBAL\DriverManager::getConnection([
+            'url' => $_ENV['DATABASE_URL'],
+        ]);
+    }
+
+    protected function getSpy(string $className, bool $enableProxy = true): MockObject
+    {
+        if (!$enableProxy) {
+            return $this->getMockBuilder($className)
+                ->getMock();
+        }
+
+        return $this->getMockBuilder($className)
+            ->enableProxyingToOriginalMethods()
+            ->getMock();
+    }
+
+    protected function getVehicleRequest(array $exclude = [], array $include = []): array
+    {
+        return $this->applyChanges([
+            'id' => '1',
+            'placa' => 'ABC123',
+            'type' => '1',
+            'brand' => '1',
+            'serie' => '1',
+        ], $exclude, $include);
+    }
+
+    protected function getCustomerRequest(array $exclude = [], array $include = []): array
+    {
+        return $this->applyChanges([
+            'id' => 1,
+            'documentTypeId' => 'NIT',
+            'documentNumber' => '1022',
+            'name' => 'Jon',
+            'phoneNumber' => '3211234567',
+            'email' => 'jon@doe.com',
+        ], $exclude, $include);
+    }
+
+    private function applyChanges(array $original, array $exclude, array $include): array
+    {
+        if (count($exclude) > 0) {
+            $original = array_diff_key($original, array_flip($exclude));
+        }
+
+        return $include + $original;
+    }
+}
