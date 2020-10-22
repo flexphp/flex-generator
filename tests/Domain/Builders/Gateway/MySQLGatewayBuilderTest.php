@@ -44,7 +44,7 @@ final class MySQLTestGateway implements TestGateway
         $this->conn = $conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit): array
+    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -59,7 +59,7 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.lower', 'ASC');
 
-        $criteria = new DbalCriteriaHelper($query);
+        $criteria = new DbalCriteriaHelper($query, $offset);
 
         foreach ($wheres as $column => $value) {
             $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
@@ -157,7 +157,7 @@ final class MySQLUpperGateway implements UpperGateway
         $this->conn = $conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit): array
+    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -168,7 +168,7 @@ final class MySQLUpperGateway implements UpperGateway
 
         $query->orderBy('upper.Foo', 'ASC');
 
-        $criteria = new DbalCriteriaHelper($query);
+        $criteria = new DbalCriteriaHelper($query, $offset);
 
         foreach ($wheres as $column => $value) {
             $criteria->getCriteria('upper', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
@@ -335,7 +335,7 @@ final class MySQLJoinGateway implements JoinGateway
         return $query->execute()->fetch() ?: [];
     }
 
-    public function filterJoinTables(FindJoinJoinTableRequest $request, int $page, int $limit): array
+    public function filterJoinTables(FindJoinJoinTableRequest $request, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -535,7 +535,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         $this->conn = $conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit): array
+    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -558,7 +558,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
 
         $query->orderBy('postComment.Pk', 'DESC');
 
-        $criteria = new DbalCriteriaHelper($query);
+        $criteria = new DbalCriteriaHelper($query, $offset);
 
         foreach ($wheres as $column => $value) {
             $criteria->getCriteria('postComment', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
@@ -647,7 +647,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         $query->execute();
     }
 
-    public function filterBars(FindPostCommentBarRequest $request, int $page, int $limit): array
+    public function filterBars(FindPostCommentBarRequest $request, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -666,7 +666,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         return $query->execute()->fetchAll();
     }
 
-    public function filterPosts(FindPostCommentPostRequest $request, int $page, int $limit): array
+    public function filterPosts(FindPostCommentPostRequest $request, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -685,7 +685,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         return $query->execute()->fetchAll();
     }
 
-    public function filterUserStatus(FindPostCommentUserStatusRequest $request, int $page, int $limit): array
+    public function filterUserStatus(FindPostCommentUserStatusRequest $request, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -737,7 +737,7 @@ final class MySQLTestGateway implements TestGateway
         $this->conn = $conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit): array
+    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -749,7 +749,7 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.Updated', 'DESC');
 
-        $criteria = new DbalCriteriaHelper($query);
+        $criteria = new DbalCriteriaHelper($query, $offset);
 
         foreach ($wheres as $column => $value) {
             $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
@@ -831,7 +831,7 @@ final class MySQLTestGateway implements TestGateway
         $this->conn = $conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit): array
+    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -843,7 +843,7 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.code', 'ASC');
 
-        $criteria = new DbalCriteriaHelper($query);
+        $criteria = new DbalCriteriaHelper($query, $offset);
 
         foreach ($wheres as $column => $value) {
             $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
@@ -954,7 +954,7 @@ final class MySQLTestGateway implements TestGateway
         $this->conn = $conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit): array
+    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -966,7 +966,7 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.CreatedAt', 'DESC');
 
-        $criteria = new DbalCriteriaHelper($query);
+        $criteria = new DbalCriteriaHelper($query, $offset);
 
         foreach ($wheres as $column => $value) {
             $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
@@ -1068,7 +1068,7 @@ final class MySQLTestGateway implements TestGateway
         $this->conn = $conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit): array
+    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -1080,7 +1080,7 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.UpdatedAt', 'DESC');
 
-        $criteria = new DbalCriteriaHelper($query);
+        $criteria = new DbalCriteriaHelper($query, $offset);
 
         foreach ($wheres as $column => $value) {
             $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);

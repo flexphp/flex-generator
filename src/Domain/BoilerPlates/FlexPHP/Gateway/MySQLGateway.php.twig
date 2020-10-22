@@ -37,7 +37,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% for action in actions %}
 {% if action == 'index' %}
 
-    public function search(array $wheres, array $orders, int $page, int $limit): array
+    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -76,7 +76,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endif %}
 {% endfor %}
 
-        $criteria = new DbalCriteriaHelper($query);
+        $criteria = new DbalCriteriaHelper($query, $offset);
 
         foreach ($wheres as $column => $value) {
             $criteria->getCriteria('{{ item }}', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
@@ -203,7 +203,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endfor %}
 {% for id,fkFn in fkFnsNoBlame %}
 
-    public function filter{{ fkFn.fnPlural }}(Find{{ entity }}{{ fkFn.fnSingular }}Request $request, int $page, int $limit): array
+    public function filter{{ fkFn.fnPlural }}(Find{{ entity }}{{ fkFn.fnSingular }}Request $request, int $page, int $limit, int $offset): array
     {
         $query = $this->conn->createQueryBuilder();
 
