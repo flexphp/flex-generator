@@ -30,6 +30,7 @@ services:
     # domain are imported separately to make sure services can be injected
     Domain\:
         resource: '../domain'
+        exclude: '../domain/{Tests}'
         tags: ['@router']
 
     Doctrine\DBAL\Configuration:

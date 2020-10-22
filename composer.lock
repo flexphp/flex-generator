@@ -335,12 +335,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/flexphp/flex-database.git",
-                "reference": "a1a700638f0157da5bfba378c7994d707e63bf82"
+                "reference": "3db8d112fcf2e39bbac2275ec66086c398e67751"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flexphp/flex-database/zipball/a1a700638f0157da5bfba378c7994d707e63bf82",
-                "reference": "a1a700638f0157da5bfba378c7994d707e63bf82",
+                "url": "https://api.github.com/repos/flexphp/flex-database/zipball/3db8d112fcf2e39bbac2275ec66086c398e67751",
+                "reference": "3db8d112fcf2e39bbac2275ec66086c398e67751",
                 "shasum": ""
             },
             "require": {
@@ -373,7 +373,7 @@
                 }
             ],
             "description": "Database PHP for FlexPHP library",
-            "time": "2020-08-21T20:28:51+00:00"
+            "time": "2020-10-22T20:56:55+00:00"
         },
         {
             "name": "flexphp/schema",
@@ -2447,6 +2447,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {

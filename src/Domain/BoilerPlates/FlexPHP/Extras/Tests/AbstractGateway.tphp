@@ -15,13 +15,39 @@ abstract class AbstractGateway
     {
         self::init();
         $registers = [];
-        $filters = array_diff_key(array_filter($wheres), array_flip(['page']));
+        $filters = array_diff_key(array_filter($wheres), array_flip(['page', 'offset']));
 
         foreach (self::$registers[static::class] as $register) {
             $skip = false;
 
             foreach ($filters as $name => $value) {
-                if (property_exists($register, $name) && $register->{$name}() !== $value) {
+                if (!property_exists($register, $name)) {
+                    // undefined
+                    continue;
+                }
+
+                if (!is_array($value)) {
+                    // equals
+                    if ($register->{$name}() !== $value) {
+                        $skip = true;
+                    }
+                    continue;
+                }
+
+                $start = $end = null;
+
+                if (count($value) == 2) {
+                    list($start, $end) = $value;
+                }
+
+                if ($start && $end && ($start < $register->{$name}() || $register->{$name}() > $end)) {
+                    // start & end - dates
+                    $skip = true;
+                } elseif ($start && $register->{$name}() < $start) {
+                    // start date
+                    $skip = true;
+                } elseif ($end && $register->{$name}() > $end) {
+                    // end date
                     $skip = true;
                 }
             }
