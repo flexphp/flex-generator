@@ -93,15 +93,14 @@ T
 
         $render = new ControllerBuilder($schema, $actions);
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
 
 namespace App\Controller;
 
-use Doctrine\DBAL\Connection;
-use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\IndexTestRequest;
 use Domain\Test\TestFormType;
+use Domain\Test\TestGateway;
 use Domain\Test\TestRepository;
 use Domain\Test\UseCase\IndexTestUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -121,18 +120,18 @@ final class TestController extends AbstractController
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_INDEX')", statusCode=401)
      */
-    public function index(Request \$request, Connection \$conn): Response
+    public function index(Request $request, TestGateway $testGateway): Response
     {
-        \$template = \$request->isXmlHttpRequest() ? 'test/_ajax.html.twig' : 'test/index.html.twig';
+        $template = $request->isXmlHttpRequest() ? 'test/_ajax.html.twig' : 'test/index.html.twig';
 
-        \$request = new IndexTestRequest(\$request->request->all(), (int)\$request->query->get('page', 1));
+        $request = new IndexTestRequest($request->request->all(), (int)$request->query->get('page', 1));
 
-        \$useCase = new IndexTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $useCase = new IndexTestUseCase(new TestRepository($testGateway));
 
-        \$response = \$useCase->execute(\$request);
+        $response = $useCase->execute($request);
 
-        return \$this->render(\$template, [
-            'tests' => \$response->tests,
+        return $this->render($template, [
+            'tests' => $response->tests,
         ]);
     }
 }
@@ -157,15 +156,14 @@ T
 
         $render = new ControllerBuilder($schema, $actions);
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
 
 namespace App\Controller;
 
-use Doctrine\DBAL\Connection;
-use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\CreateTestRequest;
 use Domain\Test\TestFormType;
+use Domain\Test\TestGateway;
 use Domain\Test\TestRepository;
 use Domain\Test\UseCase\CreateTestUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -188,10 +186,10 @@ final class TestController extends AbstractController
      */
     public function new(): Response
     {
-        \$form = \$this->createForm(TestFormType::class);
+        $form = $this->createForm(TestFormType::class);
 
-        return \$this->render('test/new.html.twig', [
-            'form' => \$form->createView(),
+        return $this->render('test/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
@@ -199,20 +197,20 @@ final class TestController extends AbstractController
      * @Route("/create", methods={"POST"}, name="tests.create")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_CREATE')", statusCode=401)
      */
-    public function create(Request \$request, Connection \$conn, TranslatorInterface \$trans): Response
+    public function create(Request $request, TestGateway $testGateway, TranslatorInterface $trans): Response
     {
-        \$form = \$this->createForm(TestFormType::class);
-        \$form->handleRequest(\$request);
+        $form = $this->createForm(TestFormType::class);
+        $form->handleRequest($request);
 
-        \$request = new CreateTestRequest(\$form->getData());
+        $request = new CreateTestRequest($form->getData());
 
-        \$useCase = new CreateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $useCase = new CreateTestUseCase(new TestRepository($testGateway));
 
-        \$useCase->execute(\$request);
+        $useCase->execute($request);
 
-        \$this->addFlash('success', \$trans->trans('message.created', [], 'test'));
+        $this->addFlash('success', $trans->trans('message.created', [], 'test'));
 
-        return \$this->redirectToRoute('tests.index');
+        return $this->redirectToRoute('tests.index');
     }
 }
 
@@ -236,15 +234,14 @@ T
 
         $render = new ControllerBuilder($schema, $actions);
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
 
 namespace App\Controller;
 
-use Doctrine\DBAL\Connection;
-use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\ReadTestRequest;
 use Domain\Test\TestFormType;
+use Domain\Test\TestGateway;
 use Domain\Test\TestRepository;
 use Domain\Test\UseCase\ReadTestUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -264,20 +261,20 @@ final class TestController extends AbstractController
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_READ')", statusCode=401)
      */
-    public function read(Connection \$conn, string \$id): Response
+    public function read(TestGateway $testGateway, string $id): Response
     {
-        \$request = new ReadTestRequest(\$id);
+        $request = new ReadTestRequest($id);
 
-        \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $useCase = new ReadTestUseCase(new TestRepository($testGateway));
 
-        \$response = \$useCase->execute(\$request);
+        $response = $useCase->execute($request);
 
-        if (!\$response->test->id()) {
-            throw \$this->createNotFoundException();
+        if (!$response->test->id()) {
+            throw $this->createNotFoundException();
         }
 
-        return \$this->render('test/show.html.twig', [
-            'test' => \$response->test,
+        return $this->render('test/show.html.twig', [
+            'test' => $response->test,
         ]);
     }
 }
@@ -302,15 +299,14 @@ T
 
         $render = new ControllerBuilder($schema, $actions);
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
 
 namespace App\Controller;
 
-use Doctrine\DBAL\Connection;
-use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\UpdateTestRequest;
 use Domain\Test\TestFormType;
+use Domain\Test\TestGateway;
 use Domain\Test\TestRepository;
 use Domain\Test\UseCase\UpdateTestUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -330,23 +326,23 @@ final class TestController extends AbstractController
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function edit(Connection \$conn, int \$id): Response
+    public function edit(TestGateway $testGateway, int $id): Response
     {
-        \$request = new ReadTestRequest(\$id);
+        $request = new ReadTestRequest($id);
 
-        \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $useCase = new ReadTestUseCase(new TestRepository($testGateway));
 
-        \$response = \$useCase->execute(\$request);
+        $response = $useCase->execute($request);
 
-        if (!\$response->test->foo()) {
-            throw \$this->createNotFoundException();
+        if (!$response->test->foo()) {
+            throw $this->createNotFoundException();
         }
 
-        \$form = \$this->createForm(TestFormType::class, \$response->test);
+        $form = $this->createForm(TestFormType::class, $response->test);
 
-        return \$this->render('test/edit.html.twig', [
-            'test' => \$response->test,
-            'form' => \$form->createView(),
+        return $this->render('test/edit.html.twig', [
+            'test' => $response->test,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -354,21 +350,21 @@ final class TestController extends AbstractController
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function update(Request \$request, Connection \$conn, TranslatorInterface \$trans, int \$id): Response
+    public function update(Request $request, TestGateway $testGateway, TranslatorInterface $trans, int $id): Response
     {
-        \$form = \$this->createForm(TestFormType::class);
-        \$form->submit(\$request->request->get(\$form->getName()));
-        \$form->handleRequest(\$request);
+        $form = $this->createForm(TestFormType::class);
+        $form->submit($request->request->get($form->getName()));
+        $form->handleRequest($request);
 
-        \$request = new UpdateTestRequest(\$id, \$form->getData());
+        $request = new UpdateTestRequest($id, $form->getData());
 
-        \$useCase = new UpdateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $useCase = new UpdateTestUseCase(new TestRepository($testGateway));
 
-        \$useCase->execute(\$request);
+        $useCase->execute($request);
 
-        \$this->addFlash('success', \$trans->trans('message.updated', [], 'test'));
+        $this->addFlash('success', $trans->trans('message.updated', [], 'test'));
 
-        return \$this->redirectToRoute('tests.index');
+        return $this->redirectToRoute('tests.index');
     }
 }
 
@@ -392,15 +388,14 @@ T
 
         $render = new ControllerBuilder($schema, $actions);
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
 
 namespace App\Controller;
 
-use Doctrine\DBAL\Connection;
-use Domain\Test\Gateway\MySQLTestGateway;
 use Domain\Test\Request\DeleteTestRequest;
 use Domain\Test\TestFormType;
+use Domain\Test\TestGateway;
 use Domain\Test\TestRepository;
 use Domain\Test\UseCase\DeleteTestUseCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
@@ -419,17 +414,17 @@ final class TestController extends AbstractController
      * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
      */
-    public function delete(Connection \$conn, TranslatorInterface \$trans, int \$id): Response
+    public function delete(TestGateway $testGateway, TranslatorInterface $trans, int $id): Response
     {
-        \$request = new DeleteTestRequest(\$id);
+        $request = new DeleteTestRequest($id);
 
-        \$useCase = new DeleteTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $useCase = new DeleteTestUseCase(new TestRepository($testGateway));
 
-        \$useCase->execute(\$request);
+        $useCase->execute($request);
 
-        \$this->addFlash('success', \$trans->trans('message.deleted', [], 'test'));
+        $this->addFlash('success', $trans->trans('message.deleted', [], 'test'));
 
-        return \$this->redirectToRoute('tests.index');
+        return $this->redirectToRoute('tests.index');
     }
 }
 
@@ -480,7 +475,7 @@ T
     {
         $render = new ControllerBuilder($this->getSchemaFkRelation('UserPosts'), []);
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
 
 namespace App\Controller;
@@ -491,6 +486,7 @@ use Domain\UserPost\Request\FindUserPostUserStatusRequest;
 use Domain\UserPost\UseCase\FindUserPostBarUseCase;
 use Domain\UserPost\UseCase\FindUserPostPostUseCase;
 use Domain\UserPost\UseCase\FindUserPostUserStatusUseCase;
+use Domain\UserPost\UserPostGateway;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -509,20 +505,20 @@ final class UserPostController extends AbstractController
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_BAR_INDEX')", statusCode=401)
      */
-    public function findBar(Request \$request, Connection \$conn): Response
+    public function findBar(Request $request, UserPostGateway $userPostGateway): Response
     {
-        if (!\$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest()) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        \$request = new FindUserPostBarRequest(\$request->request->all());
+        $request = new FindUserPostBarRequest($request->request->all());
 
-        \$useCase = new FindUserPostBarUseCase(new UserPostRepository(new MySQLUserPostGateway(\$conn)));
+        $useCase = new FindUserPostBarUseCase(new UserPostRepository($userPostGateway));
 
-        \$response = \$useCase->execute(\$request);
+        $response = $useCase->execute($request);
 
         return new JsonResponse([
-            'results' => \$response->bars,
+            'results' => $response->bars,
             'pagination' => ['more' => false],
         ]);
     }
@@ -532,20 +528,20 @@ final class UserPostController extends AbstractController
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_POST_INDEX')", statusCode=401)
      */
-    public function findPost(Request \$request, Connection \$conn): Response
+    public function findPost(Request $request, UserPostGateway $userPostGateway): Response
     {
-        if (!\$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest()) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        \$request = new FindUserPostPostRequest(\$request->request->all());
+        $request = new FindUserPostPostRequest($request->request->all());
 
-        \$useCase = new FindUserPostPostUseCase(new UserPostRepository(new MySQLUserPostGateway(\$conn)));
+        $useCase = new FindUserPostPostUseCase(new UserPostRepository($userPostGateway));
 
-        \$response = \$useCase->execute(\$request);
+        $response = $useCase->execute($request);
 
         return new JsonResponse([
-            'results' => \$response->posts,
+            'results' => $response->posts,
             'pagination' => ['more' => false],
         ]);
     }
@@ -555,20 +551,20 @@ final class UserPostController extends AbstractController
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_USERSTATUS_INDEX')", statusCode=401)
      */
-    public function findUserStatus(Request \$request, Connection \$conn): Response
+    public function findUserStatus(Request $request, UserPostGateway $userPostGateway): Response
     {
-        if (!\$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest()) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
         }
 
-        \$request = new FindUserPostUserStatusRequest(\$request->request->all());
+        $request = new FindUserPostUserStatusRequest($request->request->all());
 
-        \$useCase = new FindUserPostUserStatusUseCase(new UserPostRepository(new MySQLUserPostGateway(\$conn)));
+        $useCase = new FindUserPostUserStatusUseCase(new UserPostRepository($userPostGateway));
 
-        \$response = \$useCase->execute(\$request);
+        $response = $useCase->execute($request);
 
         return new JsonResponse([
-            'results' => \$response->userStatus,
+            'results' => $response->userStatus,
             'pagination' => ['more' => false],
         ]);
     }
@@ -627,7 +623,7 @@ T
 
         $render = new ControllerBuilder($schema, $actions);
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
 
 namespace App\Controller;
@@ -652,28 +648,28 @@ final class TestController extends AbstractController
      * @Route("/action", methods={"POST"}, name="tests.action")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_ACTION')", statusCode=401)
      */
-    public function action(Request \$request): Response
+    public function action(Request $request): Response
     {
-        \$request = new ActionTestRequest(\$request->request->all());
+        $request = new ActionTestRequest($request->request->all());
 
-        \$useCase = new ActionTestUseCase();
-        \$response = \$useCase->execute(\$request);
+        $useCase = new ActionTestUseCase();
+        $response = $useCase->execute($request);
 
-        return new Response(\$response);
+        return new Response($response);
     }
 
     /**
      * @Route("/custom-fuz", methods={"POST"}, name="tests.custom-fuz")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_CUSTOMFUZ')", statusCode=401)
      */
-    public function customFuz(Request \$request): Response
+    public function customFuz(Request $request): Response
     {
-        \$request = new CustomFuzTestRequest(\$request->request->all());
+        $request = new CustomFuzTestRequest($request->request->all());
 
-        \$useCase = new CustomFuzTestUseCase();
-        \$response = \$useCase->execute(\$request);
+        $useCase = new CustomFuzTestUseCase();
+        $response = $useCase->execute($request);
 
-        return new Response(\$response);
+        return new Response($response);
     }
 }
 

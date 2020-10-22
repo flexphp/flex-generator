@@ -33,10 +33,10 @@ T
     {
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'index');
 
-        $this->assertEquals(<<<T
-        \$useCase = new IndexTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $this->assertEquals(<<<'T'
+        $useCase = new IndexTestUseCase(new TestRepository($testGateway));
 
-        \$response = \$useCase->execute(\$request);
+        $response = $useCase->execute($request);
 T
 , $render->build());
     }
@@ -45,10 +45,10 @@ T
     {
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'create');
 
-        $this->assertEquals(<<<T
-        \$useCase = new CreateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $this->assertEquals(<<<'T'
+        $useCase = new CreateTestUseCase(new TestRepository($testGateway));
 
-        \$useCase->execute(\$request);
+        $useCase->execute($request);
 T
 , $render->build());
     }
@@ -57,13 +57,13 @@ T
     {
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'read');
 
-        $this->assertEquals(<<<T
-        \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $this->assertEquals(<<<'T'
+        $useCase = new ReadTestUseCase(new TestRepository($testGateway));
 
-        \$response = \$useCase->execute(\$request);
+        $response = $useCase->execute($request);
 
-        if (!\$response->test->id()) {
-            throw \$this->createNotFoundException();
+        if (!$response->test->id()) {
+            throw $this->createNotFoundException();
         }
 T
 , $render->build());
@@ -77,7 +77,7 @@ T
         $render = new UseCaseBuilder(new Schema($name, 'bar', []), 'read');
 
         $this->assertEquals(<<<T
-        \$useCase = new Read{$expected}UseCase(new {$expected}Repository(new MySQL{$expected}Gateway(\$conn)));
+        \$useCase = new Read{$expected}UseCase(new {$expected}Repository(\${$item}Gateway));
 
         \$response = \$useCase->execute(\$request);
 
@@ -92,10 +92,10 @@ T
     {
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'update');
 
-        $this->assertEquals(<<<T
-        \$useCase = new UpdateTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $this->assertEquals(<<<'T'
+        $useCase = new UpdateTestUseCase(new TestRepository($testGateway));
 
-        \$useCase->execute(\$request);
+        $useCase->execute($request);
 T
 , $render->build());
     }
@@ -104,10 +104,10 @@ T
     {
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'delete');
 
-        $this->assertEquals(<<<T
-        \$useCase = new DeleteTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $this->assertEquals(<<<'T'
+        $useCase = new DeleteTestUseCase(new TestRepository($testGateway));
 
-        \$useCase->execute(\$request);
+        $useCase->execute($request);
 T
 , $render->build());
     }

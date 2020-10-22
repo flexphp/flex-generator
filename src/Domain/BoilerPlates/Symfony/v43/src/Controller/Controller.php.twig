@@ -7,7 +7,9 @@ namespace App\Controller;
 {% if actions.Index or actions.Create or actions.Read or actions.Update or actions.Delete %}
 {% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\' ~ entity ~ 'FormType;']) %}
 {% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\' ~ entity ~ 'Repository;']) %}
-{% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\Gateway\\MySQL' ~ entity ~ 'Gateway;']) %}
+{% endif %}
+{% if actions.Index or actions.Create or actions.Read or actions.Update or actions.Delete or fkFnsNoBlame|length > 0 %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\' ~ entity ~ 'Gateway;']) %}
 {% endif %}
 {% for key,action in actions %}
 {% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\Request\\' ~ key ~ entity ~ 'Request;']) %}
@@ -19,9 +21,6 @@ namespace App\Controller;
 {% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\Request\\Find' ~ entity ~ fkFn.fnSingular ~ 'Request;']) %}
 {% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\UseCase\\Find' ~ entity ~ fkFn.fnSingular ~ 'UseCase;']) %}
 {% endfor %}
-{% if actions.Index or actions.Create or actions.Read or actions.Update or actions.Delete %}
-{% set useStatements = useStatements|merge(['use Doctrine\\DBAL\\Connection;']) %}
-{% endif %}
 {% set useStatements = useStatements|merge(['use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Cache;']) %}
 {% set useStatements = useStatements|merge(['use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Security;']) %}
 {% set useStatements = useStatements|merge(['use Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController;']) %}
@@ -59,7 +58,7 @@ final class {{ entity }}Controller extends AbstractController
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ fkFn.fnSingular|upper }}_INDEX')", statusCode=401)
      */
-    public function find{{ fkFn.fnSingular }}(Request $request, {{ entity }}Gateway ${{ item }}Gateway): Response
+    public function find{{ fkFn.fnSingular }}(Request $request, {{ entity }}Gateway ${{ fkFn.fkItem }}Gateway): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
@@ -67,7 +66,7 @@ final class {{ entity }}Controller extends AbstractController
 
         $request = new Find{{ entity }}{{ fkFn.fnSingular }}Request($request->request->all());
 
-        $useCase = new Find{{ entity }}{{ fkFn.fnSingular }}UseCase(new {{ entity }}Repository(${{ item }}Gateway));
+        $useCase = new Find{{ entity }}{{ fkFn.fnSingular }}UseCase(new {{ entity }}Repository(${{ fkFn.fkItem }}Gateway));
 
         $response = $useCase->execute($request);
 
