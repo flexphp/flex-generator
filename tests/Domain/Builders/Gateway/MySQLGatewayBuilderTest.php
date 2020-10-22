@@ -27,12 +27,17 @@ namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types as DB;
+use Domain\Helper\DbalCriteriaHelper;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
     private $conn;
+
+    private $operator = [
+        //
+    ];
 
     public function __construct(Connection $conn)
     {
@@ -54,13 +59,10 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.lower', 'ASC');
 
-        foreach ($wheres as $column => $value) {
-            if ($column === 'page' || !$value) {
-                continue;
-            }
+        $criteria = new DbalCriteriaHelper($query);
 
-            $query->where("{$column} = :{$column}");
-            $query->setParameter(":{$column}", $value);
+        foreach ($wheres as $column => $value) {
+            $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
         $query->setFirstResult($page ? ($page - 1) * $limit : 0);
@@ -138,12 +140,17 @@ namespace Domain\Upper\Gateway;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types as DB;
+use Domain\Helper\DbalCriteriaHelper;
 use Domain\Upper\Upper;
 use Domain\Upper\UpperGateway;
 
 final class MySQLUpperGateway implements UpperGateway
 {
     private $conn;
+
+    private $operator = [
+        //
+    ];
 
     public function __construct(Connection $conn)
     {
@@ -161,13 +168,10 @@ final class MySQLUpperGateway implements UpperGateway
 
         $query->orderBy('upper.Foo', 'ASC');
 
-        foreach ($wheres as $column => $value) {
-            if ($column === 'page' || !$value) {
-                continue;
-            }
+        $criteria = new DbalCriteriaHelper($query);
 
-            $query->where("{$column} = :{$column}");
-            $query->setParameter(":{$column}", $value);
+        foreach ($wheres as $column => $value) {
+            $criteria->getCriteria('upper', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
         $query->setFirstResult($page ? ($page - 1) * $limit : 0);
@@ -511,6 +515,7 @@ namespace Domain\PostComment\Gateway;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types as DB;
+use Domain\Helper\DbalCriteriaHelper;
 use Domain\PostComment\PostComment;
 use Domain\PostComment\PostCommentGateway;
 use Domain\PostComment\Request\FindPostCommentBarRequest;
@@ -520,6 +525,10 @@ use Domain\PostComment\Request\FindPostCommentUserStatusRequest;
 final class MySQLPostCommentGateway implements PostCommentGateway
 {
     private $conn;
+
+    private $operator = [
+        //
+    ];
 
     public function __construct(Connection $conn)
     {
@@ -549,13 +558,10 @@ final class MySQLPostCommentGateway implements PostCommentGateway
 
         $query->orderBy('postComment.Pk', 'DESC');
 
-        foreach ($wheres as $column => $value) {
-            if ($column === 'page' || !$value) {
-                continue;
-            }
+        $criteria = new DbalCriteriaHelper($query);
 
-            $query->where("{$column} = :{$column}");
-            $query->setParameter(":{$column}", $value);
+        foreach ($wheres as $column => $value) {
+            $criteria->getCriteria('postComment', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
         $query->setFirstResult($page ? ($page - 1) * $limit : 0);
@@ -714,12 +720,17 @@ namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types as DB;
+use Domain\Helper\DbalCriteriaHelper;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
     private $conn;
+
+    private $operator = [
+        //
+    ];
 
     public function __construct(Connection $conn)
     {
@@ -738,13 +749,10 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.Updated', 'DESC');
 
-        foreach ($wheres as $column => $value) {
-            if ($column === 'page' || !$value) {
-                continue;
-            }
+        $criteria = new DbalCriteriaHelper($query);
 
-            $query->where("{$column} = :{$column}");
-            $query->setParameter(":{$column}", $value);
+        foreach ($wheres as $column => $value) {
+            $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
         $query->setFirstResult($page ? ($page - 1) * $limit : 0);
@@ -806,12 +814,17 @@ namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types as DB;
+use Domain\Helper\DbalCriteriaHelper;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
     private $conn;
+
+    private $operator = [
+        //
+    ];
 
     public function __construct(Connection $conn)
     {
@@ -830,13 +843,10 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.code', 'ASC');
 
-        foreach ($wheres as $column => $value) {
-            if ($column === 'page' || !$value) {
-                continue;
-            }
+        $criteria = new DbalCriteriaHelper($query);
 
-            $query->where("{$column} = :{$column}");
-            $query->setParameter(":{$column}", $value);
+        foreach ($wheres as $column => $value) {
+            $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
         $query->setFirstResult($page ? ($page - 1) * $limit : 0);
@@ -927,12 +937,17 @@ namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types as DB;
+use Domain\Helper\DbalCriteriaHelper;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
     private $conn;
+
+    private $operator = [
+        //
+    ];
 
     public function __construct(Connection $conn)
     {
@@ -951,13 +966,10 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.CreatedAt', 'DESC');
 
-        foreach ($wheres as $column => $value) {
-            if ($column === 'page' || !$value) {
-                continue;
-            }
+        $criteria = new DbalCriteriaHelper($query);
 
-            $query->where("{$column} = :{$column}");
-            $query->setParameter(":{$column}", $value);
+        foreach ($wheres as $column => $value) {
+            $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
         $query->setFirstResult($page ? ($page - 1) * $limit : 0);
@@ -1039,12 +1051,17 @@ namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types as DB;
+use Domain\Helper\DbalCriteriaHelper;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
 final class MySQLTestGateway implements TestGateway
 {
     private $conn;
+
+    private $operator = [
+        //
+    ];
 
     public function __construct(Connection $conn)
     {
@@ -1063,13 +1080,10 @@ final class MySQLTestGateway implements TestGateway
 
         $query->orderBy('test.UpdatedAt', 'DESC');
 
-        foreach ($wheres as $column => $value) {
-            if ($column === 'page' || !$value) {
-                continue;
-            }
+        $criteria = new DbalCriteriaHelper($query);
 
-            $query->where("{$column} = :{$column}");
-            $query->setParameter(":{$column}", $value);
+        foreach ($wheres as $column => $value) {
+            $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
         $query->setFirstResult($page ? ($page - 1) * $limit : 0);

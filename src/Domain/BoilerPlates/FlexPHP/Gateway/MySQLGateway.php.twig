@@ -8,6 +8,9 @@ namespace Domain\{{ entity }}\Gateway;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types as DB;
+{% if 'index' in actions %}
+{% set useStatements = useStatements|merge(['use Domain\\Helper\\DbalCriteriaHelper;']) %}
+{% endif %}
 {% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\' ~ entity ~ ';']) %}
 {% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\' ~ entity ~ 'Gateway;']) %}
 {% for id,fkFn in fkFnsNoBlame %}
@@ -20,6 +23,12 @@ use Doctrine\DBAL\Types\Types as DB;
 final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {
     private $conn;
+{% if 'index' in actions %}
+
+    private $operator = [
+        //
+    ];
+{% endif %}
 
     public function __construct(Connection $conn)
     {
@@ -67,13 +76,10 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endif %}
 {% endfor %}
 
-        foreach ($wheres as $column => $value) {
-            if ($column === 'page' || !$value) {
-                continue;
-            }
+        $criteria = new DbalCriteriaHelper($query);
 
-            $query->where("{$column} = :{$column}");
-            $query->setParameter(":{$column}", $value);
+        foreach ($wheres as $column => $value) {
+            $criteria->getCriteria('{{ item }}', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
         $query->setFirstResult($page ? ($page - 1) * $limit : 0);
