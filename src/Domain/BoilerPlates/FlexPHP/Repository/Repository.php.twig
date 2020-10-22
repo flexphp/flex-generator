@@ -24,6 +24,9 @@ final class {{ entity }}Repository extends Repository
 {
 {% for index, action in actions %}
 {% if action == 'index' %}
+    /**
+     * @return array<{{ entity }}>
+     */
     public function findBy(Index{{ entity }}Request $request): array
     {
         return array_map(function (array ${{ item }}) {

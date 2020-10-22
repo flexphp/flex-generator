@@ -46,6 +46,9 @@ use FlexPHP\Repositories\Repository;
  */
 final class TestRepository extends Repository
 {
+    /**
+     * @return array<Test>
+     */
     public function findBy(IndexTestRequest $request): array
     {
         return array_map(function (array $test) {
@@ -120,6 +123,9 @@ use FlexPHP\Repositories\Repository;
  */
 final class TestRepository extends Repository
 {
+    /**
+     * @return array<Test>
+     */
     public function findBy(IndexTestRequest $request): array
     {
         return array_map(function (array $test) {
@@ -341,6 +347,9 @@ use FlexPHP\Repositories\Repository;
  */
 final class PostCommentRepository extends Repository
 {
+    /**
+     * @return array<PostComment>
+     */
     public function findBy(IndexPostCommentRequest $request): array
     {
         return array_map(function (array $postComment) {
@@ -394,6 +403,9 @@ use FlexPHP\Repositories\Repository;
  */
 final class TestRepository extends Repository
 {
+    /**
+     * @return array<Test>
+     */
     public function findBy(IndexTestRequest $request): array
     {
         return array_map(function (array $test) {
