@@ -37,7 +37,7 @@ use Domain\Test\Request\FindTestUserStatusRequest;
 
 interface TestGateway
 {
-    public function search(array $wheres, array $orders, int $page, int $limit): array;
+    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array;
 
     public function push(Test $test): int;
 
@@ -49,11 +49,11 @@ interface TestGateway
 
     public function getBy(string $column, $value): array;
 
-    public function filterBars(FindTestBarRequest $request, int $page, int $limit): array;
+    public function filterBars(FindTestBarRequest $request, int $page, int $limit, int $offset): array;
 
-    public function filterPosts(FindTestPostRequest $request, int $page, int $limit): array;
+    public function filterPosts(FindTestPostRequest $request, int $page, int $limit, int $offset): array;
 
-    public function filterUserStatus(FindTestUserStatusRequest $request, int $page, int $limit): array;
+    public function filterUserStatus(FindTestUserStatusRequest $request, int $page, int $limit, int $offset): array;
 }
 
 T
@@ -71,7 +71,7 @@ namespace Domain\Test;
 
 interface TestGateway
 {
-    public function search(array $wheres, array $orders, int $page, int $limit): array;
+    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array;
 }
 
 T
@@ -183,11 +183,11 @@ use Domain\PostComment\Request\FindPostCommentUserStatusRequest;
 
 interface PostCommentGateway
 {
-    public function filterBars(FindPostCommentBarRequest $request, int $page, int $limit): array;
+    public function filterBars(FindPostCommentBarRequest $request, int $page, int $limit, int $offset): array;
 
-    public function filterPosts(FindPostCommentPostRequest $request, int $page, int $limit): array;
+    public function filterPosts(FindPostCommentPostRequest $request, int $page, int $limit, int $offset): array;
 
-    public function filterUserStatus(FindPostCommentUserStatusRequest $request, int $page, int $limit): array;
+    public function filterUserStatus(FindPostCommentUserStatusRequest $request, int $page, int $limit, int $offset): array;
 }
 
 T

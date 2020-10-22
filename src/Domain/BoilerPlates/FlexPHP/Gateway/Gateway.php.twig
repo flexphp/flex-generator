@@ -19,7 +19,7 @@ interface {{ entity }}Gateway
 
 {% endif %}
 {% if action in ['index'] %}
-    public function search(array $wheres, array $orders, int $page, int $limit): array;
+    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array;
 {% elseif action in ['create'] %}
     public function push({{ entity }} ${{ item }}): {{ typeHint }};
 {% elseif action in ['read'] %}
@@ -36,7 +36,7 @@ interface {{ entity }}Gateway
 
 {% endif %}
 {% for fkFn in fkFnsNoBlame %}
-    public function filter{{ fkFn.fnPlural }}(Find{{ entity }}{{ fkFn.fnSingular }}Request $request, int $page, int $limit): array;
+    public function filter{{ fkFn.fnPlural }}(Find{{ entity }}{{ fkFn.fnSingular }}Request $request, int $page, int $limit, int $offset): array;
 {% if not loop.last %}
 
 {% endif %}
