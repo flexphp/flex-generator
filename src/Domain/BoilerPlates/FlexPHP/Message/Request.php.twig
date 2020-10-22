@@ -4,10 +4,17 @@
 
 namespace Domain\{{ entity }}\Request;
 
+{% if action in ['Index'] %}
+use Domain\Helper\DateTimeTrait;
+{% endif %}
 use FlexPHP\Messages\RequestInterface;
 
 final class {{ action }}{{ entity }}Request implements RequestInterface
 {
+{% if action in ['Index'] %}
+    use DateTimeTrait;
+
+{% endif %}
 {% if action in ['Read', 'Delete'] %}
     public ${{ pkName }};
 
@@ -31,11 +38,16 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% set UpdatedById = id %}
 {% endif %}
 {% if (action in ['Update'] and (property.isPk or property.isUb)) or (action in ['Create'] and property.isCb) or action in ['Index'] or (not property.isAi and not property.isBlame) %}
+{% if action in ['Index'] and property.isCa %}
+    public ${{ id }} = [];
+{% else %}
     public ${{ id }};
+{% endif %}
 {% endif %}
 {% endfor %}
 {% if action in ['Index'] %}
     public $page;
+    public $offset;
 {% endif %}
 {% if properties %}
 
@@ -47,7 +59,7 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% elseif action in ['Update'] %}
     public function __construct({{ pkTypeHint }} ${{ pkName }}, array $data)
 {% elseif action in ['Index'] %}
-    public function __construct(array $data, int $page)
+    public function __construct(array $data, int $page, ?string $timezone = null)
 {% else %}
     public function __construct(array $data)
 {% endif %}
@@ -60,11 +72,17 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% elseif not (action in ['Create'] and property.isAi) and not property.isBlame %}
         $this->{{ id }} = $data['{{ id }}'] ?? null;
 {% elseif action in ['Index'] %}
+{% if property.isCa %}
+        $this->{{ id }}[] = $data['{{ id }}_START'] ?? null;
+        $this->{{ id }}[] = $data['{{ id }}_END'] ?? null;
+{% else %}
         $this->{{ id }} = $data['{{ id }}'] ?? null;
+{% endif %}
 {% endif %}
 {% endfor %}
 {% if action in ['Index'] %}
         $this->page = $page;
+        $this->offset = $this->getOffset($this->getTimezone($timezone));
 {% endif %}
     }
 {% endif %}
