@@ -17,7 +17,7 @@ final class TemplateBuilderTest extends TestCase
     public function testItRenderIndexOk(): void
     {
         $render = new TemplateBuilder($this->getSchema(), 'index');
-
+        
         $this->assertEquals(<<<T
 {% trans_default_domain 'test' %}
 {% extends 'form/layout.html.twig' %}
@@ -354,13 +354,7 @@ T
     </div>
 {% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/select2/select2.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/select2/select2bs4.min.css') }}" />
-{% endblock %}
-
 {% block javascripts %}
-    <script src="{{ asset('js/jquery/jquery.select2.min.js') }}"></script>
     <script src="{{ asset('js/postComments.js') }}"></script>
 {% endblock %}
 
@@ -569,13 +563,7 @@ T
     </div>
 {% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/select2/select2.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/select2/select2bs4.min.css') }}" />
-{% endblock %}
-
 {% block javascripts %}
-    <script src="{{ asset('js/jquery/jquery.select2.min.js') }}"></script>
     <script src="{{ asset('js/postComments.js') }}"></script>
 {% endblock %}
 
