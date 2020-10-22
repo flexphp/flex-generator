@@ -28,7 +28,7 @@ final class {{ entity }}Repository extends Repository
     {
         return array_map(function (array ${{ item }}) {
             return (new {{ entity }}Factory())->make(${{ item }});
-        }, $this->getGateway()->search((array)$request, [], $request->page, 10));
+        }, $this->getGateway()->search((array)$request, [], $request->page, 50));
     }
 {% elseif action == 'create' %}
     public function add(Create{{ entity }}Request $request): {{ entity }}
@@ -84,7 +84,7 @@ final class {{ entity }}Repository extends Repository
 
     public function find{{ fkFn.fnPlural }}By(Find{{ entity }}{{ fkFn.fnSingular }}Request $request): array
     {
-        return $this->getGateway()->filter{{ fkFn.fnPlural }}($request, $request->page, 10);
+        return $this->getGateway()->filter{{ fkFn.fnPlural }}($request, $request->page, 20);
     }
 {% endfor %}
 }
