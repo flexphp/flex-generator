@@ -1,5 +1,5 @@
 {% if action in ['Index', 'Create', 'Read', 'Update', 'Delete'] %}
-        $useCase = new {{ action }}{{ entity }}UseCase(new {{ entity }}Repository(new MySQL{{ entity }}Gateway($conn)));
+        $useCase = new {{ action }}{{ entity }}UseCase(new {{ entity }}Repository(${{ item }}Gateway));
 
 {% else %}
         $useCase = new {{ action }}{{ entity }}UseCase();

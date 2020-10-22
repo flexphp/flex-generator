@@ -19,7 +19,7 @@ final class ActionBuilderTest extends TestCase
     /**
      * @dataProvider getEntityAndRouteName
      */
-    public function testItRenderOk(string $entity, string $route, string $role): void
+    public function testItRenderOk(string $entity, string $expected, string $route, string $role, string $item): void
     {
         $render = new ActionBuilder(new Schema($entity, 'bar', []), '');
 
@@ -29,7 +29,7 @@ final class ActionBuilderTest extends TestCase
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_INDEX')", statusCode=401)
      */
-    public function index(Request \$request, Connection \$conn): Response
+    public function index(Request \$request, {$expected}Gateway \${$item}Gateway): Response
     {
     }
 
@@ -41,13 +41,13 @@ T
     {
         $render = new ActionBuilder(new Schema('Test', 'bar', []), 'index');
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
     /**
      * @Route("/", methods={"GET"}, name="tests.index")
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_INDEX')", statusCode=401)
      */
-    public function index(Request \$request, Connection \$conn): Response
+    public function index(Request $request, TestGateway $testGateway): Response
     {
     }
 
@@ -59,7 +59,7 @@ T
     {
         $render = new ActionBuilder(new Schema('Test', 'bar', []), 'create');
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
     /**
      * @Route("/new", methods={"GET"}, name="tests.new")
      * @Cache(smaxage="3600")
@@ -67,10 +67,10 @@ T
      */
     public function new(): Response
     {
-        \$form = \$this->createForm(TestFormType::class);
+        $form = $this->createForm(TestFormType::class);
 
-        return \$this->render('test/new.html.twig', [
-            'form' => \$form->createView(),
+        return $this->render('test/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
@@ -78,7 +78,7 @@ T
      * @Route("/create", methods={"POST"}, name="tests.create")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_CREATE')", statusCode=401)
      */
-    public function create(Request \$request, Connection \$conn, TranslatorInterface \$trans): Response
+    public function create(Request $request, TestGateway $testGateway, TranslatorInterface $trans): Response
     {
     }
 
@@ -94,7 +94,8 @@ T
         string $expected,
         string $route,
         string $template,
-        string $role
+        string $role,
+        string $item
     ): void {
         $render = new ActionBuilder(new Schema($name, 'bar', []), 'create');
 
@@ -117,7 +118,7 @@ T
      * @Route("/create", methods={"POST"}, name="{$route}.create")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_CREATE')", statusCode=401)
      */
-    public function create(Request \$request, Connection \$conn, TranslatorInterface \$trans): Response
+    public function create(Request \$request, {$expected}Gateway \${$item}Gateway, TranslatorInterface \$trans): Response
     {
     }
 
@@ -129,13 +130,13 @@ T
     {
         $render = new ActionBuilder(new Schema('Test', 'bar', []), 'read');
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
     /**
      * @Route("/{id}", methods={"GET"}, name="tests.read")
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_READ')", statusCode=401)
      */
-    public function read(Connection \$conn, string \$id): Response
+    public function read(TestGateway $testGateway, string $id): Response
     {
     }
 
@@ -147,29 +148,29 @@ T
     {
         $render = new ActionBuilder(new Schema('Test', 'bar', []), 'update');
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
     /**
      * @Route("/edit/{id}", methods={"GET"}, name="tests.edit")
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function edit(Connection \$conn, string \$id): Response
+    public function edit(TestGateway $testGateway, string $id): Response
     {
-        \$request = new ReadTestRequest(\$id);
+        $request = new ReadTestRequest($id);
 
-        \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $useCase = new ReadTestUseCase(new TestRepository($testGateway));
 
-        \$response = \$useCase->execute(\$request);
+        $response = $useCase->execute($request);
 
-        if (!\$response->test->id()) {
-            throw \$this->createNotFoundException();
+        if (!$response->test->id()) {
+            throw $this->createNotFoundException();
         }
 
-        \$form = \$this->createForm(TestFormType::class, \$response->test);
+        $form = $this->createForm(TestFormType::class, $response->test);
 
-        return \$this->render('test/edit.html.twig', [
-            'test' => \$response->test,
-            'form' => \$form->createView(),
+        return $this->render('test/edit.html.twig', [
+            'test' => $response->test,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -177,7 +178,7 @@ T
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function update(Request \$request, Connection \$conn, TranslatorInterface \$trans, string \$id): Response
+    public function update(Request $request, TestGateway $testGateway, TranslatorInterface $trans, string $id): Response
     {
     }
 
@@ -188,7 +189,7 @@ T
     /**
      * @dataProvider getEntityName
      */
-    public function __testItRenderUpdateDiffNameOk(
+    public function testItRenderUpdateDiffNameOk(
         string $name,
         string $expected,
         string $route,
@@ -204,11 +205,11 @@ T
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_UPDATE')", statusCode=401)
      */
-    public function edit(Connection \$conn, string \$id): Response
+    public function edit({$expected}Gateway \${$item}Gateway, string \$id): Response
     {
         \$request = new Read{$expected}Request(\$id);
 
-        \$useCase = new Read{$expected}UseCase(new {$expected}Repository(new MySQL{$expected}Gateway(\$conn)));
+        \$useCase = new Read{$expected}UseCase(new {$expected}Repository(\${$item}Gateway));
 
         \$response = \$useCase->execute(\$request);
 
@@ -228,7 +229,7 @@ T
      * @Route("/update/{id}", methods={"PUT"}, name="{$route}.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_UPDATE')", statusCode=401)
      */
-    public function update(Request \$request, Connection \$conn, string \$id): Response
+    public function update(Request \$request, {$expected}Gateway \${$item}Gateway, TranslatorInterface \$trans, string \$id): Response
     {
     }
 
@@ -242,12 +243,12 @@ T
             new SchemaAttribute('foo', 'integer', 'pk|ai|required'),
         ]), 'delete');
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
     /**
      * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
      */
-    public function delete(Connection \$conn, TranslatorInterface \$trans, int \$id): Response
+    public function delete(TestGateway $testGateway, TranslatorInterface $trans, int $id): Response
     {
     }
 
@@ -261,12 +262,12 @@ T
             new SchemaAttribute('foo', 'string', 'pk|required'),
         ]), 'delete');
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
     /**
      * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
      */
-    public function delete(Connection \$conn, TranslatorInterface \$trans, string \$id): Response
+    public function delete(TestGateway $testGateway, TranslatorInterface $trans, string $id): Response
     {
     }
 
@@ -278,29 +279,29 @@ T
     {
         $render = new ActionBuilder($this->getSchemaAiAndBlameAt(), 'update');
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
     /**
      * @Route("/edit/{id}", methods={"GET"}, name="tests.edit")
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function edit(Connection \$conn, int \$id): Response
+    public function edit(TestGateway $testGateway, int $id): Response
     {
-        \$request = new ReadTestRequest(\$id);
+        $request = new ReadTestRequest($id);
 
-        \$useCase = new ReadTestUseCase(new TestRepository(new MySQLTestGateway(\$conn)));
+        $useCase = new ReadTestUseCase(new TestRepository($testGateway));
 
-        \$response = \$useCase->execute(\$request);
+        $response = $useCase->execute($request);
 
-        if (!\$response->test->key()) {
-            throw \$this->createNotFoundException();
+        if (!$response->test->key()) {
+            throw $this->createNotFoundException();
         }
 
-        \$form = \$this->createForm(TestFormType::class, \$response->test);
+        $form = $this->createForm(TestFormType::class, $response->test);
 
-        return \$this->render('test/edit.html.twig', [
-            'test' => \$response->test,
-            'form' => \$form->createView(),
+        return $this->render('test/edit.html.twig', [
+            'test' => $response->test,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -308,7 +309,7 @@ T
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function update(Request \$request, Connection \$conn, TranslatorInterface \$trans, int \$id): Response
+    public function update(Request $request, TestGateway $testGateway, TranslatorInterface $trans, int $id): Response
     {
     }
 
@@ -463,13 +464,13 @@ T
     public function getEntityAndRouteName(): array
     {
         return [
-            // entity, route, role
-            ['userpassword', 'userpasswords', 'USERPASSWORD'],
-            ['USERPASSWORD', 'userpasswords', 'USERPASSWORD'],
-            ['UserPassword', 'user-passwords', 'USERPASSWORD'],
-            ['userPassword', 'user-passwords', 'USERPASSWORD'],
-            ['user_password', 'user-passwords', 'USERPASSWORD'],
-            ['Posts', 'posts', 'POST'],
+            // entity, function, route, role, item
+            ['userpassword', 'Userpassword', 'userpasswords', 'USERPASSWORD', 'userpassword'],
+            ['USERPASSWORD', 'Userpassword', 'userpasswords', 'USERPASSWORD', 'userpassword'],
+            ['UserPassword', 'UserPassword', 'user-passwords', 'USERPASSWORD', 'userPassword'],
+            ['userPassword', 'UserPassword', 'user-passwords', 'USERPASSWORD', 'userPassword'],
+            ['user_password', 'UserPassword', 'user-passwords', 'USERPASSWORD', 'userPassword'],
+            ['Posts', 'Post', 'posts', 'POST', 'post'],
         ];
     }
 

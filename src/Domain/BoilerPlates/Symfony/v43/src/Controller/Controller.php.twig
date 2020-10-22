@@ -59,7 +59,7 @@ final class {{ entity }}Controller extends AbstractController
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ fkFn.fnSingular|upper }}_INDEX')", statusCode=401)
      */
-    public function find{{ fkFn.fnSingular }}(Request $request, Connection $conn): Response
+    public function find{{ fkFn.fnSingular }}(Request $request, {{ entity }}Gateway ${{ item }}Gateway): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new JsonResponse([], Response::HTTP_BAD_REQUEST);
@@ -67,7 +67,7 @@ final class {{ entity }}Controller extends AbstractController
 
         $request = new Find{{ entity }}{{ fkFn.fnSingular }}Request($request->request->all());
 
-        $useCase = new Find{{ entity }}{{ fkFn.fnSingular }}UseCase(new {{ entity }}Repository(new MySQL{{ entity }}Gateway($conn)));
+        $useCase = new Find{{ entity }}{{ fkFn.fnSingular }}UseCase(new {{ entity }}Repository(${{ item }}Gateway));
 
         $response = $useCase->execute($request);
 
