@@ -56,11 +56,17 @@ try {
     ];
     $response->hasError = true;
 
-    \file_put_contents(
-        \sprintf('%s/../../log/build_%s.log', __DIR__, \date('Y_m_d')),
-        $e->getTraceAsString() . "\n",
-        \FILE_APPEND
+    $logfile = \sprintf('%s/../../log/build_%s.log', __DIR__, \date('Y_m_d'));
+    $log = \sprintf(
+        "[%s]\t%s\t%s\t%s\n%s\n",
+        \date('Y-m-d H:i:s'),
+        $e->getFile(),
+        $e->getLine(),
+        $e->getMessage(),
+        $e->getTraceAsString()
     );
+
+    \file_put_contents($logfile, $log, \FILE_APPEND);
 } finally {
     $content = \json_encode($response->messages);
     $status = $response->hasError
