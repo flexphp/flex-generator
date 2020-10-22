@@ -335,7 +335,7 @@ final class MySQLJoinGateway implements JoinGateway
         return $query->execute()->fetch() ?: [];
     }
 
-    public function filterJoinTables(FindJoinJoinTableRequest $request, int $page, int $limit, int $offset): array
+    public function filterJoinTables(FindJoinJoinTableRequest $request, int $page, int $limit): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -647,7 +647,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         $query->execute();
     }
 
-    public function filterBars(FindPostCommentBarRequest $request, int $page, int $limit, int $offset): array
+    public function filterBars(FindPostCommentBarRequest $request, int $page, int $limit): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -666,7 +666,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         return $query->execute()->fetchAll();
     }
 
-    public function filterPosts(FindPostCommentPostRequest $request, int $page, int $limit, int $offset): array
+    public function filterPosts(FindPostCommentPostRequest $request, int $page, int $limit): array
     {
         $query = $this->conn->createQueryBuilder();
 
@@ -685,7 +685,7 @@ final class MySQLPostCommentGateway implements PostCommentGateway
         return $query->execute()->fetchAll();
     }
 
-    public function filterUserStatus(FindPostCommentUserStatusRequest $request, int $page, int $limit, int $offset): array
+    public function filterUserStatus(FindPostCommentUserStatusRequest $request, int $page, int $limit): array
     {
         $query = $this->conn->createQueryBuilder();
 

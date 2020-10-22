@@ -203,7 +203,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% endfor %}
 {% for id,fkFn in fkFnsNoBlame %}
 
-    public function filter{{ fkFn.fnPlural }}(Find{{ entity }}{{ fkFn.fnSingular }}Request $request, int $page, int $limit, int $offset): array
+    public function filter{{ fkFn.fnPlural }}(Find{{ entity }}{{ fkFn.fnSingular }}Request $request, int $page, int $limit): array
     {
         $query = $this->conn->createQueryBuilder();
 

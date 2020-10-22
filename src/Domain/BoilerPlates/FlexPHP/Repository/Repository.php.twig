@@ -84,7 +84,7 @@ final class {{ entity }}Repository extends Repository
 
     public function find{{ fkFn.fnPlural }}By(Find{{ entity }}{{ fkFn.fnSingular }}Request $request): array
     {
-        return $this->getGateway()->filter{{ fkFn.fnPlural }}($request, $request->page, 20, $request->offset);
+        return $this->getGateway()->filter{{ fkFn.fnPlural }}($request, $request->page, 20);
     }
 {% endfor %}
 }

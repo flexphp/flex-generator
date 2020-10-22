@@ -49,11 +49,11 @@ interface TestGateway
 
     public function getBy(string $column, $value): array;
 
-    public function filterBars(FindTestBarRequest $request, int $page, int $limit, int $offset): array;
+    public function filterBars(FindTestBarRequest $request, int $page, int $limit): array;
 
-    public function filterPosts(FindTestPostRequest $request, int $page, int $limit, int $offset): array;
+    public function filterPosts(FindTestPostRequest $request, int $page, int $limit): array;
 
-    public function filterUserStatus(FindTestUserStatusRequest $request, int $page, int $limit, int $offset): array;
+    public function filterUserStatus(FindTestUserStatusRequest $request, int $page, int $limit): array;
 }
 
 T
@@ -183,11 +183,11 @@ use Domain\PostComment\Request\FindPostCommentUserStatusRequest;
 
 interface PostCommentGateway
 {
-    public function filterBars(FindPostCommentBarRequest $request, int $page, int $limit, int $offset): array;
+    public function filterBars(FindPostCommentBarRequest $request, int $page, int $limit): array;
 
-    public function filterPosts(FindPostCommentPostRequest $request, int $page, int $limit, int $offset): array;
+    public function filterPosts(FindPostCommentPostRequest $request, int $page, int $limit): array;
 
-    public function filterUserStatus(FindPostCommentUserStatusRequest $request, int $page, int $limit, int $offset): array;
+    public function filterUserStatus(FindPostCommentUserStatusRequest $request, int $page, int $limit): array;
 }
 
 T

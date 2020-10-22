@@ -36,7 +36,7 @@ interface {{ entity }}Gateway
 
 {% endif %}
 {% for fkFn in fkFnsNoBlame %}
-    public function filter{{ fkFn.fnPlural }}(Find{{ entity }}{{ fkFn.fnSingular }}Request $request, int $page, int $limit, int $offset): array;
+    public function filter{{ fkFn.fnPlural }}(Find{{ entity }}{{ fkFn.fnSingular }}Request $request, int $page, int $limit): array;
 {% if not loop.last %}
 
 {% endif %}

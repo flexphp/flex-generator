@@ -121,7 +121,7 @@ jQuery(document).ready(function ($) {
         isInput ? $html.val(money) : $html.html(money);
     });
 
-    $('[name$=_filter_form]').on('submit', function(e) {
+    $('[name$=_filter_form]').on('submit', function (e) {
         e.preventDefault();
 
         const url = $(this).attr('action');
