@@ -301,7 +301,7 @@ final class User implements UserInterface
 
     public function getRoles()
     {
-        return ['ROLE_ADMIN', 'ROLE_USER'];
+        return (new UserRbac())->getRoles(\$this->email());
     }
 
     public function eraseCredentials()
@@ -369,7 +369,7 @@ final class User implements UserInterface
 
     public function getRoles()
     {
-        return ['ROLE_ADMIN', 'ROLE_USER'];
+        return (new UserRbac())->getRoles($this->email());
     }
 
     public function eraseCredentials()
