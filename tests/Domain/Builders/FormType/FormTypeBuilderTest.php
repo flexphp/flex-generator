@@ -12,6 +12,7 @@ namespace FlexPHP\Generator\Tests\Domain\Builders\FormType;
 use FlexPHP\Generator\Domain\Builders\FormType\FormTypeBuilder;
 use FlexPHP\Generator\Tests\TestCase;
 use FlexPHP\Schema\Schema;
+use FlexPHP\Schema\SchemaAttribute;
 
 final class FormTypeBuilderTest extends TestCase
 {
@@ -49,9 +50,21 @@ T
 
     public function testItOkWithDiffNameProperties(): void
     {
-        $render = new FormTypeBuilder($this->getSchema());
+        $render = new FormTypeBuilder(new Schema('Test', 'Entity Foo Title', [
+            new SchemaAttribute('lower', 'string', 'pk|minlength:20|maxlength:100|required'),
+            new SchemaAttribute('UPPER', 'integer', 'min:2|max:10'),
+            new SchemaAttribute('PascalCase', 'datetime', 'required'),
+            new SchemaAttribute('camelCase', 'boolean', ''),
+            new SchemaAttribute('snake_case', 'text', 'length:100,200'),
+            new SchemaAttribute('created', 'datetime', 'ca'),
+            new SchemaAttribute('creator', 'integer', 'cb'),
+            new SchemaAttribute('updated', 'datetime', 'ua'),
+            new SchemaAttribute('updater', 'integer', 'ub'),
+            new SchemaAttribute('passphrase', 'string', 'required|type:password'),
+            new SchemaAttribute('zone', 'string', 'type:timezone'),
+        ]));
 
-        $this->assertEquals(<<<T
+        $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
 
 namespace Domain\Test;
@@ -63,9 +76,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TestFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface \$builder, array \$options): void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        \$builder->add('lower', InputType\TextType::class, [
+        $builder->add('lower', InputType\TextType::class, [
             'label' => 'label.lower',
             'required' => true,
             'attr' => [
@@ -73,7 +86,7 @@ final class TestFormType extends AbstractType
                 'maxlength' => 100,
             ],
         ]);
-        \$builder->add('upper', InputType\IntegerType::class, [
+        $builder->add('upper', InputType\IntegerType::class, [
             'label' => 'label.upper',
             'required' => false,
             'attr' => [
@@ -81,18 +94,18 @@ final class TestFormType extends AbstractType
                 'max' => 10,
             ],
         ]);
-        \$builder->add('pascalCase', InputType\DateTimeType::class, [
+        $builder->add('pascalCase', InputType\DateTimeType::class, [
             'label' => 'label.pascalCase',
             'required' => true,
             'date_widget' => 'single_text',
             'time_widget' => 'single_text',
             'format' => 'Y-m-d H:i:s',
         ]);
-        \$builder->add('camelCase', InputType\CheckboxType::class, [
+        $builder->add('camelCase', InputType\CheckboxType::class, [
             'label' => 'label.camelCase',
             'required' => false,
         ]);
-        \$builder->add('snakeCase', InputType\TextareaType::class, [
+        $builder->add('snakeCase', InputType\TextareaType::class, [
             'label' => 'label.snakeCase',
             'required' => false,
             'attr' => [
@@ -100,11 +113,19 @@ final class TestFormType extends AbstractType
                 'maxlength' => 200,
             ],
         ]);
+        $builder->add('passphrase', InputType\PasswordType::class, [
+            'label' => 'label.passphrase',
+            'required' => true,
+        ]);
+        $builder->add('zone', InputType\TimezoneType::class, [
+            'label' => 'label.zone',
+            'required' => false,
+        ]);
     }
 
-    public function configureOptions(OptionsResolver \$resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        \$resolver->setDefaults([
+        $resolver->setDefaults([
             'translation_domain' => 'test',
         ]);
     }

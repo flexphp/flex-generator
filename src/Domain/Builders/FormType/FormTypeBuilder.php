@@ -12,7 +12,6 @@ namespace FlexPHP\Generator\Domain\Builders\FormType;
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Schema\SchemaAttribute;
 use FlexPHP\Schema\SchemaInterface;
-use Jawira\CaseConverter\Convert;
 
 final class FormTypeBuilder extends AbstractBuilder
 {
@@ -29,7 +28,7 @@ final class FormTypeBuilder extends AbstractBuilder
             function (array $result, SchemaAttribute $property) use (&$inputs) {
                 $name = $this->getInflector()->camelProperty($property->name());
                 $result[$name] = $property;
-                $inputs[$name] = $this->getInputType($property->dataType());
+                $inputs[$name] = $this->getInputType($property->dataType(), $property->type());
 
                 return $result;
             },
@@ -49,10 +48,12 @@ final class FormTypeBuilder extends AbstractBuilder
         return \sprintf('%1$s/FlexPHP/FormType', parent::getPathTemplate());
     }
 
-    private function getInputType(string $dataType): string
+    private function getInputType(string $dataType, ?string $type): string
     {
         $inputTypes = [
             'text' => 'Textarea',
+            'password' => 'Password',
+            'timezone' => 'Timezone',
             'smallint' => 'Integer',
             'integer' => 'Integer',
             'float' => 'Number',
@@ -68,6 +69,10 @@ final class FormTypeBuilder extends AbstractBuilder
             'time' => 'Time',
             'time_immutable' => 'DateTime',
         ];
+
+        if (!empty($inputTypes[$type])) {
+            return $inputTypes[$type];
+        }
 
         if (!empty($inputTypes[$dataType])) {
             return $inputTypes[$dataType];
