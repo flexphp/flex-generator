@@ -1,3 +1,4 @@
+{% set isUser = entity == 'User' %}
 {% set fkFnsNoBlame = fkFns|filter(v => not v.blameBy) %}
 {% set useStatements = [] %}
 <?php declare(strict_types=1);
@@ -37,6 +38,12 @@ final class {{ entity }}Repository extends Repository
     public function add(Create{{ entity }}Request $request): {{ entity }}
     {
         ${{ item }} = (new {{ entity }}Factory())->make($request);
+{% if isUser  %}
+
+        if (${{ item }}->getPassword()) {
+            ${{ item }}->setPassword($this->getHashPassword(${{ item }}->getPassword()));
+        }
+{% endif  %}
 
         ${{item }}->set{{ pkName }}($this->getGateway()->push(${{ item }}));
 
@@ -47,6 +54,10 @@ final class {{ entity }}Repository extends Repository
     {
         $factory = new {{ entity }}Factory();
         $data = $this->getGateway()->get($factory->make($request));
+{% if isUser  %}
+
+        $data['password'] = $this->getFakePassword();
+{% endif  %}
 
         return $factory->make($data);
     }
@@ -54,6 +65,12 @@ final class {{ entity }}Repository extends Repository
     public function change(Update{{ entity }}Request $request): {{ entity }}
     {
         ${{ item }} = (new {{ entity }}Factory())->make($request);
+{% if isUser  %}
+
+        if (${{ item }}->getPassword() && ${{ item }}->getPassword() !== $this->getFakePassword()) {
+            ${{ item }}->setPassword($this->getHashPassword(${{ item }}->getPassword()));
+        }
+{% endif  %}
 
         $this->getGateway()->shift(${{ item }});
 
@@ -78,6 +95,18 @@ final class {{ entity }}Repository extends Repository
 
         return (new {{ entity }}Factory())->make($data);
     }
+{% if isUser %}
+
+    private function getHashPassword(string $password): string
+    {
+        return password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    private function getFakePassword(): string
+    {
+        return '**********';
+    }
+{% endif %}
 {% endif %}
 {% if not loop.last and actions[index + 1] in ['index', 'create', 'read', 'update', 'delete', 'login'] %}
 

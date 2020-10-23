@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use Domain\Tests\User\Gateway\TestUserGateway;
 use Domain\User\Gateway\MySQLUserGateway;
 use Domain\User\Request\LoginUserRequest;
 use Domain\User\UseCase\LoginUserUseCase;
@@ -40,7 +41,7 @@ abstract class WebTestCase extends WebTestCaseSymfony
     {
         $session = self::$container->get('session');
 
-        $response = (new LoginUserUseCase(new UserRepository(new MySQLUserGateway($this->connection()))))->execute(new LoginUserRequest($email));
+        $response = (new LoginUserUseCase(new UserRepository(new TestUserGateway())))->execute(new LoginUserRequest($email));
         $user = $response->user;
 
         $firewallName = 'main';

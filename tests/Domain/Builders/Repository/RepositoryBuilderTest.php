@@ -299,26 +299,88 @@ T
 
     public function testItRenderLoginOk(): void
     {
-        $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['login']);
+        $render = new RepositoryBuilder(new Schema('User', 'bar', []), ['create', 'read', 'update', 'delete', 'login']);
 
         $this->assertEquals(<<<'T'
 <?php declare(strict_types=1);
 
-namespace Domain\Test;
+namespace Domain\User;
 
-use Domain\Test\Request\LoginTestRequest;
+use Domain\User\Request\CreateUserRequest;
+use Domain\User\Request\DeleteUserRequest;
+use Domain\User\Request\LoginUserRequest;
+use Domain\User\Request\ReadUserRequest;
+use Domain\User\Request\UpdateUserRequest;
 use FlexPHP\Repositories\Repository;
 
 /**
- * @method TestGateway getGateway
+ * @method UserGateway getGateway
  */
-final class TestRepository extends Repository
+final class UserRepository extends Repository
 {
-    public function getByLogin(LoginTestRequest $request): Test
+    public function add(CreateUserRequest $request): User
+    {
+        $user = (new UserFactory())->make($request);
+
+        if ($user->getPassword()) {
+            $user->setPassword($this->getHashPassword($user->getPassword()));
+        }
+
+        $user->setId($this->getGateway()->push($user));
+
+        return $user;
+    }
+
+    public function getById(ReadUserRequest $request): User
+    {
+        $factory = new UserFactory();
+        $data = $this->getGateway()->get($factory->make($request));
+
+        $data['password'] = $this->getFakePassword();
+
+        return $factory->make($data);
+    }
+
+    public function change(UpdateUserRequest $request): User
+    {
+        $user = (new UserFactory())->make($request);
+
+        if ($user->getPassword() && $user->getPassword() !== $this->getFakePassword()) {
+            $user->setPassword($this->getHashPassword($user->getPassword()));
+        }
+
+        $this->getGateway()->shift($user);
+
+        return $user;
+    }
+
+    public function remove(DeleteUserRequest $request): User
+    {
+        $factory = new UserFactory();
+        $data = $this->getGateway()->get($factory->make($request));
+
+        $user = $factory->make($data);
+
+        $this->getGateway()->pop($user);
+
+        return $user;
+    }
+
+    public function getByLogin(LoginUserRequest $request): User
     {
         $data = $this->getGateway()->getBy('email', $request->email);
 
-        return (new TestFactory())->make($data);
+        return (new UserFactory())->make($data);
+    }
+
+    private function getHashPassword(string $password): string
+    {
+        return password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    private function getFakePassword(): string
+    {
+        return '**********';
     }
 }
 

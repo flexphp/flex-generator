@@ -1,4 +1,4 @@
-{% set is_user = name == 'User' %}
+{% set isUser = name == 'User' %}
 <?php declare(strict_types=1);
 
 namespace Domain\{{ name }};
@@ -8,7 +8,7 @@ namespace Domain\{{ name }};
 use Domain\{{ fkFn.fnSingular }}\{{ fkFn.fnSingular }};
 {% endif %}
 {% endfor %}
-{% if is_user %}
+{% if isUser %}
 use Symfony\Component\Security\Core\User\UserInterface;
 
 final class {{ name }} implements UserInterface
@@ -69,10 +69,10 @@ final class {{ name }}
 {{ fkSetter|raw }}
 {% endif %}
 {% endfor %}
-{% if (getters or fkGetters or setters or fkSetters) and is_user %}
+{% if (getters or fkGetters or setters or fkSetters) and isUser %}
 
 {% endif %}
-{% if is_user %}
+{% if isUser %}
     public function getUsername()
     {
         return $this->name();
