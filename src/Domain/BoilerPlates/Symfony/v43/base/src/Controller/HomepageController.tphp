@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,6 +13,7 @@ class HomepageController extends AbstractController
     /**
      * @Route("/", methods={"GET"}, name="homepage.index")
      * @Cache(smaxage="3600")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function index(): Response
     {

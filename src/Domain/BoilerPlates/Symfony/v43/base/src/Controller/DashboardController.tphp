@@ -15,6 +15,7 @@ class DashboardController extends AbstractController
     /**
      * @Route("/", methods={"GET"}, name="dashboard.index")
      * @Cache(smaxage="3600")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function index(): Response
     {

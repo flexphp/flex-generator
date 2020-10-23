@@ -19,14 +19,14 @@ class SecurityController extends AbstractController
      */
     public function login(Request $request, Security $security, AuthenticationUtils $helper): Response
     {
-        if ($security->isGranted('ROLE_USER')) {
+        if ($security->getUser()) {
             return $this->redirectToRoute('dashboard.index');
         }
 
         $this->saveTargetPath($request->getSession(), 'main', $this->generateUrl('dashboard.index'));
 
         return $this->render('security/login.html.twig', [
-            'last_username' => $helper->getLastUsername(),
+            'email' => $helper->getLastUsername(),
             'error' => $helper->getLastAuthenticationError(),
         ]);
     }
