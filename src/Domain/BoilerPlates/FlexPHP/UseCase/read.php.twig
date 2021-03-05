@@ -1,24 +1,23 @@
 <?php declare(strict_types=1);
-
+{{ header|raw }}
 namespace Domain\{{ entity }}\UseCase;
 
+use Domain\{{ entity }}\{{ entity }}Repository;
 use Domain\{{ entity }}\Request\{{ action }}{{ entity }}Request;
 use Domain\{{ entity }}\Response\{{ action }}{{ entity }}Response;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\{{ entity }}\{{ entity }}Repository getRepository
- */
-final class {{ action }}{{ entity }}UseCase extends UseCase
+final class {{ action }}{{ entity }}UseCase
 {
-    /**
-     * @param {{ action }}{{ entity }}Request $request
-     *
-     * @return {{ action }}{{ entity }}Response
-     */
-    public function execute($request)
+    private {{ entity }}Repository ${{ item }}Repository;
+
+    public function __construct({{ entity }}Repository ${{ item }}Repository)
     {
-        ${{ item }} = $this->getRepository()->getById($request);
+        $this->{{ item }}Repository = ${{ item }}Repository;
+    }
+
+    public function execute({{ action }}{{ entity }}Request $request): {{ action }}{{ entity }}Response
+    {
+        ${{ item }} = $this->{{ item }}Repository->getById($request);
 
         return new {{ action }}{{ entity }}Response(${{ item }});
     }

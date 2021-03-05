@@ -9,15 +9,16 @@
  */
 namespace FlexPHP\Generator\Tests;
 
-use FlexPHP\Generator\Domain\Builders\Constraint\RuleBuilder;
+use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Schema\Schema;
 use FlexPHP\Schema\SchemaAttribute;
-use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\Schema\SchemaInterface;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 class TestCase extends PHPUnitTestCase
 {
+    protected string $header;
+
     public static function tearDownAfterClass(): void
     {
         if (\is_dir(self::getOutputFolder())) {
@@ -28,6 +29,8 @@ class TestCase extends PHPUnitTestCase
     public function setUp(): void
     {
         \chdir(__DIR__ . '/../');
+
+        $this->header = AbstractBuilder::getHeaderFile();
     }
 
     protected function getSchema(string $name = 'Test'): SchemaInterface

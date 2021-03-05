@@ -22,17 +22,14 @@ final class UseCaseBuilderTest extends TestCase
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\UseCase;
 
+use Domain\Test\TestRepository;
 use Domain\Test\Request\ActionTestRequest;
 use Domain\Test\Response\ActionTestResponse;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\Test\TestRepository getRepository
- */
-final class ActionTestUseCase extends UseCase
+final class ActionTestUseCase
 {
     private \$lower;
     private \$upper;
@@ -40,12 +37,14 @@ final class ActionTestUseCase extends UseCase
     private \$camelCase;
     private \$snakeCase;
 
-    /**
-     * @param ActionTestRequest \$request
-     *
-     * @return ActionTestResponse
-     */
-    public function execute(\$request)
+    private TestRepository \$testRepository;
+
+    public function __construct(TestRepository \$testRepository)
+    {
+        \$this->testRepository = \$testRepository;
+    }
+
+    public function execute(ActionTestRequest \$request): ActionTestResponse
     {
         \$this->lower = \$request->lower;
         \$this->upper = \$request->upper;
@@ -67,26 +66,25 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\UseCase;
 
+use Domain\Test\TestRepository;
 use Domain\Test\Request\IndexTestRequest;
 use Domain\Test\Response\IndexTestResponse;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\Test\TestRepository getRepository
- */
-final class IndexTestUseCase extends UseCase
+final class IndexTestUseCase
 {
-    /**
-     * @param IndexTestRequest \$request
-     *
-     * @return IndexTestResponse
-     */
-    public function execute(\$request)
+    private TestRepository \$testRepository;
+
+    public function __construct(TestRepository \$testRepository)
     {
-        \$tests = \$this->getRepository()->findBy(\$request);
+        \$this->testRepository = \$testRepository;
+    }
+
+    public function execute(IndexTestRequest \$request): IndexTestResponse
+    {
+        \$tests = \$this->testRepository->findBy(\$request);
 
         return new IndexTestResponse(\$tests);
     }
@@ -102,26 +100,25 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\UseCase;
 
+use Domain\Test\TestRepository;
 use Domain\Test\Request\CreateTestRequest;
 use Domain\Test\Response\CreateTestResponse;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\Test\TestRepository getRepository
- */
-final class CreateTestUseCase extends UseCase
+final class CreateTestUseCase
 {
-    /**
-     * @param CreateTestRequest \$request
-     *
-     * @return CreateTestResponse
-     */
-    public function execute(\$request)
+    private TestRepository \$testRepository;
+
+    public function __construct(TestRepository \$testRepository)
     {
-        return new CreateTestResponse(\$this->getRepository()->add(\$request));
+        \$this->testRepository = \$testRepository;
+    }
+
+    public function execute(CreateTestRequest \$request): CreateTestResponse
+    {
+        return new CreateTestResponse(\$this->testRepository->add(\$request));
     }
 }
 
@@ -135,26 +132,25 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\UseCase;
 
+use Domain\Test\TestRepository;
 use Domain\Test\Request\ReadTestRequest;
 use Domain\Test\Response\ReadTestResponse;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\Test\TestRepository getRepository
- */
-final class ReadTestUseCase extends UseCase
+final class ReadTestUseCase
 {
-    /**
-     * @param ReadTestRequest \$request
-     *
-     * @return ReadTestResponse
-     */
-    public function execute(\$request)
+    private TestRepository \$testRepository;
+
+    public function __construct(TestRepository \$testRepository)
     {
-        \$test = \$this->getRepository()->getById(\$request);
+        \$this->testRepository = \$testRepository;
+    }
+
+    public function execute(ReadTestRequest \$request): ReadTestResponse
+    {
+        \$test = \$this->testRepository->getById(\$request);
 
         return new ReadTestResponse(\$test);
     }
@@ -170,26 +166,25 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\UseCase;
 
+use Domain\Test\TestRepository;
 use Domain\Test\Request\UpdateTestRequest;
 use Domain\Test\Response\UpdateTestResponse;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\Test\TestRepository getRepository
- */
-final class UpdateTestUseCase extends UseCase
+final class UpdateTestUseCase
 {
-    /**
-     * @param UpdateTestRequest \$request
-     *
-     * @return UpdateTestResponse
-     */
-    public function execute(\$request)
+    private TestRepository \$testRepository;
+
+    public function __construct(TestRepository \$testRepository)
     {
-        return new UpdateTestResponse(\$this->getRepository()->change(\$request));
+        \$this->testRepository = \$testRepository;
+    }
+
+    public function execute(UpdateTestRequest \$request): UpdateTestResponse
+    {
+        return new UpdateTestResponse(\$this->testRepository->change(\$request));
     }
 }
 
@@ -203,26 +198,25 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\UseCase;
 
+use Domain\Test\TestRepository;
 use Domain\Test\Request\DeleteTestRequest;
 use Domain\Test\Response\DeleteTestResponse;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\Test\TestRepository getRepository
- */
-final class DeleteTestUseCase extends UseCase
+final class DeleteTestUseCase
 {
-    /**
-     * @param DeleteTestRequest \$request
-     *
-     * @return DeleteTestResponse
-     */
-    public function execute(\$request)
+    private TestRepository \$testRepository;
+
+    public function __construct(TestRepository \$testRepository)
     {
-        return new DeleteTestResponse(\$this->getRepository()->remove(\$request));
+        \$this->testRepository = \$testRepository;
+    }
+
+    public function execute(DeleteTestRequest \$request): DeleteTestResponse
+    {
+        return new DeleteTestResponse(\$this->testRepository->remove(\$request));
     }
 }
 
@@ -236,26 +230,25 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\UseCase;
 
+use Domain\Test\TestRepository;
 use Domain\Test\Request\LoginTestRequest;
 use Domain\Test\Response\LoginTestResponse;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\Test\TestRepository getRepository
- */
-final class LoginTestUseCase extends UseCase
+final class LoginTestUseCase
 {
-    /**
-     * @param LoginTestRequest \$request
-     *
-     * @return LoginTestResponse
-     */
-    public function execute(\$request)
+    private TestRepository \$testRepository;
+
+    public function __construct(TestRepository \$testRepository)
     {
-        \$test = \$this->getRepository()->getByLogin(\$request);
+        \$this->testRepository = \$testRepository;
+    }
+
+    public function execute(LoginTestRequest \$request): LoginTestResponse
+    {
+        \$test = \$this->testRepository->getByLogin(\$request);
 
         return new LoginTestResponse(\$test);
     }
@@ -268,30 +261,29 @@ T
     /**
      * @dataProvider getEntityName
      */
-    public function testItRenderOkWithDiffEntityName(string $entity, string $expected): void
+    public function testItRenderOkWithDiffEntityName(string $entity, string $expected, string $expectedItem): void
     {
         $render = new UseCaseBuilder(new Schema($entity, 'bar', []), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\\{$expected}\\UseCase;
 
+use Domain\\{$expected}\\{$expected}Repository;
 use Domain\\{$expected}\Request\Action{$expected}Request;
 use Domain\\{$expected}\Response\Action{$expected}Response;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\\{$expected}\\{$expected}Repository getRepository
- */
-final class Action{$expected}UseCase extends UseCase
+final class Action{$expected}UseCase
 {
-    /**
-     * @param Action{$expected}Request \$request
-     *
-     * @return Action{$expected}Response
-     */
-    public function execute(\$request)
+    private {$expected}Repository \${$expectedItem}Repository;
+
+    public function __construct({$expected}Repository \${$expectedItem}Repository)
+    {
+        \$this->{$expectedItem}Repository = \${$expectedItem}Repository;
+    }
+
+    public function execute(Action{$expected}Request \$request): Action{$expected}Response
     {
         return new Action{$expected}Response();
     }
@@ -310,24 +302,23 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\UseCase;
 
+use Domain\Test\TestRepository;
 use Domain\Test\Request\\{$expected}TestRequest;
 use Domain\Test\Response\\{$expected}TestResponse;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\Test\TestRepository getRepository
- */
-final class {$expected}TestUseCase extends UseCase
+final class {$expected}TestUseCase
 {
-    /**
-     * @param {$expected}TestRequest \$request
-     *
-     * @return {$expected}TestResponse
-     */
-    public function execute(\$request)
+    private TestRepository \$testRepository;
+
+    public function __construct(TestRepository \$testRepository)
+    {
+        \$this->testRepository = \$testRepository;
+    }
+
+    public function execute({$expected}TestRequest \$request): {$expected}TestResponse
     {
         return new {$expected}TestResponse();
     }
@@ -348,26 +339,25 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\UseCase;
 
+use Domain\Test\TestRepository;
 use Domain\Test\Request\ActionTestRequest;
 use Domain\Test\Response\ActionTestResponse;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\Test\TestRepository getRepository
- */
-final class ActionTestUseCase extends UseCase
+final class ActionTestUseCase
 {
     private \${$expected};
 
-    /**
-     * @param ActionTestRequest \$request
-     *
-     * @return ActionTestResponse
-     */
-    public function execute(\$request)
+    private TestRepository \$testRepository;
+
+    public function __construct(TestRepository \$testRepository)
+    {
+        \$this->testRepository = \$testRepository;
+    }
+
+    public function execute(ActionTestRequest \$request): ActionTestResponse
     {
         \$this->{$expected} = \$request->{$expected};
 
@@ -382,12 +372,12 @@ T
     public function getEntityName(): array
     {
         return [
-            ['userpassword', 'Userpassword'],
-            ['USERPASSWORD', 'Userpassword'],
-            ['UserPassword', 'UserPassword'],
-            ['userPassword', 'UserPassword'],
-            ['user_password', 'UserPassword'],
-            ['Posts', 'Post'],
+            ['userpassword', 'Userpassword', 'userpassword'],
+            ['USERPASSWORD', 'Userpassword', 'userpassword'],
+            ['UserPassword', 'UserPassword', 'userPassword'],
+            ['userPassword', 'UserPassword', 'userPassword'],
+            ['user_password', 'UserPassword', 'userPassword'],
+            ['Posts', 'Post', 'post'],
         ];
     }
 

@@ -16,6 +16,20 @@ abstract class AbstractBuilder implements BuilderInterface
      */
     private $data;
 
+    public static function getHeaderFile(): string
+    {
+        return <<<H
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+H;
+    }
+
     /**
      * @param array<array|string> $data
      */

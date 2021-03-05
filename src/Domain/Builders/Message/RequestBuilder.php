@@ -19,7 +19,6 @@ final class RequestBuilder extends AbstractBuilder
     {
         $login = 'email';
         $entity = $this->getInflector()->entity($schema->name());
-        $name = $this->getInflector()->item($schema->name());
         $action = $this->getInflector()->pascalAction($action);
         $pkName = $this->getInflector()->camelProperty($schema->pkName());
         $pkTypeHint = $schema->pkTypeHint();
@@ -29,7 +28,7 @@ final class RequestBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('entity', 'name', 'action', 'pkName', 'pkTypeHint', 'login', 'properties'));
+        parent::__construct(\compact('entity', 'action', 'pkName', 'pkTypeHint', 'login', 'properties'));
     }
 
     protected function getFileTemplate(): string

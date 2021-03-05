@@ -1,6 +1,7 @@
 .env
 .idea
 .vscode
+.php_cs.cache
 tests/coverage
 vendor
 infection.*
