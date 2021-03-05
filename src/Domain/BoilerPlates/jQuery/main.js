@@ -186,7 +186,13 @@ jQuery(document).ready(function ($) {
 
                 return '?page=' + page + queryFilters;
             },
-            responseType: 'html',
+            responseType: 'document',
+            fetchOptions: {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            },
+            domParseResponse: false,
             status: '.infinite-scroll-status',
             history: false,
         }).on('load', function (html) {
