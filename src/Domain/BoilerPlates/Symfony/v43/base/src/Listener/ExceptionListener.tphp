@@ -2,6 +2,8 @@
 
 namespace App\Listener;
 
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,6 +11,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ExceptionListener
 {
@@ -27,27 +30,52 @@ final class ExceptionListener
      */
     private $logger;
 
-    public function __construct(UrlGeneratorInterface $router, SessionInterface $session, LoggerInterface $logger)
-    {
+    public function __construct(
+        UrlGeneratorInterface $router,
+        SessionInterface $session,
+        LoggerInterface $logger,
+        TranslatorInterface $trans
+    ) {
         $this->router = $router;
         $this->session = $session;
         $this->logger = $logger;
+        $this->trans = $trans;
     }
 
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
+        $exceptionClass = get_class($exception);
+        $element = $this->getElementInException($exception);
 
-        if (!$exception instanceof HttpExceptionInterface && $exception->getCode() >= 100) {
+        $messageByClass = [
+            ForeignKeyConstraintViolationException::class => $this->trans->trans('db.fk', [
+                '{element}' => $element,
+            ],'error'),
+        ];
+
+        if (isset($messageByClass[$exceptionClass])) {
+            if ($event->getRequest()->hasPreviousSession()) {
+                $this->session->getFlashBag()->add('danger', $messageByClass[$exceptionClass]);
+            }
+
+            $referer = $event->getRequest()->headers->get('referer');
+
+            if (!$referer) {
+                $referer = $this->router->generate('homepage.index');
+            }
+
+            $response = new RedirectResponse($referer);
+
+            $event->setResponse($response);
+        } elseif (!$exception instanceof HttpExceptionInterface && $exception->getCode() >= 100) {
             $response = new Response();
 
             $response->setStatusCode($exception->getCode());
             $response->setContent($exception->getMessage());
 
             $event->setResponse($response);
-        }
-
-        if ($exception instanceof HttpExceptionInterface && $exception->getStatusCode() === 401) {
+        } elseif ($exception instanceof HttpExceptionInterface && $exception->getStatusCode() === 401) {
             if (!empty($event->getRequest()->getUser())) {
                 $this->session->getFlashBag()->add('danger', $exception->getMessage());
             }
@@ -58,5 +86,45 @@ final class ExceptionListener
         }
 
         $this->logger->error($exception->getMessage(), $exception->getTrace());
+    }
+
+    public function getElementInException(Exception $exception): string
+    {
+        $trace = $exception->getTrace();
+
+        foreach ($trace as $step) {
+            if (empty($step['file'])) {
+                continue;
+            }
+
+            if (strpos($step['file'], 'Repository.php') === false) {
+                continue;
+            }
+
+            $parts = explode(DIRECTORY_SEPARATOR, $step['file']);
+            $file = end($parts);
+            $context = $this->getCamelCase(str_replace('Repository.php', '', $file));
+
+            if ($context) {
+                return $this->trans->trans('entity', [], $context);
+            }
+        }
+
+        return $this->trans->trans('error.undefined', [], 'error');
+    }
+
+    public function getCamelCase(string $string): string
+    {
+        $pattern = '#(?=\p{Lu}{1})#u';
+
+        $words = preg_split($pattern, $string, 0, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
+        if ($words === false) {
+            return $string;
+        }
+
+        $words[0] = strtolower($words[0]);
+
+        return implode('', $words);
     }
 }

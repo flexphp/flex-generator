@@ -1,0 +1,8 @@
+<?php
+
+return [
+    'undefined' => 'Undefined',
+    'db' => [
+        'fk' => 'Integrity error related with {element}',
+    ],
+];

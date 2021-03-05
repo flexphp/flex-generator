@@ -3,7 +3,7 @@
 return [
     'title' => [
         'action' => 'Ingresar',
-        'description' => 'Bienvenido',
+        'description' => 'Bienvenid@',
     ],
     'label' => [
         'email' => 'Correo',

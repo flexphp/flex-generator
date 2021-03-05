@@ -116,7 +116,7 @@ jQuery(document).ready(function ($) {
         const number = isInput ? $html.val() : $html.html();
         const money = getMoneyFormat(number);
 
-        $html.data('mf-amount', number);
+        $html.data('mf-amount', Math.round(number));
 
         isInput ? $html.val(money) : $html.html(money);
     });
