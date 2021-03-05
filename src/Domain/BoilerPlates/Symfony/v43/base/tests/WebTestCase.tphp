@@ -2,20 +2,23 @@
 
 namespace App\Tests;
 
-use Domain\Tests\User\Gateway\TestUserGateway;
+use Domain\Tests\DatabaseTrait;
 use Domain\User\Gateway\MySQLUserGateway;
 use Domain\User\Request\LoginUserRequest;
 use Domain\User\UseCase\LoginUserUseCase;
 use Domain\User\UserRepository;
+use PHPUnit\Framework\Assert as PHPUnit;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as WebTestCaseSymfony;
-use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class WebTestCase extends WebTestCaseSymfony
 {
+    use DatabaseTrait;
+
     /**
-     * @var Client
+     * @var KernelBrowser
      */
     protected $client;
 
@@ -25,23 +28,74 @@ abstract class WebTestCase extends WebTestCaseSymfony
 
         $this->client = static::createClient();
         $this->client->followRedirects();
+        $this->client->disableReboot();
 
-        // $this->createDb();
-        // $this->seedDb();
+        $this->createDb();
+
+        $this->connection()->beginTransaction();
     }
 
     public function tearDown(): void
     {
-        // $this->destroyDb();
+        if ($this->connection()->isTransactionActive()) {
+            $this->connection()->rollBack();
+        }
 
         parent::tearDown();
+    }
+
+    public function assertJsonStructure(array $structure = null, $responseData = null)
+    {
+        if (\is_null($structure)) {
+            return $this->assertJson($responseData);
+        }
+
+        if (\is_null($responseData)) {
+            $responseData = $this->decodeResponseJson();
+        }
+
+        foreach ($structure as $key => $value) {
+            if (\is_array($value) && $key === '*') {
+                PHPUnit::assertIsArray($responseData);
+
+                foreach ($responseData as $responseDataItem) {
+                    $this->assertJsonStructure($structure['*'], $responseDataItem);
+                }
+            } elseif (\is_array($value)) {
+                PHPUnit::assertArrayHasKey($key, $responseData);
+                $this->assertJsonStructure($structure[$key], $responseData[$key]);
+            } else {
+                PHPUnit::assertArrayHasKey($value, $responseData);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Validate and return the decoded response JSON.
+     *
+     * @return array
+     */
+    public function decodeResponseJson()
+    {
+        $decodedResponse = \json_decode($this->client->getResponse()->getContent(), true);
+
+        if (\is_null($decodedResponse) || $decodedResponse === false) {
+            if ($this->exception) {
+                throw $this->exception;
+            }
+            PHPUnit::fail('Invalid JSON was returned from the route.');
+        }
+
+        return $decodedResponse;
     }
 
     protected function logIn(string $email = 'admin@admin'): void
     {
         $session = self::$container->get('session');
 
-        $response = (new LoginUserUseCase(new UserRepository(new TestUserGateway())))->execute(new LoginUserRequest($email));
+        $response = (new LoginUserUseCase(new UserRepository(new MySQLUserGateway($this->connection()))))->execute(new LoginUserRequest($email));
         $user = $response->user;
 
         $firewallName = 'main';
@@ -69,68 +123,5 @@ abstract class WebTestCase extends WebTestCaseSymfony
     protected function getInputCsrfToken(string $id = 'ajax')
     {
         return ['_token' => $this->getCsrfToken($id)];
-    }
-
-    protected function createDb(): bool
-    {
-        $file = \dirname(__DIR__) . '/domain/Database/create - sqlite.sql';
-
-        if (!\file_exists($file)) {
-            return false;
-        }
-
-        \file_put_contents(\dirname(__DIR__) . '/var/testing.db', '');
-
-        $this->executeDb(\file_get_contents($file));
-
-        return false;
-    }
-
-    protected function seedDb(): bool
-    {
-        $file = \dirname(__DIR__) . '/domain/Database/preinserts.sql';
-
-        if (!\file_exists($file)) {
-            return false;
-        }
-
-        $this->executeDb(\file_get_contents($file));
-
-        return true;
-    }
-
-    protected function destroyDb(): bool
-    {
-        $file = \dirname(__DIR__) . '/var/testing.db';
-
-        if (\file_exists($file)) {
-            return \unlink($file);
-        }
-
-        return false;
-    }
-
-    protected function executeDb(string $sql): void
-    {
-        $sentences = \explode(';', $sql);
-
-        foreach ($sentences as $sentence) {
-            $query = $this->connection()->prepare($sentence);
-            $query->execute();
-        }
-    }
-
-    /**
-     * @return \Doctrine\Dbal\Connection
-     */
-    protected function connection()
-    {
-        static $connection;
-
-        if ($connection) {
-            return $connection;
-        }
-
-        return $connection = self::$container->get('Doctrine\DBAL\Connection');
     }
 }
