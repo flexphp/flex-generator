@@ -1,5 +1,12 @@
 <?php declare(strict_types=1);
-
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace Domain\Tests;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -7,61 +14,61 @@ use PHPUnit\Framework\TestCase as FrameworkTestCase;
 
 abstract class TestCase extends FrameworkTestCase
 {
-    /**
-     * @return \Doctrine\Dbal\Connection
-     */
-    protected function connection()
+    use DatabaseTrait;
+
+    public function setUp(): void
     {
-        static $connection;
+        parent::setUp();
 
-        if ($connection) {
-            return $connection;
-        }
+        $this->createDb();
 
-        return $connection = \Doctrine\DBAL\DriverManager::getConnection([
-            'url' => $_ENV['DATABASE_URL'],
-        ]);
+        $this->connection()->beginTransaction();
     }
 
-    protected function getSpy(string $className, bool $enableProxy = true): MockObject
+    public function tearDown(): void
+    {
+        if ($this->connection()->isTransactionActive()) {
+            $this->connection()->rollBack();
+        }
+
+        parent::tearDown();
+    }
+
+    protected function getSpy(string $className, array $args = [], bool $enableProxy = true): MockObject
     {
         if (!$enableProxy) {
             return $this->getMockBuilder($className)
+                ->setConstructorArgs($args)
                 ->getMock();
         }
 
         return $this->getMockBuilder($className)
+            ->setConstructorArgs($args)
             ->enableProxyingToOriginalMethods()
             ->getMock();
     }
 
-    protected function getVehicleRequest(array $exclude = [], array $include = []): array
+    protected function getXRequest(X $x, array $exclude = [], array $include = []): array
     {
         return $this->applyChanges([
-            'id' => '1',
-            'placa' => 'ABC123',
-            'type' => '1',
-            'brand' => '1',
-            'serie' => '1',
+            'id' => $x->id(),
         ], $exclude, $include);
     }
 
-    protected function getCustomerRequest(array $exclude = [], array $include = []): array
+    protected function xRepository(xGateway $gateway = null): xRepository
     {
-        return $this->applyChanges([
-            'id' => 1,
-            'documentTypeId' => 'NIT',
-            'documentNumber' => '1022',
-            'name' => 'Jon',
-            'phoneNumber' => '3211234567',
-            'email' => 'jon@doe.com',
-        ], $exclude, $include);
+        if (!$gateway) {
+            $class = $this->getGateway(xGateway::class);
+            $gateway = new $class($this->connection());
+        }
+
+        return new xRepository($gateway);
     }
 
     private function applyChanges(array $original, array $exclude, array $include): array
     {
-        if (count($exclude) > 0) {
-            $original = array_diff_key($original, array_flip($exclude));
+        if (\count($exclude) > 0) {
+            $original = \array_diff_key($original, \array_flip($exclude));
         }
 
         return $include + $original;

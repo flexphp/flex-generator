@@ -92,7 +92,7 @@ final class CreatePrototypeUseCase
             $source . '/Extras/Helper/DateTimeTrait.tphp' => $dest . '/domain/Helper/DateTimeTrait.php',
             $source . '/Extras/Helper/DbalCriteriaHelper.tphp' => $dest . '/domain/Helper/DbalCriteriaHelper.php',
             $source . '/Extras/Tests/TestCase.tphp' => $dest . '/domain/Tests/TestCase.php',
-            $source . '/Extras/Tests/AbstractGateway.tphp' => $dest . '/domain/Tests/AbstractGateway.php',
+            $source . '/Extras/Tests/DatabaseTrait.tphp' => $dest . '/domain/Tests/DatabaseTrait.php',
             $source . '/Extras/User/UserRbac.tphp' => $dest . '/domain/User/UserRbac.php',
         ];
 
@@ -161,6 +161,7 @@ final class CreatePrototypeUseCase
         $templates = [
             $source . '/config/bootstrap.tphp' => $dest . '/config/bootstrap.php',
             $source . '/config/bundles.tphp' => $dest . '/config/bundles.php',
+            $source . '/config/preload.tphp' => $dest . '/config/preload.php',
             $source . '/config/packages/security.yaml' => $dest . '/config/packages/security.yaml',
             $source . '/config/packages/translation.yaml' => $dest . '/config/packages/translation.yaml',
             $source . '/config/packages/twig.yaml' => $dest . '/config/packages/twig.yaml',
@@ -204,6 +205,7 @@ final class CreatePrototypeUseCase
 
         $files = [
             '/composer.json',
+            '/.htaccess',
             '/.env.example',
             '/.env.test.example',
             '/.gitignore',
@@ -252,6 +254,7 @@ final class CreatePrototypeUseCase
             "$src/FontAwesome/css/all.min.css" => "$dest/public/css/fontawesome/all.min.css",
             "$src/FontAwesome/webfonts/fonts.css" => "$dest/public/css/webfonts/fonts.css",
             "$src/FontAwesome/webfonts/fa-solid-900.woff2" => "$dest/public/css/webfonts/fa-solid-900.woff2",
+            "$src/FontAwesome/webfonts/fa-regular-400.woff2" => "$dest/public/css/webfonts/fa-regular-400.woff2",
             "$src/FontAwesome/webfonts/CircularStd-Book.woff" => "$dest/public/css/webfonts/CircularStd-Book.woff",
             "$src/FontAwesome/webfonts/CircularStd-Medium.woff" => "$dest/public/css/webfonts/CircularStd-Medium.woff",
             "$src/Bootstrap/js/bootstrap.min.js" => "$dest/public/js/bootstrap/bootstrap.min.js",

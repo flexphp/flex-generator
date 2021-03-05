@@ -4,6 +4,7 @@
 /** global: URLSearchParams */
 jQuery(document).ready(function ($) {
     'use strict';
+
     if ($('.notification-list').length) {
         $('.notification-list').slimScroll({
             height: '100%'
@@ -81,11 +82,21 @@ jQuery(document).ready(function ($) {
     }
 
     $('.money-format').each(function () {
+        // Used in template without AJAX
+        $(this).data('mf-amount', Math.round($(this).html()));
         $(this).html(getMoneyFormat($(this).html()));
     });
 
     $('.datetime-format').each(function () {
+        // Used in template without AJAX
+        $(this).attr('title', getDateTime($(this).html()));
         $(this).html(getDateTimeFormat($(this).html()));
+    });
+
+    $('.timeago-format').each(function () {
+        // Used in template without AJAX
+        $(this).attr('title', getDateTime($(this).html()));
+        $(this).html(getTimeAgo($(this).html()));
     });
 
     $(document).on('submit', 'form[data-confirmation]', function (event) {
@@ -111,14 +122,14 @@ jQuery(document).ready(function ($) {
             $('.overlay').show();
         }
     }).on('change', '.money-format', function () {
-        const $html = $(this);
-        const isInput = $html.is('input');
-        const number = isInput ? $html.val() : $html.html();
+        // Used in dashboard view
+        const isInput = $(this).is('input');
+        const number = isInput ? $(this).val() : $(this).html();
         const money = getMoneyFormat(number);
 
-        $html.data('mf-amount', Math.round(number));
+        $(this).data('mf-amount', Math.round(number));
 
-        isInput ? $html.val(money) : $html.html(money);
+        isInput ? $(this).val(money) : $(this).html(money);
     });
 
     $('[name$=_filter_form]').on('submit', function (e) {
@@ -146,15 +157,9 @@ jQuery(document).ready(function ($) {
 
             $('.dashboard-content .table > tbody').empty().html(html);
 
-            const moneyFormats = document.querySelectorAll('.dashboard-content .table > tbody > tr > td.money-format');
+            updateTableFormats();
 
-            [].forEach.call(moneyFormats, function (moneyFormat) {
-                if (isNaN(moneyFormat.innerHTML)) {
-                    return undefined;
-                }
-
-                moneyFormat.innerHTML = getMoneyFormat(moneyFormat.innerHTML);
-            });
+            infScroll.dispatchEvent('append');
         });
     });
 
@@ -181,7 +186,13 @@ jQuery(document).ready(function ($) {
 
                 return '?page=' + page + queryFilters;
             },
-            responseType: 'html',
+            responseType: 'document',
+            fetchOptions: {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            },
+            domParseResponse: false,
             status: '.infinite-scroll-status',
             history: false,
         }).on('load', function (html) {
@@ -193,20 +204,33 @@ jQuery(document).ready(function ($) {
 
             document.querySelector('.dashboard-content .table > tbody').innerHTML += html;
 
-            const moneyFormats = document.querySelectorAll('.dashboard-content .table > tbody > tr > td.money-format');
+            updateTableFormats();
 
-            [].forEach.call(moneyFormats, function (moneyFormat) {
-                if (isNaN(moneyFormat.innerHTML)) {
-                    return undefined;
-                }
-
-                moneyFormat.innerHTML = getMoneyFormat(moneyFormat.innerHTML);
-            });
+            infScroll.dispatchEvent('append');
         });
 
         window.infScroll = infScroll;
     }
 });
+
+function updateTableFormats()
+{
+    const moneyFormats = document.querySelectorAll('.dashboard-content .table > tbody > tr > td.money-format');
+
+    [].forEach.call(moneyFormats, function (moneyFormat) {
+        if (!isNaN(moneyFormat.innerText)) {
+            moneyFormat.setAttribute('data-mf-amount', moneyFormat.innerText);
+        }
+        moneyFormat.innerHTML = getMoneyFormat(moneyFormat.innerHTML);
+    });
+
+    const timeAgos = document.querySelectorAll('.dashboard-content .table > tbody > tr > td.timeago-format');
+
+    [].forEach.call(timeAgos, function (timeAgo) {
+        timeAgo.title = getDateTime(timeAgo.innerHTML);
+        timeAgo.innerHTML = getTimeAgo(timeAgo.innerHTML);
+    });
+}
 
 function getCookie(cname)
 {
@@ -231,7 +255,7 @@ function getCookie(cname)
 function getMoneyFormat(number)
 {
     if (isNaN(number)) {
-        return 0;
+        return number;
     }
 
     if (!(typeof Intl === 'object' && Intl && typeof Intl.NumberFormat === 'function')) {
@@ -246,10 +270,29 @@ function getMoneyFormat(number)
     });
 }
 
+function isValidDateTimeFormat(datetime)
+{
+    return !(!datetime || datetime === undefined || datetime === null || datetime === '');
+
+}
+
+function getDateTime(datetime)
+{
+    if (!isValidDateTimeFormat(datetime)) {
+        return datetime;
+    }
+
+    try {
+        return (new Date((new Date(datetime)).setMilliseconds(getTimeZoneOffset() * 2))).toJSON().slice(0, 19).replace('T', ' ');
+    } catch (e) {
+        return datetime;
+    }
+}
+
 function getDateTimeFormat(datetime)
 {
-    if (!datetime || datetime === undefined || datetime === null || datetime === '') {
-        return '';
+    if (!isValidDateTimeFormat(datetime)) {
+        return datetime;
     }
 
     try {
@@ -265,6 +308,46 @@ function getDateTimeFormat(datetime)
     } catch (e) {
         return datetime;
     }
+}
+
+const MINUTE = 60;
+const HOUR = MINUTE * 60;
+const DAY = HOUR * 24;
+const WEEK = DAY * 7;
+const MONTH = DAY * 30;
+const YEAR = DAY * 365;
+
+function getTimeAgo(datetime) {
+    if (!isValidDateTimeFormat(datetime)) {
+        return datetime;
+    }
+
+    const secondsAgo = Math.round((+new Date() - (new Date((new Date(datetime)).setMilliseconds(getTimeZoneOffset())))) / 1000);
+
+    let divisor = null
+    let unit = null
+
+    if (isNaN(secondsAgo)) {
+        return datetime;
+    } else if (secondsAgo < MINUTE) {
+        return 'hace ' + secondsAgo + ' segundos'
+    } else if (secondsAgo < HOUR) {
+        [divisor, unit] = [MINUTE, 'minuto']
+    } else if (secondsAgo < DAY) {
+        [divisor, unit] = [HOUR, 'hora']
+    } else if (secondsAgo < WEEK) {
+        [divisor, unit] = [DAY, 'día']
+    } else if (secondsAgo < MONTH) {
+        [divisor, unit] = [WEEK, 'semana']
+    } else if (secondsAgo < YEAR) {
+        [divisor, unit] = [MONTH, 'semana']
+    } else if (secondsAgo > YEAR) {
+        [divisor, unit] = [YEAR, 'año']
+    }
+
+    count = Math.floor(secondsAgo / divisor)
+
+    return  `hace ${count} ${unit}${(count > 1)?'s':''}`
 }
 
 function getTimeZone()
