@@ -15,7 +15,8 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: lazy
+            anonymous: true
+            lazy: true
             provider: in_chain
             guard:
                 authenticators:
@@ -28,3 +29,5 @@ security:
         Domain\User\User: 'auto'
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/profile, roles: ROLE_ADMIN }
+

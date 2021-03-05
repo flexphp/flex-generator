@@ -40,6 +40,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/LICENSE.md');
         $this->assertFileExists($response->outputDir . '/README.md');
         $this->assertFileExists($response->outputDir . '/phpunit.xml.dist');
+        $this->assertFileExists($response->outputDir . '/.htaccess');
 
         $this->assertDirectoryExists($response->outputDir . '/src');
         $this->assertFileExists($response->outputDir . '/src/Kernel.php');
@@ -96,6 +97,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/config');
         $this->assertFileExists($response->outputDir . '/config/bootstrap.php');
         $this->assertFileExists($response->outputDir . '/config/bundles.php');
+        $this->assertFileExists($response->outputDir . '/config/preload.php');
         $this->assertFileExists($response->outputDir . '/config/services.yaml');
         $this->assertFileExists($response->outputDir . '/config/routes.yaml');
         $this->assertFileExists($response->outputDir . '/config/menu.php');
@@ -128,6 +130,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/public/css/webfonts/');
         $this->assertFileExists($response->outputDir . '/public/css/webfonts/fonts.css');
         $this->assertFileExists($response->outputDir . '/public/css/webfonts/fa-solid-900.woff2');
+        $this->assertFileExists($response->outputDir . '/public/css/webfonts/fa-regular-400.woff2');
         $this->assertFileExists($response->outputDir . '/public/css/webfonts/CircularStd-Book.woff');
         $this->assertFileExists($response->outputDir . '/public/css/webfonts/CircularStd-Medium.woff');
 
@@ -176,8 +179,8 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/translations/login.es.php');
         $this->assertFileExists($response->outputDir . '/translations/messages.en.php');
         $this->assertFileExists($response->outputDir . '/translations/messages.es.php');
-        $this->assertFileExists($response->outputDir . '/translations/error.en.php');
-        $this->assertFileExists($response->outputDir . '/translations/error.es.php');
+        // $this->assertFileExists($response->outputDir . '/translations/error.en.php');
+        // $this->assertFileExists($response->outputDir . '/translations/error.es.php');
         $this->assertFileExists($response->outputDir . '/translations/post.en.php');
         $this->assertFileExists($response->outputDir . '/translations/comment.en.php');
 
@@ -206,7 +209,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         
         $this->assertDirectoryExists($response->outputDir . '/domain/Tests');
         $this->assertFileExists($response->outputDir . '/domain/Tests/TestCase.php');
-        $this->assertFileExists($response->outputDir . '/domain/Tests/AbstractGateway.php');
+        $this->assertFileExists($response->outputDir . '/domain/Tests/DatabaseTrait.php');
 
         $this->assertDirectoryExists($response->outputDir . '/domain/User');
         $this->assertFileExists($response->outputDir . '/domain/User/UserRbac.php');

@@ -5,6 +5,8 @@
 tests/coverage
 vendor
 infection.*
+*.swp
+.php_cs.cache
 
 ###> symfony/framework-bundle ###
 /.env.local

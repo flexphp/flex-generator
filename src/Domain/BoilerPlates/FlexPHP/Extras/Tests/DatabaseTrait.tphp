@@ -1,0 +1,108 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace Domain\Tests;
+
+use DateTime;
+use DateTimeInterface;
+use Exception;
+
+/**
+ * @property \Symfony\Component\DependencyInjection\ContainerInterface $container
+ */
+trait DatabaseTrait
+{
+    protected function createDb(): bool
+    {
+        $date = \date('Y-m-d');
+        $filecheck = \dirname(__DIR__) . '/../var/db.check';
+
+        if (\file_exists($filecheck) && \file_get_contents($filecheck) === $date) {
+            return true;
+        }
+
+        $files = [
+            \dirname(__DIR__) . '/../domain/Database/0 - drop.sql',
+            \dirname(__DIR__) . '/../domain/Database/1 - create.sql',
+            \dirname(__DIR__) . '/../domain/Database/2 - preinserts.sql',
+            \dirname(__DIR__) . '/../domain/Database/9999 - testing.sql',
+        ];
+
+        foreach ($files as $file) {
+            if (!\file_exists($file)) {
+                throw new Exception(\sprintf('File %s not exists', $file));
+            }
+
+            $this->executeDb(\file_get_contents($file));
+        }
+
+        \file_put_contents($filecheck, $date);
+
+        return true;
+    }
+
+    protected function executeDb(string $sql): void
+    {
+        $query = $this->connection()->prepare($sql);
+        $query->execute();
+    }
+
+    /**
+     * @return \Doctrine\Dbal\Connection
+     */
+    protected function connection()
+    {
+        static $connection;
+
+        if ($connection) {
+            return $connection;
+        }
+
+        if (isset(self::$container)) {
+            // Call from Symfony
+            return $connection = self::$container->get('doctrine.dbal.default_connection');
+        }
+
+        return $connection = \Doctrine\DBAL\DriverManager::getConnection([
+            'url' => $_ENV['DATABASE_URL'],
+        ]);
+    }
+
+    protected function getGateway($abstract, bool $asInstance = false)
+    {
+        if (isset(self::$container)) {
+            // Call from Symfony
+            return self::$container->get($abstract);
+        }
+
+        $gateways = [
+            xGateway::class => \Domain\x\Gateway\MySQLxGateway::class,
+        ];
+
+        if (isset($gateways[$abstract])) {
+            if ($asInstance) {
+                return new $gateways[$abstract]($this->connection());
+            }
+
+            return $gateways[$abstract];
+        }
+
+        throw new Exception(\sprintf('Error internal: Implementation for %s is not defined', $abstract));
+    }
+
+    protected function createX(
+        string $name
+    ): X {
+        $x = new X;
+        $x->setName($name);
+        $x->setId($this->getGateway(XGateway::class, true)->push($x));
+
+        return $x;
+    }
+}

@@ -1,9 +1,13 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
 # Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#configuration
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: es
     # This parameter defines the codes of the locales (languages) enabled in the application
     app_locales: en|es
+    container.dumper.inline_factories: true
 
 services:
     # default configuration for services in *this* file
@@ -18,13 +22,17 @@ services:
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
-        resource: '../src/Controller'
+        resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
     # domain are imported separately to make sure services can be injected
@@ -32,14 +40,6 @@ services:
         resource: '../domain'
         exclude: '../domain/{Tests}'
         tags: ['@router']
-
-    Doctrine\DBAL\Configuration:
-    Doctrine\DBAL\Connection:
-        factory: 'Doctrine\DBAL\DriverManager::getConnection'
-        arguments:
-            -
-                url : '%env(DATABASE_URL)%'
-            - '@Doctrine\DBAL\Configuration'
 
     app.event_subscriber.locale_susbscriber:
         class: App\Listener\LocaleListener
@@ -51,3 +51,4 @@ services:
         class: App\Listener\ExceptionListener
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
