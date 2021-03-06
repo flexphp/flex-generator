@@ -54,7 +54,7 @@ final class TestRepository
      */
     public function findBy(IndexTestRequest \$request): array
     {
-        return array_map(function (array \$test) {
+        return \array_map(function (array \$test) {
             return (new TestFactory())->make(\$test);
         }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
     }
@@ -134,7 +134,7 @@ final class TestRepository
      */
     public function findBy(IndexTestRequest \$request): array
     {
-        return array_map(function (array \$test) {
+        return \array_map(function (array \$test) {
             return (new TestFactory())->make(\$test);
         }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
     }
@@ -441,7 +441,7 @@ final class PostCommentRepository
      */
     public function findBy(IndexPostCommentRequest \$request): array
     {
-        return array_map(function (array \$postComment) {
+        return \array_map(function (array \$postComment) {
             return (new PostCommentFactory())->make(\$postComment);
         }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
     }
@@ -500,7 +500,7 @@ final class TestRepository
      */
     public function findBy(IndexTestRequest \$request): array
     {
-        return array_map(function (array \$test) {
+        return \array_map(function (array \$test) {
             return (new TestFactory())->make(\$test);
         }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
     }

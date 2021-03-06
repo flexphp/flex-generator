@@ -35,7 +35,7 @@ final class {{ entity }}Repository
      */
     public function findBy(Index{{ entity }}Request $request): array
     {
-        return array_map(function (array ${{ item }}) {
+        return \array_map(function (array ${{ item }}) {
             return (new {{ entity }}Factory())->make(${{ item }});
         }, $this->gateway->search((array)$request, [], $request->page, 50, $request->offset));
     }
