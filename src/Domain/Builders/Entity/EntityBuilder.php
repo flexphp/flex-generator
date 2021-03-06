@@ -25,9 +25,10 @@ final class EntityBuilder extends AbstractBuilder
         $_properties = $this->getProperties($schema->attributes());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
         $fkRels = $this->getFkRelations($schema->fkRelations());
+        $header = self::getHeaderFile();
 
         parent::__construct(
-            \compact('name', 'getters', 'fkGetters', 'setters', 'fkSetters', '_properties', 'fkFns', 'fkRels')
+            \compact('header', 'name', 'getters', 'fkGetters', 'setters', 'fkSetters', '_properties', 'fkFns', 'fkRels')
         );
     }
 
@@ -87,7 +88,7 @@ final class EntityBuilder extends AbstractBuilder
         return \array_reduce(
             $fkRelations,
             function (array $result, array $fkRel): array {
-                $result[] = new FkGetterBuilder($fkRel['pkId'], $fkRel['pkTable']);
+                $result[] = new FkGetterBuilder($fkRel['pkId'], $fkRel['pkTable'], $fkRel['isRequired']);
 
                 return $result;
             },

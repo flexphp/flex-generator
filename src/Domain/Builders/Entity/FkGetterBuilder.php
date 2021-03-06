@@ -13,14 +13,19 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 final class FkGetterBuilder extends AbstractBuilder
 {
-    public function __construct(string $name, string $type)
+    public function __construct(string $name, string $type, bool $required)
     {
         $name = $this->getInflector()->camelProperty($name);
         $getter = $this->getInflector()->camelProperty($name);
         $type = $this->getInflector()->entity($type);
         $typeName = $this->getInflector()->camelProperty($type);
 
-        parent::__construct(\compact('name', 'getter', 'type', 'typeName'));
+        parent::__construct(\compact('name', 'getter', 'type', 'typeName', 'required'));
+    }
+
+    public function build(): string
+    {
+        return \rtrim(parent::build());
     }
 
     protected function getFileTemplate(): string

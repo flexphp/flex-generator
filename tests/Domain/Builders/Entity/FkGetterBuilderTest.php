@@ -16,7 +16,7 @@ final class FkGetterBuilderTest extends TestCase
 {
     public function testItNotRequiredOk(): void
     {
-        $render = new FkGetterBuilder('foo', 'Foo');
+        $render = new FkGetterBuilder('foo', 'Foo', false);
 
         $this->assertEquals(<<<T
     public function fooInstance(): ?Foo
@@ -29,12 +29,12 @@ T
 
     public function testItRequiredOk(): void
     {
-        $render = new FkGetterBuilder('foo', 'Foo');
+        $render = new FkGetterBuilder('foo', 'Foo', true);
 
         $this->assertEquals(<<<T
-    public function fooInstance(): ?Foo
+    public function fooInstance(): Foo
     {
-        return \$this->fooInstance;
+        return \$this->fooInstance ?: new Foo;
     }
 T
 , $render->build());
@@ -49,12 +49,12 @@ T
         string $entityExpected,
         string $getter
     ): void {
-        $render = new FkGetterBuilder($name, $entity);
+        $render = new FkGetterBuilder($name, $entity, true);
 
         $this->assertEquals(<<<T
-        public function {$getter}Instance(): ?$entityExpected
+        public function {$getter}Instance(): $entityExpected
         {
-            return \$this->{$name}Instance;
+            return \$this->{$name}Instance ?: new {$entityExpected};
         }
     T
     , $render->build());
@@ -69,7 +69,7 @@ T
         string $nameExpected,
         string $getter
     ): void {
-        $render = new FkGetterBuilder($name, $type);
+        $render = new FkGetterBuilder($name, $type, false);
 
         $this->assertEquals(<<<T
     public function {$getter}Instance(): ?$type
