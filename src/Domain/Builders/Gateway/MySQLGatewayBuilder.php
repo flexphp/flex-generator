@@ -42,10 +42,20 @@ final class MySQLGatewayBuilder extends AbstractBuilder
             },
             []
         );
+        $header = self::getHeaderFile();
 
-        parent::__construct(
-            \compact('entity', 'item', 'table', 'actions', 'properties', 'dbTypes', 'pkName', 'fkFns', 'fkRels')
-        );
+        parent::__construct(\compact(
+            'header',
+            'entity',
+            'item',
+            'table',
+            'actions',
+            'properties',
+            'dbTypes',
+            'pkName',
+            'fkFns',
+            'fkRels'
+        ));
     }
 
     protected function getFileTemplate(): string
