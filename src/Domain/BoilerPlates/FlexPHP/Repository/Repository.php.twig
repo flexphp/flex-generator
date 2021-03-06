@@ -2,7 +2,7 @@
 {% set fkFnsNoBlame = fkFns|filter(v => not v.blameBy) %}
 {% set useStatements = [] %}
 <?php declare(strict_types=1);
-
+{{ header|raw }}
 namespace Domain\{{ entity }};
 
 {% for request in requests %}
@@ -15,15 +15,20 @@ namespace Domain\{{ entity }};
 {% endfor %}
 {% if useStatements|length > 0 %}
 {{ useStatements|sort|join("\n") }}
-{% endif %}
-use FlexPHP\Repositories\Repository;
 
-/**
- * @method {{ entity }}Gateway getGateway
- */
-final class {{ entity }}Repository extends Repository
+{% endif %}
+final class {{ entity }}Repository
 {
+    private {{ entity }}Gateway $gateway;
+
+    public function __construct({{ entity }}Gateway $gateway)
+    {
+        $this->gateway = $gateway;
+    }
 {% for index, action in actions %}
+{% if index == 0 and action in ['index', 'create', 'read', 'update', 'delete', 'login'] %}
+
+{% endif %}
 {% if action == 'index' %}
     /**
      * @return array<{{ entity }}>
@@ -32,7 +37,7 @@ final class {{ entity }}Repository extends Repository
     {
         return array_map(function (array ${{ item }}) {
             return (new {{ entity }}Factory())->make(${{ item }});
-        }, $this->getGateway()->search((array)$request, [], $request->page, 50, $request->offset));
+        }, $this->gateway->search((array)$request, [], $request->page, 50, $request->offset));
     }
 {% elseif action == 'create' %}
     public function add(Create{{ entity }}Request $request): {{ entity }}
@@ -45,7 +50,7 @@ final class {{ entity }}Repository extends Repository
         }
 {% endif  %}
 
-        ${{item }}->set{{ pkName }}($this->getGateway()->push(${{ item }}));
+        ${{item }}->set{{ pkName }}($this->gateway->push(${{ item }}));
 
         return ${{ item }};
     }
@@ -53,7 +58,7 @@ final class {{ entity }}Repository extends Repository
     public function getById(Read{{ entity }}Request $request): {{ entity }}
     {
         $factory = new {{ entity }}Factory();
-        $data = $this->getGateway()->get($factory->make($request));
+        $data = $this->gateway->get($factory->make($request));
 {% if isUser  %}
 
         $data['password'] = $this->getFakePassword();
@@ -72,7 +77,7 @@ final class {{ entity }}Repository extends Repository
         }
 {% endif  %}
 
-        $this->getGateway()->shift(${{ item }});
+        $this->gateway->shift(${{ item }});
 
         return ${{ item }};
     }
@@ -80,18 +85,18 @@ final class {{ entity }}Repository extends Repository
     public function remove(Delete{{ entity }}Request $request): {{ entity }}
     {
         $factory = new {{ entity }}Factory();
-        $data = $this->getGateway()->get($factory->make($request));
+        $data = $this->gateway->get($factory->make($request));
 
         ${{ item }} = $factory->make($data);
 
-        $this->getGateway()->pop(${{ item }});
+        $this->gateway->pop(${{ item }});
 
         return ${{ item }};
     }
 {% elseif action == 'login' %}
     public function getByLogin(Login{{ entity }}Request $request): {{ entity }}
     {
-        $data = $this->getGateway()->getBy('{{ login }}', $request->{{ login }});
+        $data = $this->gateway->getBy('{{ login }}', $request->{{ login }});
 
         return (new {{ entity }}Factory())->make($data);
     }
@@ -116,7 +121,7 @@ final class {{ entity }}Repository extends Repository
 
     public function find{{ fkFn.fnPlural }}By(Find{{ entity }}{{ fkFn.fnSingular }}Request $request): array
     {
-        return $this->getGateway()->filter{{ fkFn.fnPlural }}($request, $request->page, 20);
+        return $this->gateway->filter{{ fkFn.fnPlural }}($request, $request->page, 20);
     }
 {% endfor %}
 }
