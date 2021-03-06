@@ -22,6 +22,7 @@ final class FkUseCaseBuilderTest extends TestCase
         string $fkEntity,
         string $namespace,
         string $expected,
+        string $items,
         string $item,
         string $entity
     ): void {
@@ -29,28 +30,27 @@ final class FkUseCaseBuilderTest extends TestCase
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\\{$namespace}\UseCase;
 
+use Domain\\{$namespace}\\{$namespace}Repository;
 use Domain\\{$namespace}\Request\Find{$expected}Request;
 use Domain\\{$namespace}\Response\Find{$expected}Response;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\\{$namespace}\\{$namespace}Repository getRepository
- */
-final class Find{$expected}UseCase extends UseCase
+final class Find{$expected}UseCase
 {
-    /**
-     * @param Find{$expected}Request \$request
-     *
-     * @return Find{$expected}Response
-     */
-    public function execute(\$request)
-    {
-        \${$item} = \$this->getRepository()->find{$entity}By(\$request);
+    private {$namespace}Repository \${$item}Repository;
 
-        return new Find{$expected}Response(\${$item});
+    public function __construct({$namespace}Repository \${$item}Repository)
+    {
+        \$this->{$item}Repository = \${$item}Repository;
+    }
+
+    public function execute(Find{$expected}Request \$request): Find{$expected}Response
+    {
+        \${$items} = \$this->{$item}Repository->find{$entity}By(\$request);
+
+        return new Find{$expected}Response(\${$items});
     }
 }
 
@@ -61,13 +61,13 @@ T
     public function getEntityName(): array
     {
         return [
-            ['fuz', 'bar', 'Fuz', 'FuzBar', 'bars', 'Bars'],
-            ['FUZ', 'BAR', 'Fuz', 'FuzBar', 'bars', 'Bars'],
-            ['User', 'UserPassword', 'User', 'UserUserPassword', 'userPasswords', 'UserPasswords'],
-            ['user', 'userPassword', 'User', 'UserUserPassword', 'userPasswords', 'UserPasswords'],
-            ['user', 'user_password', 'User', 'UserUserPassword', 'userPasswords', 'UserPasswords'],
-            ['user', 'user-password', 'User', 'UserUserPassword', 'userPasswords', 'UserPasswords'],
-            ['Posts', 'Comments', 'Post', 'PostComment', 'comments', 'Comments'],
+            ['fuz', 'bar', 'Fuz', 'FuzBar', 'bars', 'fuz', 'Bars'],
+            ['FUZ', 'BAR', 'Fuz', 'FuzBar', 'bars', 'fuz', 'Bars'],
+            ['User', 'UserPassword', 'User', 'UserUserPassword', 'userPasswords', 'user', 'UserPasswords'],
+            ['user', 'userPassword', 'User', 'UserUserPassword', 'userPasswords', 'user', 'UserPasswords'],
+            ['user', 'user_password', 'User', 'UserUserPassword', 'userPasswords', 'user', 'UserPasswords'],
+            ['user', 'user-password', 'User', 'UserUserPassword', 'userPasswords', 'user', 'UserPasswords'],
+            ['Posts', 'Comments', 'Post', 'PostComment', 'comments', 'post', 'Comments'],
         ];
     }
 }

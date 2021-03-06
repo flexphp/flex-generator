@@ -1,25 +1,24 @@
 <?php declare(strict_types=1);
-
+{{ header|raw }}
 namespace Domain\{{ pkEntity }}\UseCase;
 
+use Domain\{{ pkEntity }}\{{ pkEntity }}Repository;
 use Domain\{{ pkEntity }}\Request\Find{{ pkEntity }}{{ fkEntity }}Request;
 use Domain\{{ pkEntity }}\Response\Find{{ pkEntity }}{{ fkEntity }}Response;
-use FlexPHP\UseCases\UseCase;
 
-/**
- * @method \Domain\{{ pkEntity }}\{{ pkEntity }}Repository getRepository
- */
-final class Find{{ pkEntity }}{{ fkEntity }}UseCase extends UseCase
+final class Find{{ pkEntity }}{{ fkEntity }}UseCase
 {
-    /**
-     * @param Find{{ pkEntity }}{{ fkEntity }}Request $request
-     *
-     * @return Find{{ pkEntity }}{{ fkEntity }}Response
-     */
-    public function execute($request)
-    {
-        ${{ items }} = $this->getRepository()->find{{ name }}By($request);
+    private {{ pkEntity }}Repository ${{ pkItem }}Repository;
 
-        return new Find{{ pkEntity }}{{ fkEntity }}Response(${{ items }});
+    public function __construct({{ pkEntity }}Repository ${{ pkItem }}Repository)
+    {
+        $this->{{ pkItem }}Repository = ${{ pkItem }}Repository;
+    }
+
+    public function execute(Find{{ pkEntity }}{{ fkEntity }}Request $request): Find{{ pkEntity }}{{ fkEntity }}Response
+    {
+        ${{ fkItems }} = $this->{{ pkItem }}Repository->find{{ name }}By($request);
+
+        return new Find{{ pkEntity }}{{ fkEntity }}Response(${{ fkItems }});
     }
 }
