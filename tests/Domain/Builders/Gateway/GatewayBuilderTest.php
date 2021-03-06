@@ -26,9 +26,9 @@ final class GatewayBuilderTest extends TestCase
             'login',
         ]);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 use Domain\Test\Request\FindTestBarRequest;
@@ -37,23 +37,23 @@ use Domain\Test\Request\FindTestUserStatusRequest;
 
 interface TestGateway
 {
-    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array;
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit, int \$offset): array;
 
-    public function push(Test $test): int;
+    public function push(Test \$test): int;
 
-    public function get(Test $test): array;
+    public function get(Test \$test): array;
 
-    public function shift(Test $test): void;
+    public function shift(Test \$test): void;
 
-    public function pop(Test $test): void;
+    public function pop(Test \$test): void;
 
-    public function getBy(string $column, $value): array;
+    public function getBy(string \$column, \$value): array;
 
-    public function filterBars(FindTestBarRequest $request, int $page, int $limit): array;
+    public function filterBars(FindTestBarRequest \$request, int \$page, int \$limit): array;
 
-    public function filterPosts(FindTestPostRequest $request, int $page, int $limit): array;
+    public function filterPosts(FindTestPostRequest \$request, int \$page, int \$limit): array;
 
-    public function filterUserStatus(FindTestUserStatusRequest $request, int $page, int $limit): array;
+    public function filterUserStatus(FindTestUserStatusRequest \$request, int \$page, int \$limit): array;
 }
 
 T
@@ -64,14 +64,14 @@ T
     {
         $render = new GatewayBuilder($this->getSchema(), ['index']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 interface TestGateway
 {
-    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array;
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit, int \$offset): array;
 }
 
 T
@@ -82,14 +82,14 @@ T
     {
         $render = new GatewayBuilder($this->getSchema(), ['create']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 interface TestGateway
 {
-    public function push(Test $test): string;
+    public function push(Test \$test): string;
 }
 
 T
@@ -100,14 +100,14 @@ T
     {
         $render = new GatewayBuilder($this->getSchema(), ['read']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 interface TestGateway
 {
-    public function get(Test $test): array;
+    public function get(Test \$test): array;
 }
 
 T
@@ -118,14 +118,14 @@ T
     {
         $render = new GatewayBuilder($this->getSchema(), ['update']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 interface TestGateway
 {
-    public function shift(Test $test): void;
+    public function shift(Test \$test): void;
 }
 
 T
@@ -136,14 +136,14 @@ T
     {
         $render = new GatewayBuilder($this->getSchema(), ['delete']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 interface TestGateway
 {
-    public function pop(Test $test): void;
+    public function pop(Test \$test): void;
 }
 
 T
@@ -154,14 +154,14 @@ T
     {
         $render = new GatewayBuilder($this->getSchema(), ['login']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 interface TestGateway
 {
-    public function getBy(string $column, $value): array;
+    public function getBy(string \$column, \$value): array;
 }
 
 T
@@ -172,9 +172,9 @@ T
     {
         $render = new GatewayBuilder($this->getSchemaFkRelation('PostComments'), ['other']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\PostComment;
 
 use Domain\PostComment\Request\FindPostCommentBarRequest;
@@ -183,11 +183,11 @@ use Domain\PostComment\Request\FindPostCommentUserStatusRequest;
 
 interface PostCommentGateway
 {
-    public function filterBars(FindPostCommentBarRequest $request, int $page, int $limit): array;
+    public function filterBars(FindPostCommentBarRequest \$request, int \$page, int \$limit): array;
 
-    public function filterPosts(FindPostCommentPostRequest $request, int $page, int $limit): array;
+    public function filterPosts(FindPostCommentPostRequest \$request, int \$page, int \$limit): array;
 
-    public function filterUserStatus(FindPostCommentUserStatusRequest $request, int $page, int $limit): array;
+    public function filterUserStatus(FindPostCommentUserStatusRequest \$request, int \$page, int \$limit): array;
 }
 
 T
@@ -198,9 +198,9 @@ T
     {
         $render = new GatewayBuilder($this->getSchemaStringAndBlameBy(), ['other']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 interface TestGateway
@@ -218,14 +218,14 @@ T
     {
         $render = new GatewayBuilder($this->getSchema(), ['create', 'other']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 interface TestGateway
 {
-    public function push(Test $test): string;
+    public function push(Test \$test): string;
 }
 
 T
@@ -241,7 +241,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\\{$expected};
 
 interface {$expected}Gateway

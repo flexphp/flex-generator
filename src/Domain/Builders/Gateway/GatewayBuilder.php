@@ -25,8 +25,9 @@ final class GatewayBuilder extends AbstractBuilder
 
             return $result;
         }, []);
+        $header = self::getHeaderFile();
 
-        parent::__construct(\compact('entity', 'actions', 'item', 'fkFns', 'typeHint'));
+        parent::__construct(\compact('header', 'entity', 'actions', 'item', 'fkFns', 'typeHint'));
     }
 
     protected function getFileTemplate(): string
