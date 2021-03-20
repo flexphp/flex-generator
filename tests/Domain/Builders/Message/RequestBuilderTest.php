@@ -138,7 +138,6 @@ T
 
     public function testItRenderCreateWithTrimOk(): void
     {
-        $this->markTestIncomplete();
         $render = new RequestBuilder($this->getSchemaFkWithFilterAndFchars('Fuz'), 'create');
 
         $this->assertEquals(<<<T
@@ -150,22 +149,20 @@ use FlexPHP\Messages\RequestInterface;
 
 final class CreateFuzRequest implements RequestInterface
 {
-    public \$lower;
+    public \$filter;
 
-    public \$upper;
+    public \$otherFilter;
 
-    public \$pascalCase;
+    public \$fchars;
 
-    public \$camelCase;
-
-    public \$snakeCase;
+    public \$trim;
 
     public function __construct(array \$data)
     {
         \$this->filter = \$data['filter'] ?? null;
         \$this->otherFilter = \$data['otherFilter'] ?? null;
         \$this->fchars = \$data['fchars'] ?? null;
-        \$this->trim = isset(\$data['trim']) ? \trim(\$data['trim']) : null;
+        \$this->trim = isset(\$data['trim']) ? \\trim(\$data['trim']) : null;
     }
 }
 
@@ -235,6 +232,42 @@ T
 , $render->build());
     }
 
+    public function testItRenderUpdateWithTrimOk(): void
+    {
+        $render = new RequestBuilder($this->getSchemaFkWithFilterAndFchars('Fuz'), 'update');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class UpdateFuzRequest implements RequestInterface
+{
+    public \$id;
+
+    public \$filter;
+
+    public \$otherFilter;
+
+    public \$fchars;
+
+    public \$trim;
+
+    public function __construct(int \$id, array \$data)
+    {
+        \$this->id = \$id;
+        \$this->filter = \$data['filter'] ?? null;
+        \$this->otherFilter = \$data['otherFilter'] ?? null;
+        \$this->fchars = \$data['fchars'] ?? null;
+        \$this->trim = isset(\$data['trim']) ? \\trim(\$data['trim']) : null;
+    }
+}
+
+T
+, $render->build());
+    }
     public function testItRenderDeleteOk(): void
     {
         $render = new RequestBuilder($this->getSchema('Fuz'), 'delete');

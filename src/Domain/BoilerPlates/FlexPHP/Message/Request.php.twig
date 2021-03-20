@@ -67,6 +67,8 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% for id, property in properties %}
 {% if action in ['Update'] and property.isPk %}
         $this->{{ id }} = ${{ pkName }};
+{% elseif action in ['Create', 'Update'] and property.trim %}
+        $this->{{ id }} = isset($data['{{ id }}']) ? \trim($data['{{ id }}']) : null;
 {% elseif (action in ['Create'] and property.isCb) or (action in ['Update'] and property.isUb) %}
         $this->{{ id }} = ${{ id }};
 {% elseif not (action in ['Create'] and property.isAi) and not property.isBlame %}
