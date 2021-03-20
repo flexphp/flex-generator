@@ -317,7 +317,8 @@ const WEEK = DAY * 7;
 const MONTH = DAY * 30;
 const YEAR = DAY * 365;
 
-function getTimeAgo(datetime) {
+function getTimeAgo(datetime)
+{
     if (!isValidDateTimeFormat(datetime)) {
         return datetime;
     }

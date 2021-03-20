@@ -74,6 +74,17 @@ class TestCase extends PHPUnitTestCase
         ]);
     }
 
+    protected function getSchemaFkWithFilterAndFchars(string $name = 'Test'): Schema
+    {
+        return new Schema($name, 'bar', [
+            new SchemaAttribute('id', 'integer', 'pk|ai|required'),
+            new SchemaAttribute('filter', 'string', 'filter:ss'),
+            new SchemaAttribute('OtherFilter', 'string', 'filter:eq'),
+            new SchemaAttribute('fchars', 'string', 'fk:Bar,fuz,baz|fchars:2'),
+            new SchemaAttribute('trim', 'string', 'trim'),
+        ]);
+    }
+
     protected static function getOutputFolder(): string
     {
         return __DIR__ . '/../src/tmp/skeleton';

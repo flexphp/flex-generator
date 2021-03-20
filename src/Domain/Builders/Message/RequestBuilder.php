@@ -27,8 +27,9 @@ final class RequestBuilder extends AbstractBuilder
 
             return $result;
         }, []);
+        $header = self::getHeaderFile();
 
-        parent::__construct(\compact('entity', 'action', 'pkName', 'pkTypeHint', 'login', 'properties'));
+        parent::__construct(\compact('entity', 'header', 'action', 'pkName', 'pkTypeHint', 'login', 'properties'));
     }
 
     protected function getFileTemplate(): string

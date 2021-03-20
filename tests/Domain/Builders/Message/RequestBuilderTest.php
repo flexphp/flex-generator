@@ -22,7 +22,7 @@ final class RequestBuilderTest extends TestCase
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -30,9 +30,13 @@ use FlexPHP\Messages\RequestInterface;
 final class ActionFuzRequest implements RequestInterface
 {
     public \$lower;
+
     public \$upper;
+
     public \$pascalCase;
+
     public \$camelCase;
+
     public \$snakeCase;
 
     public function __construct(array \$data)
@@ -53,9 +57,9 @@ T
     {
         $render = new RequestBuilder($this->getSchema('Fuz'), 'index');
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use Domain\Helper\DateTimeTrait;
@@ -65,23 +69,29 @@ final class IndexFuzRequest implements RequestInterface
 {
     use DateTimeTrait;
 
-    public $lower;
-    public $upper;
-    public $pascalCase;
-    public $camelCase;
-    public $snakeCase;
-    public $page;
-    public $offset;
+    public \$lower;
 
-    public function __construct(array $data, int $page, ?string $timezone = null)
+    public \$upper;
+
+    public \$pascalCase;
+
+    public \$camelCase;
+
+    public \$snakeCase;
+
+    public \$page;
+
+    public \$offset;
+
+    public function __construct(array \$data, int \$page, ?string \$timezone = null)
     {
-        $this->lower = $data['lower'] ?? null;
-        $this->upper = $data['upper'] ?? null;
-        $this->pascalCase = $data['pascalCase'] ?? null;
-        $this->camelCase = $data['camelCase'] ?? null;
-        $this->snakeCase = $data['snakeCase'] ?? null;
-        $this->page = $page;
-        $this->offset = $this->getOffset($this->getTimezone($timezone));
+        \$this->lower = \$data['lower'] ?? null;
+        \$this->upper = \$data['upper'] ?? null;
+        \$this->pascalCase = \$data['pascalCase'] ?? null;
+        \$this->camelCase = \$data['camelCase'] ?? null;
+        \$this->snakeCase = \$data['snakeCase'] ?? null;
+        \$this->page = \$page;
+        \$this->offset = \$this->getOffset(\$this->getTimezone(\$timezone));
     }
 }
 
@@ -95,7 +105,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -103,9 +113,13 @@ use FlexPHP\Messages\RequestInterface;
 final class CreateFuzRequest implements RequestInterface
 {
     public \$lower;
+
     public \$upper;
+
     public \$pascalCase;
+
     public \$camelCase;
+
     public \$snakeCase;
 
     public function __construct(array \$data)
@@ -122,13 +136,47 @@ T
 , $render->build());
     }
 
+    public function testItRenderCreateWithTrimOk(): void
+    {
+        $render = new RequestBuilder($this->getSchemaFkWithFilterAndFchars('Fuz'), 'create');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class CreateFuzRequest implements RequestInterface
+{
+    public \$filter;
+
+    public \$otherFilter;
+
+    public \$fchars;
+
+    public \$trim;
+
+    public function __construct(array \$data)
+    {
+        \$this->filter = \$data['filter'] ?? null;
+        \$this->otherFilter = \$data['otherFilter'] ?? null;
+        \$this->fchars = \$data['fchars'] ?? null;
+        \$this->trim = isset(\$data['trim']) ? \\trim(\$data['trim']) : null;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderReadOk(): void
     {
         $render = new RequestBuilder($this->getSchema('Fuz'), 'read');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -153,7 +201,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -161,9 +209,13 @@ use FlexPHP\Messages\RequestInterface;
 final class UpdateFuzRequest implements RequestInterface
 {
     public \$lower;
+
     public \$upper;
+
     public \$pascalCase;
+
     public \$camelCase;
+
     public \$snakeCase;
 
     public function __construct(string \$lower, array \$data)
@@ -180,13 +232,49 @@ T
 , $render->build());
     }
 
+    public function testItRenderUpdateWithTrimOk(): void
+    {
+        $render = new RequestBuilder($this->getSchemaFkWithFilterAndFchars('Fuz'), 'update');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class UpdateFuzRequest implements RequestInterface
+{
+    public \$id;
+
+    public \$filter;
+
+    public \$otherFilter;
+
+    public \$fchars;
+
+    public \$trim;
+
+    public function __construct(int \$id, array \$data)
+    {
+        \$this->id = \$id;
+        \$this->filter = \$data['filter'] ?? null;
+        \$this->otherFilter = \$data['otherFilter'] ?? null;
+        \$this->fchars = \$data['fchars'] ?? null;
+        \$this->trim = isset(\$data['trim']) ? \\trim(\$data['trim']) : null;
+    }
+}
+
+T
+, $render->build());
+    }
     public function testItRenderDeleteOk(): void
     {
         $render = new RequestBuilder($this->getSchema('Fuz'), 'delete');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -211,7 +299,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -236,7 +324,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -261,7 +349,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -284,9 +372,9 @@ T
     {
         $render = new RequestBuilder($this->getSchemaAiAndBlameAt('Bar'), 'index');
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Bar\Request;
 
 use Domain\Helper\DateTimeTrait;
@@ -296,22 +384,27 @@ final class IndexBarRequest implements RequestInterface
 {
     use DateTimeTrait;
 
-    public $key;
-    public $value;
-    public $created = [];
-    public $updated;
-    public $page;
-    public $offset;
+    public \$key;
 
-    public function __construct(array $data, int $page, ?string $timezone = null)
+    public \$value;
+
+    public \$created = [];
+
+    public \$updated;
+
+    public \$page;
+
+    public \$offset;
+
+    public function __construct(array \$data, int \$page, ?string \$timezone = null)
     {
-        $this->key = $data['key'] ?? null;
-        $this->value = $data['value'] ?? null;
-        $this->created[] = $data['created_START'] ?? null;
-        $this->created[] = $data['created_END'] ?? null;
-        $this->updated = $data['updated'] ?? null;
-        $this->page = $page;
-        $this->offset = $this->getOffset($this->getTimezone($timezone));
+        \$this->key = \$data['key'] ?? null;
+        \$this->value = \$data['value'] ?? null;
+        \$this->created[] = \$data['created_START'] ?? null;
+        \$this->created[] = \$data['created_END'] ?? null;
+        \$this->updated = \$data['updated'] ?? null;
+        \$this->page = \$page;
+        \$this->offset = \$this->getOffset(\$this->getTimezone(\$timezone));
     }
 }
 
@@ -325,7 +418,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Bar\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -350,7 +443,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Bar\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -358,6 +451,7 @@ use FlexPHP\Messages\RequestInterface;
 final class UpdateBarRequest implements RequestInterface
 {
     public \$key;
+
     public \$value;
 
     public function __construct(int \$key, array \$data)
@@ -377,7 +471,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Bar\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -385,7 +479,9 @@ use FlexPHP\Messages\RequestInterface;
 final class CreateBarRequest implements RequestInterface
 {
     public \$code;
+
     public \$name;
+
     public \$createdBy;
 
     public function __construct(array \$data, int \$createdBy)
@@ -406,7 +502,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -414,7 +510,9 @@ use FlexPHP\Messages\RequestInterface;
 final class UpdateFuzRequest implements RequestInterface
 {
     public \$code;
+
     public \$name;
+
     public \$updatedBy;
 
     public function __construct(string \$code, array \$data, int \$updatedBy)
@@ -438,7 +536,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\\{$expected}\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -463,7 +561,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -490,7 +588,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
