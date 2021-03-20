@@ -1,7 +1,7 @@
 {% set CreatedBy, CreatedById = properties|filter(v => v.isCb)|first, '' %}
 {% set UpdatedBy, UpdatedById = properties|filter(v => v.isUb)|first, '' %}
 <?php declare(strict_types=1);
-
+{{ header|raw }}
 namespace Domain\{{ entity }}\Request;
 
 {% if action in ['Index'] %}
