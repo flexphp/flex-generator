@@ -189,6 +189,8 @@ final class CreatePrototypeUseCase
             $source . '/translations/login.es.tphp' => $dest . '/translations/login.es.php',
             $source . '/translations/messages.en.tphp' => $dest . '/translations/messages.en.php',
             $source . '/translations/messages.es.tphp' => $dest . '/translations/messages.es.php',
+            $source . '/translations/error.en.tphp' => $dest . '/translations/error.en.php',
+            $source . '/translations/error.es.tphp' => $dest . '/translations/error.es.php',
             $source . '/var/cache/.gitkeep' => $dest . '/var/cache/.gitkeep',
             $source . '/var/log/.gitkeep' => $dest . '/var/log/.gitkeep',
             $source . '/var/sessions/.gitkeep' => $dest . '/var/sessions/.gitkeep',

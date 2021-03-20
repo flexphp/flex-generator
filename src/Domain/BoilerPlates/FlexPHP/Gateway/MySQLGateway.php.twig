@@ -3,7 +3,7 @@
 {% set columnUpdatedAt = properties|filter(v => v.isUa) %}
 {% set useStatements = [] %}
 <?php declare(strict_types=1);
-
+{{ header|raw }}
 namespace Domain\{{ entity }}\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -20,7 +20,7 @@ use Doctrine\DBAL\Types\Types as DB;
 {{ useStatements|sort|join("\n") }}
 {% endif %}
 
-final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
+class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {
     private $conn;
 {% if 'index' in actions %}
@@ -105,7 +105,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% if not property.isAi and not property.isBlameAt and not property.isUb %}
         $query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
 {% elseif property.isBlameAt %}
-        $query->setParameter(':{{ id }}', new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
+        $query->setParameter(':{{ id }}', ${{ item }}->{{ id }}() ?? new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
 {% endif %}
 {% endfor %}
 
@@ -160,7 +160,7 @@ final class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% if not property.isAi and not property.isBlameAt and not property.isCb %}
         $query->setParameter(':{{ id }}', ${{ item }}->{{ id }}(), DB::{{ dbTypes[id] }});
 {% elseif property.isBlameAt and property.isUa %}
-        $query->setParameter(':{{ id }}', new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
+        $query->setParameter(':{{ id }}', ${{ item }}->{{ id }}() ?? new \DateTime(date('Y-m-d H:i:s')), DB::{{ dbTypes[id] }});
 {% endif %}
 {% endfor %}
 

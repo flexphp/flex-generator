@@ -1,4 +1,4 @@
-    public function {{ getter }}Instance(): ?{{ type }}
+    public function {{ getter }}Instance(): {{ required ? '' : '?' }}{{ type }}
     {
-        return $this->{{ name }}Instance;
+        return $this->{{ name }}Instance{% if required %} ?: new {{ type }}{% endif %};
     }

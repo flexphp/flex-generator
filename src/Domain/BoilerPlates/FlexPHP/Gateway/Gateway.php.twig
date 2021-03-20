@@ -2,7 +2,7 @@
 {% set fkFnsNoBlame = fkFns|filter(v => not v.blameBy) %}
 {% set useStatements = [] %}
 <?php declare(strict_types=1);
-
+{{ header|raw }}
 namespace Domain\{{ entity }};
 {% for fkFn in fkFnsNoBlame %}
 {% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\Request\\Find' ~ entity ~ fkFn.fnSingular ~ 'Request;']) %}

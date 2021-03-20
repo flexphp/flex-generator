@@ -25,12 +25,12 @@ final class RepositoryBuilderTest extends TestCase
             'update',
             'delete',
             'login',
-            'other'
+            'other',
         ]);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 use Domain\Test\Request\CreateTestRequest;
@@ -39,66 +39,69 @@ use Domain\Test\Request\IndexTestRequest;
 use Domain\Test\Request\LoginTestRequest;
 use Domain\Test\Request\ReadTestRequest;
 use Domain\Test\Request\UpdateTestRequest;
-use FlexPHP\Repositories\Repository;
 
-/**
- * @method TestGateway getGateway
- */
-final class TestRepository extends Repository
+final class TestRepository
 {
+    private TestGateway \$gateway;
+
+    public function __construct(TestGateway \$gateway)
+    {
+        \$this->gateway = \$gateway;
+    }
+
     /**
      * @return array<Test>
      */
-    public function findBy(IndexTestRequest $request): array
+    public function findBy(IndexTestRequest \$request): array
     {
-        return array_map(function (array $test) {
-            return (new TestFactory())->make($test);
-        }, $this->getGateway()->search((array)$request, [], $request->page, 50, $request->offset));
+        return \array_map(function (array \$test) {
+            return (new TestFactory())->make(\$test);
+        }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
     }
 
-    public function add(CreateTestRequest $request): Test
+    public function add(CreateTestRequest \$request): Test
     {
-        $test = (new TestFactory())->make($request);
+        \$test = (new TestFactory())->make(\$request);
 
-        $test->setId($this->getGateway()->push($test));
+        \$test->setId(\$this->gateway->push(\$test));
 
-        return $test;
+        return \$test;
     }
 
-    public function getById(ReadTestRequest $request): Test
+    public function getById(ReadTestRequest \$request): Test
     {
-        $factory = new TestFactory();
-        $data = $this->getGateway()->get($factory->make($request));
+        \$factory = new TestFactory();
+        \$data = \$this->gateway->get(\$factory->make(\$request));
 
-        return $factory->make($data);
+        return \$factory->make(\$data);
     }
 
-    public function change(UpdateTestRequest $request): Test
+    public function change(UpdateTestRequest \$request): Test
     {
-        $test = (new TestFactory())->make($request);
+        \$test = (new TestFactory())->make(\$request);
 
-        $this->getGateway()->shift($test);
+        \$this->gateway->shift(\$test);
 
-        return $test;
+        return \$test;
     }
 
-    public function remove(DeleteTestRequest $request): Test
+    public function remove(DeleteTestRequest \$request): Test
     {
-        $factory = new TestFactory();
-        $data = $this->getGateway()->get($factory->make($request));
+        \$factory = new TestFactory();
+        \$data = \$this->gateway->get(\$factory->make(\$request));
 
-        $test = $factory->make($data);
+        \$test = \$factory->make(\$data);
 
-        $this->getGateway()->pop($test);
+        \$this->gateway->pop(\$test);
 
-        return $test;
+        return \$test;
     }
 
-    public function getByLogin(LoginTestRequest $request): Test
+    public function getByLogin(LoginTestRequest \$request): Test
     {
-        $data = $this->getGateway()->getBy('email', $request->email);
+        \$data = \$this->gateway->getBy('email', \$request->email);
 
-        return (new TestFactory())->make($data);
+        return (new TestFactory())->make(\$data);
     }
 }
 
@@ -110,27 +113,30 @@ T
     {
         $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['index']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 use Domain\Test\Request\IndexTestRequest;
-use FlexPHP\Repositories\Repository;
 
-/**
- * @method TestGateway getGateway
- */
-final class TestRepository extends Repository
+final class TestRepository
 {
+    private TestGateway \$gateway;
+
+    public function __construct(TestGateway \$gateway)
+    {
+        \$this->gateway = \$gateway;
+    }
+
     /**
      * @return array<Test>
      */
-    public function findBy(IndexTestRequest $request): array
+    public function findBy(IndexTestRequest \$request): array
     {
-        return array_map(function (array $test) {
-            return (new TestFactory())->make($test);
-        }, $this->getGateway()->search((array)$request, [], $request->page, 50, $request->offset));
+        return \array_map(function (array \$test) {
+            return (new TestFactory())->make(\$test);
+        }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
     }
 }
 
@@ -142,26 +148,29 @@ T
     {
         $render = new RepositoryBuilder($this->getSchemaStringAndBlameBy(), ['create']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 use Domain\Test\Request\CreateTestRequest;
-use FlexPHP\Repositories\Repository;
 
-/**
- * @method TestGateway getGateway
- */
-final class TestRepository extends Repository
+final class TestRepository
 {
-    public function add(CreateTestRequest $request): Test
+    private TestGateway \$gateway;
+
+    public function __construct(TestGateway \$gateway)
     {
-        $test = (new TestFactory())->make($request);
+        \$this->gateway = \$gateway;
+    }
 
-        $test->setCode($this->getGateway()->push($test));
+    public function add(CreateTestRequest \$request): Test
+    {
+        \$test = (new TestFactory())->make(\$request);
 
-        return $test;
+        \$test->setCode(\$this->gateway->push(\$test));
+
+        return \$test;
     }
 }
 
@@ -175,26 +184,29 @@ T
             new SchemaAttribute('key', 'integer', 'pk|ai|required'),
         ]), ['create']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 use Domain\Test\Request\CreateTestRequest;
-use FlexPHP\Repositories\Repository;
 
-/**
- * @method TestGateway getGateway
- */
-final class TestRepository extends Repository
+final class TestRepository
 {
-    public function add(CreateTestRequest $request): Test
+    private TestGateway \$gateway;
+
+    public function __construct(TestGateway \$gateway)
     {
-        $test = (new TestFactory())->make($request);
+        \$this->gateway = \$gateway;
+    }
 
-        $test->setKey($this->getGateway()->push($test));
+    public function add(CreateTestRequest \$request): Test
+    {
+        \$test = (new TestFactory())->make(\$request);
 
-        return $test;
+        \$test->setKey(\$this->gateway->push(\$test));
+
+        return \$test;
     }
 }
 
@@ -206,25 +218,28 @@ T
     {
         $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['read']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 use Domain\Test\Request\ReadTestRequest;
-use FlexPHP\Repositories\Repository;
 
-/**
- * @method TestGateway getGateway
- */
-final class TestRepository extends Repository
+final class TestRepository
 {
-    public function getById(ReadTestRequest $request): Test
-    {
-        $factory = new TestFactory();
-        $data = $this->getGateway()->get($factory->make($request));
+    private TestGateway \$gateway;
 
-        return $factory->make($data);
+    public function __construct(TestGateway \$gateway)
+    {
+        \$this->gateway = \$gateway;
+    }
+
+    public function getById(ReadTestRequest \$request): Test
+    {
+        \$factory = new TestFactory();
+        \$data = \$this->gateway->get(\$factory->make(\$request));
+
+        return \$factory->make(\$data);
     }
 }
 
@@ -236,26 +251,29 @@ T
     {
         $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['update']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 use Domain\Test\Request\UpdateTestRequest;
-use FlexPHP\Repositories\Repository;
 
-/**
- * @method TestGateway getGateway
- */
-final class TestRepository extends Repository
+final class TestRepository
 {
-    public function change(UpdateTestRequest $request): Test
+    private TestGateway \$gateway;
+
+    public function __construct(TestGateway \$gateway)
     {
-        $test = (new TestFactory())->make($request);
+        \$this->gateway = \$gateway;
+    }
 
-        $this->getGateway()->shift($test);
+    public function change(UpdateTestRequest \$request): Test
+    {
+        \$test = (new TestFactory())->make(\$request);
 
-        return $test;
+        \$this->gateway->shift(\$test);
+
+        return \$test;
     }
 }
 
@@ -267,29 +285,32 @@ T
     {
         $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['delete']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 use Domain\Test\Request\DeleteTestRequest;
-use FlexPHP\Repositories\Repository;
 
-/**
- * @method TestGateway getGateway
- */
-final class TestRepository extends Repository
+final class TestRepository
 {
-    public function remove(DeleteTestRequest $request): Test
+    private TestGateway \$gateway;
+
+    public function __construct(TestGateway \$gateway)
     {
-        $factory = new TestFactory();
-        $data = $this->getGateway()->get($factory->make($request));
+        \$this->gateway = \$gateway;
+    }
 
-        $test = $factory->make($data);
+    public function remove(DeleteTestRequest \$request): Test
+    {
+        \$factory = new TestFactory();
+        \$data = \$this->gateway->get(\$factory->make(\$request));
 
-        $this->getGateway()->pop($test);
+        \$test = \$factory->make(\$data);
 
-        return $test;
+        \$this->gateway->pop(\$test);
+
+        return \$test;
     }
 }
 
@@ -301,9 +322,9 @@ T
     {
         $render = new RepositoryBuilder(new Schema('User', 'bar', []), ['create', 'read', 'update', 'delete', 'login']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\User;
 
 use Domain\User\Request\CreateUserRequest;
@@ -311,71 +332,74 @@ use Domain\User\Request\DeleteUserRequest;
 use Domain\User\Request\LoginUserRequest;
 use Domain\User\Request\ReadUserRequest;
 use Domain\User\Request\UpdateUserRequest;
-use FlexPHP\Repositories\Repository;
 
-/**
- * @method UserGateway getGateway
- */
-final class UserRepository extends Repository
+final class UserRepository
 {
-    public function add(CreateUserRequest $request): User
-    {
-        $user = (new UserFactory())->make($request);
+    private UserGateway \$gateway;
 
-        if ($user->getPassword()) {
-            $user->setPassword($this->getHashPassword($user->getPassword()));
+    public function __construct(UserGateway \$gateway)
+    {
+        \$this->gateway = \$gateway;
+    }
+
+    public function add(CreateUserRequest \$request): User
+    {
+        \$user = (new UserFactory())->make(\$request);
+
+        if (\$user->getPassword()) {
+            \$user->setPassword(\$this->getHashPassword(\$user->getPassword()));
         }
 
-        $user->setId($this->getGateway()->push($user));
+        \$user->setId(\$this->gateway->push(\$user));
 
-        return $user;
+        return \$user;
     }
 
-    public function getById(ReadUserRequest $request): User
+    public function getById(ReadUserRequest \$request): User
     {
-        $factory = new UserFactory();
-        $data = $this->getGateway()->get($factory->make($request));
+        \$factory = new UserFactory();
+        \$data = \$this->gateway->get(\$factory->make(\$request));
 
-        $data['password'] = $this->getFakePassword();
+        \$data['password'] = \$this->getFakePassword();
 
-        return $factory->make($data);
+        return \$factory->make(\$data);
     }
 
-    public function change(UpdateUserRequest $request): User
+    public function change(UpdateUserRequest \$request): User
     {
-        $user = (new UserFactory())->make($request);
+        \$user = (new UserFactory())->make(\$request);
 
-        if ($user->getPassword() && $user->getPassword() !== $this->getFakePassword()) {
-            $user->setPassword($this->getHashPassword($user->getPassword()));
+        if (\$user->getPassword() && \$user->getPassword() !== \$this->getFakePassword()) {
+            \$user->setPassword(\$this->getHashPassword(\$user->getPassword()));
         }
 
-        $this->getGateway()->shift($user);
+        \$this->gateway->shift(\$user);
 
-        return $user;
+        return \$user;
     }
 
-    public function remove(DeleteUserRequest $request): User
+    public function remove(DeleteUserRequest \$request): User
     {
-        $factory = new UserFactory();
-        $data = $this->getGateway()->get($factory->make($request));
+        \$factory = new UserFactory();
+        \$data = \$this->gateway->get(\$factory->make(\$request));
 
-        $user = $factory->make($data);
+        \$user = \$factory->make(\$data);
 
-        $this->getGateway()->pop($user);
+        \$this->gateway->pop(\$user);
 
-        return $user;
+        return \$user;
     }
 
-    public function getByLogin(LoginUserRequest $request): User
+    public function getByLogin(LoginUserRequest \$request): User
     {
-        $data = $this->getGateway()->getBy('email', $request->email);
+        \$data = \$this->gateway->getBy('email', \$request->email);
 
-        return (new UserFactory())->make($data);
+        return (new UserFactory())->make(\$data);
     }
 
-    private function getHashPassword(string $password): string
+    private function getHashPassword(string \$password): string
     {
-        return password_hash($password, PASSWORD_BCRYPT);
+        return password_hash(\$password, PASSWORD_BCRYPT);
     }
 
     private function getFakePassword(): string
@@ -392,9 +416,9 @@ T
     {
         $render = new RepositoryBuilder($this->getSchemaFkRelation('PostComments'), ['index', 'update']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\PostComment;
 
 use Domain\PostComment\Request\FindPostCommentBarRequest;
@@ -402,45 +426,48 @@ use Domain\PostComment\Request\FindPostCommentPostRequest;
 use Domain\PostComment\Request\FindPostCommentUserStatusRequest;
 use Domain\PostComment\Request\IndexPostCommentRequest;
 use Domain\PostComment\Request\UpdatePostCommentRequest;
-use FlexPHP\Repositories\Repository;
 
-/**
- * @method PostCommentGateway getGateway
- */
-final class PostCommentRepository extends Repository
+final class PostCommentRepository
 {
+    private PostCommentGateway \$gateway;
+
+    public function __construct(PostCommentGateway \$gateway)
+    {
+        \$this->gateway = \$gateway;
+    }
+
     /**
      * @return array<PostComment>
      */
-    public function findBy(IndexPostCommentRequest $request): array
+    public function findBy(IndexPostCommentRequest \$request): array
     {
-        return array_map(function (array $postComment) {
-            return (new PostCommentFactory())->make($postComment);
-        }, $this->getGateway()->search((array)$request, [], $request->page, 50, $request->offset));
+        return \array_map(function (array \$postComment) {
+            return (new PostCommentFactory())->make(\$postComment);
+        }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
     }
 
-    public function change(UpdatePostCommentRequest $request): PostComment
+    public function change(UpdatePostCommentRequest \$request): PostComment
     {
-        $postComment = (new PostCommentFactory())->make($request);
+        \$postComment = (new PostCommentFactory())->make(\$request);
 
-        $this->getGateway()->shift($postComment);
+        \$this->gateway->shift(\$postComment);
 
-        return $postComment;
+        return \$postComment;
     }
 
-    public function findBarsBy(FindPostCommentBarRequest $request): array
+    public function findBarsBy(FindPostCommentBarRequest \$request): array
     {
-        return $this->getGateway()->filterBars($request, $request->page, 20);
+        return \$this->gateway->filterBars(\$request, \$request->page, 20);
     }
 
-    public function findPostsBy(FindPostCommentPostRequest $request): array
+    public function findPostsBy(FindPostCommentPostRequest \$request): array
     {
-        return $this->getGateway()->filterPosts($request, $request->page, 20);
+        return \$this->gateway->filterPosts(\$request, \$request->page, 20);
     }
 
-    public function findUserStatusBy(FindPostCommentUserStatusRequest $request): array
+    public function findUserStatusBy(FindPostCommentUserStatusRequest \$request): array
     {
-        return $this->getGateway()->filterUserStatus($request, $request->page, 20);
+        return \$this->gateway->filterUserStatus(\$request, \$request->page, 20);
     }
 }
 
@@ -452,27 +479,30 @@ T
     {
         $render = new RepositoryBuilder($this->getSchemaStringAndBlameBy(), ['index']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 use Domain\Test\Request\IndexTestRequest;
-use FlexPHP\Repositories\Repository;
 
-/**
- * @method TestGateway getGateway
- */
-final class TestRepository extends Repository
+final class TestRepository
 {
+    private TestGateway \$gateway;
+
+    public function __construct(TestGateway \$gateway)
+    {
+        \$this->gateway = \$gateway;
+    }
+
     /**
      * @return array<Test>
      */
-    public function findBy(IndexTestRequest $request): array
+    public function findBy(IndexTestRequest \$request): array
     {
-        return array_map(function (array $test) {
-            return (new TestFactory())->make($test);
-        }, $this->getGateway()->search((array)$request, [], $request->page, 50, $request->offset));
+        return \array_map(function (array \$test) {
+            return (new TestFactory())->make(\$test);
+        }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
     }
 }
 
@@ -489,16 +519,17 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\\{$expected};
 
-use FlexPHP\Repositories\Repository;
-
-/**
- * @method {$expected}Gateway getGateway
- */
-final class {$expected}Repository extends Repository
+final class {$expected}Repository
 {
+    private {$expected}Gateway \$gateway;
+
+    public function __construct({$expected}Gateway \$gateway)
+    {
+        \$this->gateway = \$gateway;
+    }
 }
 
 T

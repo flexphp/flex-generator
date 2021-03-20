@@ -22,7 +22,7 @@ final class EntityBuilderTest extends TestCase
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 final class Test
@@ -94,7 +94,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 use Domain\Bar\Bar;
@@ -131,9 +131,9 @@ final class Test
         return \$this->statusId;
     }
 
-    public function fooInstance(): ?Bar
+    public function fooInstance(): Bar
     {
-        return \$this->fooInstance;
+        return \$this->fooInstance ?: new Bar;
     }
 
     public function postIdInstance(): ?Post
@@ -190,80 +190,80 @@ T
     {
         $render = new EntityBuilder($this->getSchemaStringAndBlameBy());
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
 
 use Domain\User\User;
 
 final class Test
 {
-    private $code;
-    private $name;
-    private $createdBy;
-    private $updatedBy;
-    private $createdByInstance;
-    private $updatedByInstance;
+    private \$code;
+    private \$name;
+    private \$createdBy;
+    private \$updatedBy;
+    private \$createdByInstance;
+    private \$updatedByInstance;
 
     public function code(): ?string
     {
-        return $this->code;
+        return \$this->code;
     }
 
     public function name(): ?string
     {
-        return $this->name;
+        return \$this->name;
     }
 
     public function createdBy(): ?int
     {
-        return $this->createdBy;
+        return \$this->createdBy;
     }
 
     public function updatedBy(): ?int
     {
-        return $this->updatedBy;
+        return \$this->updatedBy;
     }
 
     public function createdByInstance(): ?User
     {
-        return $this->createdByInstance;
+        return \$this->createdByInstance;
     }
 
     public function updatedByInstance(): ?User
     {
-        return $this->updatedByInstance;
+        return \$this->updatedByInstance;
     }
 
-    public function setCode(string $code): void
+    public function setCode(string \$code): void
     {
-        $this->code = $code;
+        \$this->code = \$code;
     }
 
-    public function setName(string $name): void
+    public function setName(string \$name): void
     {
-        $this->name = $name;
+        \$this->name = \$name;
     }
 
-    public function setCreatedBy(?int $createdBy): void
+    public function setCreatedBy(?int \$createdBy): void
     {
-        $this->createdBy = $createdBy;
+        \$this->createdBy = \$createdBy;
     }
 
-    public function setUpdatedBy(?int $updatedBy): void
+    public function setUpdatedBy(?int \$updatedBy): void
     {
-        $this->updatedBy = $updatedBy;
+        \$this->updatedBy = \$updatedBy;
     }
 
-    public function setCreatedByInstance(?User $user): void
+    public function setCreatedByInstance(?User \$user): void
     {
-        $this->createdByInstance = $user;
+        \$this->createdByInstance = \$user;
     }
 
-    public function setUpdatedByInstance(?User $user): void
+    public function setUpdatedByInstance(?User \$user): void
     {
-        $this->updatedByInstance = $user;
+        \$this->updatedByInstance = \$user;
     }
 }
 
@@ -277,7 +277,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\User;
 
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -320,46 +320,46 @@ T
             new SchemaAttribute('createdBy', 'integer', 'cb|fk:Users'),
         ]));
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\User;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
 final class User implements UserInterface
 {
-    private $createdBy;
-    private $createdByInstance;
+    private \$createdBy;
+    private \$createdByInstance;
 
     public function createdBy(): ?int
     {
-        return $this->createdBy;
+        return \$this->createdBy;
     }
 
     public function createdByInstance(): ?User
     {
-        return $this->createdByInstance;
+        return \$this->createdByInstance;
     }
 
-    public function setCreatedBy(?int $createdBy): void
+    public function setCreatedBy(?int \$createdBy): void
     {
-        $this->createdBy = $createdBy;
+        \$this->createdBy = \$createdBy;
     }
 
-    public function setCreatedByInstance(?User $user): void
+    public function setCreatedByInstance(?User \$user): void
     {
-        $this->createdByInstance = $user;
+        \$this->createdByInstance = \$user;
     }
 
     public function getUsername()
     {
-        return $this->name();
+        return \$this->name();
     }
 
     public function getPassword()
     {
-        return $this->password();
+        return \$this->password();
     }
 
     public function getSalt()
@@ -369,7 +369,7 @@ final class User implements UserInterface
 
     public function getRoles()
     {
-        return (new UserRbac())->getRoles($this->email());
+        return (new UserRbac())->getRoles(\$this->email());
     }
 
     public function eraseCredentials()
@@ -391,7 +391,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\\{$expected};
 
 final class {$expected}
@@ -413,7 +413,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz;
 
 final class Fuz

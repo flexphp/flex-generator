@@ -34,8 +34,9 @@ final class UseCaseBuilder extends AbstractBuilder
             },
             []
         );
+        $header = self::getHeaderFile();
 
-        parent::__construct(\compact('entity', 'item', 'items', 'action', 'properties'));
+        parent::__construct(\compact('header', 'entity', 'item', 'items', 'action', 'properties'));
     }
 
     protected function getFileTemplate(): string

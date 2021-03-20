@@ -16,11 +16,13 @@ final class FkUseCaseBuilder extends AbstractBuilder
     public function __construct(string $pkEntity, string $fkEntity)
     {
         $name = $this->getInflector()->fnPlural($fkEntity);
-        $items = $this->getInflector()->items($fkEntity);
+        $pkItem = $this->getInflector()->item($pkEntity);
+        $fkItems = $this->getInflector()->items($fkEntity);
         $pkEntity = $this->getInflector()->entity($pkEntity);
         $fkEntity = $this->getInflector()->entity($fkEntity);
+        $header = self::getHeaderFile();
 
-        parent::__construct(\compact('pkEntity', 'fkEntity', 'name', 'items'));
+        parent::__construct(\compact('header', 'pkEntity', 'fkEntity', 'name', 'pkItem', 'fkItems'));
     }
 
     protected function getFileTemplate(): string

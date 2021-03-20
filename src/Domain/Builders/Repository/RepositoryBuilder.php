@@ -29,8 +29,9 @@ final class RepositoryBuilder extends AbstractBuilder
 
             return $result;
         }, []);
+        $header = self::getHeaderFile();
 
-        parent::__construct(\compact('entity', 'item', 'actions', 'requests', 'login', 'fkFns', 'pkName'));
+        parent::__construct(\compact('header', 'entity', 'item', 'actions', 'requests', 'login', 'fkFns', 'pkName'));
     }
 
     protected function getFileTemplate(): string

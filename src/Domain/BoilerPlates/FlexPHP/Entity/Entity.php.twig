@@ -1,6 +1,6 @@
 {% set isUser = name == 'User' %}
 <?php declare(strict_types=1);
-
+{{ header|raw }}
 namespace Domain\{{ name }};
 
 {% for fkFn in fkFns %}

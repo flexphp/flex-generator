@@ -20,9 +20,9 @@ final class MySQLGatewayBuilderTest extends TestCase
     {
         $render = new MySQLGatewayBuilder($this->getSchema(), ['index']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -31,44 +31,44 @@ use Domain\Helper\DbalCriteriaHelper;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
-final class MySQLTestGateway implements TestGateway
+class MySQLTestGateway implements TestGateway
 {
-    private $conn;
+    private \$conn;
 
-    private $operator = [
+    private \$operator = [
         //
     ];
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit, int \$offset): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'test.lower as lower',
             'test.UPPER as upper',
             'test.PascalCase as pascalCase',
             'test.camelCase as camelCase',
             'test.snake_case as snakeCase',
         ]);
-        $query->from('`Test`', '`test`');
+        \$query->from('`Test`', '`test`');
 
-        $query->orderBy('test.lower', 'ASC');
+        \$query->orderBy('test.lower', 'ASC');
 
-        $criteria = new DbalCriteriaHelper($query, $offset);
+        \$criteria = new DbalCriteriaHelper(\$query, \$offset);
 
-        foreach ($wheres as $column => $value) {
-            $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
+        foreach (\$wheres as \$column => \$value) {
+            \$criteria->getCriteria('test', \$column, \$value, \$this->operator[\$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
-        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $query->setMaxResults($limit);
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
 
-        return $query->execute()->fetchAll();
+        return \$query->execute()->fetchAll();
     }
 }
 
@@ -80,9 +80,9 @@ T
     {
         $render = new MySQLGatewayBuilder($this->getSchema(), ['create']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -90,36 +90,36 @@ use Doctrine\DBAL\Types\Types as DB;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
-final class MySQLTestGateway implements TestGateway
+class MySQLTestGateway implements TestGateway
 {
-    private $conn;
+    private \$conn;
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function push(Test $test): string
+    public function push(Test \$test): string
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->insert('`Test`');
+        \$query->insert('`Test`');
 
-        $query->setValue('lower', ':lower');
-        $query->setValue('UPPER', ':upper');
-        $query->setValue('PascalCase', ':pascalCase');
-        $query->setValue('camelCase', ':camelCase');
-        $query->setValue('snake_case', ':snakeCase');
+        \$query->setValue('lower', ':lower');
+        \$query->setValue('UPPER', ':upper');
+        \$query->setValue('PascalCase', ':pascalCase');
+        \$query->setValue('camelCase', ':camelCase');
+        \$query->setValue('snake_case', ':snakeCase');
 
-        $query->setParameter(':lower', $test->lower(), DB::STRING);
-        $query->setParameter(':upper', $test->upper(), DB::INTEGER);
-        $query->setParameter(':pascalCase', $test->pascalCase(), DB::DATETIME_MUTABLE);
-        $query->setParameter(':camelCase', $test->camelCase(), DB::BOOLEAN);
-        $query->setParameter(':snakeCase', $test->snakeCase(), DB::TEXT);
+        \$query->setParameter(':lower', \$test->lower(), DB::STRING);
+        \$query->setParameter(':upper', \$test->upper(), DB::INTEGER);
+        \$query->setParameter(':pascalCase', \$test->pascalCase(), DB::DATETIME_MUTABLE);
+        \$query->setParameter(':camelCase', \$test->camelCase(), DB::BOOLEAN);
+        \$query->setParameter(':snakeCase', \$test->snakeCase(), DB::TEXT);
 
-        $query->execute();
+        \$query->execute();
 
-        return $test->lower();
+        return \$test->lower();
     }
 }
 
@@ -133,9 +133,9 @@ T
             new SchemaAttribute('Foo', 'string', 'pk|required'),
         ]), ['index', 'create', 'read', 'update', 'delete']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Upper\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -144,97 +144,97 @@ use Domain\Helper\DbalCriteriaHelper;
 use Domain\Upper\Upper;
 use Domain\Upper\UpperGateway;
 
-final class MySQLUpperGateway implements UpperGateway
+class MySQLUpperGateway implements UpperGateway
 {
-    private $conn;
+    private \$conn;
 
-    private $operator = [
+    private \$operator = [
         //
     ];
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit, int \$offset): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'upper.Foo as foo',
         ]);
-        $query->from('`Upper`', '`upper`');
+        \$query->from('`Upper`', '`upper`');
 
-        $query->orderBy('upper.Foo', 'ASC');
+        \$query->orderBy('upper.Foo', 'ASC');
 
-        $criteria = new DbalCriteriaHelper($query, $offset);
+        \$criteria = new DbalCriteriaHelper(\$query, \$offset);
 
-        foreach ($wheres as $column => $value) {
-            $criteria->getCriteria('upper', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
+        foreach (\$wheres as \$column => \$value) {
+            \$criteria->getCriteria('upper', \$column, \$value, \$this->operator[\$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
-        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $query->setMaxResults($limit);
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
 
-        return $query->execute()->fetchAll();
+        return \$query->execute()->fetchAll();
     }
 
-    public function push(Upper $upper): string
+    public function push(Upper \$upper): string
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->insert('`Upper`');
+        \$query->insert('`Upper`');
 
-        $query->setValue('Foo', ':foo');
+        \$query->setValue('Foo', ':foo');
 
-        $query->setParameter(':foo', $upper->foo(), DB::STRING);
+        \$query->setParameter(':foo', \$upper->foo(), DB::STRING);
 
-        $query->execute();
+        \$query->execute();
 
-        return $upper->foo();
+        return \$upper->foo();
     }
 
-    public function get(Upper $upper): array
+    public function get(Upper \$upper): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'upper.Foo as foo',
         ]);
-        $query->from('`Upper`', '`upper`');
-        $query->where('upper.Foo = :foo');
-        $query->setParameter(':foo', $upper->foo(), DB::STRING);
+        \$query->from('`Upper`', '`upper`');
+        \$query->where('upper.Foo = :foo');
+        \$query->setParameter(':foo', \$upper->foo(), DB::STRING);
 
-        return $query->execute()->fetch() ?: [];
+        return \$query->execute()->fetch() ?: [];
     }
 
-    public function shift(Upper $upper): void
+    public function shift(Upper \$upper): void
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->update('`Upper`');
+        \$query->update('`Upper`');
 
-        $query->set('Foo', ':foo');
+        \$query->set('Foo', ':foo');
 
-        $query->setParameter(':foo', $upper->foo(), DB::STRING);
+        \$query->setParameter(':foo', \$upper->foo(), DB::STRING);
 
-        $query->where('Foo = :foo');
-        $query->setParameter(':foo', $upper->foo(), DB::STRING);
+        \$query->where('Foo = :foo');
+        \$query->setParameter(':foo', \$upper->foo(), DB::STRING);
 
-        $query->execute();
+        \$query->execute();
     }
 
-    public function pop(Upper $upper): void
+    public function pop(Upper \$upper): void
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->delete('`Upper`');
+        \$query->delete('`Upper`');
 
-        $query->where('Foo = :foo');
-        $query->setParameter(':foo', $upper->foo(), DB::STRING);
+        \$query->where('Foo = :foo');
+        \$query->setParameter(':foo', \$upper->foo(), DB::STRING);
 
-        $query->execute();
+        \$query->execute();
     }
 }
 
@@ -246,9 +246,9 @@ T
     {
         $render = new MySQLGatewayBuilder($this->getSchema(), ['read']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -256,31 +256,31 @@ use Doctrine\DBAL\Types\Types as DB;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
-final class MySQLTestGateway implements TestGateway
+class MySQLTestGateway implements TestGateway
 {
-    private $conn;
+    private \$conn;
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function get(Test $test): array
+    public function get(Test \$test): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'test.lower as lower',
             'test.UPPER as upper',
             'test.PascalCase as pascalCase',
             'test.camelCase as camelCase',
             'test.snake_case as snakeCase',
         ]);
-        $query->from('`Test`', '`test`');
-        $query->where('test.lower = :lower');
-        $query->setParameter(':lower', $test->lower(), DB::STRING);
+        \$query->from('`Test`', '`test`');
+        \$query->where('test.lower = :lower');
+        \$query->setParameter(':lower', \$test->lower(), DB::STRING);
 
-        return $query->execute()->fetch() ?: [];
+        return \$query->execute()->fetch() ?: [];
     }
 }
 
@@ -296,9 +296,9 @@ T
             new SchemaAttribute('joinField', 'integer', 'fk:joinTable,fkName,fkId'),
         ]), ['read']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Join\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -307,51 +307,51 @@ use Domain\Join\Join;
 use Domain\Join\JoinGateway;
 use Domain\Join\Request\FindJoinJoinTableRequest;
 
-final class MySQLJoinGateway implements JoinGateway
+class MySQLJoinGateway implements JoinGateway
 {
-    private $conn;
+    private \$conn;
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function get(Join $join): array
+    public function get(Join \$join): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'join.pk as pk',
             'join.field as field',
             'join.joinField as joinField',
             'joinField.fkId as `joinField.fkId`',
             'joinField.fkName as `joinField.fkName`',
         ]);
-        $query->from('`Join`', '`join`');
-        $query->leftJoin('`join`', '`joinTable`', '`joinField`', 'join.joinField = joinField.fkId');
-        $query->where('join.pk = :pk');
-        $query->setParameter(':pk', $join->pk(), DB::INTEGER);
+        \$query->from('`Join`', '`join`');
+        \$query->leftJoin('`join`', '`joinTable`', '`joinField`', 'join.joinField = joinField.fkId');
+        \$query->where('join.pk = :pk');
+        \$query->setParameter(':pk', \$join->pk(), DB::INTEGER);
 
-        return $query->execute()->fetch() ?: [];
+        return \$query->execute()->fetch() ?: [];
     }
 
-    public function filterJoinTables(FindJoinJoinTableRequest $request, int $page, int $limit): array
+    public function filterJoinTables(FindJoinJoinTableRequest \$request, int \$page, int \$limit): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'joinTable.fkId as id',
             'joinTable.fkName as text',
         ]);
-        $query->from('`joinTable`', '`joinTable`');
+        \$query->from('`joinTable`', '`joinTable`');
 
-        $query->where('joinTable.fkName like :joinTable_fkName');
-        $query->setParameter(':joinTable_fkName', "%{$request->term}%");
+        \$query->where('joinTable.fkName like :joinTable_fkName');
+        \$query->setParameter(':joinTable_fkName', "%{\$request->term}%");
 
-        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $query->setMaxResults($limit);
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
 
-        return $query->execute()->fetchAll();
+        return \$query->execute()->fetchAll();
     }
 }
 
@@ -363,9 +363,9 @@ T
     {
         $render = new MySQLGatewayBuilder($this->getSchema(), ['update']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -373,37 +373,37 @@ use Doctrine\DBAL\Types\Types as DB;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
-final class MySQLTestGateway implements TestGateway
+class MySQLTestGateway implements TestGateway
 {
-    private $conn;
+    private \$conn;
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function shift(Test $test): void
+    public function shift(Test \$test): void
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->update('`Test`');
+        \$query->update('`Test`');
 
-        $query->set('lower', ':lower');
-        $query->set('UPPER', ':upper');
-        $query->set('PascalCase', ':pascalCase');
-        $query->set('camelCase', ':camelCase');
-        $query->set('snake_case', ':snakeCase');
+        \$query->set('lower', ':lower');
+        \$query->set('UPPER', ':upper');
+        \$query->set('PascalCase', ':pascalCase');
+        \$query->set('camelCase', ':camelCase');
+        \$query->set('snake_case', ':snakeCase');
 
-        $query->setParameter(':lower', $test->lower(), DB::STRING);
-        $query->setParameter(':upper', $test->upper(), DB::INTEGER);
-        $query->setParameter(':pascalCase', $test->pascalCase(), DB::DATETIME_MUTABLE);
-        $query->setParameter(':camelCase', $test->camelCase(), DB::BOOLEAN);
-        $query->setParameter(':snakeCase', $test->snakeCase(), DB::TEXT);
+        \$query->setParameter(':lower', \$test->lower(), DB::STRING);
+        \$query->setParameter(':upper', \$test->upper(), DB::INTEGER);
+        \$query->setParameter(':pascalCase', \$test->pascalCase(), DB::DATETIME_MUTABLE);
+        \$query->setParameter(':camelCase', \$test->camelCase(), DB::BOOLEAN);
+        \$query->setParameter(':snakeCase', \$test->snakeCase(), DB::TEXT);
 
-        $query->where('lower = :lower');
-        $query->setParameter(':lower', $test->lower(), DB::STRING);
+        \$query->where('lower = :lower');
+        \$query->setParameter(':lower', \$test->lower(), DB::STRING);
 
-        $query->execute();
+        \$query->execute();
     }
 }
 
@@ -415,9 +415,9 @@ T
     {
         $render = new MySQLGatewayBuilder($this->getSchema(), ['delete']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -425,25 +425,25 @@ use Doctrine\DBAL\Types\Types as DB;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
-final class MySQLTestGateway implements TestGateway
+class MySQLTestGateway implements TestGateway
 {
-    private $conn;
+    private \$conn;
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function pop(Test $test): void
+    public function pop(Test \$test): void
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->delete('`Test`');
+        \$query->delete('`Test`');
 
-        $query->where('lower = :lower');
-        $query->setParameter(':lower', $test->lower(), DB::STRING);
+        \$query->where('lower = :lower');
+        \$query->setParameter(':lower', \$test->lower(), DB::STRING);
 
-        $query->execute();
+        \$query->execute();
     }
 }
 
@@ -455,9 +455,9 @@ T
     {
         $render = new MySQLGatewayBuilder($this->getSchema(), ['login']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -465,31 +465,31 @@ use Doctrine\DBAL\Types\Types as DB;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
-final class MySQLTestGateway implements TestGateway
+class MySQLTestGateway implements TestGateway
 {
-    private $conn;
+    private \$conn;
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function getBy(string $column, $value): array
+    public function getBy(string \$column, \$value): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'lower as lower',
             'UPPER as upper',
             'PascalCase as pascalCase',
             'camelCase as camelCase',
             'snake_case as snakeCase',
         ]);
-        $query->from('`Test`');
-        $query->where("{$column} = :column");
-        $query->setParameter(':column', $value);
+        \$query->from('`Test`');
+        \$query->where("{\$column} = :column");
+        \$query->setParameter(':column', \$value);
 
-        return $query->execute()->fetch() ?: [];
+        return \$query->execute()->fetch() ?: [];
     }
 }
 
@@ -508,9 +508,9 @@ T
             'other',
         ]);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\PostComment\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -522,24 +522,24 @@ use Domain\PostComment\Request\FindPostCommentBarRequest;
 use Domain\PostComment\Request\FindPostCommentPostRequest;
 use Domain\PostComment\Request\FindPostCommentUserStatusRequest;
 
-final class MySQLPostCommentGateway implements PostCommentGateway
+class MySQLPostCommentGateway implements PostCommentGateway
 {
-    private $conn;
+    private \$conn;
 
-    private $operator = [
+    private \$operator = [
         //
     ];
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit, int \$offset): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'postComment.Pk as pk',
             'postComment.foo as foo',
             'postComment.PostId as postId',
@@ -551,49 +551,49 @@ final class MySQLPostCommentGateway implements PostCommentGateway
             'statusId.id as `statusId.id`',
             'statusId.name as `statusId.name`',
         ]);
-        $query->from('`PostComments`', '`postComment`');
-        $query->join('`postComment`', '`Bar`', '`foo`', 'postComment.foo = foo.baz');
-        $query->leftJoin('`postComment`', '`posts`', '`postId`', 'postComment.PostId = postId.id');
-        $query->leftJoin('`postComment`', '`UserStatus`', '`statusId`', 'postComment.StatusId = statusId.id');
+        \$query->from('`PostComments`', '`postComment`');
+        \$query->join('`postComment`', '`Bar`', '`foo`', 'postComment.foo = foo.baz');
+        \$query->leftJoin('`postComment`', '`posts`', '`postId`', 'postComment.PostId = postId.id');
+        \$query->leftJoin('`postComment`', '`UserStatus`', '`statusId`', 'postComment.StatusId = statusId.id');
 
-        $query->orderBy('postComment.Pk', 'DESC');
+        \$query->orderBy('postComment.Pk', 'DESC');
 
-        $criteria = new DbalCriteriaHelper($query, $offset);
+        \$criteria = new DbalCriteriaHelper(\$query, \$offset);
 
-        foreach ($wheres as $column => $value) {
-            $criteria->getCriteria('postComment', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
+        foreach (\$wheres as \$column => \$value) {
+            \$criteria->getCriteria('postComment', \$column, \$value, \$this->operator[\$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
-        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $query->setMaxResults($limit);
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
 
-        return $query->execute()->fetchAll();
+        return \$query->execute()->fetchAll();
     }
 
-    public function push(PostComment $postComment): int
+    public function push(PostComment \$postComment): int
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->insert('`PostComments`');
+        \$query->insert('`PostComments`');
 
-        $query->setValue('foo', ':foo');
-        $query->setValue('PostId', ':postId');
-        $query->setValue('StatusId', ':statusId');
+        \$query->setValue('foo', ':foo');
+        \$query->setValue('PostId', ':postId');
+        \$query->setValue('StatusId', ':statusId');
 
-        $query->setParameter(':foo', $postComment->foo(), DB::STRING);
-        $query->setParameter(':postId', $postComment->postId(), DB::INTEGER);
-        $query->setParameter(':statusId', $postComment->statusId(), DB::INTEGER);
+        \$query->setParameter(':foo', \$postComment->foo(), DB::STRING);
+        \$query->setParameter(':postId', \$postComment->postId(), DB::INTEGER);
+        \$query->setParameter(':statusId', \$postComment->statusId(), DB::INTEGER);
 
-        $query->execute();
+        \$query->execute();
 
-        return (int)$query->getConnection()->lastInsertId();
+        return (int)\$query->getConnection()->lastInsertId();
     }
 
-    public function get(PostComment $postComment): array
+    public function get(PostComment \$postComment): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'postComment.Pk as pk',
             'postComment.foo as foo',
             'postComment.PostId as postId',
@@ -605,103 +605,103 @@ final class MySQLPostCommentGateway implements PostCommentGateway
             'statusId.id as `statusId.id`',
             'statusId.name as `statusId.name`',
         ]);
-        $query->from('`PostComments`', '`postComment`');
-        $query->join('`postComment`', '`Bar`', '`foo`', 'postComment.foo = foo.baz');
-        $query->leftJoin('`postComment`', '`posts`', '`postId`', 'postComment.PostId = postId.id');
-        $query->leftJoin('`postComment`', '`UserStatus`', '`statusId`', 'postComment.StatusId = statusId.id');
-        $query->where('postComment.Pk = :pk');
-        $query->setParameter(':pk', $postComment->pk(), DB::INTEGER);
+        \$query->from('`PostComments`', '`postComment`');
+        \$query->join('`postComment`', '`Bar`', '`foo`', 'postComment.foo = foo.baz');
+        \$query->leftJoin('`postComment`', '`posts`', '`postId`', 'postComment.PostId = postId.id');
+        \$query->leftJoin('`postComment`', '`UserStatus`', '`statusId`', 'postComment.StatusId = statusId.id');
+        \$query->where('postComment.Pk = :pk');
+        \$query->setParameter(':pk', \$postComment->pk(), DB::INTEGER);
 
-        return $query->execute()->fetch() ?: [];
+        return \$query->execute()->fetch() ?: [];
     }
 
-    public function shift(PostComment $postComment): void
+    public function shift(PostComment \$postComment): void
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->update('`PostComments`');
+        \$query->update('`PostComments`');
 
-        $query->set('foo', ':foo');
-        $query->set('PostId', ':postId');
-        $query->set('StatusId', ':statusId');
+        \$query->set('foo', ':foo');
+        \$query->set('PostId', ':postId');
+        \$query->set('StatusId', ':statusId');
 
-        $query->setParameter(':foo', $postComment->foo(), DB::STRING);
-        $query->setParameter(':postId', $postComment->postId(), DB::INTEGER);
-        $query->setParameter(':statusId', $postComment->statusId(), DB::INTEGER);
+        \$query->setParameter(':foo', \$postComment->foo(), DB::STRING);
+        \$query->setParameter(':postId', \$postComment->postId(), DB::INTEGER);
+        \$query->setParameter(':statusId', \$postComment->statusId(), DB::INTEGER);
 
-        $query->where('Pk = :pk');
-        $query->setParameter(':pk', $postComment->pk(), DB::INTEGER);
+        \$query->where('Pk = :pk');
+        \$query->setParameter(':pk', \$postComment->pk(), DB::INTEGER);
 
-        $query->execute();
+        \$query->execute();
     }
 
-    public function pop(PostComment $postComment): void
+    public function pop(PostComment \$postComment): void
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->delete('`PostComments`');
+        \$query->delete('`PostComments`');
 
-        $query->where('Pk = :pk');
-        $query->setParameter(':pk', $postComment->pk(), DB::INTEGER);
+        \$query->where('Pk = :pk');
+        \$query->setParameter(':pk', \$postComment->pk(), DB::INTEGER);
 
-        $query->execute();
+        \$query->execute();
     }
 
-    public function filterBars(FindPostCommentBarRequest $request, int $page, int $limit): array
+    public function filterBars(FindPostCommentBarRequest \$request, int \$page, int \$limit): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'bar.baz as id',
             'bar.fuz as text',
         ]);
-        $query->from('`Bar`', '`bar`');
+        \$query->from('`Bar`', '`bar`');
 
-        $query->where('bar.fuz like :bar_fuz');
-        $query->setParameter(':bar_fuz', "%{$request->term}%");
+        \$query->where('bar.fuz like :bar_fuz');
+        \$query->setParameter(':bar_fuz', "%{\$request->term}%");
 
-        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $query->setMaxResults($limit);
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
 
-        return $query->execute()->fetchAll();
+        return \$query->execute()->fetchAll();
     }
 
-    public function filterPosts(FindPostCommentPostRequest $request, int $page, int $limit): array
+    public function filterPosts(FindPostCommentPostRequest \$request, int \$page, int \$limit): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'post.id as id',
             'post.name as text',
         ]);
-        $query->from('`posts`', '`post`');
+        \$query->from('`posts`', '`post`');
 
-        $query->where('post.name like :post_name');
-        $query->setParameter(':post_name', "%{$request->term}%");
+        \$query->where('post.name like :post_name');
+        \$query->setParameter(':post_name', "%{\$request->term}%");
 
-        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $query->setMaxResults($limit);
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
 
-        return $query->execute()->fetchAll();
+        return \$query->execute()->fetchAll();
     }
 
-    public function filterUserStatus(FindPostCommentUserStatusRequest $request, int $page, int $limit): array
+    public function filterUserStatus(FindPostCommentUserStatusRequest \$request, int \$page, int \$limit): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'userStatus.id as id',
             'userStatus.name as text',
         ]);
-        $query->from('`UserStatus`', '`userStatus`');
+        \$query->from('`UserStatus`', '`userStatus`');
 
-        $query->where('userStatus.name like :userStatus_name');
-        $query->setParameter(':userStatus_name', "%{$request->term}%");
+        \$query->where('userStatus.name like :userStatus_name');
+        \$query->setParameter(':userStatus_name', "%{\$request->term}%");
 
-        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $query->setMaxResults($limit);
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
 
-        return $query->execute()->fetchAll();
+        return \$query->execute()->fetchAll();
     }
 }
 
@@ -713,9 +713,9 @@ T
     {
         $render = new MySQLGatewayBuilder($this->getSchemaAiAndBlameAt(), ['index', 'create', 'update']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -724,78 +724,78 @@ use Domain\Helper\DbalCriteriaHelper;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
-final class MySQLTestGateway implements TestGateway
+class MySQLTestGateway implements TestGateway
 {
-    private $conn;
+    private \$conn;
 
-    private $operator = [
+    private \$operator = [
         //
     ];
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit, int \$offset): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'test.key as key',
             'test.Value as value',
         ]);
-        $query->from('`Test`', '`test`');
+        \$query->from('`Test`', '`test`');
 
-        $query->orderBy('test.Updated', 'DESC');
+        \$query->orderBy('test.Updated', 'DESC');
 
-        $criteria = new DbalCriteriaHelper($query, $offset);
+        \$criteria = new DbalCriteriaHelper(\$query, \$offset);
 
-        foreach ($wheres as $column => $value) {
-            $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
+        foreach (\$wheres as \$column => \$value) {
+            \$criteria->getCriteria('test', \$column, \$value, \$this->operator[\$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
-        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $query->setMaxResults($limit);
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
 
-        return $query->execute()->fetchAll();
+        return \$query->execute()->fetchAll();
     }
 
-    public function push(Test $test): int
+    public function push(Test \$test): int
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->insert('`Test`');
+        \$query->insert('`Test`');
 
-        $query->setValue('Value', ':value');
-        $query->setValue('Created', ':created');
-        $query->setValue('Updated', ':updated');
+        \$query->setValue('Value', ':value');
+        \$query->setValue('Created', ':created');
+        \$query->setValue('Updated', ':updated');
 
-        $query->setParameter(':value', $test->value(), DB::INTEGER);
-        $query->setParameter(':created', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
-        $query->setParameter(':updated', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+        \$query->setParameter(':value', \$test->value(), DB::INTEGER);
+        \$query->setParameter(':created', \$test->created() ?? new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+        \$query->setParameter(':updated', \$test->updated() ?? new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
 
-        $query->execute();
+        \$query->execute();
 
-        return (int)$query->getConnection()->lastInsertId();
+        return (int)\$query->getConnection()->lastInsertId();
     }
 
-    public function shift(Test $test): void
+    public function shift(Test \$test): void
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->update('`Test`');
+        \$query->update('`Test`');
 
-        $query->set('Value', ':value');
-        $query->set('Updated', ':updated');
+        \$query->set('Value', ':value');
+        \$query->set('Updated', ':updated');
 
-        $query->setParameter(':value', $test->value(), DB::INTEGER);
-        $query->setParameter(':updated', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+        \$query->setParameter(':value', \$test->value(), DB::INTEGER);
+        \$query->setParameter(':updated', \$test->updated() ?? new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
 
-        $query->where('key = :key');
-        $query->setParameter(':key', $test->key(), DB::INTEGER);
+        \$query->where('key = :key');
+        \$query->setParameter(':key', \$test->key(), DB::INTEGER);
 
-        $query->execute();
+        \$query->execute();
     }
 }
 
@@ -807,9 +807,9 @@ T
     {
         $render = new MySQLGatewayBuilder($this->getSchemaStringAndBlameBy(), ['index', 'create', 'read', 'update']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -818,67 +818,67 @@ use Domain\Helper\DbalCriteriaHelper;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
-final class MySQLTestGateway implements TestGateway
+class MySQLTestGateway implements TestGateway
 {
-    private $conn;
+    private \$conn;
 
-    private $operator = [
+    private \$operator = [
         //
     ];
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit, int \$offset): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'test.code as code',
             'test.Name as name',
         ]);
-        $query->from('`Test`', '`test`');
+        \$query->from('`Test`', '`test`');
 
-        $query->orderBy('test.code', 'ASC');
+        \$query->orderBy('test.code', 'ASC');
 
-        $criteria = new DbalCriteriaHelper($query, $offset);
+        \$criteria = new DbalCriteriaHelper(\$query, \$offset);
 
-        foreach ($wheres as $column => $value) {
-            $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
+        foreach (\$wheres as \$column => \$value) {
+            \$criteria->getCriteria('test', \$column, \$value, \$this->operator[\$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
-        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $query->setMaxResults($limit);
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
 
-        return $query->execute()->fetchAll();
+        return \$query->execute()->fetchAll();
     }
 
-    public function push(Test $test): string
+    public function push(Test \$test): string
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->insert('`Test`');
+        \$query->insert('`Test`');
 
-        $query->setValue('code', ':code');
-        $query->setValue('Name', ':name');
-        $query->setValue('CreatedBy', ':createdBy');
+        \$query->setValue('code', ':code');
+        \$query->setValue('Name', ':name');
+        \$query->setValue('CreatedBy', ':createdBy');
 
-        $query->setParameter(':code', $test->code(), DB::STRING);
-        $query->setParameter(':name', $test->name(), DB::TEXT);
-        $query->setParameter(':createdBy', $test->createdBy(), DB::INTEGER);
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
+        \$query->setParameter(':name', \$test->name(), DB::TEXT);
+        \$query->setParameter(':createdBy', \$test->createdBy(), DB::INTEGER);
 
-        $query->execute();
+        \$query->execute();
 
-        return $test->code();
+        return \$test->code();
     }
 
-    public function get(Test $test): array
+    public function get(Test \$test): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'test.code as code',
             'test.Name as name',
             'test.CreatedBy as createdBy',
@@ -888,33 +888,33 @@ final class MySQLTestGateway implements TestGateway
             'updatedBy.id as `updatedBy.id`',
             'updatedBy.name as `updatedBy.name`',
         ]);
-        $query->from('`Test`', '`test`');
-        $query->leftJoin('`test`', '`users`', '`createdBy`', 'test.CreatedBy = createdBy.id');
-        $query->leftJoin('`test`', '`users`', '`updatedBy`', 'test.UpdatedBy = updatedBy.id');
-        $query->where('test.code = :code');
-        $query->setParameter(':code', $test->code(), DB::STRING);
+        \$query->from('`Test`', '`test`');
+        \$query->leftJoin('`test`', '`users`', '`createdBy`', 'test.CreatedBy = createdBy.id');
+        \$query->leftJoin('`test`', '`users`', '`updatedBy`', 'test.UpdatedBy = updatedBy.id');
+        \$query->where('test.code = :code');
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
 
-        return $query->execute()->fetch() ?: [];
+        return \$query->execute()->fetch() ?: [];
     }
 
-    public function shift(Test $test): void
+    public function shift(Test \$test): void
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->update('`Test`');
+        \$query->update('`Test`');
 
-        $query->set('code', ':code');
-        $query->set('Name', ':name');
-        $query->set('UpdatedBy', ':updatedBy');
+        \$query->set('code', ':code');
+        \$query->set('Name', ':name');
+        \$query->set('UpdatedBy', ':updatedBy');
 
-        $query->setParameter(':code', $test->code(), DB::STRING);
-        $query->setParameter(':name', $test->name(), DB::TEXT);
-        $query->setParameter(':updatedBy', $test->updatedBy(), DB::INTEGER);
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
+        \$query->setParameter(':name', \$test->name(), DB::TEXT);
+        \$query->setParameter(':updatedBy', \$test->updatedBy(), DB::INTEGER);
 
-        $query->where('code = :code');
-        $query->setParameter(':code', $test->code(), DB::STRING);
+        \$query->where('code = :code');
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
 
-        $query->execute();
+        \$query->execute();
     }
 }
 
@@ -930,9 +930,9 @@ T
             new SchemaAttribute('CreatedAt', 'datetime', 'ca'),
         ]), ['index', 'create', 'read', 'update']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -941,94 +941,94 @@ use Domain\Helper\DbalCriteriaHelper;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
-final class MySQLTestGateway implements TestGateway
+class MySQLTestGateway implements TestGateway
 {
-    private $conn;
+    private \$conn;
 
-    private $operator = [
+    private \$operator = [
         //
     ];
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit, int \$offset): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'test.code as code',
             'test.Name as name',
         ]);
-        $query->from('`Test`', '`test`');
+        \$query->from('`Test`', '`test`');
 
-        $query->orderBy('test.CreatedAt', 'DESC');
+        \$query->orderBy('test.CreatedAt', 'DESC');
 
-        $criteria = new DbalCriteriaHelper($query, $offset);
+        \$criteria = new DbalCriteriaHelper(\$query, \$offset);
 
-        foreach ($wheres as $column => $value) {
-            $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
+        foreach (\$wheres as \$column => \$value) {
+            \$criteria->getCriteria('test', \$column, \$value, \$this->operator[\$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
-        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $query->setMaxResults($limit);
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
 
-        return $query->execute()->fetchAll();
+        return \$query->execute()->fetchAll();
     }
 
-    public function push(Test $test): string
+    public function push(Test \$test): string
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->insert('`Test`');
+        \$query->insert('`Test`');
 
-        $query->setValue('code', ':code');
-        $query->setValue('Name', ':name');
-        $query->setValue('CreatedAt', ':createdAt');
+        \$query->setValue('code', ':code');
+        \$query->setValue('Name', ':name');
+        \$query->setValue('CreatedAt', ':createdAt');
 
-        $query->setParameter(':code', $test->code(), DB::STRING);
-        $query->setParameter(':name', $test->name(), DB::TEXT);
-        $query->setParameter(':createdAt', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
+        \$query->setParameter(':name', \$test->name(), DB::TEXT);
+        \$query->setParameter(':createdAt', \$test->createdAt() ?? new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
 
-        $query->execute();
+        \$query->execute();
 
-        return $test->code();
+        return \$test->code();
     }
 
-    public function get(Test $test): array
+    public function get(Test \$test): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'test.code as code',
             'test.Name as name',
             'test.CreatedAt as createdAt',
         ]);
-        $query->from('`Test`', '`test`');
-        $query->where('test.code = :code');
-        $query->setParameter(':code', $test->code(), DB::STRING);
+        \$query->from('`Test`', '`test`');
+        \$query->where('test.code = :code');
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
 
-        return $query->execute()->fetch() ?: [];
+        return \$query->execute()->fetch() ?: [];
     }
 
-    public function shift(Test $test): void
+    public function shift(Test \$test): void
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->update('`Test`');
+        \$query->update('`Test`');
 
-        $query->set('code', ':code');
-        $query->set('Name', ':name');
+        \$query->set('code', ':code');
+        \$query->set('Name', ':name');
 
-        $query->setParameter(':code', $test->code(), DB::STRING);
-        $query->setParameter(':name', $test->name(), DB::TEXT);
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
+        \$query->setParameter(':name', \$test->name(), DB::TEXT);
 
-        $query->where('code = :code');
-        $query->setParameter(':code', $test->code(), DB::STRING);
+        \$query->where('code = :code');
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
 
-        $query->execute();
+        \$query->execute();
     }
 }
 
@@ -1044,9 +1044,9 @@ T
             new SchemaAttribute('UpdatedAt', 'datetime', 'ua'),
         ]), ['index', 'create', 'read', 'update']);
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -1055,96 +1055,96 @@ use Domain\Helper\DbalCriteriaHelper;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
-final class MySQLTestGateway implements TestGateway
+class MySQLTestGateway implements TestGateway
 {
-    private $conn;
+    private \$conn;
 
-    private $operator = [
+    private \$operator = [
         //
     ];
 
-    public function __construct(Connection $conn)
+    public function __construct(Connection \$conn)
     {
-        $this->conn = $conn;
+        \$this->conn = \$conn;
     }
 
-    public function search(array $wheres, array $orders, int $page, int $limit, int $offset): array
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit, int \$offset): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'test.code as code',
             'test.Name as name',
         ]);
-        $query->from('`Test`', '`test`');
+        \$query->from('`Test`', '`test`');
 
-        $query->orderBy('test.UpdatedAt', 'DESC');
+        \$query->orderBy('test.UpdatedAt', 'DESC');
 
-        $criteria = new DbalCriteriaHelper($query, $offset);
+        \$criteria = new DbalCriteriaHelper(\$query, \$offset);
 
-        foreach ($wheres as $column => $value) {
-            $criteria->getCriteria('test', $column, $value, $this->operator[$column] ?? DbalCriteriaHelper::OP_EQUALS);
+        foreach (\$wheres as \$column => \$value) {
+            \$criteria->getCriteria('test', \$column, \$value, \$this->operator[\$column] ?? DbalCriteriaHelper::OP_EQUALS);
         }
 
-        $query->setFirstResult($page ? ($page - 1) * $limit : 0);
-        $query->setMaxResults($limit);
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
 
-        return $query->execute()->fetchAll();
+        return \$query->execute()->fetchAll();
     }
 
-    public function push(Test $test): string
+    public function push(Test \$test): string
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->insert('`Test`');
+        \$query->insert('`Test`');
 
-        $query->setValue('code', ':code');
-        $query->setValue('Name', ':name');
-        $query->setValue('UpdatedAt', ':updatedAt');
+        \$query->setValue('code', ':code');
+        \$query->setValue('Name', ':name');
+        \$query->setValue('UpdatedAt', ':updatedAt');
 
-        $query->setParameter(':code', $test->code(), DB::STRING);
-        $query->setParameter(':name', $test->name(), DB::TEXT);
-        $query->setParameter(':updatedAt', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
+        \$query->setParameter(':name', \$test->name(), DB::TEXT);
+        \$query->setParameter(':updatedAt', \$test->updatedAt() ?? new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
 
-        $query->execute();
+        \$query->execute();
 
-        return $test->code();
+        return \$test->code();
     }
 
-    public function get(Test $test): array
+    public function get(Test \$test): array
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->select([
+        \$query->select([
             'test.code as code',
             'test.Name as name',
             'test.UpdatedAt as updatedAt',
         ]);
-        $query->from('`Test`', '`test`');
-        $query->where('test.code = :code');
-        $query->setParameter(':code', $test->code(), DB::STRING);
+        \$query->from('`Test`', '`test`');
+        \$query->where('test.code = :code');
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
 
-        return $query->execute()->fetch() ?: [];
+        return \$query->execute()->fetch() ?: [];
     }
 
-    public function shift(Test $test): void
+    public function shift(Test \$test): void
     {
-        $query = $this->conn->createQueryBuilder();
+        \$query = \$this->conn->createQueryBuilder();
 
-        $query->update('`Test`');
+        \$query->update('`Test`');
 
-        $query->set('code', ':code');
-        $query->set('Name', ':name');
-        $query->set('UpdatedAt', ':updatedAt');
+        \$query->set('code', ':code');
+        \$query->set('Name', ':name');
+        \$query->set('UpdatedAt', ':updatedAt');
 
-        $query->setParameter(':code', $test->code(), DB::STRING);
-        $query->setParameter(':name', $test->name(), DB::TEXT);
-        $query->setParameter(':updatedAt', new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
+        \$query->setParameter(':name', \$test->name(), DB::TEXT);
+        \$query->setParameter(':updatedAt', \$test->updatedAt() ?? new \DateTime(date('Y-m-d H:i:s')), DB::DATETIME_MUTABLE);
 
-        $query->where('code = :code');
-        $query->setParameter(':code', $test->code(), DB::STRING);
+        \$query->where('code = :code');
+        \$query->setParameter(':code', \$test->code(), DB::STRING);
 
-        $query->execute();
+        \$query->execute();
     }
 }
 
@@ -1161,7 +1161,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\\{$expectedName}\Gateway;
 
 use Doctrine\DBAL\Connection;
@@ -1169,7 +1169,7 @@ use Doctrine\DBAL\Types\Types as DB;
 use Domain\\{$expectedName}\\{$expectedName};
 use Domain\\{$expectedName}\\{$expectedName}Gateway;
 
-final class MySQL{$expectedName}Gateway implements {$expectedName}Gateway
+class MySQL{$expectedName}Gateway implements {$expectedName}Gateway
 {
     private \$conn;
 
