@@ -1,4 +1,5 @@
 {% set fkFnsNoBlame = fkFns|filter(v => not v.blameBy) %}
+{% set filterOperators = properties|filter(v => v.filter) %}
 {% set columnCreatedAt = properties|filter(v => v.isCa) %}
 {% set columnUpdatedAt = properties|filter(v => v.isUa) %}
 {% set useStatements = [] %}
@@ -26,7 +27,11 @@ class MySQL{{ entity }}Gateway implements {{ entity }}Gateway
 {% if 'index' in actions %}
 
     private $operator = [
+{% for id, property in filterOperators %}
+        '{{ id }}' => DbalCriteriaHelper::{{ operators[id] }},
+{% else %}
         //
+{% endfor %}
     ];
 {% endif %}
 

@@ -76,6 +76,89 @@ T
 , $render->build());
     }
 
+    public function testItIndexOperatorOk(): void
+    {
+        $render = new MySQLGatewayBuilder($this->getSchemaFkWithFilterAndFchars(), ['index']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Test\Gateway;
+
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types as DB;
+use Domain\Helper\DbalCriteriaHelper;
+use Domain\Test\Request\FindTestBarRequest;
+use Domain\Test\Test;
+use Domain\Test\TestGateway;
+
+class MySQLTestGateway implements TestGateway
+{
+    private \$conn;
+
+    private \$operator = [
+        'filter' => DbalCriteriaHelper::OP_START,
+        'otherFilter' => DbalCriteriaHelper::OP_EQUALS,
+    ];
+
+    public function __construct(Connection \$conn)
+    {
+        \$this->conn = \$conn;
+    }
+
+    public function search(array \$wheres, array \$orders, int \$page, int \$limit, int \$offset): array
+    {
+        \$query = \$this->conn->createQueryBuilder();
+
+        \$query->select([
+            'test.id as id',
+            'test.filter as filter',
+            'test.OtherFilter as otherFilter',
+            'test.fchars as fchars',
+            'test.trim as trim',
+            'fchars.baz as `fchars.baz`',
+            'fchars.fuz as `fchars.fuz`',
+        ]);
+        \$query->from('`Test`', '`test`');
+        \$query->leftJoin('`test`', '`Bar`', '`fchars`', 'test.fchars = fchars.baz');
+
+        \$query->orderBy('test.id', 'DESC');
+
+        \$criteria = new DbalCriteriaHelper(\$query, \$offset);
+
+        foreach (\$wheres as \$column => \$value) {
+            \$criteria->getCriteria('test', \$column, \$value, \$this->operator[\$column] ?? DbalCriteriaHelper::OP_EQUALS);
+        }
+
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
+
+        return \$query->execute()->fetchAll();
+    }
+
+    public function filterBars(FindTestBarRequest \$request, int \$page, int \$limit): array
+    {
+        \$query = \$this->conn->createQueryBuilder();
+
+        \$query->select([
+            'bar.baz as id',
+            'bar.fuz as text',
+        ]);
+        \$query->from('`Bar`', '`bar`');
+
+        \$query->where('bar.fuz like :bar_fuz');
+        \$query->setParameter(':bar_fuz', "%{\$request->term}%");
+
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
+
+        return \$query->execute()->fetchAll();
+    }
+}
+
+T
+, $render->build());
+    }
     public function testItCreateOk(): void
     {
         $render = new MySQLGatewayBuilder($this->getSchema(), ['create']);

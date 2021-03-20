@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Gateway;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\Constants\Operator;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\Schema\SchemaInterface;
 
@@ -27,16 +28,18 @@ final class MySQLGatewayBuilder extends AbstractBuilder
         }, []);
 
         $dbTypes = [];
+        $operators = [];
         $pkName = $this->getInflector()->camelProperty($schema->pkName());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
         $fkRels = $this->getFkRelations($schema->fkRelations());
         $properties = \array_reduce(
             $schema->attributes(),
-            function (array $result, SchemaAttributeInterface $property) use (&$dbTypes) {
+            function (array $result, SchemaAttributeInterface $property) use (&$dbTypes, &$operators) {
                 $camelName = $this->getInflector()->camelProperty($property->name());
 
                 $result[$camelName] = $property;
                 $dbTypes[$camelName] = $this->getDbType($property->dataType());
+                $operators[$camelName] = $this->getOperator($property->filter());
 
                 return $result;
             },
@@ -54,7 +57,8 @@ final class MySQLGatewayBuilder extends AbstractBuilder
             'dbTypes',
             'pkName',
             'fkFns',
-            'fkRels'
+            'fkRels',
+            'operators'
         ));
     }
 
@@ -101,5 +105,22 @@ final class MySQLGatewayBuilder extends AbstractBuilder
         }
 
         return 'STRING';
+    }
+
+    private function getOperator(?string $operator): string
+    {
+        $operators = [
+            Operator::EQUALS => 'OP_EQUALS',
+            Operator::STARTS => 'OP_START',
+            Operator::ENDS => 'OP_END',
+            Operator::CONTAINS => 'OP_CONTAINS',
+            Operator::EXPLODE => 'OP_SEARCH',
+        ];
+
+        if (!empty($operators[$operator])) {
+            return $operators[$operator];
+        }
+
+        return '';
     }
 }
