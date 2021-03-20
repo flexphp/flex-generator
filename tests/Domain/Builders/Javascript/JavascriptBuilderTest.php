@@ -114,6 +114,44 @@ T
 , $render->build());
     }
 
+    public function testItFkRelationsWithFcharsOk(): void
+    {
+        $render = new JavascriptBuilder($this->getSchemaFkWithFilterAndFchars('PostComments'));
+
+        $this->assertEquals(<<<T
+jQuery(document).ready(function ($) {
+    'use strict';
+
+    const fcharsUrl = $('[id$=form_fchars]').data('autocomplete-url');
+
+    $('[id$=form_fchars]').select2({
+        theme: 'bootstrap4',
+        minimumInputLength: 2,
+        allowClear: true,
+        placeholder: '',
+        ajax: {
+            url: fcharsUrl,
+            method: 'POST',
+            dataType: 'json',
+            delay: 300,
+            cache: true,
+            headers: {
+                'X-XSRF-Token': getCookie('XSRF-Token')
+            },
+            data: function (params) {
+                return {
+                    term: params.term,
+                    page: params.page
+                };
+            }
+        },
+    });
+});
+
+T
+, $render->build());
+    }
+
     public function testItBlameByOk(): void
     {
         $render = new JavascriptBuilder($this->getSchemaStringAndBlameBy('Test'));

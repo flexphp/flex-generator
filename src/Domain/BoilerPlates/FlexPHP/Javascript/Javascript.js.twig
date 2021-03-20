@@ -8,7 +8,7 @@ jQuery(document).ready(function ($) {
 
     $('[id$=form_{{ fkRel.pkName }}]').select2({
         theme: 'bootstrap4',
-        minimumInputLength: 3,
+        minimumInputLength: {{ fkRel.chars }},
         allowClear: true,
         placeholder: '',
         ajax: {

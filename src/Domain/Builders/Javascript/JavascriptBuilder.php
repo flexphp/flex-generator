@@ -36,14 +36,13 @@ final class JavascriptBuilder extends AbstractBuilder
 
     private function getNotBlameFkRelations(SchemaInterface $schema): array
     {
-        $properties = \array_map(function (SchemaAttributeInterface $property) {
+        $fkRels = $this->getFkRelations($schema->fkRelations());
+        $properties = \array_filter(\array_map(function (SchemaAttributeInterface $property) {
             if ($property->isBlameBy()) {
                 return $property->name();
             }
-        }, $schema->attributes());
+        }, $schema->attributes()));
 
-        $properties = \array_filter($properties);
-        $fkRels = $this->getFkRelations($schema->fkRelations());
 
         return \array_filter($fkRels, function (array $fkRel) use ($properties) {
             if (!\in_array($fkRel['pk'], $properties)) {
