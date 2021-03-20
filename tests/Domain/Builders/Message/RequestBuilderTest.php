@@ -30,9 +30,13 @@ use FlexPHP\Messages\RequestInterface;
 final class ActionFuzRequest implements RequestInterface
 {
     public \$lower;
+
     public \$upper;
+
     public \$pascalCase;
+
     public \$camelCase;
+
     public \$snakeCase;
 
     public function __construct(array \$data)
@@ -66,11 +70,17 @@ final class IndexFuzRequest implements RequestInterface
     use DateTimeTrait;
 
     public $lower;
+
     public $upper;
+
     public $pascalCase;
+
     public $camelCase;
+
     public $snakeCase;
+
     public $page;
+
     public $offset;
 
     public function __construct(array $data, int $page, ?string $timezone = null)
@@ -103,9 +113,13 @@ use FlexPHP\Messages\RequestInterface;
 final class CreateFuzRequest implements RequestInterface
 {
     public \$lower;
+
     public \$upper;
+
     public \$pascalCase;
+
     public \$camelCase;
+
     public \$snakeCase;
 
     public function __construct(array \$data)
@@ -115,6 +129,43 @@ final class CreateFuzRequest implements RequestInterface
         \$this->pascalCase = \$data['pascalCase'] ?? null;
         \$this->camelCase = \$data['camelCase'] ?? null;
         \$this->snakeCase = \$data['snakeCase'] ?? null;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderCreateWithTrimOk(): void
+    {
+        $this->markTestIncomplete();
+        $render = new RequestBuilder($this->getSchemaFkWithFilterAndFchars('Fuz'), 'create');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class CreateFuzRequest implements RequestInterface
+{
+    public \$lower;
+
+    public \$upper;
+
+    public \$pascalCase;
+
+    public \$camelCase;
+
+    public \$snakeCase;
+
+    public function __construct(array \$data)
+    {
+        \$this->filter = \$data['filter'] ?? null;
+        \$this->otherFilter = \$data['otherFilter'] ?? null;
+        \$this->fchars = \$data['fchars'] ?? null;
+        \$this->trim = isset(\$data['trim']) ? \trim(\$data['trim']) : null;
     }
 }
 
@@ -161,9 +212,13 @@ use FlexPHP\Messages\RequestInterface;
 final class UpdateFuzRequest implements RequestInterface
 {
     public \$lower;
+
     public \$upper;
+
     public \$pascalCase;
+
     public \$camelCase;
+
     public \$snakeCase;
 
     public function __construct(string \$lower, array \$data)
@@ -297,10 +352,15 @@ final class IndexBarRequest implements RequestInterface
     use DateTimeTrait;
 
     public $key;
+
     public $value;
+
     public $created = [];
+
     public $updated;
+
     public $page;
+
     public $offset;
 
     public function __construct(array $data, int $page, ?string $timezone = null)
@@ -358,6 +418,7 @@ use FlexPHP\Messages\RequestInterface;
 final class UpdateBarRequest implements RequestInterface
 {
     public \$key;
+
     public \$value;
 
     public function __construct(int \$key, array \$data)
@@ -385,7 +446,9 @@ use FlexPHP\Messages\RequestInterface;
 final class CreateBarRequest implements RequestInterface
 {
     public \$code;
+
     public \$name;
+
     public \$createdBy;
 
     public function __construct(array \$data, int \$createdBy)
@@ -414,7 +477,9 @@ use FlexPHP\Messages\RequestInterface;
 final class UpdateFuzRequest implements RequestInterface
 {
     public \$code;
+
     public \$name;
+
     public \$updatedBy;
 
     public function __construct(string \$code, array \$data, int \$updatedBy)
