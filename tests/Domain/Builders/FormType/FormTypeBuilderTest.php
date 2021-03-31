@@ -396,6 +396,126 @@ T
 , $render->build());
     }
 
+    public function testNotAttributtes(): void
+    {
+        $render = new FormTypeBuilder(new Schema('Test', 'Title', [
+            new SchemaAttribute('pk', 'string', 'pk|required'),
+            new SchemaAttribute('required', 'string', 'required'),
+            new SchemaAttribute('type', 'string', 'type:number'),
+            new SchemaAttribute('filter', 'string', 'filter:ss'),
+            new SchemaAttribute('trim', 'string', 'trim'),
+            new SchemaAttribute('fchars', 'string', 'fk:table,name,id|fchars:1'),
+        ]));
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+
+namespace Domain\Test;
+
+use App\Form\Type\Select2Type;
+use Doctrine\DBAL\Connection;
+use Domain\Table\Gateway\MySQLTableGateway;
+use Domain\Table\Request\ReadTableRequest;
+use Domain\Table\TableRepository;
+use Domain\Table\UseCase\ReadTableUseCase;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type as InputType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+final class TestFormType extends AbstractType
+{
+    private \$conn;
+    private \$router;
+
+    public function __construct(Connection \$conn, UrlGeneratorInterface \$router)
+    {
+        \$this->conn = \$conn;
+        \$this->router = \$router;
+    }
+
+    public function buildForm(FormBuilderInterface \$builder, array \$options): void
+    {
+        \$fcharsModifier = function (FormInterface \$form, ?string \$value) {
+            \$choices = null;
+
+            if (!empty(\$value)) {
+                \$useCase = new ReadTableUseCase(new TableRepository(new MySQLTableGateway(\$this->conn)));
+                \$response = \$useCase->execute(new ReadTableRequest(\$value));
+
+                if (\$response->table->id()) {
+                    \$choices = [\$response->table->name() => \$value];
+                }
+            }
+
+            \$form->add('fchars', Select2Type::class, [
+                'label' => 'label.fchars',
+                'required' => false,
+                'attr' => [
+                    'data-autocomplete-url' => \$this->router->generate('tests.find.tables'),
+                ],
+                'choices' => \$choices,
+                'data' => \$value,
+            ]);
+        };
+
+        \$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent \$event) use (\$fcharsModifier) {
+            if (!\$event->getData()) {
+                return null;
+            }
+
+            \$fcharsModifier(\$event->getForm(), \$event->getData()->fchars());
+        });
+
+        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$fcharsModifier) {
+            \$fcharsModifier(\$event->getForm(), (string)\$event->getData()['fchars'] ?: null);
+        });
+
+        \$builder->add('pk', InputType\TextType::class, [
+            'label' => 'label.pk',
+            'required' => true,
+        ]);
+        \$builder->add('required', InputType\TextType::class, [
+            'label' => 'label.required',
+            'required' => true,
+        ]);
+        \$builder->add('type', InputType\TextType::class, [
+            'label' => 'label.type',
+            'required' => false,
+        ]);
+        \$builder->add('filter', InputType\TextType::class, [
+            'label' => 'label.filter',
+            'required' => false,
+        ]);
+        \$builder->add('trim', InputType\TextType::class, [
+            'label' => 'label.trim',
+            'required' => false,
+        ]);
+        \$builder->add('fchars', Select2Type::class, [
+            'label' => 'label.fchars',
+            'required' => false,
+            'attr' => [
+                'data-autocomplete-url' => \$this->router->generate('tests.find.tables'),
+            ],
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver \$resolver)
+    {
+        \$resolver->setDefaults([
+            'translation_domain' => 'test',
+        ]);
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */
