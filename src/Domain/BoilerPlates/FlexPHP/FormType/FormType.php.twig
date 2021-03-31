@@ -6,12 +6,9 @@ namespace Domain\{{ entity }};
 
 {% if fkRelsNoBlame %}
 {% set useStatements = useStatements|merge(['use App\\Form\\Type\\Select2Type;']) %}
-{% set useStatements = useStatements|merge(['use Doctrine\\DBAL\\Connection;']) %}
 {% for fkFn in fkFns %}
 {% if not properties[fkFn.pkName].isBlameBy %}
 {% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\UseCase\\Read' ~ fkFn.fnSingular ~ 'UseCase;']) %}
-{% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\' ~ fkFn.fnSingular ~ 'Repository;']) %}
-{% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\Gateway\\MySQL' ~ fkFn.fnSingular ~ 'Gateway;']) %}
 {% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\Request\\Read' ~ fkFn.fnSingular ~ 'Request;']) %}
 {% endif %}
 {% endfor %}
@@ -33,12 +30,21 @@ namespace Domain\{{ entity }};
 final class {{ entity }}FormType extends AbstractType
 {
 {% if fkRelsNoBlame %}
-    private $conn;
-    private $router;
+{% for id, fkRel in fkRelsNoBlame %}
+    private {{ 'Read' ~ fkRel.fnSingular ~ 'UseCase' }} ${{ 'read' ~ fkRel.fnSingular ~ 'UseCase' }};
 
-    public function __construct(Connection $conn, UrlGeneratorInterface $router)
-    {
-        $this->conn = $conn;
+{% endfor %}
+    private UrlGeneratorInterface $router;
+
+    public function __construct(
+{% for id, fkRel in fkRelsNoBlame %}
+        {{ 'Read' ~ fkRel.fnSingular ~ 'UseCase' }} ${{ 'read' ~ fkRel.fnSingular ~ 'UseCase' }},
+{% endfor %}
+        UrlGeneratorInterface $router
+    ) {
+{% for id, fkRel in fkRelsNoBlame %}
+        $this->{{ 'read' ~ fkRel.fnSingular ~ 'UseCase' }} = ${{ 'read' ~ fkRel.fnSingular ~ 'UseCase' }};
+{% endfor %}
         $this->router = $router;
     }
 
@@ -46,12 +52,11 @@ final class {{ entity }}FormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 {% for id, fkRel in fkRelsNoBlame %}
-        ${{ fkRel.pkName }}Modifier = function (FormInterface $form, ?{{ fkRel.typeHint }} $value) {
+        ${{ fkRel.pkName }}Modifier = function (FormInterface $form, ?{{ fkRel.typeHint }} $value): void {
             $choices = null;
 
             if (!empty($value)) {
-                $useCase = new Read{{ fkRel.fnSingular }}UseCase(new {{ fkRel.fnSingular }}Repository(new MySQL{{ fkRel.fnSingular }}Gateway($this->conn)));
-                $response = $useCase->execute(new Read{{ fkRel.fnSingular }}Request($value));
+                $response = $this->read{{ fkRel.fnSingular }}UseCase->execute(new Read{{ fkRel.fnSingular }}Request($value));
 
                 if ($response->{{ fkRel.item }}->{{ fkRel.id }}()) {
                     $choices = [$response->{{ fkRel.item }}->{{ fkRel.text }}() => $value];
@@ -81,7 +86,7 @@ final class {{ entity }}FormType extends AbstractType
             ${{ fkRel.pkName }}Modifier($event->getForm(), $event->getData()->{{ fkRel.pkName }}());
         });
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (${{ fkRel.pkName }}Modifier) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use (${{ fkRel.pkName }}Modifier): void {
             ${{ fkRel.pkName }}Modifier($event->getForm(), ({{ fkRel.typeHint }})$event->getData()['{{ fkRel.pkName }}'] ?: null);
         });
 
@@ -128,7 +133,7 @@ final class {{ entity }}FormType extends AbstractType
 {% endfor %}
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'translation_domain' => '{{ item }}',

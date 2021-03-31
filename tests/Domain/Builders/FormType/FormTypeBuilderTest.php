@@ -36,7 +36,7 @@ final class TestFormType extends AbstractType
     {
     }
 
-    public function configureOptions(OptionsResolver \$resolver)
+    public function configureOptions(OptionsResolver \$resolver): void
     {
         \$resolver->setDefaults([
             'translation_domain' => 'test',
@@ -123,7 +123,7 @@ final class TestFormType extends AbstractType
         ]);
     }
 
-    public function configureOptions(OptionsResolver \$resolver)
+    public function configureOptions(OptionsResolver \$resolver): void
     {
         \$resolver->setDefaults([
             'translation_domain' => 'test',
@@ -145,19 +145,12 @@ T
 namespace Domain\PostComment;
 
 use App\Form\Type\Select2Type;
-use Doctrine\DBAL\Connection;
-use Domain\Bar\BarRepository;
-use Domain\Bar\Gateway\MySQLBarGateway;
 use Domain\Bar\Request\ReadBarRequest;
 use Domain\Bar\UseCase\ReadBarUseCase;
-use Domain\Post\Gateway\MySQLPostGateway;
-use Domain\Post\PostRepository;
 use Domain\Post\Request\ReadPostRequest;
 use Domain\Post\UseCase\ReadPostUseCase;
-use Domain\UserStatus\Gateway\MySQLUserStatusGateway;
 use Domain\UserStatus\Request\ReadUserStatusRequest;
 use Domain\UserStatus\UseCase\ReadUserStatusUseCase;
-use Domain\UserStatus\UserStatusRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -169,23 +162,33 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class PostCommentFormType extends AbstractType
 {
-    private \$conn;
-    private \$router;
+    private ReadBarUseCase \$readBarUseCase;
 
-    public function __construct(Connection \$conn, UrlGeneratorInterface \$router)
-    {
-        \$this->conn = \$conn;
+    private ReadPostUseCase \$readPostUseCase;
+
+    private ReadUserStatusUseCase \$readUserStatusUseCase;
+
+    private UrlGeneratorInterface \$router;
+
+    public function __construct(
+        ReadBarUseCase \$readBarUseCase,
+        ReadPostUseCase \$readPostUseCase,
+        ReadUserStatusUseCase \$readUserStatusUseCase,
+        UrlGeneratorInterface \$router
+    ) {
+        \$this->readBarUseCase = \$readBarUseCase;
+        \$this->readPostUseCase = \$readPostUseCase;
+        \$this->readUserStatusUseCase = \$readUserStatusUseCase;
         \$this->router = \$router;
     }
 
     public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {
-        \$fooModifier = function (FormInterface \$form, ?string \$value) {
+        \$fooModifier = function (FormInterface \$form, ?string \$value): void {
             \$choices = null;
 
             if (!empty(\$value)) {
-                \$useCase = new ReadBarUseCase(new BarRepository(new MySQLBarGateway(\$this->conn)));
-                \$response = \$useCase->execute(new ReadBarRequest(\$value));
+                \$response = \$this->readBarUseCase->execute(new ReadBarRequest(\$value));
 
                 if (\$response->bar->baz()) {
                     \$choices = [\$response->bar->fuz() => \$value];
@@ -211,16 +214,15 @@ final class PostCommentFormType extends AbstractType
             \$fooModifier(\$event->getForm(), \$event->getData()->foo());
         });
 
-        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$fooModifier) {
+        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$fooModifier): void {
             \$fooModifier(\$event->getForm(), (string)\$event->getData()['foo'] ?: null);
         });
 
-        \$postIdModifier = function (FormInterface \$form, ?int \$value) {
+        \$postIdModifier = function (FormInterface \$form, ?int \$value): void {
             \$choices = null;
 
             if (!empty(\$value)) {
-                \$useCase = new ReadPostUseCase(new PostRepository(new MySQLPostGateway(\$this->conn)));
-                \$response = \$useCase->execute(new ReadPostRequest(\$value));
+                \$response = \$this->readPostUseCase->execute(new ReadPostRequest(\$value));
 
                 if (\$response->post->id()) {
                     \$choices = [\$response->post->name() => \$value];
@@ -246,16 +248,15 @@ final class PostCommentFormType extends AbstractType
             \$postIdModifier(\$event->getForm(), \$event->getData()->postId());
         });
 
-        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$postIdModifier) {
+        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$postIdModifier): void {
             \$postIdModifier(\$event->getForm(), (int)\$event->getData()['postId'] ?: null);
         });
 
-        \$statusIdModifier = function (FormInterface \$form, ?int \$value) {
+        \$statusIdModifier = function (FormInterface \$form, ?int \$value): void {
             \$choices = null;
 
             if (!empty(\$value)) {
-                \$useCase = new ReadUserStatusUseCase(new UserStatusRepository(new MySQLUserStatusGateway(\$this->conn)));
-                \$response = \$useCase->execute(new ReadUserStatusRequest(\$value));
+                \$response = \$this->readUserStatusUseCase->execute(new ReadUserStatusRequest(\$value));
 
                 if (\$response->userStatus->id()) {
                     \$choices = [\$response->userStatus->name() => \$value];
@@ -281,7 +282,7 @@ final class PostCommentFormType extends AbstractType
             \$statusIdModifier(\$event->getForm(), \$event->getData()->statusId());
         });
 
-        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$statusIdModifier) {
+        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$statusIdModifier): void {
             \$statusIdModifier(\$event->getForm(), (int)\$event->getData()['statusId'] ?: null);
         });
 
@@ -308,7 +309,7 @@ final class PostCommentFormType extends AbstractType
         ]);
     }
 
-    public function configureOptions(OptionsResolver \$resolver)
+    public function configureOptions(OptionsResolver \$resolver): void
     {
         \$resolver->setDefaults([
             'translation_domain' => 'postComment',
@@ -344,7 +345,7 @@ final class TestFormType extends AbstractType
         ]);
     }
 
-    public function configureOptions(OptionsResolver \$resolver)
+    public function configureOptions(OptionsResolver \$resolver): void
     {
         \$resolver->setDefaults([
             'translation_domain' => 'test',
@@ -384,7 +385,7 @@ final class TestFormType extends AbstractType
         ]);
     }
 
-    public function configureOptions(OptionsResolver \$resolver)
+    public function configureOptions(OptionsResolver \$resolver): void
     {
         \$resolver->setDefaults([
             'translation_domain' => 'test',
@@ -413,10 +414,7 @@ T
 namespace Domain\Test;
 
 use App\Form\Type\Select2Type;
-use Doctrine\DBAL\Connection;
-use Domain\Table\Gateway\MySQLTableGateway;
 use Domain\Table\Request\ReadTableRequest;
-use Domain\Table\TableRepository;
 use Domain\Table\UseCase\ReadTableUseCase;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
@@ -429,23 +427,25 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class TestFormType extends AbstractType
 {
-    private \$conn;
-    private \$router;
+    private ReadTableUseCase \$readTableUseCase;
 
-    public function __construct(Connection \$conn, UrlGeneratorInterface \$router)
-    {
-        \$this->conn = \$conn;
+    private UrlGeneratorInterface \$router;
+
+    public function __construct(
+        ReadTableUseCase \$readTableUseCase,
+        UrlGeneratorInterface \$router
+    ) {
+        \$this->readTableUseCase = \$readTableUseCase;
         \$this->router = \$router;
     }
 
     public function buildForm(FormBuilderInterface \$builder, array \$options): void
     {
-        \$fcharsModifier = function (FormInterface \$form, ?string \$value) {
+        \$fcharsModifier = function (FormInterface \$form, ?string \$value): void {
             \$choices = null;
 
             if (!empty(\$value)) {
-                \$useCase = new ReadTableUseCase(new TableRepository(new MySQLTableGateway(\$this->conn)));
-                \$response = \$useCase->execute(new ReadTableRequest(\$value));
+                \$response = \$this->readTableUseCase->execute(new ReadTableRequest(\$value));
 
                 if (\$response->table->id()) {
                     \$choices = [\$response->table->name() => \$value];
@@ -471,7 +471,7 @@ final class TestFormType extends AbstractType
             \$fcharsModifier(\$event->getForm(), \$event->getData()->fchars());
         });
 
-        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$fcharsModifier) {
+        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$fcharsModifier): void {
             \$fcharsModifier(\$event->getForm(), (string)\$event->getData()['fchars'] ?: null);
         });
 
@@ -504,7 +504,7 @@ final class TestFormType extends AbstractType
         ]);
     }
 
-    public function configureOptions(OptionsResolver \$resolver)
+    public function configureOptions(OptionsResolver \$resolver): void
     {
         \$resolver->setDefaults([
             'translation_domain' => 'test',
@@ -539,7 +539,7 @@ final class {$expected}FormType extends AbstractType
     {
     }
 
-    public function configureOptions(OptionsResolver \$resolver)
+    public function configureOptions(OptionsResolver \$resolver): void
     {
         \$resolver->setDefaults([
             'translation_domain' => '{$item}',
