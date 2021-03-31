@@ -1,7 +1,7 @@
 {% set fkRelsNoBlame = fkRels|filter(v => not v.blameBy) %}
 {% set useStatements = [] %}
 <?php declare(strict_types=1);
-
+{{ header|raw }}
 namespace Domain\{{ entity }};
 
 {% if fkRelsNoBlame %}

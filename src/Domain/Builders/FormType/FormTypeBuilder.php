@@ -34,8 +34,9 @@ final class FormTypeBuilder extends AbstractBuilder
             },
             []
         );
+        $header = self::getHeaderFile();
 
-        parent::__construct(\compact('entity', 'item', 'properties', 'inputs', 'route', 'fkRels', 'fkFns'));
+        parent::__construct(\compact('header', 'entity', 'item', 'properties', 'inputs', 'route', 'fkRels', 'fkFns'));
     }
 
     protected function getFileTemplate(): string
