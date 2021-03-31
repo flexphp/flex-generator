@@ -40,8 +40,10 @@ final class CreateDatabaseFileUseCaseTest extends TestCase
 
         $content = file_get_contents($file);
 
-        $this->assertContains('USE ', $content);
-        $this->assertContains('GRANT ALL', $content);
+        $this->assertNotContains('CREATE DATABASE ', $content);
+        $this->assertNotContains('USE ', $content);
+        $this->assertNotContains('CREATE USER ', $content);
+        $this->assertNotContains('GRANT ALL', $content);
 
         \unlink($file);
     }

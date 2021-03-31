@@ -24,8 +24,6 @@ final class CreateDatabaseFileUseCase
         $dbname = $inflector->dbName($request->dbname);
 
         $builder = new Builder($request->platform);
-        $builder->createDatabaseWithUse($dbname);
-        $builder->createUser($request->username, $request->password, '%', ['ALL PRIVILEGES'], $dbname);
 
         \array_map(function (string $schemafile) use ($builder): void {
             $builder->createTable(Schema::fromFile($schemafile));
