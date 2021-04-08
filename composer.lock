@@ -181,31 +181,32 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.9.3",
+            "version": "2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "7345cd59edfa2036eb0fa4264b77ae2576842035"
+                "reference": "67d56d3203b33db29834e6b2fcdbfdc50535d796"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/7345cd59edfa2036eb0fa4264b77ae2576842035",
-                "reference": "7345cd59edfa2036eb0fa4264b77ae2576842035",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/67d56d3203b33db29834e6b2fcdbfdc50535d796",
+                "reference": "67d56d3203b33db29834e6b2fcdbfdc50535d796",
                 "shasum": ""
             },
             "require": {
                 "doctrine/cache": "^1.0",
+                "doctrine/deprecations": "^0.5.3",
                 "doctrine/event-manager": "^1.0",
                 "ext-pdo": "*",
-                "php": "^7.1"
+                "php": "^7.1 || ^8"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^5.0",
-                "jetbrains/phpstorm-stubs": "^2018.1.2",
-                "phpstan/phpstan": "^0.10.1",
-                "phpunit/phpunit": "^7.4",
-                "symfony/console": "^2.0.5|^3.0|^4.0",
-                "symfony/phpunit-bridge": "^3.4.5|^4.0.5"
+                "doctrine/coding-standard": "8.2.0",
+                "jetbrains/phpstorm-stubs": "2020.2",
+                "phpstan/phpstan": "0.12.81",
+                "phpunit/phpunit": "^7.5.20|^8.5|9.5.0",
+                "symfony/console": "^2.0.5|^3.0|^4.0|^5.0",
+                "vimeo/psalm": "4.6.4"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
@@ -214,12 +215,6 @@
                 "bin/doctrine-dbal"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.9.x-dev",
-                    "dev-develop": "3.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Doctrine\\DBAL\\": "lib/Doctrine/DBAL"
@@ -252,18 +247,86 @@
             "keywords": [
                 "abstraction",
                 "database",
+                "db2",
                 "dbal",
+                "mariadb",
+                "mssql",
                 "mysql",
-                "persistence",
+                "oci8",
+                "oracle",
+                "pdo",
                 "pgsql",
-                "php",
-                "queryobject"
+                "postgresql",
+                "queryobject",
+                "sasql",
+                "sql",
+                "sqlanywhere",
+                "sqlite",
+                "sqlserver",
+                "sqlsrv"
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/2.9"
+                "source": "https://github.com/doctrine/dbal/tree/2.13.0"
             },
-            "time": "2019-11-02T22:19:34+00:00"
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fdbal",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-03-28T18:10:53+00:00"
+        },
+        {
+            "name": "doctrine/deprecations",
+            "version": "v0.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/deprecations.git",
+                "reference": "9504165960a1f83cc1480e2be1dd0a0478561314"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/9504165960a1f83cc1480e2be1dd0a0478561314",
+                "reference": "9504165960a1f83cc1480e2be1dd0a0478561314",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1|^8.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0",
+                "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Allows logging deprecations via PSR-3 logger implementation"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Deprecations\\": "lib/Doctrine/Deprecations"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A small layer on top of trigger_error(E_USER_DEPRECATED) or PSR-3 logging with options to disable all deprecations or selectively for packages.",
+            "homepage": "https://www.doctrine-project.org/",
+            "support": {
+                "issues": "https://github.com/doctrine/deprecations/issues",
+                "source": "https://github.com/doctrine/deprecations/tree/v0.5.3"
+            },
+            "time": "2021-03-21T12:59:47+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -416,12 +479,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/flexphp/flex-schema.git",
-                "reference": "0f519b5ef407006e670cb04e75cfa4f83cf2ff90"
+                "reference": "eeff2c5117fb70d30f89a776fed8cb4c535f4c4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flexphp/flex-schema/zipball/0f519b5ef407006e670cb04e75cfa4f83cf2ff90",
-                "reference": "0f519b5ef407006e670cb04e75cfa4f83cf2ff90",
+                "url": "https://api.github.com/repos/flexphp/flex-schema/zipball/eeff2c5117fb70d30f89a776fed8cb4c535f4c4c",
+                "reference": "eeff2c5117fb70d30f89a776fed8cb4c535f4c4c",
                 "shasum": ""
             },
             "require": {
@@ -458,7 +521,7 @@
                 "issues": "https://github.com/flexphp/flex-schema/issues",
                 "source": "https://github.com/flexphp/flex-schema/tree/develop"
             },
-            "time": "2021-03-20T18:28:45+00:00"
+            "time": "2021-04-08T16:54:00+00:00"
         },
         {
             "name": "jawira/case-converter",
@@ -592,16 +655,16 @@
         },
         {
             "name": "symfony/inflector",
-            "version": "v4.4.20",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/inflector.git",
-                "reference": "a8691d012fb449ba49363a3b3e3e743f354f7d56"
+                "reference": "9455097d23776a4a10c817d903271bc1ce7596ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/inflector/zipball/a8691d012fb449ba49363a3b3e3e743f354f7d56",
-                "reference": "a8691d012fb449ba49363a3b3e3e743f354f7d56",
+                "url": "https://api.github.com/repos/symfony/inflector/zipball/9455097d23776a4a10c817d903271bc1ce7596ff",
+                "reference": "9455097d23776a4a10c817d903271bc1ce7596ff",
                 "shasum": ""
             },
             "require": {
@@ -642,7 +705,7 @@
                 "words"
             ],
             "support": {
-                "source": "https://github.com/symfony/inflector/tree/v4.4.20"
+                "source": "https://github.com/symfony/inflector/tree/v4.4.21"
             },
             "funding": [
                 {
@@ -658,20 +721,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-24T23:44:26+00:00"
+            "time": "2021-03-17T16:19:54+00:00"
         },
         {
             "name": "symfony/mime",
-            "version": "v4.4.20",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mime.git",
-                "reference": "6db092f97cd6eee8d4b2026e3a8fa3f576b396d4"
+                "reference": "50d7a1d569edad1f1321c59123c4c322c8daff7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mime/zipball/6db092f97cd6eee8d4b2026e3a8fa3f576b396d4",
-                "reference": "6db092f97cd6eee8d4b2026e3a8fa3f576b396d4",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/50d7a1d569edad1f1321c59123c4c322c8daff7c",
+                "reference": "50d7a1d569edad1f1321c59123c4c322c8daff7c",
                 "shasum": ""
             },
             "require": {
@@ -680,10 +743,11 @@
                 "symfony/polyfill-mbstring": "^1.0"
             },
             "conflict": {
+                "egulias/email-validator": "~3.0.0",
                 "symfony/mailer": "<4.4"
             },
             "require-dev": {
-                "egulias/email-validator": "^2.1.10",
+                "egulias/email-validator": "^2.1.10|^3.1",
                 "symfony/dependency-injection": "^3.4|^4.1|^5.0"
             },
             "type": "library",
@@ -716,7 +780,7 @@
                 "mime-type"
             ],
             "support": {
-                "source": "https://github.com/symfony/mime/tree/v4.4.20"
+                "source": "https://github.com/symfony/mime/tree/v4.4.21"
             },
             "funding": [
                 {
@@ -732,7 +796,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-14T12:29:41+00:00"
+            "time": "2021-03-12T08:47:38+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -1303,16 +1367,16 @@
         },
         {
             "name": "symfony/validator",
-            "version": "v4.4.20",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/validator.git",
-                "reference": "08c3add0462f22f00b856c0d0361cf51897d51aa"
+                "reference": "c00da06b82b8591548f52b4d6aad0faa0985843e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/validator/zipball/08c3add0462f22f00b856c0d0361cf51897d51aa",
-                "reference": "08c3add0462f22f00b856c0d0361cf51897d51aa",
+                "url": "https://api.github.com/repos/symfony/validator/zipball/c00da06b82b8591548f52b4d6aad0faa0985843e",
+                "reference": "c00da06b82b8591548f52b4d6aad0faa0985843e",
                 "shasum": ""
             },
             "require": {
@@ -1333,7 +1397,7 @@
             "require-dev": {
                 "doctrine/annotations": "^1.10.4",
                 "doctrine/cache": "~1.0",
-                "egulias/email-validator": "^2.1.10",
+                "egulias/email-validator": "^2.1.10|^3",
                 "symfony/cache": "^3.4|^4.0|^5.0",
                 "symfony/config": "^3.4|^4.0|^5.0",
                 "symfony/dependency-injection": "^3.4|^4.0|^5.0",
@@ -1388,7 +1452,7 @@
             "description": "Provides tools to validate values",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/validator/tree/v4.4.20"
+                "source": "https://github.com/symfony/validator/tree/v4.4.21"
             },
             "funding": [
                 {
@@ -1404,20 +1468,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-03-03T22:57:07+00:00"
+            "time": "2021-03-23T11:25:54+00:00"
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.4.20",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "29e61305e1c79d25f71060903982ead8f533e267"
+                "reference": "3871c720871029f008928244e56cf43497da7e9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/29e61305e1c79d25f71060903982ead8f533e267",
-                "reference": "29e61305e1c79d25f71060903982ead8f533e267",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/3871c720871029f008928244e56cf43497da7e9d",
+                "reference": "3871c720871029f008928244e56cf43497da7e9d",
                 "shasum": ""
             },
             "require": {
@@ -1459,7 +1523,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v4.4.20"
+                "source": "https://github.com/symfony/yaml/tree/v4.4.21"
             },
             "funding": [
                 {
@@ -1475,7 +1539,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-22T15:36:50+00:00"
+            "time": "2021-03-05T17:58:50+00:00"
         },
         {
             "name": "twig/twig",
@@ -1560,16 +1624,16 @@
     "packages-dev": [
         {
             "name": "composer/xdebug-handler",
-            "version": "1.4.5",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "f28d44c286812c714741478d968104c5e604a1d4"
+                "reference": "f27e06cd9675801df441b3656569b328e04aa37c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/f28d44c286812c714741478d968104c5e604a1d4",
-                "reference": "f28d44c286812c714741478d968104c5e604a1d4",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/f27e06cd9675801df441b3656569b328e04aa37c",
+                "reference": "f27e06cd9675801df441b3656569b328e04aa37c",
                 "shasum": ""
             },
             "require": {
@@ -1577,7 +1641,8 @@
                 "psr/log": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.7 || 6.5 - 8"
+                "phpstan/phpstan": "^0.12.55",
+                "symfony/phpunit-bridge": "^4.2 || ^5"
             },
             "type": "library",
             "autoload": {
@@ -1603,7 +1668,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/1.4.5"
+                "source": "https://github.com/composer/xdebug-handler/tree/1.4.6"
             },
             "funding": [
                 {
@@ -1619,7 +1684,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-13T08:04:11+00:00"
+            "time": "2021-03-25T17:01:18+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -2227,16 +2292,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.82",
+            "version": "0.12.83",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "3920f0fb0aff39263d3a4cb0bca120a67a1a6a11"
+                "reference": "4a967cec6efb46b500dd6d768657336a3ffe699f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/3920f0fb0aff39263d3a4cb0bca120a67a1a6a11",
-                "reference": "3920f0fb0aff39263d3a4cb0bca120a67a1a6a11",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/4a967cec6efb46b500dd6d768657336a3ffe699f",
+                "reference": "4a967cec6efb46b500dd6d768657336a3ffe699f",
                 "shasum": ""
             },
             "require": {
@@ -2267,7 +2332,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.82"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.83"
             },
             "funding": [
                 {
@@ -2283,7 +2348,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-03-19T06:08:17+00:00"
+            "time": "2021-04-03T15:35:45+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3565,16 +3630,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v4.4.20",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "4b3e341ce4436df9a9abc2914cb120b4d41796d7"
+                "reference": "b5f97557faa48ead4671bc311cfca423d476e93e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/4b3e341ce4436df9a9abc2914cb120b4d41796d7",
-                "reference": "4b3e341ce4436df9a9abc2914cb120b4d41796d7",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/b5f97557faa48ead4671bc311cfca423d476e93e",
+                "reference": "b5f97557faa48ead4671bc311cfca423d476e93e",
                 "shasum": ""
             },
             "require": {
@@ -3630,7 +3695,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v4.4.20"
+                "source": "https://github.com/symfony/dependency-injection/tree/v4.4.21"
             },
             "funding": [
                 {
@@ -3646,20 +3711,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-03-03T12:11:09+00:00"
+            "time": "2021-03-05T18:16:26+00:00"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v4.4.20",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "715e7a531bdae109a828f9e91629e5b3b2926beb"
+                "reference": "940826c465be2690c9fae91b2793481e5cbd6834"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/715e7a531bdae109a828f9e91629e5b3b2926beb",
-                "reference": "715e7a531bdae109a828f9e91629e5b3b2926beb",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/940826c465be2690c9fae91b2793481e5cbd6834",
+                "reference": "940826c465be2690c9fae91b2793481e5cbd6834",
                 "shasum": ""
             },
             "require": {
@@ -3692,7 +3757,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v4.4.20"
+                "source": "https://github.com/symfony/filesystem/tree/v4.4.21"
             },
             "funding": [
                 {
@@ -3708,7 +3773,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-11T19:34:41+00:00"
+            "time": "2021-03-28T09:59:32+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -3791,16 +3856,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v4.4.20",
+            "version": "v4.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "a1eab2f69906dc83c5ddba4632180260d0ab4f7f"
+                "reference": "0da0e174f728996f5d5072d6a9f0a42259dbc806"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/a1eab2f69906dc83c5ddba4632180260d0ab4f7f",
-                "reference": "a1eab2f69906dc83c5ddba4632180260d0ab4f7f",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/0da0e174f728996f5d5072d6a9f0a42259dbc806",
+                "reference": "0da0e174f728996f5d5072d6a9f0a42259dbc806",
                 "shasum": ""
             },
             "require": {
@@ -3860,7 +3925,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v4.4.20"
+                "source": "https://github.com/symfony/var-dumper/tree/v4.4.21"
             },
             "funding": [
                 {
@@ -3876,7 +3941,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-27T09:09:26+00:00"
+            "time": "2021-03-27T19:49:03+00:00"
         },
         {
             "name": "theseer/tokenizer",
