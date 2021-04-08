@@ -1,5 +1,11 @@
 {% set fkRelsNoBlame = fkRels|filter(v => not v.blameBy) %}
 {% set useStatements = [] %}
+{% set fkRelsUnique = {} %}
+{% for fkRel in fkRelsNoBlame %}
+{% if fkRel.fnSingular not in fkRelsUnique %}
+{% set fkRelsUnique = fkRelsUnique|merge([fkRel.fnSingular]) %}
+{% endif %}
+{% endfor %}
 <?php declare(strict_types=1);
 {{ header|raw }}
 namespace Domain\{{ entity }};
@@ -30,20 +36,20 @@ namespace Domain\{{ entity }};
 final class {{ entity }}FormType extends AbstractType
 {
 {% if fkRelsNoBlame %}
-{% for id, fkRel in fkRelsNoBlame %}
-    private {{ 'Read' ~ fkRel.fnSingular ~ 'UseCase' }} ${{ 'read' ~ fkRel.fnSingular ~ 'UseCase' }};
+{% for fkName in fkRelsUnique %}
+    private {{ 'Read' ~ fkName ~ 'UseCase' }} ${{ 'read' ~ fkName ~ 'UseCase' }};
 
 {% endfor %}
     private UrlGeneratorInterface $router;
 
     public function __construct(
-{% for id, fkRel in fkRelsNoBlame %}
-        {{ 'Read' ~ fkRel.fnSingular ~ 'UseCase' }} ${{ 'read' ~ fkRel.fnSingular ~ 'UseCase' }},
+{% for fkName in fkRelsUnique %}
+        {{ 'Read' ~ fkName ~ 'UseCase' }} ${{ 'read' ~ fkName ~ 'UseCase' }},
 {% endfor %}
         UrlGeneratorInterface $router
     ) {
-{% for id, fkRel in fkRelsNoBlame %}
-        $this->{{ 'read' ~ fkRel.fnSingular ~ 'UseCase' }} = ${{ 'read' ~ fkRel.fnSingular ~ 'UseCase' }};
+{% for fkName in fkRelsUnique %}
+        $this->{{ 'read' ~ fkName ~ 'UseCase' }} = ${{ 'read' ~ fkName ~ 'UseCase' }};
 {% endfor %}
         $this->router = $router;
     }

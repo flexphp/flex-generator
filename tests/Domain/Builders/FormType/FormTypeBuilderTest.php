@@ -516,6 +516,142 @@ T
 , $render->build());
     }
 
+    public function testSameFkUsedInTwoAttributes(): void
+    {
+        $render = new FormTypeBuilder(new Schema('Test', 'Title', [
+            new SchemaAttribute('rel1', 'string', 'fk:table,name,id'),
+            new SchemaAttribute('rel2', 'string', 'fk:table,name,id'),
+        ]));
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Test;
+
+use App\Form\Type\Select2Type;
+use Domain\Table\Request\ReadTableRequest;
+use Domain\Table\UseCase\ReadTableUseCase;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type as InputType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+final class TestFormType extends AbstractType
+{
+    private ReadTableUseCase \$readTableUseCase;
+
+    private UrlGeneratorInterface \$router;
+
+    public function __construct(
+        ReadTableUseCase \$readTableUseCase,
+        UrlGeneratorInterface \$router
+    ) {
+        \$this->readTableUseCase = \$readTableUseCase;
+        \$this->router = \$router;
+    }
+
+    public function buildForm(FormBuilderInterface \$builder, array \$options): void
+    {
+        \$rel1Modifier = function (FormInterface \$form, ?string \$value): void {
+            \$choices = null;
+
+            if (!empty(\$value)) {
+                \$response = \$this->readTableUseCase->execute(new ReadTableRequest(\$value));
+
+                if (\$response->table->id()) {
+                    \$choices = [\$response->table->name() => \$value];
+                }
+            }
+
+            \$form->add('rel1', Select2Type::class, [
+                'label' => 'label.rel1',
+                'required' => false,
+                'attr' => [
+                    'data-autocomplete-url' => \$this->router->generate('tests.find.tables'),
+                ],
+                'choices' => \$choices,
+                'data' => \$value,
+            ]);
+        };
+
+        \$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent \$event) use (\$rel1Modifier) {
+            if (!\$event->getData()) {
+                return null;
+            }
+
+            \$rel1Modifier(\$event->getForm(), \$event->getData()->rel1());
+        });
+
+        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$rel1Modifier): void {
+            \$rel1Modifier(\$event->getForm(), (string)\$event->getData()['rel1'] ?: null);
+        });
+
+        \$rel2Modifier = function (FormInterface \$form, ?string \$value): void {
+            \$choices = null;
+
+            if (!empty(\$value)) {
+                \$response = \$this->readTableUseCase->execute(new ReadTableRequest(\$value));
+
+                if (\$response->table->id()) {
+                    \$choices = [\$response->table->name() => \$value];
+                }
+            }
+
+            \$form->add('rel2', Select2Type::class, [
+                'label' => 'label.rel2',
+                'required' => false,
+                'attr' => [
+                    'data-autocomplete-url' => \$this->router->generate('tests.find.tables'),
+                ],
+                'choices' => \$choices,
+                'data' => \$value,
+            ]);
+        };
+
+        \$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent \$event) use (\$rel2Modifier) {
+            if (!\$event->getData()) {
+                return null;
+            }
+
+            \$rel2Modifier(\$event->getForm(), \$event->getData()->rel2());
+        });
+
+        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$rel2Modifier): void {
+            \$rel2Modifier(\$event->getForm(), (string)\$event->getData()['rel2'] ?: null);
+        });
+
+        \$builder->add('rel1', Select2Type::class, [
+            'label' => 'label.rel1',
+            'required' => false,
+            'attr' => [
+                'data-autocomplete-url' => \$this->router->generate('tests.find.tables'),
+            ],
+        ]);
+        \$builder->add('rel2', Select2Type::class, [
+            'label' => 'label.rel2',
+            'required' => false,
+            'attr' => [
+                'data-autocomplete-url' => \$this->router->generate('tests.find.tables'),
+            ],
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver \$resolver): void
+    {
+        \$resolver->setDefaults([
+            'translation_domain' => 'test',
+        ]);
+    }
+}
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getEntityName
      */
