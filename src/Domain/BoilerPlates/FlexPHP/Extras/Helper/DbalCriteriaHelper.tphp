@@ -30,7 +30,7 @@ class DbalCriteriaHelper
 
     public function getCriteria(string $alias, string $column, $value, string $operator = self::OP_EQUALS): void
     {
-        if (in_array($column, ['page', 'offset']) || !$value) {
+        if (in_array($column, ['page', 'offset', '_limit']) || is_null($value) || $value === '') {
             return;
         }
 
