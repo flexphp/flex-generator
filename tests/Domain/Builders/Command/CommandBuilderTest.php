@@ -33,7 +33,7 @@ use Domain\Test\UseCase\ActionTestUseCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface; 
+use Symfony\Component\Console\Output\OutputInterface;
 
 final class ActionTestCommand extends Command
 {
@@ -79,7 +79,7 @@ use Domain\\{$expectedCamel}\\UseCase\Action{$expectedCamel}UseCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface; 
+use Symfony\Component\Console\Output\OutputInterface;
 
 final class Action{$expectedCamel}Command extends Command
 {
@@ -123,7 +123,7 @@ use Domain\Test\UseCase\CustomActionTestUseCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface; 
+use Symfony\Component\Console\Output\OutputInterface;
 
 final class CustomActionTestCommand extends Command
 {
