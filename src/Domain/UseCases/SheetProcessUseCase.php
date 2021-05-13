@@ -41,6 +41,7 @@ use FlexPHP\Generator\Domain\Messages\Responses\CreateTemplateFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateTranslateFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\CreateUseCaseFileResponse;
 use FlexPHP\Generator\Domain\Messages\Responses\SheetProcessResponse;
+use FlexPHP\Schema\Constants\Action;
 use FlexPHP\Schema\Schema;
 use FlexPHP\Schema\SchemaInterface;
 
@@ -50,17 +51,19 @@ final class SheetProcessUseCase
     {
         $name = $request->name;
         $schema = Schema::fromFile($request->path);
-        $actions = [
-            'index',
-            'create',
-            'read',
-            'update',
-            'delete',
-        ];
+        $actions = [];
+        $actions[] = $schema->hasAction(Action::INDEX) ? 'index' : null;
+        $actions[] = $schema->hasAction(Action::CREATE) ? 'create' : null;
+        $actions[] = $schema->hasAction(Action::READ) ? 'read' : null;
+        $actions[] = $schema->hasAction(Action::UPDATE) ? 'update' : null;
+        $actions[] = $schema->hasAction(Action::DELETE) ? 'delete' : null;
+        $actions[] = $schema->hasAction(Action::FILTER) ? 'filter' : null;
 
         if ($name === 'Users') {
             $actions = \array_merge($actions, ['login']);
         }
+
+        $actions = \array_values(\array_filter($actions));
 
         $controller = $this->createController($schema, $actions);
         $entity = $this->createEntity($schema);

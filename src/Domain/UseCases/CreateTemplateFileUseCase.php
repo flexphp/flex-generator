@@ -31,6 +31,16 @@ final class CreateTemplateFileUseCase
             'ajax' => '_ajax.html',
         ];
 
+        foreach (\array_keys($actions) as $action) {
+            if ($action !== 'ajax' && !$request->schema->hasAction(\substr($action, 0, 1))) {
+                unset($actions[$action]);
+            }
+        }
+
+        if (empty($actions['index'])) {
+            unset($actions['ajax']);
+        }
+
         $path = \sprintf('%1$s/../../tmp/skeleton/templates/%2$s', __DIR__, $filename);
 
         foreach ($actions as $action => $filename) {

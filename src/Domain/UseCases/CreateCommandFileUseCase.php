@@ -24,7 +24,7 @@ final class CreateCommandFileUseCase
         $entity = $inflector->entity($request->schema->name());
 
         $path = \sprintf('%1$s/../../tmp/skeleton/src/Command/%2$s', __DIR__, $entity);
-        $actions = \array_diff($request->actions, ['login']);
+        $actions = \array_diff($request->actions, ['login', 'filter']);
 
         foreach ($actions as $action) {
             $builder = new CommandBuilder($request->schema, $action);

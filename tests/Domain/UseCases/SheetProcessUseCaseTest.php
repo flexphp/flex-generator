@@ -53,6 +53,8 @@ final class SheetProcessUseCaseTest extends TestCase
         \unlink($response->repository);
 
         $countFiles = 5;
+        $countCommands = 5;
+        $countTemplates = 6;
 
         switch ($name) {
             case 'Posts':
@@ -67,6 +69,13 @@ final class SheetProcessUseCaseTest extends TestCase
                 break;
             case 'Users':
                 $countFiles = 6;
+                $this->assertNull($response->javascript);
+
+                break;
+            case 'CustomActions':
+                $countFiles = 3;
+                $countCommands = 2;
+                $countTemplates = 3;
                 $this->assertNull($response->javascript);
 
                 break;
@@ -90,13 +99,13 @@ final class SheetProcessUseCaseTest extends TestCase
             \unlink($useCase);
         }, $response->useCases);
 
-        $this->assertEquals(5, \count($response->commands));
+        $this->assertEquals($countCommands, \count($response->commands));
         \array_map(function (string $command): void {
             $this->assertFileExists($command);
             \unlink($command);
         }, $response->commands);
 
-        $this->assertEquals(6, \count($response->templates));
+        $this->assertEquals($countTemplates, \count($response->templates));
         \array_map(function (string $template): void {
             $this->assertFileExists($template);
             \unlink($template);
@@ -109,6 +118,7 @@ final class SheetProcessUseCaseTest extends TestCase
             ['Posts', \sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__)],
             ['Comments', \sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__)],
             ['Users', \sprintf('%1$s/../../Mocks/yaml/users.yaml', __DIR__)],
+            ['CustomActions', \sprintf('%1$s/../../Mocks/yaml/customActions.yaml', __DIR__)],
         ];
     }
 }

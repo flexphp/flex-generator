@@ -70,7 +70,7 @@ final class ProcessFormatUseCaseTest extends TestCase
 
         $this->assertInstanceOf(ProcessFormatResponse::class, $response);
         $sheetNames = $response->messages;
-        $this->assertEquals(2, \count($sheetNames));
+        $this->assertEquals(3, \count($sheetNames));
 
         foreach ($sheetNames as $sheetName => $numberFields) {
             $numberExpected = 0;
@@ -82,6 +82,10 @@ final class ProcessFormatUseCaseTest extends TestCase
                     break;
                 case 'Comments':
                     $numberExpected = 5;
+
+                    break;
+                case 'Actions':
+                    $numberExpected = 2;
 
                     break;
                 default:

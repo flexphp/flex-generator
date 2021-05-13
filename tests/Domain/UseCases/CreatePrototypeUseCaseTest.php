@@ -101,7 +101,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/config/services.yaml');
         $this->assertFileExists($response->outputDir . '/config/routes.yaml');
         $this->assertFileExists($response->outputDir . '/config/menu.php');
-        
+
         $this->assertDirectoryExists($response->outputDir . '/config/packages');
         $this->assertFileExists($response->outputDir . '/config/packages/security.yaml');
         $this->assertFileExists($response->outputDir . '/config/packages/translation.yaml');
@@ -202,11 +202,11 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/domain');
         $this->assertDirectoryExists($response->outputDir . '/domain/Database');
         $this->assertFileExists($response->outputDir . '/domain/Database/1 - create.sql');
-        
+
         $this->assertDirectoryExists($response->outputDir . '/domain/Helper');
         $this->assertFileExists($response->outputDir . '/domain/Helper/DateTimeTrait.php');
         $this->assertFileExists($response->outputDir . '/domain/Helper/DbalCriteriaHelper.php');
-        
+
         $this->assertDirectoryExists($response->outputDir . '/domain/Tests');
         $this->assertFileExists($response->outputDir . '/domain/Tests/TestCase.php');
         $this->assertFileExists($response->outputDir . '/domain/Tests/DatabaseTrait.php');
@@ -246,12 +246,12 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/domain/Post/UseCase/DeletePostUseCase.php');
 
         $this->assertFileExists($response->outputDir . '/domain/Post/Gateway/MySQLPostGateway.php');
-        
+
         $this->assertDirectoryExists($response->outputDir . '/domain/Comment');
         $this->assertFileExists($response->outputDir . '/domain/Comment/Request/FindCommentPostRequest.php');
         $this->assertFileExists($response->outputDir . '/domain/Comment/Response/FindCommentPostResponse.php');
         $this->assertFileExists($response->outputDir . '/domain/Comment/UseCase/FindCommentPostUseCase.php');
-        
+
         $this->assertDirectoryExists($response->outputDir . '/domain/User');
         $this->assertFileExists($response->outputDir . '/domain/User/Request/LoginUserRequest.php');
         $this->assertFileExists($response->outputDir . '/domain/User/Response/LoginUserResponse.php');

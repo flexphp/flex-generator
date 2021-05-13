@@ -1,0 +1,13 @@
+CustomActions:
+  Title: Custom Actions
+  Language: es
+  Actions: icf
+  Attributes:
+    id:
+      Name: Id
+      DataType: integer
+      Constraints: 'pk|ai|required|type:number'
+    name:
+      Name: Name
+      DataType: string
+      Constraints: 'required|maxlength:255'
