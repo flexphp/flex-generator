@@ -20,6 +20,7 @@ final class GeneratorTest extends WebTestCase
         \ob_start();
 
         include __DIR__ . '/../../src/dist/build.php';
+
         $response = \ob_get_clean();
 
         $this->assertContains('Upload file has error.', $response);
@@ -38,6 +39,7 @@ final class GeneratorTest extends WebTestCase
         \ob_start();
 
         include __DIR__ . '/../../src/dist/build.php';
+
         $response = \ob_get_clean();
 
         $this->assertContains('exceeds the upload limit', $response);
@@ -56,6 +58,7 @@ final class GeneratorTest extends WebTestCase
         \ob_start();
 
         include __DIR__ . '/../../src/dist/build.php';
+
         $response = \ob_get_clean();
 
         $this->assertContains('isn\'t supported', $response);
@@ -75,7 +78,7 @@ final class GeneratorTest extends WebTestCase
 
         include __DIR__ . '/../../src/dist/build.php';
 
-        $this->assertEquals('{"Posts":6,"Comments":5}', \ob_get_clean());
+        $this->assertEquals('{"Posts":6,"Comments":5,"Actions":2}', \ob_get_clean());
 
         $zip = \sprintf('%1$s/../../src/tmp/%2$s.zip', __DIR__, $name);
 
