@@ -19,9 +19,14 @@
 
         <div class="card-body">
 {% for id, property in properties %}
+{% set format = property.format %}
 {% if property.isPk %}
 {% elseif property.dataType starts with 'date' %}
+{% if format %}
+            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext"><span class="{{ format }}-format">{{ '{{' }} {{ item }}.{{ id }} ? {{ item }}.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</span></div></div>
+{% else %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} {{ item }}.{{ id }} ? {{ item }}.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</div></div>
+{% endif %}
 {% elseif property.dataType starts with 'time' %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} {{ item }}.{{ id }} ? {{ item }}.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</div></div>
 {% elseif property.dataType starts with 'bool' %}
@@ -31,7 +36,7 @@
 {% elseif fkRels[id] %}
             <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} {{ item }}.{{ fkRels[id].pkName }}Instance.{{ fkRels[id].text }}|default('-') {{ '}}' }}</div></div>
 {% else %}
-            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext">{{ '{{' }} {{ item }}.{{ id }} {{ '}}' }}</div></div>
+            <div class="form-group"><label>{{ '{%' }} trans {{ '%}' }}label.{{ id }}{{ '{%' }} endtrans {{ '%}' }}</label><div class="form-control-plaintext{% if format %} {{ format }}-format{% endif %}">{{ '{{' }} {{ item }}.{{ id }} {{ '}}' }}</div></div>
 {% endif %}
 {% endfor %}
         </div>

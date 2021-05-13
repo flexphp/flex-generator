@@ -17,7 +17,7 @@ final class TemplateBuilderTest extends TestCase
     public function testItRenderIndexOk(): void
     {
         $render = new TemplateBuilder($this->getSchema(), 'index');
-        
+
         $this->assertEquals(<<<T
 {% trans_default_domain 'test' %}
 {% extends 'form/layout.html.twig' %}
@@ -272,6 +272,34 @@ T, $render->build());
 T, $render->build());
     }
 
+    public function testItRenderIndexAjaxFormatsOk(): void
+    {
+        $render = new TemplateBuilder($this->getSchemaWithFormats(), 'ajax');
+
+        $this->assertEquals(<<<T
+{% for _test in tests %}
+    <tr>
+        <td>{{ _test.id }}</td>
+        <td class="timeago-format">{{ _test.timeago ? _test.timeago|date('Y-m-d H:i:s') : '-' }}</td>
+        <td class="datetime-format">{{ _test.datetime ? _test.datetime|date('Y-m-d H:i:s') : '-' }}</td>
+        <td class="money-format text-right">{{ _test.money }}</td>
+        <td class="text-center">
+            <div class="btn-group">
+                <a href="{{ path('tests.read', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.read{% endtrans %}">
+                    <i class="fa fa-eye text-dark" aria-hidden="true"></i>
+                </a>
+
+                <a href="{{ path('tests.edit', {id: _test.id}) }}" class="btn btn-sm btn-outline-light" title="{% trans from 'messages' %}action.edit{% endtrans %}">
+                    <i class="fa fa-edit text-info" aria-hidden="true"></i>
+                </a>
+            </div>
+        </td>
+    </tr>
+{% endfor %}
+
+T, $render->build());
+    }
+
     public function testItRenderCreateOk(): void
     {
         $render = new TemplateBuilder($this->getSchema(), 'create');
@@ -442,6 +470,57 @@ T
             <div class="form-group"><label>{% trans %}label.foo{% endtrans %}</label><div class="form-control-plaintext">{{ test.fooInstance.fuz|default('-') }}</div></div>
             <div class="form-group"><label>{% trans %}label.postId{% endtrans %}</label><div class="form-control-plaintext">{{ test.postIdInstance.name|default('-') }}</div></div>
             <div class="form-group"><label>{% trans %}label.statusId{% endtrans %}</label><div class="form-control-plaintext">{{ test.statusIdInstance.name|default('-') }}</div></div>
+        </div>
+
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    {{ include('test/_delete_form.html.twig', {test: test}, with_context = false) }}
+                </div>
+
+                <div class="col text-right">
+                    <a href="{{ path('tests.edit', {id: test.id}) }}" class="btn btn-outline-primary">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                        <span class="btn-text">{% trans from 'messages' %}action.edit{% endtrans %}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderReadFormatsOk(): void
+    {
+        $render = new TemplateBuilder($this->getSchemaWithFormats(), 'read');
+
+        $this->assertEquals(<<<T
+{% trans_default_domain 'test' %}
+{% extends 'form/layout.html.twig' %}
+
+{% block title %}{% trans %}title.show{% endtrans %}{% endblock %}
+
+{% block main %}
+    <div class="card">
+        <div class="card-header d-flex">
+            <h3 class="card-header-title">
+                {% trans %}entity{% endtrans %}: {{ test.id }}
+            </h3>
+            <div class="toolbar ml-auto">
+                <a href="{{ path('tests.index') }}" class="btn btn-outline-secondary">
+                    <i class="fa fa-list-ol" aria-hidden="true"></i>
+                    <span class="btn-text">{% trans from 'messages' %}action.list{% endtrans %}</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="form-group"><label>{% trans %}label.timeago{% endtrans %}</label><div class="form-control-plaintext"><span class="timeago-format">{{ test.timeago ? test.timeago|date('Y-m-d H:i:s') : '-' }}</span></div></div>
+            <div class="form-group"><label>{% trans %}label.datetime{% endtrans %}</label><div class="form-control-plaintext"><span class="datetime-format">{{ test.datetime ? test.datetime|date('Y-m-d H:i:s') : '-' }}</span></div></div>
+            <div class="form-group"><label>{% trans %}label.money{% endtrans %}</label><div class="form-control-plaintext money-format">{{ test.money }}</div></div>
         </div>
 
         <div class="card-footer">

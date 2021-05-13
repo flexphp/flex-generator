@@ -1,9 +1,18 @@
 {{ '{%' }} for _{{ item }} in {{ items }} {{ '%}' }}
     <tr>
 {% for id, property in properties %}
+{% set format = property.format %}
+{% set td_class = '' %}
+{% if format == 'timeago' %}
+{% set td_class = ' class="timeago-format"' %}
+{% elseif format == 'datetime' %}
+{% set td_class = ' class="datetime-format"' %}
+{% elseif format == 'money' %}
+{% set td_class = ' class="money-format text-right"' %}
+{% endif %}
 {% if property.isBlame %}
 {% elseif property.DataType starts with 'date' %}
-        <td>{{ '{{' }} _{{ item }}.{{ id }} ? _{{ item }}.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</td>
+        <td{{ td_class|raw }}>{{ '{{' }} _{{ item }}.{{ id }} ? _{{ item }}.{{ id }}|date('Y-m-d H:i:s') : '-' {{ '}}' }}</td>
 {% elseif property.DataType starts with 'time' %}
         <td>{{ '{{' }} _{{ item }}.{{ id }} ? _{{ item }}.{{ id }}|date('H:i:s') : '-' {{ '}}' }}</td>
 {% elseif property.DataType starts with 'bool' %}
@@ -11,7 +20,7 @@
 {% elseif fkRels[id] %}
         <td>{{ '{{' }} _{{ item }}.{{ fkRels[id].pkName }}Instance.{{ fkRels[id].text }}|default('-') {{ '}}' }}</td>
 {% else %}
-        <td>{{ '{{' }} _{{ item }}.{{ id }} {{ '}}' }}</td>
+        <td{{ td_class|raw }}>{{ '{{' }} _{{ item }}.{{ id }} {{ '}}' }}</td>
 {% endif %}
 {% endfor %}
         <td class="text-center">

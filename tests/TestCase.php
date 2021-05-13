@@ -81,7 +81,28 @@ class TestCase extends PHPUnitTestCase
             new SchemaAttribute('filter', 'string', 'filter:ss'),
             new SchemaAttribute('OtherFilter', 'string', 'filter:eq'),
             new SchemaAttribute('fchars', 'string', 'fk:Bar,fuz,baz|fchars:2'),
+            // new SchemaAttribute('fkcheck', 'string', 'fk:Check,fk|fkcheck'),
             new SchemaAttribute('trim', 'string', 'trim'),
+        ]);
+    }
+
+    protected function getSchemaWithFormats(string $name = 'Test'): Schema
+    {
+        return new Schema($name, 'bar', [
+            new SchemaAttribute('id', 'integer', 'pk|ai|required'),
+            new SchemaAttribute('timeago', 'datetime', 'format:timeago'),
+            new SchemaAttribute('datetime', 'datetime', 'format:datetime'),
+            new SchemaAttribute('money', 'integer', 'format:money'),
+        ]);
+    }
+
+    protected function getSchemaWithShowAndHide(string $name = 'Test'): Schema
+    {
+        return new Schema($name, 'bar', [
+            new SchemaAttribute('id', 'integer', 'pk|ai|required|hide:a'),
+            new SchemaAttribute('hideInCreate', 'string', 'hide:c'),
+            new SchemaAttribute('creator', 'int', 'cb|show:ir'),
+            new SchemaAttribute('created', 'datetime', 'ca|show:a'),
         ]);
     }
 
