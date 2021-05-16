@@ -22,7 +22,7 @@ final class CreateDatabaseFileRequest
     /**
      * @var array<int, string>
      */
-    public array $yamls;
+    public array $yamls = [];
 
     public function __construct(string $platform, string $dbname, string $username, string $password, array $yamls)
     {

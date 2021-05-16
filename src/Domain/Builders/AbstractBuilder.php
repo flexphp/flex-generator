@@ -14,7 +14,7 @@ abstract class AbstractBuilder implements BuilderInterface
     /**
      * @var array<array|string>
      */
-    private array $data;
+    private array $data = [];
 
     public static function getHeaderFile(): string
     {

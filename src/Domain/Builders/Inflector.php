@@ -184,7 +184,7 @@ final class Inflector
     private function pluralize(string $string): string
     {
         if (\substr(\strtolower($string), -3) === 'ice') {
-            $onlyUpper = \preg_match('@^[A-Z]+$@', $string);
+            $onlyUpper = \preg_match('#^[A-Z]+$#', $string);
 
             return $string . ($onlyUpper ? 'S' : 's');
         }

@@ -27,7 +27,7 @@ try {
     $file = $request->files->get('file', null);
 
     // @codeCoverageIgnoreStart
-    if (\php_sapi_name() !== 'cli' && !$request->isXmlHttpRequest()) {
+    if (PHP_SAPI !== 'cli' && !$request->isXmlHttpRequest()) {
         \header('Location: index.html');
         die;
     }
@@ -45,13 +45,13 @@ try {
             )
         );
     }
-} catch (Exception $e) {
+} catch (Exception $exception) {
     $response = new \stdClass();
     $response->messages = [
         'message' => \sprintf(
             "Error processing %s file:\n\n%s",
             (isset($file) ? $file->getClientOriginalName() : 'Format'),
-            $e->getMessage()
+            $exception->getMessage()
         ),
     ];
     $response->hasError = true;
@@ -60,10 +60,10 @@ try {
     $log = \sprintf(
         "[%s]\t%s\t%s\t%s\n%s\n",
         \date('Y-m-d H:i:s'),
-        $e->getFile(),
-        $e->getLine(),
-        $e->getMessage(),
-        $e->getTraceAsString()
+        $exception->getFile(),
+        $exception->getLine(),
+        $exception->getMessage(),
+        $exception->getTraceAsString()
     );
 
     \file_put_contents($logfile, $log, \FILE_APPEND);

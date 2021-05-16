@@ -32,27 +32,27 @@ final class SheetProcessResponse
     /**
      * @var array<int, string>
      */
-    public array $requests;
+    public array $requests = [];
 
     /**
      * @var array<int, string>
      */
-    public array $responses;
+    public array $responses = [];
 
     /**
      * @var array<int, string>
      */
-    public array $useCases;
+    public array $useCases = [];
 
     /**
      * @var array<int, string>
      */
-    public array $commands;
+    public array $commands = [];
 
     /**
      * @var array<int, string>
      */
-    public array $templates;
+    public array $templates = [];
 
     public ?string $javascript = null;
 

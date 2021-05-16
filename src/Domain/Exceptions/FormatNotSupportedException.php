@@ -14,5 +14,5 @@ final class FormatNotSupportedException extends DomainException
     /**
      * @var string
      */
-    protected $message = 'Format isn\'t supported';
+    protected $message = "Format isn't supported";
 }
