@@ -237,7 +237,7 @@ final class ProcessFormatUseCase
             RecursiveIteratorIterator::LEAVES_ONLY
         );
 
-        foreach ($files as $name => $file) {
+        foreach ($files as $file) {
             if (!$file->isDir()) {
                 $realPath = $file->getRealPath();
                 $relativePath = \substr($realPath, \strlen($path) + 1);
