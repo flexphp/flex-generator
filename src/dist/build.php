@@ -34,7 +34,7 @@ try {
     // @codeCoverageIgnoreEnd
 
     if (!$file || $file->getError() !== \UPLOAD_ERR_OK) {
-        $error = $file ? $file->getErrorMessage() : 'Upload file has error.';
+        $error = $file !== null ? $file->getErrorMessage() : 'Upload file has error.';
         $response->messages = ['message' => $error];
     } else {
         $response = (new ProcessFormatUseCase())->execute(

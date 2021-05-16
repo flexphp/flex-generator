@@ -24,26 +24,26 @@ final class ActionBuilder extends AbstractBuilder
         string $useCase = '',
         string $responseMessage = ''
     ) {
-        $nflector = $this->getInflector();
-        $action = !empty($action)
-            ? $nflector->action($action)
-            : 'index';
+        $inflector = $this->getInflector();
+        $action = empty($action)
+            ? 'index'
+            : $inflector->action($action);
 
         $this->action = $action;
 
         $data = [];
         $data['action'] = $action;
-        $data['entity'] = $nflector->entity($schema->name());
-        $data['entity_dash'] = $nflector->route($schema->name());
-        $data['item'] = $nflector->item($schema->name());
-        $data['pkName'] = $nflector->camelProperty($schema->pkName());
+        $data['entity'] = $inflector->entity($schema->name());
+        $data['entity_dash'] = $inflector->route($schema->name());
+        $data['item'] = $inflector->item($schema->name());
+        $data['pkName'] = $inflector->camelProperty($schema->pkName());
         $data['pkTypeHint'] = $schema->pkTypeHint();
         $data['request_message'] = $requestMessage;
         $data['use_case'] = $useCase;
         $data['response_message'] = $responseMessage;
-        $data['action_camel'] = $nflector->camelAction($action);
-        $data['route'] = $this->getGuessRoute($nflector->dashAction($action));
-        $data['route_name'] = $nflector->routeName($schema->name(), $action);
+        $data['action_camel'] = $inflector->camelAction($action);
+        $data['route'] = $this->getGuessRoute($inflector->dashAction($action));
+        $data['route_name'] = $inflector->routeName($schema->name(), $action);
         $data['methods'] = $this->getGuessMethod($action);
 
         parent::__construct($data);
