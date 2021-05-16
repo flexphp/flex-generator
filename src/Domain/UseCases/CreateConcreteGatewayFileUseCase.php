@@ -21,7 +21,7 @@ final class CreateConcreteGatewayFileUseCase
     /**
      * @var array<string, string>
      */
-    private $concretes = [
+    private array $concretes = [
         'MySQL' => 'MySQLGatewayBuilder',
     ];
 

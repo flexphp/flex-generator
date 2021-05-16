@@ -11,30 +11,18 @@ namespace FlexPHP\Generator\Domain\Messages\Requests;
 
 final class CreateDatabaseFileRequest
 {
-    /**
-     * @var string
-     */
-    public $platform;
+    public string $platform;
 
-    /**
-     * @var string
-     */
-    public $dbname;
+    public string $dbname;
 
-    /**
-     * @var string
-     */
-    public $username;
+    public string $username;
 
-    /**
-     * @var string
-     */
-    public $password;
+    public string $password;
 
     /**
      * @var array<int, string>
      */
-    public $yamls;
+    public array $yamls;
 
     public function __construct(string $platform, string $dbname, string $username, string $password, array $yamls)
     {

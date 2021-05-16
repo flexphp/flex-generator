@@ -11,10 +11,7 @@ namespace FlexPHP\Generator\Domain\Messages\Responses;
 
 final class CreateUseCaseFileResponse
 {
-    /**
-     * @var array
-     */
-    public $files;
+    public array $files;
 
     public function __construct(array $files)
     {

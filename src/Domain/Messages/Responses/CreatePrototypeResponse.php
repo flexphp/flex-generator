@@ -11,10 +11,7 @@ namespace FlexPHP\Generator\Domain\Messages\Responses;
 
 final class CreatePrototypeResponse
 {
-    /**
-     * @var string
-     */
-    public $outputDir;
+    public string $outputDir;
 
     public function __construct(string $outputDir)
     {

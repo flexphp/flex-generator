@@ -11,10 +11,7 @@ namespace FlexPHP\Generator\Domain\Messages\Responses;
 
 final class CreateControllerFileResponse
 {
-    /**
-     * @var string
-     */
-    public $file;
+    public string $file;
 
     public function __construct(string $file)
     {

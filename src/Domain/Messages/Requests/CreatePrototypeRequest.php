@@ -11,25 +11,13 @@ namespace FlexPHP\Generator\Domain\Messages\Requests;
 
 final class CreatePrototypeRequest
 {
-    /**
-     * @var string
-     */
-    public $name;
+    public string $name;
 
-    /**
-     * @var array
-     */
-    public $sheets;
+    public array $sheets;
 
-    /**
-     * @var string
-     */
-    public $outputDir;
+    public string $outputDir;
 
-    /**
-     * @var string
-     */
-    public $platform;
+    public string $platform;
 
     public function __construct(string $name, array $sheets, string $outputDir, string $platform = 'MySQL')
     {

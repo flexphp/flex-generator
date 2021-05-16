@@ -11,15 +11,9 @@ namespace FlexPHP\Generator\Domain\Messages\Responses;
 
 final class ProcessFormatResponse
 {
-    /**
-     * @var array
-     */
-    public $messages;
+    public array $messages;
 
-    /**
-     * @var bool
-     */
-    public $hasError;
+    public bool $hasError;
 
     public function __construct(array $messages)
     {

@@ -11,15 +11,9 @@ namespace FlexPHP\Generator\Domain\Messages\Requests;
 
 final class SheetProcessRequest
 {
-    /**
-     * @var string
-     */
-    public $name;
+    public string $name;
 
-    /**
-     * @var string
-     */
-    public $path;
+    public string $path;
 
     public function __construct(string $name, string $path)
     {

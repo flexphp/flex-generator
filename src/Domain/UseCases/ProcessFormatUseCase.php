@@ -34,15 +34,9 @@ final class ProcessFormatUseCase
 
     private const COLUMN_B = 1;
 
-    /**
-     * @var int
-     */
-    private $rowHeaders;
+    private ?int $rowHeaders = null;
 
-    /**
-     * @var Inflector
-     */
-    private $inflector;
+    private \FlexPHP\Generator\Domain\Builders\Inflector $inflector;
 
     public function __construct()
     {

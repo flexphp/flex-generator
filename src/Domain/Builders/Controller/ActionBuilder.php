@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class ActionBuilder extends AbstractBuilder
 {
-    private $action;
+    private string $action;
 
     public function __construct(
         SchemaInterface $schema,

@@ -11,11 +11,11 @@ namespace FlexPHP\Generator\Domain\Writers;
 
 abstract class AbstractWriter implements WriterInterface
 {
-    private $content;
+    private string $content;
 
-    private $filename;
+    private string $filename;
 
-    private $path;
+    private string $path;
 
     public function __construct(string $content, string $filename, string $path)
     {

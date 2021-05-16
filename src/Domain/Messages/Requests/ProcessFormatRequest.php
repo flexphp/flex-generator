@@ -11,20 +11,11 @@ namespace FlexPHP\Generator\Domain\Messages\Requests;
 
 final class ProcessFormatRequest
 {
-    /**
-     * @var string
-     */
-    public $path;
+    public string $path;
 
-    /**
-     * @var string
-     */
-    public $filename;
+    public string $filename;
 
-    /**
-     * @var null|string
-     */
-    public $extension;
+    public ?string $extension = null;
 
     public function __construct(string $path, string $filename, ?string $extension)
     {

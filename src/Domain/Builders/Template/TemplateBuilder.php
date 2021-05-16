@@ -15,7 +15,7 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class TemplateBuilder extends AbstractBuilder
 {
-    private $action;
+    private string $action;
 
     public function __construct(SchemaInterface $schema, string $action)
     {

@@ -13,15 +13,9 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class CreateUseCaseFileRequest
 {
-    /**
-     * @var SchemaInterface
-     */
-    public $schema;
+    public \FlexPHP\Schema\SchemaInterface $schema;
 
-    /**
-     * @var array
-     */
-    public $actions;
+    public array $actions;
 
     public function __construct(SchemaInterface $schema, array $actions)
     {

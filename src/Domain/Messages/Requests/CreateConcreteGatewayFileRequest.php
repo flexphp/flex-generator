@@ -13,20 +13,11 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class CreateConcreteGatewayFileRequest
 {
-    /**
-     * @var SchemaInterface
-     */
-    public $schema;
+    public \FlexPHP\Schema\SchemaInterface $schema;
 
-    /**
-     * @var string
-     */
-    public $concrete;
+    public string $concrete;
 
-    /**
-     * @var array
-     */
-    public $actions;
+    public array $actions;
 
     public function __construct(SchemaInterface $schema, string $concrete, array $actions)
     {

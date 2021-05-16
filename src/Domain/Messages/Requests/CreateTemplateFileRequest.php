@@ -13,10 +13,7 @@ use FlexPHP\Schema\SchemaInterface;
 
 final class CreateTemplateFileRequest
 {
-    /**
-     * @var SchemaInterface
-     */
-    public $schema;
+    public \FlexPHP\Schema\SchemaInterface $schema;
 
     public function __construct(SchemaInterface $schema)
     {

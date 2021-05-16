@@ -14,24 +14,15 @@ use FlexPHP\Schema\Constants\Keyword;
 
 final class HeaderSyntaxValidation implements ValidationInterface
 {
-    /**
-     * @var array
-     */
-    private $headers;
+    private array $headers;
 
-    /**
-     * @var array
-     */
-    private $allowedHeaders = [
+    private array $allowedHeaders = [
         Keyword::NAME,
         Keyword::DATATYPE,
         Keyword::CONSTRAINTS,
     ];
 
-    /**
-     * @var array
-     */
-    private $requiredHeaders = [
+    private array $requiredHeaders = [
         Keyword::NAME,
         Keyword::DATATYPE,
     ];

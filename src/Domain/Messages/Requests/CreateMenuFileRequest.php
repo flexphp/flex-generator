@@ -11,10 +11,7 @@ namespace FlexPHP\Generator\Domain\Messages\Requests;
 
 final class CreateMenuFileRequest
 {
-    /**
-     * @var array
-     */
-    public $schemafiles;
+    public array $schemafiles;
 
     public function __construct(array $schemafiles)
     {

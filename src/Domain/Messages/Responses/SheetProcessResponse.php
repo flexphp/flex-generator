@@ -11,80 +11,50 @@ namespace FlexPHP\Generator\Domain\Messages\Responses;
 
 final class SheetProcessResponse
 {
-    /**
-     * @var null|string
-     */
-    public $controller;
+    public ?string $controller = null;
 
-    /**
-     * @var null|string
-     */
-    public $entity;
+    public ?string $entity = null;
 
-    /**
-     * @var null|string
-     */
-    public $gateway;
+    public ?string $gateway = null;
 
-    /**
-     * @var null|string
-     */
-    public $concreteGateway;
+    public ?string $concreteGateway = null;
 
-    /**
-     * @var null|string
-     */
-    public $factory;
+    public ?string $factory = null;
 
-    /**
-     * @var null|string
-     */
-    public $repository;
+    public ?string $repository = null;
 
-    /**
-     * @var null|string
-     */
-    public $constraint;
+    public ?string $constraint = null;
 
-    /**
-     * @var null|string
-     */
-    public $translate;
+    public ?string $translate = null;
 
-    /**
-     * @var null|string
-     */
-    public $formType;
+    public ?string $formType = null;
 
     /**
      * @var array<int, string>
      */
-    public $requests;
+    public array $requests;
 
     /**
      * @var array<int, string>
      */
-    public $responses;
+    public array $responses;
 
     /**
      * @var array<int, string>
      */
-    public $useCases;
+    public array $useCases;
 
     /**
      * @var array<int, string>
      */
-    public $commands;
+    public array $commands;
 
     /**
      * @var array<int, string>
      */
-    public $templates;
+    public array $templates;
 
-    /**
-     * @var null|string
-     */
-    public $javascript;
+    public ?string $javascript = null;
 
     public function __construct(array $response)
     {
