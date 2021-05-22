@@ -404,8 +404,14 @@ T
             new SchemaAttribute('required', 'string', 'required'),
             new SchemaAttribute('type', 'string', 'type:number'),
             new SchemaAttribute('filter', 'string', 'filter:ss'),
+            new SchemaAttribute('format', 'integer', 'format:money'),
             new SchemaAttribute('trim', 'string', 'trim'),
             new SchemaAttribute('fchars', 'string', 'fk:table,name,id|fchars:1'),
+            new SchemaAttribute('fkcheck', 'string', 'fk:table,name,id|fkcheck'),
+            new SchemaAttribute('link', 'string', 'link'),
+            new SchemaAttribute('show', 'string', 'show:a'),
+            new SchemaAttribute('hide', 'string', 'hide:a'),
+            new SchemaAttribute('default', 'string', 'default:A'),
         ]));
 
         $this->assertEquals(<<<T
@@ -475,6 +481,40 @@ final class TestFormType extends AbstractType
             \$fcharsModifier(\$event->getForm(), (string)\$event->getData()['fchars'] ?: null);
         });
 
+        \$fkcheckModifier = function (FormInterface \$form, ?string \$value): void {
+            \$choices = null;
+
+            if (!empty(\$value)) {
+                \$response = \$this->readTableUseCase->execute(new ReadTableRequest(\$value));
+
+                if (\$response->table->id()) {
+                    \$choices = [\$response->table->name() => \$value];
+                }
+            }
+
+            \$form->add('fkcheck', Select2Type::class, [
+                'label' => 'label.fkcheck',
+                'required' => false,
+                'attr' => [
+                    'data-autocomplete-url' => \$this->router->generate('tests.find.tables'),
+                ],
+                'choices' => \$choices,
+                'data' => \$value,
+            ]);
+        };
+
+        \$builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent \$event) use (\$fkcheckModifier) {
+            if (!\$event->getData()) {
+                return null;
+            }
+
+            \$fkcheckModifier(\$event->getForm(), \$event->getData()->fkcheck());
+        });
+
+        \$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent \$event) use (\$fkcheckModifier): void {
+            \$fkcheckModifier(\$event->getForm(), (string)\$event->getData()['fkcheck'] ?: null);
+        });
+
         \$builder->add('pk', InputType\TextType::class, [
             'label' => 'label.pk',
             'required' => true,
@@ -491,6 +531,10 @@ final class TestFormType extends AbstractType
             'label' => 'label.filter',
             'required' => false,
         ]);
+        \$builder->add('format', InputType\IntegerType::class, [
+            'label' => 'label.format',
+            'required' => false,
+        ]);
         \$builder->add('trim', InputType\TextType::class, [
             'label' => 'label.trim',
             'required' => false,
@@ -501,6 +545,29 @@ final class TestFormType extends AbstractType
             'attr' => [
                 'data-autocomplete-url' => \$this->router->generate('tests.find.tables'),
             ],
+        ]);
+        \$builder->add('fkcheck', Select2Type::class, [
+            'label' => 'label.fkcheck',
+            'required' => false,
+            'attr' => [
+                'data-autocomplete-url' => \$this->router->generate('tests.find.tables'),
+            ],
+        ]);
+        \$builder->add('link', InputType\TextType::class, [
+            'label' => 'label.link',
+            'required' => false,
+        ]);
+        \$builder->add('show', InputType\TextType::class, [
+            'label' => 'label.show',
+            'required' => false,
+        ]);
+        \$builder->add('hide', InputType\TextType::class, [
+            'label' => 'label.hide',
+            'required' => false,
+        ]);
+        \$builder->add('default', InputType\TextType::class, [
+            'label' => 'label.default',
+            'required' => false,
         ]);
     }
 

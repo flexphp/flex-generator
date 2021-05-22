@@ -110,7 +110,7 @@ final class {{ entity }}FormType extends AbstractType
 {% else %}
             'required' => false,
 {% endif %}
-{% if property.constraints|keys|filter(v => v not in ['required', 'type', 'pk', 'trim', 'fchars', 'filter'])|length > 0 %}
+{% if property.constraints|keys|filter(v => v not in ['required', 'type', 'pk', 'trim', 'fchars', 'filter', 'format', 'show', 'hide', 'fkcheck', 'link', 'default'])|length > 0 %}
             'attr' => [
 {% if fkRelsNoBlame[id] %}
                 'data-autocomplete-url' => $this->router->generate('{{ route }}.find.{{ fkRelsNoBlame[id].route }}'),
