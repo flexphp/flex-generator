@@ -170,7 +170,7 @@ jQuery(document).ready(function ($) {
     });
 
     if ($(document).datepicker) {
-        $('.datepicker').datepicker({
+        $('.date-picker').datepicker({
             format: window.flex.defaultDateFormat,
             language: window.flex.defaultLocale,
             clearBtn: true,

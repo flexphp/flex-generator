@@ -1,9 +1,9 @@
 {% block datepicker_widget %}
-    <div class="input-group date mb-3">
-        <input type="text" id="{{ id }}" name="{{ full_name }}" class="form-control datepicker" {% if value is not empty %}value="{{ value }}"{% endif %} />
+    <div class="input-group date date-picker mb-3">
+        <input type="text" id="{{ id }}" name="{{ full_name }}" class="form-control" {% if value is not empty %}value="{{ value }}"{% endif %} />
         <div class="input-group-append">
             <span class="input-group-text">
-                <i class="fas fa-calendar-day"></i>
+                <i class="fa fa-calendar-day"></i>
             </span>
         </div>
     </div>
