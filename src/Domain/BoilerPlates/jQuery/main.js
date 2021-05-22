@@ -87,6 +87,12 @@ jQuery(document).ready(function ($) {
         $(this).html(getMoneyFormat($(this).html()));
     });
 
+    $('.date-format').each(function () {
+        // Used in template without AJAX
+        $(this).attr('title', getDate($(this).html()));
+        $(this).html(getDateFormat($(this).html()));
+    });
+
     $('.datetime-format').each(function () {
         // Used in template without AJAX
         $(this).attr('title', getDateTime($(this).html()));
@@ -274,6 +280,37 @@ function isValidDateTimeFormat(datetime)
 {
     return !(!datetime || datetime === undefined || datetime === null || datetime === '');
 
+}
+
+function getDate(date)
+{
+    if (!isValidDateTimeFormat(date)) {
+        return date;
+    }
+
+    try {
+        return (new Date((new Date(date)).setMilliseconds(getTimeZoneOffset() * 2))).toJSON().slice(0, 19).replace('T', ' ');
+    } catch (e) {
+        return date;
+    }
+}
+
+function getDateFormat(date)
+{
+    if (!isValidDateTimeFormat(date)) {
+        return date;
+    }
+
+    try {
+        return (new Date((new Date(date)).setMilliseconds(getTimeZoneOffset()))).toLocaleDateString(window.flex.defaultLocale, {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+    } catch (e) {
+        return date;
+    }
 }
 
 function getDateTime(datetime)

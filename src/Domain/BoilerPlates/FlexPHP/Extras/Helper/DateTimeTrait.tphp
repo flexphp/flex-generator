@@ -1,5 +1,12 @@
 <?php declare(strict_types=1);
-
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace Domain\Helper;
 
 use DateInterval;
@@ -33,6 +40,23 @@ trait DateTimeTrait
         return new DateTimeZone($timezone ?? 'UTC');
     }
 
+    private function dateTimeToUTC(?string $datetime, int $offset): ?string
+    {
+        if ($datetime) {
+            $interval = new DateInterval('PT' . \abs($offset) . 'S');
+
+            if ($offset > 0) {
+                $datetimeUTC = (new DateTime($datetime))->sub($interval);
+            } else {
+                $datetimeUTC = (new DateTime($datetime))->add($interval);
+            }
+
+            return $datetimeUTC->format('Y-m-d H:i:s');
+        }
+
+        return null;
+    }
+
     private function getStartToday(DateTimeZone $timezone, int $offset): string
     {
         $timestamp = $this->getDateTime('today', $timezone);
@@ -43,7 +67,7 @@ trait DateTimeTrait
                 ->sub(new DateInterval('PT' . $offset . 'S'));
         } elseif ($offset < 0) {
             $timestamp
-                ->add(new DateInterval('PT' . abs($offset) . 'S'));
+                ->add(new DateInterval('PT' . \abs($offset) . 'S'));
         }
 
         return $timestamp->format('Y-m-d H:i:s');
@@ -57,7 +81,7 @@ trait DateTimeTrait
             $timestamp->sub(new DateInterval('PT' . ($offset + 1) . 'S'));
         } elseif ($offset < 0) {
             $timestamp->add(new DateInterval('P1D'));
-            $timestamp->add(new DateInterval('PT' . abs($offset + 1) .'S'));
+            $timestamp->add(new DateInterval('PT' . \abs($offset + 1) . 'S'));
         } else {
             $timestamp->add(new DateInterval('P1D'));
             $timestamp->sub(new DateInterval('PT' . ($offset + 1) . 'S'));
