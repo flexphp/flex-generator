@@ -42,6 +42,7 @@ final class ActionBuilder extends AbstractBuilder
         $data['use_case'] = $useCase;
         $data['response_message'] = $responseMessage;
         $data['action_camel'] = $inflector->camelAction($action);
+        $data['action_pascal'] = $inflector->pascalAction($action);
         $data['route'] = $this->getGuessRoute($inflector->dashAction($action));
         $data['route_name'] = $inflector->routeName($schema->name(), $action);
         $data['methods'] = $this->getGuessMethod($action);

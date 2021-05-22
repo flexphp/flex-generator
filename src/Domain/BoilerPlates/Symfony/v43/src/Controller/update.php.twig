@@ -3,11 +3,9 @@
      * @Cache(smaxage="{{ cache|default('3600') }}")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
-    public function edit({{ entity }}Gateway ${{ item }}Gateway, {{ pkTypeHint }} $id): Response
+    public function edit(Read{{ entity }}UseCase $useCase, {{ pkTypeHint }} $id): Response
     {
         $request = new Read{{ entity }}Request($id);
-
-        $useCase = new Read{{ entity }}UseCase(new {{ entity }}Repository(${{ item }}Gateway));
 
         $response = $useCase->execute($request);
 
@@ -27,7 +25,7 @@
      * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
-    public function {{ action_camel }}(Request $request, {{ entity }}Gateway ${{ item }}Gateway, TranslatorInterface $trans, {{ pkTypeHint }} $id): Response
+    public function {{ action_camel }}(Request $request, {{ action_pascal }}{{ entity }}UseCase $useCase, TranslatorInterface $trans, {{ pkTypeHint }} $id): Response
     {
 {% if request_message %}
         {{ request_message|trim|raw }}

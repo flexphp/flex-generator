@@ -19,7 +19,7 @@ final class ActionBuilderTest extends TestCase
     /**
      * @dataProvider getEntityAndRouteName
      */
-    public function testItRenderOk(string $entity, string $expected, string $route, string $role, string $item): void
+    public function testItRenderOk(string $entity, string $expected, string $route, string $role): void
     {
         $render = new ActionBuilder(new Schema($entity, 'bar', []), '');
 
@@ -29,7 +29,7 @@ final class ActionBuilderTest extends TestCase
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_INDEX')", statusCode=401)
      */
-    public function index(Request \$request, {$expected}Gateway \${$item}Gateway): Response
+    public function index(Request \$request, Index{$expected}UseCase \$useCase): Response
     {
     }
 
@@ -47,7 +47,7 @@ T
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_INDEX')", statusCode=401)
      */
-    public function index(Request $request, TestGateway $testGateway): Response
+    public function index(Request $request, IndexTestUseCase $useCase): Response
     {
     }
 
@@ -78,7 +78,7 @@ T
      * @Route("/create", methods={"POST"}, name="tests.create")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_CREATE')", statusCode=401)
      */
-    public function create(Request $request, TestGateway $testGateway, TranslatorInterface $trans): Response
+    public function create(Request $request, CreateTestUseCase $useCase, TranslatorInterface $trans): Response
     {
     }
 
@@ -94,8 +94,7 @@ T
         string $expected,
         string $route,
         string $template,
-        string $role,
-        string $item
+        string $role
     ): void {
         $render = new ActionBuilder(new Schema($name, 'bar', []), 'create');
 
@@ -118,7 +117,7 @@ T
      * @Route("/create", methods={"POST"}, name="{$route}.create")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_CREATE')", statusCode=401)
      */
-    public function create(Request \$request, {$expected}Gateway \${$item}Gateway, TranslatorInterface \$trans): Response
+    public function create(Request \$request, Create{$expected}UseCase \$useCase, TranslatorInterface \$trans): Response
     {
     }
 
@@ -136,7 +135,7 @@ T
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_READ')", statusCode=401)
      */
-    public function read(TestGateway $testGateway, string $id): Response
+    public function read(ReadTestUseCase $useCase, string $id): Response
     {
     }
 
@@ -154,11 +153,9 @@ T
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function edit(TestGateway $testGateway, string $id): Response
+    public function edit(ReadTestUseCase $useCase, string $id): Response
     {
         $request = new ReadTestRequest($id);
-
-        $useCase = new ReadTestUseCase(new TestRepository($testGateway));
 
         $response = $useCase->execute($request);
 
@@ -178,7 +175,7 @@ T
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function update(Request $request, TestGateway $testGateway, TranslatorInterface $trans, string $id): Response
+    public function update(Request $request, UpdateTestUseCase $useCase, TranslatorInterface $trans, string $id): Response
     {
     }
 
@@ -205,11 +202,9 @@ T
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_UPDATE')", statusCode=401)
      */
-    public function edit({$expected}Gateway \${$item}Gateway, string \$id): Response
+    public function edit(Read{$expected}UseCase \$useCase, string \$id): Response
     {
         \$request = new Read{$expected}Request(\$id);
-
-        \$useCase = new Read{$expected}UseCase(new {$expected}Repository(\${$item}Gateway));
 
         \$response = \$useCase->execute(\$request);
 
@@ -229,7 +224,7 @@ T
      * @Route("/update/{id}", methods={"PUT"}, name="{$route}.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{$role}_UPDATE')", statusCode=401)
      */
-    public function update(Request \$request, {$expected}Gateway \${$item}Gateway, TranslatorInterface \$trans, string \$id): Response
+    public function update(Request \$request, Update{$expected}UseCase \$useCase, TranslatorInterface \$trans, string \$id): Response
     {
     }
 
@@ -248,7 +243,7 @@ T
      * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
      */
-    public function delete(TestGateway $testGateway, TranslatorInterface $trans, int $id): Response
+    public function delete(DeleteTestUseCase $useCase, TranslatorInterface $trans, int $id): Response
     {
     }
 
@@ -267,7 +262,7 @@ T
      * @Route("/delete/{id}", methods={"DELETE"}, name="tests.delete")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_DELETE')", statusCode=401)
      */
-    public function delete(TestGateway $testGateway, TranslatorInterface $trans, string $id): Response
+    public function delete(DeleteTestUseCase $useCase, TranslatorInterface $trans, string $id): Response
     {
     }
 
@@ -285,11 +280,9 @@ T
      * @Cache(smaxage="3600")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function edit(TestGateway $testGateway, int $id): Response
+    public function edit(ReadTestUseCase $useCase, int $id): Response
     {
         $request = new ReadTestRequest($id);
-
-        $useCase = new ReadTestUseCase(new TestRepository($testGateway));
 
         $response = $useCase->execute($request);
 
@@ -309,7 +302,7 @@ T
      * @Route("/update/{id}", methods={"PUT"}, name="tests.update")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_UPDATE')", statusCode=401)
      */
-    public function update(Request $request, TestGateway $testGateway, TranslatorInterface $trans, int $id): Response
+    public function update(Request $request, UpdateTestUseCase $useCase, TranslatorInterface $trans, int $id): Response
     {
     }
 
@@ -331,7 +324,7 @@ T
      * @Route("/custom-action", methods={"POST"}, name="foo-bars.custom-action")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_FOOBAR_CUSTOMACTION')", statusCode=401)
      */
-    public function customAction(Request \$request): Response
+    public function customAction(Request \$request, CustomActionFooBarUseCase \$useCase): Response
     {
     }
 
@@ -350,7 +343,7 @@ T
      * @Route("/action", methods={"POST"}, name="tests.action")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_ACTION')", statusCode=401)
      */
-    public function action(Request \$request): Response
+    public function action(Request \$request, ActionTestUseCase \$useCase): Response
     {
         $requestMessage
     }
@@ -370,7 +363,7 @@ T
      * @Route("/action", methods={"POST"}, name="tests.action")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_ACTION')", statusCode=401)
      */
-    public function action(Request \$request): Response
+    public function action(Request \$request, ActionTestUseCase \$useCase): Response
     {
         $useCase
     }
@@ -390,7 +383,7 @@ T
      * @Route("/action", methods={"POST"}, name="tests.action")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_ACTION')", statusCode=401)
      */
-    public function action(Request \$request): Response
+    public function action(Request \$request, ActionTestUseCase \$useCase): Response
     {
         $responseMessage
     }
@@ -418,7 +411,7 @@ T
      * @Route("/action", methods={"POST"}, name="tests.action")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_ACTION')", statusCode=401)
      */
-    public function action(Request \$request): Response
+    public function action(Request \$request, ActionTestUseCase \$useCase): Response
     {
         $requestMessage
 
@@ -440,7 +433,7 @@ T
      * @Route("/action", methods={"POST"}, name="tests.action")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_ACTION')", statusCode=401)
      */
-    public function action(Request \$request): Response
+    public function action(Request \$request, ActionTestUseCase \$useCase): Response
     {
     }
 
@@ -464,13 +457,13 @@ T
     public function getEntityAndRouteName(): array
     {
         return [
-            // entity, function, route, role, item
-            ['userpassword', 'Userpassword', 'userpasswords', 'USERPASSWORD', 'userpassword'],
-            ['USERPASSWORD', 'Userpassword', 'userpasswords', 'USERPASSWORD', 'userpassword'],
-            ['UserPassword', 'UserPassword', 'user-passwords', 'USERPASSWORD', 'userPassword'],
-            ['userPassword', 'UserPassword', 'user-passwords', 'USERPASSWORD', 'userPassword'],
-            ['user_password', 'UserPassword', 'user-passwords', 'USERPASSWORD', 'userPassword'],
-            ['Posts', 'Post', 'posts', 'POST', 'post'],
+            // entity, function, route, role
+            ['userpassword', 'Userpassword', 'userpasswords', 'USERPASSWORD'],
+            ['USERPASSWORD', 'Userpassword', 'userpasswords', 'USERPASSWORD'],
+            ['UserPassword', 'UserPassword', 'user-passwords', 'USERPASSWORD'],
+            ['userPassword', 'UserPassword', 'user-passwords', 'USERPASSWORD'],
+            ['user_password', 'UserPassword', 'user-passwords', 'USERPASSWORD'],
+            ['Posts', 'Post', 'posts', 'POST'],
         ];
     }
 

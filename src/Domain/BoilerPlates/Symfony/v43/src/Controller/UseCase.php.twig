@@ -1,9 +1,3 @@
-{% if action in ['Index', 'Create', 'Read', 'Update', 'Delete'] %}
-        $useCase = new {{ action }}{{ entity }}UseCase(new {{ entity }}Repository(${{ item }}Gateway));
-
-{% else %}
-        $useCase = new {{ action }}{{ entity }}UseCase();
-{% endif %}
 {% if action in ['Create', 'Update', 'Delete'] %}
         $useCase->execute($request);
 {% else %}

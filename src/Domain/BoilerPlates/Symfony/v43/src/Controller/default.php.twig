@@ -11,7 +11,7 @@
 {% elseif methods == 'DELETE' %}
     public function {{ action_camel }}($id): Response
 {% else %}
-    public function {{ action_camel }}(Request $request): Response
+    public function {{ action_camel }}(Request $request, {{ action_pascal }}{{ entity }}UseCase $useCase): Response
 {% endif %}
     {
 {% if request_message %}

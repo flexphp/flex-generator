@@ -2,7 +2,7 @@
      * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
-    public function {{ action_camel }}({{ entity }}Gateway ${{ item }}Gateway, TranslatorInterface $trans, {{ pkTypeHint }} $id): Response
+    public function {{ action_camel }}({{ action_pascal }}{{ entity }}UseCase $useCase, TranslatorInterface $trans, {{ pkTypeHint }} $id): Response
     {
 {% if request_message %}
         {{ request_message|trim|raw }}

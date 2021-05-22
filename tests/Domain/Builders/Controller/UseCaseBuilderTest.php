@@ -23,7 +23,6 @@ final class UseCaseBuilderTest extends TestCase
         $render = new UseCaseBuilder(new Schema($entity, 'bar', []), 'action');
 
         $this->assertEquals(<<<T
-        \$useCase = new Action{$expected}UseCase();
         \$response = \$useCase->execute(\$request);
 T
 , $render->build());
@@ -34,8 +33,6 @@ T
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'index');
 
         $this->assertEquals(<<<'T'
-        $useCase = new IndexTestUseCase(new TestRepository($testGateway));
-
         $response = $useCase->execute($request);
 T
 , $render->build());
@@ -46,8 +43,6 @@ T
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'create');
 
         $this->assertEquals(<<<'T'
-        $useCase = new CreateTestUseCase(new TestRepository($testGateway));
-
         $useCase->execute($request);
 T
 , $render->build());
@@ -58,8 +53,6 @@ T
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'read');
 
         $this->assertEquals(<<<'T'
-        $useCase = new ReadTestUseCase(new TestRepository($testGateway));
-
         $response = $useCase->execute($request);
 
         if (!$response->test->id()) {
@@ -77,8 +70,6 @@ T
         $render = new UseCaseBuilder(new Schema($name, 'bar', []), 'read');
 
         $this->assertEquals(<<<T
-        \$useCase = new Read{$expected}UseCase(new {$expected}Repository(\${$item}Gateway));
-
         \$response = \$useCase->execute(\$request);
 
         if (!\$response->{$item}->id()) {
@@ -93,8 +84,6 @@ T
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'update');
 
         $this->assertEquals(<<<'T'
-        $useCase = new UpdateTestUseCase(new TestRepository($testGateway));
-
         $useCase->execute($request);
 T
 , $render->build());
@@ -105,8 +94,6 @@ T
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'delete');
 
         $this->assertEquals(<<<'T'
-        $useCase = new DeleteTestUseCase(new TestRepository($testGateway));
-
         $useCase->execute($request);
 T
 , $render->build());
