@@ -1,9 +1,15 @@
 <?php declare(strict_types=1);
-
+/*
+ * This file is part of FlexPHP.
+ *
+ * (c) Freddie Gar <freddie.gar@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace App\Listener;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,13 +51,13 @@ final class ExceptionListener
     public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
-        $exceptionClass = get_class($exception);
+        $exceptionClass = \get_class($exception);
         $element = $this->getElementInException($exception);
 
         $messageByClass = [
             ForeignKeyConstraintViolationException::class => $this->trans->trans('db.fk', [
                 '{element}' => $element,
-            ],'error'),
+            ], 'error'),
         ];
 
         if (isset($messageByClass[$exceptionClass])) {
@@ -76,9 +82,7 @@ final class ExceptionListener
 
             $event->setResponse($response);
         } elseif ($exception instanceof HttpExceptionInterface && $exception->getStatusCode() === 401) {
-            if (!empty($event->getRequest()->getUser())) {
-                $this->session->getFlashBag()->add('danger', $exception->getMessage());
-            }
+            $this->session->getFlashBag()->add('danger', $exception->getMessage());
 
             $response = new RedirectResponse($this->router->generate('login'), 302);
 
@@ -97,13 +101,13 @@ final class ExceptionListener
                 continue;
             }
 
-            if (strpos($step['file'], 'Repository.php') === false) {
+            if (\strpos($step['file'], 'Repository.php') === false) {
                 continue;
             }
 
-            $parts = explode(DIRECTORY_SEPARATOR, $step['file']);
-            $file = end($parts);
-            $context = $this->getCamelCase(str_replace('Repository.php', '', $file));
+            $parts = \explode(\DIRECTORY_SEPARATOR, $step['file']);
+            $file = \end($parts);
+            $context = $this->getCamelCase(\str_replace('Repository.php', '', $file));
 
             if ($context) {
                 return $this->trans->trans('entity', [], $context);
@@ -117,14 +121,14 @@ final class ExceptionListener
     {
         $pattern = '#(?=\p{Lu}{1})#u';
 
-        $words = preg_split($pattern, $string, 0, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $words = \preg_split($pattern, $string, 0, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
 
         if ($words === false) {
             return $string;
         }
 
-        $words[0] = strtolower($words[0]);
+        $words[0] = \strtolower($words[0]);
 
-        return implode('', $words);
+        return \implode('', $words);
     }
 }
