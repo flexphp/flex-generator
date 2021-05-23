@@ -13,12 +13,14 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 
 final class FkSetterBuilder extends AbstractBuilder
 {
-    public function __construct(string $name, string $type, bool $required)
+    public function __construct(string $name, string $type, bool $required, string $table = '')
     {
         $name = $this->getInflector()->camelProperty($name);
         $setter = $this->getInflector()->pascalProperty($name);
-        $type = $this->getInflector()->entity($type);
-        $typeName = $this->getInflector()->camelProperty($type);
+        $type = $type !== 'self' ? $this->getInflector()->entity($type) : $type;
+        $typeName = $type !== 'self'
+            ? $this->getInflector()->camelProperty($type)
+            : $this->getInflector()->camelProperty($this->getInflector()->entity($table ?: $type));
 
         parent::__construct(\compact('name', 'setter', 'type', 'typeName', 'required'));
     }

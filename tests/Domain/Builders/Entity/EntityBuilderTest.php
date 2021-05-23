@@ -342,6 +342,65 @@ T
 , $render->build());
     }
 
+    public function testItSelfReferenceOk(): void
+    {
+        $render = new EntityBuilder(new Schema('Tests', 'bar', [
+            new SchemaAttribute('id', 'integer', 'pk|ai|required'),
+            new SchemaAttribute('parent', 'integer', 'fk:Tests'),
+        ]));
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Test;
+
+use Domain\Helper\ToArrayTrait;
+
+final class Test
+{
+    use ToArrayTrait;
+
+    private \$id;
+
+    private \$parent;
+
+    private \$parentInstance;
+
+    public function id(): ?int
+    {
+        return \$this->id;
+    }
+
+    public function parent(): ?int
+    {
+        return \$this->parent;
+    }
+
+    public function parentInstance(): ?self
+    {
+        return \$this->parentInstance;
+    }
+
+    public function setId(int \$id): void
+    {
+        \$this->id = \$id;
+    }
+
+    public function setParent(?int \$parent): void
+    {
+        \$this->parent = \$parent;
+    }
+
+    public function setParentInstance(?self \$test): void
+    {
+        \$this->parentInstance = \$test;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItOkBlameByInFk(): void
     {
         $render = new EntityBuilder(new Schema('Users', 'bar', [
@@ -369,7 +428,7 @@ final class User implements UserInterface
         return \$this->createdBy;
     }
 
-    public function createdByInstance(): ?User
+    public function createdByInstance(): ?self
     {
         return \$this->createdByInstance;
     }
@@ -379,7 +438,7 @@ final class User implements UserInterface
         \$this->createdBy = \$createdBy;
     }
 
-    public function setCreatedByInstance(?User \$user): void
+    public function setCreatedByInstance(?self \$user): void
     {
         \$this->createdByInstance = \$user;
     }

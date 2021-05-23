@@ -20,8 +20,8 @@ final class EntityBuilder extends AbstractBuilder
         $name = $this->getInflector()->entity($schema->name());
         $getters = $this->getGetters($schema->attributes());
         $setters = $this->getSetters($schema->attributes());
-        $fkGetters = $this->getFkGetters($schema->fkRelations());
-        $fkSetters = $this->getFkSetters($schema->fkRelations());
+        $fkGetters = $this->getFkGetters($schema->name(), $schema->fkRelations());
+        $fkSetters = $this->getFkSetters($schema->name(), $schema->fkRelations());
         $_properties = $this->getProperties($schema->attributes());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
         $fkRels = $this->getFkRelations($schema->fkRelations());
@@ -83,12 +83,16 @@ final class EntityBuilder extends AbstractBuilder
         );
     }
 
-    private function getFkGetters(array $fkRelations): array
+    private function getFkGetters(string $table, array $fkRelations): array
     {
         return \array_reduce(
             $fkRelations,
-            function (array $result, array $fkRel): array {
-                $result[] = new FkGetterBuilder($fkRel['pkId'], $fkRel['pkTable'], $fkRel['isRequired']);
+            function (array $result, array $fkRel) use ($table): array {
+                $result[] = new FkGetterBuilder(
+                    $fkRel['pkId'],
+                    $fkRel['pkTable'] === $table ? 'self' : $fkRel['pkTable'],
+                    $fkRel['isRequired']
+                );
 
                 return $result;
             },
@@ -96,12 +100,17 @@ final class EntityBuilder extends AbstractBuilder
         );
     }
 
-    private function getFkSetters(array $fkRelations): array
+    private function getFkSetters(string $table, array $fkRelations): array
     {
         return \array_reduce(
             $fkRelations,
-            function (array $result, array $fkRel): array {
-                $result[] = new FkSetterBuilder($fkRel['pkId'], $fkRel['pkTable'], $fkRel['isRequired']);
+            function (array $result, array $fkRel) use ($table): array {
+                $result[] = new FkSetterBuilder(
+                    $fkRel['pkId'],
+                    $fkRel['pkTable'] === $table ? 'self' : $fkRel['pkTable'],
+                    $fkRel['isRequired'],
+                    $table
+                );
 
                 return $result;
             },

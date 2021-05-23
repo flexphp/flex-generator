@@ -17,7 +17,7 @@ final class FkGetterBuilder extends AbstractBuilder
     {
         $name = $this->getInflector()->camelProperty($name);
         $getter = $this->getInflector()->camelProperty($name);
-        $type = $this->getInflector()->entity($type);
+        $type = $type !== 'self' ? $this->getInflector()->entity($type) : $type;
         $typeName = $this->getInflector()->camelProperty($type);
 
         parent::__construct(\compact('name', 'getter', 'type', 'typeName', 'required'));
