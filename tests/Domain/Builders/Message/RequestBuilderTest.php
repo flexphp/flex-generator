@@ -235,6 +235,46 @@ T
 , $render->build());
     }
 
+    public function testItRenderPatchOk(): void
+    {
+        $render = new RequestBuilder($this->getSchema('Fuz'), 'patch');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class UpdateFuzRequest implements RequestInterface
+{
+    public \$lower;
+
+    public \$upper;
+
+    public \$pascalCase;
+
+    public \$camelCase;
+
+    public \$snakeCase;
+
+    public \$_patch;
+
+    public function __construct(string \$lower, array \$data, bool \$_patch = false)
+    {
+        \$this->lower = \$lower;
+        \$this->upper = \$data['upper'] ?? null;
+        \$this->pascalCase = \$data['pascalCase'] ?? null;
+        \$this->camelCase = \$data['camelCase'] ?? null;
+        \$this->snakeCase = \$data['snakeCase'] ?? null;
+        \$this->_patch = \$_patch;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderUpdateWithTrimOk(): void
     {
         $render = new RequestBuilder($this->getSchemaFkWithFilterAndFchars('Fuz'), 'update');
@@ -271,6 +311,47 @@ final class UpdateFuzRequest implements RequestInterface
 T
 , $render->build());
     }
+
+    public function testItRenderPatchWithTrimOk(): void
+    {
+        $render = new RequestBuilder($this->getSchemaFkWithFilterAndFchars('Fuz'), 'patch');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class UpdateFuzRequest implements RequestInterface
+{
+    public \$id;
+
+    public \$filter;
+
+    public \$otherFilter;
+
+    public \$fchars;
+
+    public \$trim;
+
+    public \$_patch;
+
+    public function __construct(int \$id, array \$data, bool \$_patch = false)
+    {
+        \$this->id = \$id;
+        \$this->filter = \$data['filter'] ?? null;
+        \$this->otherFilter = \$data['otherFilter'] ?? null;
+        \$this->fchars = \$data['fchars'] ?? null;
+        \$this->trim = isset(\$data['trim']) ? \\trim(\$data['trim']) : null;
+        \$this->_patch = \$_patch;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderDeleteOk(): void
     {
         $render = new RequestBuilder($this->getSchema('Fuz'), 'delete');
@@ -526,6 +607,41 @@ final class UpdateFuzRequest implements RequestInterface
         \$this->code = \$code;
         \$this->name = \$data['name'] ?? null;
         \$this->updatedBy = \$updatedBy;
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItRenderPatchWithBlameByOk(): void
+    {
+        $this->markTestIncomplete();
+        $render = new RequestBuilder($this->getSchemaStringAndBlameBy('Fuz'), 'patch');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Fuz\Request;
+
+use FlexPHP\Messages\RequestInterface;
+
+final class UpdateFuzRequest implements RequestInterface
+{
+    public \$code;
+
+    public \$name;
+
+    public \$updatedBy;
+
+    public \$_patch;
+
+    public function __construct(string \$code, array \$data, int \$updatedBy, bool \$_patch = false)
+    {
+        \$this->code = \$code;
+        \$this->name = \$data['name'] ?? null;
+        \$this->updatedBy = \$updatedBy;
+        \$this->_patch = \$_patch;
     }
 }
 

@@ -9,7 +9,7 @@ use Domain\Helper\DateTimeTrait;
 {% endif %}
 use FlexPHP\Messages\RequestInterface;
 
-final class {{ action }}{{ entity }}Request implements RequestInterface
+final class {{ action in ['Patch'] ? 'Update' : action }}{{ entity }}Request implements RequestInterface
 {
 {% if action in ['Index'] %}
     use DateTimeTrait;
@@ -37,7 +37,7 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% if property.isUb %}
 {% set UpdatedById = id %}
 {% endif %}
-{% if (action in ['Update'] and (property.isPk or property.isUb)) or (action in ['Create'] and property.isCb) or action in ['Index'] or (not property.isAi and not property.isBlame) %}
+{% if (action in ['Update', 'Patch'] and (property.isPk or property.isUb)) or (action in ['Create'] and property.isCb) or action in ['Index'] or (not property.isAi and not property.isBlame) %}
 {% if action in ['Index'] and property.isCa %}
     public ${{ id }} = [];
 {% else %}
@@ -60,6 +60,14 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
     public function __construct({{ pkTypeHint }} ${{ pkName }}, array $data, {{ UpdatedBy.typeHint }} ${{ UpdatedById }})
 {% elseif action in ['Update'] %}
     public function __construct({{ pkTypeHint }} ${{ pkName }}, array $data)
+{% elseif action in ['Patch'] and UpdatedBy %}
+    public $_patch;
+
+    public function __construct({{ pkTypeHint }} ${{ pkName }}, array $data, {{ UpdatedBy.typeHint }} ${{ UpdatedById }}, bool $_patch = false)
+{% elseif action in ['Patch'] %}
+    public $_patch;
+
+    public function __construct({{ pkTypeHint }} ${{ pkName }}, array $data, bool $_patch = false)
 {% elseif action in ['Index'] %}
     public function __construct(array $data, int $_page, int $_limit = 50, ?string $timezone = null)
 {% else %}
@@ -67,9 +75,9 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% endif %}
     {
 {% for id, property in properties %}
-{% if action in ['Update'] and property.isPk %}
+{% if action in ['Update', 'Patch'] and property.isPk %}
         $this->{{ id }} = ${{ pkName }};
-{% elseif action in ['Create', 'Update'] and property.trim %}
+{% elseif action in ['Create', 'Update', 'Patch'] and property.trim %}
         $this->{{ id }} = isset($data['{{ id }}']) ? \trim($data['{{ id }}']) : null;
 {% elseif (action in ['Create'] and property.isCb) or (action in ['Update'] and property.isUb) %}
         $this->{{ id }} = ${{ id }};
@@ -84,7 +92,9 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% endif %}
 {% endif %}
 {% endfor %}
-{% if action in ['Index'] %}
+{% if action in ['Patch'] %}
+        $this->_patch = $_patch;
+{% elseif action in ['Index'] %}
         $this->_page = $_page;
         $this->_limit = $_limit;
         $this->_offset = $this->getOffset($this->getTimezone($timezone));
