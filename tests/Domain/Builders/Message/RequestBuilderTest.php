@@ -79,19 +79,22 @@ final class IndexFuzRequest implements RequestInterface
 
     public \$snakeCase;
 
-    public \$page;
+    public \$_page;
 
-    public \$offset;
+    public \$_limit;
 
-    public function __construct(array \$data, int \$page, ?string \$timezone = null)
+    public \$_offset;
+
+    public function __construct(array \$data, int \$_page, int \$_limit = 50, ?string \$timezone = null)
     {
         \$this->lower = \$data['lower'] ?? null;
         \$this->upper = \$data['upper'] ?? null;
         \$this->pascalCase = \$data['pascalCase'] ?? null;
         \$this->camelCase = \$data['camelCase'] ?? null;
         \$this->snakeCase = \$data['snakeCase'] ?? null;
-        \$this->page = \$page;
-        \$this->offset = \$this->getOffset(\$this->getTimezone(\$timezone));
+        \$this->_page = \$_page;
+        \$this->_limit = \$_limit;
+        \$this->_offset = \$this->getOffset(\$this->getTimezone(\$timezone));
     }
 }
 
@@ -392,19 +395,22 @@ final class IndexBarRequest implements RequestInterface
 
     public \$updated;
 
-    public \$page;
+    public \$_page;
 
-    public \$offset;
+    public \$_limit;
 
-    public function __construct(array \$data, int \$page, ?string \$timezone = null)
+    public \$_offset;
+
+    public function __construct(array \$data, int \$_page, int \$_limit = 50, ?string \$timezone = null)
     {
         \$this->key = \$data['key'] ?? null;
         \$this->value = \$data['value'] ?? null;
         \$this->created[] = \$data['created_START'] ?? null;
         \$this->created[] = \$data['created_END'] ?? null;
         \$this->updated = \$data['updated'] ?? null;
-        \$this->page = \$page;
-        \$this->offset = \$this->getOffset(\$this->getTimezone(\$timezone));
+        \$this->_page = \$_page;
+        \$this->_limit = \$_limit;
+        \$this->_offset = \$this->getOffset(\$this->getTimezone(\$timezone));
     }
 }
 

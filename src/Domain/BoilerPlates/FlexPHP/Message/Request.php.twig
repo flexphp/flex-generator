@@ -47,9 +47,11 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% endif %}
 {% endfor %}
 {% if action in ['Index'] %}
-    public $page;
+    public $_page;
 
-    public $offset;
+    public $_limit;
+
+    public $_offset;
 
 {% endif %}
 {% if action in ['Create'] and CreatedBy %}
@@ -59,7 +61,7 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% elseif action in ['Update'] %}
     public function __construct({{ pkTypeHint }} ${{ pkName }}, array $data)
 {% elseif action in ['Index'] %}
-    public function __construct(array $data, int $page, ?string $timezone = null)
+    public function __construct(array $data, int $_page, int $_limit = 50, ?string $timezone = null)
 {% else %}
     public function __construct(array $data)
 {% endif %}
@@ -83,8 +85,9 @@ final class {{ action }}{{ entity }}Request implements RequestInterface
 {% endif %}
 {% endfor %}
 {% if action in ['Index'] %}
-        $this->page = $page;
-        $this->offset = $this->getOffset($this->getTimezone($timezone));
+        $this->_page = $_page;
+        $this->_limit = $_limit;
+        $this->_offset = $this->getOffset($this->getTimezone($timezone));
 {% endif %}
     }
 {% endif %}
