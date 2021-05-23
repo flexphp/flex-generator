@@ -56,7 +56,7 @@ final class TestRepository
     {
         return \array_map(function (array \$test) {
             return (new TestFactory())->make(\$test);
-        }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
+        }, \$this->gateway->search((array)\$request, [], \$request->_page, \$request->_limit, \$request->_offset));
     }
 
     public function add(CreateTestRequest \$request): Test
@@ -136,7 +136,7 @@ final class TestRepository
     {
         return \array_map(function (array \$test) {
             return (new TestFactory())->make(\$test);
-        }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
+        }, \$this->gateway->search((array)\$request, [], \$request->_page, \$request->_limit, \$request->_offset));
     }
 }
 
@@ -443,7 +443,7 @@ final class PostCommentRepository
     {
         return \array_map(function (array \$postComment) {
             return (new PostCommentFactory())->make(\$postComment);
-        }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
+        }, \$this->gateway->search((array)\$request, [], \$request->_page, \$request->_limit, \$request->_offset));
     }
 
     public function change(UpdatePostCommentRequest \$request): PostComment
@@ -457,17 +457,17 @@ final class PostCommentRepository
 
     public function findBarsBy(FindPostCommentBarRequest \$request): array
     {
-        return \$this->gateway->filterBars(\$request, \$request->page, 20);
+        return \$this->gateway->filterBars(\$request, \$request->_page, \$request->_limit);
     }
 
     public function findPostsBy(FindPostCommentPostRequest \$request): array
     {
-        return \$this->gateway->filterPosts(\$request, \$request->page, 20);
+        return \$this->gateway->filterPosts(\$request, \$request->_page, \$request->_limit);
     }
 
     public function findUserStatusBy(FindPostCommentUserStatusRequest \$request): array
     {
-        return \$this->gateway->filterUserStatus(\$request, \$request->page, 20);
+        return \$this->gateway->filterUserStatus(\$request, \$request->_page, \$request->_limit);
     }
 }
 
@@ -502,7 +502,7 @@ final class TestRepository
     {
         return \array_map(function (array \$test) {
             return (new TestFactory())->make(\$test);
-        }, \$this->gateway->search((array)\$request, [], \$request->page, 50, \$request->offset));
+        }, \$this->gateway->search((array)\$request, [], \$request->_page, \$request->_limit, \$request->_offset));
     }
 }
 
