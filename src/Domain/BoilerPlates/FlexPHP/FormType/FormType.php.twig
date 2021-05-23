@@ -10,6 +10,14 @@
 {{ header|raw }}
 namespace Domain\{{ entity }};
 
+{% for id,property in properties %}
+{% if not property.isBlameAt and inputs[id] ends with 'picker' %}
+{% set name = 'use App\\Form\\Type\\' ~ inputs[id] ~ 'Type;' %}
+{% if name not in useStatements %}
+{% set useStatements = useStatements|merge([name]) %}
+{% endif %}
+{% endif %}
+{% endfor %}
 {% if fkRelsNoBlame %}
 {% set useStatements = useStatements|merge(['use App\\Form\\Type\\Select2Type;']) %}
 {% for fkFn in fkFns %}
@@ -101,6 +109,8 @@ final class {{ entity }}FormType extends AbstractType
 {% if not property.isAi and not property.isBlame %}
 {% if fkRelsNoBlame[id] %}
         $builder->add('{{ id }}', Select2Type::class, [
+{% elseif inputs[id] ends with 'picker' %}
+        $builder->add('{{ id }}', {{ inputs[id] }}Type::class, [
 {% else %}
         $builder->add('{{ id }}', InputType\{{ inputs[id] }}Type::class, [
 {% endif %}

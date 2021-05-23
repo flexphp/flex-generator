@@ -69,6 +69,7 @@ T
 {$this->header}
 namespace Domain\Test;
 
+use App\Form\Type\DatetimepickerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -94,12 +95,9 @@ final class TestFormType extends AbstractType
                 'max' => 10,
             ],
         ]);
-        \$builder->add('pascalCase', InputType\DateTimeType::class, [
+        \$builder->add('pascalCase', DatetimepickerType::class, [
             'label' => 'label.pascalCase',
             'required' => true,
-            'date_widget' => 'single_text',
-            'time_widget' => 'single_text',
-            'format' => 'Y-m-d H:i:s',
         ]);
         \$builder->add('camelCase', InputType\CheckboxType::class, [
             'label' => 'label.camelCase',
@@ -119,6 +117,81 @@ final class TestFormType extends AbstractType
         ]);
         \$builder->add('zone', InputType\TimezoneType::class, [
             'label' => 'label.zone',
+            'required' => false,
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver \$resolver): void
+    {
+        \$resolver->setDefaults([
+            'translation_domain' => 'test',
+        ]);
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItOkWithDateOrTimeProperties(): void
+    {
+        $render = new FormTypeBuilder(new Schema('Test', 'Entity Foo Title', [
+            new SchemaAttribute('id', 'string', 'pk|minlength:20|maxlength:100|required'),
+            new SchemaAttribute('datetime', 'datetime', 'required'),
+            new SchemaAttribute('date', 'date', 'required'),
+            new SchemaAttribute('time', 'time', 'required'),
+            new SchemaAttribute('datetimeOptional', 'datetime'),
+            new SchemaAttribute('dateOptional', 'date'),
+            new SchemaAttribute('timeOptional', 'time'),
+        ]));
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Test;
+
+use App\Form\Type\DatepickerType;
+use App\Form\Type\DatetimepickerType;
+use App\Form\Type\TimepickerType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type as InputType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+final class TestFormType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface \$builder, array \$options): void
+    {
+        \$builder->add('id', InputType\TextType::class, [
+            'label' => 'label.id',
+            'required' => true,
+            'attr' => [
+                'minlength' => 20,
+                'maxlength' => 100,
+            ],
+        ]);
+        \$builder->add('datetime', DatetimepickerType::class, [
+            'label' => 'label.datetime',
+            'required' => true,
+        ]);
+        \$builder->add('date', DatepickerType::class, [
+            'label' => 'label.date',
+            'required' => true,
+        ]);
+        \$builder->add('time', TimepickerType::class, [
+            'label' => 'label.time',
+            'required' => true,
+        ]);
+        \$builder->add('datetimeOptional', DatetimepickerType::class, [
+            'label' => 'label.datetimeOptional',
+            'required' => false,
+        ]);
+        \$builder->add('dateOptional', DatepickerType::class, [
+            'label' => 'label.dateOptional',
+            'required' => false,
+        ]);
+        \$builder->add('timeOptional', TimepickerType::class, [
+            'label' => 'label.timeOptional',
             'required' => false,
         ]);
     }

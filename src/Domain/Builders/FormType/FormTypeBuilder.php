@@ -61,13 +61,13 @@ final class FormTypeBuilder extends AbstractBuilder
             'double' => 'Number',
             'bool' => 'Checkbox',
             'boolean' => 'Checkbox',
-            'date' => 'Date',
+            'date' => 'Datepicker',
             'date_immutable' => 'DateTime',
-            'datetime' => 'DateTime',
+            'datetime' => 'Datetimepicker',
             'datetime_immutable' => 'DateTime',
             'datetimetz' => 'DateTime',
             'datetimetz_immutable' => 'DateTime',
-            'time' => 'Time',
+            'time' => 'Timepicker',
             'time_immutable' => 'DateTime',
         ];
 
