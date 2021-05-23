@@ -23,12 +23,24 @@ final class EntityBuilder extends AbstractBuilder
         $fkGetters = $this->getFkGetters($schema->name(), $schema->fkRelations());
         $fkSetters = $this->getFkSetters($schema->name(), $schema->fkRelations());
         $_properties = $this->getProperties($schema->attributes());
+        $defaults = $this->getDefaults($schema->attributes());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
         $fkRels = $this->getFkRelations($schema->fkRelations());
         $header = self::getHeaderFile();
 
         parent::__construct(
-            \compact('header', 'name', 'getters', 'fkGetters', 'setters', 'fkSetters', '_properties', 'fkFns', 'fkRels')
+            \compact(
+                'header',
+                'name',
+                'getters',
+                'fkGetters',
+                'setters',
+                'fkSetters',
+                '_properties',
+                'fkFns',
+                'fkRels',
+                'defaults'
+            )
         );
     }
 
@@ -47,8 +59,8 @@ final class EntityBuilder extends AbstractBuilder
         return \array_values(
             \array_reduce(
                 $properties,
-                function (array $result, SchemaAttributeInterface $attributes): array {
-                    $result[] = $this->getInflector()->camelProperty($attributes->name());
+                function (array $result, SchemaAttributeInterface $attribute): array {
+                    $result[] = $this->getInflector()->camelProperty($attribute->name());
 
                     return $result;
                 },
@@ -57,12 +69,33 @@ final class EntityBuilder extends AbstractBuilder
         );
     }
 
+    private function getDefaults(array $properties): array
+    {
+        return \array_reduce(
+            $properties,
+            function (array $result, SchemaAttributeInterface $attribute): array {
+                if ($attribute->default() !== null) {
+                    $name = $this->getInflector()->camelProperty($attribute->name());
+                    $result[$name] = [
+                        'type' => $attribute->typeHint(),
+                        'value' => $attribute->default(),
+                    ];
+
+                    return $result;
+                }
+
+                return $result;
+            },
+            []
+        );
+    }
+
     private function getGetters(array $properties): array
     {
         return \array_reduce(
             $properties,
-            function (array $result, SchemaAttributeInterface $attributes): array {
-                $result[] = new GetterBuilder($attributes);
+            function (array $result, SchemaAttributeInterface $attribute): array {
+                $result[] = new GetterBuilder($attribute);
 
                 return $result;
             },

@@ -401,6 +401,118 @@ T
 , $render->build());
     }
 
+    public function testItUsingDefaultValues(): void
+    {
+        $render = new EntityBuilder(new Schema('Tests', 'bar', [
+            new SchemaAttribute('id', 'integer', 'pk|ai|required'),
+            new SchemaAttribute('control', 'string'),
+            new SchemaAttribute('integer', 'integer', 'default:0'),
+            new SchemaAttribute('float', 'double', 'default:0.1'),
+            new SchemaAttribute('negative', 'integer', 'default:-1'),
+            new SchemaAttribute('string', 'string', 'default:S'),
+            new SchemaAttribute('empty', 'string', 'default:'),
+        ]));
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Test;
+
+use Domain\Helper\ToArrayTrait;
+
+final class Test
+{
+    use ToArrayTrait;
+
+    private \$id;
+
+    private \$control;
+
+    private \$integer = 0;
+
+    private \$float = 0.1;
+
+    private \$negative = -1;
+
+    private \$string = 'S';
+
+    private \$empty = '';
+
+    public function id(): ?int
+    {
+        return \$this->id;
+    }
+
+    public function control(): ?string
+    {
+        return \$this->control;
+    }
+
+    public function integer(): ?int
+    {
+        return \$this->integer;
+    }
+
+    public function float(): ?float
+    {
+        return \$this->float;
+    }
+
+    public function negative(): ?int
+    {
+        return \$this->negative;
+    }
+
+    public function string(): ?string
+    {
+        return \$this->string;
+    }
+
+    public function empty(): ?string
+    {
+        return \$this->empty;
+    }
+
+    public function setId(int \$id): void
+    {
+        \$this->id = \$id;
+    }
+
+    public function setControl(?string \$control): void
+    {
+        \$this->control = \$control;
+    }
+
+    public function setInteger(?int \$integer): void
+    {
+        \$this->integer = \$integer;
+    }
+
+    public function setFloat(?float \$float): void
+    {
+        \$this->float = \$float;
+    }
+
+    public function setNegative(?int \$negative): void
+    {
+        \$this->negative = \$negative;
+    }
+
+    public function setString(?string \$string): void
+    {
+        \$this->string = \$string;
+    }
+
+    public function setEmpty(?string \$empty): void
+    {
+        \$this->empty = \$empty;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItOkBlameByInFk(): void
     {
         $render = new EntityBuilder(new Schema('Users', 'bar', [
