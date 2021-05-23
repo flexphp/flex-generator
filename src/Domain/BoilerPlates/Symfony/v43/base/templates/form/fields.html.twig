@@ -1,10 +1,17 @@
 {% block datepicker_widget %}
-    <div class="input-group date date-picker mb-3">
-        <input type="text" id="{{ id }}" name="{{ full_name }}" class="form-control" {% if value is not empty %}value="{{ value }}"{% endif %} />
-        <div class="input-group-append">
-            <span class="input-group-text">
-                <i class="fa fa-calendar-day"></i>
-            </span>
-        </div>
+    <div class="input-group mb-3">
+        <input type="text" id="{{ id }}" name="{{ full_name }}" class="form-control date-picker" {% if value is not empty %}value="{{ value }}"{% endif %} />
+    </div>
+{% endblock %}
+
+{% block datetimepicker_widget %}
+    <div class="input-group mb-3">
+        <input type="text" id="{{ id }}" name="{{ full_name }}" class="form-control datetime-picker" {% if value is not empty %}value="{{ value }}"{% endif %} />
+    </div>
+{% endblock %}
+
+{% block timepicker_widget %}
+    <div class="input-group mb-3">
+        <input type="text" id="{{ id }}" name="{{ full_name }}" class="form-control time-picker" {% if value is not empty %}value="{{ value }}"{% endif %} />
     </div>
 {% endblock %}

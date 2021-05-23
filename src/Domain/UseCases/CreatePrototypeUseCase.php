@@ -119,7 +119,7 @@ final class CreatePrototypeUseCase
             '/public/js',
             '/public/js/bootstrap',
             '/public/js/jquery',
-            '/public/js/jquery/locales',
+            '/public/js/jquery/i18n',
             '/public/js/select2',
             '/public/css',
             '/public/css/bootstrap',
@@ -175,6 +175,8 @@ final class CreatePrototypeUseCase
             $source . '/src/Controller/HomepageController.tphp' => $dest . '/src/Controller/HomepageController.php',
             $source . '/src/Form/Type/Select2Type.tphp' => $dest . '/src/Form/Type/Select2Type.php',
             $source . '/src/Form/Type/DatepickerType.tphp' => $dest . '/src/Form/Type/DatepickerType.php',
+            $source . '/src/Form/Type/DatetimepickerType.tphp' => $dest . '/src/Form/Type/DatetimepickerType.php',
+            $source . '/src/Form/Type/TimepickerType.tphp' => $dest . '/src/Form/Type/TimepickerType.php',
             $source . '/src/Listener/CsrfListener.tphp' => $dest . '/src/Listener/CsrfListener.php',
             $source . '/src/Listener/LocaleListener.tphp' => $dest . '/src/Listener/LocaleListener.php',
             $source . '/src/Listener/ExceptionListener.tphp' => $dest . '/src/Listener/ExceptionListener.php',
@@ -251,6 +253,7 @@ final class CreatePrototypeUseCase
             "$src/Bootstrap/css/select2bs4.min.css" => "$dest/public/css/select2/select2bs4.min.css",
             "$src/Bootstrap/css/datepicker.min.css" => "$dest/public/css/datepicker/datepicker.min.css",
             "$src/Bootstrap/main.css" => "$dest/public/css/main.css",
+            "$src/Bootstrap/images/icons.png" => "$dest/public/css/datepicker/icons.png",
             "$src/FontAwesome/css/all.min.css" => "$dest/public/css/fontawesome/all.min.css",
             "$src/FontAwesome/webfonts/fonts.css" => "$dest/public/css/webfonts/fonts.css",
             "$src/FontAwesome/webfonts/fa-solid-900.woff2" => "$dest/public/css/webfonts/fa-solid-900.woff2",
@@ -265,7 +268,7 @@ final class CreatePrototypeUseCase
             "$src/jQuery/plugins/jquery.datepicker.min.js" => "$dest/public/js/jquery/jquery.datepicker.min.js",
             "$src/jQuery/plugins/chart.bundle.min.js" => "$dest/public/js/jquery/chart.bundle.min.js",
             "$src/jQuery/main.js" => "$dest/public/js/main.js",
-            "$src/jQuery/i18n" => "$dest/public/js/jquery/locales",
+            "$src/jQuery/i18n" => "$dest/public/js/jquery/i18n",
         ];
 
         foreach ($assets as $from => $to) {

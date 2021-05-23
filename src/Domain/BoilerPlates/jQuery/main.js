@@ -169,13 +169,21 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    if ($(document).datepicker) {
-        $('.date-picker').datepicker({
+    if ($(document).Zebra_DatePicker) {
+        // @see https://github.com/stefangabos/Zebra_Datepicker
+        $('.date-picker').Zebra_DatePicker_i18n({
+            readonly_element: false,
             format: window.flex.defaultDateFormat,
-            language: window.flex.defaultLocale,
-            clearBtn: true,
-            autoclose: true,
-            toggleActive: true,
+        });
+
+        $('.datetime-picker').Zebra_DatePicker_i18n({
+            readonly_element: false,
+            format: window.flex.defaultDateTimeFormat,
+        });
+
+        $('.time-picker').Zebra_DatePicker_i18n({
+            readonly_element: false,
+            format: window.flex.defaultTimeFormat,
         });
     }
 

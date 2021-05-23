@@ -20,7 +20,9 @@
         window.flex = {
             baseUrl: window.location.origin + '{{ app.request.getBaseURL() }}',
             defaultLocale: 'es-CO',
-            defaultDateFormat: 'yyyy-mm-dd',
+            defaultDateFormat: 'Y-m-d',
+            defaultDateTimeFormat: 'Y-m-d H:i:s',
+            defaultTimeFormat: 'H:i:s',
             defaultCurrency: 'COP',
             defaultTimezone: 'UTC',
         };
@@ -180,9 +182,9 @@
     <script src="{{ asset('js/jquery/jquery.slimscroll.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/jquery/jquery.datepicker.min.js') }}"></script>
-    <script src="{{ asset('js/jquery/locales/bootstrap-datepicker.%locale%.min.js'|replace({'%locale%': app.request.locale|replace({'_': '-'}) })) }}"></script>
+    <script src="{{ asset('js/jquery/i18n/datepicker.%locale%.min.js'|replace({'%locale%': app.request.locale|replace({'_': '-'}) })) }}"></script>
     <script src="{{ asset('js/jquery/jquery.select2.min.js') }}"></script>
-    <script src="{{ asset('js/jquery/locales/select2.%locale%.min.js'|replace({'%locale%': app.request.locale|replace({'_': '-'}) })) }}"></script>
+    <script src="{{ asset('js/jquery/i18n/select2.%locale%.min.js'|replace({'%locale%': app.request.locale|replace({'_': '-'}) })) }}"></script>
     {% block javascripts %}{% endblock %}
     <script src="{{ asset('js/main.js') }}"></script>
 </body>

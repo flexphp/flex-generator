@@ -50,6 +50,8 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/src/Form');
         $this->assertFileExists($response->outputDir . '/src/Form/Type/Select2Type.php');
         $this->assertFileExists($response->outputDir . '/src/Form/Type/DatepickerType.php');
+        $this->assertFileExists($response->outputDir . '/src/Form/Type/DatetimepickerType.php');
+        $this->assertFileExists($response->outputDir . '/src/Form/Type/TimepickerType.php');
 
         $this->assertDirectoryExists($response->outputDir . '/src/Listener');
         $this->assertFileExists($response->outputDir . '/src/Listener/CsrfListener.php');
@@ -126,6 +128,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/public/css/fontawesome/all.min.css');
         $this->assertDirectoryExists($response->outputDir . '/public/css/datepicker');
         $this->assertFileExists($response->outputDir . '/public/css/datepicker/datepicker.min.css');
+        $this->assertFileExists($response->outputDir . '/public/css/datepicker/icons.png');
 
         $this->assertDirectoryExists($response->outputDir . '/public/css/webfonts/');
         $this->assertFileExists($response->outputDir . '/public/css/webfonts/fonts.css');
@@ -149,9 +152,11 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/public/js/bootstrap');
         $this->assertFileExists($response->outputDir . '/public/js/bootstrap/bootstrap.min.js');
 
-        $this->assertDirectoryExists($response->outputDir . '/public/js/jquery/locales');
-        $this->assertFileExists($response->outputDir . '/public/js/jquery/locales/bootstrap-datepicker.en-US.min.js');
-        $this->assertFileExists($response->outputDir . '/public/js/jquery/locales/select2.en-US.min.js');
+        $this->assertDirectoryExists($response->outputDir . '/public/js/jquery/i18n');
+        $this->assertFileExists($response->outputDir . '/public/js/jquery/i18n/datepicker.en.min.js');
+        $this->assertFileExists($response->outputDir . '/public/js/jquery/i18n/datepicker.es.min.js');
+        $this->assertFileExists($response->outputDir . '/public/js/jquery/i18n/select2.en.min.js');
+        $this->assertFileExists($response->outputDir . '/public/js/jquery/i18n/select2.es.min.js');
 
         $this->assertDirectoryExists($response->outputDir . '/templates');
         $this->assertFileExists($response->outputDir . '/templates/base.html.twig');
