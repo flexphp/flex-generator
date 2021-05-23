@@ -1,0 +1,13 @@
+Patch:
+  Title: Patch
+  Language: pt
+  Actions: ip
+  Attributes:
+    id:
+      Name: Id
+      DataType: integer
+      Constraints: 'pk|ai|required|type:number'
+    name:
+      Name: Name
+      DataType: string
+      Constraints: 'required|maxlength:255'

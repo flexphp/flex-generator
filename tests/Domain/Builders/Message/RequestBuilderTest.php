@@ -18,7 +18,7 @@ final class RequestBuilderTest extends TestCase
 {
     public function testItRenderOk(): void
     {
-        $render = new RequestBuilder($this->getSchema('Fuz'), 'action');
+        $render = new RequestBuilder($this->getSchema('Fuz', ['p']), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -55,7 +55,7 @@ T
 
     public function testItRenderIndexOk(): void
     {
-        $render = new RequestBuilder($this->getSchema('Fuz'), 'index');
+        $render = new RequestBuilder($this->getSchema('Fuz', ['p']), 'index');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -104,7 +104,7 @@ T
 
     public function testItRenderCreateOk(): void
     {
-        $render = new RequestBuilder($this->getSchema('Fuz'), 'create');
+        $render = new RequestBuilder($this->getSchema('Fuz', ['p']), 'create');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -141,7 +141,7 @@ T
 
     public function testItRenderCreateWithTrimOk(): void
     {
-        $render = new RequestBuilder($this->getSchemaFkWithFilterAndFchars('Fuz'), 'create');
+        $render = new RequestBuilder($this->getSchemaFkWithFilterAndFchars('Fuz', ['p']), 'create');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -175,7 +175,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new RequestBuilder($this->getSchema('Fuz'), 'read');
+        $render = new RequestBuilder($this->getSchema('Fuz', ['p']), 'read');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -237,7 +237,7 @@ T
 
     public function testItRenderPatchOk(): void
     {
-        $render = new RequestBuilder($this->getSchema('Fuz'), 'patch');
+        $render = new RequestBuilder($this->getSchema('Fuz', ['p']), 'update');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -314,7 +314,7 @@ T
 
     public function testItRenderPatchWithTrimOk(): void
     {
-        $render = new RequestBuilder($this->getSchemaFkWithFilterAndFchars('Fuz'), 'patch');
+        $render = new RequestBuilder($this->getSchemaFkWithFilterAndFchars('Fuz', ['p']), 'update');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -354,7 +354,7 @@ T
 
     public function testItRenderDeleteOk(): void
     {
-        $render = new RequestBuilder($this->getSchema('Fuz'), 'delete');
+        $render = new RequestBuilder($this->getSchema('Fuz', ['p']), 'delete');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -379,7 +379,7 @@ T
 
     public function testItRenderReadWithIntPkOk(): void
     {
-        $render = new RequestBuilder($this->getSchemaFkRelation('Fuz'), 'read');
+        $render = new RequestBuilder($this->getSchemaFkRelation('Fuz', ['p']), 'read');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -404,7 +404,7 @@ T
 
     public function testItRenderDeleteWithIntPkOk(): void
     {
-        $render = new RequestBuilder($this->getSchemaFkRelation('Fuz'), 'delete');
+        $render = new RequestBuilder($this->getSchemaFkRelation('Fuz', ['p']), 'delete');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -429,7 +429,7 @@ T
 
     public function testItRenderLoginOk(): void
     {
-        $render = new RequestBuilder($this->getSchema('Fuz'), 'login');
+        $render = new RequestBuilder($this->getSchema('Fuz', ['p']), 'login');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -454,7 +454,7 @@ T
 
     public function testItIndexAiAndBlameAt(): void
     {
-        $render = new RequestBuilder($this->getSchemaAiAndBlameAt('Bar'), 'index');
+        $render = new RequestBuilder($this->getSchemaAiAndBlameAt('Bar', ['p']), 'index');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -501,7 +501,7 @@ T
 
     public function testItCreateAiAndBlameAt(): void
     {
-        $render = new RequestBuilder($this->getSchemaAiAndBlameAt('Bar'), 'create');
+        $render = new RequestBuilder($this->getSchemaAiAndBlameAt('Bar', ['p']), 'create');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -554,7 +554,7 @@ T
 
     public function testItCreateBlameBy(): void
     {
-        $render = new RequestBuilder($this->getSchemaStringAndBlameBy('Bar'), 'create');
+        $render = new RequestBuilder($this->getSchemaStringAndBlameBy('Bar', ['p']), 'create');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -616,7 +616,7 @@ T
 
     public function testItRenderPatchWithBlameByOk(): void
     {
-        $render = new RequestBuilder($this->getSchemaStringAndBlameBy('Fuz'), 'patch');
+        $render = new RequestBuilder($this->getSchemaStringAndBlameBy('Fuz', ['p']), 'update');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -653,7 +653,7 @@ T
      */
     public function testItRenderOkWithDiffEntityName(string $entity, string $expected): void
     {
-        $render = new RequestBuilder(new Schema($entity, 'bar', []), 'action');
+        $render = new RequestBuilder(new Schema($entity, 'bar', [], null, null, ['p']), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -678,7 +678,7 @@ T
      */
     public function testItRenderOkWithDiffActionName(string $action, string $expected): void
     {
-        $render = new RequestBuilder(new Schema('Fuz', 'bar', []), $action);
+        $render = new RequestBuilder(new Schema('Fuz', 'bar', [], null, null, ['p']), $action);
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
@@ -705,7 +705,7 @@ T
     {
         $render = new RequestBuilder(new Schema('Fuz', 'bar', [
             new SchemaAttribute($name, 'integer'),
-        ]), 'action');
+        ], null, null, ['p']), 'action');
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);

@@ -55,7 +55,7 @@ final class SheetProcessUseCase
         $actions[] = $schema->hasAction(Action::INDEX) ? 'index' : null;
         $actions[] = $schema->hasAction(Action::CREATE) ? 'create' : null;
         $actions[] = $schema->hasAction(Action::READ) ? 'read' : null;
-        $actions[] = $schema->hasAction(Action::UPDATE) ? 'update' : null;
+        $actions[] = $schema->hasAction(Action::UPDATE) || $schema->hasAction(Action::PATCH) ? 'update' : null;
         $actions[] = $schema->hasAction(Action::DELETE) ? 'delete' : null;
         $actions[] = $schema->hasAction(Action::FILTER) ? 'filter' : null;
 

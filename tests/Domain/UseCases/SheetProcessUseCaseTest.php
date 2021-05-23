@@ -16,7 +16,7 @@ use FlexPHP\Generator\Tests\TestCase;
 final class SheetProcessUseCaseTest extends TestCase
 {
     /**
-     * @dataProvider getEntityFile()
+     * @dataProvider getEntityFile
      */
     public function testItSymfony43Ok(string $name, string $path): void
     {
@@ -52,6 +52,7 @@ final class SheetProcessUseCaseTest extends TestCase
         $this->assertFileExists($response->repository);
         \unlink($response->repository);
 
+        $checkPatch = false;
         $countFiles = 5;
         $countCommands = 5;
         $countTemplates = 6;
@@ -79,11 +80,24 @@ final class SheetProcessUseCaseTest extends TestCase
                 $this->assertNull($response->javascript);
 
                 break;
+            case 'Patch':
+                $checkPatch = true;
+                $countFiles = 2;
+                $countCommands = 2;
+                $countTemplates = 2;
+                $this->assertNull($response->javascript);
+
+                break;
         }
 
         $this->assertEquals($countFiles, \count($response->requests));
-        \array_map(function (string $request): void {
+        \array_map(function (string $request) use ($checkPatch): void {
             $this->assertFileExists($request);
+
+            if ($checkPatch && \strpos($request, 'Update') !== false) {
+                $this->assertStringContainsString('$_patch = ', \file_get_contents($request));
+            }
+
             \unlink($request);
         }, $response->requests);
 
@@ -119,6 +133,7 @@ final class SheetProcessUseCaseTest extends TestCase
             ['Comments', \sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__)],
             ['Users', \sprintf('%1$s/../../Mocks/yaml/users.yaml', __DIR__)],
             ['CustomActions', \sprintf('%1$s/../../Mocks/yaml/customActions.yaml', __DIR__)],
+            ['Patch', \sprintf('%1$s/../../Mocks/yaml/patch.yaml', __DIR__)],
         ];
     }
 }

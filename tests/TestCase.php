@@ -33,7 +33,7 @@ class TestCase extends PHPUnitTestCase
         $this->header = AbstractBuilder::getHeaderFile();
     }
 
-    protected function getSchema(string $name = 'Test'): SchemaInterface
+    protected function getSchema(string $name = 'Test', array $actions = []): SchemaInterface
     {
         return new Schema($name, 'Entity Foo Title', [
             new SchemaAttribute('lower', 'string', 'pk|minlength:20|maxlength:100|required'),
@@ -41,40 +41,40 @@ class TestCase extends PHPUnitTestCase
             new SchemaAttribute('PascalCase', 'datetime', 'required'),
             new SchemaAttribute('camelCase', 'boolean', ''),
             new SchemaAttribute('snake_case', 'text', 'length:100,200'),
-        ]);
+        ], null, null, $actions);
     }
 
-    protected function getSchemaFkRelation(string $name = 'Test'): Schema
+    protected function getSchemaFkRelation(string $name = 'Test', array $actions = []): Schema
     {
         return new Schema($name, 'Entity Test Title', [
             new SchemaAttribute('Pk', 'integer', 'pk|ai|required'),
             new SchemaAttribute('foo', 'string', 'fk:Bar,fuz,baz|required'),
             new SchemaAttribute('PostId', 'integer', 'fk:posts'),
             new SchemaAttribute('StatusId', 'integer', 'fk:UserStatus'),
-        ]);
+        ], null, null, $actions);
     }
 
-    protected function getSchemaAiAndBlameAt(string $name = 'Test'): Schema
+    protected function getSchemaAiAndBlameAt(string $name = 'Test', array $actions = []): Schema
     {
         return new Schema($name, 'bar', [
             new SchemaAttribute('key', 'integer', 'pk|ai|required'),
             new SchemaAttribute('Value', 'integer', 'required'),
             new SchemaAttribute('Created', 'datetime', 'ca'),
             new SchemaAttribute('Updated', 'datetime', 'ua'),
-        ]);
+        ], null, null, $actions);
     }
 
-    protected function getSchemaStringAndBlameBy(string $name = 'Test'): Schema
+    protected function getSchemaStringAndBlameBy(string $name = 'Test', array $actions = []): Schema
     {
         return new Schema($name, 'bar', [
             new SchemaAttribute('code', 'string', 'pk|required'),
             new SchemaAttribute('Name', 'text', 'required'),
             new SchemaAttribute('CreatedBy', 'integer', 'cb|fk:users,name'),
             new SchemaAttribute('UpdatedBy', 'integer', 'ub|fk:users,name'),
-        ]);
+        ], null, null, $actions);
     }
 
-    protected function getSchemaFkWithFilterAndFchars(string $name = 'Test'): Schema
+    protected function getSchemaFkWithFilterAndFchars(string $name = 'Test', array $actions = []): Schema
     {
         return new Schema($name, 'bar', [
             new SchemaAttribute('id', 'integer', 'pk|ai|required'),
@@ -83,7 +83,7 @@ class TestCase extends PHPUnitTestCase
             new SchemaAttribute('fchars', 'string', 'fk:Bar,fuz,baz|fchars:2'),
             // new SchemaAttribute('fkcheck', 'string', 'fk:Check,fk|fkcheck'),
             new SchemaAttribute('trim', 'string', 'trim'),
-        ]);
+        ], null, null, $actions);
     }
 
     protected function getSchemaWithFormats(string $name = 'Test'): Schema
