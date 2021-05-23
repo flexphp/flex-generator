@@ -171,10 +171,10 @@ jQuery(document).ready(function ($) {
 
     // @see https://github.com/stefangabos/Zebra_Datepicker
     if ($(document).Zebra_DatePicker) {
-        // $('.date-picker').Zebra_DatePicker_i18n({
-        //     readonly_element: false,
-        //     format: window.flex.defaultDateFormat,
-        // });
+        $('.date-picker').Zebra_DatePicker_i18n({
+            readonly_element: false,
+            format: window.flex.defaultDateFormat,
+        });
 
         $('.datetime-picker').Zebra_DatePicker_i18n({
             readonly_element: false,
@@ -193,7 +193,6 @@ jQuery(document).ready(function ($) {
         });
 
         $('.date-finish-picker').Zebra_DatePicker_i18n({
-            direction: 1,
             readonly_element: false,
             format: window.flex.defaultDateFormat,
         });
