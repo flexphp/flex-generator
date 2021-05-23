@@ -17,8 +17,9 @@ final class FkRequestBuilder extends AbstractBuilder
     {
         $pkEntity = $this->getInflector()->entity($pkEntity);
         $fkEntity = $this->getInflector()->entity($fkEntity);
+        $header = self::getHeaderFile();
 
-        parent::__construct(\compact('pkEntity', 'fkEntity'));
+        parent::__construct(\compact('pkEntity', 'fkEntity', 'header'));
     }
 
     protected function getFileTemplate(): string

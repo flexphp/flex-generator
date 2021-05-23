@@ -20,7 +20,7 @@ final class FkRequestBuilderTest extends TestCase
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Fuz\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -28,12 +28,16 @@ use FlexPHP\Messages\RequestInterface;
 final class FindFuzBarRequest implements RequestInterface
 {
     public \$term;
-    public \$page;
+
+    public \$_page;
+
+    public \$_limit;
 
     public function __construct(array \$data)
     {
         \$this->term = \$data['term'] ?? '';
-        \$this->page = \$data['page'] ?? 1;
+        \$this->_page = \$data['page'] ?? 1;
+        \$this->_limit = \$data['limit'] ?? 20;
     }
 }
 
@@ -54,7 +58,7 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\\{$namespace}\Request;
 
 use FlexPHP\Messages\RequestInterface;
@@ -62,12 +66,16 @@ use FlexPHP\Messages\RequestInterface;
 final class Find{$expected}Request implements RequestInterface
 {
     public \$term;
-    public \$page;
+
+    public \$_page;
+
+    public \$_limit;
 
     public function __construct(array \$data)
     {
         \$this->term = \$data['term'] ?? '';
-        \$this->page = \$data['page'] ?? 1;
+        \$this->_page = \$data['page'] ?? 1;
+        \$this->_limit = \$data['limit'] ?? 20;
     }
 }
 
