@@ -9,7 +9,6 @@
  */
 namespace Domain\Helper;
 
-use Domain\Provider\Provider;
 use FlexPHP\Messages\RequestInterface;
 
 trait FactoryExtendedTrait

@@ -91,6 +91,8 @@ final class CreatePrototypeUseCase
         $templates = [
             $source . '/Extras/Helper/DateTimeTrait.tphp' => $dest . '/domain/Helper/DateTimeTrait.php',
             $source . '/Extras/Helper/DbalCriteriaHelper.tphp' => $dest . '/domain/Helper/DbalCriteriaHelper.php',
+            $source . '/Extras/Helper/FactoryExtendedTrait.tphp' => $dest . '/domain/Helper/FactoryExtendedTrait.php',
+            $source . '/Extras/Helper/ToArrayTrait.tphp' => $dest . '/domain/Helper/ToArrayTrait.php',
             $source . '/Extras/Tests/TestCase.tphp' => $dest . '/domain/Tests/TestCase.php',
             $source . '/Extras/Tests/DatabaseTrait.tphp' => $dest . '/domain/Tests/DatabaseTrait.php',
             $source . '/Extras/User/UserRbac.tphp' => $dest . '/domain/User/UserRbac.php',

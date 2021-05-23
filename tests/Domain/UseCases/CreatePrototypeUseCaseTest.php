@@ -213,6 +213,8 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertDirectoryExists($response->outputDir . '/domain/Helper');
         $this->assertFileExists($response->outputDir . '/domain/Helper/DateTimeTrait.php');
         $this->assertFileExists($response->outputDir . '/domain/Helper/DbalCriteriaHelper.php');
+        $this->assertFileExists($response->outputDir . '/domain/Helper/FactoryExtendedTrait.php');
+        $this->assertFileExists($response->outputDir . '/domain/Helper/ToArrayTrait.php');
 
         $this->assertDirectoryExists($response->outputDir . '/domain/Tests');
         $this->assertFileExists($response->outputDir . '/domain/Tests/TestCase.php');
