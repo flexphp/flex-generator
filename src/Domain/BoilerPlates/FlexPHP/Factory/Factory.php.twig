@@ -1,60 +1,46 @@
+{% set useStatements = [] %}
+{% set useStatements = useStatements|merge(['use Domain\\Helper\\FactoryExtendedTrait;']) %}
 <?php declare(strict_types=1);
-
+{{ header|raw }}
 namespace Domain\{{ entity }};
-{% if fkFns|filter(v => v.fnSingular != entity)|length > 0 %}
 
-{% endif %}
 {% for fkFn in fkFns %}
 {% if fkFn.fnSingular != entity %}
-use Domain\{{ fkFn.fnSingular }}\{{ fkFn.fnSingular }}Factory;
+{% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\' ~ fkFn.fnSingular ~ 'Factory;']) %}
 {% endif %}
 {% endfor %}
+{% if useStatements|length > 0 %}
+{{ useStatements|sort|join("\n") }}
 
+{% endif %}
 final class {{ entity }}Factory
 {
+    use FactoryExtendedTrait;
+
     public function make($data): {{ entity }}
     {
         ${{ item }} = new {{ entity }}();
 
-        if (is_object($data)) {
+        if (\is_object($data)) {
             $data = (array)$data;
         }
-{% if setters %}
-
 {% for setter in setters %}
+
         if (isset($data['{{ setter.camel }}'])) {
 {% if setter.typehint starts with '\\' %}
-            ${{ item }}->set{{ setter.pascal }}(is_string($data['{{ setter.camel }}']) ? new {{ setter.typehint }}($data['{{ setter.camel }}']) : $data['{{ setter.camel }}']);
+            ${{ item }}->set{{ setter.pascal }}(\is_string($data['{{ setter.camel }}']) ? new {{ setter.typehint }}($data['{{ setter.camel }}']) : $data['{{ setter.camel }}']);
 {% else %}
             ${{ item }}->set{{ setter.pascal }}(({{ setter.typehint }})$data['{{ setter.camel }}']);
 {% endif %}
         }
 {% endfor %}
-{% endif %}
-{% if fkRels %}
-
 {% for fkRel in fkRels %}
+
         if (isset($data['{{ fkRel.pkName }}.{{ fkRel.id }}'])) {
             ${{ item }}->set{{ fkRel.pkNamePascal }}Instance((new {{ fkRel.fnSingular }}Factory())->make($this->getFkEntity('{{ fkRel.pkName }}.', $data)));
         }
 {% endfor %}
-{% endif %}
 
         return ${{ item }};
     }
-{% if fkRels %}
-
-    private function getFkEntity(string $prefix, array &$data): array
-    {
-        $_data = [];
-
-        \array_map(function (string $key, ?string $value) use ($prefix, &$_data): void {
-            if (\strpos($key, $prefix) !== false) {
-                $_data[\substr($key, \strlen($prefix))] = $value;
-            }
-        }, \array_keys($data), $data);
-
-        return $_data;
-    }
-{% endif %}
 }

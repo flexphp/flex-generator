@@ -20,38 +20,46 @@ final class FactoryBuilderTest extends TestCase
     {
         $render = new FactoryBuilder($this->getSchema());
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\Test;
+
+use Domain\Helper\FactoryExtendedTrait;
 
 final class TestFactory
 {
-    public function make($data): Test
+    use FactoryExtendedTrait;
+
+    public function make(\$data): Test
     {
-        $test = new Test();
+        \$test = new Test();
 
-        if (is_object($data)) {
-            $data = (array)$data;
-        }
-
-        if (isset($data['lower'])) {
-            $test->setLower((string)$data['lower']);
-        }
-        if (isset($data['upper'])) {
-            $test->setUpper((int)$data['upper']);
-        }
-        if (isset($data['pascalCase'])) {
-            $test->setPascalCase(is_string($data['pascalCase']) ? new \DateTime($data['pascalCase']) : $data['pascalCase']);
-        }
-        if (isset($data['camelCase'])) {
-            $test->setCamelCase((bool)$data['camelCase']);
-        }
-        if (isset($data['snakeCase'])) {
-            $test->setSnakeCase((string)$data['snakeCase']);
+        if (\is_object(\$data)) {
+            \$data = (array)\$data;
         }
 
-        return $test;
+        if (isset(\$data['lower'])) {
+            \$test->setLower((string)\$data['lower']);
+        }
+
+        if (isset(\$data['upper'])) {
+            \$test->setUpper((int)\$data['upper']);
+        }
+
+        if (isset(\$data['pascalCase'])) {
+            \$test->setPascalCase(\is_string(\$data['pascalCase']) ? new \DateTime(\$data['pascalCase']) : \$data['pascalCase']);
+        }
+
+        if (isset(\$data['camelCase'])) {
+            \$test->setCamelCase((bool)\$data['camelCase']);
+        }
+
+        if (isset(\$data['snakeCase'])) {
+            \$test->setSnakeCase((string)\$data['snakeCase']);
+        }
+
+        return \$test;
     }
 }
 
@@ -63,62 +71,57 @@ T
     {
         $render = new FactoryBuilder($this->getSchemaFkRelation('FkEntity'));
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\FkEntity;
 
 use Domain\Bar\BarFactory;
+use Domain\Helper\FactoryExtendedTrait;
 use Domain\Post\PostFactory;
 use Domain\UserStatus\UserStatusFactory;
 
 final class FkEntityFactory
 {
-    public function make($data): FkEntity
+    use FactoryExtendedTrait;
+
+    public function make(\$data): FkEntity
     {
-        $fkEntity = new FkEntity();
+        \$fkEntity = new FkEntity();
 
-        if (is_object($data)) {
-            $data = (array)$data;
-        }
-
-        if (isset($data['pk'])) {
-            $fkEntity->setPk((int)$data['pk']);
-        }
-        if (isset($data['foo'])) {
-            $fkEntity->setFoo((string)$data['foo']);
-        }
-        if (isset($data['postId'])) {
-            $fkEntity->setPostId((int)$data['postId']);
-        }
-        if (isset($data['statusId'])) {
-            $fkEntity->setStatusId((int)$data['statusId']);
+        if (\is_object(\$data)) {
+            \$data = (array)\$data;
         }
 
-        if (isset($data['foo.baz'])) {
-            $fkEntity->setFooInstance((new BarFactory())->make($this->getFkEntity('foo.', $data)));
-        }
-        if (isset($data['postId.id'])) {
-            $fkEntity->setPostIdInstance((new PostFactory())->make($this->getFkEntity('postId.', $data)));
-        }
-        if (isset($data['statusId.id'])) {
-            $fkEntity->setStatusIdInstance((new UserStatusFactory())->make($this->getFkEntity('statusId.', $data)));
+        if (isset(\$data['pk'])) {
+            \$fkEntity->setPk((int)\$data['pk']);
         }
 
-        return $fkEntity;
-    }
+        if (isset(\$data['foo'])) {
+            \$fkEntity->setFoo((string)\$data['foo']);
+        }
 
-    private function getFkEntity(string $prefix, array &$data): array
-    {
-        $_data = [];
+        if (isset(\$data['postId'])) {
+            \$fkEntity->setPostId((int)\$data['postId']);
+        }
 
-        \array_map(function (string $key, ?string $value) use ($prefix, &$_data): void {
-            if (\strpos($key, $prefix) !== false) {
-                $_data[\substr($key, \strlen($prefix))] = $value;
-            }
-        }, \array_keys($data), $data);
+        if (isset(\$data['statusId'])) {
+            \$fkEntity->setStatusId((int)\$data['statusId']);
+        }
 
-        return $_data;
+        if (isset(\$data['foo.baz'])) {
+            \$fkEntity->setFooInstance((new BarFactory())->make(\$this->getFkEntity('foo.', \$data)));
+        }
+
+        if (isset(\$data['postId.id'])) {
+            \$fkEntity->setPostIdInstance((new PostFactory())->make(\$this->getFkEntity('postId.', \$data)));
+        }
+
+        if (isset(\$data['statusId.id'])) {
+            \$fkEntity->setStatusIdInstance((new UserStatusFactory())->make(\$this->getFkEntity('statusId.', \$data)));
+        }
+
+        return \$fkEntity;
     }
 }
 
@@ -132,43 +135,34 @@ T
             new SchemaAttribute('createdBy', 'integer', 'cb|fk:Users'),
         ]));
 
-        $this->assertEquals(<<<'T'
+        $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\User;
+
+use Domain\Helper\FactoryExtendedTrait;
 
 final class UserFactory
 {
-    public function make($data): User
+    use FactoryExtendedTrait;
+
+    public function make(\$data): User
     {
-        $user = new User();
+        \$user = new User();
 
-        if (is_object($data)) {
-            $data = (array)$data;
+        if (\is_object(\$data)) {
+            \$data = (array)\$data;
         }
 
-        if (isset($data['createdBy'])) {
-            $user->setCreatedBy((int)$data['createdBy']);
+        if (isset(\$data['createdBy'])) {
+            \$user->setCreatedBy((int)\$data['createdBy']);
         }
 
-        if (isset($data['createdBy.id'])) {
-            $user->setCreatedByInstance((new UserFactory())->make($this->getFkEntity('createdBy.', $data)));
+        if (isset(\$data['createdBy.id'])) {
+            \$user->setCreatedByInstance((new UserFactory())->make(\$this->getFkEntity('createdBy.', \$data)));
         }
 
-        return $user;
-    }
-
-    private function getFkEntity(string $prefix, array &$data): array
-    {
-        $_data = [];
-
-        \array_map(function (string $key, ?string $value) use ($prefix, &$_data): void {
-            if (\strpos($key, $prefix) !== false) {
-                $_data[\substr($key, \strlen($prefix))] = $value;
-            }
-        }, \array_keys($data), $data);
-
-        return $_data;
+        return \$user;
     }
 }
 
@@ -185,16 +179,20 @@ T
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
-
+{$this->header}
 namespace Domain\\{$expected};
+
+use Domain\Helper\FactoryExtendedTrait;
 
 final class {$expected}Factory
 {
+    use FactoryExtendedTrait;
+
     public function make(\$data): $expected
     {
         \${$item} = new {$expected}();
 
-        if (is_object(\$data)) {
+        if (\is_object(\$data)) {
             \$data = (array)\$data;
         }
 
