@@ -616,7 +616,6 @@ T
 
     public function testItRenderPatchWithBlameByOk(): void
     {
-        $this->markTestIncomplete();
         $render = new RequestBuilder($this->getSchemaStringAndBlameBy('Fuz'), 'patch');
 
         $this->assertEquals(<<<T

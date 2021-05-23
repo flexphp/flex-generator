@@ -79,7 +79,7 @@ final class {{ action in ['Patch'] ? 'Update' : action }}{{ entity }}Request imp
         $this->{{ id }} = ${{ pkName }};
 {% elseif action in ['Create', 'Update', 'Patch'] and property.trim %}
         $this->{{ id }} = isset($data['{{ id }}']) ? \trim($data['{{ id }}']) : null;
-{% elseif (action in ['Create'] and property.isCb) or (action in ['Update'] and property.isUb) %}
+{% elseif (action in ['Create'] and property.isCb) or (action in ['Update', 'Patch'] and property.isUb) %}
         $this->{{ id }} = ${{ id }};
 {% elseif not (action in ['Create'] and property.isAi) and not property.isBlame %}
         $this->{{ id }} = $data['{{ id }}'] ?? null;
