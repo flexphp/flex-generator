@@ -15,3 +15,15 @@
         <input type="text" id="{{ id }}" name="{{ full_name }}" class="form-control time-picker" {% if value is not empty %}value="{{ value }}"{% endif %} />
     </div>
 {% endblock %}
+
+{% block datestartpicker_widget %}
+    <div class="input-group mb-3">
+        <input type="text" id="{{ id }}" name="{{ full_name }}" class="form-control date-start-picker" {% if value is not empty %}value="{{ value }}"{% endif %} />
+    </div>
+{% endblock %}
+
+{% block datefinishpicker_widget %}
+    <div class="input-group mb-3">
+        <input type="text" id="{{ id }}" name="{{ full_name }}" class="form-control date-finish-picker" {% if value is not empty %}value="{{ value }}"{% endif %} />
+    </div>
+{% endblock %}

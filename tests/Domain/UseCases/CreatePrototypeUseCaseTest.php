@@ -52,6 +52,8 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/src/Form/Type/DatepickerType.php');
         $this->assertFileExists($response->outputDir . '/src/Form/Type/DatetimepickerType.php');
         $this->assertFileExists($response->outputDir . '/src/Form/Type/TimepickerType.php');
+        $this->assertFileExists($response->outputDir . '/src/Form/Type/DatestartpickerType.php');
+        $this->assertFileExists($response->outputDir . '/src/Form/Type/DatefinishpickerType.php');
 
         $this->assertDirectoryExists($response->outputDir . '/src/Listener');
         $this->assertFileExists($response->outputDir . '/src/Listener/CsrfListener.php');

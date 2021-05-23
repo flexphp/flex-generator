@@ -169,12 +169,12 @@ jQuery(document).ready(function ($) {
         });
     });
 
+    // @see https://github.com/stefangabos/Zebra_Datepicker
     if ($(document).Zebra_DatePicker) {
-        // @see https://github.com/stefangabos/Zebra_Datepicker
-        $('.date-picker').Zebra_DatePicker_i18n({
-            readonly_element: false,
-            format: window.flex.defaultDateFormat,
-        });
+        // $('.date-picker').Zebra_DatePicker_i18n({
+        //     readonly_element: false,
+        //     format: window.flex.defaultDateFormat,
+        // });
 
         $('.datetime-picker').Zebra_DatePicker_i18n({
             readonly_element: false,
@@ -184,6 +184,18 @@ jQuery(document).ready(function ($) {
         $('.time-picker').Zebra_DatePicker_i18n({
             readonly_element: false,
             format: window.flex.defaultTimeFormat,
+        });
+
+        $('.date-start-picker').Zebra_DatePicker_i18n({
+            readonly_element: false,
+            pair: $('.date-finish-picker'),
+            format: window.flex.defaultDateFormat,
+        });
+
+        $('.date-finish-picker').Zebra_DatePicker_i18n({
+            direction: 1,
+            readonly_element: false,
+            format: window.flex.defaultDateFormat,
         });
     }
 

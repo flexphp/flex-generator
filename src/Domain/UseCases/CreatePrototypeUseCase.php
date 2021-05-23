@@ -177,6 +177,8 @@ final class CreatePrototypeUseCase
             $source . '/src/Form/Type/DatepickerType.tphp' => $dest . '/src/Form/Type/DatepickerType.php',
             $source . '/src/Form/Type/DatetimepickerType.tphp' => $dest . '/src/Form/Type/DatetimepickerType.php',
             $source . '/src/Form/Type/TimepickerType.tphp' => $dest . '/src/Form/Type/TimepickerType.php',
+            $source . '/src/Form/Type/DatestartpickerType.tphp' => $dest . '/src/Form/Type/DatestartpickerType.php',
+            $source . '/src/Form/Type/DatefinishpickerType.tphp' => $dest . '/src/Form/Type/DatefinishpickerType.php',
             $source . '/src/Listener/CsrfListener.tphp' => $dest . '/src/Listener/CsrfListener.php',
             $source . '/src/Listener/LocaleListener.tphp' => $dest . '/src/Listener/LocaleListener.php',
             $source . '/src/Listener/ExceptionListener.tphp' => $dest . '/src/Listener/ExceptionListener.php',
