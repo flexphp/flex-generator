@@ -25,12 +25,20 @@ final class EntityBuilderTest extends TestCase
 {$this->header}
 namespace Domain\Test;
 
+use Domain\Helper\ToArrayTrait;
+
 final class Test
 {
+    use ToArrayTrait;
+
     private \$lower;
+
     private \$upper;
+
     private \$pascalCase;
+
     private \$camelCase;
+
     private \$snakeCase;
 
     public function lower(): ?string
@@ -98,17 +106,26 @@ T
 namespace Domain\Test;
 
 use Domain\Bar\Bar;
+use Domain\Helper\ToArrayTrait;
 use Domain\Post\Post;
 use Domain\UserStatus\UserStatus;
 
 final class Test
 {
+    use ToArrayTrait;
+
     private \$pk;
+
     private \$foo;
+
     private \$postId;
+
     private \$statusId;
+
     private \$fooInstance;
+
     private \$postIdInstance;
+
     private \$statusIdInstance;
 
     public function pk(): ?int
@@ -195,15 +212,23 @@ T
 {$this->header}
 namespace Domain\Test;
 
+use Domain\Helper\ToArrayTrait;
 use Domain\User\User;
 
 final class Test
 {
+    use ToArrayTrait;
+
     private \$code;
+
     private \$name;
+
     private \$createdBy;
+
     private \$updatedBy;
+
     private \$createdByInstance;
+
     private \$updatedByInstance;
 
     public function code(): ?string
@@ -280,10 +305,13 @@ T
 {$this->header}
 namespace Domain\User;
 
+use Domain\Helper\ToArrayTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 final class User implements UserInterface
 {
+    use ToArrayTrait;
+
     public function getUsername()
     {
         return \$this->name();
@@ -325,11 +353,15 @@ T
 {$this->header}
 namespace Domain\User;
 
+use Domain\Helper\ToArrayTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 final class User implements UserInterface
 {
+    use ToArrayTrait;
+
     private \$createdBy;
+
     private \$createdByInstance;
 
     public function createdBy(): ?int
@@ -394,8 +426,11 @@ T
 {$this->header}
 namespace Domain\\{$expected};
 
+use Domain\Helper\ToArrayTrait;
+
 final class {$expected}
 {
+    use ToArrayTrait;
 }
 
 T
@@ -416,8 +451,12 @@ T
 {$this->header}
 namespace Domain\Fuz;
 
+use Domain\Helper\ToArrayTrait;
+
 final class Fuz
 {
+    use ToArrayTrait;
+
     private \${$expected};
 
     public function {$getter}(): ?string

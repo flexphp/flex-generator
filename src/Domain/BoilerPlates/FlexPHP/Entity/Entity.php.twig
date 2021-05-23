@@ -1,28 +1,35 @@
 {% set isUser = name == 'User' %}
+{% set useStatements = [] %}
 <?php declare(strict_types=1);
 {{ header|raw }}
 namespace Domain\{{ name }};
 
+{% set useStatements = useStatements|merge(['use Domain\\Helper\\ToArrayTrait;']) %}
+{% if isUser %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Security\\Core\\User\\UserInterface;']) %}
+{% endif %}
 {% for fkFn in fkFns %}
 {% if fkFn.fnSingular != name %}
-use Domain\{{ fkFn.fnSingular }}\{{ fkFn.fnSingular }};
+{% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\' ~ fkFn.fnSingular ~ ';']) %}
 {% endif %}
 {% endfor %}
-{% if isUser %}
-use Symfony\Component\Security\Core\User\UserInterface;
-
-final class {{ name }} implements UserInterface
-{% else %}
-{% if fkFns %}
+{% if useStatements|length > 0 %}
+{{ useStatements|sort|join("\n") }}
 
 {% endif %}
+{% if isUser %}
+final class {{ name }} implements UserInterface
+{% else %}
 final class {{ name }}
 {% endif %}
 {
+    use ToArrayTrait;
 {% for _property in _properties %}
+
     private ${{ _property }};
 {% endfor %}
 {% for fkRel in fkRels %}
+
     private ${{ fkRel.pkName }}Instance;
 {% endfor %}
 {% if getters %}
@@ -70,6 +77,8 @@ final class {{ name }}
 {% endif %}
 {% endfor %}
 {% if (getters or fkGetters or setters or fkSetters) and isUser %}
+
+{% elseif isUser %}
 
 {% endif %}
 {% if isUser %}
