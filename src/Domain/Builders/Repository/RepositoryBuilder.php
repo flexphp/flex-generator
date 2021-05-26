@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Repository;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\Constants\Action;
 use FlexPHP\Schema\SchemaInterface;
 
 final class RepositoryBuilder extends AbstractBuilder
@@ -30,8 +31,21 @@ final class RepositoryBuilder extends AbstractBuilder
             return $result;
         }, []);
         $header = self::getHeaderFile();
+        $usePatch = $schema->hasAction(Action::PATCH);
 
-        parent::__construct(\compact('header', 'entity', 'item', 'actions', 'requests', 'login', 'fkFns', 'pkName'));
+        parent::__construct(
+            \compact(
+                'header',
+                'entity',
+                'item',
+                'actions',
+                'requests',
+                'login',
+                'fkFns',
+                'pkName',
+                'usePatch'
+            )
+        );
     }
 
     protected function getFileTemplate(): string

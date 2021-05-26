@@ -281,6 +281,47 @@ T
 , $render->build());
     }
 
+    public function testItRenderPatchOk(): void
+    {
+        $render = new RepositoryBuilder(new Schema('Test', 'bar', [], null, null, ['p']), ['update']);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Test;
+
+use Domain\Test\Request\UpdateTestRequest;
+
+final class TestRepository
+{
+    private TestGateway \$gateway;
+
+    public function __construct(TestGateway \$gateway)
+    {
+        \$this->gateway = \$gateway;
+    }
+
+    public function change(UpdateTestRequest \$request): Test
+    {
+        \$factory = new TestFactory();
+        \$test = \$factory->make(\$request);
+
+        if (!empty(\$request->_patch)) {
+            \$data = \$this->gateway->get(\$test);
+
+            \$test = \$factory->patch(\$request, \$data);
+        }
+
+        \$this->gateway->shift(\$test);
+
+        return \$test;
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderDeleteOk(): void
     {
         $render = new RepositoryBuilder(new Schema('Test', 'bar', []), ['delete']);

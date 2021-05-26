@@ -69,7 +69,18 @@ final class {{ entity }}Repository
 {% elseif action == 'update' %}
     public function change(Update{{ entity }}Request $request): {{ entity }}
     {
+{% if usePatch %}
+        $factory = new {{ entity }}Factory();
+        ${{ item }} = $factory->make($request);
+
+        if (!empty($request->_patch)) {
+            $data = $this->gateway->get(${{ item }});
+
+            ${{ item }} = $factory->patch($request, $data);
+        }
+{% else %}
         ${{ item }} = (new {{ entity }}Factory())->make($request);
+{% endif %}
 {% if isUser  %}
 
         if (${{ item }}->getPassword() && ${{ item }}->getPassword() !== $this->getFakePassword()) {
