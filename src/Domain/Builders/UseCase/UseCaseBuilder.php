@@ -25,6 +25,7 @@ final class UseCaseBuilder extends AbstractBuilder
         $item = $this->getInflector()->item($schema->name());
         $items = $this->getInflector()->items($schema->name());
         $action = $this->getInflector()->pascalAction($action);
+        $fkFns = $this->getFkFunctions($this->getFkCheck($schema->fkRelations()));
         $properties = \array_reduce(
             $schema->attributes(),
             function ($result, SchemaAttributeInterface $property) {
@@ -36,7 +37,7 @@ final class UseCaseBuilder extends AbstractBuilder
         );
         $header = self::getHeaderFile();
 
-        parent::__construct(\compact('header', 'entity', 'item', 'items', 'action', 'properties'));
+        parent::__construct(\compact('header', 'entity', 'item', 'items', 'action', 'properties', 'fkFns'));
     }
 
     protected function getFileTemplate(): string
@@ -51,5 +52,16 @@ final class UseCaseBuilder extends AbstractBuilder
     protected function getPathTemplate(): string
     {
         return \sprintf('%1$s/FlexPHP/UseCase', parent::getPathTemplate());
+    }
+
+    private function getFkCheck(array $relations)
+    {
+        return \array_reduce($relations, function (array $result, array $relation) {
+            if (!empty($relation['check'])) {
+                $result[] = $relation;
+            }
+
+            return $result;
+        }, []);
     }
 }

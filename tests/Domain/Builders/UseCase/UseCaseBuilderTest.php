@@ -103,9 +103,9 @@ T
 {$this->header}
 namespace Domain\Test\UseCase;
 
-use Domain\Test\TestRepository;
 use Domain\Test\Request\CreateTestRequest;
 use Domain\Test\Response\CreateTestResponse;
+use Domain\Test\TestRepository;
 
 final class CreateTestUseCase
 {
@@ -137,9 +137,9 @@ namespace Domain\Test\UseCase;
 
 use Domain\Check\CheckRepository;
 use Domain\Check\Request\ReadCheckRequest;
-use Domain\Test\TestRepository;
 use Domain\Test\Request\CreateTestRequest;
 use Domain\Test\Response\CreateTestResponse;
+use Domain\Test\TestRepository;
 use Exception;
 
 final class CreateTestUseCase

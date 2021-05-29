@@ -92,6 +92,7 @@ H;
                 'required' => $fkRel['isRequired'],
                 'blameBy' => $fkRel['isBlameBy'],
                 'chars' => \is_null($fkRel['minChars']) ? 3 : $fkRel['minChars'],
+                'check' => $fkRel['check'],
                 'pkNamePascal' => $this->getInflector()->pascalProperty($fkRel['pkId']),
             ];
         }
