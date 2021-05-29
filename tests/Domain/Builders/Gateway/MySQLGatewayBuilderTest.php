@@ -116,7 +116,7 @@ class MySQLTestGateway implements TestGateway
             'test.filter as filter',
             'test.OtherFilter as otherFilter',
             'test.fchars as fchars',
-            'test.fkcheck as fkcheck',
+            'test.Fkcheck as fkcheck',
             'test.trim as trim',
             'fchars.baz as `fchars.baz`',
             'fchars.fuz as `fchars.fuz`',
@@ -125,7 +125,7 @@ class MySQLTestGateway implements TestGateway
         ]);
         \$query->from('`Test`', '`test`');
         \$query->leftJoin('`test`', '`Bar`', '`fchars`', 'test.fchars = fchars.baz');
-        \$query->leftJoin('`test`', '`Check`', '`fkcheck`', 'test.fkcheck = fkcheck.id');
+        \$query->leftJoin('`test`', '`Checks`', '`fkcheck`', 'test.Fkcheck = fkcheck.id');
 
         \$query->orderBy('test.id', 'DESC');
 
@@ -168,7 +168,7 @@ class MySQLTestGateway implements TestGateway
             'check.id as id',
             'check.fk as text',
         ]);
-        \$query->from('`Check`', '`check`');
+        \$query->from('`Checks`', '`check`');
 
         \$query->where('check.fk like :check_fk');
         \$query->setParameter(':check_fk', "%{\$request->term}%");
@@ -183,6 +183,7 @@ class MySQLTestGateway implements TestGateway
 T
 , $render->build());
     }
+
     public function testItCreateOk(): void
     {
         $render = new MySQLGatewayBuilder($this->getSchema(), ['create']);

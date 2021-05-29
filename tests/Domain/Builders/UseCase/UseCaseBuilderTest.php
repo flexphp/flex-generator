@@ -161,7 +161,7 @@ final class CreateTestUseCase
         if (\$request->fkcheck
             && !\$this->checkRepository->getById(new ReadCheckRequest(\$request->fkcheck))->id()
         ) {
-            throw new Exception('Check not found [%s]', \$request->fkcheck);
+            throw new Exception(\sprintf('Check not found [%s]', \$request->fkcheck));
         }
 
         return new CreateTestResponse(\$this->testRepository->add(\$request));
@@ -273,7 +273,7 @@ final class UpdateTestUseCase
         if (\$request->fkcheck
             && !\$this->checkRepository->getById(new ReadCheckRequest(\$request->fkcheck))->id()
         ) {
-            throw new Exception('Check not found [%s]', \$request->fkcheck);
+            throw new Exception(\sprintf('Check not found [%s]', \$request->fkcheck));
         }
 
         return new UpdateTestResponse(\$this->testRepository->change(\$request));

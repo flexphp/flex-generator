@@ -81,7 +81,7 @@ class TestCase extends PHPUnitTestCase
             new SchemaAttribute('filter', 'string', 'filter:ss'),
             new SchemaAttribute('OtherFilter', 'string', 'filter:eq'),
             new SchemaAttribute('fchars', 'string', 'fk:Bar,fuz,baz|fchars:2'),
-            new SchemaAttribute('fkcheck', 'string', 'fk:Check,fk|fkcheck'),
+            new SchemaAttribute('Fkcheck', 'string', 'fk:Checks,fk|fkcheck'),
             new SchemaAttribute('trim', 'string', 'trim'),
         ], null, null, $actions);
     }
