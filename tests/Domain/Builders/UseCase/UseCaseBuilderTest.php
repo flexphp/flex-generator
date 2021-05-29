@@ -126,6 +126,52 @@ T
 , $render->build());
     }
 
+    public function testItRenderCreateWithCheckForeignKey(): void
+    {
+        $render = new UseCaseBuilder($this->getSchemaFkWithFilterAndFchars(), 'create');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Test\UseCase;
+
+use Domain\Check\CheckRepository;
+use Domain\Check\Request\ReadCheckRequest;
+use Domain\Test\TestRepository;
+use Domain\Test\Request\CreateTestRequest;
+use Domain\Test\Response\CreateTestResponse;
+use Exception;
+
+final class CreateTestUseCase
+{
+    private TestRepository \$testRepository;
+
+    private CheckRepository \$checkRepository;
+
+    public function __construct(
+        TestRepository \$testRepository,
+        CheckRepository \$checkRepository
+    ) {
+        \$this->testRepository = \$testRepository;
+        \$this->checkRepository = \$checkRepository;
+    }
+
+    public function execute(CreateTestRequest \$request): CreateTestResponse
+    {
+        if (\$request->fkcheck
+            && !\$this->checkRepository->getById(new ReadCheckRequest(\$request->fkcheck))->id()
+        ) {
+            throw new Exception('Check not found [%s]', \$request->fkcheck);
+        }
+
+        return new CreateTestResponse(\$this->testRepository->add(\$request));
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderReadOk(): void
     {
         $render = new UseCaseBuilder($this->getSchema(), 'read');

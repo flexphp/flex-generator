@@ -123,6 +123,7 @@ jQuery(document).ready(function ($) {
     'use strict';
 
     const fcharsUrl = $('[id$=form_fchars]').data('autocomplete-url');
+    const fkcheckUrl = $('[id$=form_fkcheck]').data('autocomplete-url');
 
     $('[id$=form_fchars]').select2({
         theme: 'bootstrap4',
@@ -131,6 +132,29 @@ jQuery(document).ready(function ($) {
         placeholder: '',
         ajax: {
             url: fcharsUrl,
+            method: 'POST',
+            dataType: 'json',
+            delay: 300,
+            cache: true,
+            headers: {
+                'X-XSRF-Token': getCookie('XSRF-Token')
+            },
+            data: function (params) {
+                return {
+                    term: params.term,
+                    page: params.page
+                };
+            }
+        },
+    });
+
+    $('[id$=form_fkcheck]').select2({
+        theme: 'bootstrap4',
+        minimumInputLength: 3,
+        allowClear: true,
+        placeholder: '',
+        ajax: {
+            url: fkcheckUrl,
             method: 'POST',
             dataType: 'json',
             delay: 300,

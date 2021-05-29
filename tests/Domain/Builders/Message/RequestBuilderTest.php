@@ -158,6 +158,8 @@ final class CreateFuzRequest implements RequestInterface
 
     public \$fchars;
 
+    public \$fkcheck;
+
     public \$trim;
 
     public function __construct(array \$data)
@@ -165,6 +167,7 @@ final class CreateFuzRequest implements RequestInterface
         \$this->filter = \$data['filter'] ?? null;
         \$this->otherFilter = \$data['otherFilter'] ?? null;
         \$this->fchars = \$data['fchars'] ?? null;
+        \$this->fkcheck = \$data['fkcheck'] ?? null;
         \$this->trim = isset(\$data['trim']) ? \\trim(\$data['trim']) : null;
     }
 }
@@ -296,6 +299,8 @@ final class UpdateFuzRequest implements RequestInterface
 
     public \$fchars;
 
+    public \$fkcheck;
+
     public \$trim;
 
     public function __construct(int \$id, array \$data)
@@ -304,6 +309,7 @@ final class UpdateFuzRequest implements RequestInterface
         \$this->filter = \$data['filter'] ?? null;
         \$this->otherFilter = \$data['otherFilter'] ?? null;
         \$this->fchars = \$data['fchars'] ?? null;
+        \$this->fkcheck = \$data['fkcheck'] ?? null;
         \$this->trim = isset(\$data['trim']) ? \\trim(\$data['trim']) : null;
     }
 }
@@ -333,6 +339,8 @@ final class UpdateFuzRequest implements RequestInterface
 
     public \$fchars;
 
+    public \$fkcheck;
+
     public \$trim;
 
     public \$_patch;
@@ -343,6 +351,7 @@ final class UpdateFuzRequest implements RequestInterface
         \$this->filter = \$data['filter'] ?? null;
         \$this->otherFilter = \$data['otherFilter'] ?? null;
         \$this->fchars = \$data['fchars'] ?? null;
+        \$this->fkcheck = \$data['fkcheck'] ?? null;
         \$this->trim = isset(\$data['trim']) ? \\trim(\$data['trim']) : null;
         \$this->_patch = \$_patch;
     }

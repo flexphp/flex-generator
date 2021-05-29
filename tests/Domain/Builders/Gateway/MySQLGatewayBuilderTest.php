@@ -89,6 +89,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types as DB;
 use Domain\Helper\DbalCriteriaHelper;
 use Domain\Test\Request\FindTestBarRequest;
+use Domain\Test\Request\FindTestCheckRequest;
 use Domain\Test\Test;
 use Domain\Test\TestGateway;
 
@@ -115,12 +116,16 @@ class MySQLTestGateway implements TestGateway
             'test.filter as filter',
             'test.OtherFilter as otherFilter',
             'test.fchars as fchars',
+            'test.fkcheck as fkcheck',
             'test.trim as trim',
             'fchars.baz as `fchars.baz`',
             'fchars.fuz as `fchars.fuz`',
+            'fkcheck.id as `fkcheck.id`',
+            'fkcheck.fk as `fkcheck.fk`',
         ]);
         \$query->from('`Test`', '`test`');
         \$query->leftJoin('`test`', '`Bar`', '`fchars`', 'test.fchars = fchars.baz');
+        \$query->leftJoin('`test`', '`Check`', '`fkcheck`', 'test.fkcheck = fkcheck.id');
 
         \$query->orderBy('test.id', 'DESC');
 
@@ -148,6 +153,25 @@ class MySQLTestGateway implements TestGateway
 
         \$query->where('bar.fuz like :bar_fuz');
         \$query->setParameter(':bar_fuz', "%{\$request->term}%");
+
+        \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
+        \$query->setMaxResults(\$limit);
+
+        return \$query->execute()->fetchAll();
+    }
+
+    public function filterChecks(FindTestCheckRequest \$request, int \$page, int \$limit): array
+    {
+        \$query = \$this->conn->createQueryBuilder();
+
+        \$query->select([
+            'check.id as id',
+            'check.fk as text',
+        ]);
+        \$query->from('`Check`', '`check`');
+
+        \$query->where('check.fk like :check_fk');
+        \$query->setParameter(':check_fk', "%{\$request->term}%");
 
         \$query->setFirstResult(\$page ? (\$page - 1) * \$limit : 0);
         \$query->setMaxResults(\$limit);
