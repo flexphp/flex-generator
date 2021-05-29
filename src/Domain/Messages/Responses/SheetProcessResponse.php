@@ -29,6 +29,8 @@ final class SheetProcessResponse
 
     public ?string $formType = null;
 
+    public ?string $filterForm = null;
+
     /**
      * @var array<int, string>
      */
@@ -67,6 +69,7 @@ final class SheetProcessResponse
         $this->constraint = $response['constraint'] ?? null;
         $this->translate = $response['translate'] ?? null;
         $this->formType = $response['formType'] ?? null;
+        $this->filterForm = $response['filterForm'] ?? null;
         $this->requests = $response['requests'] ?? [];
         $this->responses = $response['responses'] ?? [];
         $this->useCases = $response['useCases'] ?? [];

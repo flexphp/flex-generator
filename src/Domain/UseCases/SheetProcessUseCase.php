@@ -52,12 +52,12 @@ final class SheetProcessUseCase
         $name = $request->name;
         $schema = Schema::fromFile($request->path);
         $actions = [];
-        $actions[] = $schema->hasAction(Action::INDEX) ? 'index' : null;
+
+        $actions[] = $schema->hasAction(Action::INDEX) || $schema->hasAction(Action::FILTER) ? 'index' : null;
         $actions[] = $schema->hasAction(Action::CREATE) ? 'create' : null;
         $actions[] = $schema->hasAction(Action::READ) ? 'read' : null;
         $actions[] = $schema->hasAction(Action::UPDATE) || $schema->hasAction(Action::PATCH) ? 'update' : null;
         $actions[] = $schema->hasAction(Action::DELETE) ? 'delete' : null;
-        $actions[] = $schema->hasAction(Action::FILTER) ? 'filter' : null;
 
         if ($name === 'Users') {
             $actions = \array_merge($actions, ['login']);
@@ -74,6 +74,7 @@ final class SheetProcessUseCase
         $constraint = $this->createConstraint($schema);
         $translate = $this->createTranslate($schema);
         $formType = $this->createFormType($schema);
+        $filterForm = $this->createFilterForm($schema);
         $requests = $this->createRequests($schema, $actions);
         $responses = $this->createResponses($schema, $actions);
         $useCases = $this->createUseCases($schema, $actions);
@@ -95,6 +96,7 @@ final class SheetProcessUseCase
             'constraint' => $constraint->file,
             'translate' => $translate->file,
             'formType' => $formType->file,
+            'filterForm' => $filterForm->file,
             'requests' => $requests->files,
             'responses' => $responses->files,
             'useCases' => $useCases->files,
@@ -128,6 +130,13 @@ final class SheetProcessUseCase
     private function createFormType(SchemaInterface $schema): CreateFormTypeFileResponse
     {
         return (new CreateFormTypeFileUseCase())->execute(
+            new CreateFormTypeFileRequest($schema)
+        );
+    }
+
+    private function createFilterForm(SchemaInterface $schema): CreateFormTypeFileResponse
+    {
+        return (new CreateFilterFormFileUseCase())->execute(
             new CreateFormTypeFileRequest($schema)
         );
     }

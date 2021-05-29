@@ -1,0 +1,20 @@
+Filter:
+  Title: Filter
+  Actions: if
+  Attributes:
+    id:
+      Name: Id
+      DataType: integer
+      Constraints: 'pk|ai|required|type:number'
+    password:
+      Name: Password
+      DataType: string
+      Constraints: 'required|type:password'
+    createdAt:
+      Name: CreatedAt
+      DataType: datetime
+      Constraints: 'ca'
+    updatedAt:
+      Name: UpdatedAt
+      DataType: datetime
+      Constraints: 'ua'
