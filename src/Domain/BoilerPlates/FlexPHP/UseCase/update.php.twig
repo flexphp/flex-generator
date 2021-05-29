@@ -1,22 +1,58 @@
+{% set useStatements = [] %}
 <?php declare(strict_types=1);
 {{ header|raw }}
 namespace Domain\{{ entity }}\UseCase;
 
-use Domain\{{ entity }}\{{ entity }}Repository;
-use Domain\{{ entity }}\Request\{{ action }}{{ entity }}Request;
-use Domain\{{ entity }}\Response\{{ action }}{{ entity }}Response;
+{% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\' ~ entity ~ 'Repository;']) %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\Request\\' ~ action ~ entity ~ 'Request;']) %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ entity ~ '\\Response\\' ~ action ~ entity ~ 'Response;']) %}
+{% for fkFn in fkFns %}
+{% if fkFn.fnSingular != name %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\' ~ fkFn.fnSingular ~ 'Repository;']) %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\Request\\Read' ~ fkFn.fnSingular ~ 'Request;']) %}
+{% endif %}
+{% endfor %}
+{% if fkFns|length > 0 %}
+{% set useStatements = useStatements|merge(['use Exception;']) %}
+{% endif %}
+{{ useStatements|sort|join("\n") }}
 
 final class {{ action }}{{ entity }}UseCase
 {
     private {{ entity }}Repository ${{ item }}Repository;
+{% for fkFn in fkFns %}
 
+    private {{ fkFn.table }}Repository ${{ fkFn.item }}Repository;
+{% endfor %}
+
+{% if fkFns|length > 0 %}
+    public function __construct(
+        {{ entity }}Repository ${{ item }}Repository,
+{% for fkFn in fkFns %}
+        {{ fkFn.table }}Repository ${{ fkFn.item }}Repository{% if not loop.last %},{% endif %}
+
+    ) {
+{% endfor %}
+{% else %}
     public function __construct({{ entity }}Repository ${{ item }}Repository)
     {
+{% endif %}
         $this->{{ item }}Repository = ${{ item }}Repository;
+{% for fkFn in fkFns %}
+        $this->{{ fkFn.item }}Repository = ${{ fkFn.item }}Repository;
+{% endfor %}
     }
 
     public function execute({{ action }}{{ entity }}Request $request): {{ action }}{{ entity }}Response
     {
+{% for fkFn in fkFns %}
+        if ($request->{{ fkFn.pk }}
+            && !$this->{{ fkFn.item}}Repository->getById(new Read{{ fkFn.table }}Request($request->{{ fkFn.pk }}))->{{ fkFn.id }}()
+        ) {
+            throw new Exception('{{ fkFn.table }} not found [%s]', $request->{{ fkFn.pk }});
+        }
+
+{% endfor %}
         return new {{ action }}{{ entity }}Response($this->{{ item }}Repository->change($request));
     }
 }

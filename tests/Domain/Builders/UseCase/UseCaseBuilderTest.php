@@ -215,9 +215,9 @@ T
 {$this->header}
 namespace Domain\Test\UseCase;
 
-use Domain\Test\TestRepository;
 use Domain\Test\Request\UpdateTestRequest;
 use Domain\Test\Response\UpdateTestResponse;
+use Domain\Test\TestRepository;
 
 final class UpdateTestUseCase
 {
@@ -230,6 +230,52 @@ final class UpdateTestUseCase
 
     public function execute(UpdateTestRequest \$request): UpdateTestResponse
     {
+        return new UpdateTestResponse(\$this->testRepository->change(\$request));
+    }
+}
+
+T
+, $render->build());
+    }
+
+    public function testItrenderUpdateWithCheckForeingKey(): void
+    {
+        $render = new UseCaseBuilder($this->getSchemaFkWithFilterAndFchars(), 'update');
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Test\UseCase;
+
+use Domain\Check\CheckRepository;
+use Domain\Check\Request\ReadCheckRequest;
+use Domain\Test\Request\UpdateTestRequest;
+use Domain\Test\Response\UpdateTestResponse;
+use Domain\Test\TestRepository;
+use Exception;
+
+final class UpdateTestUseCase
+{
+    private TestRepository \$testRepository;
+
+    private CheckRepository \$checkRepository;
+
+    public function __construct(
+        TestRepository \$testRepository,
+        CheckRepository \$checkRepository
+    ) {
+        \$this->testRepository = \$testRepository;
+        \$this->checkRepository = \$checkRepository;
+    }
+
+    public function execute(UpdateTestRequest \$request): UpdateTestResponse
+    {
+        if (\$request->fkcheck
+            && !\$this->checkRepository->getById(new ReadCheckRequest(\$request->fkcheck))->id()
+        ) {
+            throw new Exception('Check not found [%s]', \$request->fkcheck);
+        }
+
         return new UpdateTestResponse(\$this->testRepository->change(\$request));
     }
 }
