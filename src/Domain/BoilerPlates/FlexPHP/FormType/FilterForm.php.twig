@@ -1,5 +1,6 @@
 {% set fkRelsNoBlame = fkRels|filter(v => not v.blameBy) %}
 {% set validFields = properties|filter(v => (not v.isBlame and v.type not in ['password']) or v.isCa)|length %}
+{% set hasCa = properties|filter(v => v.isCa)|length > 0 %}
 {% set useStatements = [] %}
 <?php declare(strict_types=1);
 {{ header|raw }}
@@ -13,6 +14,10 @@ namespace Domain\{{ entity }};
 {% endif %}
 {% endif %}
 {% endfor %}
+{% if hasCa %}
+{% set useStatements = useStatements|merge(['use App\\Form\\Type\\DatefinishpickerType;']) %}
+{% set useStatements = useStatements|merge(['use App\\Form\\Type\\DatestartpickerType;']) %}
+{% endif %}
 {% if fkRelsNoBlame %}
 {% set useStatements = useStatements|merge(['use App\\Form\\Type\\Select2Type;']) %}
 {% set useStatements = useStatements|merge(['use Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface;']) %}

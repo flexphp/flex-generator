@@ -74,16 +74,20 @@ final class SheetProcessUseCase
         $constraint = $this->createConstraint($schema);
         $translate = $this->createTranslate($schema);
         $formType = $this->createFormType($schema);
-        $filterForm = $this->createFilterForm($schema);
         $requests = $this->createRequests($schema, $actions);
         $responses = $this->createResponses($schema, $actions);
         $useCases = $this->createUseCases($schema, $actions);
         $commands = $this->createCommands($schema, $actions);
         $templates = $this->createTemplates($schema);
         $javascript = null;
+        $filterForm = null;
 
         if (!empty($schema->fkRelations())) {
             $javascript = $this->createJavascript($schema);
+        }
+
+        if ($schema->hasAction(Action::FILTER)) {
+            $filterForm = $this->createFilterForm($schema);
         }
 
         return new SheetProcessResponse([
@@ -96,13 +100,13 @@ final class SheetProcessUseCase
             'constraint' => $constraint->file,
             'translate' => $translate->file,
             'formType' => $formType->file,
-            'filterForm' => $filterForm->file,
             'requests' => $requests->files,
             'responses' => $responses->files,
             'useCases' => $useCases->files,
             'commands' => $commands->files,
             'templates' => $templates->files,
             'javascript' => $javascript->file ?? null,
+            'filterForm' => $filterForm->file ?? null,
         ]);
     }
 

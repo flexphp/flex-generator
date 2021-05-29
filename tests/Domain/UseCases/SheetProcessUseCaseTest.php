@@ -60,6 +60,7 @@ final class SheetProcessUseCaseTest extends TestCase
         switch ($name) {
             case 'Posts':
                 $this->assertNull($response->javascript);
+                $this->assertNull($response->filterForm);
 
                 break;
             case 'Comments':
@@ -149,12 +150,12 @@ final class SheetProcessUseCaseTest extends TestCase
     public function getEntityFile(): array
     {
         return [
-            // ['Posts', \sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__)],
-            // ['Comments', \sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__)],
-            // ['Users', \sprintf('%1$s/../../Mocks/yaml/users.yaml', __DIR__)],
+            ['Posts', \sprintf('%1$s/../../Mocks/yaml/posts.yaml', __DIR__)],
+            ['Comments', \sprintf('%1$s/../../Mocks/yaml/comments.yaml', __DIR__)],
+            ['Users', \sprintf('%1$s/../../Mocks/yaml/users.yaml', __DIR__)],
             ['CustomActions', \sprintf('%1$s/../../Mocks/yaml/customActions.yaml', __DIR__)],
-            // ['Patch', \sprintf('%1$s/../../Mocks/yaml/patch.yaml', __DIR__)],
-            // ['Filter', \sprintf('%1$s/../../Mocks/yaml/filter.yaml', __DIR__)],
+            ['Patch', \sprintf('%1$s/../../Mocks/yaml/patch.yaml', __DIR__)],
+            ['Filter', \sprintf('%1$s/../../Mocks/yaml/filter.yaml', __DIR__)],
         ];
     }
 }

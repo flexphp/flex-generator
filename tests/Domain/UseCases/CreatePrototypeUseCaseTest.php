@@ -235,6 +235,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/domain/Post/PostRepository.php');
         $this->assertFileExists($response->outputDir . '/domain/Post/PostConstraint.php');
         $this->assertFileExists($response->outputDir . '/domain/Post/PostFormType.php');
+        $this->assertFileNotExists($response->outputDir . '/domain/Post/PostFilterFormType.php');
 
         $this->assertFileExists($response->outputDir . '/domain/Post/Request/IndexPostRequest.php');
         $this->assertFileExists($response->outputDir . '/domain/Post/Request/CreatePostRequest.php');
@@ -266,6 +267,7 @@ final class CreatePrototypeUseCaseTest extends TestCase
         $this->assertFileExists($response->outputDir . '/domain/User/Response/LoginUserResponse.php');
         $this->assertFileExists($response->outputDir . '/domain/User/UseCase/LoginUserUseCase.php');
         $this->assertFileNotExists($response->outputDir . '/domain/User/Command/LoginUserCommand.php');
+        $this->assertFileExists($response->outputDir . '/domain/User/UserFilterFormType.php');
 
         parent::deleteFolder(\dirname($response->outputDir));
     }

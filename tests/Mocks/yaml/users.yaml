@@ -1,6 +1,7 @@
 Users:
   Title: Users
   Icon: fas fa-users
+  Actions: icrudf
   Attributes:
     id:
       Name: Id

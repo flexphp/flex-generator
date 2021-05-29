@@ -69,6 +69,8 @@ T
 {$this->header}
 namespace Domain\Test;
 
+use App\Form\Type\DatefinishpickerType;
+use App\Form\Type\DatestartpickerType;
 use App\Form\Type\DatetimepickerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
@@ -285,6 +287,8 @@ T
 {$this->header}
 namespace Domain\Test;
 
+use App\Form\Type\DatefinishpickerType;
+use App\Form\Type\DatestartpickerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as InputType;
 use Symfony\Component\Form\FormBuilderInterface;

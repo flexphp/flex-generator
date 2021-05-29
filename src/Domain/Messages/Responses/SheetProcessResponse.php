@@ -29,8 +29,6 @@ final class SheetProcessResponse
 
     public ?string $formType = null;
 
-    public ?string $filterForm = null;
-
     /**
      * @var array<int, string>
      */
@@ -57,6 +55,8 @@ final class SheetProcessResponse
     public array $templates = [];
 
     public ?string $javascript = null;
+
+    public ?string $filterForm = null;
 
     public function __construct(array $response)
     {
