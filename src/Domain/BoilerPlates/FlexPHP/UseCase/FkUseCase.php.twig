@@ -1,10 +1,12 @@
+{% set useStatements = [] %}
 <?php declare(strict_types=1);
 {{ header|raw }}
 namespace Domain\{{ pkEntity }}\UseCase;
 
-use Domain\{{ pkEntity }}\{{ pkEntity }}Repository;
-use Domain\{{ pkEntity }}\Request\Find{{ pkEntity }}{{ fkEntity }}Request;
-use Domain\{{ pkEntity }}\Response\Find{{ pkEntity }}{{ fkEntity }}Response;
+{% set useStatements = useStatements|merge(['use Domain\\' ~ pkEntity ~ '\\' ~ pkEntity ~ 'Repository;']) %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ pkEntity ~ '\\Request\\Find' ~ pkEntity ~ fkEntity ~ 'Request;']) %}
+{% set useStatements = useStatements|merge(['use Domain\\' ~ pkEntity ~ '\\Response\\Find' ~ pkEntity ~ fkEntity ~ 'Response;']) %}
+{{ useStatements|sort|join("\n") }}
 
 final class Find{{ pkEntity }}{{ fkEntity }}UseCase
 {

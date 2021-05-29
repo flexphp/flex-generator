@@ -27,15 +27,26 @@ final class FkUseCaseBuilderTest extends TestCase
         string $entity
     ): void {
         $render = new FkUseCaseBuilder($pkEntity, $fkEntity);
+        $useStatements = <<<T
+use Domain\\{$namespace}\Request\Find{$expected}Request;
+use Domain\\{$namespace}\Response\Find{$expected}Response;
+use Domain\\{$namespace}\\{$namespace}Repository;
+T;
+
+        if (in_array(strtolower($pkEntity), ['posts', 'fuz'])) {
+            $useStatements = <<<T
+use Domain\\{$namespace}\\{$namespace}Repository;
+use Domain\\{$namespace}\Request\Find{$expected}Request;
+use Domain\\{$namespace}\Response\Find{$expected}Response;
+T;
+        }
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
 namespace Domain\\{$namespace}\UseCase;
 
-use Domain\\{$namespace}\\{$namespace}Repository;
-use Domain\\{$namespace}\Request\Find{$expected}Request;
-use Domain\\{$namespace}\Response\Find{$expected}Response;
+{$useStatements}
 
 final class Find{$expected}UseCase
 {

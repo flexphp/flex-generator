@@ -25,9 +25,9 @@ final class UseCaseBuilderTest extends TestCase
 {$this->header}
 namespace Domain\Test\UseCase;
 
-use Domain\Test\TestRepository;
 use Domain\Test\Request\ActionTestRequest;
 use Domain\Test\Response\ActionTestResponse;
+use Domain\Test\TestRepository;
 
 final class ActionTestUseCase
 {
@@ -69,9 +69,9 @@ T
 {$this->header}
 namespace Domain\Test\UseCase;
 
-use Domain\Test\TestRepository;
 use Domain\Test\Request\IndexTestRequest;
 use Domain\Test\Response\IndexTestResponse;
+use Domain\Test\TestRepository;
 
 final class IndexTestUseCase
 {
@@ -181,9 +181,9 @@ T
 {$this->header}
 namespace Domain\Test\UseCase;
 
-use Domain\Test\TestRepository;
 use Domain\Test\Request\ReadTestRequest;
 use Domain\Test\Response\ReadTestResponse;
+use Domain\Test\TestRepository;
 
 final class ReadTestUseCase
 {
@@ -293,9 +293,9 @@ T
 {$this->header}
 namespace Domain\Test\UseCase;
 
-use Domain\Test\TestRepository;
 use Domain\Test\Request\DeleteTestRequest;
 use Domain\Test\Response\DeleteTestResponse;
+use Domain\Test\TestRepository;
 
 final class DeleteTestUseCase
 {
@@ -325,9 +325,9 @@ T
 {$this->header}
 namespace Domain\Test\UseCase;
 
-use Domain\Test\TestRepository;
 use Domain\Test\Request\LoginTestRequest;
 use Domain\Test\Response\LoginTestResponse;
+use Domain\Test\TestRepository;
 
 final class LoginTestUseCase
 {
@@ -356,15 +356,26 @@ T
     public function testItRenderOkWithDiffEntityName(string $entity, string $expected, string $expectedItem): void
     {
         $render = new UseCaseBuilder(new Schema($entity, 'bar', []), 'action');
+        $useStatements = <<<T
+use Domain\\{$expected}\Request\Action{$expected}Request;
+use Domain\\{$expected}\Response\Action{$expected}Response;
+use Domain\\{$expected}\\{$expected}Repository;
+T;
+
+        if ($entity === 'Posts') {
+            $useStatements = <<<T
+use Domain\\{$expected}\\{$expected}Repository;
+use Domain\\{$expected}\Request\Action{$expected}Request;
+use Domain\\{$expected}\Response\Action{$expected}Response;
+T;
+        }
 
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
 namespace Domain\\{$expected}\\UseCase;
 
-use Domain\\{$expected}\\{$expected}Repository;
-use Domain\\{$expected}\Request\Action{$expected}Request;
-use Domain\\{$expected}\Response\Action{$expected}Response;
+{$useStatements}
 
 final class Action{$expected}UseCase
 {
@@ -397,9 +408,9 @@ T
 {$this->header}
 namespace Domain\Test\UseCase;
 
-use Domain\Test\TestRepository;
 use Domain\Test\Request\\{$expected}TestRequest;
 use Domain\Test\Response\\{$expected}TestResponse;
+use Domain\Test\TestRepository;
 
 final class {$expected}TestUseCase
 {
@@ -434,9 +445,9 @@ T
 {$this->header}
 namespace Domain\Test\UseCase;
 
-use Domain\Test\TestRepository;
 use Domain\Test\Request\ActionTestRequest;
 use Domain\Test\Response\ActionTestResponse;
+use Domain\Test\TestRepository;
 
 final class ActionTestUseCase
 {
