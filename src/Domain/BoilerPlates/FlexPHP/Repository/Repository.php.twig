@@ -25,7 +25,7 @@ final class {{ entity }}Repository
     {
         $this->gateway = $gateway;
     }
-{% for index, action in actions %}
+{% for index,action in actions %}
 {% if index == 0 and action in ['index', 'create', 'read', 'update', 'delete', 'login'] %}
 
 {% endif %}

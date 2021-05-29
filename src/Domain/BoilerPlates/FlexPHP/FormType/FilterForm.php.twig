@@ -1,0 +1,86 @@
+{% set fkRelsNoBlame = fkRels|filter(v => not v.blameBy) %}
+{% set validFields = properties|filter(v => (not v.isBlame and v.type not in ['password']) or v.isCa)|length %}
+{% set useStatements = [] %}
+<?php declare(strict_types=1);
+{{ header|raw }}
+namespace Domain\{{ entity }};
+
+{% for id,property in properties %}
+{% if not property.isBlameAt and inputs[id] ends with 'picker' %}
+{% set name = 'use App\\Form\\Type\\' ~ inputs[id] ~ 'Type;' %}
+{% if name not in useStatements %}
+{% set useStatements = useStatements|merge([name]) %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% if fkRelsNoBlame %}
+{% set useStatements = useStatements|merge(['use App\\Form\\Type\\Select2Type;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface;']) %}
+{% endif %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\AbstractType;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\Extension\\Core\\Type as InputType;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormBuilderInterface;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\OptionsResolver\\OptionsResolver;']) %}
+{% if useStatements|length > 0 %}
+{{ useStatements|sort|join("\n") }}
+{% endif %}
+
+final class {{ entity }}FilterFormType extends AbstractType
+{
+{% if fkRelsNoBlame %}
+    private UrlGeneratorInterface $router;
+
+    public function __construct(UrlGeneratorInterface $router)
+    {
+        $this->router = $router;
+    }
+
+{% endif %}
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+{% for id, property in properties %}
+{% if (not property.isBlame and property.type not in ['password']) or property.isCa %}
+{% set validFields = validFields - 1 %}
+{% if property.isCa %}
+        $builder->add('{{ id }}_START', DatestartpickerType::class, [
+            'label' => 'filter.createdAtStart',
+        ]);
+
+        $builder->add('{{ id }}_END', DatefinishpickerType::class, [
+            'label' => 'filter.createdAtEnd',
+{% elseif fkRelsNoBlame[id] %}
+        $builder->add('{{ id }}', Select2Type::class, [
+{% elseif inputs[id] ends with 'picker' %}
+        $builder->add('{{ id }}', {{ inputs[id] }}Type::class, [
+{% else %}
+        $builder->add('{{ id }}', InputType\{{ inputs[id] }}Type::class, [
+{% endif %}
+{% if not property.isCa  %}
+            'label' => 'label.{{ id }}',
+            'required' => false,
+{% endif %}
+{% if property.constraints|keys|filter(v => v in ['fk']) %}
+            'attr' => [
+                'data-autocomplete-url' => $this->router->generate('{{ route }}.find.{{ fkRelsNoBlame[id].route }}'),
+            ],
+{% endif %}
+{% if not property.isCa and inputs[id] in ['Date', 'Time', 'DateTime'] %}
+            'date_widget' => 'single_text',
+            'time_widget' => 'single_text',
+            'format' => 'Y-m-d H:i:s',
+{% endif %}
+        ]);
+{% if validFields > 0 %}
+
+{% endif %}
+{% endif %}
+{% endfor %}
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'translation_domain' => '{{ item }}',
+        ]);
+    }
+}

@@ -13,7 +13,7 @@ use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
 use FlexPHP\Schema\SchemaAttribute;
 use FlexPHP\Schema\SchemaInterface;
 
-final class FormTypeBuilder extends AbstractBuilder
+class FormTypeBuilder extends AbstractBuilder
 {
     public function __construct(SchemaInterface $schema)
     {
@@ -49,7 +49,7 @@ final class FormTypeBuilder extends AbstractBuilder
         return \sprintf('%1$s/FlexPHP/FormType', parent::getPathTemplate());
     }
 
-    private function getInputType(string $dataType, ?string $type): string
+    protected function getInputType(string $dataType, ?string $type): string
     {
         $inputTypes = [
             'text' => 'Textarea',

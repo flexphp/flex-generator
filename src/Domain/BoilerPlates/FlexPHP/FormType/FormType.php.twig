@@ -20,6 +20,10 @@ namespace Domain\{{ entity }};
 {% endfor %}
 {% if fkRelsNoBlame %}
 {% set useStatements = useStatements|merge(['use App\\Form\\Type\\Select2Type;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormInterface;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormEvent;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormEvents;']) %}
+{% set useStatements = useStatements|merge(['use Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface;']) %}
 {% for fkFn in fkFns %}
 {% if not properties[fkFn.pkName].isBlameBy %}
 {% set useStatements = useStatements|merge(['use Domain\\' ~ fkFn.fnSingular ~ '\\UseCase\\Read' ~ fkFn.fnSingular ~ 'UseCase;']) %}
@@ -31,12 +35,6 @@ namespace Domain\{{ entity }};
 {% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\Extension\\Core\\Type as InputType;']) %}
 {% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormBuilderInterface;']) %}
 {% set useStatements = useStatements|merge(['use Symfony\\Component\\OptionsResolver\\OptionsResolver;']) %}
-{% if fkRelsNoBlame %}
-{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormInterface;']) %}
-{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormEvent;']) %}
-{% set useStatements = useStatements|merge(['use Symfony\\Component\\Form\\FormEvents;']) %}
-{% set useStatements = useStatements|merge(['use Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface;']) %}
-{% endif %}
 {% if useStatements|length > 0 %}
 {{ useStatements|sort|join("\n") }}
 {% endif %}
