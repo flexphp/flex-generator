@@ -1,3 +1,4 @@
+{% set locale = app.request.locale|split('_')|first %}
 {% trans_default_domain 'messages' %}
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
@@ -182,9 +183,9 @@
     <script src="{{ asset('js/jquery/jquery.slimscroll.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/jquery/jquery.datepicker.min.js') }}"></script>
-    <script src="{{ asset('js/jquery/i18n/datepicker.%locale%.min.js'|replace({'%locale%': app.request.locale|replace({'_': '-'}) })) }}"></script>
+    <script src="{{ asset('js/jquery/i18n/datepicker.%locale%.min.js'|replace({'%locale%': locale })) }}"></script>
     <script src="{{ asset('js/jquery/jquery.select2.min.js') }}"></script>
-    <script src="{{ asset('js/jquery/i18n/select2.%locale%.min.js'|replace({'%locale%': app.request.locale|replace({'_': '-'}) })) }}"></script>
+    <script src="{{ asset('js/jquery/i18n/select2.%locale%.min.js'|replace({'%locale%': locale })) }}"></script>
     {% block javascripts %}{% endblock %}
     <script src="{{ asset('js/main.js') }}"></script>
 </body>

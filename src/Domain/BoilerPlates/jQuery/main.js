@@ -138,37 +138,6 @@ jQuery(document).ready(function ($) {
         isInput ? $(this).val(money) : $(this).html(money);
     });
 
-    $('[name$=_filter_form]').on('submit', function (e) {
-        e.preventDefault();
-
-        const url = $(this).attr('action');
-        const method = $(this).attr('method');
-        const data = $(this).serialize();
-
-        $.ajax({
-            url: url,
-            method: method,
-            dataType: 'html',
-            data: data,
-            headers: {
-                'X-XSRF-Token': getCookie('XSRF-Token')
-            },
-            beforeSend: function () {
-                $('.overlay').show();
-            }
-        }).always(function () {
-            $('.overlay').hide();
-        }).done(function (html) {
-            infScroll.pageIndex = 1;
-
-            $('.dashboard-content .table > tbody').empty().html(html);
-
-            updateTableFormats();
-
-            infScroll.dispatchEvent('append');
-        });
-    });
-
     // @see https://github.com/stefangabos/Zebra_Datepicker
     if ($(document).Zebra_DatePicker) {
         $('.date-picker').Zebra_DatePicker_i18n({
@@ -232,6 +201,37 @@ jQuery(document).ready(function ($) {
             updateTableFormats();
 
             infScroll.dispatchEvent('append');
+        });
+
+        $('[name$=_filter_form]').on('submit', function (e) {
+            e.preventDefault();
+
+            const url = $(this).attr('action');
+            const method = $(this).attr('method');
+            const data = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                method: method,
+                dataType: 'html',
+                data: data,
+                headers: {
+                    'X-XSRF-Token': getCookie('XSRF-Token')
+                },
+                beforeSend: function () {
+                    $('.overlay').show();
+                }
+            }).always(function () {
+                $('.overlay').hide();
+            }).done(function (html) {
+                infScroll.pageIndex = 1;
+
+                $('.dashboard-content .table > tbody').empty().html(html);
+
+                updateTableFormats();
+
+                infScroll.dispatchEvent('append');
+            });
         });
 
         window.infScroll = infScroll;
