@@ -18,4 +18,10 @@ return [
         'updated' => '{{ titleSingular }} updated',
         'deleted' => '{{ titleSingular }} deleted',
     ],
+{% if hasFilter %}
+    'filter' => [
+        'createdAtStart' => 'Date Start',
+        'createdAtEnd' => 'Date End',
+    ],
+{% endif %}
 ];

@@ -49,6 +49,38 @@ T
 , $render->build());
     }
 
+    public function testItRenderFilterOk(): void
+    {
+        $render = new TranslateBuilder(new Schema('Filter', 'filter', [], null, null, ['f']));
+
+        $this->assertEquals(<<<T
+<?php
+
+return [
+    'entity' => 'Filter',
+    'title' => [
+        'new' => 'New Filter',
+        'edit' => 'Edit Filter',
+        'show' => 'Filter Details',
+        'list' => 'Filters',
+    ],
+    'label' => [
+    ],
+    'message' => [
+        'created' => 'Filter created',
+        'updated' => 'Filter updated',
+        'deleted' => 'Filter deleted',
+    ],
+    'filter' => [
+        'createdAtStart' => 'Date Start',
+        'createdAtEnd' => 'Date End',
+    ],
+];
+
+T
+, $render->build());
+    }
+
     /**
      * @dataProvider getTranslateName
      */

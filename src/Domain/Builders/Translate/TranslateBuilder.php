@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Translate;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\Constants\Action;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\Schema\SchemaInterface;
 
@@ -19,6 +20,7 @@ final class TranslateBuilder extends AbstractBuilder
     {
         $titleSingular = $this->getInflector()->entityTitleSingular($schema->name());
         $titlePlural = $this->getInflector()->entityTitlePlural($schema->name());
+        $hasFilter = $schema->hasAction(Action::FILTER);
         $headers = \array_reduce($schema->attributes(), function (array $result, SchemaAttributeInterface $property) {
             $result[
                 $this->getInflector()->camelProperty($property->name())
@@ -27,7 +29,7 @@ final class TranslateBuilder extends AbstractBuilder
             return $result;
         }, []);
 
-        parent::__construct(\compact('titleSingular', 'titlePlural', 'headers'));
+        parent::__construct(\compact('titleSingular', 'titlePlural', 'headers', 'hasFilter'));
     }
 
     protected function getFileTemplate(): string
