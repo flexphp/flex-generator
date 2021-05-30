@@ -20,9 +20,6 @@ final class CreateDatabaseFileUseCase
 {
     public function execute(CreateDatabaseFileRequest  $request): CreateDatabaseFileResponse
     {
-        $inflector = new Inflector();
-        $dbname = $inflector->dbName($request->dbname);
-
         $builder = new Builder($request->platform);
 
         \array_map(function (string $schemafile) use ($builder): void {

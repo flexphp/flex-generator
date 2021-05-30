@@ -55,9 +55,28 @@ T
 , $render->build());
     }
 
+    public function testItRenderFilterOk(): void
+    {
+        $render = new ActionBuilder(new Schema('Test', 'bar', [], null, null, ['f']), 'index');
+
+        $this->assertEquals(<<<'T'
+    /**
+     * @Route("/", methods={"GET","POST"}, name="tests.index")
+     * @Cache(smaxage="3600")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_INDEX')", statusCode=401)
+     */
+    public function index(Request $request, IndexTestUseCase $useCase): Response
+    {
+    }
+
+T
+, $render->build());
+
+    }
+
     public function testItRenderCreateOk(): void
     {
-        $render = new ActionBuilder(new Schema('Test', 'bar', []), 'create');
+        $render = new ActionBuilder(new Schema('Test', 'bar', [], null, null, ['f', 'p']), 'create');
 
         $this->assertEquals(<<<'T'
     /**
@@ -127,7 +146,7 @@ T
 
     public function testItRenderReadOk(): void
     {
-        $render = new ActionBuilder(new Schema('Test', 'bar', []), 'read');
+        $render = new ActionBuilder(new Schema('Test', 'bar', [], null, null, ['f', 'p']), 'read');
 
         $this->assertEquals(<<<'T'
     /**
@@ -145,7 +164,7 @@ T
 
     public function testItRenderUpdateOk(): void
     {
-        $render = new ActionBuilder(new Schema('Test', 'bar', []), 'update');
+        $render = new ActionBuilder(new Schema('Test', 'bar', [], null, null, ['f', 'p']), 'update');
 
         $this->assertEquals(<<<'T'
     /**
@@ -236,7 +255,7 @@ T
     {
         $render = new ActionBuilder(new Schema('Test', 'bar', [
             new SchemaAttribute('foo', 'integer', 'pk|ai|required'),
-        ]), 'delete');
+        ], null, null, ['f', 'p']), 'delete');
 
         $this->assertEquals(<<<'T'
     /**
@@ -317,7 +336,7 @@ T
      */
     public function testItRenderCustomActionOk($action): void
     {
-        $render = new ActionBuilder(new Schema('FooBar', 'bar', []), $action);
+        $render = new ActionBuilder(new Schema('FooBar', 'bar', [], null, null, ['f', 'p']), $action);
 
         $this->assertEquals(<<<T
     /**

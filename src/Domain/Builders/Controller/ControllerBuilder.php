@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\Constants\Action;
 use FlexPHP\Schema\SchemaInterface;
 
 final class ControllerBuilder extends AbstractBuilder
@@ -20,6 +21,7 @@ final class ControllerBuilder extends AbstractBuilder
         $route = $this->getInflector()->route($schema->name());
         $fkFns = $this->getFkFunctions($schema->fkRelations());
         $header = self::getHeaderFile();
+        $hasFilter = $schema->hasAction(Action::FILTER);
         unset($actions['login']);
 
         foreach ($actions as $action => $builder) {
@@ -27,7 +29,7 @@ final class ControllerBuilder extends AbstractBuilder
             unset($actions[$action]);
         }
 
-        parent::__construct(\compact('entity', 'actions', 'route', 'fkFns', 'header'));
+        parent::__construct(\compact('entity', 'actions', 'route', 'fkFns', 'header', 'hasFilter'));
     }
 
     protected function getFileTemplate(): string

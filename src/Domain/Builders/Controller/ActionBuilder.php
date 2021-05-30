@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\Constants\Action;
 use FlexPHP\Schema\SchemaInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -45,7 +46,9 @@ final class ActionBuilder extends AbstractBuilder
         $data['action_pascal'] = $inflector->pascalAction($action);
         $data['route'] = $this->getGuessRoute($inflector->dashAction($action));
         $data['route_name'] = $inflector->routeName($schema->name(), $action);
-        $data['methods'] = $this->getGuessMethod($action);
+        $data['methods'] = $action === 'index' && $schema->hasAction(Action::FILTER)
+            ? \implode('","', [Request::METHOD_GET, Request::METHOD_POST])
+            : $this->getGuessMethod($action);
 
         parent::__construct($data);
     }

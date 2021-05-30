@@ -18,7 +18,7 @@ final class UseCaseBuilderTest extends TestCase
     /**
      * @dataProvider getEntityName
      */
-    public function testItRenderOk(string $entity, string $expected): void
+    public function testItRenderOk(string $entity): void
     {
         $render = new UseCaseBuilder(new Schema($entity, 'bar', []), 'action');
 
@@ -31,6 +31,16 @@ T
     public function testItRenderIndexOk(): void
     {
         $render = new UseCaseBuilder(new Schema('Test', 'bar', []), 'index');
+
+        $this->assertEquals(<<<'T'
+        $response = $useCase->execute($request);
+T
+, $render->build());
+    }
+
+    public function testItRenderFilterOk(): void
+    {
+        $render = new UseCaseBuilder(new Schema('Test', 'bar', [], null, null, ['f']), 'index');
 
         $this->assertEquals(<<<'T'
         $response = $useCase->execute($request);
@@ -67,6 +77,7 @@ T
      */
     public function testItRenderReadDiffEntityNameOk(string $name, string $expected, string $item): void
     {
+        unset($expected);
         $render = new UseCaseBuilder(new Schema($name, 'bar', []), 'read');
 
         $this->assertEquals(<<<T

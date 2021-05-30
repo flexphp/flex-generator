@@ -10,6 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders\Controller;
 
 use FlexPHP\Generator\Domain\Builders\AbstractBuilder;
+use FlexPHP\Schema\Constants\Action;
 use FlexPHP\Schema\SchemaAttributeInterface;
 use FlexPHP\Schema\SchemaInterface;
 
@@ -22,6 +23,7 @@ final class RequestMessageBuilder extends AbstractBuilder
         $action = $this->getInflector()->pascalAction($action);
         $createdBy = null;
         $updatedBy = null;
+        $hasFilter = $schema->hasAction(Action::FILTER);
 
         \array_filter(
             $schema->attributes(),
@@ -36,7 +38,7 @@ final class RequestMessageBuilder extends AbstractBuilder
             }
         );
 
-        parent::__construct(\compact('entity', 'item', 'action', 'createdBy', 'updatedBy'));
+        parent::__construct(\compact('entity', 'item', 'action', 'createdBy', 'updatedBy', 'hasFilter'));
     }
 
     public function build(): string

@@ -136,6 +136,71 @@ T
 , $render->build());
     }
 
+    public function testItRenderFilterOk(): void
+    {
+        $schema = new Schema('Test', 'bar', [], null, null, ['f']);
+        $action = 'index';
+        $actions = [
+            $action => (new ActionBuilder(
+                $schema,
+                $action,
+                (new RequestMessageBuilder($schema, $action))->build(),
+                (new UseCaseBuilder($schema, $action))->build(),
+                (new ResponseMessageBuilder($schema, $action))->build()
+            ))->build(),
+        ];
+
+        $render = new ControllerBuilder($schema, $actions);
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace App\Controller;
+
+use Domain\Test\Request\IndexTestRequest;
+use Domain\Test\TestFilterFormType;
+use Domain\Test\TestFormType;
+use Domain\Test\UseCase\IndexTestUseCase;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @Route("/tests")
+ */
+final class TestController extends AbstractController
+{
+    /**
+     * @Route("/", methods={"GET","POST"}, name="tests.index")
+     * @Cache(smaxage="3600")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_TEST_INDEX')", statusCode=401)
+     */
+    public function index(Request \$request, IndexTestUseCase \$useCase): Response
+    {
+        \$filters = \$request->isMethod('POST')
+            ? \$request->request->filter('test_filter_form', [])
+            : \$request->query->filter('test_filter_form', []);
+
+        \$template = \$request->isXmlHttpRequest() ? 'test/_ajax.html.twig' : 'test/index.html.twig';
+
+        \$request = new IndexTestRequest(\$filters, (int)\$request->query->get('page', 1), 50, \$this->getUser()->timezone());
+
+        \$response = \$useCase->execute(\$request);
+
+        return \$this->render(\$template, [
+            'tests' => \$response->tests,
+            'filter' => (\$this->createForm(TestFilterFormType::class))->createView(),
+        ]);
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItRenderCreateOk(): void
     {
         $schema = new Schema('Test', 'bar', []);

@@ -1,6 +1,9 @@
 {% if action == 'index' %}
         return $this->render($template, [
             '{{ items }}' => $response->{{ items }},
+{% if hasFilter %}
+            'filter' => ($this->createForm({{ entity }}FilterFormType::class))->createView(),
+{% endif %}
         ]);
 {% elseif action in ['create', 'update', 'delete'] %}
         $this->addFlash('success', $trans->trans('message.{{ action }}d', [], '{{ item }}'));

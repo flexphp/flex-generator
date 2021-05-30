@@ -27,6 +27,19 @@ T
 , $render->build());
     }
 
+    public function testItRenderFilterOk(): void
+    {
+        $render = new ResponseMessageBuilder(new Schema('Test', 'bar', [], null, null, ['f']), 'index');
+
+        $this->assertEquals(<<<T
+        return \$this->render(\$template, [
+            'tests' => \$response->tests,
+            'filter' => (\$this->createForm(TestFilterFormType::class))->createView(),
+        ]);
+T
+, $render->build());
+    }
+
     public function testItRenderCreateOk(): void
     {
         $render = new ResponseMessageBuilder(new Schema('Test', 'bar', []), 'create');

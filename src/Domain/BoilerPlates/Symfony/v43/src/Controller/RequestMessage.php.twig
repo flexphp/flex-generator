@@ -11,6 +11,14 @@
         $form->handleRequest($request);
 
         $request = new {{ action }}{{ entity }}Request($id, $form->getData(){% if updatedBy %}, $this->getUser()->{{ updatedBy }}(){% endif %});
+{% elseif hasFilter and action in ['Index'] %}
+        $filters = $request->isMethod('POST')
+            ? $request->request->filter('{{ item }}_filter_form', [])
+            : $request->query->filter('{{ item }}_filter_form', []);
+
+        $template = $request->isXmlHttpRequest() ? '{{ item }}/_ajax.html.twig' : '{{ item }}/index.html.twig';
+
+        $request = new {{ action }}{{ entity }}Request($filters, (int)$request->query->get('page', 1), 50, $this->getUser()->timezone());
 {% elseif action in ['Index'] %}
         $template = $request->isXmlHttpRequest() ? '{{ item }}/_ajax.html.twig' : '{{ item }}/index.html.twig';
 

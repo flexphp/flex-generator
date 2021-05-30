@@ -41,6 +41,22 @@ T
 , $render->build());
     }
 
+    public function testItRenderFilterOk(): void
+    {
+        $render = new RequestMessageBuilder(new Schema('Test', 'bar', [], null, null, ['f']), 'index');
+
+        $this->assertEquals(<<<T
+        \$filters = \$request->isMethod('POST')
+            ? \$request->request->filter('test_filter_form', [])
+            : \$request->query->filter('test_filter_form', []);
+
+        \$template = \$request->isXmlHttpRequest() ? 'test/_ajax.html.twig' : 'test/index.html.twig';
+
+        \$request = new IndexTestRequest(\$filters, (int)\$request->query->get('page', 1), 50, \$this->getUser()->timezone());
+T
+, $render->build());
+    }
+
     public function testItRenderCreateOk(): void
     {
         $render = new RequestMessageBuilder(new Schema('Test', 'bar', []), 'create');

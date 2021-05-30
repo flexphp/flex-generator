@@ -1,5 +1,5 @@
     /**
-     * @Route("{{ route }}", methods={"{{ methods }}"}, name="{{ route_name }}")
+     * @Route("{{ route }}", methods={"{{ methods|raw }}"}, name="{{ route_name }}")
      * @Cache(smaxage="{{ cache|default('3600') }}")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_USER_{{ entity|upper }}_{{ action_camel|upper }}')", statusCode=401)
      */
