@@ -36,6 +36,6 @@ final class UseCaseBuilder extends AbstractBuilder
 
     protected function getPathTemplate(): string
     {
-        return \sprintf('%1$s/Symfony/v43/src/Controller', parent::getPathTemplate());
+        return \sprintf('%1$s/Symfony/src/Controller', parent::getPathTemplate());
     }
 }

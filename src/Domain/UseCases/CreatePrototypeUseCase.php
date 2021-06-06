@@ -22,7 +22,7 @@ final class CreatePrototypeUseCase
     {
         $sheets = $request->sheets;
         $outputDir = $request->outputDir;
-        $sourceDir = (string)realpath(__DIR__ . '/../BoilerPlates/Symfony/v43/base');
+        $sourceDir = (string)realpath(__DIR__ . '/../BoilerPlates/Symfony/base');
 
         if (!\is_dir($outputDir)) {
             \mkdir($outputDir, 0777, true); // @codeCoverageIgnore

@@ -46,6 +46,6 @@ final class TemplateBuilder extends AbstractBuilder
 
     protected function getPathTemplate(): string
     {
-        return \sprintf('%1$s/Symfony/v43/templates', parent::getPathTemplate());
+        return \sprintf('%1$s/Symfony/templates', parent::getPathTemplate());
     }
 }
