@@ -41,7 +41,7 @@ final class HeaderSyntaxValidation implements ValidationInterface
 
     private function validateAllowedHeaders(): void
     {
-        $notAllowedHeaders = \array_filter($this->headers, fn($header) => !\in_array($header, $this->allowedHeaders));
+        $notAllowedHeaders = \array_filter($this->headers, fn ($header) => !\in_array($header, $this->allowedHeaders));
 
         if (!empty($notAllowedHeaders)) {
             throw new HeaderSyntaxValidationException('Unknow headers: ' . \implode(', ', $notAllowedHeaders));
@@ -50,7 +50,10 @@ final class HeaderSyntaxValidation implements ValidationInterface
 
     private function validateRequiredHeaders(): void
     {
-        $requiredHeaders = \array_filter($this->requiredHeaders, fn($required) => !\in_array($required, $this->headers));
+        $requiredHeaders = \array_filter(
+            $this->requiredHeaders,
+            fn ($required) => !\in_array($required, $this->headers)
+        );
 
         if (!empty($requiredHeaders)) {
             throw new HeaderSyntaxValidationException(

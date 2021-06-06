@@ -31,17 +31,16 @@ final class RequestBuilder extends AbstractBuilder
         $header = self::getHeaderFile();
         $usePatch = $schema->hasAction(Action::PATCH);
 
-        parent::__construct(
-            \compact('entity',
-                'header',
-                'action',
-                'pkName',
-                'pkTypeHint',
-                'login',
-                'properties',
-                'usePatch'
-            )
-        );
+        parent::__construct(\compact(
+            'entity',
+            'header',
+            'action',
+            'pkName',
+            'pkTypeHint',
+            'login',
+            'properties',
+            'usePatch'
+        ));
     }
 
     protected function getFileTemplate(): string
