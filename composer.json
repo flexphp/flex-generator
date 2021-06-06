@@ -52,7 +52,7 @@
         "phpfix": "phpcbf --standard=PSR2 --extensions=php src/ tests/",
         "phpstan": [
             "phpstan analyse -l 8 src/",
-            "phpstan analyse -l 4 tests/"
+            "phpstan analyse -l 6 tests/"
         ],
         "phpunit": "phpunit --bootstrap vendor/autoload.php --testdox tests/",
         "test": [

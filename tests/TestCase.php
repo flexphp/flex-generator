@@ -111,7 +111,7 @@ class TestCase extends PHPUnitTestCase
         return __DIR__ . '/../src/tmp/skeleton';
     }
 
-    protected static function deleteFolder($dir, $delete = true): void
+    protected static function deleteFolder(string $dir, bool $delete = true): void
     {
         if (\is_dir($dir)) {
             $objects = \array_diff(\scandir($dir), ['.', '..']);
