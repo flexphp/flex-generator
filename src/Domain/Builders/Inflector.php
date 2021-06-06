@@ -174,11 +174,9 @@ final class Inflector
             return $string;
         }
 
-        $singularize = EnglishInflector::singularize($string);
+        $singularize = (new EnglishInflector)->singularize($string);
 
-        return \is_array($singularize)
-            ? \array_pop($singularize)
-            : $singularize;
+        return (string)\array_pop($singularize);
     }
 
     private function pluralize(string $string): string
@@ -193,10 +191,8 @@ final class Inflector
             return $string;
         }
 
-        $pluralize = EnglishInflector::pluralize($this->singularize($string));
+        $pluralize = (new EnglishInflector)->pluralize($this->singularize($string));
 
-        return \is_array($pluralize)
-            ? $pluralize[0]
-            : $pluralize;
+        return (string)\array_pop($pluralize);
     }
 }

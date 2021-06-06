@@ -21,19 +21,20 @@ final class RequestMessageBuilder extends AbstractBuilder
         $entity = $this->getInflector()->entity($schema->name());
         $item = $this->getInflector()->item($schema->name());
         $action = $this->getInflector()->pascalAction($action);
-        $createdBy = null;
-        $updatedBy = null;
+        $createdBy = '';
+        $updatedBy = '';
         $hasFilter = $schema->hasAction(Action::FILTER);
 
         \array_filter(
             $schema->attributes(),
+            // @phpstan-ignore-next-line
             function (SchemaAttributeInterface $property) use (&$createdBy, &$updatedBy): void {
                 if ($property->isCb()) {
-                    $createdBy = $this->getInflector()->camelProperty($property->fkId());
+                    $createdBy = $this->getInflector()->camelProperty((string)$property->fkId());
                 }
 
                 if ($property->isUb()) {
-                    $updatedBy = $this->getInflector()->camelProperty($property->fkId());
+                    $updatedBy = $this->getInflector()->camelProperty((string)$property->fkId());
                 }
             }
         );

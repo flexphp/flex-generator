@@ -298,26 +298,26 @@ T
 , $render->build());
     }
 
-    public function testItPatternOk(): void
-    {
-        $this->markTestSkipped('Pattern rule is no available yet');
+    // public function testItPatternOk(): void
+    // {
+    //     $this->markTestSkipped('Pattern rule is no available yet');
 
-        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
-            'pattern' => '/^[a-z_]*$/',
-        ]));
+    //     $render = new RuleBuilder(new SchemaAttribute('foo', 'string', [
+    //         'pattern' => '/^[a-z_]*$/',
+    //     ]));
 
-        $this->assertEquals(<<<T
-    private function foo(): array
-    {
-        return [
-            new Assert\Regex([
-                'pattern' => '/^[a-z_]*$/',
-            ]),
-        ];
-    }
-T
-, $render->build());
-    }
+    //     $this->assertEquals(<<<T
+    // private function foo(): array
+    // {
+    //     return [
+    //         new Assert\Regex([
+    //             'pattern' => '/^[a-z_]*$/',
+    //         ]),
+    //     ];
+    // }
+// T
+// , $render->build());
+    // }
 
     public function testItPrimaryKeyOk(): void
     {

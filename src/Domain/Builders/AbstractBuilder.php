@@ -12,7 +12,7 @@ namespace FlexPHP\Generator\Domain\Builders;
 abstract class AbstractBuilder implements BuilderInterface
 {
     /**
-     * @var array<array|string>
+     * @var array<array|bool|string|mixed>
      */
     private array $data = [];
 
@@ -31,7 +31,7 @@ H;
     }
 
     /**
-     * @param array<array|string> $data
+     * @param array<array|bool|string|mixed> $data
      */
     public function __construct(array $data)
     {

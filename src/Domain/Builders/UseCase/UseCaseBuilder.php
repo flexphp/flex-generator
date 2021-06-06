@@ -54,7 +54,7 @@ final class UseCaseBuilder extends AbstractBuilder
         return \sprintf('%1$s/FlexPHP/UseCase', parent::getPathTemplate());
     }
 
-    private function getFkCheck(array $relations)
+    private function getFkCheck(array $relations): array
     {
         return \array_reduce($relations, function (array $result, array $relation) {
             if (!empty($relation['check'])) {

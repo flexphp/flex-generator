@@ -43,7 +43,7 @@ final class JavascriptBuilder extends AbstractBuilder
             }
         }, $schema->attributes()));
 
-
+        // @phpstan-ignore-next-line
         return \array_filter($fkRels, function (array $fkRel) use ($properties) {
             if (!\in_array($fkRel['pk'], $properties)) {
                 return $fkRel;

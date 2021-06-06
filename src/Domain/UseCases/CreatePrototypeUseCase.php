@@ -22,14 +22,14 @@ final class CreatePrototypeUseCase
     {
         $sheets = $request->sheets;
         $outputDir = $request->outputDir;
-        $sourceDir = realpath(__DIR__ . '/../BoilerPlates/Symfony/v43/base');
+        $sourceDir = (string)realpath(__DIR__ . '/../BoilerPlates/Symfony/v43/base');
 
         if (!\is_dir($outputDir)) {
             \mkdir($outputDir, 0777, true); // @codeCoverageIgnore
         }
 
         $this->addDomainDirectories($outputDir);
-        $this->addDomainFiles(realpath(__DIR__ . '/../BoilerPlates/FlexPHP'), $outputDir);
+        $this->addDomainFiles((string)realpath(__DIR__ . '/../BoilerPlates/FlexPHP'), $outputDir);
         $this->addDatabaseFile($outputDir, $request->name, $request->platform, $sheets);
         $this->addMenuFile($outputDir, $sheets);
         $this->addFrameworkDirectories($outputDir);
@@ -279,13 +279,13 @@ final class CreatePrototypeUseCase
             if (\is_dir($from)) {
                 $dir = \opendir($from);
 
-                while (false !== ($file = \readdir($dir))) {
+                while (false !== ($file = \readdir($dir))) { // @phpstan-ignore-line
                     if (!\in_array($file, ['.', '..'])) {
                         \copy($from . '/' . $file, $to . '/' . $file);
                     }
                 }
 
-                \closedir($dir);
+                \closedir($dir); // @phpstan-ignore-line
 
                 continue;
             }

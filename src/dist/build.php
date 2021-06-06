@@ -16,12 +16,12 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+$response = new \stdClass();
+$response->messages = ['message' => 'Unknow error'];
+$response->hasError = true;
+
 try {
     $request = Request::createFromGlobals();
-
-    $response = new \stdClass();
-    $response->messages = ['message' => 'Unknow error'];
-    $response->hasError = true;
 
     /** @var null|UploadedFile $file */
     $file = $request->files->get('file', null);
@@ -50,7 +50,7 @@ try {
     $response->messages = [
         'message' => \sprintf(
             "Error processing %s file:\n\n%s",
-            (isset($file) ? $file->getClientOriginalName() : 'Format'),
+            $file->getClientOriginalName(),
             $exception->getMessage()
         ),
     ];
@@ -68,7 +68,7 @@ try {
 
     \file_put_contents($logfile, $log, \FILE_APPEND);
 } finally {
-    $content = \json_encode($response->messages);
+    $content = (string)\json_encode($response->messages);
     $status = $response->hasError
         ? Response::HTTP_BAD_REQUEST
         : Response::HTTP_OK;

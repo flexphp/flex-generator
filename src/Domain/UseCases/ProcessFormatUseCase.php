@@ -212,8 +212,8 @@ final class ProcessFormatUseCase
 
     private function createZip(string $name, string $outputTmp, string $outputDir): string
     {
-        $outputTmp = \realpath($outputTmp);
-        $outputDir = \realpath($outputDir);
+        $outputTmp = (string)\realpath($outputTmp);
+        $outputDir = (string)\realpath($outputDir);
 
         $src = $outputTmp . \DIRECTORY_SEPARATOR . $name . '.zip';
         $dst = $outputDir . \DIRECTORY_SEPARATOR . $name . '.zip';
@@ -252,17 +252,19 @@ final class ProcessFormatUseCase
     private function deleteFolder(string $dir): void
     {
         if (\is_dir($dir)) {
-            $objects = \array_diff(\scandir($dir), ['.', '..']);
+            $objects = \array_diff(\scandir($dir), ['.', '..']); // @phpstan-ignore-line
 
             foreach ($objects as $object) {
-                if (\is_dir($dir . '/' . $object) && !\is_link($dir . '/' . $object)) {
-                    $this->deleteFolder($dir . '/' . $object);
+                $path = $dir . '/' . $object;
+
+                if (\is_dir($path) && !\is_link($path)) {
+                    $this->deleteFolder($path);
                 } else {
-                    \unlink($dir . '/' . $object);
+                    \unlink($path);
                 }
             }
 
-            \closedir(\opendir($dir));
+            \closedir(\opendir($dir)); // @phpstan-ignore-line
             \rmdir($dir);
         }
     }
