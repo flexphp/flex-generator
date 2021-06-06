@@ -12,15 +12,16 @@
     "require": {
         "php": ">=7.4",
         "ext-zip": "*",
-        "box/spout": "^3.0",
+        "box/spout": "^3.3",
         "flexphp/database": "dev-develop",
         "flexphp/schema": "dev-develop",
         "jawira/case-converter": "^3.4",
-        "symfony/http-foundation": "^4.3",
+        "symfony/http-foundation": "^5.3",
         "symfony/inflector": "^4.4",
-        "symfony/validator": "^4.3",
-        "symfony/yaml": "^4.3",
-        "twig/twig": "^2.12"
+        "symfony/mime": "^5.3",
+        "symfony/validator": "^5.3",
+        "symfony/yaml": "^5.3",
+        "twig/twig": "^3.3"
     },
     "require-dev": {
         "phpmd/phpmd": "^2.10",
