@@ -45,6 +45,7 @@ T
     {
         $render = new RequestMessageBuilder(new Schema('Test', 'bar', [], null, null, ['f']), 'index');
 
+        // @codingStandardsIgnoreStarts
         $this->assertEquals(<<<T
         \$filters = \$request->isMethod('POST')
             ? \$request->request->filter('test_filter_form', [])
@@ -55,6 +56,7 @@ T
         \$request = new IndexTestRequest(\$filters, (int)\$request->query->get('page', 1), 50, \$this->getUser()->timezone());
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItRenderCreateOk(): void

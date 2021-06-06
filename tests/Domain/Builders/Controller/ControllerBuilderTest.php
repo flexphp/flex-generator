@@ -152,6 +152,7 @@ T
 
         $render = new ControllerBuilder($schema, $actions);
 
+        // @codingStandardsIgnoreStarts
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
@@ -199,6 +200,7 @@ final class TestController extends AbstractController
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItRenderCreateOk(): void
@@ -352,6 +354,7 @@ T
 
         $render = new ControllerBuilder($schema, $actions);
 
+        // @codingStandardsIgnoreStarts
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
@@ -417,6 +420,7 @@ final class TestController extends AbstractController
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItRenderDeleteOk(): void

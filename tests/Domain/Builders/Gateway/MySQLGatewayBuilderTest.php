@@ -20,6 +20,7 @@ final class MySQLGatewayBuilderTest extends TestCase
     {
         $render = new MySQLGatewayBuilder($this->getSchema(), ['index']);
 
+        // @codingStandardsIgnoreStart
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
@@ -74,12 +75,14 @@ class MySQLTestGateway implements TestGateway
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItIndexOperatorOk(): void
     {
         $render = new MySQLGatewayBuilder($this->getSchemaFkWithFilterAndFchars(), ['index']);
 
+        // @codingStandardsIgnoreStart
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
@@ -182,6 +185,7 @@ class MySQLTestGateway implements TestGateway
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItCreateOk(): void
@@ -241,6 +245,7 @@ T
             new SchemaAttribute('Foo', 'string', 'pk|required'),
         ]), ['index', 'create', 'read', 'update', 'delete']);
 
+        // @codingStandardsIgnoreStart
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
@@ -348,6 +353,7 @@ class MySQLUpperGateway implements UpperGateway
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItReadOk(): void
@@ -616,6 +622,7 @@ T
             'other',
         ]);
 
+        // @codingStandardsIgnoreStart
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
@@ -815,12 +822,14 @@ class MySQLPostCommentGateway implements PostCommentGateway
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItAiAndBlameAt(): void
     {
         $render = new MySQLGatewayBuilder($this->getSchemaAiAndBlameAt(), ['index', 'create', 'update']);
 
+        // @codingStandardsIgnoreStart
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
@@ -909,12 +918,14 @@ class MySQLTestGateway implements TestGateway
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItBlameBy(): void
     {
         $render = new MySQLGatewayBuilder($this->getSchemaStringAndBlameBy(), ['index', 'create', 'read', 'update']);
 
+        // @codingStandardsIgnoreStart
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
@@ -1028,6 +1039,7 @@ class MySQLTestGateway implements TestGateway
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItIndexStringAndOnlyCreatedAt(): void
@@ -1038,6 +1050,7 @@ T
             new SchemaAttribute('CreatedAt', 'datetime', 'ca'),
         ]), ['index', 'create', 'read', 'update']);
 
+        // @codingStandardsIgnoreStart
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
@@ -1142,6 +1155,7 @@ class MySQLTestGateway implements TestGateway
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItIndexStringAndOnlyUpdatedAt(): void
@@ -1152,6 +1166,7 @@ T
             new SchemaAttribute('UpdatedAt', 'datetime', 'ua'),
         ]), ['index', 'create', 'read', 'update']);
 
+        // @codingStandardsIgnoreStart
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
@@ -1258,6 +1273,7 @@ class MySQLTestGateway implements TestGateway
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     /**

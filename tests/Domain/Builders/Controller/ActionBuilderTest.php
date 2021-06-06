@@ -71,7 +71,6 @@ T
 
 T
 , $render->build());
-
     }
 
     public function testItRenderCreateOk(): void
@@ -166,6 +165,7 @@ T
     {
         $render = new ActionBuilder(new Schema('Test', 'bar', [], null, null, ['f', 'p']), 'update');
 
+        // @codingStandardsIgnoreStarts
         $this->assertEquals(<<<'T'
     /**
      * @Route("/edit/{id}", methods={"GET"}, name="tests.edit")
@@ -200,6 +200,7 @@ T
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     /**
@@ -215,6 +216,7 @@ T
     ): void {
         $render = new ActionBuilder(new Schema($name, 'bar', []), 'update');
 
+        // @codingStandardsIgnoreStarts
         $this->assertEquals(<<<T
     /**
      * @Route("/edit/{id}", methods={"GET"}, name="{$route}.edit")
@@ -249,6 +251,7 @@ T
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItRenderDeleteOk(): void

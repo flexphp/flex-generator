@@ -212,6 +212,7 @@ T
     {
         $render = new FormTypeBuilder($this->getSchemaFkRelation('PostComments'));
 
+        // @codingStandardsIgnoreStart
         $this->assertEquals(<<<T
 <?php declare(strict_types=1);
 {$this->header}
@@ -392,6 +393,7 @@ final class PostCommentFormType extends AbstractType
 
 T
 , $render->build());
+        // @codingStandardsIgnoreEnd
     }
 
     public function testItAiAndBlameAt(): void
