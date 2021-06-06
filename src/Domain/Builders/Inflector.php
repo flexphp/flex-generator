@@ -10,7 +10,7 @@
 namespace FlexPHP\Generator\Domain\Builders;
 
 use Jawira\CaseConverter\Convert;
-use Symfony\Component\Inflector\Inflector as I;
+use Symfony\Component\String\Inflector\EnglishInflector;
 
 final class Inflector
 {
@@ -174,7 +174,7 @@ final class Inflector
             return $string;
         }
 
-        $singularize = I::singularize($string);
+        $singularize = EnglishInflector::singularize($string);
 
         return \is_array($singularize)
             ? \array_pop($singularize)
@@ -193,7 +193,7 @@ final class Inflector
             return $string;
         }
 
-        $pluralize = I::pluralize($this->singularize($string));
+        $pluralize = EnglishInflector::pluralize($this->singularize($string));
 
         return \is_array($pluralize)
             ? $pluralize[0]
