@@ -23,7 +23,7 @@ final class GeneratorTest extends WebTestCase
 
         $response = \ob_get_clean();
 
-        $this->assertContains('Upload file has error.', $response);
+        $this->assertStringContainsString('Upload file has error.', $response);
     }
 
     public function testItFileUploadError(): void
@@ -42,7 +42,7 @@ final class GeneratorTest extends WebTestCase
 
         $response = \ob_get_clean();
 
-        $this->assertContains('exceeds the upload limit', $response);
+        $this->assertStringContainsString('exceeds the upload limit', $response);
     }
 
     public function testItFileUploadExtensionError(): void
@@ -61,7 +61,7 @@ final class GeneratorTest extends WebTestCase
 
         $response = \ob_get_clean();
 
-        $this->assertContains('isn\'t supported', $response);
+        $this->assertStringContainsString('isn\'t supported', $response);
     }
 
     public function testItFileFormatXlsx(): void

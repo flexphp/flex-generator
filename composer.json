@@ -23,11 +23,11 @@
         "twig/twig": "^2.12"
     },
     "require-dev": {
-        "phpmd/phpmd": "^2.8",
-        "phpstan/phpstan": "~0.9",
-        "phpunit/phpunit": "^7.0",
-        "squizlabs/php_codesniffer": "~3.2",
-        "symfony/var-dumper": "^4.3"
+        "phpmd/phpmd": "^2.10",
+        "phpstan/phpstan": "^0.12.88",
+        "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "^3.6",
+        "symfony/var-dumper": "^5.3"
     },
     "autoload": {
         "psr-4": {

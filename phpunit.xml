@@ -1,29 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="./vendor/autoload.php"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         executionOrder="random"
-         resolveDependencies="true"
-         stopOnFailure="false">
-    <testsuites>
-        <testsuite name="functional">
-            <directory suffix="Test.php">./tests/Functional</directory>
-        </testsuite>
-        <testsuite name="domain">
-            <directory suffix="Test.php">./tests/Domain</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-html" target="./tests/coverage"/>
-    </logging>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false" bootstrap="./vendor/autoload.php" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" executionOrder="random" resolveDependencies="true" stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+    <report>
+      <html outputDirectory="./tests/coverage"/>
+    </report>
+  </coverage>
+  <testsuites>
+    <testsuite name="functional">
+      <directory suffix="Test.php">./tests/Functional</directory>
+    </testsuite>
+    <testsuite name="domain">
+      <directory suffix="Test.php">./tests/Domain</directory>
+    </testsuite>
+  </testsuites>
+  <logging/>
 </phpunit>
