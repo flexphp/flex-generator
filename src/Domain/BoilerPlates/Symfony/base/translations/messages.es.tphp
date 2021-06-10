@@ -37,6 +37,7 @@ return [
         'remove' => 'Quitar',
         'filter' => 'Filtrar',
         'back' => 'Regresar',
+        'view' => 'Ver',
     ],
     'message' => [
         'delete' => 'Estás seguro?',
