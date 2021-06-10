@@ -209,6 +209,50 @@ T
 , $render->build());
     }
 
+    public function testItFileTypeOk(): void
+    {
+        $render = new FilterFormBuilder(new Schema('Test', 'Entity Foo Title', [
+            new SchemaAttribute('id', 'string', 'pk|minlength:20|maxlength:100|required'),
+            new SchemaAttribute('file', 'string', 'type:file'),
+        ]));
+
+        $this->assertEquals(<<<T
+<?php declare(strict_types=1);
+{$this->header}
+namespace Domain\Test;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type as InputType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+final class TestFilterFormType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface \$builder, array \$options): void
+    {
+        \$builder->add('id', InputType\TextType::class, [
+            'label' => 'label.id',
+            'required' => false,
+        ]);
+
+        \$builder->add('file', InputType\FileType::class, [
+            'label' => 'label.file',
+            'required' => false,
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver \$resolver): void
+    {
+        \$resolver->setDefaults([
+            'translation_domain' => 'test',
+        ]);
+    }
+}
+
+T
+, $render->build());
+    }
+
     public function testItFkRelationsOk(): void
     {
         $render = new FilterFormBuilder($this->getSchemaFkRelation('PostComments'));

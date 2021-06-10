@@ -53,6 +53,7 @@ class FormTypeBuilder extends AbstractBuilder
     {
         $inputTypes = [
             'text' => 'Textarea',
+            'file' => 'File',
             'password' => 'Password',
             'timezone' => 'Timezone',
             'smallint' => 'Integer',
