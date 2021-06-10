@@ -481,12 +481,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/flexphp/flex-schema.git",
-                "reference": "a7d9816f15e0d50331ba95d53fc70e08edd8f6b9"
+                "reference": "ffed97555dacc00084cf333ab522461a4faa9f73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/flexphp/flex-schema/zipball/a7d9816f15e0d50331ba95d53fc70e08edd8f6b9",
-                "reference": "a7d9816f15e0d50331ba95d53fc70e08edd8f6b9",
+                "url": "https://api.github.com/repos/flexphp/flex-schema/zipball/ffed97555dacc00084cf333ab522461a4faa9f73",
+                "reference": "ffed97555dacc00084cf333ab522461a4faa9f73",
                 "shasum": ""
             },
             "require": {
@@ -524,7 +524,7 @@
                 "issues": "https://github.com/flexphp/flex-schema/issues",
                 "source": "https://github.com/flexphp/flex-schema/tree/develop"
             },
-            "time": "2021-06-06T02:35:41+00:00"
+            "time": "2021-06-10T02:36:47+00:00"
         },
         {
             "name": "jawira/case-converter",
@@ -2609,16 +2609,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.88",
+            "version": "0.12.89",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "464d1a81af49409c41074aa6640ed0c4cbd9bb68"
+                "reference": "54c0f5a6c30511b77128d58b6369f718df250542"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/464d1a81af49409c41074aa6640ed0c4cbd9bb68",
-                "reference": "464d1a81af49409c41074aa6640ed0c4cbd9bb68",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/54c0f5a6c30511b77128d58b6369f718df250542",
+                "reference": "54c0f5a6c30511b77128d58b6369f718df250542",
                 "shasum": ""
             },
             "require": {
@@ -2649,11 +2649,15 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.88"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.89"
             },
             "funding": [
                 {
                     "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
                     "type": "github"
                 },
                 {
@@ -2665,7 +2669,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-17T12:24:49+00:00"
+            "time": "2021-06-09T20:23:49+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
