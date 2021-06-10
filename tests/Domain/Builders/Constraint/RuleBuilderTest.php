@@ -281,7 +281,7 @@ T
 , $render->build());
     }
 
-    public function testItTypeInplicitOk(): void
+    public function testItTypeImplicitOk(): void
     {
         $render = new RuleBuilder(new SchemaAttribute('foo', 'string', []));
 
@@ -371,6 +371,23 @@ T, $render->build());
         ];
     }
 T, $render->build());
+    }
+
+    public function testItTypeFileOk(): void
+    {
+        $render = new RuleBuilder(new SchemaAttribute('foo', 'string', 'type:file'));
+
+        $this->assertEquals(<<<T
+    private function foo(): array
+    {
+        return [
+            new Assert\Type([
+                'type' => 'string',
+            ]),
+        ];
+    }
+T, $render->build());
+
     }
 
     public function testItTypeDateAtOk(): void
